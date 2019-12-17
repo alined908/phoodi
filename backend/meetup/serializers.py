@@ -5,14 +5,14 @@ from meetup.models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('email',)
+        fields = ('id', 'email', 'first_name', 'last_name', 'staff', 'admin')
 
 class UserSerializerWithToken(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     email = serializers.EmailField(required=True)
     token = serializers.SerializerMethodField()
     first_name = serializers.CharField(max_length=255)
-    password = serializers.CharField(min_length=2)
+    password = serializers.CharField(write_only=True)
 
     def get_token(self, obj):
         jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
@@ -23,7 +23,7 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         return token
 
     def create(self, validated_data):
-        user = User.objects.create_user(validated_data['email'], validated_data['first_name'], password=validated_data['password'])
+        user = User.objects.create_user(email=validated_data['email'], first_name=validated_data['first_name'], password=validated_data['password'])
         return user
 
     class Meta:

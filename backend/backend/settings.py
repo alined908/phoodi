@@ -59,8 +59,11 @@ CORS_ORIGIN_WHITELIST = (
 CORS_ALLOW_CREDENTIALS = True
 
 JWT_AUTH = {
-    'JWT_RESPONSE_PAYLOAD_HANDLER': 'mysite.utils.my_jwt_response_handler'
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'backend.utils.my_jwt_response_handler'
 }
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
 
 AUTH_USER_MODEL = 'meetup.User'
 
@@ -101,8 +104,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'jwt_db',
+        'USER' : 'daniel',
+        'PASSWORD' : 'Dogmanblue1',
+        'HOST' : 'localhost',
+        'PORT' : '5432',
     }
 }
 
