@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'meetup'
 ]
 
+AUTH_USER_MODEL = 'meetup.User'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
