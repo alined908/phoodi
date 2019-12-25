@@ -1,58 +1,43 @@
 import React, {Component} from 'react';
-import AuthenticationService from "../accounts/AuthenticationService.js";
-import axios from 'axios';
+import {reduxForm, Field} from 'redux-form';
+import {compose} from 'redux';
+import {connect} from 'react-redux';
+import * as actions from '../actions';
 
 class LoginComponent extends Component {
 
-    constructor(props){
-        super(props)
-        this.state = {
-            email: '',
-            password: '',
-            hasLoginFailed: false,
-            showSuccessMessage: false
-        }
-        this.handleChange = this.handleChange.bind(this);
-        this.loginClicked = this.loginClicked.bind(this);
+    onSubmit = formProps => {
+        this.props.signin(formProps, () => {
+            this.props.history.push("/welcome")
+        });
     }
 
-    handleChange(event){
-        this.setState({
-            [event.target.name]:event.target.value
-        })
-    }
+    render(){
+        const {handleSubmit} = this.props;
 
-    loginClicked(){
-        axios.post('http://localhost:8000/token-auth/', {
-            email: this.state.email,
-            password: this.state.password
-        })
-        .then(response => {
-            if (response.status === 200) {
-                AuthenticationService.registerSuccessfulLogin(response.token);
-                this.props.history.push("/welcome")
-            }
-        })
-        .catch(error => {
-            this.setState({showSuccessMessage: false})
-            this.setState({hasLoginFailed: true})
-        })
-    }
-
-    render () {
         return (
             <div>
                 <h1>Login</h1>
                 <div className="container">
-                    {this.state.hasLoginFailed && <div className="alert alert-warning">Invalid Credentials</div>}
-                    {this.state.showSuccessMessage && <div>Logged in Successfully</div>}
-                    Email: <input type="email" name="email" value={this.state.email} onChange={this.handleChange}></input>
-                    Password: <input type="password" name="password" value={this.state.password} onChange={this.handleChange}></input>
-                    <button className="btn btn-success" onClick={this.loginClicked}>Login</button>
+                    <form onSubmit={handleSubmit(this.onSubmit)}>
+                        <label>Email</label>
+                        <Field name="email" type="text" component="input" autoComplete="none"/>
+                        <label>Password</label>
+                        <Field name="password" type="password" component="input" autoComplete="none"/>
+                        <div>{this.props.errorMessage}</div>
+                        <button className="btn btn-success">Signin</button>
+                    </form>
                 </div>
             </div>
         )
     }
 }
 
-export default LoginComponent
+function mapStatetoProps(state) {
+    return {errorMessage: state.auth.errorMessage}
+}
+
+export default compose (
+    connect(mapStatetoProps, actions),
+    reduxForm({form: 'signin'})
+)(LoginComponent);
