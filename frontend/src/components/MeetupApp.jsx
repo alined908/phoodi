@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {Provider} from 'react-redux'
-import {createStore, applyMiddleware} from 'redux';
-import reduxThunk from 'redux-thunk'
 import AuthenticatedRoute from "../accounts/AuthenticatedRoute";
-
-import reducers from "../reducers"
 import LoginComponent from "./LoginComponent";
 import HeaderComponent from "./HeaderComponent";
 import LogoutComponent from "./LogoutComponent";
@@ -14,14 +10,7 @@ import RegisterComponent from "./RegisterComponent";
 import WelcomeComponent from "./WelcomeComponent";
 import MainComponent from "./MainComponent";
 import HomeComponent from "./HomeComponent";
-
-const store = createStore(
-    reducers,
-    {auth: {
-        authenticated: localStorage.getItem('token')
-    }},
-    applyMiddleware(reduxThunk)
-);
+import {store} from "../store/index";
 
 class MeetupApp extends Component {
     render () {
@@ -45,4 +34,5 @@ class MeetupApp extends Component {
         )
     }
 }
+
 export default MeetupApp

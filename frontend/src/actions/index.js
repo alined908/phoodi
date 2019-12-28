@@ -1,4 +1,4 @@
-import {AUTH_USER, AUTH_ERROR} from "./types"
+import {AUTH_USER, AUTH_ERROR} from "../constants/action-types"
 import axios from 'axios';
 import AuthenticationService from "../accounts/AuthenticationService";
 
