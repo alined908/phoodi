@@ -2,5 +2,100 @@
 
 .App {
   text-align: center;
+  display: flex;
+  height: 100%;
+}
+.chat {
+  display: grid;
+  grid-template-columns: 25% 75%;
+  height: 100vh;
+}
+.chat-bar{
+  background-color: rgba(32, 32, 35, 1);
+  color: white;
+}
+.chat-window{
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(20, 20, 25, 1);
+}
+.chat-contact{
+  display: flex;
+  justify-content: center; 
+  padding: 1rem;
+  flex-direction: column;
+}
+.chat-contact:hover{
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+.chat-messages{
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 85%;
+  margin: 0 auto;
+  overflow-y: scroll;
+  padding: 1.5rem 0;
+}
+
+.chat-msg-wrapper.is-user{
+  margin-left: auto;
+}
+
+.chat-msg{
+  max-width: 300px;
+  font-size: .85rem;
+  padding: .75rem;
+  margin: .5rem 0;
+  color: #fff;
+  background: #2b2c33;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+
+}
+
+.chat-msg-info{
+  display:flex;
+  align-items: center;
+
+  color: white;
+  font-size: .8rem;
+  justify-content: flex-start;
+}
+
+.chat-msg-info.is-user{
+  justify-content: flex-end;
+}
+
+.chat-msg-time{
+  margin-left: 5px;
+  color: lightslategrey;
+  font-size: .75rem;
+}
+.chat-msg.is-user{
+  background: linear-gradient(90deg, #1986d8, #7b9cc2);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.chat-input{
+  margin-top: auto;
+  width: 100%;
+  padding: .5rem;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border: 0;
+  border-radius: 10px;
+  font-size: 1rem;
+  outline: 0;
+}
+
+.chat-input-form{
+  width: 100%;
+  margin: .25rem auto;
 }
 

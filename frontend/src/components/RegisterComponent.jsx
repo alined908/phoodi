@@ -8,7 +8,7 @@ class RegisterComponent extends Component {
 
     onSubmit = formProps => {
         this.props.signup(formProps, () => {
-            this.props.history.push("/welcome")
+            this.props.history.push("/login")
         });
     }
 

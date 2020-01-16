@@ -8,6 +8,7 @@ import LogoutComponent from "./LogoutComponent";
 import ErrorComponent from "./ErrorComponent";
 import RegisterComponent from "./RegisterComponent";
 import WelcomeComponent from "./WelcomeComponent";
+import ChatComponent from "./ChatComponent"
 import MainComponent from "./MainComponent";
 import HomeComponent from "./HomeComponent";
 import {store} from "../store/index";
@@ -26,6 +27,7 @@ class MeetupApp extends Component {
                             <Route path="/logout" component={LogoutComponent}></Route>
                             <AuthenticatedRoute path="/welcome" component={WelcomeComponent}></AuthenticatedRoute>
                             <AuthenticatedRoute path="/meetup" component={MainComponent}></AuthenticatedRoute>
+                            <AuthenticatedRoute path="/chat" component={ChatComponent}></AuthenticatedRoute>
                             <Route component={ErrorComponent}></Route>
                         </Switch>
                     </Router>

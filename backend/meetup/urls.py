@@ -1,12 +1,15 @@
 from django.urls import path
 from django.conf.urls import url
-from .views import current_user, CreateUserView
+from .views import current_user, CreateUserView, ChatRoomView, ChatRoomMessageView, UserFriendsView
 from . import views
 
 app_name='meetup'
 
 urlpatterns=[
     path("current_user/", current_user),
-    path('users/create', CreateUserView.as_view()),
-    path("", views.index, name="index"),
+    path('users/', CreateUserView.as_view()),
+    path("chats/", views.ChatRoomView.as_view()),
+    path("chats/<uri>/", views.ChatRoomView.as_view()),
+    path("chats/<uri>/messages/", views.ChatRoomMessageView.as_view()),
+    path("friends/", views.UserFriendsView.as_view()),
 ]

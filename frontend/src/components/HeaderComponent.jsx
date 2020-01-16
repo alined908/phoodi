@@ -10,6 +10,7 @@ class HeaderComponent extends Component {
                     <div><a href="http://localhost:3000" className="navbar-brand">Meetup</a></div>
                     <ul className="navbar-nav">
                         <li><Link className="nav-link" to="/">Home</Link></li>
+                        <li><Link className="nav-link" to="/chat">Chat</Link></li>
                     </ul>
                     <ul className="navbar-nav navbar-collapse justify-content-end">
                         {!this.props.authenticated && <li><Link className="nav-link" to="/login">Login</Link></li>}

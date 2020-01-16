@@ -4,12 +4,10 @@ import AuthenticationService from "../accounts/AuthenticationService";
 
 export const signup = (formProps, redirectOnSuccess) => async dispatch => {
     try {
-        const response = await axios.post('http://localhost:8000/meetup/users/create', {
+        const response = await axios.post('http://localhost:8000/api/users/', {
             "user": formProps
         })
         console.log(response)
-        dispatch({type: AUTH_USER, payload: response.data.user.token});
-        AuthenticationService.registerSuccessfulLogin(response.data.user.token)
         redirectOnSuccess();
     }
     catch (e){
@@ -22,17 +20,16 @@ export const signout = () => {
     localStorage.removeItem('token')
     return {
         type: AUTH_USER,
-        payload: ''
+        payload: {"token": '', "user": {}}
     }
 }
 
 export const signin = (formProps, redirectOnSuccess) => async dispatch => {
     try {
-        console.log(formProps);
-        const response = await axios.post('http://localhost:8000/token-auth/', formProps)
-        console.log(response)
-        dispatch({type: AUTH_USER, payload: response.data.token});
+        const response = await axios.post('http://localhost:8000/api/token-auth/', formProps)
+        dispatch({type: AUTH_USER, payload: response.data});
         AuthenticationService.registerSuccessfulLogin(response.data.token)
+        localStorage.setItem("user", JSON.stringify(response.data.user[Object.keys(response.data.user)[0]]))
         redirectOnSuccess();
     }
     catch (e){

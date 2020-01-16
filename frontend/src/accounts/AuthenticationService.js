@@ -5,6 +5,10 @@ class AuthenticationService{
         console.log("register successfull login");
     }
 
+    retrieveToken(){
+        return localStorage.getItem('token');
+    }
+
     logout(){
         localStorage.removeItem('token');
     }
