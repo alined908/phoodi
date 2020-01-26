@@ -137,7 +137,7 @@ class ChatRoomMessageView(APIView):
         chat_room = ChatRoom.objects.get(uri=uri)
         messages = []
 
-        for msg in chat_room.messages.all():
+        for msg in reversed(chat_room.messages.order_by('-timestamp')[:50]):
             message = MessageSerializer(msg).data
             messages.append({'message': message})
 

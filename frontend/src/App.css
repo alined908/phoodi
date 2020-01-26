@@ -25,6 +25,11 @@
   padding: 1rem;
   flex-direction: column;
 }
+
+.chat-contact.curr-room{
+  background-color: rgb(50 , 50, 50, 1);
+}
+
 .chat-contact:hover{
   background: rgba(0, 0, 0, 0.2);
   cursor: pointer;

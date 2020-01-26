@@ -7,7 +7,7 @@ import {getMessages} from "../actions/chat"
 class ChatComponent extends Component {
     render(){
         const renderChatWindow = () => {
-            if (this.props.isActiveRoomSet) {
+            if (this.props.isMessagesInitialized) {
                 return <ChatWindowComponent isMessagesInitialized={this.props.isMessagesInitialized} activeRoom={this.props.activeRoom} messages={this.props.messages}></ChatWindowComponent>
             } else {
                 return <ChatWindowComponent activeRoom={""}></ChatWindowComponent>

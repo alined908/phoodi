@@ -22,7 +22,7 @@ urlpatterns = [
     path('', home, name='home'),
     path('admin/', admin.site.urls),
     path('api/', include('meetup.urls')),
-    path('api/token-auth/', obtain_jwt_token),
+    path('api/token-auth/', obtain_jwt_token),  
     path('api/token-refresh/', refresh_jwt_token),
     path('api/token-verify/', verify_jwt_token)
 ]

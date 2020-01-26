@@ -4,7 +4,7 @@ export default function(state = {authenticated: '', errorMessage: ''}, action){
     switch(action.type){
         case AUTH_USER:
             let user = Object.values(action.payload.user)[0]
-            return {...state, authenticated: action.payload.token, user: user};
+            return {...state, authenticated: action.payload.token, user: JSON.stringify(user)};
         case AUTH_ERROR:
             return {...state, errorMessage: action.payload};
         default:

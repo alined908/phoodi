@@ -13,8 +13,12 @@ class AuthenticationService{
         localStorage.removeItem('token');
     }
 
+    getUser(){
+        return localStorage.getItem('token');
+    }
+
     isUserLoggedIn(){
-        let user = localStorage.getItem('token')
+        let user = this.getUser();
         if (user === null){
             return false
         }

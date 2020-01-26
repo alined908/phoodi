@@ -28,8 +28,20 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'channels',
     'meetup'
 ]
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": ['redis://localhost:6379/'],
+        },
+    },
+}
+
+ASGI_APPLICATION = "backend.routing.application"
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (

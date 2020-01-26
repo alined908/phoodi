@@ -1,20 +1,43 @@
 import React, {Component} from 'react'
 import ChatMessageComponent from "./ChatMessageComponent"
-import ChatInputComponent from "./ChatInputComponent"
 import {connect} from 'react-redux'
+import WebSocketInstance from '../accounts/WebSocket'
+import {setTypingValue, addMessage, getMessages} from "../actions/chat";
 
 class ChatWindowComponent extends Component {
+    constructor(props){
+        super(props)
+        console.log("chat window constructor")
+        console.log(this.props.user)
+        let user = this.props.user
+        WebSocketInstance.initChatUser(user.email);
+        WebSocketInstance.addCallbacks(this.props.getMessages, this.props.addMessage)
+        // WebSocketInstance.fetchMessages(user.email);
+    }
+    
+    handleChange = (e) => {
+        console.log(e.target.value);
+        this.props.setTypingValue(e.target.value);        
+    }
+
+    handleSubmit = (e) => {
+        if (e.key === "Enter"){
+            e.preventDefault();
+            console.log("handle submit")
+            const messageObject = {from: JSON.parse(this.props.user).id, text: this.props.message, room: this.props.room}
+            console.log(messageObject)
+            WebSocketInstance.newChatMessage(messageObject)
+            // this.props.addMessage(e.target.value, this.props.room, JSON.parse(this.props.user).id)
+        }
+    }
 
     componentDidMount() {
-        console.log("mounted chat window")
         this.scrollToBottom();
       }
     componentDidUpdate() {
-        console.log("updated chat window")
         this.scrollToBottom();
     }
-    scrollToBottom = () => {
-        console.log("scroll to bottom called")
+    scrollToBottom = () => {    
         this.messagesEnd && this.messagesEnd.scrollIntoView({ behavior: "smooth" });
     };
     
@@ -28,7 +51,15 @@ class ChatWindowComponent extends Component {
                     {this.props.messages && this.props.messages.map((msg) => <ChatMessageComponent user={this.props.user} message={msg.message} members={this.props.activeChatMembers}/>)}
                 </div>
                 {this.props.activeChatMembers && <div ref={(el) => { this.messagesEnd = el; }} className="chat-input">
-                    <ChatInputComponent/>
+                    <form className="chat-input-form">
+                        <input className="chat-input"
+                            type="text"
+                            onChange={this.handleChange} 
+                            onKeyPress={this.handleSubmit}
+                            value={this.props.message} 
+                            placeholder="Type here to send a message">
+                        </input>
+                    </form>
                 </div>}
             </div>
         )
@@ -39,16 +70,24 @@ function mapStateToProps(state){
     if (state.chat.activeRoom in state.chat.rooms){
         return {
             activeChatMembers: state.chat.rooms[state.chat.activeRoom].members,
-            user: state.auth.user
+            user: state.auth.user,
+            message: state.chat.setTypingValue,
+            room: state.chat.activeRoom
         }
     } else {
         return {
             activeChatMembers: null,
-            user: state.auth.user
+            user: state.auth.user,
         }
     }
     
 }
 
+const mapDispatchToProps = {
+    setTypingValue,
+    addMessage,
+    getMessages
+}
 
-export default connect(mapStateToProps)(ChatWindowComponent)
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatWindowComponent)
