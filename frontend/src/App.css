@@ -103,4 +103,47 @@
   width: 100%;
   margin: .25rem auto;
 }
+.rsts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-row-gap: 1rem;
+  justify-items: center;
+  align-items: center;
+  grid-column-gap: 1rem;
+}
 
+.rst-wrapper{
+}
+
+.rst{
+  margin: 6px;
+  font-family: 'Roboto', sans-serif;
+  font-size: .9rem;
+  width: 240px;
+  height: 180px;
+  overflow: hidden; 
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+ 
+}
+
+.rst-img{
+  background-size: cover;
+  height: 200px;
+  background-position: center center;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.rst-info {
+  display:flex;
+  justify-content: space-between;
+}
+
+.rst-name{
+  font-weight: bold;
+}
+
+.rst-rating{
+  font-size: .75rem;
+}

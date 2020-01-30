@@ -1,14 +1,14 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
-from meetup.models import User, ChatRoom, ChatRoomMember, ChatRoomMessage
-from django.urls import reverse
+from meetup.models import User, ChatRoom, ChatRoomMember, ChatRoomMessage, Meetup
 from django.db import IntegrityError
 from rest_framework.decorators import api_view
 from django.http import HttpResponse, HttpResponseRedirect
 from rest_framework.views import APIView
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework import permissions, status
-from meetup.serializers import UserSerializer, UserSerializerWithToken, MessageSerializer, FriendsSerializer, FriendshipSerializer, ChatRoomSerializer
+from meetup.serializers import UserSerializer, UserSerializerWithToken, MessageSerializer, FriendsSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer
 
 @api_view(['GET'])
 def current_user(request):
@@ -45,6 +45,37 @@ class CreateUserView(APIView):
             return Response({"error" : serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
         return Response({"success" : "user created succesfully", "user": serializer.data})
+
+class MeetUpView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self, uri):
+        obj = get_object_or_404(Meetup, uri=uri)
+        return obj
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        meetups = user.meetups
+        meetups_json = {}
+    
+        for meetup in meetups.all():
+            serializer = MeetupSerializer(meetup.meetup)
+            meetups_json[meetup.meetup.uri] = serializer.data
+
+        return Response ({"meetups": meetups_json})
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        print(request.data)
+        meetup = Meetup.objects.create(datetime=request.data['datetime'], location = request.data['location'])
+        meetup.members.create(user=user, meetup=meetup)
+
+        return Response({'status': 'Success', 'meetup': MeetupSerializer(meetup).data, 'message': "new meetup created"})
+
+    def delete(self, request, *args, **kwargs):
+        meetup = self.get_object(kwargs['uri'])
+        meetup.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class UserFriendsView(APIView):
     permission_classes = [permissions.IsAuthenticated]

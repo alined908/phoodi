@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
-from meetup.models import User, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember
+from meetup.models import User, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember
 
 class UserSerializer(serializers.ModelSerializer):
     def to_representation(self, data):
@@ -74,6 +74,20 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatRoomMessage
         fields = ('__all__')
+
+class MeetupSerializer(serializers.ModelSerializer):
+    members = serializers.SerializerMethodField('_get_members')
+
+    def _get_members(self, obj):
+        mapping = {}
+        for member in obj.members.all():
+            user = member.user
+            mapping.update(UserSerializer(user).data)
+        return mapping
+
+    class Meta:
+        model = Meetup
+        fields = ('id', 'uri', 'location', 'datetime', 'options', 'chosen', 'members')
 
 
 

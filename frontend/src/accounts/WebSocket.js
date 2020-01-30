@@ -14,7 +14,7 @@ class WebSocketService{
     }
 
     connect(uri){
-        var ws_scheme = window.location.protocol == "https:" ? "wss": "ws"
+        var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
         const path = `${ws_scheme}://localhost:8000/ws/chat/${uri}/`;
         this.socketRef = new WebSocket(path);
         

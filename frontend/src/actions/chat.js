@@ -1,6 +1,5 @@
-import {GET_ROOMS, SET_ROOM, ADD_ROOM, SET_ACTIVE_ROOM, GET_MESSAGES, SET_TYPING_VALUE, ADD_MESSAGE} from "../constants/action-types"
+import {GET_ROOMS, ADD_ROOM, SET_ACTIVE_ROOM, GET_MESSAGES, SET_TYPING_VALUE, ADD_MESSAGE} from "../constants/action-types"
 import axios from 'axios';
-import WebSocketInstance from "../accounts/WebSocket";
 
 export const getRooms = () => async dispatch => {
     try {

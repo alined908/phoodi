@@ -3,6 +3,14 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager)
 from django.conf import settings
 from uuid import uuid4
+import requests
+import json
+
+url = "https://api.yelp.com/v3/businesses/search"
+headers = {'Authorization': "Bearer U46B4ff8l6NAdldViS7IeS8HJriDeE9Cd5YZXTUmrdzvtv57AUQiYJVVbEPFp30nhL9YAW2-LjAAQ1cBapJ4uqiOYES8tz9EjM85R8ki9l-54Z1d_1OOWLeY5tTuXXYx"}
+
+def generate_unique_uri():
+    return str(uuid4()).replace('-', '')[:15]
 
 class UserManager(BaseUserManager):
     def create_user(self, email, first_name, is_staff=False, is_admin=False, password=None, **kwargs):
@@ -86,17 +94,49 @@ class User(AbstractBaseUser):
         return friends
 
 class Profile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, default="profile")
     location = models.CharField(max_length=30,blank=True)
+
+class Meetup(models.Model):
+    uri = models.URLField(default=generate_unique_uri)
+    datetime = models.DateTimeField()
+    options = models.TextField()
+    chosen = models.TextField(blank=True)
+    location = models.TextField()
+
+    _original_location = None
+    objects = models.Manager()
+
+    def __init__(self, *args, **kwargs):
+        super(Meetup, self).__init__(*args, **kwargs)
+        print("init")
+
+    def __str__(self):
+        return self.uri
+
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
+        if self.location != self._original_location:
+            params = {"location": self.location}
+            r = requests.get(url=url, params=params, headers=headers)
+            self.options = json.dumps(r.json())
+            print("Save new location and generate options")
+        super(Meetup, self).save(force_insert, force_update, *args, **kwargs)
+        self._original_location = self.location
+
+class MeetupMember(models.Model):
+    meetup = models.ForeignKey(Meetup, related_name="members", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="meetups", on_delete=models.CASCADE)
+
+class Preference(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="preferences")
+    label = models.TextField()
 
 class Friendship(models.Model):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="friend_creators", on_delete=models.CASCADE)
     friend = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="friends", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     objects=models.Manager()
-
-def generate_unique_uri():
-    return str(uuid4()).replace('-', '')[:15]
 
 class ChatRoom(models.Model):
     name = models.CharField(max_length=200)
