@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
 from rest_framework_jwt.settings import api_settings
-from meetup.models import User, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember
+from meetup.models import User, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite
 from django.forms.models import model_to_dict
 
 class UserSerializer(serializers.ModelSerializer):
@@ -105,5 +105,10 @@ class MeetupMemberSerializer(serializers.ModelSerializer):
 class MeetupInviteSerializer(serializers.ModelSerializer):
     class Meta:
         model = MeetupInvite
+        fields = ('__all__')
+
+class FriendInviteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FriendInvite
         fields = ('__all__')
 

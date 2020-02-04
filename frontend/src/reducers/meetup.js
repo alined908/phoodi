@@ -1,4 +1,4 @@
-import {GET_MEETUPS, ADD_MEETUP, DELETE_MEETUP} from '../constants/action-types';
+import {GET_MEETUPS, ADD_MEETUP, DELETE_MEETUP, CLEAR_STORE} from '../constants/action-types';
 
 const defaultState = {
     meetups: {},
@@ -23,6 +23,8 @@ export default function meetupReducer(state = defaultState, action){
                 }
             })
             return {...state, meetups: meetups}
+        case CLEAR_STORE:
+            return defaultState
         default:
             return state
     }

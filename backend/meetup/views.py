@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
-from meetup.models import User, ChatRoom, ChatRoomMember, ChatRoomMessage, Meetup, Friendship, MeetupInvite, MeetupMember
+from meetup.models import User, ChatRoom, ChatRoomMember, ChatRoomMessage, Meetup, Friendship, MeetupInvite, MeetupMember, FriendInvite
 from django.db import IntegrityError
 from rest_framework.decorators import api_view
 from django.http import HttpResponse, HttpResponseRedirect
@@ -9,7 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework import permissions, status
 from django.forms.models import model_to_dict
-from meetup.serializers import UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer
+from meetup.serializers import UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer, FriendInviteSerializer
 
 @api_view(['GET'])
 def current_user(request):
@@ -159,7 +159,7 @@ class MeetupInviteAllView(APIView):
         Get all invites
         """
         user = request.user
-        invites = MeetupInvite.objects.filter(receiver=user)
+        invites = user.received_meetupinvites.all()
         return Response(MeetupInviteSerializer(invites, many=True).data)
 
 class MeetupInviteListView(APIView):
@@ -215,7 +215,7 @@ class MeetupInviteView(APIView):
         user = request.user
         room_uri = kwargs['uri']
         invite_uri = kwargs['invite_code']
-        status = request.data['status']
+        num = request.data['status']
         
         try: 
             meetup = Meetup.objects.get(uri=room_uri)
@@ -230,7 +230,7 @@ class MeetupInviteView(APIView):
         if user != invite.receiver:
             return Response({"error": "Not your invite"}, status=status.HTTP_400_BAD_REQUEST)
 
-        invite.status = status
+        invite.status = num
         invite.save()
 
         return Response({"message": "Invite status changed", "invite": MeetupInviteSerializer(invite).data})
@@ -271,6 +271,61 @@ class UserFriendsView(APIView):
         friendship = get_object_or_404(Meetup, pk=pk)
         friendship.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class FriendInviteListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        """
+        Get Friend Request Invites
+        """
+        user = request.user
+        received_invs = user.received_friendinvites.all()
+        serializer = FriendInviteSerializer(received_invs, many=True)
+
+        return Response({"invites": serializer.data})
+
+    def post(self, request, *args, **kwargs):
+        """
+        Send Friend Request 
+        """
+        user = request.user
+        recepient = request.data['email']
+
+        try: 
+            invite = User.objects.get(email=recepient)
+        except ObjectDoesNotExist:
+            return Response({"error": "User does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        invite, created = FriendInvite.objects.get_or_create(sender=user, receiver=invite)
+        serializer = FriendInviteSerializer(invite)
+
+        if created:
+            return Response({"message": "Invite sent/created", "invite": serializer.data})
+        else:
+            return Response({"message": "Invite already sent out", "invite": serializer.data})
+        
+
+class FriendInviteView(APIView):
+
+    def patch(self, request, *args, **kwargs):
+        user = request.user
+        uri = kwargs['invite_code']
+        num = request.data['status']
+
+        try:
+            invite = FriendInvite.objects.get(uri=uri)
+        except ObjectDoesNotExist:
+            return Response({"error": "Invite does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if user != invite.receiver:
+            return Response({"error": "Not your invite"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        invite.status = num
+        invite.save()
+        serializer = FriendInviteSerializer(invite)
+
+        return Response(serializer.data)
 
 class ChatRoomListView(APIView):
     permission_classes = [permissions.IsAuthenticated]

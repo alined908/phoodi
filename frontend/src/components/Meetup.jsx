@@ -41,6 +41,7 @@ class Meetup extends Component {
         const renderFriends = () => {
             return (
                 <div>
+                    {this.props.isFriendsInitialized && <div>Friends</div>}
                     {this.props.isFriendsInitialized && this.props.friends.map((friendship) => <MeetupFriend friend={friendship.user} isMember={isMember(friendship.user.id)}></MeetupFriend>)}
                 </div>
             )

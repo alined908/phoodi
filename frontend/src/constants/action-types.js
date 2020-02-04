@@ -1,6 +1,7 @@
 //User
 export const AUTH_USER = 'auth_user';
 export const AUTH_ERROR = 'auth_error';
+export const CLEAR_STORE= 'clear_store'
 
 //Chat
 export const GET_ROOMS = 'get_rooms';
@@ -21,7 +22,7 @@ export const ADD_FRIEND = 'add_friend';
 export const DELETE_FRIEND = 'delete_friend';
 export const FRIEND_ERROR = 'add_friend_error'
 
-//Invites
-export const GET_INVITES = 'get_invites';
-export const SEND_INVITE = 'send_invite';
-export const RESPOND_INVITE = 'accept_invite';
+//Meetup Invites
+export const GET_MEETUP_INVITES = 'get_meetup_invites';
+export const SEND_MEETUP_INVITE = 'send_meetup_invite';
+export const RESPOND_MEETUP_INVITE = 'accept_meetup_invite';

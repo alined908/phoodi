@@ -1,4 +1,4 @@
-import {GET_ROOMS, ADD_ROOM, SET_ACTIVE_ROOM, SET_TYPING_VALUE, ADD_MESSAGE, GET_MESSAGES} from "../constants/action-types"
+import {CLEAR_STORE, GET_ROOMS, ADD_ROOM, SET_ACTIVE_ROOM, SET_TYPING_VALUE, ADD_MESSAGE, GET_MESSAGES} from "../constants/action-types"
 
 const defaultState = {
     rooms: [],
@@ -25,6 +25,8 @@ export default function chatReducer(state = defaultState, action){
             return {...state, setTypingValue: action.payload}
         case ADD_MESSAGE:
             return {...state, setTypingValue: '', messages: [...state.messages, {"message": action.payload.message}]}
+        case CLEAR_STORE:
+            return defaultState
         default:
             return state
     }

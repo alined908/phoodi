@@ -29,6 +29,7 @@ class FriendsComponent extends Component{
         return (
             <div>
                 {!this.props.isFriendsInitialized && <div>...Initializing Friends</div>}
+                {this.props.isFriendsInitialized && <div>Friends</div>}
                 {this.props.isFriendsInitialized && this.props.friends.map((friendship) => 
                     friendship.user.email + ", "
                 )}

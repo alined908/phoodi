@@ -1,4 +1,4 @@
-import {AUTH_USER, AUTH_ERROR} from "../constants/action-types"
+import {AUTH_USER, AUTH_ERROR, CLEAR_STORE} from "../constants/action-types"
 import axios from 'axios';
 import AuthenticationService from "../accounts/AuthenticationService";
 
@@ -19,17 +19,18 @@ export const signup = (formProps, redirectOnSuccess) => async dispatch => {
 export const signout = () => {
     localStorage.removeItem('token')
     return {
-        type: AUTH_USER,
-        payload: {"token": '', "user": {}}
+        type: CLEAR_STORE,
+        payload: {}
     }
 }
 
 export const signin = (formProps, redirectOnSuccess) => async dispatch => {
     try {
         const response = await axios.post('http://localhost:8000/api/token-auth/', formProps)
-        dispatch({type: AUTH_USER, payload: response.data});
+        //Combine next two lines later
         AuthenticationService.registerSuccessfulLogin(response.data.token)
         localStorage.setItem("user", JSON.stringify(response.data.user[Object.keys(response.data.user)[0]]))
+        dispatch({type: AUTH_USER, payload: response.data});
         redirectOnSuccess();
     }
     catch (e){
