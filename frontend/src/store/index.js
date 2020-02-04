@@ -8,7 +8,7 @@ const middleware = [reduxThunk]
 export const store = createStore(
     reducers,
     {
-        auth: {authenticated: localStorage.getItem('token'), user: localStorage.getItem('user')},
+        user: {authenticated: localStorage.getItem('token'), user: localStorage.getItem('user')},
     },
     composeEnhancers(applyMiddleware(...middleware))
 );

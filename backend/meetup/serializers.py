@@ -1,12 +1,17 @@
 from rest_framework import serializers
+from rest_framework.fields import CurrentUserDefault
 from rest_framework_jwt.settings import api_settings
-from meetup.models import User, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember
+from meetup.models import User, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember
+from django.forms.models import model_to_dict
 
 class UserSerializer(serializers.ModelSerializer):
     def to_representation(self, data):
         res = super(UserSerializer, self).to_representation(data)
-        return {res['id']: res}
-
+        if self.context.get("plain"):
+            return res
+        else:
+            return {res['id']: res}
+        
     class Meta:
         model = User
         fields = ('id', 'email', 'first_name', 'last_name')
@@ -26,24 +31,19 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         fields = ('id', 'email', 'first_name', 'password')
     
 class FriendshipSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Friendship
-        fields = ('id', 'creator', 'friend', 'created_at')
+    user = serializers.SerializerMethodField('_get_friend')
 
-class FriendsSerializer(serializers.ModelSerializer):
-    friends = serializers.SerializerMethodField('get_friends')
-
-    def get_friends(self, obj):
-        print("DWADAWDAWD")
-        friends = obj.get_friends()
-        print("HELDLAWODLWA")
-        print(friends)
-        serializer = UserSerializer(friends, many=True)
-        return serializer.data
+    def _get_friend(self, obj):
+        user = self.context.get('user')
+        
+        if obj.creator == user:
+            return UserSerializer(obj.friend, context={'plain': True}).data
+        else:
+            return UserSerializer(obj.creator, context={'plain': True}).data
 
     class Meta:
         model = Friendship
-        fields = ('id', 'friends')
+        fields = ('id', 'user', 'created_at')
 
 class ChatRoomSerializer(serializers.ModelSerializer):
     members = serializers.SerializerMethodField('_get_members')
@@ -87,9 +87,23 @@ class MeetupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Meetup
-        fields = ('id', 'uri', 'location', 'datetime', 'options', 'chosen', 'members')
+        fields = ('id', 'name', 'uri', 'location', 'datetime', 'options', 'chosen', 'members')
 
 
+class MeetupMemberSerializer(serializers.ModelSerializer):
+    member = serializers.SerializerMethodField('_get_member')
 
-    
+    def _get_member(self, obj):
+        print(obj)
+        serializer = UserSerializer(obj.user)
+        return serializer.data
+
+    class Meta:
+        model = MeetupMember
+        fields = ['member']
+
+class MeetupInviteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MeetupInvite
+        fields = ('__all__')
 

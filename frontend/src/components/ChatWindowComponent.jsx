@@ -70,14 +70,14 @@ function mapStateToProps(state){
     if (state.chat.activeRoom in state.chat.rooms){
         return {
             activeChatMembers: state.chat.rooms[state.chat.activeRoom].members,
-            user: state.auth.user,
+            user: state.user.user,
             message: state.chat.setTypingValue,
             room: state.chat.activeRoom
         }
     } else {
         return {
             activeChatMembers: null,
-            user: state.auth.user,
+            user: state.user.user,
         }
     }
     

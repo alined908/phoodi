@@ -1,16 +1,20 @@
 from django.urls import path
 from django.conf.urls import url
-from .views import current_user, CreateUserView, ChatRoomView, ChatRoomMessageView, UserFriendsView, MeetUpView
+from .views import current_user, MeetupInviteAllView, CreateUserView, ChatRoomView, ChatRoomMessageView, UserFriendsView, MeetupView, MeetupListView, MeetupInviteListView, MeetupInviteView, MeetupMembersView
 from . import views
 
 app_name='meetup'
 
 urlpatterns=[
     path("current_user/", current_user),
-    path("meetups/", views.MeetUpView.as_view()),
-    path("meetups/<uri>/", views.MeetUpView.as_view()),
     path('users/', CreateUserView.as_view()),
-    path("chats/", views.ChatRoomView.as_view()),
+    path("meetups/", views.MeetupListView.as_view()),
+    path("meetups/invites/", views.MeetupInviteAllView.as_view()),
+    path("meetups/<uri>/", views.MeetupView.as_view()),
+    path("meetups/<uri>/members/", views.MeetupMembersView.as_view()),
+    path("meetups/<uri>/invite/", views.MeetupInviteListView.as_view()),
+    path("meetups/<uri>/invite/<invite_code>/", views.MeetupInviteView.as_view()),
+    path("chats/", views.ChatRoomListView.as_view()),
     path("chats/<uri>/", views.ChatRoomView.as_view()),
     path("chats/<uri>/messages/", views.ChatRoomMessageView.as_view()),
     path("friends/", views.UserFriendsView.as_view()),

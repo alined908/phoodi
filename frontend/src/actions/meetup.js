@@ -14,13 +14,32 @@ export const getMeetups = () => async dispatch => {
     }
 }
 
-export const addMeetup = (meetup) => async dispatch => {
+export const getMeetup = (uri) => async dispatch => {
+    console.log("getMeetup called")
+    try {
+        const response = await axios.get(
+            `http://localhost:8000/api/meetups/${uri}/`, {headers: {
+                "Authorization": `JWT ${localStorage.getItem('token')}`
+            }}
+        )
+        console.log(response)
+        dispatch({type: ADD_MEETUP, payload: response.data})
+    } catch(e){
+        console.log(e)
+    }
+}
+
+export const addMeetup = (formProps, redirectOnSuccess) => async dispatch => {
+    console.log("add meetup called")
+    console.log(formProps);
     try {
         const response = await axios.post(
-            `http://localhost:8000/api/meetups/`, {"meetup": meetup}, {headers: {
+            `http://localhost:8000/api/meetups/`, formProps, {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
         }})
-        dispatch({type: ADD_MEETUP, payload: response.data})
+        dispatch({type: ADD_MEETUP, payload: response.data.meetup})
+        console.log(response.data)
+        redirectOnSuccess(response.data.meetup.uri)
     } catch(e){
         console.log(e)
     }

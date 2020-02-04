@@ -34,7 +34,7 @@ class LoginComponent extends Component {
 }
 
 function mapStatetoProps(state) {
-    return {errorMessage: state.auth.errorMessage}
+    return {errorMessage: state.user.errorMessage}
 }
 
 export default compose (

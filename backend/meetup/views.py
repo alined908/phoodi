@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
-from meetup.models import User, ChatRoom, ChatRoomMember, ChatRoomMessage, Meetup
+from meetup.models import User, ChatRoom, ChatRoomMember, ChatRoomMessage, Meetup, Friendship, MeetupInvite, MeetupMember
 from django.db import IntegrityError
 from rest_framework.decorators import api_view
 from django.http import HttpResponse, HttpResponseRedirect
@@ -8,7 +8,8 @@ from rest_framework.views import APIView
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework import permissions, status
-from meetup.serializers import UserSerializer, UserSerializerWithToken, MessageSerializer, FriendsSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer
+from django.forms.models import model_to_dict
+from meetup.serializers import UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer
 
 @api_view(['GET'])
 def current_user(request):
@@ -45,23 +46,23 @@ class CreateUserView(APIView):
             return Response({"error" : serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
         return Response({"success" : "user created succesfully", "user": serializer.data})
-
-class MeetUpView(APIView):
+    
+class MeetupListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def get_object(self, uri):
-        obj = get_object_or_404(Meetup, uri=uri)
-        return obj
-
-    def get(self, request, *args, **kwargs):
-        user = request.user
-        meetups = user.meetups
+    def format_meetups(self, meetups):
         meetups_json = {}
     
         for meetup in meetups.all():
             serializer = MeetupSerializer(meetup.meetup)
             meetups_json[meetup.meetup.uri] = serializer.data
 
+        return meetups_json
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        meetups = user.meetups
+        meetups_json = self.format_meetups(meetups)
         return Response ({"meetups": meetups_json})
 
     def post(self, request, *args, **kwargs):
@@ -72,48 +73,206 @@ class MeetUpView(APIView):
 
         return Response({'status': 'Success', 'meetup': MeetupSerializer(meetup).data, 'message': "new meetup created"})
 
+class MeetupView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self, uri):
+        obj = get_object_or_404(Meetup, uri=uri)
+        return obj
+
+    def get(self, request, *args, **kwargs):
+        meetup = self.get_object(kwargs['uri'])
+        serializer = MeetupSerializer(meetup)
+        return Response(serializer.data)
+
     def delete(self, request, *args, **kwargs):
         meetup = self.get_object(kwargs['uri'])
         meetup.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class MeetupMembersView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        """
+        Get all members of meetup
+        """
+        uri = kwargs['uri']
+
+        try: 
+            meetup = Meetup.objects.get(uri=uri)
+        except ObjectDoesNotExist:
+            return Response({"error": "Room does not exist"},status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = MeetupMemberSerializer(meetup.members.all(), many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        """
+        Add member to meetup
+        """
+        email = request.data['email']
+        uri = kwargs['uri']
+
+        try: 
+            meetup = Meetup.objects.get(uri=uri)
+        except ObjectDoesNotExist:
+            return Response({"error": "Room does not exist"},status=status.HTTP_400_BAD_REQUEST)
+
+        try: 
+            member = User.objects.get(email=email)
+        except ObjectDoesNotExist:
+            return Response({"error": "User does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        meetup.members.get_or_create(meetup=meetup, user= member)
+
+        return Response(MeetupSerializer(meetup).data)
+
+    def delete(self, request, *args, **kwargs):
+        uri = kwargs['uri']
+        email = request.data['email']
+
+        try: 
+            meetup = Meetup.objects.get(uri=uri)
+        except ObjectDoesNotExist:
+            return Response({"error": "Room does not exist"},status=status.HTTP_400_BAD_REQUEST)
+
+        try: 
+            user = User.objects.get(email=email)
+        except ObjectDoesNotExist:
+            return Response({"error": "User does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try: 
+            member = MeetupMember.objects.get(user=user)
+        except ObjectDoesNotExist:
+            return Response({"error": "Member does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+        member.delete()
+        serializer = MeetupMemberSerializer(meetup.members.all(), many=True)
+        return Response(serializer.data)
+
+class MeetupInviteAllView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        """
+        Get all invites
+        """
+        user = request.user
+        invites = MeetupInvite.objects.filter(receiver=user)
+        return Response(MeetupInviteSerializer(invites, many=True).data)
+
+class MeetupInviteListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        """
+        Get all invites
+        """
+        user = request.user
+        uri = kwargs['uri']
+
+        try: 
+            meetup = Meetup.objects.get(uri=uri)
+        except ObjectDoesNotExist:
+            return Response({"error": "Room does not exist"},status=status.HTTP_400_BAD_REQUEST)
+
+        invites = meetup.invs.filter(receiver=user)
+
+        return Response(MeetupInviteSerializer(invites, many=True).data)
+
+    def post(self, request, *args, **kwargs):
+        """
+        Create/Send Invite
+        """
+        user = request.user
+        recepient = request.data['email']
+        uri = kwargs['uri']
+
+        try: 
+            meetup = Meetup.objects.get(uri=uri)
+        except ObjectDoesNotExist:
+            return Response({"error": "Room does not exist"},status=status.HTTP_400_BAD_REQUEST)
+
+        try: 
+            invite = User.objects.get(email=recepient)
+        except ObjectDoesNotExist:
+            return Response({"error": "User does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+        invite, created = MeetupInvite.objects.get_or_create(meetup=meetup, sender=user, receiver=invite)
+
+        if created:
+            return Response({"message": "Invite sent/created"})
+        else:
+            return Response({"message": "Invite already sent out"})
+
+class MeetupInviteView(APIView):
+
+    def patch(self, request, *args, **kwargs):
+        """
+        Change status of invite
+        """
+        user = request.user
+        room_uri = kwargs['uri']
+        invite_uri = kwargs['invite_code']
+        status = request.data['status']
+        
+        try: 
+            meetup = Meetup.objects.get(uri=room_uri)
+        except ObjectDoesNotExist:
+            return Response({"error": "Room does not exist"},status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            invite = MeetupInvite.objects.get(meetup=meetup, uri=invite_uri)
+        except ObjectDoesNotExist:
+            return Response({"error": "Invite does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if user != invite.receiver:
+            return Response({"error": "Not your invite"}, status=status.HTTP_400_BAD_REQUEST)
+
+        invite.status = status
+        invite.save()
+
+        return Response({"message": "Invite status changed", "invite": MeetupInviteSerializer(invite).data})
+
 class UserFriendsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def post(self, request):
-        """
-        User adds another user as a friend
-        """
-        user = request.user
-        print(user)
-        emails = request.data['friends']
-        print(emails)
-
-        friends = []
-        for email in emails:
-            friend = User.objects.get(email=email)
-            print(friend)
-            print(friend.id)
-            entity = user.friends.get_or_create(friend=friend, creator=user)
-            print(entity)
-            serializer = FriendshipSerializer(entity[0])
-            print(serializer.data)
-            friends.append(serializer.data)
-
-        print(friends)
-        return Response({"success": "friend successfully added", "friends": friends})
-
-
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         """
         Get users friends
         """
         user = request.user
-        serializer = FriendsSerializer(user)
+        serializer = FriendshipSerializer(user.get_friends(), many=True, context={'user': user})
 
-        return Response({"success": "friends list retrieved", "friends": serializer.data})
+        return Response({"friends": serializer.data})
 
-class ChatRoomView(APIView):
+    def post(self, request, *args, **kwargs):
+        """
+        User adds another user as a friend
+        """
+        user = request.user
+        email = request.data['email']
+
+        try: 
+            friend = User.objects.get(email=email.strip())
+        except ObjectDoesNotExist:
+            return Response({"error": "Email does not exist"},status=status.HTTP_400_BAD_REQUEST)
+        entity = user.get_or_create_friend(friend)
+        serializer = FriendshipSerializer(entity, context={'user': user})
+        
+        return Response({"friend": serializer.data})
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Delete friend
+        """
+        pk = request.data["id"]
+        friendship = get_object_or_404(Meetup, pk=pk)
+        friendship.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class ChatRoomListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
@@ -139,6 +298,8 @@ class ChatRoomView(APIView):
         chat_room.members.create(user=user, room = chat_room)
 
         return Response({'status': 'Success', 'uri': chat_room.uri, 'message': 'New chat sessions created'})
+
+class ChatRoomView(APIView):
 
     def patch(self, request, *args, **kwargs):
         """

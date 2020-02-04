@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.mail import send_mail
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager)
+from django.core.exceptions import ValidationError
 from django.conf import settings
 from uuid import uuid4
 import requests
@@ -89,9 +90,22 @@ class User(AbstractBaseUser):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
     def get_friends(self):
-        identifier = self.get_id()
-        friends = Friendship.objects.raw('SELECT * FROM meetup_friendship WHERE creator.id= %s OR friend.id = %s', [identifier, identifier])
+        id = self.get_id()
+        friends = Friendship.objects.raw('SELECT * FROM meetup_friendship WHERE creator_id= %s OR friend_id = %s', [id, id])
         return friends
+
+    def get_friend(self, friend):
+        id = self.get_id()
+        mapping = {'me': id, 'friend': friend.id}
+        friendship = Friendship.objects.raw('SELECT * FROM meetup_friendship WHERE (creator_id = %(me)s AND friend_id = %(friend)s) OR (creator_id = %(friend)s AND friend_id = %(me)s)', mapping)
+        return friendship
+
+    def get_or_create_friend(self, friend):
+        friendship = self.get_friend(friend)
+        if not friendship:
+            return Friendship.objects.create(creator=self, friend=friend)
+
+        return friendship[0]
 
 class Profile(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -100,6 +114,7 @@ class Profile(models.Model):
 
 class Meetup(models.Model):
     uri = models.URLField(default=generate_unique_uri)
+    name = models.CharField(max_length=255, default="Meetup")
     datetime = models.DateTimeField()
     options = models.TextField()
     chosen = models.TextField(blank=True)
@@ -108,12 +123,11 @@ class Meetup(models.Model):
     _original_location = None
     objects = models.Manager()
 
-    def __init__(self, *args, **kwargs):
-        super(Meetup, self).__init__(*args, **kwargs)
-        print("init")
-
     def __str__(self):
         return self.uri
+
+    def __init__(self, *args, **kwargs):
+        super(Meetup, self).__init__(*args, **kwargs)
 
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
         if self.location != self._original_location:
@@ -127,6 +141,36 @@ class Meetup(models.Model):
 class MeetupMember(models.Model):
     meetup = models.ForeignKey(Meetup, related_name="members", on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name="meetups", on_delete=models.CASCADE)
+    objects = models.Manager()
+
+class Invite(models.Model):
+    class InviteStatus(models.IntegerChoices):
+        OPEN = 1
+        ACCEPTED = 2
+        REJECTED = 3
+
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="sent_invs", on_delete=models.CASCADE)
+    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="received_invs", on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    status = models.IntegerField(choices=InviteStatus.choices, default=InviteStatus.OPEN)
+    uri = models.URLField(default=generate_unique_uri)
+
+    class Meta:
+        abstract = True
+
+class MeetupInvite(Invite):
+    meetup = models.ForeignKey(Meetup, related_name="invs", on_delete=models.CASCADE)
+    objects = models.Manager()
+
+    def __init__(self, *args, **kwargs):
+        super(MeetupInvite, self).__init__(*args, **kwargs)
+
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
+        print("save")
+        if self.status != Invite.InviteStatus.OPEN:
+            if self.status == Invite.InviteStatus.ACCEPTED:
+                MeetupMember.objects.get_or_create(meetup=self.meetup, user=self.receiver)
+        super(MeetupInvite, self).save(force_insert, force_update, *args, **kwargs)
 
 class Preference(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="preferences")
@@ -137,6 +181,10 @@ class Friendship(models.Model):
     friend = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="friends", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     objects=models.Manager()
+
+    def clean(self):
+        if self.creator == self.friend:
+            raise ValidationError("cannot be friends with yourself")
 
 class ChatRoom(models.Model):
     name = models.CharField(max_length=200)
@@ -166,6 +214,8 @@ class ChatRoomMember(models.Model):
     room = models.ForeignKey(ChatRoom, related_name='members', on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name='rooms', on_delete=models.CASCADE)
     objects = models.Manager()
+
+
 
    
 

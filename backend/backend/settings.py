@@ -52,6 +52,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 
 CORS_ORIGIN_WHITELIST = (
@@ -114,6 +115,9 @@ DATABASES = {
         'PASSWORD' : 'Dogmanblue1',
         'HOST' : 'localhost',
         'PORT' : '5432',
+        'TEST': {
+            'NAME': 'test_jwt_db'
+        }
     }
 }
 

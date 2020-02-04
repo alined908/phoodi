@@ -1,7 +1,7 @@
 import {GET_MEETUPS, ADD_MEETUP, DELETE_MEETUP} from '../constants/action-types';
 
 const defaultState = {
-    meetups: [],
+    meetups: {},
     activeMeetup: null,
     isMeetupsInitialized: false,
 }
@@ -11,7 +11,10 @@ export default function meetupReducer(state = defaultState, action){
         case GET_MEETUPS:
             return {...state, meetups: action.payload, isMeetupsInitialized: true}
         case ADD_MEETUP:
-            return {...state, meetups: [...state.meetups, action.payload]}
+            var meetup = {}
+            console.log(action.payload)
+            meetup[action.payload.uri] = action.payload
+            return {...state, meetups: {...state.meetups, ...meetup}}
         case DELETE_MEETUP:
             var meetups = {}
             Object.keys(state.meetups).map((key) => {
