@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
-from meetup.models import User, ChatRoom, ChatRoomMember, ChatRoomMessage, Meetup, Friendship, MeetupInvite, MeetupMember, FriendInvite
+from meetup.models import Category, User, ChatRoom, ChatRoomMember, ChatRoomMessage, Meetup, Friendship, MeetupInvite, MeetupMember, FriendInvite, MeetupEvent
 from django.db import IntegrityError
 from rest_framework.decorators import api_view
 from django.http import HttpResponse, HttpResponseRedirect
@@ -9,7 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework import permissions, status
 from django.forms.models import model_to_dict
-from meetup.serializers import UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer, FriendInviteSerializer
+from meetup.serializers import CategorySerializer, UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer, FriendInviteSerializer, MeetupEventSerializer
 
 @api_view(['GET'])
 def current_user(request):
@@ -88,6 +88,40 @@ class MeetupView(APIView):
     def delete(self, request, *args, **kwargs):
         meetup = self.get_object(kwargs['uri'])
         meetup.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class MeetupEventsListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def format_events(self, events):
+        events_json = {event.id:MeetupEventSerializer(event).data for event in events.all()}
+        return events_json
+
+    def get(self, request, *args, **kwargs):
+        uri = kwargs['uri']
+        meetup = get_object_or_404(Meetup, uri=uri)
+        events = meetup.events
+        events_json = self.format_events(events)
+        
+        return Response(events_json)
+
+    def post(self, request, *args, **kwargs):
+        uri = kwargs['uri']
+        meetup = get_object_or_404(Meetup, uri=uri)
+        location, start, end, title = request.data['location'], request.data['start'], request.data['end'], request.data['title']
+        event = MeetupEvent.objects.create(meetup=meetup, location=location, start=start, end=end, title=title)
+        serializer = MeetupEventSerializer(event)
+
+        return Response(serializer.data)
+
+class MeetupEventsView(APIView):
+    permissions=[permissions.IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs):
+        pk = kwargs['id']
+        print(pk)
+        event = get_object_or_404(MeetupEvent, pk=pk)
+        event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class MeetupMembersView(APIView):
@@ -186,6 +220,7 @@ class MeetupInviteListView(APIView):
         Create/Send Invite
         """
         user = request.user
+        print(request.data)
         recepient = request.data['email']
         uri = kwargs['uri']
 
@@ -205,6 +240,14 @@ class MeetupInviteListView(APIView):
             return Response({"message": "Invite sent/created"})
         else:
             return Response({"message": "Invite already sent out"})
+
+class CategoryListView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
+        return Response({"categories": serializer.data})
 
 class MeetupInviteView(APIView):
 
@@ -283,7 +326,7 @@ class FriendInviteListView(APIView):
         received_invs = user.received_friendinvites.all()
         serializer = FriendInviteSerializer(received_invs, many=True)
 
-        return Response({"invites": serializer.data})
+        return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
         """

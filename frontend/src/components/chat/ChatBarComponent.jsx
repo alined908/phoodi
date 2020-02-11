@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Contact from "./ContactComponent";
 import {connect} from 'react-redux';
-import {getRooms} from '../actions/chat';
+import {getRooms} from '../../actions/chat';
 
 class ChatBarComponent extends Component {
     componentDidMount(){

@@ -1,0 +1,58 @@
+[
+    {
+        "model": "meetup.category",
+        "pk": 1,
+        "fields": {
+            "label": "Food",
+            "api_label": ""
+        }
+    },
+    {
+        "model": "meetup.category",
+        "pk": 2,
+        "fields": {
+            "label": "Dessert",
+            "api_label": "Desserts"
+        }
+    },
+    {
+        "model": "meetup.category",
+        "pk": 3,
+        "fields": {
+            "label": "Chinese Food",
+            "api_label": "chinese"
+        }
+    },
+    {
+        "model": "meetup.category",
+        "pk": 4,
+        "fields": {
+            "label": "Mexican Food",
+            "api_label": "mexican"
+        }
+    },
+    {
+        "model": "meetup.category",
+        "pk": 5,
+        "fields": {
+            "label": "Korean Food",
+            "api_label": "korean"
+        }
+    },
+    {
+        "model": "meetup.category",
+        "pk": 6,
+        "fields": {
+            "label": "American Food",
+            "api_label": "american"
+        }
+    },
+    {
+        "model": "meetup.category",
+        "pk": 7,
+        "fields": {
+            "label": "Mediterranean Food",
+            "api_label": "mediterranean"
+        }
+    }
+]

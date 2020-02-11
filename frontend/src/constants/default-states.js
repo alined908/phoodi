@@ -6,3 +6,14 @@ export const userDefaultState = {
     isMeetupInvitesInitialized: false,
     isFriendInvitesInitialized: false,
 }
+
+export const inviteType = {
+    friend: 0,
+    meetup: 1
+}
+
+export const inviteStatus = {
+    1: "OPEN",
+    2: "ACCEPTED",
+    3: "REJECTED"
+}

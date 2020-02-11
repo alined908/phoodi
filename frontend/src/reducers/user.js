@@ -1,9 +1,7 @@
-import {AUTH_USER, CLEAR_STORE, AUTH_ERROR, GET_FRIENDS, ADD_FRIEND, DELETE_FRIEND, FRIEND_ERROR, GET_MEETUP_INVITES, SEND_MEETUP_INVITE, RESPOND_MEETUP_INVITE} from "../constants/action-types"
+import {AUTH_USER, CLEAR_STORE, AUTH_ERROR, GET_FRIENDS, ADD_FRIEND, DELETE_FRIEND, FRIEND_ERROR, GET_MEETUP_INVITES, SEND_MEETUP_INVITE, RESPOND_MEETUP_INVITE, GET_FRIEND_INVITES, SEND_FRIEND_INVITE, RESPOND_FRIEND_INVITE} from "../constants/action-types"
 import {userDefaultState} from "../constants/default-states"
 
-const defaultState = userDefaultState
-
-export default function(state = defaultState, action){
+export default function(state = userDefaultState, action){
     switch(action.type){
         case AUTH_USER:
             let user = Object.values(action.payload.user)[0]
@@ -14,6 +12,12 @@ export default function(state = defaultState, action){
             return {...state, isFriendsInitialized: true, friends: action.payload.friends}
         case ADD_FRIEND:
             return {...state, friends: [...state.friends, action.payload]}
+        case GET_FRIEND_INVITES:
+            return {...state, invites: {...state.invites, friends: action.payload}, isFriendInvitesInitialized: true}
+        case SEND_FRIEND_INVITE:
+            return {...state}
+        case RESPOND_FRIEND_INVITE:
+            return {...state}
         case FRIEND_ERROR:
             return {...state, errorMessage: action.payload}
         case DELETE_FRIEND:
@@ -21,11 +25,11 @@ export default function(state = defaultState, action){
         case GET_MEETUP_INVITES:
             return {...state, invites: {...state.invites, meetups: action.payload}, isMeetupInvitesInitialized: true}
         case SEND_MEETUP_INVITE:
-            return {...state}
+            return state
         case RESPOND_MEETUP_INVITE:
             return {...state, invites: action.payload}
         case CLEAR_STORE:
-            return defaultState
+            return userDefaultState
         default:
             return state;
     }

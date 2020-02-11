@@ -4,6 +4,8 @@ from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager)
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from uuid import uuid4
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 import requests
 import json
 
@@ -114,34 +116,68 @@ class Profile(models.Model):
 
 class Meetup(models.Model):
     uri = models.URLField(default=generate_unique_uri)
+    location = models.TextField()
     name = models.CharField(max_length=255, default="Meetup")
     datetime = models.DateTimeField()
-    options = models.TextField()
-    chosen = models.TextField(blank=True)
-    location = models.TextField()
-
-    _original_location = None
     objects = models.Manager()
 
     def __str__(self):
         return self.uri
 
-    def __init__(self, *args, **kwargs):
-        super(Meetup, self).__init__(*args, **kwargs)
-
-    def save(self, force_insert=False, force_update=False, *args, **kwargs):
-        if self.location != self._original_location:
-            params = {"location": self.location}
-            r = requests.get(url=url, params=params, headers=headers)
-            self.options = json.dumps(r.json())
-            print("Save new location and generate options")
-        super(Meetup, self).save(force_insert, force_update, *args, **kwargs)
-        self._original_location = self.location
-
 class MeetupMember(models.Model):
     meetup = models.ForeignKey(Meetup, related_name="members", on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name="meetups", on_delete=models.CASCADE)
+    admin = models.BooleanField(default=False)
     objects = models.Manager()
+
+class Category(models.Model):
+    label = models.CharField(max_length=255)
+    api_label = models.CharField(max_length=255)
+    objects = models.Manager()
+
+class MeetupEvent(models.Model):
+    meetup = models.ForeignKey(Meetup, related_name="events", on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    location = models.TextField()
+    start = models.DateTimeField(blank=True, null=True)
+    end = models.DateTimeField(blank=True, null=True)
+    chosen = models.IntegerField(blank=True, null=True)
+    _original_location = None
+    objects = models.Manager()
+
+@receiver(post_save, sender = MeetupEvent)
+def save_options_after_event_creation(sender, instance, created, **kwargs):
+    if instance.location != instance._original_location:
+        params = {"location": instance.location, "limit": 10}
+        r = requests.get(url=url, params=params, headers=headers)
+        options = r.json()['businesses']
+        print("saving options")
+        for option in options:
+            print(option)
+            MeetupEventOption.objects.create(event=instance, option=json.dumps(option))
+    instance._original_location = instance.location
+    post_save.disconnect(save_options_after_event_creation, sender=MeetupEvent)
+    instance.save()
+    post_save.connect(save_options_after_event_creation, sender = MeetupEvent)
+
+class MeetupEventOption(models.Model):
+    event = models.ForeignKey(MeetupEvent, related_name="options", on_delete=models.CASCADE)
+    option = models.TextField()
+    objects = models.Manager()
+
+class MeetupCategory(models.Model):
+    event = models.ForeignKey(MeetupEvent, related_name="categories", on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, related_name="meetup_events", on_delete=models.CASCADE)
+    objects = models.Manager()
+
+class MeetupEventOptionVote(models.Model):
+    class Vote(models.IntegerChoices):
+        LIKE = 1
+        BAN = 2
+
+    option = models.ForeignKey(MeetupEventOption, related_name="event_votes", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="user_votes", on_delete=models.CASCADE)
+    status = models.IntegerField(choices=Vote.choices)
 
 class Invite(models.Model):
     class InviteStatus(models.IntegerChoices):

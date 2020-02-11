@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import ChatBarComponent from "./ChatBarComponent"
 import ChatWindowComponent from "./ChatWindowComponent"
 import {connect} from "react-redux";
-import {getMessages} from "../actions/chat"
+import {getMessages} from "../../actions/chat"
 
 class ChatComponent extends Component {
     render(){

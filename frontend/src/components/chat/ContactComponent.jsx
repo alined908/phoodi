@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux';
-import {setActiveRoom, getMessages} from '../actions/chat';
-import WebSocketInstance from '../accounts/WebSocket'
+import {setActiveRoom, getMessages} from '../../actions/chat';
+import WebSocketInstance from '../../accounts/WebSocket'
 
 class ContactComponent extends Component {
     handleClick = (uri) => {

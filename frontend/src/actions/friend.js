@@ -8,7 +8,7 @@ export const getFriends = () => async dispatch => {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
             }}
         )
-        console.log(response)
+        // console.log(response)
         dispatch({type: GET_FRIENDS, payload: response.data})
     } catch(e){
         console.log(e);

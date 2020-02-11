@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 import {connect} from "react-redux";
-import {getMeetup} from "../actions/meetup"
+import {getMeetup} from "../../actions/meetup"
 import Meetup from "./Meetup";
 
 class MeetupPageComponent extends Component {
@@ -14,11 +14,10 @@ class MeetupPageComponent extends Component {
 
     render () {
         const meetup = this.props.meetups[this.props.match.params.uri]
-        console.log(meetup)
         
         return (
             <div>
-                {meetup && <Meetup key={meetup.id} meetup={Object.values(meetup)}></Meetup>}
+                {meetup && <Meetup key={meetup.id} uri={meetup.uri} meetup={Object.values(meetup)}></Meetup>}
             </div>
         )
     }

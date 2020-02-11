@@ -16,6 +16,11 @@ export const GET_MEETUPS = 'get_meetups';
 export const ADD_MEETUP = 'add_meetup';
 export const DELETE_MEETUP = 'delete_meetup';
 
+//MeetupEvents
+export const GET_MEETUP_EVENTS = 'get_meetup_events';
+export const DELETE_MEETUP_EVENT = 'delete_meetup_event';
+export const ADD_MEETUP_EVENT = 'add_meetup_event'
+
 //Friends
 export const GET_FRIENDS = 'get_friends';
 export const ADD_FRIEND = 'add_friend';
@@ -25,4 +30,9 @@ export const FRIEND_ERROR = 'add_friend_error'
 //Meetup Invites
 export const GET_MEETUP_INVITES = 'get_meetup_invites';
 export const SEND_MEETUP_INVITE = 'send_meetup_invite';
-export const RESPOND_MEETUP_INVITE = 'accept_meetup_invite';
+export const RESPOND_MEETUP_INVITE = 'respond_meetup_invite';
+
+//Friend Invites
+export const GET_FRIEND_INVITES = 'get_friend_invites';
+export const SEND_FRIEND_INVITE = 'send_friend_invite';
+export const RESPOND_FRIEND_INVITE = 'respond_friend_invite'

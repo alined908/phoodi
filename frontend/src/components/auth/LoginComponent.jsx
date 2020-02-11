@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {reduxForm, Field} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import * as actions from '../actions';
+import {signin} from "../../actions/index"
 
 class LoginComponent extends Component {
 
@@ -37,7 +37,11 @@ function mapStatetoProps(state) {
     return {errorMessage: state.user.errorMessage}
 }
 
+const mapDispatchToProps = {
+    signin
+}
+
 export default compose (
-    connect(mapStatetoProps, actions),
+    connect(mapStatetoProps, mapDispatchToProps),
     reduxForm({form: 'signin'})
 )(LoginComponent);

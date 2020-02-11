@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import ChatMessageComponent from "./ChatMessageComponent"
 import {connect} from 'react-redux'
-import WebSocketInstance from '../accounts/WebSocket'
-import {setTypingValue, addMessage, getMessages} from "../actions/chat";
+import WebSocketInstance from '../../accounts/WebSocket'
+import {setTypingValue, addMessage, getMessages} from "../../actions/chat";
 
 class ChatWindowComponent extends Component {
     constructor(props){

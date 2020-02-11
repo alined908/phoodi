@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {getMeetups, addMeetup} from "../actions/meetup";
-import Meetup from "./Meetup"
+import {getMeetups, addMeetup} from "../../actions/meetup";
 import {reduxForm, Field} from 'redux-form';
 import {compose} from 'redux';
-import {Button, TextField, Container} from '@material-ui/core';
+import {Button, TextField} from '@material-ui/core';
 import renderDatePicker from "./renderDatePicker";
 import MeetupCard from "./MeetupCard"
 
@@ -27,7 +26,7 @@ class MeetupsComponent extends Component {
               {...input}
               {...custom}
             />
-          )
+        )
 
         const meetupForm = () => {
             return (<form onSubmit={handleSubmit(this.onSubmit.bind(this))}>

@@ -16,8 +16,7 @@ const useStyles = makeStyles({
 
 const MeetupCard = ({meetup}) => {
     const classes = useStyles()
-   
-        
+
     return (
         <Link to={`/meetups/${meetup.uri}`}>
             <Card className={classes.card}>
