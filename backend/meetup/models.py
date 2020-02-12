@@ -7,6 +7,7 @@ from uuid import uuid4
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import requests
+from django.contrib.postgres.fields import JSONField
 import json
 
 url = "https://api.yelp.com/v3/businesses/search"
@@ -142,22 +143,37 @@ class MeetupEvent(models.Model):
     start = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
     chosen = models.IntegerField(blank=True, null=True)
+    entries = JSONField()
     _original_location = None
     objects = models.Manager()
 
 @receiver(post_save, sender = MeetupEvent)
 def save_options_after_event_creation(sender, instance, created, **kwargs):
     if instance.location != instance._original_location:
-        params = {"location": instance.location, "limit": 10}
+        categories = ""
+        
+        for i, key in enumerate(instance.entries): 
+            category = Category.objects.get(api_label=key)
+            meetupcategory = MeetupCategory.objects.create(event=instance, category=category)
+            if i == len(instance.entries) - 1:
+                categories += key
+            else:
+                categories += key + ", "
+      
+        params = {"location": instance.location, "limit": 10, "categories": categories}
         r = requests.get(url=url, params=params, headers=headers)
         options = r.json()['businesses']
-        print("saving options")
+        
         for option in options:
-            print(option)
             MeetupEventOption.objects.create(event=instance, option=json.dumps(option))
+
     instance._original_location = instance.location
     post_save.disconnect(save_options_after_event_creation, sender=MeetupEvent)
     instance.save()
+
+    
+
+
     post_save.connect(save_options_after_event_creation, sender = MeetupEvent)
 
 class MeetupEventOption(models.Model):

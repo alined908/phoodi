@@ -20,6 +20,10 @@ class MeetupEvent extends Component {
                     <div>{event.location}</div>
                     <div>Start - {moment(event.start).local().format("MMM DD h:mm A")}</div>
                     <div>End - {moment(event.end).local().format("MMM DD h:mm A")}</div>
+                    <div>
+                        Categories: 
+                        {Object.keys(event.entries).map((entry) => <span>{entry}</span>)}
+                    </div>
                 </div>
             )
         }
@@ -32,10 +36,16 @@ class MeetupEvent extends Component {
             return (
                 <div>
                     <Button variant="contained" size="small">
-                        Reload Restauraunts
+                        Reload
+                    </Button>
+                    <Button variant="contained" size="small">
+                        Decide 
+                    </Button>
+                    <Button variant="contained" size="small">
+                        Random  
                     </Button>
                     <Button onClick={() => this.handleDelete()} variant="contained" size="small" color="secondary"> 
-                        Delete Event
+                        Delete
                     </Button>
                 </div>
             )

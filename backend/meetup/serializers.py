@@ -118,7 +118,7 @@ class MeetupEventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MeetupEvent
-        fields = ('id', 'meetup', 'title', 'location', 'start', 'end', 'chosen', 'options')
+        fields = ('id', 'meetup', 'title', 'location', 'start', 'end', 'chosen', 'entries', 'options')
 
 class MeetupMemberSerializer(serializers.ModelSerializer):
     member = serializers.SerializerMethodField('_get_member')

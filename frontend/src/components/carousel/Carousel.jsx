@@ -58,11 +58,11 @@ class Carousel extends Component {
         return (
             <div className="carousel">
                 <Arrow onClick={this.setPreviousImage} direction="left"/>
-                <Restauraunt focus={false} data={this.props.options[prevPrev]}/>
+                {/* <Restauraunt focus={false} data={this.props.options[prevPrev]}/> */}
                 <Restauraunt focus={false} data={this.props.options[prev]}/>
                 <Restauraunt focus={true} data={this.props.options[this.state.imageIndex]}/>
                 <Restauraunt focus={false} data={this.props.options[next]}/>
-                <Restauraunt focus={false} data={this.props.options[nextNext]}/>
+                {/* <Restauraunt focus={false} data={this.props.options[nextNext]}/> */}
                 <Arrow onClick={this.setNextImage} direction="right"/>
             </div>
         )

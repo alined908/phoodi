@@ -71,6 +71,7 @@ export const getMeetupEvents = (uri) => async dispatch => {
 }
 
 export const addMeetupEvent = (uri, formProps, categories, redirectOnSuccess) => async dispatch => {
+    console.log(categories)
     try {
         const response = await axios.post(
             `http://localhost:8000/api/meetups/${uri}/events/`, {...formProps, "categories": categories},{headers: {

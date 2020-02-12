@@ -173,14 +173,11 @@
   height: 100%;
 }
 
-.meetup {
-  padding: 0 2rem;
-}
-
 .carousel {
   display: flex;
   flex-wrap: nowrap;
   overflow: hidden;
+  justify-content: center;
 }
 
 .title {
@@ -192,6 +189,6 @@
 }
 
 .meetup {
-  padding: 1rem 3rem;
+  padding: 1rem 8rem;
 }
 

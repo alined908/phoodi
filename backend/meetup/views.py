@@ -109,7 +109,9 @@ class MeetupEventsListView(APIView):
         uri = kwargs['uri']
         meetup = get_object_or_404(Meetup, uri=uri)
         location, start, end, title = request.data['location'], request.data['start'], request.data['end'], request.data['title']
-        event = MeetupEvent.objects.create(meetup=meetup, location=location, start=start, end=end, title=title)
+        entries = request.data['categories']
+        print(entries)
+        event = MeetupEvent.objects.create(meetup=meetup, location=location, start=start, end=end, title=title, entries=entries)
         serializer = MeetupEventSerializer(event)
 
         return Response(serializer.data)
