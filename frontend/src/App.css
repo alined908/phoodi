@@ -118,7 +118,14 @@
 }
 
 .rst-wrapper{
+  display: flex;
+  margin: 1rem 0;
+  justify-content: center;
+}
+
+.rst-inner-wrapper{
   display:flex;
+  flex-direction: column;
 }
 
 .rst{
@@ -141,6 +148,8 @@
   border-radius: 8px;
 }
 
+
+
 .rst-info {
   display:flex;
   justify-content: space-between;
@@ -155,8 +164,8 @@
 }
 .rst-actions {
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly
+  justify-content: center;
+  padding-top: 1rem;
 }
 
 .notif-bar {
@@ -197,10 +206,30 @@
 .foursquare{
   display:grid;
   grid-template-columns: 50% 50%;
+  margin: 1rem 0;
 }
 
 .rst-score {
   display: flex;
   align-items: center;
   font-size: 40px;
+}
+
+.mte-header{
+  display: flex;
+  justify-content: space-between;
+}
+
+.mte-factions{
+  display:flex;
+  justify-content: center;
+  margin: 1.5rem 0 1rem 0;
+}
+
+.MuiSvgIcon-root{
+  cursor: pointer;
+}
+
+.button {
+  margin: 0 6px !important;
 }

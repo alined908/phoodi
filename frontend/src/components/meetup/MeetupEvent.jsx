@@ -7,10 +7,13 @@ import moment from "moment"
 import WebSocketInstance from "../../accounts/WebSocket"
 import CloseIcon from '@material-ui/icons/Close';
 import CachedIcon from "@material-ui/icons/Cached";
+import EditIcon from '@material-ui/icons/Edit';
 
 class MeetupEvent extends Component {
     handleDelete = () => {
-        this.props.deleteMeetupEvent(this.props.uri, this.props.event.id)
+        if (window.confirm("Are you sure you want to delete")){
+            this.props.deleteMeetupEvent(this.props.uri, this.props.event.id)
+        }
     }
 
     handleReload = () => {
@@ -25,19 +28,28 @@ class MeetupEvent extends Component {
         WebSocketInstance.decideMeetupEvent({meetup: this.props.uri, event: this.props.event.id, random: true})
     }
 
+    handleEdit = () => {
+        console.log("handle edit function called")
+    }
+
     render () {
         const event = this.props.event
 
-        const renderInformation = () => {
+        const renderHeader = () => {
             return (
-                <div className="mt-e-info">
-                    <div className="title">{event.title}</div>
-                    <div>{event.location}</div>
-                    <div>Start - {moment(event.start).local().format("MMM DD h:mm A")}</div>
-                    <div>End - {moment(event.end).local().format("MMM DD h:mm A")}</div>
-                    <div>
-                        Categories: 
-                        {Object.keys(event.entries).map((entry) => <span>{entry}</span>)}
+                <div className="mte-header">
+                    <div className="mte-info">
+                        <div className="title">{event.title}</div>
+                        <div>{event.location}</div>
+                        <div>Start - {moment(event.start).local().format("MMM DD h:mm A")}</div>
+                        <div>End - {moment(event.end).local().format("MMM DD h:mm A")}</div>
+                        <div>
+                            Categories: 
+                            {Object.keys(event.entries).map((entry) => <span>{entry}</span>)}
+                        </div>
+                    </div>
+                    <div className="mte-actions">
+                        {renderActions()}
                     </div>
                 </div>
             )
@@ -58,24 +70,36 @@ class MeetupEvent extends Component {
         const renderActions = () => {
             return (
                 <div>
-                    <Button variant="contained" size="small">
-                        Decide 
-                    </Button>
-                    <Button variant="contained" size="small">
-                        Random  
-                    </Button>
-                    <CachedIcon onClick={() => this.handleReload()}/>
-                    <CloseIcon onClick={() => this.handleDelete()}/>
+                    <EditIcon onClick={() => this.handleEdit()}></EditIcon>
+                    <CachedIcon fontSize='large' onClick={() => this.handleReload()}/>
+                    <CloseIcon fontSize='large' onClick={() => this.handleDelete()}/>
                 </div>
             )
         }
 
+        const renderFinalizeActions = () => {
+            return (
+                <div className="mte-factions">
+                    <Button className="button" variant="contained" onClick={() => this.handleDecide()}>
+                        Decide 
+                    </Button>
+                    <Button className="button" variant="contained"onClick={() => this.handleRandom()}>
+                        Random  
+                    </Button>
+                </div>
+            )
+        }
+
+        const renderChosen = (chosen) => {
+            return <div>{chosen.id}</div>
+        }
+
         return (
             <Paper elevation={3} className="meetup-event">
-                {renderInformation()}
+                {renderHeader()}
                 {!this.props.chosen && renderFourSquare(event.options)}
-                {this.props.chosen && <div>{JSON.stringify(event.options[this.props.chosen])}</div>}
-                {renderActions()}
+                {this.props.chosen && renderChosen(event.options[this.props.chosen])}
+                {renderFinalizeActions()}
             </Paper>
         )
     }

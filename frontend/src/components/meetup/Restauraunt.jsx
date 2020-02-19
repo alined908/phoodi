@@ -46,22 +46,26 @@ class Restauraunt extends Component {
 
         return (
             <div className="rst-wrapper">
-                <div className="rst-score">
-                    <div>{this.props.option.score}</div>
-                </div>
-                <div className="rst">
-                    <div className="rst-info">
-                        <span className="rst-name">{data.name}</span>
-                        <span className="rst-rating">{data.rating}</span>
+                
+                    <div className="rst-score">
+                        <div>{this.props.option.score}</div>
                     </div>
-                    <div className="rst-img" style={{backgroundImage: `url(${data.image_url})`}}>
-                    </div>  
-                </div>
-                <div className="rst-actions">
-                        <div><Button onClick={() => this.handleClick(voteStatus.like)} size="small" variant={this.determineVariant(status, voteStatus.like)} color="primary">Like</Button> {scores[1]}</div>
-                        <div><Button onClick={() => this.handleClick(voteStatus.dislike)} size="small" variant={this.determineVariant(status, voteStatus.dislike)} color="primary">Dislike</Button> {scores[2]}</div>
-                        <div><Button onClick={() => this.handleClick(voteStatus.ban)} size="small" variant={this.determineVariant(status, voteStatus.ban)} color="secondary">Ban</Button> {scores[3]}</div>
-                </div>
+                    <div className="rst-inner-wrapper">
+                        <div className="rst">
+                            <div className="rst-info">
+                                <span className="rst-name">{data.name}</span>
+                                <span className="rst-rating">{data.rating}</span>
+                            </div>
+                            <div className="rst-img" style={{backgroundImage: `url(${data.image_url})`}}>
+                            </div>  
+                        </div>
+                        <div className="rst-actions">
+                            <div><Button onClick={() => this.handleClick(voteStatus.like)} size="small" variant={this.determineVariant(status, voteStatus.like)} color="primary">Like</Button> {scores[1]}</div>
+                            <div><Button onClick={() => this.handleClick(voteStatus.dislike)} size="small" variant={this.determineVariant(status, voteStatus.dislike)} color="primary">Dislike</Button> {scores[2]}</div>
+                            <div><Button onClick={() => this.handleClick(voteStatus.ban)} size="small" variant={this.determineVariant(status, voteStatus.ban)} color="secondary">Ban</Button> {scores[3]}</div>
+                        </div>
+                    </div>
+                
             </div>
         )
     }

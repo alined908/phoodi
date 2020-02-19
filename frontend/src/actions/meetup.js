@@ -98,5 +98,5 @@ export const voteMeetupEvent = (event) => async dispatch => {
 }
 
 export const decideMeetupEvent = (event) => async dispatch => {
-    console.log("decideMeetupEvent")
+    dispatch({type: EDIT_MEETUP_EVENT, payload: event.message})
 }

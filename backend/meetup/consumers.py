@@ -130,22 +130,8 @@ class MeetupConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def handle_event_reload(self, event):
         event.options.all().delete()
-
-        categories = ""
-        
-        for i, key in enumerate(event.entries): 
-            if i == len(event.entries) - 1:
-                categories += key
-            else:
-                categories += key + ", "
-
-        params = {"location": event.location , "limit": 30, "categories": categories}
-        r = requests.get(url=url, params=params, headers=headers)
-        options = r.json()['businesses']
-        random.shuffle(options)
-        
-        for option in options[:4]:
-            MeetupEventOption.objects.create(event=event, option=json.dumps(option))
+        event.chosen = None
+        event.save()
 
     async def reload_event(self, command):
         data = command['data']
@@ -156,7 +142,7 @@ class MeetupConsumer(AsyncWebsocketConsumer):
 
         content = {
             'command': 'reload_event',
-            'message': {'meetup': data['meetup'], 'event': {event.id: serializer}}
+            'message': {'meetup': meetup, 'event_id': event_id, 'event': serializer}
         }
 
         await self.channel_layer.group_send(
@@ -215,10 +201,7 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         pass
 
     @sync_to_async
-    def decide_event_helper(self, event, random):
-        event = MeetupEvent.objects.get(pk=event)
-        options = event.options.all()
-        
+    def decide_event_helper(self, event, randomBool):
         """
         Randomly choose or select highest count
         If score tie: 
@@ -226,19 +209,39 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         2. Lower number of dislikes
         3. Random selection)
         """
-        if random:
+        event = MeetupEvent.objects.get(pk=event)
+        options = event.options.all()
+        
+        if randomBool:
             chosen = random.choice(options)
         else: 
-            for option in options:
-                pass
-                
-        return chosen
+            highest = []
+            maxScore = 0
 
-    async def decide_event(self, data):
+            for option in options:
+                if option.score > maxScore:
+                    maxScore = option.score
+                    highest = [option]
+                elif option.score == maxScore:
+                    highest.append(option)
+
+
+            chosen = random.choice(highest)
+
+        event.chosen = chosen.id
+        event.save()
+
+        return event.id, MeetupEventSerializer(event).data
+
+    async def decide_event(self, command):
         data = command['data']
         meetup, event, random = data['meetup'] , data['event'], data['random']
+        event_id, event = await self.decide_event_helper(event, random)
 
-        chosen = await decide_event_helper(event, random)
+        content = {
+            'command': 'decide_event',
+            'message': {"meetup": meetup, "event_id": event_id, "event": event}
+        }
 
         await self.channel_layer.group_send(
             self.meetup_group_name, {

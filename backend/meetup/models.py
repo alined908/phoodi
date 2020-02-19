@@ -7,6 +7,7 @@ from uuid import uuid4
 from django.db.models.signals import post_save, post_delete, pre_delete
 from django.dispatch import receiver
 import requests
+import random
 from django.contrib.postgres.fields import JSONField
 import json
 from django.db import transaction
@@ -143,15 +144,16 @@ class MeetupEvent(models.Model):
     location = models.TextField()
     start = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
-    chosen = models.IntegerField(blank=True, null=True)
+    chosen = models.IntegerField(blank=True, null=True) 
     entries = JSONField()
     _original_location = None
+    _original_chosen = None
     objects = models.Manager()
 
 @receiver(post_save, sender = MeetupEvent)
 def save_options_after_event_creation(sender, instance, created, **kwargs):
     print("save options after event creation")
-    if instance.location != instance._original_location:
+    if (instance.location != instance._original_location) or (instance._original_chosen and not instance.chosen):
         categories = ""
         
         for i, key in enumerate(instance.entries): 
@@ -165,11 +167,16 @@ def save_options_after_event_creation(sender, instance, created, **kwargs):
         params = {"location": instance.location, "limit": 30, "categories": categories}
         r = requests.get(url=url, params=params, headers=headers)
         options = r.json()['businesses']
+        random.shuffle(options)
         
         for option in options[:4]:
             MeetupEventOption.objects.create(event=instance, option=json.dumps(option))
 
-    instance._original_location = instance.location
+    if instance.location != instance._original_location:
+        instance._original_location = instance.location
+    if instance._original_chosen != instance.chosen:
+        instance._original_chosen = instance.chosen
+
     post_save.disconnect(save_options_after_event_creation, sender=MeetupEvent)
     instance.save()
     post_save.connect(save_options_after_event_creation, sender = MeetupEvent)

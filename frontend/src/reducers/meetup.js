@@ -35,11 +35,11 @@ export default function meetupReducer(state = defaultState, action){
                                 events: {...state.meetups[action.payload.meetup].events, 
                                     ...action.payload.event}}}}
         case EDIT_MEETUP_EVENT:
-            const event_id = Object.keys(action.payload.event)[0]
+            const event_id = action.payload.event_id
             return {...state, 
                         meetups: {...state.meetups, 
                             [action.payload.meetup]: {...state.meetups[action.payload.meetup],
-                                events: {...state.meetups[action.payload.meetup].events, [event_id]: action.payload.event[event_id]}}}}
+                                events: {...state.meetups[action.payload.meetup].events, [event_id]: action.payload.event}}}}
         case VOTE_MEETUP_EVENT:
             var meetup = action.payload.meetup
             return {...state, meetups: {...state.meetups, 
