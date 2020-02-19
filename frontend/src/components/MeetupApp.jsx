@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
+import { Router } from 'react-router';
 import {Provider} from 'react-redux'
 import AuthenticatedRoute from "../accounts/AuthenticatedRoute";
 import LoginComponent from "./auth/LoginComponent";
@@ -16,12 +17,15 @@ import FriendsComponent from './invite/FriendsComponent';
 import MeetupEventForm from "./meetup/MeetupEventForm"
 import {store} from "../store/index";
 
+import createBrowserHistory from 'history/createBrowserHistory'
+export const history = createBrowserHistory()
+
 class MeetupApp extends Component {
     render () {
         return (
             <div className="MeetupApp">
                 <Provider store={store}>
-                    <Router>
+                    <Router history={history}>
                         <HeaderComponent></HeaderComponent>
                         <div className="c">
                             <Switch>

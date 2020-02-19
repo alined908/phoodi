@@ -3,6 +3,7 @@ from rest_framework.fields import CurrentUserDefault
 from rest_framework_jwt.settings import api_settings
 from meetup.models import User, Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite
 from django.forms.models import model_to_dict
+from channels.db import database_sync_to_async
 
 class UserSerializer(serializers.ModelSerializer):
     def to_representation(self, data):
@@ -95,26 +96,34 @@ class MeetupEventOptionVoteSerializer(serializers.ModelSerializer):
         return {res['user']: res}
 
     class Meta:
-        model = MeetupEventOption
+        model = MeetupEventOptionVote
         fields = ('__all__')
 
 class MeetupEventOptionSerializer(serializers.ModelSerializer):
     votes = serializers.SerializerMethodField("_get_votes")
 
+    def to_representation(self, data):
+        res = super(MeetupEventOptionSerializer, self).to_representation(data)
+        return {res['id']: res}
+
     def _get_votes(self, obj):
-        serializer = MeetupEventOptionVoteSerializer(obj.event_votes.all(), many=True)
-        return serializer.data
+        mapping = {}
+        for vote in obj.event_votes.all():
+            mapping.update(MeetupEventOptionVoteSerializer(vote).data)
+        return mapping
 
     class Meta:
         model = MeetupEventOption
-        fields = ('id', 'event', 'option', 'votes')
+        fields = ('id', 'event', 'score', 'option', 'votes')
 
 class MeetupEventSerializer(serializers.ModelSerializer):
     options = serializers.SerializerMethodField('_get_options')
 
     def _get_options(self, obj):
-        serializer = MeetupEventOptionSerializer(obj.options.all(), many=True)
-        return serializer.data
+        mapping = {}
+        for option in obj.options.all():
+            mapping.update(MeetupEventOptionSerializer(option).data)
+        return mapping
 
     class Meta:
         model = MeetupEvent

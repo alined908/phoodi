@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {addMeetupEvent} from "../../actions/meetup"
 import axios from "axios"
 import Category from "./Category"
+import WebSocketInstance from "../../accounts/WebSocket"
 
 class MeetupEventForm extends Component {
     constructor(props){
@@ -32,9 +33,7 @@ class MeetupEventForm extends Component {
     }
 
     onSubmit = (formProps) => {
-        this.props.addMeetupEvent(this.props.match.params.uri, formProps, this.state.entries, (uri) => {
-            this.props.history.push(`/meetups/${uri}`)
-        })
+        WebSocketInstance.newMeetupEvent({uri: this.props.match.params.uri, entries: this.state.entries, ...formProps})
     }
 
     render () {

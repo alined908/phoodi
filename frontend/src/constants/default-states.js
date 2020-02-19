@@ -17,3 +17,9 @@ export const inviteStatus = {
     2: "ACCEPTED",
     3: "REJECTED"
 }
+
+export const voteStatus = {
+    like: 1,
+    dislike: 2,
+    ban: 3
+}

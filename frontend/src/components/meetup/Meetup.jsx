@@ -1,16 +1,24 @@
 import React, {Component} from 'react'
 import MeetupEvent from "./MeetupEvent"
 import {connect} from 'react-redux';
-import {deleteMeetup, getMeetupEvents} from '../../actions/meetup';
+import {deleteMeetup, getMeetupEvents, addMeetupEvent, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent} from '../../actions/meetup';
 import {getFriends} from "../../actions/friend"
 import {Link} from 'react-router-dom'
 import moment from 'moment';
 import MeetupFriend from "./MeetupFriend"
 import {Grid, Paper, Button} from "@material-ui/core"
+import WebSocketInstance from "../../accounts/WebSocket"
 
 class Meetup extends Component {
     constructor(props){
         super(props)
+
+        //Websocket create connection for meetu
+        const uri = props.uri
+        var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
+        const path = `${ws_scheme}://localhost:8000/ws/meetups/${uri}/`;
+        WebSocketInstance.connect(path);
+        WebSocketInstance.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, this.props.voteMeetupEvent, this.props.decideMeetupEvent);
     }
 
     componentDidMount () {
@@ -61,7 +69,7 @@ class Meetup extends Component {
             return (
                 <div>
                     {!this.props.isMeetupEventsInitialized && <div>Initializing Events</div>}
-                    {this.props.isMeetupEventsInitialized && Object.keys(events).map((event) => 
+                    {this.props.isMeetupEventsInitialized && events && Object.keys(events).map((event) => 
                         <MeetupEvent uri={uri} event={events[event]}></MeetupEvent> 
                     )}
                 </div>
@@ -112,7 +120,11 @@ function mapStateToProps(state){
 const mapDispatchToProps = {
     deleteMeetup,
     getFriends,
-    getMeetupEvents
+    getMeetupEvents,
+    addMeetupEvent,
+    reloadMeetupEvent,
+    voteMeetupEvent,
+    decideMeetupEvent
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Meetup)

@@ -7,7 +7,12 @@ class ContactComponent extends Component {
     handleClick = (uri) => {
         console.log("handle click")
         this.props.setActiveRoom(uri);
-        WebSocketInstance.connect(uri);
+
+        //Websocket create connection for chat
+        var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
+        const path = `${ws_scheme}://localhost:8000/ws/chat/${uri}/`;
+        WebSocketInstance.connect(path);
+
         this.props.getMessages(uri);
     }
     

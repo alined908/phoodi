@@ -2,12 +2,27 @@ import React, {Component} from 'react'
 import {Paper, Button} from "@material-ui/core"
 import {connect} from 'react-redux'
 import {deleteMeetupEvent} from "../../actions/meetup"
-import Carousel from "../carousel/Carousel"
+import Restauraunt from "./Restauraunt"
 import moment from "moment"
+import WebSocketInstance from "../../accounts/WebSocket"
+import CloseIcon from '@material-ui/icons/Close';
+import CachedIcon from "@material-ui/icons/Cached";
 
 class MeetupEvent extends Component {
     handleDelete = () => {
         this.props.deleteMeetupEvent(this.props.uri, this.props.event.id)
+    }
+
+    handleReload = () => {
+        WebSocketInstance.reloadMeetupEvent({meetup: this.props.uri, event: this.props.event.id})
+    }
+
+    handleDecide = () => {
+        WebSocketInstance.decideMeetupEvent({meetup: this.props.uri, event: this.props.event.id, random: false})
+    }
+
+    handleRandom = () => {
+        WebSocketInstance.decideMeetupEvent({meetup: this.props.uri, event: this.props.event.id, random: true})
     }
 
     render () {
@@ -28,25 +43,29 @@ class MeetupEvent extends Component {
             )
         }
 
-        const renderCarousel = (options) => {
-            return <Carousel options={options}></Carousel>
+        const renderFourSquare = (options) => {
+            const keys = Object.keys(options)
+            
+            return (
+                <div className="foursquare">
+                    {keys.map((key) => 
+                        <Restauraunt event={this.props.event.id} meetup={this.props.uri} data={options[key]}/>
+                    )}
+                </div>
+            )
         }
 
         const renderActions = () => {
             return (
                 <div>
                     <Button variant="contained" size="small">
-                        Reload
-                    </Button>
-                    <Button variant="contained" size="small">
                         Decide 
                     </Button>
                     <Button variant="contained" size="small">
                         Random  
                     </Button>
-                    <Button onClick={() => this.handleDelete()} variant="contained" size="small" color="secondary"> 
-                        Delete
-                    </Button>
+                    <CachedIcon onClick={() => this.handleReload()}/>
+                    <CloseIcon onClick={() => this.handleDelete()}/>
                 </div>
             )
         }
@@ -54,10 +73,17 @@ class MeetupEvent extends Component {
         return (
             <Paper elevation={3} className="meetup-event">
                 {renderInformation()}
-                {renderCarousel(event.options)}
+                {!this.props.chosen && renderFourSquare(event.options)}
+                {this.props.chosen && <div>{JSON.stringify(event.options[this.props.chosen])}</div>}
                 {renderActions()}
             </Paper>
         )
+    }
+}
+
+function mapStateToProps(state, props) {
+    return {
+        chosen: state.meetup.meetups[props.uri].events[props.event.id].chosen
     }
 }
 
@@ -65,5 +91,4 @@ const mapDispatchToProps = {
     deleteMeetupEvent
 }
 
-
-export default connect(null, mapDispatchToProps)(MeetupEvent)
+export default connect(mapStateToProps, mapDispatchToProps)(MeetupEvent)

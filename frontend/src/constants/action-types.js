@@ -19,8 +19,9 @@ export const DELETE_MEETUP = 'delete_meetup';
 //MeetupEvents
 export const GET_MEETUP_EVENTS = 'get_meetup_events';
 export const DELETE_MEETUP_EVENT = 'delete_meetup_event';
-export const ADD_MEETUP_EVENT = 'add_meetup_event'
-
+export const ADD_MEETUP_EVENT = 'add_meetup_event';
+export const EDIT_MEETUP_EVENT = 'edit_meetup_event';
+export const VOTE_MEETUP_EVENT = 'vote_meetup_event';
 //Friends
 export const GET_FRIENDS = 'get_friends';
 export const ADD_FRIEND = 'add_friend';

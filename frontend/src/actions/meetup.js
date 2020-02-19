@@ -1,5 +1,6 @@
-import {GET_MEETUPS, ADD_MEETUP, DELETE_MEETUP, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, ADD_MEETUP_EVENT, GET_CATEGORIES} from "../constants/action-types";
+import {GET_MEETUPS, ADD_MEETUP, DELETE_MEETUP, VOTE_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, ADD_MEETUP_EVENT, EDIT_MEETUP_EVENT} from "../constants/action-types";
 import axios from 'axios';
+import {history} from '../components/MeetupApp'
 
 export const getMeetups = () => async dispatch => {
     try {
@@ -70,19 +71,9 @@ export const getMeetupEvents = (uri) => async dispatch => {
     }
 }
 
-export const addMeetupEvent = (uri, formProps, categories, redirectOnSuccess) => async dispatch => {
-    console.log(categories)
-    try {
-        const response = await axios.post(
-            `http://localhost:8000/api/meetups/${uri}/events/`, {...formProps, "categories": categories},{headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
-        }})
-        console.log(response)
-        dispatch({type: ADD_MEETUP_EVENT, payload: response.data})
-        redirectOnSuccess(uri)
-    } catch(e) {
-        console.log(e)
-    }
+export const addMeetupEvent = (event) => async dispatch => {
+    dispatch({type: ADD_MEETUP_EVENT, payload: event.message})
+    history.push(`/meetups/${event.message.meetup}`)
 }
 
 export const deleteMeetupEvent = (uri, id) => async dispatch => {
@@ -96,4 +87,16 @@ export const deleteMeetupEvent = (uri, id) => async dispatch => {
     } catch(e){
         console.log(e)
     }
+}
+
+export const reloadMeetupEvent = (event) => async dispatch => {
+    dispatch({type: EDIT_MEETUP_EVENT, payload: event.message})
+}
+
+export const voteMeetupEvent = (event) => async dispatch => {
+    dispatch({type: VOTE_MEETUP_EVENT, payload: event.message})
+}
+
+export const decideMeetupEvent = (event) => async dispatch => {
+    console.log("decideMeetupEvent")
 }

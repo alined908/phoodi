@@ -10,9 +10,8 @@ class ChatWindowComponent extends Component {
         console.log("chat window constructor")
         console.log(this.props.user)
         let user = this.props.user
-        WebSocketInstance.initChatUser(user.email);
-        WebSocketInstance.addCallbacks(this.props.getMessages, this.props.addMessage)
-        // WebSocketInstance.fetchMessages(user.email);
+        WebSocketInstance.addChatCallbacks(this.props.getMessages, this.props.addMessage)
+        // WebSocketInstance.fetchMessages(this.props.activeRoom);
     }
     
     handleChange = (e) => {
@@ -24,7 +23,8 @@ class ChatWindowComponent extends Component {
         if (e.key === "Enter"){
             e.preventDefault();
             console.log("handle submit")
-            const messageObject = {from: JSON.parse(this.props.user).id, text: this.props.message, room: this.props.room}
+            console.log(this.props.user)
+            const messageObject = {from: this.props.user.id, text: this.props.message, room: this.props.room}
             console.log(messageObject)
             WebSocketInstance.newChatMessage(messageObject)
             // this.props.addMessage(e.target.value, this.props.room, JSON.parse(this.props.user).id)
