@@ -132,12 +132,12 @@
   margin: 6px;
   font-family: 'Roboto', sans-serif;
   font-size: .9rem;
-  width: 240px;
-  height: 180px;
+  width: 280px;
+  height: 210px;
   overflow: hidden; 
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
- 
+
 }
 
 .rst-img{
@@ -148,7 +148,9 @@
   border-radius: 8px;
 }
 
-
+.rst-outer-wrapper{
+  
+}
 
 .rst-info {
   display:flex;
@@ -156,16 +158,17 @@
 }
 
 .rst-name{
+  font-size: 1rem;
   font-weight: bold;
 }
 
 .rst-rating{
-  font-size: .75rem;
+  font-size: .9rem;
 }
 .rst-actions {
   display: flex;
-  justify-content: center;
-  padding-top: 1rem;
+  justify-content: space-evenly;
+  padding-top: .5rem;
 }
 
 .notif-bar {
@@ -184,28 +187,22 @@
   height: 100%;
 }
 
-.carousel {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow: hidden;
-  justify-content: center;
-}
-
 .title {
   font-size: 30px;
-}
-
-.arrow{
-  cursor: pointer
 }
 
 .meetup {
   padding: 1rem 8rem;
 }
 
+.meetup-event {
+  padding: 1.5rem 1.75rem;
+}
+
 .foursquare{
   display:grid;
   grid-template-columns: 50% 50%;
+  grid-row-gap: 1rem;
   margin: 1rem 0;
 }
 
@@ -213,6 +210,8 @@
   display: flex;
   align-items: center;
   font-size: 40px;
+  width: 40px;
+  max-width: 40px;
 }
 
 .mte-header{
@@ -231,5 +230,27 @@
 }
 
 .button {
-  margin: 0 6px !important;
+  margin: 0 8px !important;
+}
+
+.rst-action-score{
+  margin-left: .25rem;
+  font-size: .85rem;
+}
+
+.mte-actions svg{
+  margin-right: 5px;
+}
+
+.map{
+  width: 300px;
+  height: 300px;
+}
+
+.c {
+  background-color: #fbfdff;
+}
+.chosen {
+  display: flex;
+  justify-content: space-around;
 }

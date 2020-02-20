@@ -96,7 +96,7 @@ export const reloadMeetupEvent = (event) => async dispatch => {
 export const voteMeetupEvent = (event) => async dispatch => {
     dispatch({type: VOTE_MEETUP_EVENT, payload: event.message})
 }
-
+    
 export const decideMeetupEvent = (event) => async dispatch => {
     dispatch({type: EDIT_MEETUP_EVENT, payload: event.message})
 }
