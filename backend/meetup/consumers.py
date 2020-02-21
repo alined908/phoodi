@@ -105,6 +105,7 @@ class MeetupConsumer(AsyncWebsocketConsumer):
 
     @sync_to_async
     def get_event_serializer(self, event):
+        event.generate_options()
         return MeetupEventSerializer(event).data
 
     async def new_event(self, command):
@@ -130,8 +131,6 @@ class MeetupConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def handle_event_reload(self, event):
         event.options.all().delete()
-        event.chosen = None
-        event.save()
 
     async def reload_event(self, command):
         data = command['data']
@@ -191,11 +190,7 @@ class MeetupConsumer(AsyncWebsocketConsumer):
                 'type': 'meetup_event',
                 'meetup_event': content
             }
-        )
-
-    async def delete_event(self, data):
-        pass
-        
+        )        
 
     async def fetch_events(self, data):
         pass
@@ -250,19 +245,66 @@ class MeetupConsumer(AsyncWebsocketConsumer):
             }
         )
 
-    
+    @sync_to_async
+    def redecide_helper(self, event):
+        event = MeetupEvent.objects.get(pk=event)
+        event.chosen = None
+        event.save()
+        return event.id, MeetupEventSerializer(event).data
+
+    async def redecide_event(self, command):
+        data = command['data']
+        meetup, event = data['meetup'], data['event']
+        event_id, event = await self.redecide_helper(event)
+
+        content = {
+                'command': 'redecide_event',
+                'message': {"meetup": meetup, "event_id": event_id, "event": event}
+            }
+
+        await self.channel_layer.group_send(
+            self.meetup_group_name, {
+                'type': 'meetup_event',
+                'meetup_event': content
+            }
+        )
+
+    @sync_to_async
+    def delete_helper(self, event_id):
+        event = MeetupEvent.objects.get(pk=event_id)
+        event.delete()
+
+    async def delete_event(self, command):
+        data = command['data']
+        meetup, event_id = data['uri'], data['event']
+        await self.delete_helper(event_id)
+
+        content = {
+                'command': 'delete_event',
+                'message': {"uri": meetup, "event": event_id}
+            }
+
+        await self.channel_layer.group_send(
+            self.meetup_group_name, {
+                'type': 'meetup_event',
+                'meetup_event': content
+            }
+        )
+
+
     commands = {
         'fetch_events': fetch_events,
-        'new_event': new_event,
-        'reload_event': reload_event,
-        'delete_event': delete_event,
-        'vote_event': vote_event,
-        'decide_event': decide_event
+        'new_event': new_event, #check
+        'reload_event': reload_event, #check
+        'delete_event': delete_event, #check
+        'vote_event': vote_event, #check
+        'decide_event': decide_event, #check
+        'redecide_event': redecide_event #check
     }
 
     async def receive(self, text_data):
-        print("meetup consumer received command")
         json_data = json.loads(text_data)
+        print("Meetup Consumer: " + json_data['command'])
         await self.commands[json_data['command']](self, json_data)
 
     async def disconnect(self, close_code):
@@ -273,6 +315,6 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         )
 
     async def meetup_event(self, event):
-        print("meetup_event function ")
+        print("Meetup Consumer: Meetup Event Object sent")
         meetup_event = event['meetup_event']
         await self.send(text_data=json.dumps(meetup_event))

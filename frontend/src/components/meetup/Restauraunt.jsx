@@ -13,6 +13,7 @@ import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarHalfIcon from '@material-ui/icons/StarHalf';
 import IconButton from '@material-ui/core/IconButton';
+import Chip from '@material-ui/core/Chip';
 
 class Restauraunt extends Component {
 
@@ -91,14 +92,19 @@ class Restauraunt extends Component {
     }
 
     renderRestauraunt = (data) => {
-        return <div className="rst">
-            <div className="rst-info">
-                <span className="rst-name">{data.name}</span>
-                <span className="rst-rating">{this.determineRating(data.rating)}</span>
+        return (   
+            <div>
+                <div className="rst">
+                    <div className="rst-info">
+                        <span className="rst-name">{data.name}</span>
+                        <span className="rst-rating">{this.determineRating(data.rating)}</span>
+                    </div>
+                    <div className="rst-img" style={{backgroundImage: `url(${data.image_url})`}}>
+                    </div>
+                </div>
+                <div className="rst-categories">{data.price} &#8226; {data.categories.map((category) => <Chip variant="outlined" label={category.title} color="primary"></Chip>)}</div>
             </div>
-            <div className="rst-img" style={{backgroundImage: `url(${data.image_url})`}}>
-            </div>  
-        </div>
+        )
     }
 
     render (){
@@ -116,13 +122,18 @@ class Restauraunt extends Component {
                         {this.renderRestauraunt(data)}
                         {this.renderActions(status, scores)}
                     </div>
+                    
                 </div>
             )
         } else {
             return (
-                <>
+                <div className="rst-horizontal">  
                     {this.renderRestauraunt(data)}
-                </>
+                    <div className="rst-horz-info">
+                        <div>{data.location.address1}, {data.location.city} {data.location.state} {data.location.zip_code}</div>
+                        <div>{data.phone}</div>
+                    </div>
+                </div>
             )
         }
         

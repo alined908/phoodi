@@ -4,13 +4,14 @@ from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager)
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from uuid import uuid4
-from django.db.models.signals import post_save, post_delete, pre_delete
-from django.dispatch import receiver
 import requests
 import random
 from django.contrib.postgres.fields import JSONField
 import json
+import pickle
+import os.path
 from django.db import transaction
+from django.core.mail import EmailMessage
 
 url = "https://api.yelp.com/v3/businesses/search"
 headers = {'Authorization': "Bearer U46B4ff8l6NAdldViS7IeS8HJriDeE9Cd5YZXTUmrdzvtv57AUQiYJVVbEPFp30nhL9YAW2-LjAAQ1cBapJ4uqiOYES8tz9EjM85R8ki9l-54Z1d_1OOWLeY5tTuXXYx"}
@@ -127,6 +128,14 @@ class Meetup(models.Model):
     def __str__(self):
         return self.uri
 
+    def send_email(self, message):
+        members = self.members.all()
+        emails = [member.user.email for member in members]
+        subject = self.name + "has been finalized."
+        body = ""
+        email = EmailMessage(subject, body, to=emails)
+        email.send()
+
 class MeetupMember(models.Model):
     meetup = models.ForeignKey(Meetup, related_name="members", on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name="meetups", on_delete=models.CASCADE)
@@ -147,39 +156,26 @@ class MeetupEvent(models.Model):
     chosen = models.IntegerField(blank=True, null=True) 
     entries = JSONField()
     _original_location = None
-    _original_chosen = None
     objects = models.Manager()
 
-@receiver(post_save, sender = MeetupEvent)
-def save_options_after_event_creation(sender, instance, created, **kwargs):
-    print("save options after event creation")
-    if (instance.location != instance._original_location) or (instance._original_chosen and not instance.chosen):
+    def generate_options(self):
         categories = ""
-        
-        for i, key in enumerate(instance.entries): 
+
+        for i, key in enumerate(self.entries): 
             category = Category.objects.get(api_label=key)
-            meetupcategory = MeetupCategory.objects.create(event=instance, category=category)
-            if i == len(instance.entries) - 1:
+            meetupcategory = MeetupCategory.objects.create(event=self, category=category)
+            if i == len(self.entries) - 1:
                 categories += key
             else:
                 categories += key + ", "
-      
-        params = {"location": instance.location, "limit": 30, "categories": categories}
+
+        params = {"location": self.location, "limit": 30, "categories": categories}
         r = requests.get(url=url, params=params, headers=headers)
         options = r.json()['businesses']
         random.shuffle(options)
         
         for option in options[:4]:
-            MeetupEventOption.objects.create(event=instance, option=json.dumps(option))
-
-    if instance.location != instance._original_location:
-        instance._original_location = instance.location
-    if instance._original_chosen != instance.chosen:
-        instance._original_chosen = instance.chosen
-
-    post_save.disconnect(save_options_after_event_creation, sender=MeetupEvent)
-    instance.save()
-    post_save.connect(save_options_after_event_creation, sender = MeetupEvent)
+            MeetupEventOption.objects.create(event=self, option=json.dumps(option))
 
 class MeetupEventOption(models.Model):
     event = models.ForeignKey(MeetupEvent, related_name="options", on_delete=models.CASCADE)
