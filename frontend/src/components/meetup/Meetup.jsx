@@ -34,10 +34,6 @@ class Meetup extends Component {
         this.props.sendMeetupEmails(this.props.uri)
     }
 
-    handleCalendar = () => {
-        console.log("handle calendar")
-    }
-
     render () {
         const [id, name, uri, location, datetime, members, events] = this.props.meetup
 
@@ -89,8 +85,7 @@ class Meetup extends Component {
                 <Paper elevation={3}>
                     <Link to={`/meetups/${this.props.uri}/new`}><Button className="button" variant="contained" color="primary">Add Event</Button></Link>
                     <Button className="button" variant="contained" color="secondary" onClick={() => this.handleDelete()}>Delete Meetup</Button>
-                    <Button className="button" variant="contained" onClick={() => this.handleEmail()}>Email Members</Button>
-                    <Button className="button" variant="contained" onClick={() => this.handleCalendar()}>Add to Calendar</Button>
+                    <Button className="button" variant="contained" onClick={() => this.handleEmail()}>Notify Members</Button>
                 </Paper>
             )
         }

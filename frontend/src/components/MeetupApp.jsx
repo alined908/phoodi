@@ -15,6 +15,7 @@ import HomeComponent from "./HomeComponent";
 import MeetupPageComponent from "./meetup/MeetupPageComponent"
 import FriendsComponent from './invite/FriendsComponent';
 import MeetupEventForm from "./meetup/MeetupEventForm"
+import Navigation from "./Navigation"
 import {store} from "../store/index";
 
 import createBrowserHistory from 'history/createBrowserHistory'
@@ -27,6 +28,7 @@ class MeetupApp extends Component {
                 <Provider store={store}>
                     <Router history={history}>
                         <HeaderComponent></HeaderComponent>
+                        {/* <Navigation></Navigation> */}
                         <div className="c">
                             <Switch>
                                 <Route path="/" exact component={HomeComponent}></Route>
