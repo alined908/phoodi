@@ -53,7 +53,7 @@ export default function meetupReducer(state = defaultState, action){
             var events = {}
             const uri = action.payload.uri
             Object.keys(state.meetups[uri].events).map((key) => {
-                if (key !== action.payload.id.toString()){
+                if (key !== action.payload.event.toString()){
                     events[key] = state.meetups[uri].events[key]
                 }
             })

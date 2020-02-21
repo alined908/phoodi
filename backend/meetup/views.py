@@ -112,16 +112,25 @@ class MeetupEventsListView(APIView):
         entries = request.data['categories']
         print(entries)
         event = MeetupEvent.objects.create(meetup=meetup, location=location, start=start, end=end, title=title, entries=entries)
+        event.generate_options()
         serializer = MeetupEventSerializer(event)
 
         return Response(serializer.data)
+
+class MeetupEmailView(APIView):
+    permissions = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        uri = kwargs['uri']
+        meetup = get_object_or_404(Meetup, uri=uri)
+        meetup.send_email()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class MeetupEventsView(APIView):
     permissions=[permissions.IsAuthenticated]
 
     def delete(self, request, *args, **kwargs):
         pk = kwargs['id']
-        print(pk)
         event = get_object_or_404(MeetupEvent, pk=pk)
         event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

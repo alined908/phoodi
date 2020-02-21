@@ -9,14 +9,19 @@ import CloseIcon from '@material-ui/icons/Close';
 import CachedIcon from "@material-ui/icons/Cached";
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
+import Chip from '@material-ui/core/Chip';
 import {compose} from 'redux';
 import Map from "./Map"
 
 class MeetupEvent extends Component {
 
+    handleEdit = () => {
+        console.log("handle edit function called")
+    }
+
     handleDelete = () => {
         if (window.confirm("Are you sure you want to delete")){
-            this.props.deleteMeetupEvent(this.props.uri, this.props.event.id)
+            WebSocketInstance.deleteMeetupEvent({uri: this.props.uri, event: this.props.event.id})
         }
     }
 
@@ -32,8 +37,8 @@ class MeetupEvent extends Component {
         WebSocketInstance.decideMeetupEvent({meetup: this.props.uri, event: this.props.event.id, random: true})
     }
 
-    handleEdit = () => {
-        console.log("handle edit function called")
+    handleRedecide = () => {
+        WebSocketInstance.redecideMeetupEvent({meetup: this.props.uri, event:this.props.event.id})
     }
 
     render () {
@@ -48,8 +53,7 @@ class MeetupEvent extends Component {
                         <div>Start - {moment(event.start).local().format("MMM DD h:mm A")}</div>
                         <div>End - {moment(event.end).local().format("MMM DD h:mm A")}</div>
                         <div>
-                            Categories: 
-                            {Object.keys(event.entries).map((entry) => <span>{entry}</span>)}
+                            {Object.keys(event.entries).map((entry,index) => <Chip key={index} variant="outlined" label={entry} color="primary"></Chip>)}
                         </div>
                     </div>
                     {renderActions()}
@@ -63,7 +67,7 @@ class MeetupEvent extends Component {
             return (
                 <div className="foursquare">
                     {keys.map((key) => 
-                        <Restauraunt full={true} event={this.props.event.id} meetup={this.props.uri} data={options[key]}/>
+                        <Restauraunt key={key} full={true} event={this.props.event.id} meetup={this.props.uri} data={options[key]}/>
                     )}
                 </div>
             )
@@ -72,8 +76,8 @@ class MeetupEvent extends Component {
         const renderActions = () => {
             return (
                 <div className="mte-actions">
-                    <IconButton color="inherit" disableAutoFocus><EditIcon onClick={() => this.handleEdit()}></EditIcon></IconButton>
-                    <IconButton color="inherit" edge="start"><CachedIcon fontSize='large' onClick={() => this.handleReload()}/></IconButton>
+                    <IconButton color="inherit"><EditIcon></EditIcon></IconButton>
+                    {!this.props.chosen && <IconButton color="inherit" edge="start"><CachedIcon fontSize='large' onClick={() => this.handleReload()}/></IconButton>}
                     <IconButton color="inherit" edge="start"><CloseIcon fontSize='large' onClick={() => this.handleDelete()}/></IconButton>
                 </div>
             )
@@ -84,9 +88,7 @@ class MeetupEvent extends Component {
                 <div className="mte-factions">
                     {!this.props.chosen && <Button className="button" variant="contained" onClick={() => this.handleDecide()}>Decide</Button>}
                     {!this.props.chosen && <Button className="button" variant="contained"onClick={() => this.handleRandom()}>Random</Button>}
-                    {this.props.chosen && <Button className="button" variant="contained">Redecide</Button>}
-                    {this.props.chosen && <Button className="button" variant="contained">Email Members</Button>}
-                    {this.props.chosen && <Button className="button" variant="contained">Add to Calendar</Button>}
+                    {this.props.chosen && <Button className="button" variant="contained" onClick={() => this.handleRedecide()}>Redecide</Button>}
                 </div>
             )
         }
@@ -97,8 +99,8 @@ class MeetupEvent extends Component {
 
             return (
                 <div className="chosen">
-                    <Restauraunt full={false} event={this.props.event.id} meetup={this.props.uri} data={chosen}></Restauraunt>
-                    <Map location={position}/>
+                    <Restauraunt key={chosen.id} full={false} event={this.props.event.id} meetup={this.props.uri} data={chosen}></Restauraunt>
+                    <div className="map-wrapper"><Map location={position}/></div>
                 </div>
             )
         }

@@ -140,6 +140,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'meetup022897@gmail.com'
+EMAIL_HOST_PASSWORD = 'Meetup022897!'
+EMAIL_PORT = 587
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

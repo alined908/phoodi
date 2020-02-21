@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import MeetupEvent from "./MeetupEvent"
 import {connect} from 'react-redux';
-import {deleteMeetup, getMeetupEvents, addMeetupEvent, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent} from '../../actions/meetup';
+import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent} from '../../actions/meetup';
 import {getFriends} from "../../actions/friend"
 import {Link} from 'react-router-dom'
 import moment from 'moment';
@@ -18,7 +18,7 @@ class Meetup extends Component {
         var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
         const path = `${ws_scheme}://localhost:8000/ws/meetups/${uri}/`;
         WebSocketInstance.connect(path);
-        WebSocketInstance.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, this.props.voteMeetupEvent, this.props.decideMeetupEvent);
+        WebSocketInstance.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, this.props.voteMeetupEvent, this.props.decideMeetupEvent, this.props.deleteMeetupEvent);
     }
 
     componentDidMount () {
@@ -26,8 +26,16 @@ class Meetup extends Component {
         this.props.getFriends()
     }
     
-    handleDelete = (uri) => {
-        this.props.deleteMeetup(uri);
+    handleDelete = () => {
+        this.props.deleteMeetup(this.props.uri);
+    }
+
+    handleEmail = () => {
+        this.props.sendMeetupEmails(this.props.uri)
+    }
+
+    handleCalendar = () => {
+        console.log("handle calendar")
     }
 
     render () {
@@ -51,7 +59,7 @@ class Meetup extends Component {
             return (
                 <Paper elevation={3}>
                     {this.props.isFriendsInitialized && <div className="title">Friends</div>}
-                    {this.props.isFriendsInitialized && this.props.friends.map((friendship) => <MeetupFriend friend={friendship.user} isMember={isMember(friendship.user.id)} uri={uri}></MeetupFriend>)}
+                    {this.props.isFriendsInitialized && this.props.friends.map((friendship) => <MeetupFriend key={friendship.id} friend={friendship.user} isMember={isMember(friendship.user.id)} uri={uri}></MeetupFriend>)}
                 </Paper>
             )
         }
@@ -70,7 +78,7 @@ class Meetup extends Component {
                 <div>
                     {!this.props.isMeetupEventsInitialized && <div>Initializing Events</div>}
                     {this.props.isMeetupEventsInitialized && events && Object.keys(events).map((event) => 
-                        <MeetupEvent uri={uri} event={events[event]}></MeetupEvent> 
+                        <MeetupEvent key={event.id} uri={uri} event={events[event]}></MeetupEvent> 
                     )}
                 </div>
             )
@@ -79,8 +87,10 @@ class Meetup extends Component {
         const renderActions = () => {
             return (
                 <Paper elevation={3}>
-                    <Link to={`/meetups/${this.props.uri}/new`}><Button size="small" variant="contained" color="primary">Add Event</Button></Link>
-                    <Button size="small" variant="contained" color="secondary" onClick={() => this.handleDelete(uri)}>Delete Meetup</Button>
+                    <Link to={`/meetups/${this.props.uri}/new`}><Button className="button" variant="contained" color="primary">Add Event</Button></Link>
+                    <Button className="button" variant="contained" color="secondary" onClick={() => this.handleDelete()}>Delete Meetup</Button>
+                    <Button className="button" variant="contained" onClick={() => this.handleEmail()}>Email Members</Button>
+                    <Button className="button" variant="contained" onClick={() => this.handleCalendar()}>Add to Calendar</Button>
                 </Paper>
             )
         }
@@ -124,7 +134,9 @@ const mapDispatchToProps = {
     addMeetupEvent,
     reloadMeetupEvent,
     voteMeetupEvent,
-    decideMeetupEvent
+    decideMeetupEvent,
+    deleteMeetupEvent,
+    sendMeetupEmails
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Meetup)

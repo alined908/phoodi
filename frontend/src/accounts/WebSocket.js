@@ -127,6 +127,16 @@ class WebSocketService{
         this.sendMessage({command: 'decide_event', data: data})
     }
 
+    deleteMeetupEvent(data){
+        console.log("Websocket - delete meetup event")
+        this.sendMessage({command: 'delete_event', data:data})
+    }
+
+    redecideMeetupEvent(data){
+        console.log("Websocket - redecideEvent")
+        this.sendMessage({command: 'redecide_event', data:data})
+    }
+
     voteMeetupEvent(data){
         console.log("Websocket - voteEvent")
         this.sendMessage({command: 'vote_event', data: data})
@@ -148,12 +158,14 @@ class WebSocketService{
         this.callbacks['new_message'] = newMessageCallback;
     }
 
-    addEventCallbacks(eventsCallback, newEventCallback, reloadEventCallback, voteEventCallback, decideEventCallback){
+    addEventCallbacks(eventsCallback, newEventCallback, reloadEventCallback, voteEventCallback, decideEventCallback, deleteEventCallback){
         this.callbacks['fetch_events'] = eventsCallback
         this.callbacks['new_event'] = newEventCallback
         this.callbacks['reload_event'] = reloadEventCallback
         this.callbacks['vote_event'] = voteEventCallback
         this.callbacks['decide_event'] = decideEventCallback
+        this.callbacks['redecide_event'] = decideEventCallback
+        this.callbacks['delete_event'] = deleteEventCallback
     }
 
     addInviteCallbacks(invitesCallback, newInviteCallback){

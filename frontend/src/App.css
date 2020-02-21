@@ -148,13 +148,10 @@
   border-radius: 8px;
 }
 
-.rst-outer-wrapper{
-  
-}
-
 .rst-info {
   display:flex;
   justify-content: space-between;
+  margin-bottom: 5px;
 }
 
 .rst-name{
@@ -197,6 +194,7 @@
 
 .meetup-event {
   padding: 1.5rem 1.75rem;
+  min-height: 800px;
 }
 
 .foursquare{
@@ -204,6 +202,9 @@
   grid-template-columns: 50% 50%;
   grid-row-gap: 1rem;
   margin: 1rem 0;
+  border: 1px solid #eeeeef;
+  border-radius: 4px;
+  padding: 1rem;
 }
 
 .rst-score {
@@ -217,6 +218,9 @@
 .mte-header{
   display: flex;
   justify-content: space-between;
+  border: 1px solid #eeeeef;
+  border-radius: 4px;
+  padding: 1rem;
 }
 
 .mte-factions{
@@ -242,15 +246,41 @@
   margin-right: 5px;
 }
 
-.map{
-  width: 300px;
-  height: 300px;
-}
+
 
 .c {
   background-color: #fbfdff;
 }
 .chosen {
   display: flex;
-  justify-content: space-around;
+  border: 1px solid #eeeeef;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
+.map-wrapper{
+  border-radius: 10px;
+  overflow:hidden;
+  margin-top: .5rem;
+}
+
+.rst-horizontal {
+  display:flex;
+  flex-grow: 1;
+}
+.MuiChip-root{
+  margin-right: 5px;
+}
+
+.rst-horz-info{
+  padding-top: .5rem;
+  display: flex;
+  flex-grow: 1;
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+.rst-categories{
+  padding: .25rem .5rem;
 }
