@@ -7,7 +7,9 @@ export const signup = (formProps, redirectOnSuccess) => async dispatch => {
         const response = await axios.post('http://localhost:8000/api/users/', {
             "user": formProps
         })
-        console.log(response)
+        AuthenticationService.registerSuccessfulLogin(response.data.token)
+        localStorage.setItem("user", JSON.stringify(response.data.user[Object.keys(response.data.user)[0]]))
+        dispatch({type: AUTH_USER, payload: response.data});
         redirectOnSuccess();
     }
     catch (e){
@@ -39,10 +41,9 @@ export const signin = (formProps, redirectOnSuccess) => async dispatch => {
     }
 }
 
-export const getProfile = async (id) => {
+export const getProfile = (id) => {
     try {
-        const response = await axios.get(`http://localhost:8000/api/users/${id}/`)
-        console.log(response)
+        const response = axios.get(`http://localhost:8000/api/users/${id}/`)
         return response.data
     } catch(e){
         console.log(e)

@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
-from rest_framework_jwt.settings import api_settings
 from meetup.models import User, Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite
 from django.forms.models import model_to_dict
 from channels.db import database_sync_to_async
@@ -18,7 +17,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'email', 'first_name', 'last_name', 'avatar')
 
 class UserSerializerWithToken(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
     email = serializers.EmailField(required=True)
     first_name = serializers.CharField(max_length=255)
     password = serializers.CharField(write_only=True)
@@ -29,7 +27,7 @@ class UserSerializerWithToken(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name')
+        fields = ('id', 'email', 'first_name', 'password')
     
 class FriendshipSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('_get_friend')

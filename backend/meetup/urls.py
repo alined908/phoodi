@@ -9,6 +9,7 @@ urlpatterns=[
     path("current_user/", current_user),
     path('users/', UserView.as_view()),
     path('users/<id>/', UserView.as_view()),
+    path('users/<id>/friends/', views.UserFriendsView.as_view()),
     path("categories/", views.CategoryListView.as_view()),
     path("meetups/", views.MeetupListView.as_view()),
     path("meetups/invite/", views.MeetupInviteAllView.as_view()),
@@ -22,7 +23,6 @@ urlpatterns=[
     path("chats/", views.ChatRoomListView.as_view()),
     path("chats/<uri>/", views.ChatRoomView.as_view()),
     path("chats/<uri>/messages/", views.ChatRoomMessageView.as_view()),
-    path("friends/", views.UserFriendsView.as_view()),
     path("friends/invite/", views.FriendInviteListView.as_view()),
     path("friends/invite/<invite_code>/", views.FriendInviteView.as_view())
 ]

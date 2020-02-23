@@ -45,13 +45,14 @@ class UserView(APIView):
         serializer = UserSerializerWithToken(data = user)
         if serializer.is_valid():
             try:
-                serializer.save()
+                user = serializer.save()
+                print(user)
             except IntegrityError:
                 return Response({"error": 'Email already exists'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         else:
             return Response({"error" : serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
-        return Response({"success" : "user created succesfully", "user": serializer.data})
+        return Response({"token": user.get_token(), "user": serializer.data})
     
 class MeetupListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -302,7 +303,8 @@ class UserFriendsView(APIView):
         """
         Get users friends
         """
-        user = request.user
+        pk = kwargs['id']
+        user = User.objects.get(pk=pk)
         serializer = FriendshipSerializer(user.get_friends(), many=True, context={'user': user})
 
         return Response({"friends": serializer.data})

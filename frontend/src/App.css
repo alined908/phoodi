@@ -328,9 +328,18 @@ html, body, #root, .MeetupApp {
   margin-bottom: 2rem;
 }
 
+.pic {
+  margin-right: 1rem;
+}
+
 .user-avatar {
   width: 100px;
   height: 100px;
   border-radius: 50%;
   vertical-align: middle;
+}
+
+.profile{
+  display: flex;
+  padding: 2rem;
 }

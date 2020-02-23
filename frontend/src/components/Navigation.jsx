@@ -144,7 +144,7 @@ const Navigation = (props) => {
         <List>
           {!props.authenticated && <Link to="/login"><ListItem button key="Login"><ListItemText primary="Login"/></ListItem></Link>}
           {!props.authenticated && <Link to="/register"><ListItem button key="Register"><ListItemText primary="Register"/></ListItem></Link>}
-          {props.authenticated && <Link to={`/profile/${props.user.id}`}>
+          {props.authenticated && props.user && <Link to={`/profile/${props.user.id}`}>
             <ListItem button key="Profile">
               <ListItemIcon>
                 <PersonIcon/>
@@ -176,6 +176,7 @@ function mapStatetoProps(state) {
     authenticated: state.user.authenticated,
     user: state.user.user
   }
+  
 }
 
 export default connect(mapStatetoProps, null)(Navigation)

@@ -9,6 +9,7 @@ import random
 from django.contrib.postgres.fields import JSONField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from rest_framework_jwt.settings import api_settings
 import json
 import os.path
 from django.db import transaction
@@ -56,7 +57,7 @@ def wrapper(instance, filename):
         ext = filename.split('.')[-1]
         filename = '{}.{}'.format(uuid4().hex, ext)
         return os.path.join(path, filename)
-        
+
 def path_and_rename(path):
     return wrapper
 
@@ -117,6 +118,13 @@ class User(AbstractBaseUser):
             return Friendship.objects.create(creator=self, friend=friend)
 
         return friendship[0]
+
+    def get_token(self):
+        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+        payload = jwt_payload_handler(self)
+        token = jwt_encode_handler(payload)
+        return token
 
 class Profile(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
