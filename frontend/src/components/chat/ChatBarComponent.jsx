@@ -1,12 +1,8 @@
 import React, {Component} from 'react';
 import Contact from "./ContactComponent";
 import {connect} from 'react-redux';
-import {getRooms} from '../../actions/chat';
 
 class ChatBarComponent extends Component {
-    componentDidMount(){
-        this.props.getRooms();
-    }
 
     render (){
         return(
@@ -22,13 +18,8 @@ class ChatBarComponent extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        isRoomsInitialized: state.chat.isRoomsInitialized,
-        rooms: Object.values(state.chat.rooms)
+        isRoomsInitialized: state.chat.isRoomsInitialized
     }
 }
 
-const mapDispatchToProps = {
-    getRooms
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChatBarComponent)
+export default connect(mapStateToProps)(ChatBarComponent)

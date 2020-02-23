@@ -43,7 +43,7 @@ class Meetup extends Component {
         
         const renderInformation = (name, datetime, location) => {
             return (
-                <Paper elevation={3}>
+                <Paper className="paper" elevation={3}>
                     <div className="title">{name}</div>
                     <div>{moment(datetime).local().format("MMM DD h:mm A")}</div>
                     <div>{location}</div>
@@ -53,7 +53,7 @@ class Meetup extends Component {
 
         const renderFriends = () => {
             return (
-                <Paper elevation={3}>
+                <Paper className="paper" elevation={3}>
                     {this.props.isFriendsInitialized && <div className="title">Friends</div>}
                     {this.props.isFriendsInitialized && this.props.friends.map((friendship) => <MeetupFriend key={friendship.id} friend={friendship.user} isMember={isMember(friendship.user.id)} uri={uri}></MeetupFriend>)}
                 </Paper>
@@ -62,7 +62,7 @@ class Meetup extends Component {
 
         const renderMembers = (members) => {
             return (
-                <Paper elevation={3}>
+                <Paper className="paper" elevation={3}>
                     <div className="title">Members</div>
                     {Object.keys(members).map((key) => <div key={members[key].id}>{members[key].email + " "}</div>)}
                 </Paper>
@@ -82,16 +82,17 @@ class Meetup extends Component {
 
         const renderActions = () => {
             return (
-                <Paper elevation={3}>
+                <Paper className="paper" elevation={3}>
                     <Link to={`/meetups/${this.props.uri}/new`}><Button className="button" variant="contained" color="primary">Add Event</Button></Link>
                     <Button className="button" variant="contained" color="secondary" onClick={() => this.handleDelete()}>Delete Meetup</Button>
                     <Button className="button" variant="contained" onClick={() => this.handleEmail()}>Notify Members</Button>
+                    <Link to={`/chat/${this.props.uri}`}><Button className="button" variant="contained">Go to Chat</Button></Link>
                 </Paper>
             )
         }
 
         return (
-            <div className="meetup">
+            <div className="inner-wrap">
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
                         {renderInformation(name, datetime, location)}

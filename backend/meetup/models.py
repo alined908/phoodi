@@ -7,8 +7,9 @@ from uuid import uuid4
 import requests
 import random
 from django.contrib.postgres.fields import JSONField
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 import json
-import pickle
 import os.path
 from django.db import transaction
 from django.core.mail import EmailMessage
@@ -50,6 +51,15 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+
+def wrapper(instance, filename):
+        ext = filename.split('.')[-1]
+        filename = '{}.{}'.format(uuid4().hex, ext)
+        return os.path.join(path, filename)
+        
+def path_and_rename(path):
+    return wrapper
+
 # Create your models here.
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True, max_length=255)
@@ -59,6 +69,7 @@ class User(AbstractBaseUser):
     admin = models.BooleanField(default=False)
     staff = models.BooleanField(default=False)
     confirmed = models.BooleanField(default =False)
+    avatar = models.ImageField(blank=True, null=True, default= "avatar/blank_profile_pic.png", upload_to=path_and_rename('avatar'))
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name']
@@ -72,17 +83,11 @@ class User(AbstractBaseUser):
         full_name = '%s %s' % (self.first_name, self.last_name)
         return full_name.strip()
 
-    def get_short_name(self):
-        return self.first_name
-
     def has_perm(self, perm, obj=None):
         return self.admin
 
     def has_module_perms(self,app_label):
         return self.admin
-    
-    def get_id(self):
-        return self.id
 
     @property
     def is_admin(self):
@@ -96,12 +101,12 @@ class User(AbstractBaseUser):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
     def get_friends(self):
-        id = self.get_id()
+        id = self.id
         friends = Friendship.objects.raw('SELECT * FROM meetup_friendship WHERE creator_id= %s OR friend_id = %s', [id, id])
         return friends
 
     def get_friend(self, friend):
-        id = self.get_id()
+        id = self.id
         mapping = {'me': id, 'friend': friend.id}
         friendship = Friendship.objects.raw('SELECT * FROM meetup_friendship WHERE (creator_id = %(me)s AND friend_id = %(friend)s) OR (creator_id = %(friend)s AND friend_id = %(me)s)', mapping)
         return friendship
@@ -136,11 +141,26 @@ class Meetup(models.Model):
         email = EmailMessage(subject, body, to=emails)
         email.send()
 
+@receiver(post_save, sender=Meetup)
+def create_chat_room(sender, instance, created, **kwargs):
+    if created:
+        uri = instance.uri
+        name = instance.name
+        room = ChatRoom.objects.create(uri=uri, name=name)
+
 class MeetupMember(models.Model):
     meetup = models.ForeignKey(Meetup, related_name="members", on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name="meetups", on_delete=models.CASCADE)
     admin = models.BooleanField(default=False)
     objects = models.Manager()
+
+@receiver(post_save, sender=MeetupMember)
+def create_chat_room_member(sender, instance, created, **kwargs):
+    if created:
+        meetup = instance.meetup
+        user = instance.user
+        room = ChatRoom.objects.get(uri=meetup.uri)
+        member = ChatRoomMember.objects.create(room = room, user = user)
 
 class Category(models.Model):
     label = models.CharField(max_length=255)

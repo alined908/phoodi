@@ -3,7 +3,6 @@ class WebSocketService{
     callbacks = {};
     
     static getInstance(){
-        console.log(!WebSocketService.instance)
         if (!WebSocketService.instance){
             WebSocketService.instance = new WebSocketService();
         }
@@ -37,7 +36,7 @@ class WebSocketService{
         this.socketRef.onclose = () => {
             console.log("WebSocket closed, restarting..");
             this.connect(path);
-        };   
+        };
     }
 
     socketNewMessage(data){

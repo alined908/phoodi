@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
         
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name')
+        fields = ('id', 'email', 'first_name', 'last_name', 'avatar')
 
 class UserSerializerWithToken(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
@@ -29,7 +29,7 @@ class UserSerializerWithToken(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'password')
+        fields = ('id', 'email', 'first_name')
     
 class FriendshipSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('_get_friend')

@@ -4,6 +4,14 @@
   font-family: 'Roboto', sans-serif;
 }
 
+a, a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+html, body, #root, .MeetupApp {
+  height: 100%;
+}
+
 .App {
   text-align: center;
   display: flex;
@@ -12,7 +20,7 @@
 .chat {
   display: grid;
   grid-template-columns: 25% 75%;
-  height: 100vh;
+  height: 95vh;
   width: 100%;
 }
 .chat-bar{
@@ -174,22 +182,22 @@
 
 .c {
   display: flex;
-  align-items: center;
   justify-content: center;
+  min-height: 90%;
 }
-
-.MuiPaper-root{
-  margin: 1rem 0;
-  padding: 1rem;
-  height: 100%;
-}
-
 .title {
   font-size: 30px;
 }
+.inner-wrap {
+  width: 100%;
+  height: 100%;
+  padding: 2rem 4rem;
+}
 
-.meetup {
-  padding: 1rem 8rem;
+.form {
+  display:flex;
+  justify-content: center;
+  margin: auto;
 }
 
 .meetup-event {
@@ -246,11 +254,6 @@
   margin-right: 5px;
 }
 
-
-
-.c {
-  background-color: #fbfdff;
-}
 .chosen {
   display: flex;
   border: 1px solid #eeeeef;
@@ -283,4 +286,51 @@
 
 .rst-categories{
   padding: .25rem .5rem;
+}
+
+.paper {
+  padding: 1.5rem 1.75rem;
+}
+
+.invites {
+  margin-top: 1rem;
+}
+
+.invite, .friend {
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.friend {
+  margin-right: 1rem;
+  height: 80px;
+  width: 400px;
+}
+
+.friends {
+  display: flex;
+  margin-top: 1rem;
+}
+
+.meetup-cards {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.inner-header{
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #eeeeef;
+  padding: 1.5rem 2rem;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+}
+
+.user-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  vertical-align: middle;
 }

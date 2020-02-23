@@ -13,7 +13,7 @@ class Map extends Component {
           viewport: {
             latitude: this.props.location[0],
             longitude: this.props.location[1],
-            zoom: 11,
+            zoom: 12.5,
             bearing: 0,
             pitch: 0
           }
@@ -43,7 +43,7 @@ class Map extends Component {
             onLoad={this.onLoad}
             mapboxApiAccessToken={token}
           >
-            <div style={{position: 'absolute', right: 15, top: 10}}>
+            <div style={{position: 'absolute', right: 25, top: 10}}>
                 <NavigationControl showCompass={false}/>
             </div>
             <Marker latitude={this.props.location[0]} longitude={this.props.location[1]}>

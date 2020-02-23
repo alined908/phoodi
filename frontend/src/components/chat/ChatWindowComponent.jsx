@@ -3,19 +3,18 @@ import ChatMessageComponent from "./ChatMessageComponent"
 import {connect} from 'react-redux'
 import WebSocketInstance from '../../accounts/WebSocket'
 import {setTypingValue, addMessage, getMessages} from "../../actions/chat";
+import {Button} from '@material-ui/core'
+import {Link} from 'react-router-dom';
 
 class ChatWindowComponent extends Component {
     constructor(props){
         super(props)
-        console.log("chat window constructor")
-        console.log(this.props.user)
         let user = this.props.user
         WebSocketInstance.addChatCallbacks(this.props.getMessages, this.props.addMessage)
         // WebSocketInstance.fetchMessages(this.props.activeRoom);
     }
     
     handleChange = (e) => {
-        console.log(e.target.value);
         this.props.setTypingValue(e.target.value);        
     }
 
@@ -23,11 +22,9 @@ class ChatWindowComponent extends Component {
         if (e.key === "Enter"){
             e.preventDefault();
             console.log("handle submit")
-            console.log(this.props.user)
             const messageObject = {from: this.props.user.id, text: this.props.message, room: this.props.room}
             console.log(messageObject)
             WebSocketInstance.newChatMessage(messageObject)
-            // this.props.addMessage(e.target.value, this.props.room, JSON.parse(this.props.user).id)
         }
     }
 
@@ -45,10 +42,10 @@ class ChatWindowComponent extends Component {
         return (
             <div className="chat-window" ref={this.chatsRef}>
                 <div className="chat-header">
-                    Conversation for uri: {this.props.activeRoom}
+                    {this.props.activeRoom && <Link to={`/meetups/${this.props.activeRoom}`}><Button color="primary">Go to Meetup</Button></Link>}
                 </div>
                 <div className="chat-messages">
-                    {this.props.messages && this.props.messages.map((msg) => <ChatMessageComponent user={this.props.user} message={msg.message} members={this.props.activeChatMembers}/>)}
+                    {this.props.activeChatMembers && this.props.messages && this.props.messages.map((msg) => <ChatMessageComponent user={this.props.user} message={msg.message} members={this.props.activeChatMembers}/>)}
                 </div>
                 {this.props.activeChatMembers && <div ref={(el) => { this.messagesEnd = el; }} className="chat-input">
                     <form className="chat-input-form">
@@ -72,7 +69,7 @@ function mapStateToProps(state){
             activeChatMembers: state.chat.rooms[state.chat.activeRoom].members,
             user: state.user.user,
             message: state.chat.setTypingValue,
-            room: state.chat.activeRoom
+            room: state.chat.activeRoom,
         }
     } else {
         return {

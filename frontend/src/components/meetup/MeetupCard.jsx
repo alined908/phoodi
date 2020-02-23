@@ -8,6 +8,7 @@ import moment from 'moment';
 const useStyles = makeStyles({
     card: {
         maxWidth: 300,
+        width: 300
     },
     media: {
         height: 140

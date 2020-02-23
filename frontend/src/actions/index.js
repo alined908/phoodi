@@ -38,3 +38,13 @@ export const signin = (formProps, redirectOnSuccess) => async dispatch => {
         dispatch({type: AUTH_ERROR, payload: "Invalid login credentials"})
     }
 }
+
+export const getProfile = async (id) => {
+    try {
+        const response = await axios.get(`http://localhost:8000/api/users/${id}/`)
+        console.log(response)
+        return response.data
+    } catch(e){
+        console.log(e)
+    }
+}

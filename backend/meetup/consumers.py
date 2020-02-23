@@ -318,3 +318,6 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         print("Meetup Consumer: Meetup Event Object sent")
         meetup_event = event['meetup_event']
         await self.send(text_data=json.dumps(meetup_event))
+
+class InviteConsumer(AsyncWebsocketConsumer):
+    pass

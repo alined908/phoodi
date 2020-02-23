@@ -29,7 +29,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'channels',
-    'meetup'
+    'meetup',
+    'storages'
 ]
 
 CHANNEL_LAYERS = {
@@ -147,7 +148,6 @@ EMAIL_HOST_USER = 'meetup022897@gmail.com'
 EMAIL_HOST_PASSWORD = 'Meetup022897!'
 EMAIL_PORT = 587
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -165,4 +165,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+AWS_ACCESS_KEY_ID = 'AKIATIKKZOM552KQ7GY2'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'meetup-static'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
+
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'meetup/static'),
+]
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+DEFAULT_FILE_STORAGE = 'backend.storage_backends.MediaStorage'

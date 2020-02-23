@@ -19,8 +19,14 @@ def current_user(request):
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
 
-class CreateUserView(APIView):
+class UserView(APIView):
     permission_classes = [permissions.AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        pk = kwargs['id']
+        user = User.objects.get(pk=pk)
+        serializer = UserSerializer(user, context={'plain': True})
+        return Response(serializer.data)
 
     def post(self,request):
         """ Handles POST Request for User Signups

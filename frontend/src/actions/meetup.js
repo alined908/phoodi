@@ -53,6 +53,7 @@ export const deleteMeetup = (uri) => async dispatch => {
         }})
         console.log(response)
         dispatch({type: DELETE_MEETUP, payload: uri})
+        history.push(`/meetups`)
     } catch(e) {
         console.log(e)
     }
