@@ -3,6 +3,7 @@ from rest_framework.fields import CurrentUserDefault
 from meetup.models import User, Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite
 from django.forms.models import model_to_dict
 from channels.db import database_sync_to_async
+from django.core.exceptions import ObjectDoesNotExist
 
 class UserSerializer(serializers.ModelSerializer):
     def to_representation(self, data):
@@ -31,6 +32,7 @@ class UserSerializerWithToken(serializers.ModelSerializer):
     
 class FriendshipSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('_get_friend')
+    chat_room = serializers.SerializerMethodField('_get_chat_room')
 
     def _get_friend(self, obj):
         user = self.context.get('user')
@@ -40,9 +42,17 @@ class FriendshipSerializer(serializers.ModelSerializer):
         else:
             return UserSerializer(obj.creator, context={'plain': True}).data
 
+    def _get_chat_room(self, obj):
+        try: 
+            room = ChatRoom.objects.get(friendship=obj)
+        except ObjectDoesNotExist:
+            return None\
+                
+        return room.uri
+
     class Meta:
         model = Friendship
-        fields = ('id', 'user', 'created_at')
+        fields = ('id', 'user', 'created_at', 'chat_room')
 
 class ChatRoomSerializer(serializers.ModelSerializer):
     members = serializers.SerializerMethodField('_get_members')
@@ -56,7 +66,7 @@ class ChatRoomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChatRoom
-        fields = ('id', 'uri', 'name', 'timestamp', 'members')
+        fields = ('id', 'uri', 'name', 'timestamp', 'members', 'friendship', 'meetup')
 
 class ChatRoomMemberSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('_get_member')

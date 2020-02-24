@@ -84,6 +84,29 @@ class ChatConsumer(AsyncWebsocketConsumer):
         print(message)
         await self.send(text_data=json.dumps(message))
 
+class UserNotificationConsumer(AsyncWebsocketConsumer):
+
+    #User sends invite to someone 
+    
+    async def connect(self):
+        self.user = self.scope['url_route']['kwargs']['user_id']
+        self.user_room_name = "notif_room_for_user_%s" % self.user
+        
+        await self.channel_layer.group_add(
+            self.user_room_name, 
+            self.channel_name
+        )
+
+    async def disconnect(self):
+        await self.channel_layer.group_discard(
+            self.user_room_name,
+            self.channel_name
+        )
+
+    def notification(self, event):
+        message = event['message']
+        self.send(text_data=json.dumps(message))
+
 class MeetupConsumer(AsyncWebsocketConsumer):
     #Events, Votes 
 
@@ -318,6 +341,3 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         print("Meetup Consumer: Meetup Event Object sent")
         meetup_event = event['meetup_event']
         await self.send(text_data=json.dumps(meetup_event))
-
-class InviteConsumer(AsyncWebsocketConsumer):
-    pass

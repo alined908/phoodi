@@ -150,11 +150,11 @@ class Meetup(models.Model):
         email.send()
 
 @receiver(post_save, sender=Meetup)
-def create_chat_room(sender, instance, created, **kwargs):
+def create_chat_room_for_meetup(sender, instance, created, **kwargs):
     if created:
         uri = instance.uri
         name = instance.name
-        room = ChatRoom.objects.create(uri=uri, name=name)
+        room = ChatRoom.objects.create(uri=uri, name=name, meetup=instance)
 
 class MeetupMember(models.Model):
     meetup = models.ForeignKey(Meetup, related_name="members", on_delete=models.CASCADE)
@@ -282,8 +282,17 @@ class Friendship(models.Model):
         if self.creator == self.friend:
             raise ValidationError("cannot be friends with yourself")
 
+@receiver(post_save, sender=Friendship)
+def create_chat_room_for_friendship(sender, instance, created, **kwargs):
+    if created:
+        room = ChatRoom.objects.create(friendship=instance)
+        ChatRoomMember.objects.create(room = room, user = instance.creator)
+        ChatRoomMember.objects.create(room = room, user = instance.friend)
+
 class ChatRoom(models.Model):
-    name = models.CharField(max_length=200)
+    friendship = models.ForeignKey(Friendship, null=True, blank=True, on_delete=models.CASCADE)
+    meetup = models.ForeignKey(Meetup, null=True, blank=True, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, null=True, blank=True)
     uri = models.URLField(default=generate_unique_uri)
     timestamp = models.DateTimeField(auto_now_add=True)
     objects=models.Manager()

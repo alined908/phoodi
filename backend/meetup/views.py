@@ -307,7 +307,7 @@ class UserFriendsView(APIView):
         user = User.objects.get(pk=pk)
         serializer = FriendshipSerializer(user.get_friends(), many=True, context={'user': user})
 
-        return Response({"friends": serializer.data})
+        return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
         """

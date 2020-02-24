@@ -1,12 +1,12 @@
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.urls import re_path
-from meetup.consumers import ChatConsumer, MeetupConsumer, InviteConsumer
+from meetup.consumers import ChatConsumer, MeetupConsumer, UserNotificationConsumer
 
 websocket_urlpatterns = [
     re_path(r'ws/chat/(?P<room_name>\w+)/$', ChatConsumer),
     re_path(r'ws/meetups/(?P<room_name>\w+)/$', MeetupConsumer),
-    re_path(r'ws/invites/', InviteConsumer),
+    re_path(r'ws/user/(?P<user_id>\w+)/$', UserNotificationConsumer),
 ]
 
 application = ProtocolTypeRouter({
