@@ -1,8 +1,10 @@
 from django.db import models
+from notifications.signals import notify
 from django.core.mail import send_mail
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager)
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from asgiref.sync import async_to_sync
 from uuid import uuid4
 import requests
 import random
@@ -10,6 +12,7 @@ from django.contrib.postgres.fields import JSONField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework_jwt.settings import api_settings
+from channels.layers import get_channel_layer
 import json
 import os.path
 from django.db import transaction
@@ -256,6 +259,18 @@ class MeetupInvite(Invite):
                 MeetupMember.objects.get_or_create(meetup=self.meetup, user=self.receiver)
         super(MeetupInvite, self).save(force_insert, force_update, *args, **kwargs)
 
+@receiver(post_save, sender = MeetupInvite)
+def create_notif_meetup_inv(sender, instance, created, **kwargs):
+    if created:
+        notify.send(sender=instance.sender, receiver=instance.receiver, action_object=instance, verb="%s sent invite to %s for meetup %s" % (instance.sender.email,  instance.receiver.email, instance.meetup.title))
+        unread_meetup_notifs = instance.receiver.notifications.unread()
+        print(unread_meetup_notifs)
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % instance.receiver.id, {
+            'type': 'invite_notification',
+            'message': unread_meetup_notifs.count
+        })
+
 class FriendInvite(Invite):
     objects = models.Manager()
 
@@ -268,6 +283,18 @@ class FriendInvite(Invite):
                 Friendship.objects.get_or_create(creator=self.sender, friend=self.receiver)
         super(FriendInvite, self).save(force_insert, force_update, *args, **kwargs)
 
+@receiver(post_save, sender=FriendInvite)
+def create_notif_friend_inv(sender, instance, created, **kwargs):
+    if created:
+        notify.send(sender=instance.sender, receiver=instance.receiver, action_object=instance, verb="%s sent friend invite to %s" % (instance.sender.email,  instance.receiver.email))
+        unread_friend_notifs = instance.receiver.notifications.unread()
+        print(unread_friend_notifs)
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % instance.receiver.id, {
+            'type': 'invite_notifications',
+            'message': unread_friend_notifs.count
+        })
+        
 class Preference(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="preferences")
     label = models.TextField()
@@ -304,7 +331,6 @@ class ChatRoomMessage(models.Model):
     room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name='messages')
     message = models.TextField()
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="sent_msgs", on_delete=models.SET_NULL, null=True)
-    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="received_msgs", on_delete=models.SET_NULL, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
     objects=models.Manager()
@@ -314,6 +340,26 @@ class ChatRoomMessage(models.Model):
 
     class Meta:
         ordering = ('timestamp',)
+
+
+@receiver(post_save, sender=ChatRoomMessage)
+def create_notif_chat_message(sender, instance, created, **kwargs):
+    print("create_notif_chat_message receiver")
+    if created:
+        channel_layer = get_channel_layer()
+        for member in instance.room.members.all():
+            if member.user != instance.sender:
+                notify.send(sender=instance.sender, recipient=member.user, action_object=instance, verb="%s sent chat notif to %s" % (instance.sender.email,  member.user.email))
+                unread_chat_notifs =  member.user.notifications.unread()  
+                count = unread_chat_notifs.count()  
+                content = {
+                    'command': 'fetch_chat_notifs',
+                    'message': count
+                }
+                async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % member.user.id, {
+                    'type': 'chat_notifications',
+                    'message': content
+                })
     
 class ChatRoomMember(models.Model):
     room = models.ForeignKey(ChatRoom, related_name='members', on_delete=models.CASCADE)

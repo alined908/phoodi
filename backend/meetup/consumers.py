@@ -1,13 +1,12 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.exceptions import DenyConnection
 from .models import User, ChatRoom, ChatRoomMessage, ChatRoomMember, MeetupEventOptionVote, Meetup, MeetupEvent, MeetupEventOption
-from asgiref.sync import async_to_sync
 from django.core.exceptions import ObjectDoesNotExist
 import json
 import random
 import time
 import requests
-from asgiref.sync import sync_to_async
+from asgiref.sync import sync_to_async, async_to_sync
 from channels.db import database_sync_to_async
 from meetup.serializers import MessageSerializer, MeetupEventSerializer, MeetupEventOptionSerializer, MeetupEventOptionVoteSerializer
 url = "https://api.yelp.com/v3/businesses/search"
@@ -73,10 +72,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
     async def receive(self, text_data):
-        print("chat consumer receive command")
         # Receive message from WebSocket
-        json_data = json.loads(text_data)
-        await self.commands[json_data['command']](self, json_data)
+        print("ChatConsumer received message from websocket ")
+        if not self.scope['user']:
+            self.close()
+        else:
+            json_data = json.loads(text_data)
+            await self.commands[json_data['command']](self, json_data)
 
     # Receive message from room group
     async def chat_message(self, event):
@@ -97,15 +99,37 @@ class UserNotificationConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
-    async def disconnect(self):
+        await self.accept()
+
+    async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
             self.user_room_name,
             self.channel_name
         )
 
-    def notification(self, event):
+    commands = {
+        'fetch_chat_notifs',
+        'fetch_invite_notifs'
+    }
+
+    async def receive(self, text_data):
+        print("chat consumer receive")
+        if not self.scope['user']:
+            self.close()
+        else:
+            json_data = json.loads(text_data)
+            await self.commands[json_data['command']](self, json_data)
+
+
+    async def chat_notifications(self, event):
+        print("chat_notification consumer")
         message = event['message']
-        self.send(text_data=json.dumps(message))
+        print(event)
+        await self.send(text_data=json.dumps(message))
+
+    async def invite_notifications(self, event):
+        message = event['message']
+        await self.send(text_data=json.dumps(message))
 
 class MeetupConsumer(AsyncWebsocketConsumer):
     #Events, Votes 

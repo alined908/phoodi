@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'channels',
     'meetup',
-    'storages'
+    'storages',
+    'notifications'
 ]
 
 CHANNEL_LAYERS = {
