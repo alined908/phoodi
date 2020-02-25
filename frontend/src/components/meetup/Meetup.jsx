@@ -7,23 +7,26 @@ import {Link} from 'react-router-dom'
 import moment from 'moment';
 import MeetupFriend from "./MeetupFriend"
 import {Grid, Paper, Button} from "@material-ui/core"
-import WebSocketInstance from "../../accounts/WebSocket"
+import WebSocketService from "../../accounts/WebSocket"
 
 class Meetup extends Component {
     constructor(props){
         super(props)
-
-        //Websocket create connection for meetu
-        const uri = props.uri
-        var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
-        const path = `${ws_scheme}://localhost:8000/ws/meetups/${uri}/`;
-        WebSocketInstance.connect(path);
-        WebSocketInstance.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, this.props.voteMeetupEvent, this.props.decideMeetupEvent, this.props.deleteMeetupEvent);
+        this.state = {
+            socket: new WebSocketService()
+        }
     }
 
     componentDidMount () {
         this.props.getMeetupEvents(this.props.uri)
-        this.props.getFriends()
+        this.props.getFriends(this.props.user.id)
+        const uri = this.props.uri
+        var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
+        const path = `${ws_scheme}://localhost:8000/ws/meetups/${uri}/`;
+        const socket = this.state.socket
+        socket.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, this.props.voteMeetupEvent, this.props.decideMeetupEvent, this.props.deleteMeetupEvent);
+        socket.connect(path);
+        
     }
     
     handleDelete = () => {
@@ -74,7 +77,7 @@ class Meetup extends Component {
                 <div>
                     {!this.props.isMeetupEventsInitialized && <div>Initializing Events</div>}
                     {this.props.isMeetupEventsInitialized && events && Object.keys(events).map((event) => 
-                        <MeetupEvent key={event.id} uri={uri} event={events[event]}></MeetupEvent> 
+                        <MeetupEvent socket={this.state.socket} key={event.id} uri={uri} event={events[event]}></MeetupEvent> 
                     )}
                 </div>
             )
@@ -117,6 +120,7 @@ class Meetup extends Component {
 
 function mapStateToProps(state){
     return {
+       user: state.user.user,
        friends: state.user.friends,
        isFriendsInitialized: state.user.isFriendsInitialized,
        isMeetupEventsInitialized: state.meetup.isMeetupEventsInitialized

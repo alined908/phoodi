@@ -2,28 +2,32 @@ import React, {Component} from 'react'
 import ChatBarComponent from "./ChatBarComponent"
 import ChatWindowComponent from "./ChatWindowComponent"
 import {connect} from "react-redux";
-import {getMessages, setActiveRoom} from "../../actions/chat"
+import {getMessages, setActiveRoom, addMessage} from "../../actions/chat"
 import {getRooms} from '../../actions/chat';
-import WebSocketInstance from "../../accounts/WebSocket"
+import WebSocketService from "../../accounts/WebSocket"
 
 class ChatComponent extends Component {
-
     constructor(props){
         super(props)
-        this.props.getRooms()
-        var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
-        const path = `${ws_scheme}://localhost:8000/ws/chat/${this.props.match.params.uri}/`;
-        WebSocketInstance.connect(path);
+        this.state = {
+            socket: new WebSocketService()
+        }
     }
 
     componentDidMount(){
+        const socket = this.state.socket
+        this.props.getRooms()
+        console.log(this.props.socket)
+        socket.addChatCallbacks(this.props.getMessages, this.props.addMessage)
         if("uri" in this.props.match.params){
             this.getRelevantInfo(this.props.match.params.uri)
+            var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
+            const path = `${ws_scheme}://localhost:8000/ws/chat/${this.props.match.params.uri}/`;
+            socket.connect(path);
         }
     }
 
     componentDidUpdate(prevProps){
-        console.log("component did update")
         if (this.props.match.params.uri != prevProps.match.params.uri){
             this.getRelevantInfo(this.props.match.params.uri)
         }
@@ -37,12 +41,11 @@ class ChatComponent extends Component {
     render(){
         const renderChatWindow = () => {
             if (this.props.isMessagesInitialized) {
-                return <ChatWindowComponent isMessagesInitialized={this.props.isMessagesInitialized} activeRoom={this.props.activeRoom} messages={this.props.messages}></ChatWindowComponent>
+                return <ChatWindowComponent socket={this.state.socket} isMessagesInitialized={this.props.isMessagesInitialized} activeRoom={this.props.activeRoom} messages={this.props.messages}></ChatWindowComponent>
             } else {
-                return <ChatWindowComponent activeRoom={null}></ChatWindowComponent>
+                return <ChatWindowComponent socket={this.state.socket} activeRoom={null}></ChatWindowComponent>
             }
         }
-        console.log(this.props.isMessagesInitialized)
 
         return (
             <div className="chat">
@@ -56,7 +59,8 @@ class ChatComponent extends Component {
 const mapDispatchToProps = {
     setActiveRoom,
     getMessages,
-    getRooms
+    getRooms,
+    addMessage
 }
 
 function mapStateToProps(state){

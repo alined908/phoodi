@@ -1,18 +1,11 @@
 import React, {Component} from 'react'
 import ChatMessageComponent from "./ChatMessageComponent"
 import {connect} from 'react-redux'
-import WebSocketInstance from '../../accounts/WebSocket'
-import {setTypingValue, addMessage, getMessages} from "../../actions/chat";
+import {setTypingValue} from "../../actions/chat";
 import {Button} from '@material-ui/core'
 import {Link} from 'react-router-dom';
 
 class ChatWindowComponent extends Component {
-    constructor(props){
-        super(props)
-        let user = this.props.user
-        WebSocketInstance.addChatCallbacks(this.props.getMessages, this.props.addMessage)
-        // WebSocketInstance.fetchMessages(this.props.activeRoom);
-    }
     
     handleChange = (e) => {
         this.props.setTypingValue(e.target.value);        
@@ -24,7 +17,7 @@ class ChatWindowComponent extends Component {
             console.log("handle submit")
             const messageObject = {from: this.props.user.id, text: this.props.message, room: this.props.room}
             console.log(messageObject)
-            WebSocketInstance.newChatMessage(messageObject)
+            this.props.socket.newChatMessage(messageObject)
         }
     }
 
@@ -82,8 +75,6 @@ function mapStateToProps(state){
 
 const mapDispatchToProps = {
     setTypingValue,
-    addMessage,
-    getMessages
 }
 
 

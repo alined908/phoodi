@@ -9,7 +9,7 @@ export default function(state = userDefaultState, action){
         case AUTH_ERROR:
             return {...state, errorMessage: action.payload};
         case GET_FRIENDS:
-            return {...state, isFriendsInitialized: true, friends: action.payload.friends}
+            return {...state, isFriendsInitialized: true, friends: action.payload}
         case ADD_FRIEND:
             return {...state, friends: [...state.friends, action.payload]}
         case GET_FRIEND_INVITES:
@@ -27,7 +27,7 @@ export default function(state = userDefaultState, action){
         case SEND_MEETUP_INVITE:
             return state
         case RESPOND_MEETUP_INVITE:
-            return {...state, invites: action.payload}
+            return {...state}
         case CLEAR_STORE:
             return userDefaultState
         default:

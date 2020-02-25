@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {Drawer, CssBaseline, AppBar, Toolbar, Typography, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core'
+import {Drawer, CssBaseline, AppBar, Toolbar, Badge, Typography, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -14,6 +14,9 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Body from "./Body"
 import PersonIcon from '@material-ui/icons/Person';
+import WebSocketService from "../accounts/WebSocket"
+import {getNumberChatNotifs, getNumberInviteNotifs} from "../actions/notifications.js"
+import LiveUpdatingBadge from "./LiveUpdatingBadge"
 
 const drawerWidth = 240;
 
@@ -76,13 +79,26 @@ const useStyles = makeStyles(theme => ({
 const Navigation = (props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  var drawerState = (localStorage.getItem("drawer") === null) ? drawerState = false : JSON.parse(localStorage.getItem("drawer"))
+  const [open, setOpen] = React.useState(drawerState);
+
+  React.useEffect(() => {
+    if (props.user) {
+      const socket= new WebSocketService()
+      socket.addNotifCallbacks(props.getNumberChatNotifs, props.getNumberInviteNotifs)
+      var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
+      const path = `${ws_scheme}://localhost:8000/ws/user/${props.user.id}/`;
+      socket.connect(path);
+    }
+  })
 
   const handleDrawerOpen = () => {
+    localStorage.setItem("drawer", "true")
     setOpen(true);
   };
 
   const handleDrawerClose = () => {
+    localStorage.setItem("drawer", "false")
     setOpen(false);
   };
 
@@ -118,7 +134,7 @@ const Navigation = (props) => {
           {props.authenticated && <Link to="/chat">
               <ListItem button key="Chat">
                 <ListItemIcon>
-                  <ChatIcon/>
+                <LiveUpdatingBadge icon={<ChatIcon/>} />
                 </ListItemIcon>
                 <ListItemText primary="Chat"/>
               </ListItem>
@@ -174,9 +190,13 @@ const Navigation = (props) => {
 function mapStatetoProps(state) {
   return {
     authenticated: state.user.authenticated,
-    user: state.user.user
+    user: state.user.user,
   }
-  
 }
 
-export default connect(mapStatetoProps, null)(Navigation)
+const mapDispatchToProps = {
+  getNumberChatNotifs,
+  getNumberInviteNotifs
+}
+
+export default connect(mapStatetoProps, mapDispatchToProps)(Navigation)

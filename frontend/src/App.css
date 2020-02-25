@@ -30,7 +30,7 @@ html, body, #root, .MeetupApp {
 .chat-window{
   display: flex;
   flex-direction: column;
-  background-color: rgb(20, 20, 25, 1);
+  background-color: #f4f7fb;
 }
 .chat-contact{
   display: flex;
@@ -290,6 +290,7 @@ html, body, #root, .MeetupApp {
 
 .paper {
   padding: 1.5rem 1.75rem;
+  margin-bottom: 1.5rem;
 }
 
 .invites {
@@ -306,7 +307,6 @@ html, body, #root, .MeetupApp {
 .friend {
   margin-right: 1rem;
   height: 80px;
-  width: 400px;
 }
 
 .friends {
@@ -335,6 +335,13 @@ html, body, #root, .MeetupApp {
 .user-avatar {
   width: 100px;
   height: 100px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.user-avatar-sm {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   vertical-align: middle;
 }

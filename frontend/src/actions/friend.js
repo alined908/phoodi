@@ -1,10 +1,10 @@
 import {GET_FRIENDS, ADD_FRIEND, DELETE_FRIEND, FRIEND_ERROR} from '../constants/action-types'
 import axios from 'axios'
 
-export const getFriends = () => async dispatch => {
+export const getFriends = (id) => async dispatch => {
     try {
         const response = await axios.get(
-            "http://localhost:8000/api/friends/", {headers: {
+            `http://localhost:8000/api/users/${id}/friends/`, {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
             }}
         )

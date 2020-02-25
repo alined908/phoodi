@@ -7,13 +7,6 @@ import createBrowserHistory from 'history/createBrowserHistory'
 export const history = createBrowserHistory()
 
 class MeetupApp extends Component {
-    // componentDidMount(){
-    //     var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
-    //     const path = `${ws_scheme}://localhost:8000/ws/invites/`;
-    //     WebSocketInstance.connect(path);
-    //     WebSocketInstance.addInviteCallbacks()
-    // }
-
     render () {
         return (
             <div className="MeetupApp">

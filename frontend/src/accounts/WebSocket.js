@@ -1,13 +1,5 @@
-class WebSocketService{
-    static instance = null; 
+export default class WebSocketService{
     callbacks = {};
-    
-    static getInstance(){
-        if (!WebSocketService.instance){
-            WebSocketService.instance = new WebSocketService();
-        }
-        return WebSocketService.instance;
-    }
 
     constructor(){
         this.socketRef = null;
@@ -64,6 +56,8 @@ class WebSocketService{
         console.log("Step 1 - Send Message to Channel")
         try{
             console.log({...data})
+            console.log(this.socketRef.readyState)
+            console.log(this.socketRef.url)
             this.socketRef.send(JSON.stringify({...data}))
         }
         catch(err){
@@ -73,6 +67,10 @@ class WebSocketService{
 
     state(){
         return this.socketRef.readyState;
+    }
+
+    uri(){
+        return this.socketRef.uri;
     }
 
     waitForSocketConnection(callback){
@@ -152,6 +150,11 @@ class WebSocketService{
         this.sendMessage({command: 'new_invite', user:user})
     }
 
+    readNotifications(user, type) {
+        console.log("Websocket - readNotifications")
+        this.sendMessage({command: 'read_notifs', user:user, type:type})
+    }
+
     addChatCallbacks(messagesCallback, newMessageCallback){
         this.callbacks['fetch_messages'] = messagesCallback;
         this.callbacks['new_message'] = newMessageCallback;
@@ -171,8 +174,9 @@ class WebSocketService{
         this.callbacks['fetch_invites'] = invitesCallback
         this.callbacks['new_invite'] = newInviteCallback
     }
+
+    addNotifCallbacks(chatNotifsCallback, inviteNotifsCallback){
+        this.callbacks['fetch_chat_notifs'] = chatNotifsCallback
+        this.callbacks['fetch_invite_notifs'] = inviteNotifsCallback
+    }
 }
-
-let WebSocketInstance = WebSocketService.getInstance();
-
-export default WebSocketInstance;

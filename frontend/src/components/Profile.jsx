@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {getProfile} from '../actions/index'
 import {connect} from 'react-redux'
-import {Typography, Button, Paper} from '@material-ui/core'
+import {Typography, Button, Paper, Grid} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import {getProfileFriends} from '../actions/friend';
 import axios from 'axios'
@@ -16,7 +16,17 @@ class Profile extends Component {
         }
     }
 
-    async componentDidMount(){
+    componentDidMount(){
+        this.getInformation()
+    }
+
+    componentDidUpdate(prevProps){
+        if (this.props.match.params.id !== prevProps.match.params.id){
+            this.getInformation()
+        }
+    }
+
+    getInformation = async () => {
         const [profile, friends] = await Promise.all([
             axios.get(`http://localhost:8000/api/users/${this.props.match.params.id}/`), 
             axios.get(
@@ -26,12 +36,11 @@ class Profile extends Component {
             )]
         )
         this.setState({user: profile.data, friends: friends.data, userLoaded: true})
-        console.log(this.state.user)
     }
 
     renderProfile = () => {
         return (
-            <Paper elevation={3} className="profile">
+            <Paper elevation={1} className="paper">
                 <div className="pic"><img className="user-avatar" src={this.state.user.avatar}></img></div>
                 <div>
                     <Typography variant="h4">
@@ -46,10 +55,25 @@ class Profile extends Component {
     
     renderFriends = () => {
         return (
-            <Paper elevation={3} className="profile-friends">
-
-            </Paper>
-
+            <>
+                <div className="inner-header">
+                    <Typography variant="h5">Friends</Typography>
+                </div>
+                <Grid container spacing={3}>   
+                    {this.state.friends.map((friend) => 
+                        <Grid item xs={6}>
+                            <Link to={`/profile/${friend.user.id}`}>
+                                <Paper className="paper" elevation={3}>
+                                    <div><img className="user-avatar-sm" src={friend.user.avatar}></img></div>
+                                    <div>{friend.user.first_name} {friend.user.last_name}</div>
+                                    <div>{friend.user.email}</div>
+                                    <Link to="/chat/"></Link>
+                                </Paper>
+                            </Link>
+                        </Grid>
+                    )}
+                </Grid>
+            </>
         )
     }
 

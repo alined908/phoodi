@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {Button} from '@material-ui/core'
-import WebSocketInstance from "../../accounts/WebSocket"
 import {connect} from "react-redux"
 import {voteStatus} from "../../constants/default-states"
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
@@ -60,7 +59,7 @@ class Restauraunt extends Component {
     }
 
     handleClick = (status) => {
-        WebSocketInstance.voteMeetupEvent({
+        this.props.socket.voteMeetupEvent({
             user: JSON.parse(localStorage.getItem("user")).id,
             option: this.props.option.id, 
             status: status, 

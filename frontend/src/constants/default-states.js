@@ -18,6 +18,11 @@ export const inviteStatus = {
     3: "REJECTED"
 }
 
+export const roomType = {
+    friend: 2,
+    meetup: 1
+}
+
 export const voteStatus = {
     like: 1,
     dislike: 2,

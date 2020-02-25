@@ -4,7 +4,6 @@ import {connect} from 'react-redux'
 import {deleteMeetupEvent} from "../../actions/meetup"
 import Restauraunt from "./Restauraunt"
 import moment from "moment"
-import WebSocketInstance from "../../accounts/WebSocket"
 import CloseIcon from '@material-ui/icons/Close';
 import CachedIcon from "@material-ui/icons/Cached";
 import EditIcon from '@material-ui/icons/Edit';
@@ -21,24 +20,24 @@ class MeetupEvent extends Component {
 
     handleDelete = () => {
         if (window.confirm("Are you sure you want to delete")){
-            WebSocketInstance.deleteMeetupEvent({uri: this.props.uri, event: this.props.event.id})
+            this.props.socket.deleteMeetupEvent({uri: this.props.uri, event: this.props.event.id})
         }
     }
 
     handleReload = () => {
-        WebSocketInstance.reloadMeetupEvent({meetup: this.props.uri, event: this.props.event.id})
+        this.props.socket.reloadMeetupEvent({meetup: this.props.uri, event: this.props.event.id})
     }
 
     handleDecide = () => {
-        WebSocketInstance.decideMeetupEvent({meetup: this.props.uri, event: this.props.event.id, random: false})
+        this.props.socket.decideMeetupEvent({meetup: this.props.uri, event: this.props.event.id, random: false})
     }
 
     handleRandom = () => {
-        WebSocketInstance.decideMeetupEvent({meetup: this.props.uri, event: this.props.event.id, random: true})
+        this.props.socket.decideMeetupEvent({meetup: this.props.uri, event: this.props.event.id, random: true})
     }
 
     handleRedecide = () => {
-        WebSocketInstance.redecideMeetupEvent({meetup: this.props.uri, event:this.props.event.id})
+        this.props.socket.redecideMeetupEvent({meetup: this.props.uri, event:this.props.event.id})
     }
 
     render () {
@@ -67,7 +66,7 @@ class MeetupEvent extends Component {
             return (
                 <div className="foursquare">
                     {keys.map((key) => 
-                        <Restauraunt key={key} full={true} event={this.props.event.id} meetup={this.props.uri} data={options[key]}/>
+                        <Restauraunt socket={this.props.socket} key={key} full={true} event={this.props.event.id} meetup={this.props.uri} data={options[key]}/>
                     )}
                 </div>
             )
@@ -99,7 +98,7 @@ class MeetupEvent extends Component {
 
             return (
                 <div className="chosen">
-                    <Restauraunt key={chosen.id} full={false} event={this.props.event.id} meetup={this.props.uri} data={chosen}></Restauraunt>
+                    <Restauraunt socket={this.props.socket} key={chosen.id} full={false} event={this.props.event.id} meetup={this.props.uri} data={chosen}></Restauraunt>
                     <div className="map-wrapper"><Map location={position}/></div>
                 </div>
             )
