@@ -14,16 +14,16 @@ class ContactComponent extends Component {
                 <div className={`chat-contact ${current_room ? 'curr-room': ""}`}>
                     <div>{name}</div>
                     {meetup ? 
-                        <div>{Object.keys(members).length + " Members"}</div> : 
-                        <div>{Object.keys(members).map((member) => 
+                        <>{Object.keys(members).length + " Members"}</> : 
+                        <>{Object.keys(members).map((member) => 
                             (member !== this.props.user.id.toString()) ? 
-                                <div>
-                                    <img src={members[member].avatar} className="user-avatar-sm"></img>
-                                    {members[member].first_name + " " + members[member].email}
+                                <div className="chat-contact-info">
+                                    <div className="chat-contact-avatar"><img src={members[member].avatar} className="user-avatar-sm"></img></div>
+                                    <div>{members[member].first_name + " " + members[member].email}</div>
                                 </div> : 
                                 ""
                             )}
-                        </div>
+                        </>
                     }
                 </div>
             </Link>

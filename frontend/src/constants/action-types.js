@@ -41,5 +41,4 @@ export const SEND_FRIEND_INVITE = 'send_friend_invite';
 export const RESPOND_FRIEND_INVITE = 'respond_friend_invite'
 
 //Notifications
-export const GET_CHAT_NOTIFS = 'get_chat_notifs';
-export const GET_INVITE_NOTIFS = 'get_invite_notifs';
+export const GET_NOTIFS = 'get_notifs';

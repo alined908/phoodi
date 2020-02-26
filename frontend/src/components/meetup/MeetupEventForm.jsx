@@ -5,6 +5,7 @@ import {Button, TextField} from '@material-ui/core';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {addMeetupEvent} from "../../actions/meetup"
+import {Link} from 'react-router-dom'
 import axios from "axios"
 import Category from "./Category"
 import WebSocketInstance from "../../accounts/WebSocket"
@@ -60,6 +61,7 @@ class MeetupEventForm extends Component {
 
         return (
             <div>
+                <Link to={`/meetups/${this.props.match.params.uri}`}><Button variant="contained" color="primary">Meetup</Button></Link>
                 <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                     <Field name="title" component={renderTextField} label="title"></Field>
                     <Field name="location" component={renderTextField} label="location"></Field>

@@ -8,6 +8,7 @@ class ChatBarComponent extends Component {
         return(
             <div className="chat-bar">
                 {!this.props.isRoomsInitialized && <div>Initializing Contacts...</div>}
+                <div className="chat-bar-top">Contacts</div>
                 {this.props.isRoomsInitialized && this.props.rooms.map((room) => 
                     <Contact key={room.id} room={Object.values(room)}></Contact>
                 )}

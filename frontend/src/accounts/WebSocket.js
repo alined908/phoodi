@@ -3,6 +3,7 @@ export default class WebSocketService{
 
     constructor(){
         this.socketRef = null;
+        this.waitForSocketConnection = this.waitForSocketConnection.bind(this)
     }
 
     getCallbacks(){
@@ -27,7 +28,7 @@ export default class WebSocketService{
 
         this.socketRef.onclose = () => {
             console.log("WebSocket closed, restarting..");
-            this.connect(path);
+            setTimeout(() => this.connect(path), 3000)
         };
     }
 
@@ -89,7 +90,7 @@ export default class WebSocketService{
                     console.log("Wait for connection..");
                     recursion(callback);
                 }
-            }, 5);
+            }, 1000);
     }
     //Chat commands
     fetchMessages(uri){
@@ -150,6 +151,11 @@ export default class WebSocketService{
         this.sendMessage({command: 'new_invite', user:user})
     }
 
+    fetchNotifications(data){
+        console.log("Websocket - fetchNotifications")
+        this.sendMessage({command: 'fetch_notifications', data : data})
+    }
+
     readNotifications(user, type) {
         console.log("Websocket - readNotifications")
         this.sendMessage({command: 'read_notifs', user:user, type:type})
@@ -175,8 +181,7 @@ export default class WebSocketService{
         this.callbacks['new_invite'] = newInviteCallback
     }
 
-    addNotifCallbacks(chatNotifsCallback, inviteNotifsCallback){
-        this.callbacks['fetch_chat_notifs'] = chatNotifsCallback
-        this.callbacks['fetch_invite_notifs'] = inviteNotifsCallback
+    addNotifCallbacks(notifsCallback){
+        this.callbacks['fetch_notifs'] = notifsCallback
     }
 }

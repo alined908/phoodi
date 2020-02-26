@@ -17,13 +17,10 @@ class ChatComponent extends Component {
     componentDidMount(){
         const socket = this.state.socket
         this.props.getRooms()
-        console.log(this.props.socket)
         socket.addChatCallbacks(this.props.getMessages, this.props.addMessage)
         if("uri" in this.props.match.params){
             this.getRelevantInfo(this.props.match.params.uri)
-            var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
-            const path = `${ws_scheme}://localhost:8000/ws/chat/${this.props.match.params.uri}/`;
-            socket.connect(path);
+            
         }
     }
 
@@ -34,8 +31,12 @@ class ChatComponent extends Component {
     }
 
     getRelevantInfo(uri) {
+        const socket = this.state.socket
         this.props.setActiveRoom(uri);
         this.props.getMessages(uri);
+        var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
+        const path = `${ws_scheme}://localhost:8000/ws/chat/${this.props.match.params.uri}/`;
+        socket.connect(path);
     }
 
     render(){

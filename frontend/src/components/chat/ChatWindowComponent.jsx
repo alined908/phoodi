@@ -15,8 +15,7 @@ class ChatWindowComponent extends Component {
         if (e.key === "Enter"){
             e.preventDefault();
             console.log("handle submit")
-            const messageObject = {from: this.props.user.id, text: this.props.message, room: this.props.room}
-            console.log(messageObject)
+            const messageObject = {from: this.props.user.id, text: this.props.message, room: this.props.room.uri}
             this.props.socket.newChatMessage(messageObject)
         }
     }
@@ -30,12 +29,28 @@ class ChatWindowComponent extends Component {
     scrollToBottom = () => {    
         this.messagesEnd && this.messagesEnd.scrollIntoView({ behavior: "smooth" });
     };
-    
+
+    determineOtherUser = () => {
+        const user = this.props.user
+
+        for (var key in this.props.room.members){
+            if (key !== user.id.toString()){
+                return this.props.room.members[key].id
+            }
+        }
+    }
+ 
     render () {
+    
         return (
             <div className="chat-window" ref={this.chatsRef}>
                 <div className="chat-header">
-                    {this.props.activeRoom && <Link to={`/meetups/${this.props.activeRoom}`}><Button color="primary">Go to Meetup</Button></Link>}
+                    {this.props.room && this.props.room.meetup && 
+                        <Link to={`/meetups/${this.props.room.uri}`}><Button color="primary">Meetup</Button></Link>
+                    }
+                    {this.props.room && this.props.room.friendship && 
+                        <Link to={`/profile/${this.determineOtherUser()}`}><Button color="primary">Profile</Button></Link>
+                    }
                 </div>
                 <div className="chat-messages">
                     {this.props.activeChatMembers && this.props.messages && this.props.messages.map((msg) => <ChatMessageComponent user={this.props.user} message={msg.message} members={this.props.activeChatMembers}/>)}
@@ -47,10 +62,14 @@ class ChatWindowComponent extends Component {
                             onChange={this.handleChange} 
                             onKeyPress={this.handleSubmit}
                             value={this.props.message} 
-                            placeholder="Type here to send a message">
+                            placeholder="Type a message here">
                         </input>
                     </form>
-                </div>}
+                    <div>
+                        <Button style={{borderRadius: 15, fontSize: 11, backgroundColor: "#FFD460"}}>Send</Button>
+                    </div>
+                </div>
+                }
             </div>
         )
     }
@@ -62,7 +81,7 @@ function mapStateToProps(state){
             activeChatMembers: state.chat.rooms[state.chat.activeRoom].members,
             user: state.user.user,
             message: state.chat.setTypingValue,
-            room: state.chat.activeRoom,
+            room: state.chat.rooms[state.chat.activeRoom]
         }
     } else {
         return {

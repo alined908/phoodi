@@ -15,10 +15,12 @@ import {connect} from 'react-redux';
 import Body from "./Body"
 import PersonIcon from '@material-ui/icons/Person';
 import WebSocketService from "../accounts/WebSocket"
-import {getNumberChatNotifs, getNumberInviteNotifs} from "../actions/notifications.js"
+import {getNumberNotifs} from "../actions/notifications.js"
 import LiveUpdatingBadge from "./LiveUpdatingBadge"
+import HomeIcon from '@material-ui/icons/Home';
+import SettingsIcon from '@material-ui/icons/Settings';
 
-const drawerWidth = 240;
+const drawerWidth = 220;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,6 +32,8 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    height: '8%',
+    minHeight: '64px'
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -66,6 +70,7 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: -drawerWidth,
+    height: '92%'
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
@@ -85,10 +90,12 @@ const Navigation = (props) => {
   React.useEffect(() => {
     if (props.user) {
       const socket= new WebSocketService()
-      socket.addNotifCallbacks(props.getNumberChatNotifs, props.getNumberInviteNotifs)
+      socket.addNotifCallbacks(props.getNumberNotifs)
       var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
       const path = `${ws_scheme}://localhost:8000/ws/user/${props.user.id}/`;
       socket.connect(path);
+      console.log(socket.state())
+      socket.waitForSocketConnection(() => socket.fetchNotifications({user: props.user.id}))
     }
   })
 
@@ -123,6 +130,14 @@ const Navigation = (props) => {
         </div>
         <Divider />
         <List>
+        <Link to="/">
+          <ListItem button key="Home">
+            <ListItemIcon>
+              <HomeIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Home"/>
+          </ListItem>
+        </Link>
           {props.authenticated && <Link to="/meetups">
                 <ListItem button key="Meetups">
                   <ListItemIcon>
@@ -134,7 +149,7 @@ const Navigation = (props) => {
           {props.authenticated && <Link to="/chat">
               <ListItem button key="Chat">
                 <ListItemIcon>
-                <LiveUpdatingBadge icon={<ChatIcon/>} />
+                <LiveUpdatingBadge type={'chat'} icon={<ChatIcon/>} />
                 </ListItemIcon>
                 <ListItemText primary="Chat"/>
               </ListItem>
@@ -150,12 +165,13 @@ const Navigation = (props) => {
           {props.authenticated && <Link to="/invites">
             <ListItem button key="Invites">
               <ListItemIcon>
-                <MailIcon/>
+                <LiveUpdatingBadge type={'invite'} icon={<MailIcon/>}/>
               </ListItemIcon>
               <ListItemText primary="Invites"/>
             </ListItem>
           </Link>}
         </List>
+        
         <Divider />
         <List>
           {!props.authenticated && <Link to="/login"><ListItem button key="Login"><ListItemText primary="Login"/></ListItem></Link>}
@@ -168,6 +184,14 @@ const Navigation = (props) => {
               <ListItemText primary="Profile"/>
             </ListItem>
           </Link>}
+          {props.authenticated && <Link to="/settings">
+            <ListItem button key="Settings">
+              <ListItemIcon>
+                <SettingsIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Settings"/>
+            </ListItem>
+          </Link>}
           {props.authenticated && <Link to="/logout">
             <ListItem button key="Logout">
               <ListItemIcon>
@@ -176,8 +200,8 @@ const Navigation = (props) => {
               <ListItemText primary="Logout"/>
             </ListItem>
           </Link>}
-          
         </List>
+        <Divider />
       </Drawer>
       <main className={clsx(classes.content, {[classes.contentShift]: open,})}>
         <div className={classes.drawerHeader} />
@@ -195,8 +219,7 @@ function mapStatetoProps(state) {
 }
 
 const mapDispatchToProps = {
-  getNumberChatNotifs,
-  getNumberInviteNotifs
+  getNumberNotifs
 }
 
 export default connect(mapStatetoProps, mapDispatchToProps)(Navigation)

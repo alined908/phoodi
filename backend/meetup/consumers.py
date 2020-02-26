@@ -32,6 +32,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def new_message(self, data):
         print("new message")
         sender, msg, room = data['from'], data['text'], data['room']
+        print(room)
         room_obj = await database_sync_to_async(ChatRoom.objects.get)(uri=room)
         user_obj = await database_sync_to_async(User.objects.get)(pk=sender)
         message = await database_sync_to_async(ChatRoomMessage.objects.create)(room = room_obj, message=msg, sender=user_obj)
@@ -93,23 +94,43 @@ class UserNotificationConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.user = self.scope['url_route']['kwargs']['user_id']
         self.user_room_name = "notif_room_for_user_%s" % self.user
-        
-        await self.channel_layer.group_add(
-            self.user_room_name, 
-            self.channel_name
-        )
-
+        await self.channel_layer.group_add(self.user_room_name, self.channel_name)
         await self.accept()
 
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(
-            self.user_room_name,
-            self.channel_name
+        await self.channel_layer.group_discard(self.user_room_name,self.channel_name)
+
+    @sync_to_async 
+    def fetch_chat_notifs(self, user):
+        user_obj = User.objects.get(pk=user)
+        chat_notifs = user_obj.notifications.filter(description="message").unread().count()
+        return chat_notifs
+
+    @sync_to_async
+    def fetch_inv_notifs(self, user):
+        user_obj = User.objects.get(pk=user)
+        inv_notifs = user_obj.notifications.filter(description="invite").unread().count()
+        return inv_notifs
+
+    async def fetch_notifications(self, command):
+        data = command['data']
+        user = data['user']
+        chat_notifs = await self.fetch_chat_notifs(user)
+        inv_notifs = await self.fetch_inv_notifs(user)
+        content = {
+            'command': 'fetch_notifs',
+            'message': {"chat": chat_notifs, "invite": inv_notifs}
+        }
+
+        await self.channel_layer.group_send(
+            self.user_room_name, {
+                'type': 'notifications',
+                'message': content
+            }
         )
 
     commands = {
-        'fetch_chat_notifs',
-        'fetch_invite_notifs'
+        'fetch_notifications': fetch_notifications,
     }
 
     async def receive(self, text_data):
@@ -121,14 +142,10 @@ class UserNotificationConsumer(AsyncWebsocketConsumer):
             await self.commands[json_data['command']](self, json_data)
 
 
-    async def chat_notifications(self, event):
-        print("chat_notification consumer")
+    async def notifications(self, event):
+        print("notification consumer")
         message = event['message']
         print(event)
-        await self.send(text_data=json.dumps(message))
-
-    async def invite_notifications(self, event):
-        message = event['message']
         await self.send(text_data=json.dumps(message))
 
 class MeetupConsumer(AsyncWebsocketConsumer):
