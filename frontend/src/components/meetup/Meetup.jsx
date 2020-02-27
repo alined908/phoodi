@@ -26,7 +26,10 @@ class Meetup extends Component {
         const socket = this.state.socket
         socket.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, this.props.voteMeetupEvent, this.props.decideMeetupEvent, this.props.deleteMeetupEvent);
         socket.connect(path);
-        
+    }
+
+    componentWillUnmount() {
+        this.state.socket.disconnect()
     }
     
     handleDelete = () => {
@@ -86,7 +89,7 @@ class Meetup extends Component {
         const renderActions = () => {
             return (
                 <Paper className="paper" elevation={3}>
-                    <Link to={`/meetups/${this.props.uri}/new`}><Button className="button" variant="contained" color="primary">Add Event</Button></Link>
+                    <Link socket={this.state.socket} to={`/meetups/${this.props.uri}/new`}><Button className="button" variant="contained" color="primary">Add Event</Button></Link>
                     <Button className="button" variant="contained" color="secondary" onClick={() => this.handleDelete()}>Delete Meetup</Button>
                     <Button className="button" variant="contained" onClick={() => this.handleEmail()}>Notify Members</Button>
                     <Link to={`/chat/${this.props.uri}`}><Button className="button" variant="contained">Go to Chat</Button></Link>

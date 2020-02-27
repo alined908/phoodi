@@ -2,7 +2,7 @@ import React, {Component} from "react";
 
 class HomeComponent extends Component {
     render() {
-        return <div>Home Page</div>
+        return <div className="inner-wrap">Home Page</div>
     }
 }
 

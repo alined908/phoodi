@@ -74,7 +74,6 @@ class MeetupListView(APIView):
 
     def post(self, request, *args, **kwargs):
         user = request.user
-        print(request.data)
         meetup = Meetup.objects.create(datetime=request.data['datetime'], location = request.data['location'])
         meetup.members.create(user=user, meetup=meetup)
 
@@ -113,16 +112,14 @@ class MeetupEventsListView(APIView):
         return Response(events_json)
 
     def post(self, request, *args, **kwargs):
+        user = request.user
         uri = kwargs['uri']
         meetup = get_object_or_404(Meetup, uri=uri)
-        location, start, end, title = request.data['location'], request.data['start'], request.data['end'], request.data['title']
-        entries = request.data['categories']
-        print(entries)
-        event = MeetupEvent.objects.create(meetup=meetup, location=location, start=start, end=end, title=title, entries=entries)
-        event.generate_options()
+        creator = MeetupMember.objects.get(meetup=meetup, user=user)
+        location, start, end, title, distance, price, entries = request.data['location'], request.data['start'], request.data['end'], request.data['title'], request.data['distance'], request.data['prices'], request.data['entries']
+        event = MeetupEvent.objects.create(creator=creator, meetup=meetup, location=location, start=start, end=end, title=title, entries=entries, distance=distance, price=price)
         serializer = MeetupEventSerializer(event)
-
-        return Response(serializer.data)
+        return Response({'meetup': uri, 'event': {event.id: serializer.data}})
 
 class MeetupEmailView(APIView):
     permissions = [permissions.IsAuthenticated]
@@ -401,7 +398,7 @@ class ChatRoomListView(APIView):
         rooms = {}
     
         for room in chat_rooms.all():
-            serializer = ChatRoomSerializer(room.room)
+            serializer = ChatRoomSerializer(room.room, context={'request': request})
             rooms[room.room.uri] = serializer.data
 
         return Response ({"rooms": rooms})
@@ -437,6 +434,16 @@ class ChatRoomView(APIView):
             'status': 'SUCCESS', 'members': members, 'uri': uri,
             'message': '%s joined chat' % user.email
         })
+
+class ChatNotifsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs):
+        user = request.user
+        uri = kwargs['uri']
+        room = ChatRoom.objects.get(uri=uri)
+        user.notifications.filter(actor_object_id = room.id, description="message").mark_all_as_read()
+        return Response({'status': 'success'})
 
 class ChatRoomMessageView(APIView):
     permission_classes = [permissions.IsAuthenticated]

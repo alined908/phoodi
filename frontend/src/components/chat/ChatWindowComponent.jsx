@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import {setTypingValue} from "../../actions/chat";
 import {Button} from '@material-ui/core'
 import {Link} from 'react-router-dom';
+import {removeNotifs} from "../../actions/notifications"
 
 class ChatWindowComponent extends Component {
     
@@ -20,9 +21,6 @@ class ChatWindowComponent extends Component {
         }
     }
 
-    componentDidMount() {
-        this.scrollToBottom();
-      }
     componentDidUpdate() {
         this.scrollToBottom();
     }
@@ -52,8 +50,10 @@ class ChatWindowComponent extends Component {
                         <Link to={`/profile/${this.determineOtherUser()}`}><Button color="primary">Profile</Button></Link>
                     }
                 </div>
-                <div className="chat-messages">
-                    {this.props.activeChatMembers && this.props.messages && this.props.messages.map((msg) => <ChatMessageComponent user={this.props.user} message={msg.message} members={this.props.activeChatMembers}/>)}
+                <div className="chat-messages-wrapper" >
+                    <div className="chat-messages">
+                        {this.props.activeChatMembers && this.props.messages && this.props.messages.map((msg) => <ChatMessageComponent user={this.props.user} message={msg.message} members={this.props.activeChatMembers}/>)}
+                    </div>
                 </div>
                 {this.props.activeChatMembers && <div ref={(el) => { this.messagesEnd = el; }} className="chat-input">
                     <form className="chat-input-form">
@@ -94,6 +94,7 @@ function mapStateToProps(state){
 
 const mapDispatchToProps = {
     setTypingValue,
+    removeNotifs
 }
 
 

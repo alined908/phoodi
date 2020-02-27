@@ -4,6 +4,7 @@ export default class WebSocketService{
     constructor(){
         this.socketRef = null;
         this.waitForSocketConnection = this.waitForSocketConnection.bind(this)
+        this.disconnect = this.disconnect.bind(this)
     }
 
     getCallbacks(){
@@ -27,9 +28,14 @@ export default class WebSocketService{
         };
 
         this.socketRef.onclose = () => {
-            console.log("WebSocket closed, restarting..");
-            setTimeout(() => this.connect(path), 3000)
+            console.log("WebSocket closed");
         };
+    }
+
+    disconnect() {
+        if (this.socketRef){
+            this.socketRef.close()
+        }
     }
 
     socketNewMessage(data){

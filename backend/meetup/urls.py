@@ -1,6 +1,6 @@
 from django.urls import path
 from django.conf.urls import url
-from .views import current_user, CategoryListView, MeetupEmailView, MeetupEventsListView, MeetupEventsView, MeetupInviteAllView, UserView, ChatRoomView, ChatRoomMessageView, UserFriendsView, MeetupView, MeetupListView, MeetupInviteListView, MeetupInviteView, MeetupMembersView, FriendInviteView, FriendInviteListView
+from .views import current_user, ChatNotifsView, CategoryListView, MeetupEmailView, MeetupEventsListView, MeetupEventsView, MeetupInviteAllView, UserView, ChatRoomView, ChatRoomMessageView, UserFriendsView, MeetupView, MeetupListView, MeetupInviteListView, MeetupInviteView, MeetupMembersView, FriendInviteView, FriendInviteListView
 from . import views
 
 app_name='meetup'
@@ -22,6 +22,7 @@ urlpatterns=[
     path("meetups/<uri>/invite/<invite_code>/", views.MeetupInviteView.as_view()),
     path("chats/", views.ChatRoomListView.as_view()),
     path("chats/<uri>/", views.ChatRoomView.as_view()),
+    path("chats/<uri>/notifs/", views.ChatNotifsView.as_view()),
     path("chats/<uri>/messages/", views.ChatRoomMessageView.as_view()),
     path("friends/invite/", views.FriendInviteListView.as_view()),
     path("friends/invite/<invite_code>/", views.FriendInviteView.as_view())

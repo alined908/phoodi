@@ -30,6 +30,10 @@ class ChatComponent extends Component {
         }
     }
 
+    componentWillUnmount(){
+        this.state.socket.disconnect()
+    }
+
     getRelevantInfo(uri) {
         const socket = this.state.socket
         this.props.setActiveRoom(uri);

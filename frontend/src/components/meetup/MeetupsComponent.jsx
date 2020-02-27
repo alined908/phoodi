@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {getMeetups} from "../../actions/meetup";
 import MeetupCard from "./MeetupCard"
-import {Button, Typography} from '@material-ui/core'
+import {Button, Typography, Grid} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 
 class MeetupsComponent extends Component {
@@ -19,12 +19,16 @@ class MeetupsComponent extends Component {
                     {this.props.isMeetupsInitialized && <Link to="/meetups/new"><Button variant="contained" color="primary">Create Meetup</Button></Link>}
                 </div>
                 
-                <div className="meetup-cards">
-                    {this.props.isMeetupsInitialized && this.props.meetups.map((meetup) => 
-                        // <Meetup key={meetup.id} meetup={Object.values(meetup)}></Meetup>
-                        <MeetupCard key={meetup.id} meetup={meetup}></MeetupCard>
-                    )}
-                </div>
+                    <div className="meetup-cards">
+                        <Grid container spacing={3}>
+                        {this.props.isMeetupsInitialized && this.props.meetups.map((meetup) => 
+                            // <Meetup key={meetup.id} meetup={Object.values(meetup)}></Meetup>
+                            <Grid item xs={4}>
+                                <MeetupCard key={meetup.id} meetup={meetup}/>
+                            </Grid>
+                        )}
+                        </Grid>
+                    </div>
             </div>
         )
     }

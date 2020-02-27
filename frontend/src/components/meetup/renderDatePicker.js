@@ -12,6 +12,9 @@ export default ({ input, label, meta: { touched, invalid, error}, ...custom }) =
                 onChange={(val) => input.onChange(val)}
                 value={input.value !== '' ? input.value : null}
                 showTodayButton
+                inputVariant="outlined"
+                style={{width: "100%"}} 
+                inputProps={{style: {fontSize: 14}}} 
                 clearable
                 {...custom}
             />

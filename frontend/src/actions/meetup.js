@@ -74,7 +74,6 @@ export const getMeetupEvents = (uri) => async dispatch => {
 
 export const addMeetupEvent = (event) => async dispatch => {
     dispatch({type: ADD_MEETUP_EVENT, payload: event.message})
-    history.push(`/meetups/${event.message.meetup}`)
 }
 
 export const deleteMeetupEvent = (event) => async dispatch => {

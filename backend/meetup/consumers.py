@@ -175,9 +175,9 @@ class MeetupConsumer(AsyncWebsocketConsumer):
     async def new_event(self, command):
         data = command['data']
         print("new event function called")
-        meetup, title, location, start, end, entries = data['uri'], data['title'], data['location'], data['start'], data['end'], data['entries']
+        meetup, title, location, start, end, entries, prices, distance = data['uri'], data['title'], data['location'], data['start'], data['end'], data['entries'], data['prices'], data['distance']
         meetup_obj = await database_sync_to_async(Meetup.objects.get)(uri=meetup)
-        event = await database_sync_to_async(MeetupEvent.objects.create)(meetup = meetup_obj, title=title, location=location, start=start, end=end, entries=entries)
+        event = await database_sync_to_async(MeetupEvent.objects.create)(meetup = meetup_obj, title=title, location=location, start=start, end=end, entries=entries, distance=distance, price=prices)
         serializer = await self.get_event_serializer(event)
 
 

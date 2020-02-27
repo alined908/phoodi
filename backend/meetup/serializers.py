@@ -47,7 +47,7 @@ class FriendshipSerializer(serializers.ModelSerializer):
             room = ChatRoom.objects.get(friendship=obj)
         except ObjectDoesNotExist:
             return None\
-                
+
         return room.uri
 
     class Meta:
@@ -56,6 +56,7 @@ class FriendshipSerializer(serializers.ModelSerializer):
 
 class ChatRoomSerializer(serializers.ModelSerializer):
     members = serializers.SerializerMethodField('_get_members')
+    notifs = serializers.SerializerMethodField('_get_notifs')
 
     def _get_members(self, obj):
         mapping = {}
@@ -64,9 +65,14 @@ class ChatRoomSerializer(serializers.ModelSerializer):
             mapping.update(UserSerializer(user).data)
         return mapping
 
+    def _get_notifs(self, obj):
+        user =  self.context['request'].user
+        notifs = user.notifications.filter(actor_object_id=obj.id, description="message").unread()
+        return notifs.count()
+
     class Meta:
         model = ChatRoom
-        fields = ('id', 'uri', 'name', 'timestamp', 'members', 'friendship', 'meetup')
+        fields = ('id', 'uri', 'name', 'timestamp', 'members', 'friendship', 'meetup', 'notifs')
 
 class ChatRoomMemberSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('_get_member')

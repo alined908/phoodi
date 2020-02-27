@@ -174,7 +174,14 @@ const Navigation = (props) => {
         
         <Divider />
         <List>
-          {!props.authenticated && <Link to="/login"><ListItem button key="Login"><ListItemText primary="Login"/></ListItem></Link>}
+          {!props.authenticated && <Link to="/login">
+            <ListItem button key="Login">
+              <ListItemIcon>
+                  <ExitToAppIcon/>
+                </ListItemIcon>
+              <ListItemText primary="Login"/>
+              </ListItem>
+            </Link>}
           {!props.authenticated && <Link to="/register"><ListItem button key="Register"><ListItemText primary="Register"/></ListItem></Link>}
           {props.authenticated && props.user && <Link to={`/profile/${props.user.id}`}>
             <ListItem button key="Profile">

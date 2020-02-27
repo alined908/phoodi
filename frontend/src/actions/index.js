@@ -7,6 +7,7 @@ export const signup = (formProps, redirectOnSuccess) => async dispatch => {
         const response = await axios.post('http://localhost:8000/api/users/', {
             "user": formProps
         })
+        console.log(response)
         AuthenticationService.registerSuccessfulLogin(response.data.token)
         localStorage.setItem("user", JSON.stringify(response.data.user[Object.keys(response.data.user)[0]]))
         dispatch({type: AUTH_USER, payload: response.data});
@@ -30,6 +31,7 @@ export const signin = (formProps, redirectOnSuccess) => async dispatch => {
     try {
         const response = await axios.post('http://localhost:8000/api/token-auth/', formProps)
         //Combine next two lines later
+        console.log(response)
         AuthenticationService.registerSuccessfulLogin(response.data.token)
         localStorage.setItem("user", JSON.stringify(response.data.user[Object.keys(response.data.user)[0]]))
         dispatch({type: AUTH_USER, payload: response.data});

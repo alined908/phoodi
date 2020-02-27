@@ -28,6 +28,7 @@ body {
   height: 100%;
   background-color: #ffffff;
   color: black;
+  overflow-y: auto;
 }
 .chat-bar-top{
   display: flex;
@@ -39,10 +40,9 @@ body {
 }
 
 .chat-window{
-  display: flex;
-  flex-direction: column;
   background-color: #F2F4F8;
   height: 100%;
+  overflow-y: auto;
 }
 
 .chat-header {
@@ -64,9 +64,14 @@ body {
   font-weight: 600;
 }
 
+.chat-contact:hover{
+  background-color: #f1f9ff !important;
+}
+
 .chat-contact-info{
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .chat-contact-avatar{
@@ -88,9 +93,14 @@ body {
   align-items: flex-start;
   width: 90%;
   margin: 0 auto;
-  overflow-y: auto;
   padding: 1.5rem 0;
-  height: 100%;
+}
+
+.chat-messages-wrapper{
+  height: calc(100% - 60px - 62px);
+  overflow-y: auto;
+  display:flex; 
+  flex-direction:column-reverse;
 }
 
 .chat-msg-wrapper{
@@ -99,7 +109,7 @@ body {
 }
 
 .chat-msg-avatar{
-  margin-top: 5px;
+  margin-top: 15px;
   margin-right: 10px;
 }
 
@@ -153,11 +163,11 @@ body {
   margin-top: auto;
   margin-right: 2rem;
   width: 100%;
+  height: 58px;
   padding: .5rem 1rem;
   background: #F7F9FD;
   color: #2b2c33;
   border: 0;
-  border-radius: 10px;
   font-size: .8rem;
   outline: 0;
 }
@@ -241,13 +251,22 @@ body {
 .inner-wrap {
   width: 100%;
   height: 100%;
-  padding: 2rem 4rem;
+  padding: 3rem 4rem;
 }
 
 .form {
   display:flex;
+  font-family: "Lato";
   justify-content: center;
-  margin: auto;
+  margin: 3rem auto;
+  width: 90%;
+}
+
+.price-options{
+  margin-top: 1rem;
+}
+ .distance-options {
+  margin-top: 2rem;
 }
 
 .meetup-event {
@@ -364,11 +383,6 @@ body {
   margin-top: 1rem;
 }
 
-.meetup-cards {
-  display: flex;
-  justify-content: space-evenly;
-}
-
 .inner-header{
   display: flex;
   justify-content: space-between;
@@ -407,4 +421,19 @@ body {
 .profile{
   display: flex;
   padding: 2rem;
+}
+
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1rem auto;
+  justify-content: center;
+}
+
+.category {
+  margin: .5rem;
+}
+
+.MuiFab-root{
+  width: 100% !important;
 }

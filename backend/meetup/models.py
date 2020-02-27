@@ -170,7 +170,7 @@ def create_chat_room_member(sender, instance, created, **kwargs):
     if created:
         meetup = instance.meetup
         user = instance.user
-        room = ChatRoom.objects.get(uri=meetup.uri)
+        room = ChatRoom.objects.get(uri=meetup.uri) 
         member = ChatRoomMember.objects.create(room = room, user = user)
 
 class Category(models.Model):
@@ -180,8 +180,11 @@ class Category(models.Model):
 
 class MeetupEvent(models.Model):
     meetup = models.ForeignKey(Meetup, related_name="events", on_delete=models.CASCADE)
+    creator = models.ForeignKey(MeetupMember, related_name="created_events", on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     location = models.TextField()
+    distance = models.IntegerField()
+    price = models.CharField(max_length=10)
     start = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
     chosen = models.IntegerField(blank=True, null=True) 
@@ -200,13 +203,42 @@ class MeetupEvent(models.Model):
             else:
                 categories += key + ", "
 
-        params = {"location": self.location, "limit": 30, "categories": categories}
+        params = {"location": self.location, "limit": 30, "categories": categories, "radius": self.distance, "price": self.price}
         r = requests.get(url=url, params=params, headers=headers)
         options = r.json()['businesses']
         random.shuffle(options)
         
         for option in options[:4]:
             MeetupEventOption.objects.create(event=self, option=json.dumps(option))
+
+@receiver(post_save, sender = MeetupEvent)
+def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
+    from .serializers import MeetupEventSerializer
+    instance.generate_options()
+    channel_layer = get_channel_layer()
+    if created:
+        meetup = instance.meetup
+        #Handle Notif Update
+        for member in meetup.members.all():
+            user = member.user
+            notify.send(sender=meetup, recipient=user, description="meetup", action_object_object_id=instance.id, verb="%s created new event for %s" % (instance.creator, meetup.name))
+            unread_inv_notifs =  user.notifications.filter(description="meetup").unread()  
+            count = unread_inv_notifs.count()  
+            content = {
+                'command': 'fetch_notifs',
+                'message': {"meetup": count}
+            }
+            async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % user.id, {
+                'type': 'notifications',
+                'message': content
+            })
+
+        #Handle Event Update
+        content = {
+            'command': 'new_event',
+            'message': {'meetup': meetup.uri, 'event': {instance.id: MeetupEventSerializer(instance).data}}
+        }
+        async_to_sync(channel_layer.group_send)('meetup_%s' % meetup.uri, {'type': 'meetup_event','meetup_event': content})
 
 class MeetupEventOption(models.Model):
     event = models.ForeignKey(MeetupEvent, related_name="options", on_delete=models.CASCADE)
@@ -261,9 +293,9 @@ class MeetupInvite(Invite):
 
 @receiver(post_save, sender = MeetupInvite)
 def create_notif_meetup_inv(sender, instance, created, **kwargs):
+    channel_layer = get_channel_layer()
     if created:
-        channel_layer = get_channel_layer()
-        notify.send(sender=instance.sender, recipient=instance.receiver, description="invite", action_object=instance, verb="%s sent meetup invite to %s" % (instance.sender.email,  instance.receiver.email))
+        notify.send(sender=instance.sender, recipient=instance.receiver, description="invite", action_object_object_id=instance.id, verb="%s sent meetup invite to %s" % (instance.sender.email,  instance.receiver.email))
         unread_inv_notifs =  instance.receiver.notifications.filter(description="invite").unread()  
         count = unread_inv_notifs.count()  
         content = {
@@ -274,6 +306,22 @@ def create_notif_meetup_inv(sender, instance, created, **kwargs):
             'type': 'notifications',
             'message': content
         })
+    else: 
+        notif = instance.receiver.notifications.filter(action_object_object_id=instance.id, description="invite", verb="%s sent meetup invite to %s" % (instance.sender.email,  instance.receiver.email))
+        print(notif)
+        notif.mark_all_as_read()
+        unread_inv_notifs =  instance.receiver.notifications.filter(description="invite").unread() 
+        count = unread_inv_notifs.count()
+        print(count)
+        content = {
+            'command': 'fetch_notifs',
+            'message': {"invite": count}
+        }
+        async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % instance.receiver.id, {
+            'type': 'notifications',
+            'message': content
+        })
+
 
 class FriendInvite(Invite):
     objects = models.Manager()
@@ -291,9 +339,22 @@ class FriendInvite(Invite):
 def create_notif_friend_inv(sender, instance, created, **kwargs):
     if created:
         channel_layer = get_channel_layer()
-        notify.send(sender=instance.sender, recipient=instance.receiver, description="invite", action_object=instance, verb="%s sent friend invite to %s" % (instance.sender.email,  instance.receiver.email))
+        notify.send(sender=instance.sender, recipient=instance.receiver, description="invite", action_object_object_id=instance.id, verb="%s sent friend invite to %s" % (instance.sender.email,  instance.receiver.email))
         unread_inv_notifs =  instance.receiver.notifications.filter(description="invite").unread()  
         count = unread_inv_notifs.count()  
+        content = {
+            'command': 'fetch_notifs',
+            'message': {"invite": count}
+        }
+        async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % instance.receiver.id, {
+            'type': 'notifications',
+            'message': content
+        })
+    else: 
+        notif = instance.receiver.notifications.filter(actor_object_id=instance.sender.id, description="invite", action_object_object_id=instance.id, verb="%s sent friend invite to %s" % (instance.sender.email,  instance.receiver.email))
+        notif.mark_all_as_read()
+        unread_inv_notifs =  instance.receiver.notifications.filter(description="invite").unread() 
+        count = unread_inv_notifs.count()
         content = {
             'command': 'fetch_notifs',
             'message': {"invite": count}
@@ -357,7 +418,7 @@ def create_notif_chat_message(sender, instance, created, **kwargs):
         channel_layer = get_channel_layer()
         for member in instance.room.members.all():
             if member.user != instance.sender:
-                notify.send(sender=instance.sender, recipient=member.user, description="message", action_object=instance, verb="%s sent chat notif to %s" % (instance.sender.email,  member.user.email))
+                notify.send(sender=instance.room, recipient=member.user, description="message", action_object=instance, verb="%s sent chat notif to %s" % (instance.sender.email,  member.user.email))
                 unread_chat_notifs =  member.user.notifications.filter(description="message").unread()  
                 count = unread_chat_notifs.count()  
                 content = {
