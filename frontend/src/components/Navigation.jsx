@@ -19,6 +19,7 @@ import {getNumberNotifs} from "../actions/notifications.js"
 import LiveUpdatingBadge from "./LiveUpdatingBadge"
 import HomeIcon from '@material-ui/icons/Home';
 import SettingsIcon from '@material-ui/icons/Settings';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 
 const drawerWidth = 220;
 
@@ -141,7 +142,7 @@ const Navigation = (props) => {
           {props.authenticated && <Link to="/meetups">
                 <ListItem button key="Meetups">
                   <ListItemIcon>
-                    <PeopleIcon/>
+                    <LiveUpdatingBadge type={'meetup'} icon={<PeopleIcon/>} />
                   </ListItemIcon>
                   <ListItemText primary="Meetups"/>
                 </ListItem>
@@ -177,12 +178,20 @@ const Navigation = (props) => {
           {!props.authenticated && <Link to="/login">
             <ListItem button key="Login">
               <ListItemIcon>
-                  <ExitToAppIcon/>
-                </ListItemIcon>
+                <ExitToAppIcon/>
+              </ListItemIcon>
               <ListItemText primary="Login"/>
               </ListItem>
             </Link>}
-          {!props.authenticated && <Link to="/register"><ListItem button key="Register"><ListItemText primary="Register"/></ListItem></Link>}
+          {!props.authenticated && <Link to="/register">
+              <ListItem button key="Register">
+                <ListItemIcon>
+                  <AssignmentIcon/>
+                </ListItemIcon>
+                <ListItemText primary="Register"/>
+              </ListItem>
+            </Link>
+          }
           {props.authenticated && props.user && <Link to={`/profile/${props.user.id}`}>
             <ListItem button key="Profile">
               <ListItemIcon>

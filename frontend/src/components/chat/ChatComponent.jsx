@@ -20,7 +20,6 @@ class ChatComponent extends Component {
         socket.addChatCallbacks(this.props.getMessages, this.props.addMessage)
         if("uri" in this.props.match.params){
             this.getRelevantInfo(this.props.match.params.uri)
-            
         }
     }
 

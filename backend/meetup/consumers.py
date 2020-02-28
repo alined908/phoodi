@@ -112,14 +112,21 @@ class UserNotificationConsumer(AsyncWebsocketConsumer):
         inv_notifs = user_obj.notifications.filter(description="invite").unread().count()
         return inv_notifs
 
+    @sync_to_async
+    def fetch_meetup_notifs(self, user):
+        user_obj = User.objects.get(pk=user)
+        meetup_notifs = user_obj.notifications.filter(description="meetup").unread().count()
+        return meetup_notifs
+
     async def fetch_notifications(self, command):
         data = command['data']
         user = data['user']
         chat_notifs = await self.fetch_chat_notifs(user)
         inv_notifs = await self.fetch_inv_notifs(user)
+        meetup_notifs = await self.fetch_meetup_notifs(user)
         content = {
             'command': 'fetch_notifs',
-            'message': {"chat": chat_notifs, "invite": inv_notifs}
+            'message': {"chat": chat_notifs, "invite": inv_notifs, "meetup": meetup_notifs}
         }
 
         await self.channel_layer.group_send(

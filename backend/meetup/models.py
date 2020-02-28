@@ -220,18 +220,19 @@ def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
         meetup = instance.meetup
         #Handle Notif Update
         for member in meetup.members.all():
-            user = member.user
-            notify.send(sender=meetup, recipient=user, description="meetup", action_object_object_id=instance.id, verb="%s created new event for %s" % (instance.creator, meetup.name))
-            unread_inv_notifs =  user.notifications.filter(description="meetup").unread()  
-            count = unread_inv_notifs.count()  
-            content = {
-                'command': 'fetch_notifs',
-                'message': {"meetup": count}
-            }
-            async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % user.id, {
-                'type': 'notifications',
-                'message': content
-            })
+            if member != instance.creator:
+                user = member.user
+                notify.send(sender=meetup, recipient=user, description="meetup", action_object_object_id=instance.id, verb="%s created new event for %s" % (instance.creator, meetup.name))
+                unread_meetup_notifs =  user.notifications.filter(description="meetup").unread()  
+                count = unread_meetup_notifs.count()  
+                content = {
+                    'command': 'fetch_notifs',
+                    'message': {"meetup": count}
+                }
+                async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % user.id, {
+                    'type': 'notifications',
+                    'message': content
+                })
 
         #Handle Event Update
         content = {
@@ -337,8 +338,8 @@ class FriendInvite(Invite):
 
 @receiver(post_save, sender=FriendInvite)
 def create_notif_friend_inv(sender, instance, created, **kwargs):
+    channel_layer = get_channel_layer()
     if created:
-        channel_layer = get_channel_layer()
         notify.send(sender=instance.sender, recipient=instance.receiver, description="invite", action_object_object_id=instance.id, verb="%s sent friend invite to %s" % (instance.sender.email,  instance.receiver.email))
         unread_inv_notifs =  instance.receiver.notifications.filter(description="invite").unread()  
         count = unread_inv_notifs.count()  

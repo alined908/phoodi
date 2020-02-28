@@ -4,9 +4,19 @@ import {Badge} from '@material-ui/core'
 
 class LiveUpdatingBadge extends Component {
 
+    determineType = (type) => {
+        if (type === 'chat'){
+            return this.props.notifs.chat
+        } else if (type === 'meetup'){
+            return this.props.notifs.meetup
+        } else if (type === 'invite'){
+            return this.props.notifs.invite
+        }
+    }
+
     render () {
         return (
-            <Badge badgeContent={this.props.type === "chat" ? this.props.notifs.chat : this.props.notifs.invite} color="primary">
+            <Badge badgeContent={this.determineType(this.props.type)} color="primary">
                   {this.props.icon}
             </Badge>
         )

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import {reduxForm, Field} from 'redux-form';
 import renderDatePicker from "./renderDatePicker"
-import {Button, TextField, Typography, Paper, Grid, ButtonGroup, Slider, Fab} from '@material-ui/core';
+import {Button, Typography, Paper, Grid, ButtonGroup, Slider, Fab} from '@material-ui/core';
+import renderTextField from '../renderTextField'
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {addMeetupEvent} from "../../actions/meetup"
@@ -29,7 +30,7 @@ class MeetupEventForm extends Component {
             axios.get("http://localhost:8000/api/categories/")
             .then((response) =>
                 localStorage.setItem("categories", JSON.stringify(response.data)
-            ))      
+            ))
         } 
         
         this.setState({
@@ -73,12 +74,6 @@ class MeetupEventForm extends Component {
 
     render () {
         const {handleSubmit} = this.props;
-        
-        const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
-            <TextField variant="outlined" style={{width: "100%"}} inputProps={{
-                style: {fontSize: 14}}} 
-               label={label} {...input} {...custom}/>
-        )
 
         return (
             <div className="inner-wrap">
