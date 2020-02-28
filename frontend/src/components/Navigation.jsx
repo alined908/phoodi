@@ -105,14 +105,21 @@ const Navigation = (props) => {
   const [open, setOpen] = React.useState(drawerState);
 
   React.useEffect(() => {
+    var socket = null;
     if (props.user && props.authenticated) {
-      const socket= new WebSocketService()
+      socket = new WebSocketService()
       socket.addNotifCallbacks(props.getNumberNotifs)
       var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
       const path = `${ws_scheme}://localhost:8000/ws/user/${props.user.id}/`;
       socket.connect(path);
       console.log(socket.state())
       socket.waitForSocketConnection(() => socket.fetchNotifications({user: props.user.id}))
+    }
+
+    return () => {
+      if(props.user && props.authenticated && socket) {
+        socket.disconnect()
+      }
     }
   })
 
