@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {Drawer, CssBaseline, AppBar, Toolbar, Badge, Typography, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core'
+import {Button, Drawer, CssBaseline, AppBar, Toolbar, Typography, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -26,15 +26,17 @@ const drawerWidth = 220;
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-    height: '100%'
+    height: '100%',
+    backgroundColor: "white"
   },
   appBar: {
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    height: '8%',
-    minHeight: '64px'
+    background: "transparent",
+    boxShadow: "none",
+    padding: "0 1rem",
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -44,15 +46,28 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
   hide: {
     display: 'none',
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
+  },
+  title: {
+    color: "black",
+    flexGrow: 1,
+    marginLeft: '.5rem'
+  },
+
+  menuButton: {
+    marginRight: '2rem'
+  },
+  actionButton:{
+    marginRight: '1rem'
+  },
+  drawerText: {
+    fontSize: '.9em',
+    fontWeight: '600'
   },
   drawerPaper: {
     width: drawerWidth,
@@ -70,6 +85,7 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    width: '100%',
     marginLeft: -drawerWidth,
     height: '92%'
   },
@@ -89,7 +105,7 @@ const Navigation = (props) => {
   const [open, setOpen] = React.useState(drawerState);
 
   React.useEffect(() => {
-    if (props.user) {
+    if (props.user && props.authenticated) {
       const socket= new WebSocketService()
       socket.addNotifCallbacks(props.getNumberNotifs)
       var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
@@ -115,12 +131,23 @@ const Navigation = (props) => {
       <CssBaseline />
       <AppBar position="fixed" className={clsx(classes.appBar, {[classes.appBarShift]: open,})}>
         <Toolbar>
-          <IconButton color="inherit" aria-label="open drawer" onClick={handleDrawerOpen} edge="start" className={clsx(classes.menuButton, open && classes.hide)}>
+          {props.authenticated && <IconButton color="black" aria-label="open drawer" onClick={handleDrawerOpen} edge="start" className={clsx(classes.menuButton, open && classes.hide)}>
             <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
+          </IconButton>}
+          {/* <img className="bar-img" src={require('../assets/ice-cream.svg')}/> */}
+          <Typography className={classes.title} variant="h6" noWrap>
             <Link to="/">Meetup</Link>
           </Typography>
+          {!props.authenticated && 
+            <Link to="/login">
+              <Button className={classes.actionButton} startIcon={<ExitToAppIcon/>}>Sign in</Button>
+            </Link>
+          }
+          {!props.authenticated &&
+            <Link to="/register">
+              <Button className={classes.actionButton} startIcon={<AssignmentIcon/>}>Sign Up</Button>
+            </Link>
+          }
         </Toolbar>
       </AppBar>
       <Drawer className={classes.drawer} variant="persistent" anchor="left" open={open} classes={{ paper: classes.drawerPaper,}}>
@@ -131,20 +158,20 @@ const Navigation = (props) => {
         </div>
         <Divider />
         <List>
-        <Link to="/">
-          <ListItem button key="Home">
-            <ListItemIcon>
-              <HomeIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Home"/>
-          </ListItem>
-        </Link>
+          <Link to="/">
+            <ListItem button key="Home">
+              <ListItemIcon>
+                <HomeIcon/>
+              </ListItemIcon>
+              <ListItemText classes={{primary: classes.drawerText}} primary="Home"/>
+            </ListItem>
+          </Link>
           {props.authenticated && <Link to="/meetups">
                 <ListItem button key="Meetups">
                   <ListItemIcon>
                     <LiveUpdatingBadge type={'meetup'} icon={<PeopleIcon/>} />
                   </ListItemIcon>
-                  <ListItemText primary="Meetups"/>
+                  <ListItemText classes={{primary: classes.drawerText}} primary="Meetups"/>
                 </ListItem>
               </Link>}
           {props.authenticated && <Link to="/chat">
@@ -152,7 +179,7 @@ const Navigation = (props) => {
                 <ListItemIcon>
                 <LiveUpdatingBadge type={'chat'} icon={<ChatIcon/>} />
                 </ListItemIcon>
-                <ListItemText primary="Chat"/>
+                <ListItemText classes={{primary: classes.drawerText}} primary="Chat"/>
               </ListItem>
             </Link>}
           {props.authenticated && <Link to="/friends">
@@ -160,7 +187,7 @@ const Navigation = (props) => {
                 <ListItemIcon>
                   <PermContactCalendarIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Friends"/>
+                <ListItemText classes={{primary: classes.drawerText}} primary="Friends"/>
               </ListItem>
             </Link>}
           {props.authenticated && <Link to="/invites">
@@ -168,36 +195,19 @@ const Navigation = (props) => {
               <ListItemIcon>
                 <LiveUpdatingBadge type={'invite'} icon={<MailIcon/>}/>
               </ListItemIcon>
-              <ListItemText primary="Invites"/>
+              <ListItemText classes={{primary: classes.drawerText}} primary="Invites"/>
             </ListItem>
           </Link>}
         </List>
         
         <Divider />
         <List>
-          {!props.authenticated && <Link to="/login">
-            <ListItem button key="Login">
-              <ListItemIcon>
-                <ExitToAppIcon/>
-              </ListItemIcon>
-              <ListItemText primary="Login"/>
-              </ListItem>
-            </Link>}
-          {!props.authenticated && <Link to="/register">
-              <ListItem button key="Register">
-                <ListItemIcon>
-                  <AssignmentIcon/>
-                </ListItemIcon>
-                <ListItemText primary="Register"/>
-              </ListItem>
-            </Link>
-          }
           {props.authenticated && props.user && <Link to={`/profile/${props.user.id}`}>
             <ListItem button key="Profile">
               <ListItemIcon>
                 <PersonIcon/>
               </ListItemIcon>
-              <ListItemText primary="Profile"/>
+              <ListItemText classes={{primary: classes.drawerText}} primary="Profile"/>
             </ListItem>
           </Link>}
           {props.authenticated && <Link to="/settings">
@@ -205,7 +215,7 @@ const Navigation = (props) => {
               <ListItemIcon>
                 <SettingsIcon/>
               </ListItemIcon>
-              <ListItemText primary="Settings"/>
+              <ListItemText classes={{primary: classes.drawerText}} primary="Settings"/>
             </ListItem>
           </Link>}
           {props.authenticated && <Link to="/logout">
@@ -213,11 +223,11 @@ const Navigation = (props) => {
               <ListItemIcon>
                 <ExitToAppIcon/>
               </ListItemIcon>
-              <ListItemText primary="Logout"/>
+              <ListItemText classes={{primary: classes.drawerText}} primary="Logout"/>
             </ListItem>
           </Link>}
         </List>
-        <Divider />
+       
       </Drawer>
       <main className={clsx(classes.content, {[classes.contentShift]: open,})}>
         <div className={classes.drawerHeader} />
