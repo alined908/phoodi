@@ -34,9 +34,8 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    background: "transparent",
-    boxShadow: "none",
     padding: "0 1rem",
+    background: "white"
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -87,7 +86,6 @@ const useStyles = makeStyles(theme => ({
     }),
     width: '100%',
     marginLeft: -drawerWidth,
-    height: '92%'
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
@@ -136,12 +134,12 @@ const Navigation = (props) => {
   return (
     <div className={classes.root}>
       <CssBaseline />
+      
       <AppBar position="fixed" className={clsx(classes.appBar, {[classes.appBarShift]: open,})}>
         <Toolbar>
           {props.authenticated && <IconButton color="black" aria-label="open drawer" onClick={handleDrawerOpen} edge="start" className={clsx(classes.menuButton, open && classes.hide)}>
             <MenuIcon />
           </IconButton>}
-          {/* <img className="bar-img" src={require('../assets/ice-cream.svg')}/> */}
           <Typography className={classes.title} variant="h6" noWrap>
             <Link to="/">Meetup</Link>
           </Typography>
@@ -157,6 +155,7 @@ const Navigation = (props) => {
           }
         </Toolbar>
       </AppBar>
+      
       <Drawer className={classes.drawer} variant="persistent" anchor="left" open={open} classes={{ paper: classes.drawerPaper,}}>
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>

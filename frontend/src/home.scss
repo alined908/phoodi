@@ -1,7 +1,7 @@
 :root {
     --color-fur: #ffb141;
     --color-fur-dark: #F5832C;
-    --color-spot: #F9584C;
+    --color-spot: #ffb141;
     --color-snout: #544258;
     --color-collar: #3EAB6C;
     --duration: .7s;
@@ -10,9 +10,7 @@
     --stagger: calc(-1 * var(--semi-duration) / 2);
   }
   
-  *, *:before, *:after {
-    animation-timing-function: var(--easing) !important ;
-  }
+ 
   
   [class="🐕"] {
     z-index: 1;
@@ -21,34 +19,39 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    *:before, *:after {
+        animation-timing-function: var(--easing) !important ;
+      }
     
     * {
+      animation-timing-function: var(--easing) !important ;
       position: absolute;
       will-change: transform;
     }
     
-    // &:before {
-    //   content: '';
-    //   position: absolute;
-    //   bottom: percentage(40px / 300px);
-    //   left: 0;
-    //   width: 100%;
-    //   height: percentage(10px / 300px);
-    //   background-color: #D3D1D1;
-    //   border-radius: 2px;
-    //   animation: shadow
-    //     calc(1 * var(--semi-duration))
-    //     infinite;
+    &:before {
+      content: '';
+      position: absolute;
+      bottom: percentage(40px / 300px);
+      left: 0;
+      width: 100%;
+      height: percentage(10px / 300px);
+      background-color: #D3D1D1;
+      border-radius: 2px;
+      animation: shadow
+        calc(1 * var(--semi-duration))
+        infinite;
       
-    //   @keyframes shadow {
-    //     from, to {
-    //       transform: scaleX(.75)
-    //     }
-    //     45%, 55% {
-    //       transform: scaleX(.5)
-    //     }
-    //   }
-    // }
+      @keyframes shadow {
+        from, to {
+          transform: scaleX(.75)
+        }
+        45%, 55% {
+          transform: scaleX(.5)
+        }
+      }
+    }
   }
   
   .neck {
@@ -563,9 +566,11 @@
   
   .top {
       display:flex;
-      padding: 7rem 15% 2rem 10%;
+      padding: 20% 10% 10% 15%;
+      margin: auto 0;
       border-bottom: 2px solid #edf0f6;
       background-color: #dff7e5;
+      height: 85vh;
   }
 
   .home-banner{
@@ -575,19 +580,119 @@
   }
 
   .middle {
-      
+      padding-bottom: 4rem;
   }
 
   .middle-header{
       width: 75%;
       margin: 0 auto;
-      padding: 4rem 0;
+      padding: 6rem 0;
       text-align: center;
   }
 
   .middle-entry{
       display:flex;
-      width: 75%;
-      justify-content: center;
+      width: 80%;
+      justify-content: space-evenly;
+      margin: 0 auto;
+      padding: 3rem 0;
       align-items: center;
   }
+
+  .middle-entry-text{
+      display: flex;
+      height: 100px;
+      flex-direction: column;
+      justify-content: space-evenly;
+  }
+
+  .middle-tri{
+      display: flex;
+      width: 90%;
+      margin: 7rem auto 0 auto;
+      justify-content: space-evenly;
+  }
+
+  .middle-tri-col-txt{
+      margin-top: 2rem;
+      text-align: center;
+  }
+
+  .tri-col-head{
+      margin-bottom:1rem;
+  }
+
+  .bottom{
+      display:flex;
+      align-items: center;
+      padding: 4rem 0;
+      width: 70%;
+      margin: 0 auto;
+      flex-direction: column;
+      text-align: center;
+  }
+  .bottom-button{
+      margin-top: 1rem;
+      width: 15%;
+  }
+
+  .middle-img-enter-active{
+    transition: all 400ms;
+  }
+
+  .svg {
+      animation: rotate 3.5s linear infinite;
+  }
+
+  .clock {
+      fill: #5DDEF5;
+  }
+  
+    #chain_st {
+        -webkit-animation: dash 1s infinite linear;
+        -moz-animation: dash 1s infinite linear;
+        -o-animation: dash 1s infinite linear;
+        animation: dash 1s infinite linear;
+    }
+    @-webkit-keyframes dash {
+    to { stroke-dashoffset: -5; }
+    }
+    @keyframes dash {
+    to { stroke-dashoffset: -5; }
+    }
+
+  @keyframes rotate{
+    80%{
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+  }
+
+  .cupcake {
+      animation: moveFood 12.5s linear infinite;
+  }
+
+  @keyframes moveFood {
+      0%{
+          left: 75%;
+      }
+      100% {
+          left: 0;
+      }
+  }
+
+  .food{
+      position: absolute;
+      display: flex;
+      justify-content: flex-start;
+      width: 85%;
+      margin-top: 27px;
+      margin-left: 95px;
+    
+      :not(:last-child) {
+          margin-right: 25px;
+      }
+  }
+

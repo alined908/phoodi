@@ -1,0 +1,36 @@
+<svg id="one" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 100 30">
+  <defs>
+    <circle id="c" cx="20" cy="20" r="4" stroke="#DCDCDC" fill="transparent" stroke-width="4"/>
+    <path id="d" stroke="#DCDCDC" stroke-width="2" d="M20 13 V16 M27 20 H24 M20 27 V24 M13 20 H16"/>
+    <g id="cog">
+      <use xlink:href="#c"/>
+      <use xlink:href="#d"/>
+      <use xlink:href="#d" transform="rotate(45 20 20)"/>
+    </g>
+  </defs>
+  <path id="chain_st" 
+    stroke-width="1" 
+    stroke="#000" 
+    fill="transparent" 
+    stroke-dasharray="2.6 2.45" d="M21.3 13.5 H20 C11.4 13.5 11.4 26.5 20 26.5 H80 C89 26.5 89 13.5 80.8 13.5z" />
+  <use class="rot" xlink:href="#cog">
+    <animateTransform attributeType="xml"
+                    attributeName="transform"
+                    type="rotate"
+                    from="22.5 20 20"
+                    to="-337.5 20 20"
+                    dur="8s"
+                    repeatCount="indefinite"/>
+  </use>
+  <g transform="translate(60.3 0)">
+    <use class="" xlink:href="#cog">
+      <animateTransform attributeType="xml"
+                    attributeName="transform"
+                    type="rotate"
+                    from="22.5 20 20"
+                    to="-337.5 20 20"
+                    dur="8s"
+                    repeatCount="indefinite"/>
+    </use>
+  </g>
+</svg>

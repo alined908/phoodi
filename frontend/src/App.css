@@ -2,8 +2,8 @@ a, a:hover {
   text-decoration: none;
   color: inherit;
 }
-html, body, #root, .MeetupApp, main {
-  height: 100%;
+html, body, #root, .MeetupApp{
+  background-color: white;
 }
 
 body {
@@ -248,7 +248,7 @@ body {
   justify-content: center;
   height: 100%;
   width: 100%;
-  background-color: #F2F4F8;
+  background-color: white;
 }
 .title {
   font-size: 30px;
