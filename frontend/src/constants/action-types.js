@@ -42,4 +42,4 @@ export const RESPOND_FRIEND_INVITE = 'respond_friend_invite'
 
 //Notifications
 export const GET_NOTIFS = 'get_notifs';
-export const REMOVE_CHAT_NOTIFS = 'remove_chat_notifs';
+export const REMOVE_NOTIFS = 'remove_chat_notifs';

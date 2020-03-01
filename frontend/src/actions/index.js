@@ -1,6 +1,7 @@
 import {AUTH_USER, AUTH_ERROR, CLEAR_STORE} from "../constants/action-types"
 import axios from 'axios';
 import AuthenticationService from "../accounts/AuthenticationService";
+import {history} from '../components/MeetupApp'
 
 export const signup = (formProps, redirectOnSuccess) => async dispatch => {
     try {
@@ -19,12 +20,10 @@ export const signup = (formProps, redirectOnSuccess) => async dispatch => {
     }
 }
 
-export const signout = () => {
+export const signout = () => async dispatch => {
     localStorage.removeItem('token')
-    return {
-        type: CLEAR_STORE,
-        payload: {}
-    }
+    dispatch({type: CLEAR_STORE,payload: {}})
+    history.push('/')
 }
 
 export const signin = (formProps, redirectOnSuccess) => async dispatch => {

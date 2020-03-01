@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import MeetupEvent from "./MeetupEvent"
 import {connect} from 'react-redux';
 import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent} from '../../actions/meetup';
+import {removeNotifs} from '../../actions/notifications'
 import {getFriends} from "../../actions/friend"
 import {Link} from 'react-router-dom'
 import moment from 'moment';
@@ -20,6 +21,9 @@ class Meetup extends Component {
     componentDidMount () {
         this.props.getMeetupEvents(this.props.uri)
         this.props.getFriends(this.props.user.id)
+        if (this.props.notifs > 0){
+            this.props.removeNotifs({type: "meetup", id: this.props.id})
+        }
         const uri = this.props.uri
         var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
         const path = `${ws_scheme}://localhost:8000/ws/meetups/${uri}/`;
@@ -41,7 +45,7 @@ class Meetup extends Component {
     }
 
     render () {
-        const [id, name, uri, location, datetime, members, events] = this.props.meetup
+        const [id, name, uri, location, datetime, members, notifs, events] = this.props.meetup
 
         const isMember = (friend) => {
             return friend in members
@@ -139,7 +143,8 @@ const mapDispatchToProps = {
     voteMeetupEvent,
     decideMeetupEvent,
     deleteMeetupEvent,
-    sendMeetupEmails
+    sendMeetupEmails,
+    removeNotifs
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Meetup)

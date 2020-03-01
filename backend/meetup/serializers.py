@@ -92,6 +92,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
 class MeetupSerializer(serializers.ModelSerializer):
     members = serializers.SerializerMethodField('_get_members')
+    notifs = serializers.SerializerMethodField('_get_notifs')
 
     def _get_members(self, obj):
         mapping = {}
@@ -100,9 +101,14 @@ class MeetupSerializer(serializers.ModelSerializer):
             mapping.update(UserSerializer(user).data)
         return mapping
 
+    def _get_notifs(self, obj):
+        user =  self.context['user']
+        notifs = user.notifications.filter(actor_object_id=obj.id, description="meetup").unread()
+        return notifs.count()
+
     class Meta:
         model = Meetup
-        fields = ('id', 'name', 'uri', 'location', 'datetime', 'members')
+        fields = ('id', 'name', 'uri', 'location', 'datetime', 'members', 'notifs')
 
 class MeetupEventOptionVoteSerializer(serializers.ModelSerializer):
     def to_representation(self, data):

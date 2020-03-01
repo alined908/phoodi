@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework import permissions, status
+import collections
 from django.forms.models import model_to_dict
 from meetup.serializers import CategorySerializer, UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer, FriendInviteSerializer, MeetupEventSerializer
 
@@ -57,11 +58,11 @@ class UserView(APIView):
 class MeetupListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def format_meetups(self, meetups):
+    def format_meetups(self, meetups, user):
         meetups_json = {}
     
         for meetup in meetups.all():
-            serializer = MeetupSerializer(meetup.meetup)
+            serializer = MeetupSerializer(meetup.meetup, context={'user': user})
             meetups_json[meetup.meetup.uri] = serializer.data
 
         return meetups_json
@@ -69,7 +70,7 @@ class MeetupListView(APIView):
     def get(self, request, *args, **kwargs):
         user = request.user
         meetups = user.meetups
-        meetups_json = self.format_meetups(meetups)
+        meetups_json = self.format_meetups(meetups, user)
         return Response ({"meetups": meetups_json})
 
     def post(self, request, *args, **kwargs):
@@ -77,7 +78,7 @@ class MeetupListView(APIView):
         meetup = Meetup.objects.create(datetime=request.data['datetime'], location = request.data['location'])
         meetup.members.create(user=user, meetup=meetup)
 
-        return Response({'status': 'Success', 'meetup': MeetupSerializer(meetup).data, 'message': "new meetup created"})
+        return Response({'status': 'Success', 'meetup': MeetupSerializer(meetup, context={"user": user}).data, 'message': "new meetup created"})
 
 class MeetupView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -87,8 +88,9 @@ class MeetupView(APIView):
         return obj
 
     def get(self, request, *args, **kwargs):
+        user = request.user
         meetup = self.get_object(kwargs['uri'])
-        serializer = MeetupSerializer(meetup)
+        serializer = MeetupSerializer(meetup, context={"user": user})
         return Response(serializer.data)
 
     def delete(self, request, *args, **kwargs):
@@ -100,13 +102,14 @@ class MeetupEventsListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def format_events(self, events):
-        events_json = {event.id:MeetupEventSerializer(event).data for event in events.all()}
-        return events_json
+        events_json = [(event.id, MeetupEventSerializer(event).data) for event in events]
+        return collections.OrderedDict(events_json)
 
     def get(self, request, *args, **kwargs):
         uri = kwargs['uri']
         meetup = get_object_or_404(Meetup, uri=uri)
-        events = meetup.events
+        events = meetup.events.all().order_by('start')
+        print(events)
         events_json = self.format_events(events)
         
         return Response(events_json)
@@ -435,15 +438,15 @@ class ChatRoomView(APIView):
             'message': '%s joined chat' % user.email
         })
 
-class ChatNotifsView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+class NotificationView(APIView):
+    permission_classes = []
 
     def delete(self, request, *args, **kwargs):
         user = request.user
-        uri = kwargs['uri']
-        room = ChatRoom.objects.get(uri=uri)
-        user.notifications.filter(actor_object_id = room.id, description="message").mark_all_as_read()
-        return Response({'status': 'success'})
+        description, id = request.data['type'], request.data['id']
+        user.notifications.filter(actor_object_id = id, description=description).mark_all_as_read()
+        count = user.notifications.filter(description=description).unread().count()
+        return Response({description: count})
 
 class ChatRoomMessageView(APIView):
     permission_classes = [permissions.IsAuthenticated]

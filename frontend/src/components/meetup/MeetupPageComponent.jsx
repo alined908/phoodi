@@ -17,7 +17,7 @@ class MeetupPageComponent extends Component {
         
         return (
             <div>
-                {meetup && <Meetup key={meetup.id} uri={meetup.uri} meetup={Object.values(meetup)}></Meetup>}
+                {meetup && <Meetup key={meetup.id} uri={meetup.uri} notifs={meetup.notifs} meetup={Object.values(meetup)}></Meetup>}
             </div>
         )
     }

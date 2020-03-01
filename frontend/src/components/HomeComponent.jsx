@@ -23,74 +23,7 @@ class HomeComponent extends Component {
     render() {
         const dog = () => {
             return (
-                <div class="🐕">
-                        <div class="torso">
-                            <div class="fur">
-                            <div class="spot"></div>
-                            </div>
-                            <div class="neck">
-                            <div class="fur"></div>
-                            <div class="head">
-                                <div class="fur">
-                                <div class="snout"></div>          
-                                </div>
-                                <div class="ears">
-                                <div class="ear">
-                                    <div class="fur"></div>
-                                </div>
-                                <div class="ear">
-                                    <div class="fur"></div>
-                                </div>
-                                </div>
-                                <div class="eye"></div>
-                            </div>
-                            <div class="collar">
-                                
-                            </div>
-                            </div>
-                            <div class="legs">
-                            <div class="leg">
-                                <div class="fur"></div>
-                                <div class="leg-inner">
-                                <div class="fur"></div>
-                                </div>
-                            </div>
-                            <div class="leg">
-                                <div class="fur"></div>
-                                <div class="leg-inner">
-                                <div class="fur"></div>
-                                </div>
-                            </div>
-                            <div class="leg">
-                                <div class="fur"></div>
-                                <div class="leg-inner">
-                                <div class="fur"></div>
-                                </div>
-                            </div>
-                            <div class="leg">
-                                <div class="fur"></div>
-                                <div class="leg-inner">
-                                <div class="fur"></div>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="tail">
-                            <div class="tail">
-                                <div class="tail">
-                                <div class="tail -end">
-                                    <div class="tail">
-                                    <div class="tail">
-                                        <div class="tail">
-                                        <div class="tail"></div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
+                <div></div>
             )
         }
 
@@ -98,9 +31,9 @@ class HomeComponent extends Component {
             return (
                 <div className="food-belt">
                     <div className="food">
-                        {/* <CupcakeIcon className={"cupcake"} height={50} width={50}/> */}
-                        <WatermelonIcon className={"cupcake"} height={50} width={50}/>
-                        {/* <DonutIcon className={"cupcake"} height={50} width={50}/>
+                        <CupcakeIcon className={"cupcake"} height={50} width={50}/>
+                        {/* <WatermelonIcon className={"cupcake"} height={50} width={50}/>
+                        <DonutIcon className={"cupcake"} height={50} width={50}/>
                         <BreadIcon className={"cupcake"} height={50} width={50}/>
                         <IcecreamIcon className={"cupcake"} height={50} width={50}/> */}
                     </div>

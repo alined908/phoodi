@@ -141,7 +141,7 @@ const Navigation = (props) => {
             <MenuIcon />
           </IconButton>}
           <Typography className={classes.title} variant="h6" noWrap>
-            <Link to="/">Meetup</Link>
+            <Link onClick={handleDrawerClose} to="/">Meetup</Link>
           </Typography>
           {!props.authenticated && 
             <Link to="/login">
@@ -164,14 +164,14 @@ const Navigation = (props) => {
         </div>
         <Divider />
         <List>
-          <Link to="/">
+          {/* <Link to="/">
             <ListItem button key="Home">
               <ListItemIcon>
                 <HomeIcon/>
               </ListItemIcon>
               <ListItemText classes={{primary: classes.drawerText}} primary="Home"/>
             </ListItem>
-          </Link>
+          </Link> */}
           {props.authenticated && <Link to="/meetups">
                 <ListItem button key="Meetups">
                   <ListItemIcon>
@@ -224,7 +224,7 @@ const Navigation = (props) => {
               <ListItemText classes={{primary: classes.drawerText}} primary="Settings"/>
             </ListItem>
           </Link>}
-          {props.authenticated && <Link to="/logout">
+          {props.authenticated && <Link onClick={handleDrawerClose} to="/logout">
             <ListItem button key="Logout">
               <ListItemIcon>
                 <ExitToAppIcon/>

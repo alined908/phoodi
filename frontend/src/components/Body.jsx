@@ -11,6 +11,7 @@ import MeetupPageComponent from "./meetup/MeetupPageComponent"
 import FriendsComponent from './invite/FriendsComponent';
 import MeetupEventForm from "./meetup/MeetupEventForm"
 import AuthenticatedRoute from "../accounts/AuthenticatedRoute";
+import UnAuthenticatedRoute from "../accounts/UnAuthenticatedRoute";
 import LoginComponent from "./auth/LoginComponent";
 import Invites from "./invite/Invites"
 import MeetupForm from "./meetup/MeetupForm"
@@ -23,8 +24,8 @@ class Body extends Component {
             <div className="c">
                 <Switch>
                     <Route path="/" exact component={HomeComponent}></Route>
-                    <Route path="/login" component={LoginComponent}></Route>
-                    <Route path="/register" component={RegisterComponent}></Route>
+                    <UnAuthenticatedRoute path="/login" component={LoginComponent}></UnAuthenticatedRoute>
+                    <UnAuthenticatedRoute path="/register" component={RegisterComponent}></UnAuthenticatedRoute>
                     <AuthenticatedRoute path="/logout" component={LogoutComponent}></AuthenticatedRoute>
                     <AuthenticatedRoute path="/welcome" component={WelcomeComponent}></AuthenticatedRoute>
                     <AuthenticatedRoute path="/meetups/:uri/new" exact component={MeetupEventForm}></AuthenticatedRoute>
