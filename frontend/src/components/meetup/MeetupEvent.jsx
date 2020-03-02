@@ -7,10 +7,12 @@ import moment from "moment"
 import CloseIcon from '@material-ui/icons/Close';
 import CachedIcon from "@material-ui/icons/Cached";
 import EditIcon from '@material-ui/icons/Edit';
-import IconButton from '@material-ui/core/IconButton';
+import {IconButton, Typography, Grid} from '@material-ui/core'
 import Chip from '@material-ui/core/Chip';
 import {compose} from 'redux';
 import Map from "./Map"
+import ScheduleIcon from '@material-ui/icons/Schedule';
+import RoomIcon from '@material-ui/icons/Room';
 
 class MeetupEvent extends Component {
 
@@ -43,19 +45,19 @@ class MeetupEvent extends Component {
     render () {
         const event = this.props.event
 
-        const renderHeader = () => {
+        const renderHeader = (number) => {
             return (
-                <div className="mte-header">
-                    <div className="mte-info">
-                        <div className="title">{event.title}</div>
-                        <div>{event.location}</div>
-                        <div>Start - {moment(event.start).local().format("MMM DD h:mm A")}</div>
-                        <div>End - {moment(event.end).local().format("MMM DD h:mm A")}</div>
+                <div className="meetup-event-header">
+                    <div className="inner-header smaller-header">
+                        <Typography variant="h5">#{number+1} - {event.title}</Typography>
+                        <div className="inner-header-middle">
+                            <div className="inner-header-icons"><ScheduleIcon/> {moment(event.start).local().format("h:mm A")} - {moment(event.end).local().format("h:mm A")}</div>
+                            <div className="inner-header-icons"><RoomIcon/>{event.location}</div>
+                        </div>
                         <div>
-                            {Object.keys(event.entries).map((entry,index) => <Chip key={index} variant="outlined" label={entry} color="primary"></Chip>)}
+                            {renderActions()}
                         </div>
                     </div>
-                    {renderActions()}
                 </div>
             )
         }
@@ -65,9 +67,13 @@ class MeetupEvent extends Component {
             
             return (
                 <div className="foursquare">
+                    <Grid container spacing={3}>
                     {keys.map((key) => 
-                        <Restauraunt socket={this.props.socket} key={key} full={true} event={this.props.event.id} meetup={this.props.uri} data={options[key]}/>
+                        <Grid item xs={6}>
+                            <Restauraunt socket={this.props.socket} key={key} full={true} event={this.props.event.id} meetup={this.props.uri} data={options[key]}/>
+                        </Grid>
                     )}
+                    </Grid>
                 </div>
             )
         }
@@ -85,9 +91,9 @@ class MeetupEvent extends Component {
         const renderFinalizeActions = () => {
             return (
                 <div className="mte-factions">
-                    {!this.props.chosen && <Button className="button" variant="contained" onClick={() => this.handleDecide()}>Decide</Button>}
-                    {!this.props.chosen && <Button className="button" variant="contained"onClick={() => this.handleRandom()}>Random</Button>}
-                    {this.props.chosen && <Button className="button" variant="contained" onClick={() => this.handleRedecide()}>Redecide</Button>}
+                    {!this.props.chosen && <Button className="button" size="small" variant="contained" color="primary" onClick={() => this.handleDecide()}>Decide</Button>}
+                    {!this.props.chosen && <Button className="button" size="small" variant="contained" color="primary"onClick={() => this.handleRandom()}>Random</Button>}
+                    {this.props.chosen && <Button className="button" size="small" variant="contained" color="primary" onClick={() => this.handleRedecide()}>Redecide</Button>}
                 </div>
             )
         }
@@ -105,12 +111,20 @@ class MeetupEvent extends Component {
         }
 
         return (
-            <Paper elevation={3} className="meetup-event">
-                {renderHeader()}
+            <div className="meetup-event">
+                {renderHeader(this.props.number)}
+                <div className="second-header smaller-header">
+                    <div className="second-header-left"><Typography variant="h6">Categories: </Typography>
+                    {Object.keys(event.entries).map((entry) => 
+                        <span className="category-chip">{entry}</span>
+                    )}
+                    </div>
+                    {renderFinalizeActions()}
+                </div>
                 {!this.props.chosen && renderFourSquare(event.options)}
                 {this.props.chosen && renderChosen(event.options[this.props.chosen])}
-                {renderFinalizeActions()}
-            </Paper>
+                
+            </div>
         )
     }
 }

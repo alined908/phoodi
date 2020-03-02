@@ -1,5 +1,69 @@
 [
     {
+        "model": "meetup.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$180000$XcyNkkMrbRNf$ZtHrYnELCAm5d6J88JO6klwUc+2SDqtihQNva0F3Kjo=",
+            "last_login": null,
+            "email": "daniel@gmail.com",
+            "first_name": "Daniel",
+            "last_name": null,
+            "active": true,
+            "admin": false,
+            "staff": false,
+            "confirmed": false,
+            "avatar": "avatar/blank_profile_pic.png"
+        }
+    },
+    {
+        "model": "meetup.user",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$180000$UJ5qX7utX1Gd$J6nMC7svSW5BvSaZKI1z0QNfXnRjrp5ClIpwW+Yl82w=",
+            "last_login": null,
+            "email": "s@gmail.com",
+            "first_name": "Sam",
+            "last_name": null,
+            "active": true,
+            "admin": false,
+            "staff": false,
+            "confirmed": false,
+            "avatar": "avatar/blank_profile_pic.png"
+        }
+    },
+    {
+        "model": "meetup.user",
+        "pk": 3,
+        "fields": {
+            "password": "pbkdf2_sha256$180000$ae9fSMe09QKN$0xvuwiHHHyTHTWS0oqREVhD/DllHTBXOVOiyxrdBI70=",
+            "last_login": "2020-03-01T22:36:15.755Z",
+            "email": "admin@gmail.com",
+            "first_name": "Admin",
+            "last_name": null,
+            "active": true,
+            "admin": true,
+            "staff": true,
+            "confirmed": false,
+            "avatar": "avatar/blank_profile_pic.png"
+        }
+    },
+    {
+        "model": "meetup.user",
+        "pk": 4,
+        "fields": {
+            "password": "pbkdf2_sha256$180000$wtuoaGa7xTHA$sMouUk7TwfGsbfIlUD6mqCGf1T+/j2Fi73xNHVJb2Xc=",
+            "last_login": null,
+            "email": "jimmy@gmail.com",
+            "first_name": "Jimmy",
+            "last_name": null,
+            "active": true,
+            "admin": false,
+            "staff": false,
+            "confirmed": false,
+            "avatar": "avatar/blank_profile_pic.png"
+        }
+    },
+    {
         "model": "meetup.category",
         "pk": 1,
         "fields": {
@@ -53,6 +117,24 @@
         "fields": {
             "label": "Mediterranean",
             "api_label": "mediterranean"
+        }
+    },
+    {
+        "model": "meetup.meetup",
+        "pk": 1,
+        "fields": {
+            "location": "Berkeley",
+            "name": "Let's get some food",
+            "date": "2020-03-03"
+        }
+    },
+    {
+        "model": "meetup.meetupmember",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "meetup": 1,
+            "admin": true
         }
     }
 ]

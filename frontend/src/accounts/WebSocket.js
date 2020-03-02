@@ -5,6 +5,7 @@ export default class WebSocketService{
         this.socketRef = null;
         this.waitForSocketConnection = this.waitForSocketConnection.bind(this)
         this.disconnect = this.disconnect.bind(this)
+        this.connect = this.connect.bind(this)
     }
 
     getCallbacks(){
@@ -27,8 +28,14 @@ export default class WebSocketService{
             console.log(e.message);
         };
 
-        this.socketRef.onclose = () => {
-            console.log("WebSocket closed");
+        this.socketRef.onclose = (e) => {
+            console.log(e)
+            switch(e.code){
+                case 1000: 
+                    this.socketRef.close()
+                default:
+                    this.connect(path)
+            }
         };
     }
 
@@ -96,7 +103,7 @@ export default class WebSocketService{
                     console.log("Wait for connection..");
                     recursion(callback);
                 }
-            }, 1000);
+            }, 10000);
     }
     //Chat commands
     fetchMessages(uri){

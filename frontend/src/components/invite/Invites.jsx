@@ -36,9 +36,9 @@ class Invites extends Component {
                         {!this.props.isMeetupInvitesInitialized ? 
                             <div>Initializing Meetup Invites..</div> : 
                             <>
-                                <Typography variant="h5">
-                                    Meetup Invites
-                                </Typography>
+                                <div className="inner-header">
+                                    <Typography variant="h5">Meetup Invites</Typography>
+                                </div>
                                 <div className="invites">
                                     {this.props.meetupInvites.map((inv) => 
                                         <Invite inv={inv} type={inviteType.meetup}></Invite>
@@ -51,9 +51,9 @@ class Invites extends Component {
                         {!this.props.isFriendInvitesInitialized ? 
                             <div>Initializing Friend Invites..</div> :
                             <>
-                                <Typography variant="h5">
-                                    Friend Invites
-                                </Typography>
+                                <div className="inner-header">
+                                    <Typography variant="h5">Friend Invites</Typography>
+                                </div>
                                 <div className="invites">
                                 {this.props.friendInvites.map((inv) => 
                                     <Invite inv={inv} type={inviteType.friend}></Invite>

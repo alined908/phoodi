@@ -7,6 +7,7 @@ import renderDatePicker from "./renderDatePicker";
 import {addMeetup} from "../../actions/meetup";
 import {Link} from 'react-router-dom'
 import renderTextField from '../renderTextField'
+import renderDateSimplePicker from "./renderDateSimplePicker"
 
 class MeetupForm extends Component {
 
@@ -36,7 +37,7 @@ class MeetupForm extends Component {
                                     <Field name="location" component={renderTextField} label="Location"/>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Field name="datetime" component={renderDatePicker} label="Date/Time"></Field>
+                                    <Field name="date" component={renderDateSimplePicker} label="Date"></Field>
                                 </Grid>
                                 <Grid style={{marginTop: "1rem"}} item xs={12}>
                                     <Fab type="submit" variant="extended" color="primary" aria-label="add">Add Meetup</Fab>

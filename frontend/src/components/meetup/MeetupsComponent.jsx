@@ -40,50 +40,67 @@ class MeetupsComponent extends Component {
                     {this.props.isMeetupsInitialized && <Link to="/meetups/new"><Button variant="contained" color="primary">Create Meetup</Button></Link>}
                 </div>
                 {past.length > 0 && 
-                    <div>
-                        <div className="meetup-cards">
-                            <Typography variant="h3">Past</Typography>
-                            <Grid container spacing={3}>
-                                {past.map((meetup) => 
-                                    <Grid item xs={4}>
-                                        <MeetupCard key={meetup.id} meetup={meetup}/>
-                                    </Grid>
-                                )}
-                            </Grid>
-                        </div>
-                    </div>
-                }
-                {today.length > 0 &&
-                <div>
+                    
                     <div className="meetup-cards">
-                        <Typography variant="h3">Today</Typography>
+                        
                         <Grid container spacing={3}>
-                        {today.map((meetup) => 
-                            <Grid item xs={4}>
-                                <MeetupCard key={meetup.id} meetup={meetup}/>
+                            <Grid item xs={6}>
+                                <div className="inner-header">
+                                    <Typography variant="h5">Past</Typography>
+                                </div>
                             </Grid>
-                        )}
+                            <Grid item xs={6}>
+
+                            </Grid>
+                            {past.map((meetup) => 
+                                <Grid item xs={4}>
+                                    <MeetupCard key={meetup.id} meetup={meetup}/>
+                                </Grid>
+                            )}
                         </Grid>
                     </div>
-                </div>
+                    
                 }
-                {week.length > 0  && 
-                    <div>
-                        <div className="meetup-cards">
-                            <Typography variant="h3">Week</Typography>
-                            <Grid container spacing={3}>
-                                {week.map((meetup) => 
-                                    <Grid item xs={4}>
-                                        <MeetupCard key={meetup.id} meetup={meetup}/>
-                                    </Grid>
-                                )}
+                {today.length > 0 &&
+                    <div className="meetup-cards">
+                        <Grid container spacing={3}>
+                            <Grid item xs={6}>
+                                <div className="inner-header">
+                                    <Typography variant="h5">Today</Typography>
+                                </div>
                             </Grid>
-                        </div>
+                            <Grid item xs={6}>
+                                
+                            </Grid>
+                            {today.map((meetup) => 
+                                <Grid item xs={4}>
+                                    <MeetupCard key={meetup.id} meetup={meetup}/>
+                                </Grid>
+                            )}
+                        </Grid>
                     </div>
                 }
-                {later.length > 0 && <div>
+                {week.length > 0  && 
+                    
                     <div className="meetup-cards">
-                        <Typography variant="h3">Later</Typography>
+                        <div className="inner-header">
+                            <Typography variant="h5">Week</Typography>
+                        </div>
+                        <Grid container spacing={3}>
+                            {week.map((meetup) => 
+                                <Grid item xs={4}>
+                                    <MeetupCard key={meetup.id} meetup={meetup}/>
+                                </Grid>
+                            )}
+                        </Grid>
+                    </div>
+                    
+                }
+                {later.length > 0 && 
+                    <div className="meetup-cards">
+                        <div className="inner-header">
+                            <Typography variant="h5">Later</Typography>
+                        </div>
                         <Grid container spacing={3}>
                         {later.map((meetup) => 
                             <Grid item xs={4}>
@@ -92,7 +109,7 @@ class MeetupsComponent extends Component {
                         )}
                         </Grid>
                     </div>
-                </div> }
+                 }
             </div>
         )
     }

@@ -2,7 +2,8 @@ import {GET_NOTIFS, REMOVE_NOTIFS, CLEAR_STORE} from '../constants/action-types'
 
 const defaultState = {
     chat: null,
-    invite: null,
+    friend_inv: null,
+    meetup_inv: null,
     meetup: null,
 }
 

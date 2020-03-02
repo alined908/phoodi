@@ -108,7 +108,7 @@ class MeetupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Meetup
-        fields = ('id', 'name', 'uri', 'location', 'datetime', 'members', 'notifs')
+        fields = ('id', 'name', 'uri', 'location', 'date', 'members', 'notifs')
 
 class MeetupEventOptionVoteSerializer(serializers.ModelSerializer):
     def to_representation(self, data):

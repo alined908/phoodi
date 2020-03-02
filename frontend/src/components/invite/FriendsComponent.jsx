@@ -15,7 +15,9 @@ class FriendsComponent extends Component{
         return (
             <div className="inner-wrap">   
                 {!this.props.isFriendsInitialized && <div>...Initializing Friends</div>}
-                {this.props.isFriendsInitialized && <Typography variant="h5">Friends</Typography>}
+                {this.props.isFriendsInitialized && <div className="inner-header">
+                            <Typography variant="h5">Friends</Typography>
+                        </div>}
                 <div className="friends">
                     <Grid container spacing={3}>
                         {this.props.isFriendsInitialized && this.props.friends.map((friend) => 

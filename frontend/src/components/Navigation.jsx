@@ -101,17 +101,19 @@ const Navigation = (props) => {
   const theme = useTheme();
   var drawerState = (localStorage.getItem("drawer") === null) ? drawerState = false : JSON.parse(localStorage.getItem("drawer"))
   const [open, setOpen] = React.useState(drawerState);
+  const [ws, setWS] = React.useState(false)
 
   React.useEffect(() => {
-    var socket = null;
-    if (props.user && props.authenticated) {
+    console.log("component mount called")
+    var socket;
+    if (props.authenticated && !ws) {
       socket = new WebSocketService()
       socket.addNotifCallbacks(props.getNumberNotifs)
       var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
       const path = `${ws_scheme}://localhost:8000/ws/user/${props.user.id}/`;
       socket.connect(path);
-      console.log(socket.state())
       socket.waitForSocketConnection(() => socket.fetchNotifications({user: props.user.id}))
+      setWS(true)
     }
 
     return () => {
@@ -191,7 +193,7 @@ const Navigation = (props) => {
           {props.authenticated && <Link to="/friends">
               <ListItem button key="Friends">
                 <ListItemIcon>
-                  <PermContactCalendarIcon/>
+                <LiveUpdatingBadge type={'friend'} icon={<PermContactCalendarIcon/>} />
                 </ListItemIcon>
                 <ListItemText classes={{primary: classes.drawerText}} primary="Friends"/>
               </ListItem>

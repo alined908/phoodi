@@ -109,8 +109,9 @@ class UserNotificationConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def fetch_inv_notifs(self, user):
         user_obj = User.objects.get(pk=user)
-        inv_notifs = user_obj.notifications.filter(description="invite").unread().count()
-        return inv_notifs
+        friend_inv_notifs = user_obj.notifications.filter(description="friend_invite").unread().count()
+        meetup_inv_notifs = user_obj.notifications.filter(description="meetup_invite").unread().count()
+        return friend_inv_notifs, meetup_inv_notifs
 
     @sync_to_async
     def fetch_meetup_notifs(self, user):
@@ -118,15 +119,28 @@ class UserNotificationConsumer(AsyncWebsocketConsumer):
         meetup_notifs = user_obj.notifications.filter(description="meetup").unread().count()
         return meetup_notifs
 
+    @sync_to_async
+    def fetch_friend_notifs(self, user):
+        user_obj = User.objects.get(pk=user)
+        friend_notifs = user_obj.notifications.filter(description="friend").unread().count()
+        return friend_notifs
+
     async def fetch_notifications(self, command):
         data = command['data']
         user = data['user']
         chat_notifs = await self.fetch_chat_notifs(user)
-        inv_notifs = await self.fetch_inv_notifs(user)
+        friend_inv_notifs, meetup_inv_notifs = await self.fetch_inv_notifs(user)
         meetup_notifs = await self.fetch_meetup_notifs(user)
+        friend_notifs = await self.fetch_friend_notifs(user)
         content = {
             'command': 'fetch_notifs',
-            'message': {"chat": chat_notifs, "invite": inv_notifs, "meetup": meetup_notifs}
+            'message': {
+                            "chat": chat_notifs, 
+                            "friend_inv": friend_inv_notifs, 
+                            "meetup_inv": meetup_inv_notifs,
+                            "meetup": meetup_notifs,
+                            "friend": friend_notifs
+                        }
         }
 
         await self.channel_layer.group_send(

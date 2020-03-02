@@ -3,6 +3,7 @@ import {Button} from "@material-ui/core"
 import {connect} from 'react-redux'
 import {respondFriendInvite, respondMeetupInvite} from '../../actions/invite'
 import {inviteType, inviteStatus} from '../../constants/default-states'
+import {removeNotifs} from "../../actions/notifications"
 import {Paper} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 
@@ -17,6 +18,7 @@ class Invite extends Component {
 
     handleClick = (inv, newStatus, type) => {
         type === inviteType.meetup ? this.props.respondMeetupInvite(inv.meetup.uri, inv.uri, newStatus) : this.props.respondFriendInvite(inv.uri, newStatus)
+        type === inviteType.meetup ? this.props.removeNotifs({type: "meetup_invite", id: inv.id}) :this.props.removeNotifs({type: "friend_invite", id: inv.id})
         this.setState({responded: true, status: newStatus})
     }
     
@@ -51,7 +53,8 @@ class Invite extends Component {
 
 const mapDispatchToProps = {
     respondFriendInvite,
-    respondMeetupInvite
+    respondMeetupInvite,
+    removeNotifs
 }
 
 

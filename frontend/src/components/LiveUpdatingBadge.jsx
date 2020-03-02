@@ -9,8 +9,10 @@ class LiveUpdatingBadge extends Component {
             return this.props.notifs.chat
         } else if (type === 'meetup'){
             return this.props.notifs.meetup
+        } else if (type === 'friend') {
+            return this.props.notifs.friend
         } else if (type === 'invite'){
-            return this.props.notifs.invite
+            return this.props.notifs.friend_inv + this.props.notifs.meetup_inv
         }
     }
 

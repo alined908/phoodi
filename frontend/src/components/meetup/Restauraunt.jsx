@@ -11,8 +11,6 @@ import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarHalfIcon from '@material-ui/icons/StarHalf';
-import IconButton from '@material-ui/core/IconButton';
-import Chip from '@material-ui/core/Chip';
 
 class Restauraunt extends Component {
 
@@ -71,19 +69,19 @@ class Restauraunt extends Component {
         const [like, dislike, ban] = [this.determineClicked(status, voteStatus.like), this.determineClicked(status, voteStatus.dislike), this.determineClicked(status, voteStatus.ban)]
         return (
             <div className="rst-actions">
-                <div>
-                    {!like && <ThumbUpOutlinedIcon fontSize="large" onClick={() => this.handleClick(voteStatus.like)}/>}
-                    {like && <ThumbUpIcon color="primary" fontSize="large" onClick={() => this.handleClick(voteStatus.like)}/>}
+                <div className="rst-action-icon">
+                    {!like && <ThumbUpOutlinedIcon  onClick={() => this.handleClick(voteStatus.like)}/>}
+                    {like && <ThumbUpIcon color="primary" onClick={() => this.handleClick(voteStatus.like)}/>}
                     <span className="rst-action-score">{scores[1]}</span>
                 </div>
-                <div>
-                    {!dislike && <ThumbDownOutlinedIcon fontSize="large" onClick={() => this.handleClick(voteStatus.dislike)}/>}
-                    {dislike && <ThumbDownIcon fontSize="large" onClick={() => this.handleClick(voteStatus.dislike)}/>}
+                <div className="rst-action-icon">
+                    {!dislike && <ThumbDownOutlinedIcon onClick={() => this.handleClick(voteStatus.dislike)}/>}
+                    {dislike && <ThumbDownIcon onClick={() => this.handleClick(voteStatus.dislike)}/>}
                     <span className="rst-action-score">{scores[2]}</span>
                 </div>
-                <div>
-                    {ban && <CancelIcon color="secondary" fontSize="large" onClick={() => this.handleClick(voteStatus.ban)}/>}
-                    {!ban && <CancelOutlinedIcon fontSize="large" onClick={() => this.handleClick(voteStatus.ban)}/>}
+                <div className="rst-action-icon">
+                    {ban && <CancelIcon color="secondary" onClick={() => this.handleClick(voteStatus.ban)}/>}
+                    {!ban && <CancelOutlinedIcon  onClick={() => this.handleClick(voteStatus.ban)}/>}
                     <span className="rst-action-score">{scores[3]}</span>
                 </div>
             </div>
@@ -92,7 +90,7 @@ class Restauraunt extends Component {
 
     renderRestauraunt = (data) => {
         return (   
-            <div>
+            <>
                 <div className="rst">
                     <div className="rst-info">
                         <span className="rst-name">{data.name}</span>
@@ -101,8 +99,12 @@ class Restauraunt extends Component {
                     <div className="rst-img" style={{backgroundImage: `url(${data.image_url})`}}>
                     </div>
                 </div>
-                <div className="rst-categories">{data.price} &#8226; {data.categories.map((category) => <Chip variant="outlined" label={category.title} color="primary"></Chip>)}</div>
-            </div>
+                <div className="rst-categories">{data.price} &#8226; {data.categories.map((category) =>
+                    <div className="category-chip">{category.title}</div>
+                    )}
+                 
+                </div>
+            </>
         )
     }
 
@@ -113,15 +115,9 @@ class Restauraunt extends Component {
 
         if (this.props.full) {
             return (
-                <div className="rst-wrapper">
-                    <div className="rst-score">
-                        <div>{this.props.option.score}</div>
-                    </div>
-                    <div className="rst-inner-wrapper">
-                        {this.renderRestauraunt(data)}
-                        {this.renderActions(status, scores)}
-                    </div>
-                    
+                <div className="rst-inner-wrapper">
+                    {this.renderRestauraunt(data)}
+                    {this.renderActions(status, scores)}
                 </div>
             )
         } else {

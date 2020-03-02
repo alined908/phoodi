@@ -7,8 +7,14 @@ import {getFriends} from "../../actions/friend"
 import {Link} from 'react-router-dom'
 import moment from 'moment';
 import MeetupFriend from "./MeetupFriend"
-import {Grid, Paper, Button} from "@material-ui/core"
+import {Grid, Paper, Button, Typography} from "@material-ui/core"
 import WebSocketService from "../../accounts/WebSocket"
+import ScheduleIcon from '@material-ui/icons/Schedule';
+import DeleteIcon from '@material-ui/icons/Delete';
+import RoomIcon from '@material-ui/icons/Room';
+import ChatIcon from '@material-ui/icons/Chat';
+import EmailIcon from '@material-ui/icons/Email';
+import AddIcon from '@material-ui/icons/Add';
 
 class Meetup extends Component {
     constructor(props){
@@ -53,18 +59,24 @@ class Meetup extends Component {
         
         const renderInformation = (name, datetime, location) => {
             return (
-                <Paper className="paper" elevation={3}>
-                    <div className="title">{name}</div>
-                    <div>{moment(datetime).local().format("MMM DD h:mm A")}</div>
-                    <div>{location}</div>
-                </Paper>
+                <div className="inner-header">
+                    <Typography variant="h5">{name}</Typography>
+                    <div className="inner-header-middle">
+                        <div className="inner-header-icons"><ScheduleIcon/> {moment(datetime).local().format("dddd, MMMM D")}</div>
+                        <div className="inner-header-icons"><RoomIcon/> {location}</div>
+                    </div>
+                    <div>
+                        <Link to={`/chat/${this.props.uri}`}><Button startIcon={<ChatIcon />} className="button" color="primary" variant="contained">Chat</Button></Link>
+                        <Button startIcon={<EmailIcon />} className="button" variant="contained" onClick={() => this.handleEmail()}>Notify</Button>
+                        <Button startIcon={<DeleteIcon />} className="button" variant="contained" color="secondary" onClick={() => this.handleDelete()}>Delete</Button>
+                    </div>
+                </div>
             )
         }
 
         const renderFriends = () => {
             return (
                 <Paper className="paper" elevation={3}>
-                    {this.props.isFriendsInitialized && <div className="title">Friends</div>}
                     {this.props.isFriendsInitialized && this.props.friends.map((friendship) => <MeetupFriend key={friendship.id} friend={friendship.user} isMember={isMember(friendship.user.id)} uri={uri}></MeetupFriend>)}
                 </Paper>
             )
@@ -73,7 +85,6 @@ class Meetup extends Component {
         const renderMembers = (members) => {
             return (
                 <Paper className="paper" elevation={3}>
-                    <div className="title">Members</div>
                     {Object.keys(members).map((key) => <div key={members[key].id}>{members[key].email + " "}</div>)}
                 </Paper>
             )
@@ -81,44 +92,42 @@ class Meetup extends Component {
 
         const renderEvents = (events) => {
             return (
-                <div>
+                <>
                     {!this.props.isMeetupEventsInitialized && <div>Initializing Events</div>}
-                    {this.props.isMeetupEventsInitialized && events && Object.keys(events).map((event) => 
-                        <MeetupEvent socket={this.state.socket} key={event.id} uri={uri} event={events[event]}></MeetupEvent> 
+                    {this.props.isMeetupEventsInitialized && events && Object.keys(events).map((event, index) => 
+                        <MeetupEvent number={index} socket={this.state.socket} key={event.id} uri={uri} event={events[event]}></MeetupEvent> 
                     )}
-                </div>
-            )
-        }
-
-        const renderActions = () => {
-            return (
-                <Paper className="paper" elevation={3}>
-                    <Link socket={this.state.socket} to={`/meetups/${this.props.uri}/new`}><Button className="button" variant="contained" color="primary">Add Event</Button></Link>
-                    <Button className="button" variant="contained" color="secondary" onClick={() => this.handleDelete()}>Delete Meetup</Button>
-                    <Button className="button" variant="contained" onClick={() => this.handleEmail()}>Notify Members</Button>
-                    <Link to={`/chat/${this.props.uri}`}><Button className="button" variant="contained">Go to Chat</Button></Link>
-                </Paper>
+                </>
             )
         }
 
         return (
             <div className="inner-wrap">
                 <Grid container spacing={3}>
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                         {renderInformation(name, datetime, location)}
                     </Grid>
                     <Grid item xs={6}>
+                        <div className="inner-header">
+                            <Typography variant="h5">Members</Typography>
+                        </div>
                         {renderMembers(members)}
                     </Grid>
-                    <Grid item xs={12}>
-                        {renderEvents(events)}
-                    </Grid>
                     <Grid item xs={6}>
+                        <div className="inner-header">
+                            <Typography variant="h5">Friends</Typography>
+                        </div>
                         {renderFriends()}
                     </Grid>
-                    <Grid item xs={6}>
-                        {renderActions()}
+                    <Grid item xs={12}>
+                        <div className="inner-header">
+                            <Typography variant="h5">Events</Typography>
+                            <Link socket={this.state.socket} to={`/meetups/${this.props.uri}/new`}><Button startIcon={<AddIcon />} className="button" variant="contained" color="primary">Event</Button></Link>
+                        </div>
                     </Grid>
+                    <Grid item xs={12}>{renderEvents(events)}</Grid>
+                    
+                    
                 </Grid>
             </div>
         )
