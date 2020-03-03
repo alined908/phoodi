@@ -11,6 +11,8 @@ import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarHalfIcon from '@material-ui/icons/StarHalf';
+import RoomIcon from '@material-ui/icons/Room';
+import PhoneIcon from '@material-ui/icons/Phone';
 
 class Restauraunt extends Component {
 
@@ -70,18 +72,18 @@ class Restauraunt extends Component {
         return (
             <div className="rst-actions">
                 <div className="rst-action-icon">
-                    {!like && <ThumbUpOutlinedIcon  onClick={() => this.handleClick(voteStatus.like)}/>}
-                    {like && <ThumbUpIcon color="primary" onClick={() => this.handleClick(voteStatus.like)}/>}
+                    {!like && <ThumbUpOutlinedIcon  className="clickable" onClick={() => this.handleClick(voteStatus.like)}/>}
+                    {like && <ThumbUpIcon className="clickable" color="primary" onClick={() => this.handleClick(voteStatus.like)}/>}
                     <span className="rst-action-score">{scores[1]}</span>
                 </div>
                 <div className="rst-action-icon">
-                    {!dislike && <ThumbDownOutlinedIcon onClick={() => this.handleClick(voteStatus.dislike)}/>}
-                    {dislike && <ThumbDownIcon onClick={() => this.handleClick(voteStatus.dislike)}/>}
+                    {!dislike && <ThumbDownOutlinedIcon className="clickable" onClick={() => this.handleClick(voteStatus.dislike)}/>}
+                    {dislike && <ThumbDownIcon className="clickable" onClick={() => this.handleClick(voteStatus.dislike)}/>}
                     <span className="rst-action-score">{scores[2]}</span>
                 </div>
                 <div className="rst-action-icon">
-                    {ban && <CancelIcon color="secondary" onClick={() => this.handleClick(voteStatus.ban)}/>}
-                    {!ban && <CancelOutlinedIcon  onClick={() => this.handleClick(voteStatus.ban)}/>}
+                    {ban && <CancelIcon className="clickable" color="secondary" onClick={() => this.handleClick(voteStatus.ban)}/>}
+                    {!ban && <CancelOutlinedIcon  className="clickable" onClick={() => this.handleClick(voteStatus.ban)}/>}
                     <span className="rst-action-score">{scores[3]}</span>
                 </div>
             </div>
@@ -108,6 +110,19 @@ class Restauraunt extends Component {
         )
     }
 
+    formatPhoneNumber = (str) => {
+        let cleaned = ('' + str).replace(/\D/g, '');
+        let match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
+        
+        if (match) {
+
+          let intlCode = (match[1] ? '+1 ' : '')
+          return ['(', match[2], ') ', match[3], '-', match[4]].join('')
+        }
+        
+        return null;
+      }
+
     render (){
         const data = JSON.parse(this.props.option.option)
         const scores = this.determineNumVotes()
@@ -125,8 +140,8 @@ class Restauraunt extends Component {
                 <div className="rst-horizontal">  
                     {this.renderRestauraunt(data)}
                     <div className="rst-horz-info">
-                        <div>{data.location.address1}, {data.location.city} {data.location.state} {data.location.zip_code}</div>
-                        <div>{data.phone}</div>
+                        <div className="rst-horz-info-entry"><RoomIcon/> {data.location.address1}, {data.location.city} {data.location.state} {data.location.zip_code}</div>
+                        <div className="rst-horz-info-entry"><PhoneIcon/> {this.formatPhoneNumber(data.phone)}</div>
                     </div>
                 </div>
             )

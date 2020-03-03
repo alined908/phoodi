@@ -103,7 +103,7 @@ export default class WebSocketService{
                     console.log("Wait for connection..");
                     recursion(callback);
                 }
-            }, 10000);
+            }, 1000);
     }
     //Chat commands
     fetchMessages(uri){

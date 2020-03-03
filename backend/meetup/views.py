@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework import permissions, status
 import collections
+from datetime import datetime
 from django.forms.models import model_to_dict
 from meetup.serializers import CategorySerializer, UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer, FriendInviteSerializer, MeetupEventSerializer
 
@@ -75,7 +76,11 @@ class MeetupListView(APIView):
 
     def post(self, request, *args, **kwargs):
         user = request.user
-        meetup = Meetup.objects.create(date=request.data['date'], location = request.data['location'])
+        date = request.data['date'].split("T")[0]
+        print(request.data['date'])
+        print(date)
+        name = request.data['name']
+        meetup = Meetup.objects.create(date=date, location = request.data['location'], name=request.data['name'])
         meetup.members.create(user=user, meetup=meetup)
 
         return Response({'status': 'Success', 'meetup': MeetupSerializer(meetup, context={"user": user}).data, 'message': "new meetup created"})
@@ -119,8 +124,8 @@ class MeetupEventsListView(APIView):
         uri = kwargs['uri']
         meetup = get_object_or_404(Meetup, uri=uri)
         creator = MeetupMember.objects.get(meetup=meetup, user=user)
-        location, start, end, title, distance, price, entries = request.data['location'], request.data['start'], request.data['end'], request.data['title'], request.data['distance'], request.data['prices'], request.data['entries']
-        event = MeetupEvent.objects.create(creator=creator, meetup=meetup, location=location, start=start, end=end, title=title, entries=entries, distance=distance, price=price)
+        start, end, title, distance, price, entries = request.data['start'], request.data['end'], request.data['title'], request.data['distance'], request.data['prices'], request.data['entries']
+        event = MeetupEvent.objects.create(creator=creator, meetup=meetup, start=start, end=end, title=title, entries=entries, distance=distance, price=price)
         serializer = MeetupEventSerializer(event)
         return Response({'meetup': uri, 'event': {event.id: serializer.data}})
 
@@ -443,8 +448,12 @@ class NotificationView(APIView):
 
     def delete(self, request, *args, **kwargs):
         user = request.user
-        description, id = request.data['type'], request.data['id']
-        user.notifications.filter(actor_object_id = id, description=description).mark_all_as_read()
+        description = request.data['type']
+        if 'id' in request.data:
+            id = request.data['id']
+            user.notifications.filter(actor_object_id = id, description=description).mark_all_as_read()
+        else:
+            user.notifications.filter(description=description).mark_all_as_read()
         count = user.notifications.filter(description=description).unread().count()
         return Response({description: count})
 

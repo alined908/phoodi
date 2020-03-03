@@ -32,9 +32,11 @@ export const getMeetup = (uri) => async dispatch => {
 export const addMeetup = (formProps, redirectOnSuccess) => async dispatch => {
     console.log("add meetup called")
     console.log(formProps);
+    var params = {...formProps, 
+        date: formProps.date.getFullYear()+ "-" + ("0"+(formProps.date.getMonth()+1)).slice(-2) + "-" + ("0" + formProps.date.getDate()).slice(-2)}
     try {
         const response = await axios.post(
-            `http://localhost:8000/api/meetups/`, formProps, {headers: {
+            `http://localhost:8000/api/meetups/`, params, {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
         }})
         dispatch({type: ADD_MEETUP, payload: response.data.meetup})

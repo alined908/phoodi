@@ -7,7 +7,7 @@ import {getFriends} from "../../actions/friend"
 import {Link} from 'react-router-dom'
 import moment from 'moment';
 import MeetupFriend from "./MeetupFriend"
-import {Grid, Paper, Button, Typography} from "@material-ui/core"
+import {Grid, Paper, Button, Typography, Avatar, List, ListItem, ListItemText, Divider, ListItemAvatar} from "@material-ui/core"
 import WebSocketService from "../../accounts/WebSocket"
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -76,17 +76,44 @@ class Meetup extends Component {
 
         const renderFriends = () => {
             return (
-                <Paper className="paper" elevation={3}>
-                    {this.props.isFriendsInitialized && this.props.friends.map((friendship) => <MeetupFriend key={friendship.id} friend={friendship.user} isMember={isMember(friendship.user.id)} uri={uri}></MeetupFriend>)}
-                </Paper>
+                <div className='outer-shell'>
+                    <List style={{width: "100%"}}>
+                        {this.props.friends.map((friend) => 
+                            <MeetupFriend 
+                            key={friend.id} 
+                            friend={friend.user} 
+                            isMember={isMember(friend.user.id)} 
+                            uri={uri}/>
+                        )}
+                    </List>
+                </div>
             )
         }
 
         const renderMembers = (members) => {
             return (
-                <Paper className="paper" elevation={3}>
-                    {Object.keys(members).map((key) => <div key={members[key].id}>{members[key].email + " "}</div>)}
-                </Paper>
+
+                <div className="outer-shell">
+                    <List style={{width: "100%"}}>
+                        {Object.keys(members).map((key) => 
+                            <Link to={`/profile/${members[key].id}`}>
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar src={members[key].avatar}/>
+                                    </ListItemAvatar>
+                                    <ListItemText  primary={members[key].first_name} secondary={<>
+                                        <Typography component="span" color="inherit" variant="body2"> 
+                                            {members[key].email + " "}
+                                        </Typography>
+                                        </>
+                                    }>
+                                    </ListItemText>
+                                </ListItem>
+                            </Link>
+                        )}
+                    </List>
+                    
+                </div>
             )
         }
 

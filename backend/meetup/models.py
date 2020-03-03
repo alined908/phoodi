@@ -182,10 +182,9 @@ class MeetupEvent(models.Model):
     meetup = models.ForeignKey(Meetup, related_name="events", on_delete=models.CASCADE)
     creator = models.ForeignKey(MeetupMember, related_name="created_events", on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
-    location = models.TextField()
     distance = models.IntegerField()
     price = models.CharField(max_length=10)
-    start = models.DateTimeField(blank=True, null=True)
+    start = models.DateTimeField()
     end = models.DateTimeField(blank=True, null=True)
     chosen = models.IntegerField(blank=True, null=True) 
     entries = JSONField()
@@ -203,7 +202,7 @@ class MeetupEvent(models.Model):
             else:
                 categories += key + ", "
 
-        params = {"location": self.location, "limit": 30, "categories": categories, "radius": self.distance, "price": self.price}
+        params = {"location": self.meetup.location, "limit": 30, "categories": categories, "radius": self.distance, "price": self.price}
         r = requests.get(url=url, params=params, headers=headers)
         options = r.json()['businesses']
         random.shuffle(options)
@@ -214,9 +213,9 @@ class MeetupEvent(models.Model):
 @receiver(post_save, sender = MeetupEvent)
 def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
     from .serializers import MeetupEventSerializer
-    instance.generate_options()
-    channel_layer = get_channel_layer()
     if created:
+        channel_layer = get_channel_layer()
+        instance.generate_options()
         meetup = instance.meetup
         #Handle Notif Update
         for member in meetup.members.all():

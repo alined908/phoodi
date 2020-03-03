@@ -6,9 +6,10 @@ export const getNumberNotifs = (event) => async dispatch => {
 }
 
 export const removeNotifs = (data) => async dispatch => {
+    console.log(data)
     try {
         const response = await axios.delete(
-            'http://localhost:8000/api/notifs/', data, {headers: {
+            'http://localhost:8000/api/notifs/', {data: data, headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
         }})
         console.log(response)

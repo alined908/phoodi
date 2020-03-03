@@ -7,15 +7,12 @@ import RoomIcon from '@material-ui/icons/Room';
 import {Link} from 'react-router-dom'
 import moment from 'moment';
 
-const random = Math.floor(Math.random() * 5) + 1; 
-
 const useStyles = makeStyles({
     paper: {
         width: "100%",
         height: "350px",
     },
     middle: {
-        backgroundImage: 'url(' + require(`../../assets/images/img${random}.jpg`) + ')',
         backgroundPosition: 'center', 
         backgroundSize: 'cover', 
         backgroundRepeat: 'no-repeat',

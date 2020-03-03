@@ -8,11 +8,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import CachedIcon from "@material-ui/icons/Cached";
 import EditIcon from '@material-ui/icons/Edit';
 import {IconButton, Typography, Grid} from '@material-ui/core'
-import Chip from '@material-ui/core/Chip';
 import {compose} from 'redux';
 import Map from "./Map"
 import ScheduleIcon from '@material-ui/icons/Schedule';
-import RoomIcon from '@material-ui/icons/Room';
 
 class MeetupEvent extends Component {
 
@@ -42,6 +40,14 @@ class MeetupEvent extends Component {
         this.props.socket.redecideMeetupEvent({meetup: this.props.uri, event:this.props.event.id})
     }
 
+    handlePriceChips = (prices) => {
+        var priceList = prices.replace(/\s/g, '').split(",");
+        for (var i = 0; i < priceList.length; i++){
+            priceList[i] = "$".repeat(parseInt(priceList[i]))
+        }
+        return priceList;
+    }
+
     render () {
         const event = this.props.event
 
@@ -52,7 +58,6 @@ class MeetupEvent extends Component {
                         <Typography variant="h5">#{number+1} - {event.title}</Typography>
                         <div className="inner-header-middle">
                             <div className="inner-header-icons"><ScheduleIcon/> {moment(event.start).local().format("h:mm A")} - {moment(event.end).local().format("h:mm A")}</div>
-                            <div className="inner-header-icons"><RoomIcon/>{event.location}</div>
                         </div>
                         <div>
                             {renderActions()}
@@ -67,7 +72,7 @@ class MeetupEvent extends Component {
             
             return (
                 <div className="foursquare">
-                    <Grid container spacing={3}>
+                    <Grid justify="center" container spacing={3}>
                     {keys.map((key) => 
                         <Grid item xs={6}>
                             <Restauraunt socket={this.props.socket} key={key} full={true} event={this.props.event.id} meetup={this.props.uri} data={options[key]}/>
@@ -114,10 +119,24 @@ class MeetupEvent extends Component {
             <div className="meetup-event">
                 {renderHeader(this.props.number)}
                 <div className="second-header smaller-header">
-                    <div className="second-header-left"><Typography variant="h6">Categories: </Typography>
-                    {Object.keys(event.entries).map((entry) => 
-                        <span className="category-chip">{entry}</span>
-                    )}
+                    <div className="second-header-left">
+                        <Typography variant="h6">Categories - </Typography>
+                        {Object.keys(event.entries).map((entry) => 
+                            <span className="category-chip">{entry}</span>
+                        )}
+                    </div>
+                    <div className="second-header-left">
+                        <Typography variant="h6">Price - </Typography>  
+                        {(this.handlePriceChips(event.price)).map((price) => 
+                            <span className="category-chip">{price}</span>
+                        )
+                        }
+                    </div>
+                    <div className="second-header-left">
+                        <Typography variant="h6">Distance - </Typography>
+                        <span className="category-chip">
+                            {(Math.round(event.distance * 0.000621371192)).toFixed(2)}
+                        </span>
                     </div>
                     {renderFinalizeActions()}
                 </div>

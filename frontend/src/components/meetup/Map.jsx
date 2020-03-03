@@ -13,7 +13,7 @@ class Map extends Component {
           viewport: {
             latitude: this.props.location[0],
             longitude: this.props.location[1],
-            zoom: 12.5,
+            zoom: 14,
             bearing: 0,
             pitch: 0
           }
@@ -24,7 +24,7 @@ class Map extends Component {
         const viewport = {
             ...this.state.viewport,
             zoom: 15,
-            transitionDuration: 6000,
+            transitionDuration: 10000,
             transitionInterpolator: new FlyToInterpolator(),
             transitionEasing: d3.easeSin
         }

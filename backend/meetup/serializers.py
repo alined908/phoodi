@@ -102,6 +102,8 @@ class MeetupSerializer(serializers.ModelSerializer):
         return mapping
 
     def _get_notifs(self, obj):
+        if 'user' not in self.context:
+            return 0
         user =  self.context['user']
         notifs = user.notifications.filter(actor_object_id=obj.id, description="meetup").unread()
         return notifs.count()
@@ -147,7 +149,7 @@ class MeetupEventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MeetupEvent
-        fields = ('id', 'meetup', 'title', 'location', 'start', 'end', 'chosen', 'entries', 'options')
+        fields = ('id', 'meetup', 'title', 'start', 'end', 'chosen', 'entries', 'options', 'price', 'distance')
 
 class MeetupMemberSerializer(serializers.ModelSerializer):
     member = serializers.SerializerMethodField('_get_member')

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {getFriends, addFriend, deleteFriend} from "../../actions/friend"
 import {connect} from 'react-redux'
 import {Button, Typography, Paper, Grid} from '@material-ui/core';
+import {removeNotifs} from "../../actions/notifications"
 import moment from "moment"
 import {Link} from 'react-router-dom'
 
@@ -9,6 +10,11 @@ class FriendsComponent extends Component{
 
     componentDidMount(){    
         this.props.getFriends(this.props.user.id);
+        if (this.props.notifs !== null && this.props.notifs > 0){
+            console.log(this.props.notifs)
+            console.log("hello")
+            this.props.removeNotifs({type: "friend"})
+        }
     }
 
     render(){
@@ -45,6 +51,7 @@ function mapStateToProps(state){
         user: state.user.user,
         friends: state.user.friends,
         isFriendsInitialized: state.user.isFriendsInitialized,
+        notifs: state.notifs.friend
     }
 }
 
@@ -52,6 +59,7 @@ const mapDispatchToProps = {
     getFriends,
     addFriend,
     deleteFriend,
+    removeNotifs
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FriendsComponent)

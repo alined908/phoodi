@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {reduxForm, Field} from 'redux-form';
 import {compose} from 'redux';
 import {Button, Typography, Paper, Grid, Fab} from '@material-ui/core';
-import renderDatePicker from "./renderDatePicker";
 import {addMeetup} from "../../actions/meetup";
 import {Link} from 'react-router-dom'
 import renderTextField from '../renderTextField'
@@ -32,6 +31,9 @@ class MeetupForm extends Component {
                             <Grid container style={{padding: "1rem"}} spacing={3}>
                                 <Grid item xs={12}>
                                     <Typography variant="h6">Meetup Information</Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Field name="name" component={renderTextField} label="Name"/>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Field name="location" component={renderTextField} label="Location"/>

@@ -74,6 +74,8 @@ class MeetupEventForm extends Component {
 
     render () {
         const {handleSubmit} = this.props;
+        var date = this.props.meetup.date.split("-")
+        const maxDate = new Date(date[0], date[1] + 1, date[2])
 
         return (
             <div className="inner-wrap">
@@ -88,14 +90,12 @@ class MeetupEventForm extends Component {
                                 <Grid item xs={12}>
                                     <Typography variant="h6">Meetup Event Information</Typography>
                                 </Grid>
-                                <Grid item xs={6}>
-                                    <Field name="title" component={renderTextField} label="Event Name"></Field>
+                                <Grid item xs={12}>
+                                    <Field required name="title" component={renderTextField} label="Event Name"></Field>
                                 </Grid>
+                
                                 <Grid item xs={6}>
-                                    <Field name="location" component={renderTextField} label="Location"></Field>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Field name="start" component={renderDatePicker} label="Start"></Field>
+                                    <Field required name="start" component={renderDatePicker} label="Start" {...{maxDate: maxDate}}></Field>
                                 </Grid>
                                 <Grid item xs={6}>
                                     <Field name="end" component={renderDatePicker} label="End"></Field>
@@ -146,12 +146,18 @@ class MeetupEventForm extends Component {
     }
 }
 
+function mapStateToProps(state, ownProps){
+    return {
+        meetup: state.meetup.meetups[ownProps.match.params.uri]
+    }
+}
+
 
 const mapDispatchToProps = {
     addMeetupEvent,
 }
 
 export default compose (
-    connect(null, mapDispatchToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     reduxForm({form: 'event'})
 )(MeetupEventForm);
