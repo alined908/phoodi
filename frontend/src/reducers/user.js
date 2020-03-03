@@ -15,20 +15,10 @@ export default function(state = userDefaultState, action){
             return {...state, friends: [...state.friends, action.payload]}
         case GET_FRIEND_INVITES:
             return {...state, invites: {...state.invites, friends: action.payload}, isFriendInvitesInitialized: true}
-        case SEND_FRIEND_INVITE:
-            return {...state}
-        case RESPOND_FRIEND_INVITE:
-            return {...state}
-        case FRIEND_ERROR:
-            return {...state, errorMessage: action.payload}
         case DELETE_FRIEND:
             return state
         case GET_MEETUP_INVITES:
             return {...state, invites: {...state.invites, meetups: action.payload}, isMeetupInvitesInitialized: true}
-        case SEND_MEETUP_INVITE:
-            return state
-        case RESPOND_MEETUP_INVITE:
-            return {...state}
         case CLEAR_STORE:
             return userDefaultState
         default:

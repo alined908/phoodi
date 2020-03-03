@@ -7,7 +7,7 @@ import {getFriends} from "../../actions/friend"
 import {Link} from 'react-router-dom'
 import moment from 'moment';
 import MeetupFriend from "./MeetupFriend"
-import {Grid, Paper, Button, Typography, Avatar, List, ListItem, ListItemText, Divider, ListItemAvatar} from "@material-ui/core"
+import {Grid, Button, Typography, Avatar, List, ListItem, ListItemText, ListItemAvatar} from "@material-ui/core"
 import WebSocketService from "../../accounts/WebSocket"
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -15,6 +15,7 @@ import RoomIcon from '@material-ui/icons/Room';
 import ChatIcon from '@material-ui/icons/Chat';
 import EmailIcon from '@material-ui/icons/Email';
 import AddIcon from '@material-ui/icons/Add';
+import TodayIcon from '@material-ui/icons/Today';
 
 class Meetup extends Component {
     constructor(props){
@@ -62,7 +63,7 @@ class Meetup extends Component {
                 <div className="inner-header">
                     <Typography variant="h5">{name}</Typography>
                     <div className="inner-header-middle">
-                        <div className="inner-header-icons"><ScheduleIcon/> {moment(datetime).local().format("dddd, MMMM D")}</div>
+                        <div className="inner-header-icons"><TodayIcon/> {moment(datetime).local().format("dddd, MMMM D")}</div>
                         <div className="inner-header-icons"><RoomIcon/> {location}</div>
                     </div>
                     <div>

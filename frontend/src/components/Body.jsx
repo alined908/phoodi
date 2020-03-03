@@ -16,6 +16,7 @@ import LoginComponent from "./auth/LoginComponent";
 import Invites from "./invite/Invites"
 import MeetupForm from "./meetup/MeetupForm"
 import Profile from "./Profile"
+import GlobalMessage from "./GlobalMessage"
 
 class Body extends Component {
 
@@ -39,6 +40,7 @@ class Body extends Component {
                     <AuthenticatedRoute path="/profile/:id" component={Profile}></AuthenticatedRoute>
                     <Route component={ErrorComponent}></Route>
                 </Switch>
+                <GlobalMessage/>
             </div>
         )
     }

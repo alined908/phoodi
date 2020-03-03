@@ -28,18 +28,17 @@ export const VOTE_MEETUP_EVENT = 'vote_meetup_event';
 export const GET_FRIENDS = 'get_friends';
 export const ADD_FRIEND = 'add_friend';
 export const DELETE_FRIEND = 'delete_friend';
-export const FRIEND_ERROR = 'add_friend_error'
 
 //Meetup Invites
 export const GET_MEETUP_INVITES = 'get_meetup_invites';
-export const SEND_MEETUP_INVITE = 'send_meetup_invite';
-export const RESPOND_MEETUP_INVITE = 'respond_meetup_invite';
 
 //Friend Invites
 export const GET_FRIEND_INVITES = 'get_friend_invites';
-export const SEND_FRIEND_INVITE = 'send_friend_invite';
-export const RESPOND_FRIEND_INVITE = 'respond_friend_invite'
 
 //Notifications
 export const GET_NOTIFS = 'get_notifs';
 export const REMOVE_NOTIFS = 'remove_chat_notifs';
+
+//Errors
+export const ADD_GLOBAL_MESSAGE = 'add_global_message';
+export const REMOVE_GLOBAL_MESSAGE = 'remove_global_message';

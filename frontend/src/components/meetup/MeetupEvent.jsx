@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Paper, Button} from "@material-ui/core"
+import {Button} from "@material-ui/core"
 import {connect} from 'react-redux'
 import {deleteMeetupEvent} from "../../actions/meetup"
 import Restauraunt from "./Restauraunt"
@@ -11,6 +11,7 @@ import {IconButton, Typography, Grid} from '@material-ui/core'
 import {compose} from 'redux';
 import Map from "./Map"
 import ScheduleIcon from '@material-ui/icons/Schedule';
+
 
 class MeetupEvent extends Component {
 

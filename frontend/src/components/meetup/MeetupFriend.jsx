@@ -7,7 +7,8 @@ import {Link} from 'react-router-dom'
 
 
 const MeetupFriend = (props) => {
-    const handleClick = () => {
+    const handleClick = (e) => {
+        e.preventDefault()
         props.sendMeetupInvite(props.uri, props.friend.email)
     }
 
@@ -25,7 +26,7 @@ const MeetupFriend = (props) => {
                 }>
                 </ListItemText>
                 {props.isMember && <CheckCircleIcon></CheckCircleIcon>}
-                {!props.isMember && <Button variant="contained" color="primary" size="small" onClick={handleClick}>Send Invite</Button>}
+                {!props.isMember && <Button variant="contained" color="primary" size="small" onClick={(event) => handleClick(event)}>Invite</Button>}
             </ListItem>
         </Link>
     )

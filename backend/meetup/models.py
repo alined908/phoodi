@@ -114,7 +114,7 @@ class User(AbstractBaseUser):
         id = self.id
         mapping = {'me': id, 'friend': friend.id}
         friendship = Friendship.objects.raw('SELECT * FROM meetup_friendship WHERE (creator_id = %(me)s AND friend_id = %(friend)s) OR (creator_id = %(friend)s AND friend_id = %(me)s)', mapping)
-        return friendship
+        return len(friendship) > 0
 
     def get_or_create_friend(self, friend):
         friendship = self.get_friend(friend)

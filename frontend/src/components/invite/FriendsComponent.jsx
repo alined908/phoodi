@@ -1,8 +1,12 @@
 import React, {Component} from 'react'
-import {getFriends, addFriend, deleteFriend} from "../../actions/friend"
+import {getFriends, deleteFriend} from "../../actions/friend"
+import {sendFriendInvite} from "../../actions/invite"
 import {connect} from 'react-redux'
+import {compose} from 'redux'
+import {reduxForm, Field} from 'redux-form';
 import {Button, Typography, Paper, Grid} from '@material-ui/core';
 import {removeNotifs} from "../../actions/notifications"
+import renderTextField from "../renderTextField"
 import moment from "moment"
 import {Link} from 'react-router-dom'
 
@@ -17,13 +21,32 @@ class FriendsComponent extends Component{
         }
     }
 
+    onSubmit = (formProps) => {
+        this.props.sendFriendInvite(formProps)
+    }
+
     render(){
+        const sendFriendRequestForm = () => {
+            return (
+                <form className="horizontal-form" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                    <div>{this.props.errorMessage}</div>
+                    <Field name="email" component={renderTextField} {...{size:"small"}} label="Email"/>
+                    <Button size="small" type="submit" variant="contained" color="primary">Send</Button>
+                </form>
+            )
+        }
+
+        const {handleSubmit} = this.props;
+
         return (
             <div className="inner-wrap">   
                 {!this.props.isFriendsInitialized && <div>...Initializing Friends</div>}
-                {this.props.isFriendsInitialized && <div className="inner-header">
-                            <Typography variant="h5">Friends</Typography>
-                        </div>}
+                {this.props.isFriendsInitialized && 
+                    <div className="inner-header">
+                        <Typography variant="h5">Friends</Typography>
+                        {sendFriendRequestForm()}
+                    </div>
+                }
                 <div className="friends">
                     <Grid container spacing={3}>
                         {this.props.isFriendsInitialized && this.props.friends.map((friend) => 
@@ -57,9 +80,9 @@ function mapStateToProps(state){
 
 const mapDispatchToProps = {
     getFriends,
-    addFriend,
     deleteFriend,
-    removeNotifs
+    removeNotifs,
+    sendFriendInvite
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FriendsComponent)
+export default compose(connect(mapStateToProps, mapDispatchToProps), reduxForm({form: 'friend'}))(FriendsComponent)

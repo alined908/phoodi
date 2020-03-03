@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import {Button} from '@material-ui/core'
 import {connect} from "react-redux"
 import {voteStatus} from "../../constants/default-states"
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
@@ -130,7 +129,7 @@ class Restauraunt extends Component {
 
         if (this.props.full) {
             return (
-                <div className="rst-inner-wrapper">
+                <div className="rst-inner-wrapper elevate">
                     {this.renderRestauraunt(data)}
                     {this.renderActions(status, scores)}
                 </div>

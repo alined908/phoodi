@@ -4,7 +4,6 @@ import DateFnsUtils from "@date-io/date-fns";
 import moment from 'moment'
 
 export default ({ input, label, meta: { touched, invalid, error}, ...props }) => {
-    console.log(props);
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>

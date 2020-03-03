@@ -1,11 +1,9 @@
 import React, {Component} from "react"
-import {getUserMeetupInvites, sendMeetupInvite, respondMeetupInvite, getUserFriendInvites, sendFriendInvite, respondFriendInvite} from "../../actions/invite"
+import {getUserMeetupInvites, respondMeetupInvite, getUserFriendInvites, respondFriendInvite} from "../../actions/invite"
 import {inviteType, inviteStatus} from '../../constants/default-states'
 import {connect} from 'react-redux'
 import Invite from "./Invite"
-import {Button, Grid, Typography} from "@material-ui/core"
-import {reduxForm, Field} from 'redux-form';
-import {compose} from 'redux'
+import {Grid, Typography} from "@material-ui/core"
 
 class Invites extends Component {
 
@@ -13,22 +11,8 @@ class Invites extends Component {
         this.props.getUserMeetupInvites();
         this.props.getUserFriendInvites();
     }
-
-    onSubmit = (formProps) => {
-        this.props.sendFriendInvite(formProps)
-    }
     
     render () {
-        const sendFriendRequestForm = () => {
-            return (<form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                <div>{this.props.errorMessage}</div>
-                <Field name="email" component="input" label="email"/>
-                <Button size="small" type="submit" variant="contained" color="primary">Send</Button>
-            </form>)
-        }
-
-        const {handleSubmit} = this.props;
-
         return (
             <div className="inner-wrap">
                 <Grid container spacing={3}>
@@ -59,7 +43,6 @@ class Invites extends Component {
                                     <Invite inv={inv} type={inviteType.friend}></Invite>
                                 )}
                                 </div>
-                                {sendFriendRequestForm()}
                             </>
                         }
                     </Grid>
@@ -83,7 +66,6 @@ const mapDispatchToProps = {
     respondMeetupInvite,
     getUserMeetupInvites,
     getUserFriendInvites,
-    sendFriendInvite,
 }
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), reduxForm({form: 'friend'}))(Invites)
+export default connect(mapStateToProps, mapDispatchToProps)(Invites)

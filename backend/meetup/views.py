@@ -260,9 +260,9 @@ class MeetupInviteListView(APIView):
         invite, created = MeetupInvite.objects.get_or_create(meetup=meetup, sender=user, receiver=invite)
 
         if created:
-            return Response({"message": "Invite sent/created"})
+            return Response({"message": "Invite for meetup sent to " + recepient})
         else:
-            return Response({"message": "Invite already sent out"})
+            return Response({"message": "Invite already sent out to " + recepient})
 
 class CategoryListView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -299,7 +299,11 @@ class MeetupInviteView(APIView):
         invite.status = num
         invite.save()
 
-        return Response({"message": "Invite status changed", "invite": MeetupInviteSerializer(invite).data})
+        if invite.status == 2:
+            message = "Successfully accepted meetup invite."
+        elif invite.status == 3:
+            message = "Rejected meetup invite."
+        return Response({"message": message, "invite": MeetupInviteSerializer(invite).data})
 
 class UserFriendsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -359,18 +363,25 @@ class FriendInviteListView(APIView):
         user = request.user
         recepient = request.data['email']
 
+        #Check User exists
         try: 
-            invite = User.objects.get(email=recepient)
+            invitee = User.objects.get(email=recepient)
         except ObjectDoesNotExist:
             return Response({"error": "User does not exist"}, status=status.HTTP_400_BAD_REQUEST)
         
-        invite, created = FriendInvite.objects.get_or_create(sender=user, receiver=invite)
+        #Check if already friends
+        friendship = user.get_friend(invitee)
+        if friendship:
+            return Response({"message": "You are already friends with %s" % recepient})
+
+        invite, created = FriendInvite.objects.get_or_create(sender=user, receiver=invitee)
         serializer = FriendInviteSerializer(invite)
 
+        #Check status of invite
         if created:
-            return Response({"message": "Invite sent/created", "invite": serializer.data})
+            return Response({"message": "Invite sent to " + recepient, "invite": serializer.data})
         else:
-            return Response({"message": "Invite already sent out", "invite": serializer.data})
+            return Response({"message": "Invite to " + recepient + " has been sent.", "invite": serializer.data})
         
 
 class FriendInviteView(APIView):
@@ -392,7 +403,7 @@ class FriendInviteView(APIView):
         invite.save()
         serializer = FriendInviteSerializer(invite)
 
-        return Response(serializer.data)
+        return Response({"message": "Successfully accepted invite", "invite": serializer.data})
 
 class ChatRoomListView(APIView):
     permission_classes = [permissions.IsAuthenticated]

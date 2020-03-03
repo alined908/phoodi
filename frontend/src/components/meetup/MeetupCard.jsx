@@ -1,7 +1,7 @@
 import React from 'react'
-import {Divider, makeStyles, Button, Typography, Paper, Badge} from '@material-ui/core'
+import {makeStyles, Typography, Paper, Badge} from '@material-ui/core'
 import {AccountCircle} from '@material-ui/icons';
-import ScheduleIcon from '@material-ui/icons/Schedule';
+import TodayIcon from '@material-ui/icons/Today';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import RoomIcon from '@material-ui/icons/Room';
 import {Link} from 'react-router-dom'
@@ -38,9 +38,9 @@ const MeetupCard = ({meetup}) => {
                     <div className={classes.middle}>
                     </div>
                     <div className="meetup-card-bottom">
-                        <div className="meetup-card-icon"><ScheduleIcon/>{moment(meetup.datetime).local().format("h:mm A")}</div>
-                        <div className="meetup-card-icon"><AccountCircle/>{Object.keys(meetup.members).length}</div>
+                        <div className="meetup-card-icon"><TodayIcon/>{moment(meetup.datetime).local().format("ddd, MMM D")}</div>
                         <div className="meetup-card-icon"><RoomIcon/>{meetup.location}</div>
+                        <div className="meetup-card-icon"><AccountCircle/>{Object.keys(meetup.members).length}</div>
                     </div>
                 </div>
             </Paper>
