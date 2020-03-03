@@ -5,6 +5,7 @@ from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager)
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from asgiref.sync import async_to_sync
+from django.utils.timezone import now
 from uuid import uuid4
 import requests
 import random
@@ -371,7 +372,7 @@ class Preference(models.Model):
 class Friendship(models.Model):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="friend_creators", on_delete=models.CASCADE)
     friend = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="friends", on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    created_at = models.DateTimeField(default=now, editable=False)
     objects=models.Manager()
 
     def clean(self):
