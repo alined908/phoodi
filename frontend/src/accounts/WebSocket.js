@@ -30,7 +30,7 @@ export default class WebSocketService {
 
         this.socketRef.onclose = (e) => {
             console.log(e)
-            this.connect(path)
+            setTimeout(() => this.connect(path), 5000);
         };
     }
 

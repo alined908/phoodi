@@ -7,6 +7,7 @@ import {Link} from 'react-router-dom';
 import {removeNotifs} from "../../actions/notifications"
 
 class ChatWindowComponent extends Component {
+    messagesEndRef = React.createRef()
     
     handleChange = (e) => {
         this.props.setTypingValue(e.target.value);        
@@ -25,7 +26,7 @@ class ChatWindowComponent extends Component {
         this.scrollToBottom();
     }
     scrollToBottom = () => {    
-        this.messagesEnd && this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+        this.messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     };
 
     determineOtherUser = () => {
@@ -53,6 +54,7 @@ class ChatWindowComponent extends Component {
                 <div className="chat-messages-wrapper" >
                     <div className="chat-messages">
                         {this.props.activeChatMembers && this.props.messages && this.props.messages.map((msg) => <ChatMessageComponent user={this.props.user} message={msg.message} members={this.props.activeChatMembers}/>)}
+                        <div ref={this.messagesEndRef} />
                     </div>
                 </div>
                 {this.props.activeChatMembers && <div ref={(el) => { this.messagesEnd = el; }} className="chat-input">

@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import ChatBarComponent from "./ChatBarComponent"
 import ChatWindowComponent from "./ChatWindowComponent"
 import {connect} from "react-redux";
-import {getMessages, setActiveRoom, addMessage} from "../../actions/chat"
+import {getMessages, setActiveRoom, addMessage, removeActiveRoom} from "../../actions/chat"
 import {getRooms} from '../../actions/chat';
 import WebSocketService from "../../accounts/WebSocket"
 
@@ -32,6 +32,7 @@ class ChatComponent extends Component {
     }
 
     componentWillUnmount(){
+        this.props.removeActiveRoom()
         this.state.socket.disconnect()
     }
 
@@ -66,7 +67,8 @@ const mapDispatchToProps = {
     setActiveRoom,
     getMessages,
     getRooms,
-    addMessage
+    addMessage,
+    removeActiveRoom
 }
 
 function mapStateToProps(state){

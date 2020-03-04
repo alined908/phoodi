@@ -10,6 +10,7 @@ export const SET_ACTIVE_ROOM = 'set_active_room';
 export const GET_MESSAGES = 'get_messages';
 export const SET_TYPING_VALUE = 'set_typing_value';
 export const ADD_MESSAGE = 'add_message';
+export const REMOVE_ACTIVE_ROOM = 'remove_active_room';
 
 //Meetups
 export const GET_MEETUPS = 'get_meetups';

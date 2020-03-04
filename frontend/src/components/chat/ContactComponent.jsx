@@ -26,7 +26,7 @@ class ContactComponent extends Component {
                             (member !== this.props.user.id.toString()) ? 
                                 <div className="chat-contact-info">
                                     <div className="chat-contact-avatar"><img src={members[member].avatar} className="user-avatar-sm"></img></div>
-                                    <div>
+                                    <div className="chat-contact-user-info">
                                         <div>{members[member].first_name}</div>
                                         <div className="light-text">{members[member].email}</div>
                                     </div>
