@@ -28,6 +28,7 @@ body {
 }
 .chat {
   font-family: "Lato";
+  font-weight: 600;
   display: grid;
   grid-template-columns: 30% 70%;
   height: 100%;
@@ -73,6 +74,10 @@ body {
   font-weight: 600;
 }
 
+.light-text{
+  font-weight: 400;
+  color: grey;
+}
 .chat-contact:hover{
   background-color: #f1f9ff !important;
 }
@@ -80,7 +85,13 @@ body {
 .chat-contact-info{
   display: flex;
   align-items: center;
-  justify-content: space-between;
+}
+
+.center{
+  display:flex;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
 }
 
 .chat-contact-avatar{
@@ -197,7 +208,9 @@ body {
 .rst-inner-wrapper{
   display:flex;
   flex-direction: column;
-  max-width: 400px;
+  width: 85%;
+  min-width: 350px;
+  margin: 0 auto;
   border: 1px solid #eeeeef;
   padding: 1.5rem 2.5rem;
   border-radius: 4px;
@@ -425,9 +438,6 @@ body {
   font-family: "Lato";
 }
 
-.paper {
-  padding: 1.5rem 1.75rem;
-}
 
 .invites {
   margin-top: 1rem;
@@ -438,6 +448,7 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
+  padding: 1.5rem 2rem;
 }
 
 .friend {
@@ -448,6 +459,7 @@ body {
 .friends {
   display: flex;
   margin-top: 1rem;
+  padding: 1rem;
 }
 
 .inner-header{
@@ -537,6 +549,12 @@ body {
 .profile{
   display: flex;
   padding: 2rem;
+  margin: 1rem auto;
+  width: 60%;
+  border: 1px solid #eeeeef;
+  border-radius: 4px;
+  align-items: center;
+  background-color: white;
 }
 
 .categories {

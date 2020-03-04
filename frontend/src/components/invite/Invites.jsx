@@ -10,6 +10,12 @@ class Invites extends Component {
     componentDidMount(){
         this.props.getUserMeetupInvites();
         this.props.getUserFriendInvites();
+        if (this.props.meetupInvites !== null && this.props.meetupInvites > 0){
+            this.props.removeNotifs({type: "meetup_invite"})
+        }
+        if (this.props.meetupInvites !== null && this.props.meetupInvites > 0){
+            this.props.removeNotifs({type: "friend_invite"})
+        }
     }
     
     render () {

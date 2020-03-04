@@ -4,19 +4,16 @@ import {sendFriendInvite} from "../../actions/invite"
 import {connect} from 'react-redux'
 import {compose} from 'redux'
 import {reduxForm, Field} from 'redux-form';
-import {Button, Typography, Paper, Grid} from '@material-ui/core';
+import {Button, Typography, Paper, Grid, ListItem, ListItemAvatar, Avatar, ListItemText} from '@material-ui/core';
 import {removeNotifs} from "../../actions/notifications"
 import renderTextField from "../renderTextField"
-import moment from "moment"
-import {Link} from 'react-router-dom'
+import Friend from "./Friend"
 
 class FriendsComponent extends Component{
 
     componentDidMount(){    
         this.props.getFriends(this.props.user.id);
         if (this.props.notifs !== null && this.props.notifs > 0){
-            console.log(this.props.notifs)
-            console.log("hello")
             this.props.removeNotifs({type: "friend"})
         }
     }
@@ -47,23 +44,15 @@ class FriendsComponent extends Component{
                         {sendFriendRequestForm()}
                     </div>
                 }
-                <div className="friends">
+                {this.props.isFriendsInitialized && <div className="friends">
                     <Grid container spacing={3}>
-                        {this.props.isFriendsInitialized && this.props.friends.map((friend) => 
+                        {this.props.friends.map((friend) => 
                             <Grid item xs={4}>
-                                <Link to={`/profile/${friend.user.id}`}>
-                                    <Paper className="paper friend" elevation={3} variant="outlined">
-                                        <div><img className="user-avatar-sm" src={friend.user.avatar}></img></div>
-                                        {friend.user.first_name} 
-                                        {friend.user.email} 
-                                        {moment(friend.created_at).local().format("MMM DD")}
-                                        <Link to={`/chat/${friend.chat_room}`}><Button variant="contained" color="primary">Chat</Button></Link>
-                                    </Paper>
-                                </Link>
+                                <Friend isUserFriend={true} friend={friend}/>
                             </Grid>
                         )}
                     </Grid>
-                </div>
+                </div>}
             </div>
         )
     }

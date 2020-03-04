@@ -129,9 +129,11 @@ class Restauraunt extends Component {
 
         if (this.props.full) {
             return (
-                <div className="rst-inner-wrapper elevate">
-                    {this.renderRestauraunt(data)}
-                    {this.renderActions(status, scores)}
+                <div className="center">
+                    <div className="rst-inner-wrapper elevate">
+                        {this.renderRestauraunt(data)}
+                        {this.renderActions(status, scores)}
+                    </div>
                 </div>
             )
         } else {

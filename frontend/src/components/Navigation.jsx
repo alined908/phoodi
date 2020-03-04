@@ -17,7 +17,6 @@ import PersonIcon from '@material-ui/icons/Person';
 import WebSocketService from "../accounts/WebSocket"
 import {getNumberNotifs} from "../actions/notifications.js"
 import LiveUpdatingBadge from "./LiveUpdatingBadge"
-import HomeIcon from '@material-ui/icons/Home';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 
@@ -101,23 +100,20 @@ const Navigation = (props) => {
   const theme = useTheme();
   var drawerState = (localStorage.getItem("drawer") === null) ? drawerState = false : JSON.parse(localStorage.getItem("drawer"))
   const [open, setOpen] = React.useState(drawerState);
-  const [ws, setWS] = React.useState(false)
+  const [socket, setSocket] = React.useState(new WebSocketService())
+  socket.addNotifCallbacks(props.getNumberNotifs)
 
   React.useEffect(() => {
     console.log("component mount called")
-    var socket;
-    if (props.authenticated && !ws) {
-      socket = new WebSocketService()
-      socket.addNotifCallbacks(props.getNumberNotifs)
+    if (props.authenticated && open) {
       var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
       const path = `${ws_scheme}://localhost:8000/ws/user/${props.user.id}/`;
       socket.connect(path);
       socket.waitForSocketConnection(() => socket.fetchNotifications({user: props.user.id}))
-      setWS(true)
     }
 
     return () => {
-      if(props.user && props.authenticated && socket) {
+      if(props.authenticated && socket.exists()) {
         socket.disconnect()
       }
     }

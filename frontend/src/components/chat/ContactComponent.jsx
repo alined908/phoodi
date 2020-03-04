@@ -14,18 +14,22 @@ class ContactComponent extends Component {
     render (){
         const [id, uri, name, timestamp, members, friend, meetup, notifs] = this.props.room
         const current_room = this.props.currentRoom === uri
+        const membersKeys = Object.keys(members)
 
         return (
             <Link to={`/chat/${uri}`} onClick={notifs > 0 ? () => this.handleClick(uri): null} className="contact-link" >
                 <div className={`chat-contact ${current_room ? 'curr-room': ""}`}>
                     <div>{name}</div>
                     {meetup ? 
-                        <>{Object.keys(members).length + " Members"}</> : 
-                        <>{Object.keys(members).map((member) => 
+                        <div className="light-text">{membersKeys.length + " Member"}{membersKeys.length > 1 ? "s" : ""}</div> : 
+                        <>{membersKeys.map((member) => 
                             (member !== this.props.user.id.toString()) ? 
                                 <div className="chat-contact-info">
                                     <div className="chat-contact-avatar"><img src={members[member].avatar} className="user-avatar-sm"></img></div>
-                                    <div>{members[member].first_name + " " + members[member].email}</div>
+                                    <div>
+                                        <div>{members[member].first_name}</div>
+                                        <div className="light-text">{members[member].email}</div>
+                                    </div>
                                     <div><Badge color="primary" badgeContent={notifs}></Badge></div>
                                 </div> : 
                                 ""

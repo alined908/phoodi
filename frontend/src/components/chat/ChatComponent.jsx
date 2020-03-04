@@ -12,12 +12,11 @@ class ChatComponent extends Component {
         this.state = {
             socket: new WebSocketService()
         }
+        this.state.socket.addChatCallbacks(this.props.getMessages, this.props.addMessage)
     }
 
     componentDidMount(){
-        const socket = this.state.socket
         this.props.getRooms()
-        socket.addChatCallbacks(this.props.getMessages, this.props.addMessage)
         if("uri" in this.props.match.params){
             this.getRelevantInfo(this.props.match.params.uri)
         }
@@ -25,6 +24,9 @@ class ChatComponent extends Component {
 
     componentDidUpdate(prevProps){
         if (this.props.match.params.uri != prevProps.match.params.uri){
+            if (this.state.socket.exists()){
+                this.state.socket.disconnect()
+            }
             this.getRelevantInfo(this.props.match.params.uri)
         }
     }

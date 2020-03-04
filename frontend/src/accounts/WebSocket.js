@@ -1,4 +1,4 @@
-export default class WebSocketService{
+export default class WebSocketService {
     callbacks = {};
 
     constructor(){
@@ -30,17 +30,14 @@ export default class WebSocketService{
 
         this.socketRef.onclose = (e) => {
             console.log(e)
-            switch(e.code){
-                case 1000: 
-                    this.socketRef.close()
-                default:
-                    this.connect(path)
-            }
+            this.connect(path)
         };
     }
 
     disconnect() {
+        console.log("disconnect called")
         if (this.socketRef){
+            this.socketRef.onclose = function(){}
             this.socketRef.close()
         }
     }
@@ -77,6 +74,10 @@ export default class WebSocketService{
         catch(err){
             console.log(err.message);
         }
+    }
+
+    exists() {
+        return this.socketRef !== null
     }
 
     state(){
