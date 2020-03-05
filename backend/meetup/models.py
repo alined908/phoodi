@@ -226,31 +226,42 @@ class MeetupEventOption(models.Model):
 
             #If not banned and vote exists and option is not banned delete score
             if not self.banned and not used_ban:
+                print("A")
                 self.score -= self.conversion[vote.status] 
                 vote.delete()
             
             #If banned and vote exists and user did ban then remove ban
             if self.banned and prev_status == 3:
+                print("B")
                 vote.delete()
                 member.ban = False
-                member.save()
                 self.banned = False
                 
         except ObjectDoesNotExist:
             print("Member has not voted already on the option")
 
+        #If havent voted option yet or change from one option to another
         if status != prev_status:
+            print("C")
+            # If option is not banned
             if not self.banned:
-                if status == 3 and used_ban:
-                    pass
+                print("D")
+                # If user already used ban
+                if used_ban:
+                    if status != 3:
+                        MeetupEventOptionVote.objects.create(option=self, member=member, status=status)
                 else:
                     MeetupEventOptionVote.objects.create(option=self, member=member, status=status)
                     if status != 3:
                         self.score += self.conversion[status]
                     else:
+                        print("h")
                         self.banned = True
-
+                        member.ban = True
+        
+        member.save()
         self.save()
+        
                   
 class MeetupCategory(models.Model):
     event = models.ForeignKey(MeetupEvent, related_name="categories", on_delete=models.CASCADE)

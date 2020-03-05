@@ -214,6 +214,12 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         )
     @sync_to_async
     def handle_event_reload(self, event):
+        for option in event.options.all():
+            votes = option.event_votes
+            for vote in votes.all():
+                if vote.status == 3:
+                    vote.member.ban = False
+                    vote.member.save()
         event.options.all().delete()
 
     async def reload_event(self, command):
