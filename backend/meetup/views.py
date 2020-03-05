@@ -370,7 +370,7 @@ class FriendInviteListView(APIView):
             return Response({"error": "User does not exist"}, status=status.HTTP_400_BAD_REQUEST)
         
         #Check if already friends
-        friendship = user.get_friend(invitee)
+        friendship = user.is_friend(invitee)
         if friendship:
             return Response({"message": "You are already friends with %s" % recepient})
 

@@ -1,19 +1,15 @@
 from django.db import models
-from notifications.signals import notify
 from django.core.mail import send_mail
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager)
 from django.core.exceptions import ValidationError
 from django.conf import settings
-from asgiref.sync import async_to_sync
 from django.utils.timezone import now
 from uuid import uuid4
+from django.core.exceptions import ObjectDoesNotExist
 import requests
 import random
 from django.contrib.postgres.fields import JSONField
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from rest_framework_jwt.settings import api_settings
-from channels.layers import get_channel_layer
 import json
 import os.path
 from django.db import transaction
@@ -106,21 +102,24 @@ class User(AbstractBaseUser):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
     def get_friends(self):
-        id = self.id
-        friends = Friendship.objects.raw('SELECT * FROM meetup_friendship WHERE creator_id= %s OR friend_id = %s', [id, id])
+        friends = Friendship.objects.raw('SELECT * FROM meetup_friendship WHERE creator_id= %s OR friend_id = %s', [self.id, self.id])
         return friends
 
     def get_friend(self, friend):
-        id = self.id
-        mapping = {'me': id, 'friend': friend.id}
+        mapping = {'me': self.id, 'friend': friend.id}
         friendship = Friendship.objects.raw('SELECT * FROM meetup_friendship WHERE (creator_id = %(me)s AND friend_id = %(friend)s) OR (creator_id = %(friend)s AND friend_id = %(me)s)', mapping)
+        return friendship
+
+    def is_friend(self, friend):
+        friendship = self.get_friend(friend)
         return len(friendship) > 0
 
     def get_or_create_friend(self, friend):
-        friendship = self.get_friend(friend)
+        friendship = self.is_friend(friend)
         if not friendship:
             return Friendship.objects.create(creator=self, friend=friend)
 
+        friendship = self.get_friend(friend)
         return friendship[0]
 
     def get_token(self):
@@ -153,26 +152,15 @@ class Meetup(models.Model):
         email = EmailMessage(subject, body, to=emails)
         email.send()
 
-@receiver(post_save, sender=Meetup)
-def create_chat_room_for_meetup(sender, instance, created, **kwargs):
-    if created:
-        uri = instance.uri
-        name = instance.name
-        room = ChatRoom.objects.create(uri=uri, name=name, meetup=instance)
-
 class MeetupMember(models.Model):
     meetup = models.ForeignKey(Meetup, related_name="members", on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name="meetups", on_delete=models.CASCADE)
+    ban = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
     objects = models.Manager()
 
-@receiver(post_save, sender=MeetupMember)
-def create_chat_room_member(sender, instance, created, **kwargs):
-    if created:
-        meetup = instance.meetup
-        user = instance.user
-        room = ChatRoom.objects.get(uri=meetup.uri) 
-        member = ChatRoomMember.objects.create(room = room, user = user)
+    def used_ban(self):
+        return self.ban
 
 class Category(models.Model):
     label = models.CharField(max_length=255)
@@ -192,9 +180,8 @@ class MeetupEvent(models.Model):
     _original_location = None
     objects = models.Manager()
 
-    def generate_options(self):
+    def convert_entries_to_string(self):
         categories = ""
-
         for i, key in enumerate(self.entries): 
             category = Category.objects.get(api_label=key)
             meetupcategory = MeetupCategory.objects.create(event=self, category=category)
@@ -203,50 +190,68 @@ class MeetupEvent(models.Model):
             else:
                 categories += key + ", "
 
+        return categories
+
+    def request_yelp_api(self):
+        categories = self.convert_entries_to_string()
         params = {"location": self.meetup.location, "limit": 30, "categories": categories, "radius": self.distance, "price": self.price}
         r = requests.get(url=url, params=params, headers=headers)
         options = r.json()['businesses']
+        return options
+
+    def generate_options(self):
+        options = self.request_yelp_api()
         random.shuffle(options)
-        
         for option in options[:4]:
             MeetupEventOption.objects.create(event=self, option=json.dumps(option))
 
-@receiver(post_save, sender = MeetupEvent)
-def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
-    from .serializers import MeetupEventSerializer
-    if created:
-        channel_layer = get_channel_layer()
-        instance.generate_options()
-        meetup = instance.meetup
-        #Handle Notif Update
-        for member in meetup.members.all():
-            if member != instance.creator:
-                user = member.user
-                notify.send(sender=meetup, recipient=user, description="meetup", actor_object_id=instance.id, verb="%s created new event for %s" % (instance.creator, meetup.name))
-                unread_meetup_notifs =  user.notifications.filter(description="meetup").unread()  
-                count = unread_meetup_notifs.count()  
-                content = {
-                    'command': 'fetch_notifs',
-                    'message': {"meetup": count}
-                }
-                async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % user.id, {
-                    'type': 'notifications',
-                    'message': content
-                })
-
-        #Handle Event Update
-        content = {
-            'command': 'new_event',
-            'message': {'meetup': meetup.uri, 'event': {instance.id: MeetupEventSerializer(instance).data}}
-        }
-        async_to_sync(channel_layer.group_send)('meetup_%s' % meetup.uri, {'type': 'meetup_event','meetup_event': content})
 
 class MeetupEventOption(models.Model):
     event = models.ForeignKey(MeetupEvent, related_name="options", on_delete=models.CASCADE)
     option = models.TextField()
+    banned = models.BooleanField(default=False)
     score = models.IntegerField(default=0)
     objects = models.Manager()
 
+    conversion = {1: 1, 2: -1}
+
+    def handle_vote(self, status, member):
+        #Check if user has voted already
+        prev_status = 0
+        used_ban = member.used_ban()
+
+        try: 
+            vote = MeetupEventOptionVote.objects.get(option = self, member = member)
+            prev_status = vote.status
+
+            #If not banned and vote exists and option is not banned delete score
+            if not self.banned and not used_ban:
+                self.score -= self.conversion[vote.status] 
+                vote.delete()
+            
+            #If banned and vote exists and user did ban then remove ban
+            if self.banned and prev_status == 3:
+                vote.delete()
+                member.ban = False
+                member.save()
+                self.banned = False
+                
+        except ObjectDoesNotExist:
+            print("Member has not voted already on the option")
+
+        if status != prev_status:
+            if not self.banned:
+                if status == 3 and used_ban:
+                    pass
+                else:
+                    MeetupEventOptionVote.objects.create(option=self, member=member, status=status)
+                    if status != 3:
+                        self.score += self.conversion[status]
+                    else:
+                        self.banned = True
+
+        self.save()
+                  
 class MeetupCategory(models.Model):
     event = models.ForeignKey(MeetupEvent, related_name="categories", on_delete=models.CASCADE)
     category = models.ForeignKey(Category, related_name="meetup_events", on_delete=models.CASCADE)
@@ -259,7 +264,7 @@ class MeetupEventOptionVote(models.Model):
         BAN = 3
 
     option = models.ForeignKey(MeetupEventOption, related_name="event_votes", on_delete=models.CASCADE)
-    user = models.ForeignKey(User, related_name="user_votes", on_delete=models.CASCADE)
+    member = models.ForeignKey(MeetupMember, related_name="member_votes", on_delete=models.CASCADE)
     status = models.IntegerField(choices=Vote.choices)
     objects = models.Manager()
 
@@ -292,38 +297,6 @@ class MeetupInvite(Invite):
                 MeetupMember.objects.get_or_create(meetup=self.meetup, user=self.receiver)
         super(MeetupInvite, self).save(force_insert, force_update, *args, **kwargs)
 
-@receiver(post_save, sender = MeetupInvite)
-def create_notif_meetup_inv(sender, instance, created, **kwargs):
-    channel_layer = get_channel_layer()
-    if created:
-        notify.send(sender=instance.sender, recipient=instance.receiver, description="meetup_inv", actor_object_id = instance.id, verb="%s sent meetup invite to %s" % (instance.sender.email,  instance.receiver.email))
-        unread_inv_notifs =  instance.receiver.notifications.filter(description="meetup_inv").unread()  
-        count = unread_inv_notifs.count()  
-        content = {
-            'command': 'fetch_notifs',
-            'message': {"meetup_inv": count}
-        }
-        async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % instance.receiver.id, {
-            'type': 'notifications',
-            'message': content
-        })
-    else: 
-        notif = instance.receiver.notifications.filter(actor_object_id = instance.id, description="meetup_inv", verb="%s sent meetup invite to %s" % (instance.sender.email,  instance.receiver.email))
-        print(notif)
-        notif.mark_all_as_read()
-        unread_inv_notifs =  instance.receiver.notifications.filter(description="meetup_inv").unread() 
-        count = unread_inv_notifs.count()
-        print(count)
-        content = {
-            'command': 'fetch_notifs',
-            'message': {"meetup_inv": count}
-        }
-        async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % instance.receiver.id, {
-            'type': 'notifications',
-            'message': content
-        })
-
-
 class FriendInvite(Invite):
     objects = models.Manager()
 
@@ -335,35 +308,6 @@ class FriendInvite(Invite):
             if self.status == Invite.InviteStatus.ACCEPTED:
                 Friendship.objects.get_or_create(creator=self.sender, friend=self.receiver)
         super(FriendInvite, self).save(force_insert, force_update, *args, **kwargs)
-
-@receiver(post_save, sender=FriendInvite)
-def create_notif_friend_inv(sender, instance, created, **kwargs):
-    channel_layer = get_channel_layer()
-    if created:
-        notify.send(sender=instance.sender, recipient=instance.receiver, description="friend_inv", actor_object_id = instance.id, verb="%s sent friend invite to %s" % (instance.sender.email,  instance.receiver.email))
-        unread_inv_notifs =  instance.receiver.notifications.filter(description="friend_inv").unread()  
-        count = unread_inv_notifs.count()  
-        content = {
-            'command': 'fetch_notifs',
-            'message': {"friend_inv": count}
-        }
-        async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % instance.receiver.id, {
-            'type': 'notifications',
-            'message': content
-        })
-    else: 
-        notif = instance.receiver.notifications.filter(actor_object_id=instance.sender.id, description="friend_inv",  verb="%s sent friend invite to %s" % (instance.sender.email,  instance.receiver.email))
-        notif.mark_all_as_read()
-        unread_inv_notifs =  instance.receiver.notifications.filter(description="friend_inv").unread() 
-        count = unread_inv_notifs.count()
-        content = {
-            'command': 'fetch_notifs',
-            'message': {"friend_inv": count}
-        }
-        async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % instance.receiver.id, {
-            'type': 'notifications',
-            'message': content
-        })
         
 class Preference(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="preferences")
@@ -374,41 +318,6 @@ class Friendship(models.Model):
     friend = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="friends", on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=now, editable=False)
     objects=models.Manager()
-
-    def clean(self):
-        if self.creator == self.friend:
-            raise ValidationError("cannot be friends with yourself")
-
-@receiver(post_save, sender=Friendship)
-def create_chat_room_for_friendship(sender, instance, created, **kwargs):
-    channel_layer = get_channel_layer()
-    if created:
-        print("create notif")
-        room = ChatRoom.objects.create(friendship=instance)
-        ChatRoomMember.objects.create(room = room, user = instance.creator)
-        ChatRoomMember.objects.create(room = room, user = instance.friend)
-
-        notify.send(sender=instance.creator, recipient=instance.friend, description="friend", actor_object_id = instance.id, verb="You are now friends with %s" % instance.creator)
-        notify.send(sender=instance.friend, recipient=instance.creator, description="friend", actor_object_id = instance.id, verb="You are now friends with %s" % instance.friend)
-        unread_friend_notifs_for_creator =  instance.creator.notifications.filter(description="friend").unread().count()
-        unread_friend_notifs_for_friend = instance.friend.notifications.filter(description="friend").unread().count()
-        content = {
-            'command': 'fetch_notifs',
-            'message': {"friend": unread_friend_notifs_for_creator}
-        }
-        async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % instance.creator.id, {
-            'type': 'notifications',
-            'message': content
-        })
-        content = {
-            'command': 'fetch_notifs',
-            'message': {"friend": unread_friend_notifs_for_friend}
-        }
-        async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % instance.friend.id, {
-            'type': 'notifications',
-            'message': content
-        })
-
 
 class ChatRoom(models.Model):
     friendship = models.ForeignKey(Friendship, null=True, blank=True, on_delete=models.CASCADE)
@@ -434,33 +343,8 @@ class ChatRoomMessage(models.Model):
 
     class Meta:
         ordering = ('timestamp',)
-
-
-@receiver(post_save, sender=ChatRoomMessage)
-def create_notif_chat_message(sender, instance, created, **kwargs):
-    print("create_notif_chat_message receiver")
-    if created:
-        channel_layer = get_channel_layer()
-        for member in instance.room.members.all():
-            if member.user != instance.sender:
-                notify.send(sender=instance.room, recipient=member.user, description="message", action_object=instance, verb="%s sent chat notif to %s" % (instance.sender.email,  member.user.email))
-                unread_chat_notifs =  member.user.notifications.filter(description="message").unread()  
-                count = unread_chat_notifs.count()  
-                content = {
-                    'command': 'fetch_notifs',
-                    'message': {"chat": count}
-                }
-                async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % member.user.id, {
-                    'type': 'notifications',
-                    'message': content
-                })
     
 class ChatRoomMember(models.Model):
     room = models.ForeignKey(ChatRoom, related_name='members', on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name='rooms', on_delete=models.CASCADE)
     objects = models.Manager()
-
-
-
-   
-

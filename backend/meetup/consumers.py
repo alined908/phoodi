@@ -1,6 +1,6 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.exceptions import DenyConnection
-from .models import User, ChatRoom, ChatRoomMessage, ChatRoomMember, MeetupEventOptionVote, Meetup, MeetupEvent, MeetupEventOption
+from .models import User, ChatRoom, ChatRoomMessage, MeetupMember,ChatRoomMember, MeetupEventOptionVote, Meetup, MeetupEvent, MeetupEventOption
 from django.core.exceptions import ObjectDoesNotExist
 import json
 import random
@@ -32,7 +32,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def new_message(self, data):
         print("new message")
         sender, msg, room = data['from'], data['text'], data['room']
-        print(room)
         room_obj = await database_sync_to_async(ChatRoom.objects.get)(uri=room)
         user_obj = await database_sync_to_async(User.objects.get)(pk=sender)
         message = await database_sync_to_async(ChatRoomMessage.objects.create)(room = room_obj, message=msg, sender=user_obj)
@@ -103,7 +102,7 @@ class UserNotificationConsumer(AsyncWebsocketConsumer):
     @sync_to_async 
     def fetch_chat_notifs(self, user):
         user_obj = User.objects.get(pk=user)
-        chat_notifs = user_obj.notifications.filter(description="message").unread().count()
+        chat_notifs = user_obj.notifications.filter(description="chat_message").unread().count()
         return chat_notifs
 
     @sync_to_async
@@ -135,7 +134,7 @@ class UserNotificationConsumer(AsyncWebsocketConsumer):
         content = {
             'command': 'fetch_notifs',
             'message': {
-                            "chat": chat_notifs, 
+                            "chat_message": chat_notifs, 
                             "friend_inv": friend_inv_notifs, 
                             "meetup_inv": meetup_inv_notifs,
                             "meetup": meetup_notifs,
@@ -237,33 +236,19 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         )
     
     @sync_to_async
-    def handle_vote_event(self, option, status, user):
-        conversion = {1: 1, 2: -1, 3:0}
-        option = MeetupEventOption.objects.get(pk = option)
+    def handle_vote_event(self, option, status, user, meetup):
+        option = MeetupEventOption.objects.get(id = option)
         event = option.event.id
-        user = User.objects.get(pk=user)
-        past_status = 0
-
-        try: 
-            obj = MeetupEventOptionVote.objects.get(option = option, user = user)
-            past_status = obj.status
-            obj.delete()
-            option.score -= conversion[past_status]
-        except ObjectDoesNotExist:
-            pass
-
-        if past_status != status:
-            MeetupEventOptionVote.objects.create(option=option, user=user, status=status)
-            option.score += conversion[status]
-        
-        option.save()
+        meetup = Meetup.objects.get(uri=meetup)
+        member = MeetupMember.objects.get(meetup=meetup, user=user)
+        option.handle_vote(status, member)
         serializer = MeetupEventOptionSerializer(option)
         return serializer.data, event
 
     async def vote_event(self, command):
         data = command['data']
         user, option, status, meetup = data['user'], data['option'], data['status'], data['meetup']
-        option_json, event = await self.handle_vote_event(option, status, user)
+        option_json, event = await self.handle_vote_event(option, status, user, meetup)
 
         content = {
             'command': 'vote_event',
@@ -334,7 +319,7 @@ class MeetupConsumer(AsyncWebsocketConsumer):
     def redecide_helper(self, event):
         event = MeetupEvent.objects.get(pk=event)
         event.chosen = None
-        event.save()
+        event.save() 
         return event.id, MeetupEventSerializer(event).data
 
     async def redecide_event(self, command):

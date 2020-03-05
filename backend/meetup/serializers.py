@@ -67,7 +67,7 @@ class ChatRoomSerializer(serializers.ModelSerializer):
 
     def _get_notifs(self, obj):
         user =  self.context['request'].user
-        notifs = user.notifications.filter(actor_object_id=obj.id, description="message").unread()
+        notifs = user.notifications.filter(actor_object_id=obj.id, description="chat_message").unread()
         return notifs.count()
 
     class Meta:
@@ -115,7 +115,7 @@ class MeetupSerializer(serializers.ModelSerializer):
 class MeetupEventOptionVoteSerializer(serializers.ModelSerializer):
     def to_representation(self, data):
         res = super(MeetupEventOptionVoteSerializer, self).to_representation(data)
-        return {res['user']: res}
+        return {res['member']: res}
 
     class Meta:
         model = MeetupEventOptionVote
@@ -136,7 +136,7 @@ class MeetupEventOptionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MeetupEventOption
-        fields = ('id', 'event', 'score', 'option', 'votes')
+        fields = ('id', 'event', 'score', 'option', 'votes', 'banned')
 
 class MeetupEventSerializer(serializers.ModelSerializer):
     options = serializers.SerializerMethodField('_get_options')

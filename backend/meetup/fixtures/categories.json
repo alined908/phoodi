@@ -1,0 +1,58 @@
+[
+    {
+        "model": "meetup.category",
+        "pk": 1,
+        "fields": {
+            "label": "Italian",
+            "api_label": "italian"
+        }
+    },
+    {
+        "model": "meetup.category",
+        "pk": 2,
+        "fields": {
+            "label": "Dessert",
+            "api_label": "desserts"
+        }
+    },
+    {
+        "model": "meetup.category",
+        "pk": 3,
+        "fields": {
+            "label": "Chinese",
+            "api_label": "chinese"
+        }
+    },
+    {
+        "model": "meetup.category",
+        "pk": 4,
+        "fields": {
+            "label": "Mexican",
+            "api_label": "mexican"
+        }
+    },
+    {
+        "model": "meetup.category",
+        "pk": 5,
+        "fields": {
+            "label": "Korean",
+            "api_label": "korean"
+        }
+    },
+    {
+        "model": "meetup.category",
+        "pk": 6,
+        "fields": {
+            "label": "American",
+            "api_label": "american"
+        }
+    },
+    {
+        "model": "meetup.category",
+        "pk": 7,
+        "fields": {
+            "label": "Mediterranean",
+            "api_label": "mediterranean"
+        }
+    }
+]
