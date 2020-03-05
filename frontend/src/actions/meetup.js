@@ -67,7 +67,7 @@ export const getMeetupEvents = (uri) => async dispatch => {
             `http://localhost:8000/api/meetups/${uri}/events/`, {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
         }})
-        // console.log(response)
+        console.log(response)
         dispatch({type: GET_MEETUP_EVENTS, payload: {uri: uri, data: response.data}})
     } catch(e) {
         console.log(e)

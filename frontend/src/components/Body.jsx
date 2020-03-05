@@ -3,7 +3,6 @@ import {Route, Switch} from 'react-router-dom';
 import LogoutComponent from "./auth/LogoutComponent";
 import ErrorComponent from "./auth/ErrorComponent";
 import RegisterComponent from "./auth/RegisterComponent";
-import WelcomeComponent from "./WelcomeComponent";
 import ChatComponent from "./chat/ChatComponent"
 import MeetupsComponent from "./meetup/MeetupsComponent";
 import HomeComponent from "./HomeComponent";
@@ -28,7 +27,6 @@ class Body extends Component {
                     <UnAuthenticatedRoute path="/login" component={LoginComponent}></UnAuthenticatedRoute>
                     <UnAuthenticatedRoute path="/register" component={RegisterComponent}></UnAuthenticatedRoute>
                     <AuthenticatedRoute path="/logout" component={LogoutComponent}></AuthenticatedRoute>
-                    <AuthenticatedRoute path="/welcome" component={WelcomeComponent}></AuthenticatedRoute>
                     <AuthenticatedRoute path="/meetups/:uri/new" exact component={MeetupEventForm}></AuthenticatedRoute>
                     <AuthenticatedRoute path="/meetups/new" exact component={MeetupForm}></AuthenticatedRoute>
                     <AuthenticatedRoute path="/meetups/:uri" component={MeetupPageComponent}></AuthenticatedRoute>

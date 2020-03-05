@@ -27,6 +27,7 @@ class MeetupsComponent extends Component {
 
     divideMeetups = (meetups) => {
         var [past, today, week, later] = [[], [], [], []]
+
         for (var i = 0; i < meetups.length; i++){
             let meetup = meetups[i];
             if (moment(meetup.date, 'YYYY-MM-DD').isSame(moment(), 'day')){

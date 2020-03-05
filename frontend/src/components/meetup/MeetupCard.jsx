@@ -38,7 +38,7 @@ const MeetupCard = ({meetup}) => {
                     <div className={classes.middle}>
                     </div>
                     <div className="meetup-card-bottom">
-                        <div className="meetup-card-icon"><TodayIcon/>{moment(meetup.datetime).local().format("ddd, MMM D")}</div>
+                        <div className="meetup-card-icon"><TodayIcon/>{moment(meetup.date).local().format("ddd, MMM D")}</div>
                         <div className="meetup-card-icon"><RoomIcon/>{meetup.location}</div>
                         <div className="meetup-card-icon"><AccountCircle/>{Object.keys(meetup.members).length}</div>
                     </div>

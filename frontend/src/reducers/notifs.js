@@ -1,10 +1,11 @@
 import {GET_NOTIFS, REMOVE_NOTIFS, CLEAR_STORE} from '../constants/action-types'
 
 const defaultState = {
-    chat: null,
+    chat_message: null,
     friend_inv: null,
     meetup_inv: null,
     meetup: null,
+    friend: null
 }
 
 export default function notifReducer(state = defaultState, action){

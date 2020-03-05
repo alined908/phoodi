@@ -66,23 +66,23 @@ class Restauraunt extends Component {
         })
     }
 
-    renderActions = (status, scores) => {
+    renderActions = (status, scores, banned) => {
         const [like, dislike, ban] = [this.determineClicked(status, voteStatus.like), this.determineClicked(status, voteStatus.dislike), this.determineClicked(status, voteStatus.ban)]
         return (
             <div className="rst-actions">
                 <div className="rst-action-icon">
-                    {!like && <ThumbUpOutlinedIcon  className="clickable" onClick={() => this.handleClick(voteStatus.like)}/>}
-                    {like && <ThumbUpIcon className="clickable" color="primary" onClick={() => this.handleClick(voteStatus.like)}/>}
+                    {!like && <ThumbUpOutlinedIcon disabled={banned} className="clickable" onClick={() => this.handleClick(voteStatus.like)}/>}
+                    {like && <ThumbUpIcon disabled={banned} className="clickable" color="primary" onClick={() => this.handleClick(voteStatus.like)}/>}
                     <span className="rst-action-score">{scores[1]}</span>
                 </div>
                 <div className="rst-action-icon">
-                    {!dislike && <ThumbDownOutlinedIcon className="clickable" onClick={() => this.handleClick(voteStatus.dislike)}/>}
-                    {dislike && <ThumbDownIcon className="clickable" onClick={() => this.handleClick(voteStatus.dislike)}/>}
+                    {!dislike && <ThumbDownOutlinedIcon disabled={banned} className="clickable" onClick={() => this.handleClick(voteStatus.dislike)}/>}
+                    {dislike && <ThumbDownIcon disabled={banned} className="clickable" onClick={() => this.handleClick(voteStatus.dislike)}/>}
                     <span className="rst-action-score">{scores[2]}</span>
                 </div>
                 <div className="rst-action-icon">
-                    {ban && <CancelIcon className="clickable" color="secondary" onClick={() => this.handleClick(voteStatus.ban)}/>}
-                    {!ban && <CancelOutlinedIcon  className="clickable" onClick={() => this.handleClick(voteStatus.ban)}/>}
+                    {banned && <CancelIcon disabled={!ban} className="clickable" color="secondary" onClick={() => this.handleClick(voteStatus.ban)}/>}
+                    {!banned && <CancelOutlinedIcon className="clickable" onClick={() => this.handleClick(voteStatus.ban)}/>}
                     <span className="rst-action-score">{scores[3]}</span>
                 </div>
             </div>
@@ -114,8 +114,6 @@ class Restauraunt extends Component {
         let match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
         
         if (match) {
-
-          let intlCode = (match[1] ? '+1 ' : '')
           return ['(', match[2], ') ', match[3], '-', match[4]].join('')
         }
         
@@ -124,15 +122,16 @@ class Restauraunt extends Component {
 
     render (){
         const data = JSON.parse(this.props.option.option)
+        const banned = this.props.option.banned
         const scores = this.determineNumVotes()
         const status = this.determineStatus()
 
         if (this.props.full) {
             return (
                 <div className="center">
-                    <div className="rst-inner-wrapper elevate">
+                    <div className={"rst-inner-wrapper elevate " + (banned ? "banned": "")}>
                         {this.renderRestauraunt(data)}
-                        {this.renderActions(status, scores)}
+                        {this.renderActions(status, scores, banned)}
                     </div>
                 </div>
             )

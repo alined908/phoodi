@@ -6,9 +6,16 @@ import Badge from '@material-ui/core/Badge';
 import {removeNotifs} from "../../actions/notifications"
 
 class ContactComponent extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            notifs: this.props.room[7]
+        }
+    }
 
-    handleClick = (uri) => {
-        this.props.removeNotifs(uri)
+    handleClick = (id) => {
+        this.props.removeNotifs({type: "chat_message", id: id})
+        this.setState({notifs: 0})  
     }
 
     render (){
@@ -17,7 +24,7 @@ class ContactComponent extends Component {
         const membersKeys = Object.keys(members)
 
         return (
-            <Link to={`/chat/${uri}`} onClick={notifs > 0 ? () => this.handleClick(uri): null} className="contact-link" >
+            <Link to={`/chat/${uri}`} onClick={notifs > 0 ? () => this.handleClick(id): null} className="contact-link" >
                 <div className={`chat-contact ${current_room ? 'curr-room': ""}`}>
                     <div>{name}</div>
                     {meetup ? 
@@ -30,7 +37,7 @@ class ContactComponent extends Component {
                                         <div>{members[member].first_name}</div>
                                         <div className="light-text">{members[member].email}</div>
                                     </div>
-                                    <div><Badge color="primary" badgeContent={notifs}></Badge></div>
+                                    <div><Badge color="primary" badgeContent={this.state.notifs}></Badge></div>
                                 </div> : 
                                 ""
                             )}

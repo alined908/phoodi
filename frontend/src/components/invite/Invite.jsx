@@ -37,15 +37,15 @@ class Invite extends Component {
                     </div>
                 }
                 {inv.status !== 1 && <span>{inviteStatus[inv.status]}</span>}
-                {(this.state.responded && this.props.type === inviteType.friend && this.state.status === 2) && <span>Accepted Friend Request</span>}
-                {(this.state.responded && this.props.type === inviteType.friend && this.state.status === 3) && <span>Rejected Friend Request</span>}
+                {(this.state.responded && this.props.type === inviteType.friend && this.state.status === 2) && <span>Accepted</span>}
+                {(this.state.responded && this.props.type === inviteType.friend && this.state.status === 3) && <span>Rejected</span>}
                 {(this.state.responded && this.props.type === inviteType.meetup && this.state.status === 2) && <span>
                     <Link to={`/meetups/${inv.meetup.uri}`}>
                         <Button color="primary" variant="contained">Meetup</Button>
                     </Link>
                 </span>
                 }
-                {(this.state.responded && this.props.type === inviteType.meetup && this.state.status === 3) && <span>Rejected Meetup Request</span>}
+                {(this.state.responded && this.props.type === inviteType.meetup && this.state.status === 3) && <span>Rejected</span>}
             </Paper>
         )
     }

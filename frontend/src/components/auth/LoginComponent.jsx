@@ -10,7 +10,7 @@ class LoginComponent extends Component {
 
     onSubmit = formProps => {
         this.props.signin(formProps, () => {
-            this.props.history.push("/welcome")
+            this.props.history.push("/meetups")
         });
     }
 

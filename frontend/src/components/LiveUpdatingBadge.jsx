@@ -6,7 +6,7 @@ class LiveUpdatingBadge extends Component {
 
     determineType = (type) => {
         if (type === 'chat'){
-            return this.props.notifs.chat
+            return this.props.notifs.chat_message
         } else if (type === 'meetup'){
             return this.props.notifs.meetup
         } else if (type === 'friend') {
