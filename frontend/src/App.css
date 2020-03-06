@@ -229,11 +229,11 @@ body {
 }
 
 .banned > div:not(.rst-actions) {
-  opacity: .4;
+  opacity: .3;
 }
 
 .banned .rst-action-icon{
-  opacity: .4;
+  opacity: .3;
 }
 
 .myclick {
@@ -614,7 +614,7 @@ body {
 }
 
 .meetups-container{
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
 }
 

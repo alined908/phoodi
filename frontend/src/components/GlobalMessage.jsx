@@ -23,7 +23,7 @@ const GlobalMessage = (props) => {
             <Snackbar open={open} anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'right',
-                }} autoHideDuration={4000} onClose={() => handleClose()}>
+                }} autoHideDuration={2000} onClose={() => handleClose()}>
                 <Alert onClose={() => handleClose()} severity={props.messages[0].type}>
                     {props.messages[0].message}
                 </Alert>

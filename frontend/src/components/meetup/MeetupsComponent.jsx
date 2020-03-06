@@ -11,7 +11,7 @@ class MeetupsComponent extends Component {
     constructor(props){
         super(props)
         this.state = {
-            chosen: [false, true, true, false]
+            chosen: [false, true, true, true]
         }
     }
 
@@ -45,8 +45,6 @@ class MeetupsComponent extends Component {
 
     render(){
         const meetups = this.divideMeetups(this.props.meetups)
-        const headers = ["Past", "Today", "This Week", "Later"]
-        const range = ["", moment().format("dddd, MMMM Do"), moment().add(1, 'days').format("dddd, MMMM Do") + " - " + moment().add(7, 'days').format("dddd, MMMM Do"), moment().add(8, 'days').format("dddd, MMMM Do")+ " - " + moment().add(30, 'days').format("dddd, MMMM Do")]
 
         return (
             <div className="inner-wrap">
@@ -67,9 +65,6 @@ class MeetupsComponent extends Component {
                     <div className="meetups-container">
                         {[0,1, 2, 3].map((index) =>
                             {return (this.state.chosen[index] && meetups[index].length > 0) && <div className="meetups-range">
-                                <div className="inner-header">
-                                    <Typography variant="h5">{headers[index]} - {range[index]}</Typography>
-                                </div>
                                 <div className="meetups-datespecific">
                                     <Grid container item xs={12}>
                                         {meetups[index].map((meetup) => 

@@ -77,8 +77,8 @@ class Restauraunt extends Component {
 
     renderActions = (status, scores, banned) => {
         const [like, dislike, ban] = [this.determineClicked(status, voteStatus.like), this.determineClicked(status, voteStatus.dislike), this.determineClicked(status, voteStatus.ban)]
-        const checkOwn = () => {
-            if (this.props.user.id in this.props.option.votes && this.props.option.votes[this.props.user.id].status == voteStatus.ban) {
+        const checkOwn = (status) => {
+            if (this.props.user.id in this.props.option.votes && this.props.option.votes[this.props.user.id].status == status) {
                 return "myclick"
             } else {
                 return ""
@@ -87,17 +87,17 @@ class Restauraunt extends Component {
 
         return (
             <div className="rst-actions">
-                <div className="rst-action-icon">
+                <div className={"rst-action-icon " + checkOwn(voteStatus.like)}>
                     {!like && <ThumbUpOutlinedIcon disabled={banned} className="clickable" onClick={() => this.handleClick(voteStatus.like)}/>}
                     {like && <ThumbUpIcon disabled={banned} className="clickable" color="primary" onClick={() => this.handleClick(voteStatus.like)}/>}
                     <span className="rst-action-score">{scores[1]}</span>
                 </div>
-                <div className="rst-action-icon">
+                <div className={"rst-action-icon " + checkOwn(voteStatus.dislike)}>
                     {!dislike && <ThumbDownOutlinedIcon disabled={banned} className="clickable" onClick={() => this.handleClick(voteStatus.dislike)}/>}
                     {dislike && <ThumbDownIcon disabled={banned} className="clickable" onClick={() => this.handleClick(voteStatus.dislike)}/>}
                     <span className="rst-action-score">{scores[2]}</span>
                 </div>
-                <div className={"rst-action-icon " + checkOwn()}>
+                <div className={"rst-action-icon " + checkOwn(voteStatus.ban)}>
                     {banned && <CancelIcon disabled={!ban} className="clickable" color="secondary" onClick={() => this.handleClick(voteStatus.ban)}/>}
                     {!banned && <CancelOutlinedIcon className="clickable" onClick={() => this.handleClick(voteStatus.ban)}/>}
                     <span className="rst-action-score">{scores[3]}</span>

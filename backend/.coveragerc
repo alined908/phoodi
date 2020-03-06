@@ -1,0 +1,9 @@
+[run]
+ omit =
+    backend/*
+    manage.py
+    meetup/migrations/*
+    meetup/__init__.py
+    meetup/admin.py
+    meetup/apps.py
+    meetup/CalendarAPI.py
