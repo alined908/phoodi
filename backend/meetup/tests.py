@@ -101,26 +101,56 @@ class MeetupEventTest(TestCase):
         self.assertEqual(self.event.options.count(), 4)
 
     def test_vote_changes_score(self):
-        self.option.handle_vote(user = self.user, status = 1)
+        self.option.handle_vote(member = self.member, status = 1)
         self.assertEqual(self.option.score, 1)
-        self.option.handle_vote(user = self.user, status = 2)
+        self.option.handle_vote(member = self.member, status = 2)
         self.assertEqual(self.option.score, -1)
+        self.option.handle_vote(member = self.member, status= 3)
+        self.assertEqual(self.option.score, 0)
 
     def test_vote_same_option(self):
-        self.option.handle_vote(user = self.user, status = 1)
+        self.option.handle_vote(member = self.member, status = 1)
         self.assertEqual(self.option.score, 1)
-        self.option.handle_vote(user = self.user, status = 1)
+        self.option.handle_vote(member = self.member, status = 1)
         self.assertEqual(self.option.score, 0)
 
     def test_vote_bans_option(self):
-        self.option.handle_vote(user = self.user, status = 3)
+        self.option.handle_vote(member = self.member, status = 3)
         self.assertEqual(self.option.banned, True)
 
     def test_cant_vote_banned_option(self):
-        self.option.handle_vote(user = self.user, status = 3)
+        self.option.handle_vote(member = self.member, status = 3)
         self.assertEqual(self.option.banned, True)
-        self.option.handle_vote(user = self.user2, status = 1)
+        self.option.handle_vote(member = self.member2, status = 1)
         self.assertEqual(self.option.score, 0)
+
+    def test_used_ban_vote_then_ban(self):
+        self.option.handle_vote(member = self.member, status = 3)
+        self.assertEqual(self.option.banned, True) 
+        self.assertEqual(self.member.ban, True)
+        event2 = MeetupEvent.objects.create(creator=self.member, meetup=self.meetup, title="Event", distance=20000, price="1, 2", start=now(), entries=self.entries)
+        option2 = event2.options.first()
+        option2.handle_vote(member = self.member, status = 1)
+        self.assertEqual(option2.score, 1)
+        option2.handle_vote(member = self.member, status = 3)
+        self.assertEqual(option2.score, 1)
+        self.assertEqual(option2.banned, False)
+
+    def test_handle_decide(self):
+        self.option.handle_vote(member = self.member, status = 1)
+        self.event.handle_decide(False)
+        self.assertEqual(self.event.chosen, self.option.id)
+
+    def test_handle_decide_with_ban(self):
+        self.option.handle_vote(member = self.member, status = 3)
+        self.event.options.all()[1].handle_vote(member=self.member, status = 2)
+        self.event.options.all()[2].handle_vote(member=self.member, status = 2)
+        self.event.options.all()[3].handle_vote(member=self.member, status = 2)
+        self.event.handle_decide(False)
+        self.assertNotEqual(self.event.chosen, self.option.id)
+
+    def test_handle_decide_all_banned(self):
+        pass
 
 class InviteTest(TestCase):
     
@@ -130,6 +160,7 @@ class InviteTest(TestCase):
         pass
     def test_change_friend_inv_status(self):
         pass
+
 class ChatTest(TestCase):
     pass
 

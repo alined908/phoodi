@@ -225,7 +225,19 @@ body {
 }
 
 .banned{
-  opacity: 0.3;
+  background-color: rgb(255, 255, 255, 0.5) !important;
+}
+
+.banned > div:not(.rst-actions) {
+  opacity: .4;
+}
+
+.banned .rst-action-icon{
+  opacity: .4;
+}
+
+.myclick {
+  opacity: 1 !important;
 }
 
 .elevate {

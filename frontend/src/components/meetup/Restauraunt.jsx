@@ -12,6 +12,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarHalfIcon from '@material-ui/icons/StarHalf';
 import RoomIcon from '@material-ui/icons/Room';
 import PhoneIcon from '@material-ui/icons/Phone';
+import {ADD_GLOBAL_MESSAGE} from '../../constants/action-types'
 
 class Restauraunt extends Component {
 
@@ -58,16 +59,32 @@ class Restauraunt extends Component {
     }
 
     handleClick = (status) => {
+        //If vote is ban and option vote is not ban and option is not banned and already used ban
+
         this.props.socket.voteMeetupEvent({
-            user: JSON.parse(localStorage.getItem("user")).id,
+            user: this.props.user.id,
             option: this.props.option.id, 
             status: status, 
             meetup: this.props.meetup
         })
+        if (status === voteStatus.ban && !this.props.option.banned && this.props.members[this.props.user.id].ban){
+            this.props.dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Already used ban"}})
+        }
+        if (this.props.option.banned && ((this.props.user.id in this.props.option.votes) ? (this.props.option.votes[this.props.user.id].status !== voteStatus.ban) : true)){
+            this.props.dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Cant vote on banned option"}})
+        }
     }
 
     renderActions = (status, scores, banned) => {
         const [like, dislike, ban] = [this.determineClicked(status, voteStatus.like), this.determineClicked(status, voteStatus.dislike), this.determineClicked(status, voteStatus.ban)]
+        const checkOwn = () => {
+            if (this.props.user.id in this.props.option.votes && this.props.option.votes[this.props.user.id].status == voteStatus.ban) {
+                return "myclick"
+            } else {
+                return ""
+            }
+        }
+
         return (
             <div className="rst-actions">
                 <div className="rst-action-icon">
@@ -80,7 +97,7 @@ class Restauraunt extends Component {
                     {dislike && <ThumbDownIcon disabled={banned} className="clickable" onClick={() => this.handleClick(voteStatus.dislike)}/>}
                     <span className="rst-action-score">{scores[2]}</span>
                 </div>
-                <div className="rst-action-icon">
+                <div className={"rst-action-icon " + checkOwn()}>
                     {banned && <CancelIcon disabled={!ban} className="clickable" color="secondary" onClick={() => this.handleClick(voteStatus.ban)}/>}
                     {!banned && <CancelOutlinedIcon className="clickable" onClick={() => this.handleClick(voteStatus.ban)}/>}
                     <span className="rst-action-score">{scores[3]}</span>
@@ -152,7 +169,9 @@ class Restauraunt extends Component {
 
 function mapStateToProps(state, props) { 
     return {
-        option: state.meetup.meetups[props.meetup].events[props.event].options[props.data.id]
+        option: state.meetup.meetups[props.meetup].events[props.event].options[props.data.id],
+        members: state.meetup.meetups[props.meetup].members,
+        user: state.user.user
     }
 }
 

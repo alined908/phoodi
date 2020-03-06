@@ -8,7 +8,7 @@ import time
 import requests
 from asgiref.sync import sync_to_async, async_to_sync
 from channels.db import database_sync_to_async
-from meetup.serializers import MessageSerializer, MeetupEventSerializer, MeetupEventOptionSerializer, MeetupEventOptionVoteSerializer
+from meetup.serializers import MessageSerializer, MeetupEventSerializer, MeetupMemberSerializer, MeetupEventOptionSerializer, MeetupEventOptionVoteSerializer
 url = "https://api.yelp.com/v3/businesses/search"
 headers = {'Authorization': "Bearer U46B4ff8l6NAdldViS7IeS8HJriDeE9Cd5YZXTUmrdzvtv57AUQiYJVVbEPFp30nhL9YAW2-LjAAQ1cBapJ4uqiOYES8tz9EjM85R8ki9l-54Z1d_1OOWLeY5tTuXXYx"}
 
@@ -248,17 +248,19 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         meetup = Meetup.objects.get(uri=meetup)
         member = MeetupMember.objects.get(meetup=meetup, user=user)
         option.handle_vote(status, member)
-        serializer = MeetupEventOptionSerializer(option)
-        return serializer.data, event
+        event_serializer = MeetupEventOptionSerializer(option)
+        member_serializer = MeetupMemberSerializer(member)
+        print(member_serializer.data)
+        return event_serializer.data, event, member_serializer.data
 
     async def vote_event(self, command):
         data = command['data']
         user, option, status, meetup = data['user'], data['option'], data['status'], data['meetup']
-        option_json, event = await self.handle_vote_event(option, status, user, meetup)
+        option_json, event, member = await self.handle_vote_event(option, status, user, meetup)
 
         content = {
             'command': 'vote_event',
-            'message': {"meetup": meetup, "event": event, "option_id": option, "option": option_json[option]}
+            'message': {"meetup": meetup, "event": event, "option_id": option, "option": option_json[option], "member": member}
         }
 
         await self.channel_layer.group_send(
@@ -273,35 +275,8 @@ class MeetupConsumer(AsyncWebsocketConsumer):
 
     @sync_to_async
     def decide_event_helper(self, event, randomBool):
-        """
-        Randomly choose or select highest count
-        If score tie: 
-        1. select one with higher num likes
-        2. Lower number of dislikes
-        3. Random selection)
-        """
         event = MeetupEvent.objects.get(pk=event)
-        options = event.options.all()
-        
-        if randomBool:
-            chosen = random.choice(options)
-        else: 
-            highest = []
-            maxScore = 0
-
-            for option in options:
-                if option.score > maxScore:
-                    maxScore = option.score
-                    highest = [option]
-                elif option.score == maxScore:
-                    highest.append(option)
-
-
-            chosen = random.choice(highest)
-
-        event.chosen = chosen.id
-        event.save()
-
+        event.handle_decide(randomBool)
         return event.id, MeetupEventSerializer(event).data
 
     async def decide_event(self, command):
@@ -348,6 +323,12 @@ class MeetupConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def delete_helper(self, event_id):
         event = MeetupEvent.objects.get(pk=event_id)
+        for option in event.options.all():
+            votes = option.event_votes
+            for vote in votes.all():
+                if vote.status == 3:
+                    vote.member.ban = False
+                    vote.member.save()
         event.delete()
 
     async def delete_event(self, command):

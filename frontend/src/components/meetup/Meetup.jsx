@@ -97,14 +97,14 @@ class Meetup extends Component {
                 <div className="outer-shell">
                     <List style={{width: "100%"}}>
                         {Object.keys(members).map((key) => 
-                            <Link to={`/profile/${members[key].id}`}>
+                            <Link to={`/profile/${members[key].user.id}`}>
                                 <ListItem>
                                     <ListItemAvatar>
-                                        <Avatar src={members[key].avatar}/>
+                                        <Avatar src={members[key].user.avatar}/>
                                     </ListItemAvatar>
-                                    <ListItemText  primary={members[key].first_name} secondary={<>
+                                    <ListItemText  primary={members[key].user.first_name} secondary={<>
                                         <Typography component="span" color="inherit" variant="body2"> 
-                                            {members[key].email + " "}
+                                            {members[key].user.email + " "}
                                         </Typography>
                                         </>
                                     }>
@@ -113,7 +113,6 @@ class Meetup extends Component {
                             </Link>
                         )}
                     </List>
-                    
                 </div>
             )
         }
@@ -154,8 +153,6 @@ class Meetup extends Component {
                         </div>
                     </Grid>
                     <Grid item xs={12}>{renderEvents(events)}</Grid>
-                    
-                    
                 </Grid>
             </div>
         )

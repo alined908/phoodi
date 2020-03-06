@@ -97,8 +97,7 @@ class MeetupSerializer(serializers.ModelSerializer):
     def _get_members(self, obj):
         mapping = {}
         for member in obj.members.all():
-            user = member.user
-            mapping.update(UserSerializer(user).data)
+            mapping.update(MeetupMemberSerializer(member).data)
         return mapping
 
     def _get_notifs(self, obj):
@@ -113,13 +112,20 @@ class MeetupSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'uri', 'location', 'date', 'members', 'notifs')
 
 class MeetupEventOptionVoteSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField('_get_user')
+
     def to_representation(self, data):
         res = super(MeetupEventOptionVoteSerializer, self).to_representation(data)
-        return {res['member']: res}
+        return {res['user']['id']: res}
+
+    def _get_user(self, obj):
+        user = obj.member.user
+        serializer = UserSerializer(user, context={"plain": True})
+        return serializer.data
 
     class Meta:
         model = MeetupEventOptionVote
-        fields = ('__all__')
+        fields = ('id', 'status', 'user')
 
 class MeetupEventOptionSerializer(serializers.ModelSerializer):
     votes = serializers.SerializerMethodField("_get_votes")
@@ -152,15 +158,19 @@ class MeetupEventSerializer(serializers.ModelSerializer):
         fields = ('id', 'meetup', 'title', 'start', 'end', 'chosen', 'entries', 'options', 'price', 'distance')
 
 class MeetupMemberSerializer(serializers.ModelSerializer):
-    member = serializers.SerializerMethodField('_get_member')
+    user = serializers.SerializerMethodField('_get_user')
 
-    def _get_member(self, obj):
-        serializer = UserSerializer(obj.user)
+    def to_representation(self, data):
+        res = super(MeetupMemberSerializer, self).to_representation(data)
+        return {res['user']['id']: res}
+
+    def _get_user(self, obj):
+        serializer = UserSerializer(obj.user, context={"plain": True})
         return serializer.data
 
     class Meta:
         model = MeetupMember
-        fields = ['member']
+        fields = ['user', 'ban', 'admin']
 
 class MeetupInviteSerializer(serializers.ModelSerializer):
     sender = serializers.SerializerMethodField('_get_sender')

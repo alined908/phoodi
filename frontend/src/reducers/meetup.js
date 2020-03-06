@@ -42,8 +42,10 @@ export default function meetupReducer(state = defaultState, action){
                                 events: {...state.meetups[action.payload.meetup].events, [event_id]: action.payload.event}}}}
         case VOTE_MEETUP_EVENT:
             var meetup = action.payload.meetup
+            var member = action.payload.member
             return {...state, meetups: {...state.meetups, 
                             [meetup]: {...state.meetups[meetup], 
+                                members: {...state.meetups[meetup].members, ...member},
                                 events: {...state.meetups[meetup].events, 
                                     [action.payload.event]: {...state.meetups[meetup].events[action.payload.event], 
                                         options: {...state.meetups[meetup].events[action.payload.event].options, 
