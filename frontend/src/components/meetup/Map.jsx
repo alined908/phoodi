@@ -46,8 +46,8 @@ class Map extends Component {
             <div style={{position: 'absolute', right: 10, top: 10}}>
                 <NavigationControl showCompass={false}/>
             </div>
-            <Marker latitude={this.props.location[0]} longitude={this.props.location[1]}>
-                <LocationOnIcon fontSize="large" color="secondary"></LocationOnIcon>
+            <Marker latitude={this.props.location[0]} longitude={this.props.location[1]} offsetLeft={-10} offsetTop={-25}>
+              <LocationOnIcon fontSize="large" color="secondary"></LocationOnIcon>
             </Marker>
           </ReactMapGL>
         );

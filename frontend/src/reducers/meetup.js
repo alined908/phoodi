@@ -1,4 +1,4 @@
-import {GET_MEETUPS, ADD_MEETUP, DELETE_MEETUP, CLEAR_STORE, VOTE_MEETUP_EVENT, ADD_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, EDIT_MEETUP_EVENT} from '../constants/action-types';
+import {GET_MEETUPS, ADD_MEETUP, DELETE_MEETUP, EDIT_MEETUP, CLEAR_STORE, VOTE_MEETUP_EVENT, ADD_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, EDIT_MEETUP_EVENT} from '../constants/action-types';
 
 const defaultState = {
     meetups: {},
@@ -13,6 +13,8 @@ export default function meetupReducer(state = defaultState, action){
             return {...state, meetups: action.payload, isMeetupsInitialized: true}
         case ADD_MEETUP:
             return {...state, meetups: {...state.meetups, [action.payload.uri]: action.payload}}
+        case EDIT_MEETUP:
+            return {...state, meetups: {...state.meetups, [action.payload.uri]: {...action.payload}}}
         case DELETE_MEETUP:
             var meetups = {}
             Object.keys(state.meetups).map((key) => {

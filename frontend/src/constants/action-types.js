@@ -16,6 +16,7 @@ export const REMOVE_ACTIVE_ROOM = 'remove_active_room';
 export const GET_MEETUPS = 'get_meetups';
 export const ADD_MEETUP = 'add_meetup';
 export const DELETE_MEETUP = 'delete_meetup';
+export const EDIT_MEETUP = 'edit_meetup';
 export const SEND_MEETUP_EMAILS = 'send_meetup_emails';
 
 //MeetupEvents

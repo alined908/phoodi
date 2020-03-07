@@ -98,6 +98,13 @@ class MeetupView(APIView):
         serializer = MeetupSerializer(meetup, context={"user": user})
         return Response(serializer.data)
 
+    def patch(self, request, *args, **kwargs):
+        meetup = self.get_object(kwargs['uri'])
+        serializer = MeetupSerializer(meetup, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data)
+
     def delete(self, request, *args, **kwargs):
         meetup = self.get_object(kwargs['uri'])
         meetup.delete()
@@ -130,9 +137,11 @@ class MeetupEventsListView(APIView):
         return Response({'meetup': uri, 'event': {event.id: serializer.data}})
 
 class MeetupEmailView(APIView):
-    permissions = [permissions.IsAuthenticated]
+    permissions=[permissions.IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
+        user=request.user
+        print(user)
         uri = kwargs['uri']
         meetup = get_object_or_404(Meetup, uri=uri)
         meetup.send_email()
@@ -141,9 +150,19 @@ class MeetupEmailView(APIView):
 class MeetupEventsView(APIView):
     permissions=[permissions.IsAuthenticated]
 
-    def delete(self, request, *args, **kwargs):
-        pk = kwargs['id']
+    def get_object(self, pk):
         event = get_object_or_404(MeetupEvent, pk=pk)
+        return event
+
+    def patch(self, request, *args, **kwargs):
+        event = self.get_object(kwargs['id'])
+        serializer = MeetupEventSerializer(event, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request, *args, **kwargs):
+        event = self.get_object(kwargs['id'])
         event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 

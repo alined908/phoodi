@@ -5,7 +5,7 @@ import {Button, Typography, Paper, Grid, ButtonGroup, Slider, Fab} from '@materi
 import renderTextField from '../renderTextField'
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {addMeetupEvent} from "../../actions/meetup"
+import {addMeetupEvent, getMeetup, getMeetupEvents} from "../../actions/meetup"
 import {Link} from 'react-router-dom'
 import axios from "axios"
 import Category from "./Category"
@@ -13,6 +13,7 @@ import {history} from '../MeetupApp'
 
 const marks = [{value: 0.25},{value: 0.50},{value: 1},{value: 2},{value: 3},{value: 5},{value: 10},{value: 25}]
 const convert = {0.25: 400, 0.50: 800, 1: 1600, 2: 3200, 3: 4800, 5: 8000, 10: 16000, 25: 40000}
+const reconvert = {400: 0.25, 800: 0.50, 1600: 1, 3200: 2, 4800: 3, 8000:5, 16000: 10, 40000: 25}
 
 class MeetupEventForm extends Component {
     constructor(props){
@@ -32,10 +33,27 @@ class MeetupEventForm extends Component {
                 localStorage.setItem("categories", JSON.stringify(response.data)
             ))
         } 
+
+        if (!this.props.isMeetupInitialized){
+            this.props.getMeetup(this.props.match.params.uri)
+        } 
+        if (!this.props.isMeetupEventsInitialized){
+            this.props.getMeetupEvents(this.props.match.params.uri)
+        }
         
-        this.setState({
-            categories: JSON.parse(localStorage.getItem('categories')).categories
-        })
+        if (this.props.type === "create"){
+            this.setState({
+                categories: JSON.parse(localStorage.getItem('categories')).categories,
+            })
+        } 
+
+        if (this.props.type === "edit"){
+            this.setState({
+                categories: JSON.parse(localStorage.getItem('categories')).categories,
+                entries: this.props.entries,
+                distance: reconvert[this.props.distance]
+            })
+        }
     }
 
     onSubmit = (formProps) => {
@@ -43,10 +61,20 @@ class MeetupEventForm extends Component {
         const prices = indices.join(", ")
         const uri = this.props.match.params.uri
         const data = {uri: uri, entries: this.state.entries, distance: convert[this.state.distance], prices: prices, ...formProps}
-        axios.post(
-            `http://localhost:8000/api/meetups/${uri}/events/`, data, {headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
-        }})
+
+        if (this.props.type === "create"){
+            axios.post(
+                `http://localhost:8000/api/meetups/${uri}/events/`, data, {headers: {
+                    "Authorization": `JWT ${localStorage.getItem('token')}`
+            }})
+        } 
+        if (this.props.type === "edit") {
+            axios.patch(
+                `http://localhost:8000/api/meetups/${uri}/events/${this.props.match.params.id}/`, data, {headers: {
+                    "Authorization": `JWT ${localStorage.getItem('token')}`
+            }})
+        }
+        
         history.push(`/meetups/${uri}`)
     }
 
@@ -72,15 +100,22 @@ class MeetupEventForm extends Component {
         this.setState({distance: val})
     }
 
+    determineClicked = (category) => {
+    
+        if (category.api_label in this.state.entries){
+            return "contained"
+        }
+        return "outlined"
+    }
+
     render () {
         const {handleSubmit} = this.props;
-        var date = this.props.meetup.date.split("-")
-        const maxDate = new Date(date[0], date[1] + 1, date[2])
+        const create = this.props.type === "create"
 
         return (
             <div className="inner-wrap">
                 <div className="inner-header">
-                    <Typography variant="h5">Create New Event</Typography>
+                    <Typography variant="h5">{create ? "Create New Event" : "Edit Event"}</Typography>
                     <Link to={`/meetups/${this.props.match.params.uri}`}><Button variant="contained" color="primary">Meetup</Button></Link>
                 </div> 
                 <div className="form">
@@ -95,7 +130,7 @@ class MeetupEventForm extends Component {
                                 </Grid>
                 
                                 <Grid item xs={6}>
-                                    <Field required name="start" component={renderDatePicker} label="Start" {...{maxDate: maxDate}}></Field>
+                                    <Field required name="start" component={renderDatePicker} label="Start"></Field>
                                 </Grid>
                                 <Grid item xs={6}>
                                     <Field name="end" component={renderDatePicker} label="End"></Field>
@@ -129,13 +164,15 @@ class MeetupEventForm extends Component {
                                     <div className="categories">
                                         {this.state.categories.map((category) => 
                                             <div className="category" onClick={() => this.handleCategory(category.api_label, category.id)}>
-                                                <Category key={category.id} category={category}></Category>
+                                                <Category key={category.id} category={category} clicked={create ? "outlined" : this.determineClicked(category)}></Category>
                                             </div>
                                         )}
                                     </div>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Fab color="primary" variant="extended" type="submit" aria-label="add" >Add Event</Fab>
+                                    <Fab color="primary" variant="extended" type="submit" aria-label="add"> 
+                                        {create ? "Add Event" : "Edit Event"}
+                                    </Fab>
                                 </Grid>
                             </Grid>
                         </form>
@@ -147,14 +184,37 @@ class MeetupEventForm extends Component {
 }
 
 function mapStateToProps(state, ownProps){
-    return {
-        meetup: state.meetup.meetups[ownProps.match.params.uri]
+    const meetup = state.meetup.meetups[ownProps.match.params.uri]
+    const uri = ownProps.match.params.uri
+    const id = ownProps.match.params.id
+
+    if (ownProps.type === "edit" && (uri in state.meetup.meetups) && ("events" in meetup)){
+        const event = meetup.events[id]
+        return {
+            meetup: meetup,
+            event: event,
+            initialValues: {title: event.title, start: event.start, end: event.end},
+            distance: event.distance,
+            price: event.price,
+            entries: event.entries,
+            isMeetupInitialized: true,
+            isMeetupEventsInitialized: true
+        }
+    }
+    else {
+        return {
+            meetup: meetup,
+            isMeetupInitialized: false,
+            isMeetupEventsInitialized: false,
+            entries: {},
+        }
     }
 }
 
-
 const mapDispatchToProps = {
     addMeetupEvent,
+    getMeetup,
+    getMeetupEvents
 }
 
 export default compose (

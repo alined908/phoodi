@@ -2,7 +2,7 @@ import React from 'react'
 import {Button} from "@material-ui/core"
 
 const Category = (props) => {
-    const [variant, setVariant] = React.useState('outlined')
+    const [variant, setVariant] = React.useState(props.clicked)
 
     const handleClick = () => {
         setVariant(variant === 'outlined' ? 'contained' : 'outlined')

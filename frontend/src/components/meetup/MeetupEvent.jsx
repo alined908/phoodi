@@ -4,13 +4,14 @@ import {connect} from 'react-redux'
 import {deleteMeetupEvent} from "../../actions/meetup"
 import Restauraunt from "./Restauraunt"
 import moment from "moment"
-import CloseIcon from '@material-ui/icons/Close';
 import CachedIcon from "@material-ui/icons/Cached";
 import EditIcon from '@material-ui/icons/Edit';
 import {IconButton, Typography, Grid} from '@material-ui/core'
 import {compose} from 'redux';
 import Map from "./Map"
 import ScheduleIcon from '@material-ui/icons/Schedule';
+import DeleteIcon from '@material-ui/icons/Delete';
+import {Link} from 'react-router-dom'
 
 
 class MeetupEvent extends Component {
@@ -87,9 +88,19 @@ class MeetupEvent extends Component {
         const renderActions = () => {
             return (
                 <div className="mte-actions">
-                    <IconButton color="inherit"><EditIcon></EditIcon></IconButton>
-                    {!this.props.chosen && <IconButton color="inherit" edge="start"><CachedIcon fontSize='large' onClick={() => this.handleReload()}/></IconButton>}
-                    <IconButton color="inherit" edge="start"><CloseIcon fontSize='large' onClick={() => this.handleDelete()}/></IconButton>
+                    {!this.props.chosen && 
+                        <IconButton onClick={() => this.handleReload()} color="primary" aria-label="reload">
+                            <CachedIcon />
+                        </IconButton>
+                    }
+                    <Link to={`/meetups/${this.props.uri}/events/${this.props.event.id}/edit`}>
+                        <IconButton color="inherit" aria-label="edit">
+                            <EditIcon></EditIcon>
+                        </IconButton>
+                    </Link>
+                    <IconButton onClick={() => this.handleDelete()} color="secondary" aria-label="delete">
+                        <DeleteIcon />
+                    </IconButton>
                 </div>
             )
         }

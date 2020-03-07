@@ -7,10 +7,10 @@ import {getFriends} from "../../actions/friend"
 import {Link} from 'react-router-dom'
 import moment from 'moment';
 import MeetupFriend from "./MeetupFriend"
-import {Grid, Button, Typography, Avatar, List, ListItem, ListItemText, ListItemAvatar} from "@material-ui/core"
+import {Grid, Button, Typography, Avatar, List, ListItem, ListItemText, ListItemAvatar, IconButton} from "@material-ui/core"
 import WebSocketService from "../../accounts/WebSocket"
-import ScheduleIcon from '@material-ui/icons/Schedule';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import RoomIcon from '@material-ui/icons/Room';
 import ChatIcon from '@material-ui/icons/Chat';
 import EmailIcon from '@material-ui/icons/Email';
@@ -27,7 +27,10 @@ class Meetup extends Component {
 
     componentDidMount () {
         this.props.getMeetupEvents(this.props.uri)
-        this.props.getFriends(this.props.user.id)
+        if (!this.props.isFriendsInitialized){
+            this.props.getFriends(this.props.user.id)
+        } 
+       
         if (this.props.notifs > 0){
             this.props.removeNotifs({type: "meetup", id: this.props.id})
         }
@@ -44,7 +47,9 @@ class Meetup extends Component {
     }
     
     handleDelete = () => {
-        this.props.deleteMeetup(this.props.uri);
+        if (window.confirm("Are you sure you want to delete")){
+            this.props.deleteMeetup(this.props.uri);
+        }
     }
 
     handleEmail = () => {
@@ -67,9 +72,22 @@ class Meetup extends Component {
                         <div className="inner-header-icons"><RoomIcon/> {location}</div>
                     </div>
                     <div>
-                        <Link to={`/chat/${this.props.uri}`}><Button startIcon={<ChatIcon />} className="button" color="primary" variant="contained">Chat</Button></Link>
-                        <Button startIcon={<EmailIcon />} className="button" variant="contained" onClick={() => this.handleEmail()}>Notify</Button>
-                        <Button startIcon={<DeleteIcon />} className="button" variant="contained" color="secondary" onClick={() => this.handleDelete()}>Delete</Button>
+                        <Link to={`/chat/${this.props.uri}`}>
+                            <IconButton color="primary" aria-label='chat'>
+                                <ChatIcon />
+                            </IconButton>
+                        </Link>
+                        <IconButton onClick={() => this.handleEmail()} style={{color: "black"}} aria-label='email'>
+                            <EmailIcon />
+                        </IconButton>
+                        <Link to={`/meetups/${uri}/edit`}>
+                            <IconButton aria-label='edit'>
+                                <EditIcon />
+                            </IconButton>
+                        </Link>
+                        <IconButton onClick={() => this.handleDelete()} color="secondary" aria-label='delete'>
+                            <DeleteIcon />
+                        </IconButton>
                     </div>
                 </div>
             )

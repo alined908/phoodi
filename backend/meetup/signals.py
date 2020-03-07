@@ -26,9 +26,10 @@ def create_chat_room_member(sender, instance, created, **kwargs):
 @receiver(post_save, sender = MeetupEvent)
 def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
     from .serializers import MeetupEventSerializer
+    meetup = instance.meetup
+
     if created:
         instance.generate_options()
-        meetup = instance.meetup
         #Handle Notif Update
         for member in meetup.members.all():
             if member != instance.creator:
@@ -45,12 +46,12 @@ def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
                     'message': content
                 })
 
-        #Handle Event Update
-        content = {
-            'command': 'new_event',
-            'message': {'meetup': meetup.uri, 'event': {instance.id: MeetupEventSerializer(instance).data}}
-        }
-        async_to_sync(channel_layer.group_send)('meetup_%s' % meetup.uri, {'type': 'meetup_event','meetup_event': content})
+    #Handle Event Update
+    content = {
+        'command': 'new_event',
+        'message': {'meetup': meetup.uri, 'event': {instance.id: MeetupEventSerializer(instance).data}}
+    }
+    async_to_sync(channel_layer.group_send)('meetup_%s' % meetup.uri, {'type': 'meetup_event','meetup_event': content})
 
 @receiver(post_save, sender = MeetupInvite)
 def create_notif_meetup_inv(sender, instance, created, **kwargs):

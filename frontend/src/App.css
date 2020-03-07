@@ -276,10 +276,21 @@ body {
 .rst-name{
   font-size: 1rem;
   font-weight: bold;
-  
+  display:flex;
+  align-items: center;
+}
+
+.rst-name svg{
+  margin-left: 5px;
+}
+
+.rst-name:hover{
+  text-decoration: underline;
 }
 
 .rst-rating{
+  display:flex;
+  align-items: center;
   font-size: .9rem;
 }
 .rst-actions {
@@ -409,10 +420,6 @@ body {
   font-size: .85rem;
 }
 
-.mte-actions svg{
-  margin-right: 5px;
-}
-
 .chosen {
   display: flex;
   border: 1px solid #eeeeef;
@@ -425,6 +432,7 @@ body {
 }
 
 .map-wrapper{
+  height: 100%;
   border-radius: 10px;
   overflow:hidden;
 }
@@ -492,6 +500,7 @@ body {
   align-items: center;
 }
 
+
 .inner-header-wrapper{
   width: 100%;
 }
@@ -526,6 +535,7 @@ body {
 .inner-header-icons{
   display: flex;
   align-items: center;
+  text-transform: capitalize;
 }
 
 .inner-header-middle{

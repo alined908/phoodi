@@ -144,13 +144,13 @@ class Meetup(models.Model):
     def __str__(self):
         return self.uri
 
-    def send_email(self, message):
+    def send_email(self):
         members = self.members.all()
         emails = [member.user.email for member in members]
-        subject = self.name + "has been finalized."
-        body = ""
-        email = EmailMessage(subject, body, to=emails)
-        email.send()
+        print(emails)
+        subject = self.name + " has been finalized."
+        body = '<a href="http://localhost:3000/meetups/' + self.uri +'">Meetup</a>'
+        send_mail(subject, body, "meetup022897@gmail.com",emails)
 
 class MeetupMember(models.Model):
     meetup = models.ForeignKey(Meetup, related_name="members", on_delete=models.CASCADE)

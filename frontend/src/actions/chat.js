@@ -52,12 +52,6 @@ export const setTypingValue = (value) => {
 
 export const addMessage = (message) => async dispatch => {
     try {
-        // const response = await axios.post(
-        //     `http://localhost:8000/api/chats/${room}/messages/`, {"message": value}, {headers: {
-        //         "Authorization": `JWT ${localStorage.getItem('token')}`
-        // }})
-        // console.log("post message")
-        // console.log(response)
         console.log(message);
         dispatch({type: ADD_MESSAGE, payload: {"message": message}})
     } catch(e){

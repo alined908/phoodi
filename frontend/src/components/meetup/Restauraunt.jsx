@@ -13,6 +13,7 @@ import StarHalfIcon from '@material-ui/icons/StarHalf';
 import RoomIcon from '@material-ui/icons/Room';
 import PhoneIcon from '@material-ui/icons/Phone';
 import {ADD_GLOBAL_MESSAGE} from '../../constants/action-types'
+import LaunchIcon from '@material-ui/icons/Launch';
 
 class Restauraunt extends Component {
 
@@ -111,7 +112,8 @@ class Restauraunt extends Component {
             <>
                 <div className="rst">
                     <div className="rst-info">
-                        <span className="rst-name">{data.name}</span>
+                        <span >
+                        <a className="rst-name" target="_blank" href={data.url}>{data.name} <LaunchIcon fontSize={"inherit"} fontWeight="inherit"/></a></span>
                         <span className="rst-rating">{this.determineRating(data.rating)}</span>
                     </div>
                     <div className="rst-img" style={{backgroundImage: `url(${data.image_url})`}}>
@@ -120,7 +122,7 @@ class Restauraunt extends Component {
                 <div className="rst-categories">{data.price} &#8226; {data.categories.map((category) =>
                     <div className="category-chip">{category.title}</div>
                     )}
-                 
+                
                 </div>
             </>
         )

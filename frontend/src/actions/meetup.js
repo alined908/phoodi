@@ -1,4 +1,4 @@
-import {GET_MEETUPS, ADD_MEETUP, DELETE_MEETUP, SEND_MEETUP_EMAILS, VOTE_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, ADD_MEETUP_EVENT, EDIT_MEETUP_EVENT} from "../constants/action-types";
+import {GET_MEETUPS, ADD_MEETUP, ADD_GLOBAL_MESSAGE, DELETE_MEETUP, EDIT_MEETUP, SEND_MEETUP_EMAILS, VOTE_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, ADD_MEETUP_EVENT, EDIT_MEETUP_EVENT} from "../constants/action-types";
 import axios from 'axios';
 import {history} from '../components/MeetupApp'
 
@@ -30,10 +30,9 @@ export const getMeetup = (uri) => async dispatch => {
 }
 
 export const addMeetup = (formProps, redirectOnSuccess) => async dispatch => {
-    console.log("add meetup called")
-    console.log(formProps);
     var params = {...formProps, 
-        date: formProps.date.getFullYear()+ "-" + ("0"+(formProps.date.getMonth()+1)).slice(-2) + "-" + ("0" + formProps.date.getDate()).slice(-2)}
+        date: formProps.date.getFullYear()+ "-" + ("0"+(formProps.date.getMonth()+1)).slice(-2) + "-" + ("0" + formProps.date.getDate()).slice(-2)
+    }
     try {
         const response = await axios.post(
             `http://localhost:8000/api/meetups/`, params, {headers: {
@@ -46,6 +45,25 @@ export const addMeetup = (formProps, redirectOnSuccess) => async dispatch => {
         console.log(e)
     }
 } 
+
+export const editMeetup = (formProps, uri, redirectOnSuccess) => async dispatch => {
+    console.log('edit meetup')
+    var date = new Date(formProps.date)
+    var params = {...formProps, 
+        date: date.getFullYear()+ "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2)
+    }
+    try {
+        const response = await axios.patch(
+            `http://localhost:8000/api/meetups/${uri}/`, params, {headers: {
+                "Authorization": `JWT ${localStorage.getItem('token')}`
+        }})
+        dispatch({type: EDIT_MEETUP, payload: response.data})
+        console.log(response.data)
+        redirectOnSuccess(uri)
+    } catch(e){
+        console.log(e)
+    }
+}
 
 export const deleteMeetup = (uri) => async dispatch => {
     try {
@@ -95,14 +113,14 @@ export const decideMeetupEvent = (event) => async dispatch => {
 }
 
 export const sendMeetupEmails = (uri) => async dispatch => {
+
     try {
-        const response = await axios.post(
-            `http://localhost:8000/api/meetups/${uri}/email`, {headers: {
+        await axios.post(
+            `http://localhost:8000/api/meetups/${uri}/email/`, {}, {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
         }})
-        console.log(response)
-       // dispatch({type: SEND_MEETUP_EMAILS, payload: {uri: uri, data: response.data}})
+        dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "success", message: "Successfully sent emails"}})
     } catch(e) {
-        console.log(e)
+        dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Unable to send emails"}})
     }
 }

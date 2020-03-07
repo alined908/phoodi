@@ -22,6 +22,10 @@ class UserSerializerWithToken(serializers.ModelSerializer):
     first_name = serializers.CharField(max_length=255)
     password = serializers.CharField(write_only=True)
 
+    def to_representation(self, data):
+        res = super(UserSerializerWithToken, self).to_representation(data)
+        return {res['id']: res}
+
     def create(self, validated_data):
         user = User.objects.create_user(email=validated_data['email'], first_name=validated_data['first_name'], password=validated_data['password'])
         return user
