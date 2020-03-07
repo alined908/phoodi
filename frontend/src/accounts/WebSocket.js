@@ -154,6 +154,7 @@ export default class WebSocketService {
         this.sendMessage({command: 'vote_event', data: data})
     }
 
+
     //Invite Commands
     fetchInvites(user){
         console.log("Websocket - fetchInvites")
@@ -180,7 +181,7 @@ export default class WebSocketService {
         this.callbacks['new_message'] = newMessageCallback;
     }
 
-    addEventCallbacks(eventsCallback, newEventCallback, reloadEventCallback, voteEventCallback, decideEventCallback, deleteEventCallback){
+    addEventCallbacks(eventsCallback, newEventCallback, reloadEventCallback, voteEventCallback, decideEventCallback, deleteEventCallback, addMemberCallback){
         this.callbacks['fetch_events'] = eventsCallback
         this.callbacks['new_event'] = newEventCallback
         this.callbacks['reload_event'] = reloadEventCallback
@@ -188,6 +189,7 @@ export default class WebSocketService {
         this.callbacks['decide_event'] = decideEventCallback
         this.callbacks['redecide_event'] = decideEventCallback
         this.callbacks['delete_event'] = deleteEventCallback
+        this.callbacks['new_member'] = addMemberCallback
     }
 
     addInviteCallbacks(invitesCallback, newInviteCallback){

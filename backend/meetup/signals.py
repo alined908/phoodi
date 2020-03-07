@@ -17,11 +17,21 @@ def create_chat_room_for_meetup(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=MeetupMember)
 def create_chat_room_member(sender, instance, created, **kwargs):
+    from .serializers import MeetupMemberSerializer
+    meetup = instance.meetup
+    user = instance.user
     if created:
-        meetup = instance.meetup
-        user = instance.user
         room = ChatRoom.objects.get(uri=meetup.uri) 
         ChatRoomMember.objects.create(room = room, user = user)
+        serializer = MeetupMemberSerializer(instance)
+        content = {
+            'command': 'new_member',
+            'message': {'meetup': meetup.uri, 'member': serializer.data}
+        }
+        async_to_sync(channel_layer.group_send)('meetup_%s' % meetup.uri, {
+             'type': 'meetup_event',
+             'meetup_event': content
+        })
 
 @receiver(post_save, sender = MeetupEvent)
 def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):

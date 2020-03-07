@@ -1,4 +1,4 @@
-import {GET_MEETUPS, ADD_MEETUP, ADD_GLOBAL_MESSAGE, DELETE_MEETUP, EDIT_MEETUP, SEND_MEETUP_EMAILS, VOTE_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, ADD_MEETUP_EVENT, EDIT_MEETUP_EVENT} from "../constants/action-types";
+import {GET_MEETUPS, ADD_MEETUP, ADD_MEETUP_MEMBER, ADD_GLOBAL_MESSAGE, DELETE_MEETUP, EDIT_MEETUP, SEND_MEETUP_EMAILS, VOTE_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, ADD_MEETUP_EVENT, EDIT_MEETUP_EVENT} from "../constants/action-types";
 import axios from 'axios';
 import {history} from '../components/MeetupApp'
 
@@ -110,6 +110,10 @@ export const voteMeetupEvent = (event) => async dispatch => {
     
 export const decideMeetupEvent = (event) => async dispatch => {
     dispatch({type: EDIT_MEETUP_EVENT, payload: event.message})
+}
+
+export const addMeetupMember = (event) => async dispatch => {
+    dispatch({type: ADD_MEETUP_MEMBER, payload: event.message})
 }
 
 export const sendMeetupEmails = (uri) => async dispatch => {

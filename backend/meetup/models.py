@@ -8,7 +8,7 @@ from uuid import uuid4
 from django.core.exceptions import ObjectDoesNotExist
 import requests
 import random
-from django.contrib.postgres.fields import JSONField
+from django.contrib.postgres.fields import JSONField, ArrayField
 from rest_framework_jwt.settings import api_settings
 import json
 import os.path
@@ -184,12 +184,12 @@ class MeetupEvent(models.Model):
         categories = ""
         for i, key in enumerate(self.entries): 
             category = Category.objects.get(api_label=key)
-            meetupcategory = MeetupCategory.objects.create(event=self, category=category)
+            MeetupCategory.objects.create(event=self, category=category)
             if i == len(self.entries) - 1:
                 categories += key
             else:
                 categories += key + ", "
-
+        print(categories)
         return categories
 
     def request_yelp_api(self):

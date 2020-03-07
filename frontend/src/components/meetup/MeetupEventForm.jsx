@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import {reduxForm, Field} from 'redux-form';
 import renderDatePicker from "./renderDatePicker"
-import {Button, Typography, Paper, Grid, ButtonGroup, Slider, Fab} from '@material-ui/core';
+import {Button, Typography, Paper, Grid, ButtonGroup, Slider, Fab, TextField} from '@material-ui/core';
 import renderTextField from '../renderTextField'
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {addMeetupEvent, getMeetup, getMeetupEvents} from "../../actions/meetup"
+import Autocomplete from '@material-ui/lab/Autocomplete'
 import {Link} from 'react-router-dom'
 import axios from "axios"
 import Category from "./Category"
@@ -20,17 +21,18 @@ class MeetupEventForm extends Component {
         super(props)
         this.state = {
             categories: [],
-            entries: {},
+            entries: [],
             prices: [true, true , false, false],
             distance: 10
         }
+        this.onTagsChange = this.onTagsChange.bind(this)
     }
 
     componentDidMount(){
         if (localStorage.getItem("categories") === null) {
             axios.get("http://localhost:8000/api/categories/")
             .then((response) =>
-                localStorage.setItem("categories", JSON.stringify(response.data)
+                localStorage.setItem("categories", JSON.stringify(response.data.categories)
             ))
         } 
 
@@ -43,24 +45,34 @@ class MeetupEventForm extends Component {
         
         if (this.props.type === "create"){
             this.setState({
-                categories: JSON.parse(localStorage.getItem('categories')).categories,
+                categories: JSON.parse(localStorage.getItem('categories')),
             })
         } 
 
         if (this.props.type === "edit"){
             this.setState({
-                categories: JSON.parse(localStorage.getItem('categories')).categories,
+                categories: JSON.parse(localStorage.getItem('categories')),
                 entries: this.props.entries,
                 distance: reconvert[this.props.distance]
             })
         }
     }
 
+    handleEntries = () => {
+        const entries = {}
+        for (var i = 0; i < this.state.entries.length; i++){
+            let entry = this.state.entries[i];
+            entries[entry.api_label] = entry.id
+        }
+        return entries
+    }
+
     onSubmit = (formProps) => {
         const indices = this.state.prices.reduce((out, bool, index) => bool ? out.concat(index+1) : out, [])
         const prices = indices.join(", ")
         const uri = this.props.match.params.uri
-        const data = {uri: uri, entries: this.state.entries, distance: convert[this.state.distance], prices: prices, ...formProps}
+        const data = {uri: uri, entries: this.handleEntries(), distance: convert[this.state.distance], prices: prices, ...formProps}
+        console.log(data)
 
         if (this.props.type === "create"){
             axios.post(
@@ -74,7 +86,6 @@ class MeetupEventForm extends Component {
                     "Authorization": `JWT ${localStorage.getItem('token')}`
             }})
         }
-        
         history.push(`/meetups/${uri}`)
     }
 
@@ -84,28 +95,19 @@ class MeetupEventForm extends Component {
         this.setState({prices})
     }
 
-    handleCategory = (api_label, id) => {
-        var entries = this.state.entries
-        if (api_label in entries) {
-            delete entries[api_label]
-        } else {
-            entries[api_label] = id
-        }
-        this.setState({
-            entries: entries
-        })
-    }
-
     handleDistance = (e, val) => {
         this.setState({distance: val})
     }
 
     determineClicked = (category) => {
-    
         if (category.api_label in this.state.entries){
             return "contained"
         }
         return "outlined"
+    }
+
+    onTagsChange = (event, values) => {
+        this.setState({entries: values})
     }
 
     render () {
@@ -161,13 +163,9 @@ class MeetupEventForm extends Component {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Typography variant="h6">Categories</Typography>
-                                    <div className="categories">
-                                        {this.state.categories.map((category) => 
-                                            <div className="category" onClick={() => this.handleCategory(category.api_label, category.id)}>
-                                                <Category key={category.id} category={category} clicked={create ? "outlined" : this.determineClicked(category)}></Category>
-                                            </div>
-                                        )}
-                                    </div>
+                                    <Autocomplete multiple options={this.state.categories} onChange={this.onTagsChange} getOptionLabel={option => option.label} renderInput={
+                                        params => (<TextField {...params} variant="outlined"/>)}  
+                                    />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Fab color="primary" variant="extended" type="submit" aria-label="add"> 

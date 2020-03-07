@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import MeetupEvent from "./MeetupEvent"
 import {connect} from 'react-redux';
-import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent} from '../../actions/meetup';
+import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, addMeetupMember, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent} from '../../actions/meetup';
 import {removeNotifs} from '../../actions/notifications'
 import {getFriends} from "../../actions/friend"
 import {Link} from 'react-router-dom'
@@ -38,8 +38,9 @@ class Meetup extends Component {
         var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
         const path = `${ws_scheme}://localhost:8000/ws/meetups/${uri}/`;
         const socket = this.state.socket
-        socket.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, this.props.voteMeetupEvent, this.props.decideMeetupEvent, this.props.deleteMeetupEvent);
+        socket.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, this.props.voteMeetupEvent, this.props.decideMeetupEvent, this.props.deleteMeetupEvent, this.props.addMeetupMember);
         socket.connect(path);
+        console.log(socket.getCallbacks())
     }
 
     componentWillUnmount() {
@@ -196,7 +197,8 @@ const mapDispatchToProps = {
     decideMeetupEvent,
     deleteMeetupEvent,
     sendMeetupEmails,
-    removeNotifs
+    removeNotifs,
+    addMeetupMember
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Meetup)
