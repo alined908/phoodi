@@ -9,12 +9,20 @@ import {addMeetupEvent, getMeetup, getMeetupEvents} from "../../actions/meetup"
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import {Link} from 'react-router-dom'
 import axios from "axios"
-import Category from "./Category"
 import {history} from '../MeetupApp'
 
 const marks = [{value: 0.25},{value: 0.50},{value: 1},{value: 2},{value: 3},{value: 5},{value: 10},{value: 25}]
 const convert = {0.25: 400, 0.50: 800, 1: 1600, 2: 3200, 3: 4800, 5: 8000, 10: 16000, 25: 40000}
 const reconvert = {400: 0.25, 800: 0.50, 1600: 1, 3200: 2, 4800: 3, 8000:5, 16000: 10, 40000: 25}
+
+const validate = values => {
+    const errors = {}
+    if (values.start >= values.end){
+        errors.start = "Start time must be before end time "
+    }
+
+    return errors
+}
 
 class MeetupEventForm extends Component {
     constructor(props){
@@ -28,9 +36,9 @@ class MeetupEventForm extends Component {
         this.onTagsChange = this.onTagsChange.bind(this)
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         if (localStorage.getItem("categories") === null) {
-            axios.get("http://localhost:8000/api/categories/")
+            await axios.get("http://localhost:8000/api/categories/")
             .then((response) =>
                 localStorage.setItem("categories", JSON.stringify(response.data.categories)
             ))
@@ -64,6 +72,7 @@ class MeetupEventForm extends Component {
             let entry = this.state.entries[i];
             entries[entry.api_label] = entry.id
         }
+        console.log(entries)
         return entries
     }
 
@@ -107,6 +116,7 @@ class MeetupEventForm extends Component {
     }
 
     onTagsChange = (event, values) => {
+        console.log(values)
         this.setState({entries: values})
     }
 
@@ -130,12 +140,11 @@ class MeetupEventForm extends Component {
                                 <Grid item xs={12}>
                                     <Field required name="title" component={renderTextField} label="Event Name"></Field>
                                 </Grid>
-                
                                 <Grid item xs={6}>
-                                    <Field required name="start" component={renderDatePicker} label="Start"></Field>
+                                    <Field required name="start" component={renderDatePicker} label="Start Time"></Field>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <Field name="end" component={renderDatePicker} label="End"></Field>
+                                    <Field name="end" component={renderDatePicker} label="End Time"></Field>
                                 </Grid>
                                 <Grid item xs={6}>
                                     <div className="price">
@@ -202,6 +211,10 @@ function mapStateToProps(state, ownProps){
     else {
         return {
             meetup: meetup,
+            initialValues: {
+                start: new Date(Math.ceil(new Date().getTime()/300000)*300000),
+                end: new Date(Math.ceil(new Date().getTime()/2100000) * 2100000)
+            },
             isMeetupInitialized: false,
             isMeetupEventsInitialized: false,
             entries: {},
@@ -217,5 +230,5 @@ const mapDispatchToProps = {
 
 export default compose (
     connect(mapStateToProps, mapDispatchToProps),
-    reduxForm({form: 'event'})
+    reduxForm({form: 'event', validate})
 )(MeetupEventForm);

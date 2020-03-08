@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework import permissions, status
+from django.db.models import Q
 import collections
 from datetime import datetime
 from django.forms.models import model_to_dict
@@ -30,6 +31,15 @@ class UserView(APIView):
         serializer = UserSerializer(user, context={'plain': True})
         return Response(serializer.data)
 
+    def patch(self, request, *args, **kwargs):
+        print(request.data)
+        pk = kwargs['id']
+        user = User.objects.get(pk=pk)
+        serializer = UserSerializer(user, data=request.data, partial=True, context={'plain': True})
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data)
+
     def post(self,request):
         """ Handles POST Request for User Signups
 
@@ -39,7 +49,8 @@ class UserView(APIView):
         Returns: 
             Response: JSON containing appropriate status code and message
         """
-        user = request.data['user']
+        user = request.data
+        print(user)
 
         if not user:
             return Response({"error": 'No data found'})
@@ -235,7 +246,7 @@ class MeetupInviteAllView(APIView):
         Get all invites
         """
         user = request.user
-        invites = user.received_meetupinvites.all()
+        invites = user.received_meetupinvites.filter(status=1).all()
         return Response(MeetupInviteSerializer(invites, many=True).data)
 
 class MeetupInviteListView(APIView):
@@ -370,7 +381,7 @@ class FriendInviteListView(APIView):
         Get Friend Request Invites
         """
         user = request.user
-        received_invs = user.received_friendinvites.all()
+        received_invs = user.received_friendinvites.filter(status=1).all()
         serializer = FriendInviteSerializer(received_invs, many=True)
 
         return Response(serializer.data)

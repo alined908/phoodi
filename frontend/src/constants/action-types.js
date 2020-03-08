@@ -2,6 +2,7 @@
 export const AUTH_USER = 'auth_user';
 export const AUTH_ERROR = 'auth_error';
 export const CLEAR_STORE= 'clear_store'
+export const EDIT_USER = "edit_user"
 
 //Chat
 export const GET_ROOMS = 'get_rooms';

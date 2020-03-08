@@ -1,4 +1,4 @@
-import {AUTH_USER, CLEAR_STORE, AUTH_ERROR, GET_FRIENDS, ADD_FRIEND, DELETE_FRIEND, FRIEND_ERROR, GET_MEETUP_INVITES, SEND_MEETUP_INVITE, RESPOND_MEETUP_INVITE, GET_FRIEND_INVITES, SEND_FRIEND_INVITE, RESPOND_FRIEND_INVITE} from "../constants/action-types"
+import {AUTH_USER, CLEAR_STORE, AUTH_ERROR, EDIT_USER, GET_FRIENDS, ADD_FRIEND, DELETE_FRIEND,  GET_MEETUP_INVITES, GET_FRIEND_INVITES} from "../constants/action-types"
 import {userDefaultState} from "../constants/default-states"
 
 export default function(state = userDefaultState, action){
@@ -9,6 +9,8 @@ export default function(state = userDefaultState, action){
             return {...state, authenticated: action.payload.token, user: user};
         case AUTH_ERROR:
             return {...state, errorMessage: action.payload};
+        case EDIT_USER:
+            return {...state, user: {...action.payload}}
         case GET_FRIENDS:
             return {...state, isFriendsInitialized: true, friends: action.payload}
         case ADD_FRIEND:

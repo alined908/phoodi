@@ -1,7 +1,7 @@
 [
     {
         "model": "meetup.category",
-        "pk": 2,
+        "pk": 1,
         "fields": {
             "label": "Acai Bowls",
             "api_label": "acaibowls"
@@ -9,7 +9,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 3,
+        "pk": 2,
         "fields": {
             "label": "Afghan",
             "api_label": "afghani"
@@ -17,7 +17,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 4,
+        "pk": 3,
         "fields": {
             "label": "African",
             "api_label": "african"
@@ -25,7 +25,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 5,
+        "pk": 4,
         "fields": {
             "label": "Andalusian",
             "api_label": "andalusian"
@@ -33,7 +33,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 6,
+        "pk": 5,
         "fields": {
             "label": "Arabian",
             "api_label": "arabian"
@@ -41,7 +41,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 7,
+        "pk": 6,
         "fields": {
             "label": "Argentine",
             "api_label": "argentine"
@@ -49,7 +49,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 8,
+        "pk": 7,
         "fields": {
             "label": "Armenian",
             "api_label": "armenian"
@@ -57,7 +57,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 9,
+        "pk": 8,
         "fields": {
             "label": "Asian Fusion",
             "api_label": "asianfusion"
@@ -65,7 +65,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 10,
+        "pk": 9,
         "fields": {
             "label": "Asturian",
             "api_label": "asturian"
@@ -73,7 +73,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 11,
+        "pk": 10,
         "fields": {
             "label": "Australian",
             "api_label": "australian"
@@ -81,7 +81,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 12,
+        "pk": 11,
         "fields": {
             "label": "Austrian",
             "api_label": "austrian"
@@ -89,7 +89,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 13,
+        "pk": 12,
         "fields": {
             "label": "Backshop",
             "api_label": "backshop"
@@ -97,7 +97,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 14,
+        "pk": 13,
         "fields": {
             "label": "Bagels",
             "api_label": "bagels"
@@ -105,7 +105,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 15,
+        "pk": 14,
         "fields": {
             "label": "Baguettes",
             "api_label": "baguettes"
@@ -113,7 +113,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 16,
+        "pk": 15,
         "fields": {
             "label": "Bakeries",
             "api_label": "bakeries"
@@ -121,7 +121,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 17,
+        "pk": 16,
         "fields": {
             "label": "Bangladeshi",
             "api_label": "bangladeshi"
@@ -129,7 +129,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 18,
+        "pk": 17,
         "fields": {
             "label": "Basque",
             "api_label": "basque"
@@ -137,7 +137,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 19,
+        "pk": 18,
         "fields": {
             "label": "Bavarian",
             "api_label": "bavarian"
@@ -145,7 +145,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 20,
+        "pk": 19,
         "fields": {
             "label": "Barbeque",
             "api_label": "bbq"
@@ -153,7 +153,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 21,
+        "pk": 20,
         "fields": {
             "label": "Beer, Wine & Spirits",
             "api_label": "beer_and_wine"
@@ -161,7 +161,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 22,
+        "pk": 21,
         "fields": {
             "label": "Beer Garden",
             "api_label": "beergarden"
@@ -169,7 +169,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 23,
+        "pk": 22,
         "fields": {
             "label": "Beer Hall",
             "api_label": "beerhall"
@@ -177,7 +177,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 24,
+        "pk": 23,
         "fields": {
             "label": "Beisl",
             "api_label": "beisl"
@@ -185,7 +185,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 25,
+        "pk": 24,
         "fields": {
             "label": "Belgian",
             "api_label": "belgian"
@@ -193,7 +193,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 26,
+        "pk": 25,
         "fields": {
             "label": "Bento",
             "api_label": "bento"
@@ -201,7 +201,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 27,
+        "pk": 26,
         "fields": {
             "label": "Beverage Store",
             "api_label": "beverage_stores"
@@ -209,7 +209,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 28,
+        "pk": 27,
         "fields": {
             "label": "Bistros",
             "api_label": "bistros"
@@ -217,7 +217,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 29,
+        "pk": 28,
         "fields": {
             "label": "Black Sea",
             "api_label": "blacksea"
@@ -225,7 +225,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 30,
+        "pk": 29,
         "fields": {
             "label": "Brasseries",
             "api_label": "brasseries"
@@ -233,7 +233,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 31,
+        "pk": 30,
         "fields": {
             "label": "Brazilian",
             "api_label": "brazilian"
@@ -241,7 +241,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 32,
+        "pk": 31,
         "fields": {
             "label": "Breakfast & Brunch",
             "api_label": "breakfast_brunch"
@@ -249,7 +249,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 33,
+        "pk": 32,
         "fields": {
             "label": "Breweries",
             "api_label": "breweries"
@@ -257,7 +257,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 34,
+        "pk": 33,
         "fields": {
             "label": "British",
             "api_label": "british"
@@ -265,7 +265,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 35,
+        "pk": 34,
         "fields": {
             "label": "Bubble Tea",
             "api_label": "bubbletea"
@@ -273,7 +273,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 36,
+        "pk": 35,
         "fields": {
             "label": "Buffets",
             "api_label": "buffets"
@@ -281,7 +281,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 37,
+        "pk": 36,
         "fields": {
             "label": "Bulgarian",
             "api_label": "bulgarian"
@@ -289,7 +289,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 38,
+        "pk": 37,
         "fields": {
             "label": "Burgers",
             "api_label": "burgers"
@@ -297,7 +297,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 39,
+        "pk": 38,
         "fields": {
             "label": "Burmese",
             "api_label": "burmese"
@@ -305,7 +305,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 40,
+        "pk": 39,
         "fields": {
             "label": "Butcher",
             "api_label": "butcher"
@@ -313,7 +313,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 41,
+        "pk": 40,
         "fields": {
             "label": "Cafes",
             "api_label": "cafes"
@@ -321,7 +321,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 42,
+        "pk": 41,
         "fields": {
             "label": "Cafeteria",
             "api_label": "cafeteria"
@@ -329,7 +329,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 43,
+        "pk": 42,
         "fields": {
             "label": "Cajun/Creole",
             "api_label": "cajun"
@@ -337,7 +337,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 44,
+        "pk": 43,
         "fields": {
             "label": "Patisserie/Cake Shop",
             "api_label": "cakeshop"
@@ -345,7 +345,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 45,
+        "pk": 44,
         "fields": {
             "label": "Cambodian",
             "api_label": "cambodian"
@@ -353,7 +353,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 46,
+        "pk": 45,
         "fields": {
             "label": "Canteen",
             "api_label": "canteen"
@@ -361,7 +361,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 47,
+        "pk": 46,
         "fields": {
             "label": "Caribbean",
             "api_label": "caribbean"
@@ -369,7 +369,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 48,
+        "pk": 47,
         "fields": {
             "label": "Catalan",
             "api_label": "catalan"
@@ -377,7 +377,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 49,
+        "pk": 48,
         "fields": {
             "label": "Cheesesteaks",
             "api_label": "cheesesteaks"
@@ -385,7 +385,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 50,
+        "pk": 49,
         "fields": {
             "label": "Chicken Wings",
             "api_label": "chicken_wings"
@@ -393,7 +393,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 51,
+        "pk": 50,
         "fields": {
             "label": "Chicken Shop",
             "api_label": "chickenshop"
@@ -401,7 +401,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 52,
+        "pk": 51,
         "fields": {
             "label": "Chilean",
             "api_label": "chilean"
@@ -409,7 +409,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 53,
+        "pk": 52,
         "fields": {
             "label": "Chimney Cakes",
             "api_label": "chimneycakes"
@@ -417,7 +417,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 54,
+        "pk": 53,
         "fields": {
             "label": "Chinese",
             "api_label": "chinese"
@@ -425,7 +425,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 55,
+        "pk": 54,
         "fields": {
             "label": "Churros",
             "api_label": "churros"
@@ -433,7 +433,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 56,
+        "pk": 55,
         "fields": {
             "label": "Cideries",
             "api_label": "cideries"
@@ -441,7 +441,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 57,
+        "pk": 56,
         "fields": {
             "label": "Coffee & Tea",
             "api_label": "coffee"
@@ -449,7 +449,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 58,
+        "pk": 57,
         "fields": {
             "label": "Coffee Roasteries",
             "api_label": "coffeeroasteries"
@@ -457,7 +457,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 59,
+        "pk": 58,
         "fields": {
             "label": "Coffee & Tea Supplies",
             "api_label": "coffeeteasupplies"
@@ -465,7 +465,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 60,
+        "pk": 59,
         "fields": {
             "label": "Comfort Food",
             "api_label": "comfortfood"
@@ -473,7 +473,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 61,
+        "pk": 60,
         "fields": {
             "label": "Convenience Stores",
             "api_label": "convenience"
@@ -481,7 +481,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 62,
+        "pk": 61,
         "fields": {
             "label": "Corsican",
             "api_label": "corsican"
@@ -489,7 +489,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 63,
+        "pk": 62,
         "fields": {
             "label": "Creperies",
             "api_label": "creperies"
@@ -497,7 +497,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 64,
+        "pk": 63,
         "fields": {
             "label": "CSA",
             "api_label": "csa"
@@ -505,7 +505,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 65,
+        "pk": 64,
         "fields": {
             "label": "Cuban",
             "api_label": "cuban"
@@ -513,7 +513,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 66,
+        "pk": 65,
         "fields": {
             "label": "Cupcakes",
             "api_label": "cupcakes"
@@ -521,7 +521,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 67,
+        "pk": 66,
         "fields": {
             "label": "Curry Sausage",
             "api_label": "currysausage"
@@ -529,7 +529,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 68,
+        "pk": 67,
         "fields": {
             "label": "Custom Cakes",
             "api_label": "customcakes"
@@ -537,7 +537,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 69,
+        "pk": 68,
         "fields": {
             "label": "Cypriot",
             "api_label": "cypriot"
@@ -545,7 +545,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 70,
+        "pk": 69,
         "fields": {
             "label": "Czech",
             "api_label": "czech"
@@ -553,7 +553,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 71,
+        "pk": 70,
         "fields": {
             "label": "Czech/Slovakian",
             "api_label": "czechslovakian"
@@ -561,7 +561,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 72,
+        "pk": 71,
         "fields": {
             "label": "Danish",
             "api_label": "danish"
@@ -569,7 +569,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 73,
+        "pk": 72,
         "fields": {
             "label": "Delicatessen",
             "api_label": "delicatessen"
@@ -577,7 +577,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 74,
+        "pk": 73,
         "fields": {
             "label": "Delis",
             "api_label": "delis"
@@ -585,7 +585,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 75,
+        "pk": 74,
         "fields": {
             "label": "Desserts",
             "api_label": "desserts"
@@ -593,7 +593,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 76,
+        "pk": 75,
         "fields": {
             "label": "Diners",
             "api_label": "diners"
@@ -601,7 +601,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 77,
+        "pk": 76,
         "fields": {
             "label": "Dinner Theater",
             "api_label": "dinnertheater"
@@ -609,7 +609,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 78,
+        "pk": 77,
         "fields": {
             "label": "Distilleries",
             "api_label": "distilleries"
@@ -617,7 +617,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 79,
+        "pk": 78,
         "fields": {
             "label": "Do-It-Yourself Food",
             "api_label": "diyfood"
@@ -625,7 +625,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 80,
+        "pk": 79,
         "fields": {
             "label": "Donairs",
             "api_label": "donairs"
@@ -633,7 +633,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 81,
+        "pk": 80,
         "fields": {
             "label": "Donuts",
             "api_label": "donuts"
@@ -641,7 +641,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 82,
+        "pk": 81,
         "fields": {
             "label": "Dumplings",
             "api_label": "dumplings"
@@ -649,7 +649,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 83,
+        "pk": 82,
         "fields": {
             "label": "Eastern European",
             "api_label": "eastern_european"
@@ -657,7 +657,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 84,
+        "pk": 83,
         "fields": {
             "label": "Parent Cafes",
             "api_label": "eltern_cafes"
@@ -665,7 +665,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 85,
+        "pk": 84,
         "fields": {
             "label": "Empanadas",
             "api_label": "empanadas"
@@ -673,7 +673,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 86,
+        "pk": 85,
         "fields": {
             "label": "Eritrean",
             "api_label": "eritrean"
@@ -681,7 +681,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 87,
+        "pk": 86,
         "fields": {
             "label": "Ethical Grocery",
             "api_label": "ethicgrocery"
@@ -689,7 +689,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 88,
+        "pk": 87,
         "fields": {
             "label": "Ethiopian",
             "api_label": "ethiopian"
@@ -697,7 +697,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 89,
+        "pk": 88,
         "fields": {
             "label": "Farmers Market",
             "api_label": "farmersmarket"
@@ -705,7 +705,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 90,
+        "pk": 89,
         "fields": {
             "label": "Filipino",
             "api_label": "filipino"
@@ -713,7 +713,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 91,
+        "pk": 90,
         "fields": {
             "label": "Fischbroetchen",
             "api_label": "fischbroetchen"
@@ -721,7 +721,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 92,
+        "pk": 91,
         "fields": {
             "label": "Fishmonger",
             "api_label": "fishmonger"
@@ -729,7 +729,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 93,
+        "pk": 92,
         "fields": {
             "label": "Fish & Chips",
             "api_label": "fishnchips"
@@ -737,7 +737,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 94,
+        "pk": 93,
         "fields": {
             "label": "Flatbread",
             "api_label": "flatbread"
@@ -745,7 +745,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 95,
+        "pk": 94,
         "fields": {
             "label": "Fondue",
             "api_label": "fondue"
@@ -753,7 +753,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 96,
+        "pk": 95,
         "fields": {
             "label": "Food Court",
             "api_label": "food_court"
@@ -761,7 +761,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 97,
+        "pk": 96,
         "fields": {
             "label": "Food Delivery Services",
             "api_label": "fooddeliveryservices"
@@ -769,7 +769,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 98,
+        "pk": 97,
         "fields": {
             "label": "Food Stands",
             "api_label": "foodstands"
@@ -777,7 +777,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 99,
+        "pk": 98,
         "fields": {
             "label": "Food Trucks",
             "api_label": "foodtrucks"
@@ -785,7 +785,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 100,
+        "pk": 99,
         "fields": {
             "label": "Freiduria",
             "api_label": "freiduria"
@@ -793,7 +793,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 101,
+        "pk": 100,
         "fields": {
             "label": "French",
             "api_label": "french"
@@ -801,7 +801,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 102,
+        "pk": 101,
         "fields": {
             "label": "Friterie",
             "api_label": "friterie"
@@ -809,7 +809,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 103,
+        "pk": 102,
         "fields": {
             "label": "Galician",
             "api_label": "galician"
@@ -817,7 +817,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 104,
+        "pk": 103,
         "fields": {
             "label": "Game Meat",
             "api_label": "gamemeat"
@@ -825,7 +825,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 105,
+        "pk": 104,
         "fields": {
             "label": "Gastropubs",
             "api_label": "gastropubs"
@@ -833,7 +833,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 106,
+        "pk": 105,
         "fields": {
             "label": "Gelato",
             "api_label": "gelato"
@@ -841,7 +841,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 107,
+        "pk": 106,
         "fields": {
             "label": "Georgian",
             "api_label": "georgian"
@@ -849,7 +849,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 108,
+        "pk": 107,
         "fields": {
             "label": "German",
             "api_label": "german"
@@ -857,7 +857,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 109,
+        "pk": 108,
         "fields": {
             "label": "Giblets",
             "api_label": "giblets"
@@ -865,7 +865,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 110,
+        "pk": 109,
         "fields": {
             "label": "Mulled Wine",
             "api_label": "gluhwein"
@@ -873,7 +873,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 111,
+        "pk": 110,
         "fields": {
             "label": "Gluten-Free",
             "api_label": "gluten_free"
@@ -881,7 +881,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 112,
+        "pk": 111,
         "fields": {
             "label": "Specialty Food",
             "api_label": "gourmet"
@@ -889,7 +889,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 113,
+        "pk": 112,
         "fields": {
             "label": "Greek",
             "api_label": "greek"
@@ -897,7 +897,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 114,
+        "pk": 113,
         "fields": {
             "label": "Grocery",
             "api_label": "grocery"
@@ -905,7 +905,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 115,
+        "pk": 114,
         "fields": {
             "label": "Guamanian",
             "api_label": "guamanian"
@@ -913,7 +913,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 116,
+        "pk": 115,
         "fields": {
             "label": "Halal",
             "api_label": "halal"
@@ -921,7 +921,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 117,
+        "pk": 116,
         "fields": {
             "label": "Hawaiian",
             "api_label": "hawaiian"
@@ -929,7 +929,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 118,
+        "pk": 117,
         "fields": {
             "label": "Hawker Centre",
             "api_label": "hawkercentre"
@@ -937,7 +937,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 119,
+        "pk": 118,
         "fields": {
             "label": "Heuriger",
             "api_label": "heuriger"
@@ -945,7 +945,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 120,
+        "pk": 119,
         "fields": {
             "label": "Himalayan/Nepalese",
             "api_label": "himalayan"
@@ -953,7 +953,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 121,
+        "pk": 120,
         "fields": {
             "label": "Hong Kong Style Cafe",
             "api_label": "hkcafe"
@@ -961,7 +961,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 122,
+        "pk": 121,
         "fields": {
             "label": "Honduran",
             "api_label": "honduran"
@@ -969,7 +969,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 123,
+        "pk": 122,
         "fields": {
             "label": "Honey",
             "api_label": "honey"
@@ -977,7 +977,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 124,
+        "pk": 123,
         "fields": {
             "label": "Hot Dogs",
             "api_label": "hotdog"
@@ -985,7 +985,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 125,
+        "pk": 124,
         "fields": {
             "label": "Fast Food",
             "api_label": "hotdogs"
@@ -993,7 +993,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 126,
+        "pk": 125,
         "fields": {
             "label": "Hot Pot",
             "api_label": "hotpot"
@@ -1001,7 +1001,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 127,
+        "pk": 126,
         "fields": {
             "label": "Hungarian",
             "api_label": "hungarian"
@@ -1009,7 +1009,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 128,
+        "pk": 127,
         "fields": {
             "label": "Iberian",
             "api_label": "iberian"
@@ -1017,7 +1017,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 129,
+        "pk": 128,
         "fields": {
             "label": "Ice Cream & Frozen Yogurt",
             "api_label": "icecream"
@@ -1025,7 +1025,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 130,
+        "pk": 129,
         "fields": {
             "label": "Imported Food",
             "api_label": "importedfood"
@@ -1033,7 +1033,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 131,
+        "pk": 130,
         "fields": {
             "label": "Indonesian",
             "api_label": "indonesian"
@@ -1041,7 +1041,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 132,
+        "pk": 131,
         "fields": {
             "label": "Indian",
             "api_label": "indpak"
@@ -1049,7 +1049,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 133,
+        "pk": 132,
         "fields": {
             "label": "International",
             "api_label": "international"
@@ -1057,7 +1057,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 134,
+        "pk": 133,
         "fields": {
             "label": "Internet Cafes",
             "api_label": "internetcafe"
@@ -1065,7 +1065,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 135,
+        "pk": 134,
         "fields": {
             "label": "International Grocery",
             "api_label": "intlgrocery"
@@ -1073,7 +1073,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 136,
+        "pk": 135,
         "fields": {
             "label": "Irish",
             "api_label": "irish"
@@ -1081,7 +1081,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 137,
+        "pk": 136,
         "fields": {
             "label": "Island Pub",
             "api_label": "island_pub"
@@ -1089,7 +1089,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 138,
+        "pk": 137,
         "fields": {
             "label": "Israeli",
             "api_label": "israeli"
@@ -1097,7 +1097,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 139,
+        "pk": 138,
         "fields": {
             "label": "Italian",
             "api_label": "italian"
@@ -1105,7 +1105,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 140,
+        "pk": 139,
         "fields": {
             "label": "Japanese",
             "api_label": "japanese"
@@ -1113,7 +1113,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 141,
+        "pk": 140,
         "fields": {
             "label": "Jewish",
             "api_label": "jewish"
@@ -1121,7 +1121,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 142,
+        "pk": 141,
         "fields": {
             "label": "Japanese Sweets",
             "api_label": "jpsweets"
@@ -1129,7 +1129,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 143,
+        "pk": 142,
         "fields": {
             "label": "Juice Bars & Smoothies",
             "api_label": "juicebars"
@@ -1137,7 +1137,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 144,
+        "pk": 143,
         "fields": {
             "label": "Kebab",
             "api_label": "kebab"
@@ -1145,7 +1145,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 145,
+        "pk": 144,
         "fields": {
             "label": "Kiosk",
             "api_label": "kiosk"
@@ -1153,7 +1153,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 146,
+        "pk": 145,
         "fields": {
             "label": "Kombucha",
             "api_label": "kombucha"
@@ -1161,7 +1161,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 147,
+        "pk": 146,
         "fields": {
             "label": "Kopitiam",
             "api_label": "kopitiam"
@@ -1169,7 +1169,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 148,
+        "pk": 147,
         "fields": {
             "label": "Korean",
             "api_label": "korean"
@@ -1177,7 +1177,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 149,
+        "pk": 148,
         "fields": {
             "label": "Kosher",
             "api_label": "kosher"
@@ -1185,7 +1185,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 150,
+        "pk": 149,
         "fields": {
             "label": "Kurdish",
             "api_label": "kurdish"
@@ -1193,7 +1193,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 151,
+        "pk": 150,
         "fields": {
             "label": "Laos",
             "api_label": "laos"
@@ -1201,7 +1201,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 152,
+        "pk": 151,
         "fields": {
             "label": "Laotian",
             "api_label": "laotian"
@@ -1209,7 +1209,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 153,
+        "pk": 152,
         "fields": {
             "label": "Latin American",
             "api_label": "latin"
@@ -1217,7 +1217,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 154,
+        "pk": 153,
         "fields": {
             "label": "Lyonnais",
             "api_label": "lyonnais"
@@ -1225,7 +1225,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 155,
+        "pk": 154,
         "fields": {
             "label": "Malaysian",
             "api_label": "malaysian"
@@ -1233,7 +1233,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 156,
+        "pk": 155,
         "fields": {
             "label": "Meaderies",
             "api_label": "meaderies"
@@ -1241,7 +1241,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 157,
+        "pk": 156,
         "fields": {
             "label": "Meatballs",
             "api_label": "meatballs"
@@ -1249,7 +1249,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 158,
+        "pk": 157,
         "fields": {
             "label": "Mediterranean",
             "api_label": "mediterranean"
@@ -1257,7 +1257,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 159,
+        "pk": 158,
         "fields": {
             "label": "Mexican",
             "api_label": "mexican"
@@ -1265,7 +1265,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 160,
+        "pk": 159,
         "fields": {
             "label": "Middle Eastern",
             "api_label": "mideastern"
@@ -1273,7 +1273,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 161,
+        "pk": 160,
         "fields": {
             "label": "Milk Bars",
             "api_label": "milkbars"
@@ -1281,7 +1281,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 162,
+        "pk": 161,
         "fields": {
             "label": "Milkshake Bars",
             "api_label": "milkshakebars"
@@ -1289,7 +1289,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 163,
+        "pk": 162,
         "fields": {
             "label": "Modern Australian",
             "api_label": "modern_australian"
@@ -1297,7 +1297,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 164,
+        "pk": 163,
         "fields": {
             "label": "Modern European",
             "api_label": "modern_european"
@@ -1305,7 +1305,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 165,
+        "pk": 164,
         "fields": {
             "label": "Mongolian",
             "api_label": "mongolian"
@@ -1313,7 +1313,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 166,
+        "pk": 165,
         "fields": {
             "label": "Moroccan",
             "api_label": "moroccan"
@@ -1321,7 +1321,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 167,
+        "pk": 166,
         "fields": {
             "label": "Nasi Lemak",
             "api_label": "nasilemak"
@@ -1329,7 +1329,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 168,
+        "pk": 167,
         "fields": {
             "label": "American (New)",
             "api_label": "newamerican"
@@ -1337,7 +1337,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 169,
+        "pk": 168,
         "fields": {
             "label": "Canadian (New)",
             "api_label": "newcanadian"
@@ -1345,7 +1345,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 170,
+        "pk": 169,
         "fields": {
             "label": "New Mexican Cuisine",
             "api_label": "newmexican"
@@ -1353,7 +1353,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 171,
+        "pk": 170,
         "fields": {
             "label": "New Zealand",
             "api_label": "newzealand"
@@ -1361,7 +1361,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 172,
+        "pk": 171,
         "fields": {
             "label": "Nicaraguan",
             "api_label": "nicaraguan"
@@ -1369,7 +1369,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 173,
+        "pk": 172,
         "fields": {
             "label": "Night Food",
             "api_label": "nightfood"
@@ -1377,7 +1377,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 174,
+        "pk": 173,
         "fields": {
             "label": "Nikkei",
             "api_label": "nikkei"
@@ -1385,7 +1385,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 175,
+        "pk": 174,
         "fields": {
             "label": "Noodles",
             "api_label": "noodles"
@@ -1393,7 +1393,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 176,
+        "pk": 175,
         "fields": {
             "label": "Norcinerie",
             "api_label": "norcinerie"
@@ -1401,7 +1401,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 177,
+        "pk": 176,
         "fields": {
             "label": "Traditional Norwegian",
             "api_label": "norwegian"
@@ -1409,7 +1409,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 178,
+        "pk": 177,
         "fields": {
             "label": "Open Sandwiches",
             "api_label": "opensandwiches"
@@ -1417,7 +1417,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 179,
+        "pk": 178,
         "fields": {
             "label": "Organic Stores",
             "api_label": "organic_stores"
@@ -1425,7 +1425,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 180,
+        "pk": 179,
         "fields": {
             "label": "Oriental",
             "api_label": "oriental"
@@ -1433,7 +1433,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 181,
+        "pk": 180,
         "fields": {
             "label": "Pakistani",
             "api_label": "pakistani"
@@ -1441,7 +1441,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 182,
+        "pk": 181,
         "fields": {
             "label": "Pan Asian",
             "api_label": "panasian"
@@ -1449,7 +1449,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 183,
+        "pk": 182,
         "fields": {
             "label": "Panzerotti",
             "api_label": "panzerotti"
@@ -1457,7 +1457,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 184,
+        "pk": 183,
         "fields": {
             "label": "Parma",
             "api_label": "parma"
@@ -1465,7 +1465,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 185,
+        "pk": 184,
         "fields": {
             "label": "Persian/Iranian",
             "api_label": "persian"
@@ -1473,7 +1473,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 186,
+        "pk": 185,
         "fields": {
             "label": "Peruvian",
             "api_label": "peruvian"
@@ -1481,7 +1481,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 187,
+        "pk": 186,
         "fields": {
             "label": "PF/Comercial",
             "api_label": "pfcomercial"
@@ -1489,7 +1489,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 188,
+        "pk": 187,
         "fields": {
             "label": "Piadina",
             "api_label": "piadina"
@@ -1497,7 +1497,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 189,
+        "pk": 188,
         "fields": {
             "label": "Pita",
             "api_label": "pita"
@@ -1505,7 +1505,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 190,
+        "pk": 189,
         "fields": {
             "label": "Pizza",
             "api_label": "pizza"
@@ -1513,7 +1513,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 191,
+        "pk": 190,
         "fields": {
             "label": "Poke",
             "api_label": "poke"
@@ -1521,7 +1521,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 192,
+        "pk": 191,
         "fields": {
             "label": "Polish",
             "api_label": "polish"
@@ -1529,7 +1529,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 193,
+        "pk": 192,
         "fields": {
             "label": "Polynesian",
             "api_label": "polynesian"
@@ -1537,7 +1537,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 194,
+        "pk": 193,
         "fields": {
             "label": "Pop-Up Restaurants",
             "api_label": "popuprestaurants"
@@ -1545,7 +1545,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 195,
+        "pk": 194,
         "fields": {
             "label": "Portuguese",
             "api_label": "portuguese"
@@ -1553,7 +1553,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 196,
+        "pk": 195,
         "fields": {
             "label": "Potatoes",
             "api_label": "potatoes"
@@ -1561,7 +1561,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 197,
+        "pk": 196,
         "fields": {
             "label": "Poutineries",
             "api_label": "poutineries"
@@ -1569,7 +1569,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 198,
+        "pk": 197,
         "fields": {
             "label": "Pretzels",
             "api_label": "pretzels"
@@ -1577,7 +1577,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 199,
+        "pk": 198,
         "fields": {
             "label": "Pub Food",
             "api_label": "pubfood"
@@ -1585,7 +1585,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 200,
+        "pk": 199,
         "fields": {
             "label": "Live/Raw Food",
             "api_label": "raw_food"
@@ -1593,7 +1593,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 201,
+        "pk": 200,
         "fields": {
             "label": "Rice",
             "api_label": "riceshop"
@@ -1601,7 +1601,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 202,
+        "pk": 201,
         "fields": {
             "label": "Romanian",
             "api_label": "romanian"
@@ -1609,7 +1609,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 203,
+        "pk": 202,
         "fields": {
             "label": "Rotisserie Chicken",
             "api_label": "rotisserie_chicken"
@@ -1617,7 +1617,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 204,
+        "pk": 203,
         "fields": {
             "label": "Russian",
             "api_label": "russian"
@@ -1625,7 +1625,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 205,
+        "pk": 204,
         "fields": {
             "label": "Salad",
             "api_label": "salad"
@@ -1633,7 +1633,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 206,
+        "pk": 205,
         "fields": {
             "label": "Salumerie",
             "api_label": "salumerie"
@@ -1641,7 +1641,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 207,
+        "pk": 206,
         "fields": {
             "label": "Sandwiches",
             "api_label": "sandwiches"
@@ -1649,7 +1649,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 208,
+        "pk": 207,
         "fields": {
             "label": "Scandinavian",
             "api_label": "scandinavian"
@@ -1657,7 +1657,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 209,
+        "pk": 208,
         "fields": {
             "label": "Schnitzel",
             "api_label": "schnitzel"
@@ -1665,7 +1665,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 210,
+        "pk": 209,
         "fields": {
             "label": "Scottish",
             "api_label": "scottish"
@@ -1673,7 +1673,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 211,
+        "pk": 210,
         "fields": {
             "label": "Seafood",
             "api_label": "seafood"
@@ -1681,7 +1681,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 212,
+        "pk": 211,
         "fields": {
             "label": "Serbo Croatian",
             "api_label": "serbocroatian"
@@ -1689,7 +1689,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 213,
+        "pk": 212,
         "fields": {
             "label": "Shaved Ice",
             "api_label": "shavedice"
@@ -1697,7 +1697,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 214,
+        "pk": 213,
         "fields": {
             "label": "Shaved Snow",
             "api_label": "shavedsnow"
@@ -1705,7 +1705,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 215,
+        "pk": 214,
         "fields": {
             "label": "Signature Cuisine",
             "api_label": "signature_cuisine"
@@ -1713,7 +1713,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 216,
+        "pk": 215,
         "fields": {
             "label": "Singaporean",
             "api_label": "singaporean"
@@ -1721,7 +1721,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 217,
+        "pk": 216,
         "fields": {
             "label": "Slovakian",
             "api_label": "slovakian"
@@ -1729,7 +1729,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 218,
+        "pk": 217,
         "fields": {
             "label": "Smokehouse",
             "api_label": "smokehouse"
@@ -1737,7 +1737,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 219,
+        "pk": 218,
         "fields": {
             "label": "Somali",
             "api_label": "somali"
@@ -1745,7 +1745,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 220,
+        "pk": 219,
         "fields": {
             "label": "Soul Food",
             "api_label": "soulfood"
@@ -1753,7 +1753,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 221,
+        "pk": 220,
         "fields": {
             "label": "Soup",
             "api_label": "soup"
@@ -1761,7 +1761,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 222,
+        "pk": 221,
         "fields": {
             "label": "Southern",
             "api_label": "southern"
@@ -1769,7 +1769,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 223,
+        "pk": 222,
         "fields": {
             "label": "Spanish",
             "api_label": "spanish"
@@ -1777,7 +1777,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 224,
+        "pk": 223,
         "fields": {
             "label": "Sri Lankan",
             "api_label": "srilankan"
@@ -1785,7 +1785,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 225,
+        "pk": 224,
         "fields": {
             "label": "Steakhouses",
             "api_label": "steak"
@@ -1793,7 +1793,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 226,
+        "pk": 225,
         "fields": {
             "label": "Street Vendors",
             "api_label": "streetvendors"
@@ -1801,7 +1801,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 227,
+        "pk": 226,
         "fields": {
             "label": "French Southwest",
             "api_label": "sud_ouest"
@@ -1809,7 +1809,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 228,
+        "pk": 227,
         "fields": {
             "label": "Sugar Shacks",
             "api_label": "sugarshacks"
@@ -1817,7 +1817,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 229,
+        "pk": 228,
         "fields": {
             "label": "Supper Clubs",
             "api_label": "supperclubs"
@@ -1825,7 +1825,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 230,
+        "pk": 229,
         "fields": {
             "label": "Sushi Bars",
             "api_label": "sushi"
@@ -1833,7 +1833,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 231,
+        "pk": 230,
         "fields": {
             "label": "Swabian",
             "api_label": "swabian"
@@ -1841,7 +1841,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 232,
+        "pk": 231,
         "fields": {
             "label": "Swedish",
             "api_label": "swedish"
@@ -1849,7 +1849,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 233,
+        "pk": 232,
         "fields": {
             "label": "Swiss Food",
             "api_label": "swissfood"
@@ -1857,7 +1857,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 234,
+        "pk": 233,
         "fields": {
             "label": "Syrian",
             "api_label": "syrian"
@@ -1865,7 +1865,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 235,
+        "pk": 234,
         "fields": {
             "label": "Tabernas",
             "api_label": "tabernas"
@@ -1873,7 +1873,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 236,
+        "pk": 235,
         "fields": {
             "label": "Taiwanese",
             "api_label": "taiwanese"
@@ -1881,7 +1881,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 237,
+        "pk": 236,
         "fields": {
             "label": "Tapas Bars",
             "api_label": "tapas"
@@ -1889,7 +1889,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 238,
+        "pk": 237,
         "fields": {
             "label": "Tapas/Small Plates",
             "api_label": "tapasmallplates"
@@ -1897,7 +1897,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 239,
+        "pk": 238,
         "fields": {
             "label": "Tavola Calda",
             "api_label": "tavolacalda"
@@ -1905,7 +1905,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 240,
+        "pk": 239,
         "fields": {
             "label": "Tea Rooms",
             "api_label": "tea"
@@ -1913,7 +1913,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 241,
+        "pk": 240,
         "fields": {
             "label": "Tex-Mex",
             "api_label": "tex-mex"
@@ -1921,7 +1921,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 242,
+        "pk": 241,
         "fields": {
             "label": "Thai",
             "api_label": "thai"
@@ -1929,7 +1929,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 243,
+        "pk": 242,
         "fields": {
             "label": "Torshi",
             "api_label": "torshi"
@@ -1937,7 +1937,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 244,
+        "pk": 243,
         "fields": {
             "label": "Tortillas",
             "api_label": "tortillas"
@@ -1945,7 +1945,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 245,
+        "pk": 244,
         "fields": {
             "label": "American (Traditional)",
             "api_label": "tradamerican"
@@ -1953,7 +1953,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 246,
+        "pk": 245,
         "fields": {
             "label": "Traditional Swedish",
             "api_label": "traditional_swedish"
@@ -1961,7 +1961,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 247,
+        "pk": 246,
         "fields": {
             "label": "Trattorie",
             "api_label": "trattorie"
@@ -1969,7 +1969,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 248,
+        "pk": 247,
         "fields": {
             "label": "Turkish",
             "api_label": "turkish"
@@ -1977,7 +1977,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 249,
+        "pk": 248,
         "fields": {
             "label": "Ukrainian",
             "api_label": "ukrainian"
@@ -1985,7 +1985,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 250,
+        "pk": 249,
         "fields": {
             "label": "Uzbek",
             "api_label": "uzbek"
@@ -1993,7 +1993,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 251,
+        "pk": 250,
         "fields": {
             "label": "Vegan",
             "api_label": "vegan"
@@ -2001,7 +2001,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 252,
+        "pk": 251,
         "fields": {
             "label": "Vegetarian",
             "api_label": "vegetarian"
@@ -2009,7 +2009,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 253,
+        "pk": 252,
         "fields": {
             "label": "Venison",
             "api_label": "venison"
@@ -2017,7 +2017,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 254,
+        "pk": 253,
         "fields": {
             "label": "Vietnamese",
             "api_label": "vietnamese"
@@ -2025,7 +2025,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 255,
+        "pk": 254,
         "fields": {
             "label": "Waffles",
             "api_label": "waffles"
@@ -2033,7 +2033,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 256,
+        "pk": 255,
         "fields": {
             "label": "Water Stores",
             "api_label": "waterstores"
@@ -2041,7 +2041,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 257,
+        "pk": 256,
         "fields": {
             "label": "Wineries",
             "api_label": "wineries"
@@ -2049,7 +2049,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 258,
+        "pk": 257,
         "fields": {
             "label": "Wok",
             "api_label": "wok"
@@ -2057,7 +2057,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 259,
+        "pk": 258,
         "fields": {
             "label": "Wraps",
             "api_label": "wraps"
@@ -2065,7 +2065,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 260,
+        "pk": 259,
         "fields": {
             "label": "Yugoslav",
             "api_label": "yugoslav"
@@ -2073,7 +2073,7 @@
     },
     {
         "model": "meetup.category",
-        "pk": 261,
+        "pk": 260,
         "fields": {
             "label": "Zapiekanka",
             "api_label": "zapiekanka"

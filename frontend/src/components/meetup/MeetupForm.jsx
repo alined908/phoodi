@@ -8,6 +8,7 @@ import {Link} from 'react-router-dom'
 import renderTextField from '../renderTextField'
 import renderDateSimplePicker from "./renderDateSimplePicker"
 import moment from "moment"
+import Location from "./Location"
 
 class MeetupForm extends Component {
 
@@ -26,7 +27,7 @@ class MeetupForm extends Component {
     }
 
     componentDidMount() {
-        if (!this.props.isMeetupInitialized) {
+        if (!this.props.isMeetupInitialized && this.props.type === "edit") {
             this.props.getMeetup(this.props.match.params.uri)
         }
     }
@@ -56,13 +57,16 @@ class MeetupForm extends Component {
                                 <Grid item xs={12}>
                                     <Field name="name" component={renderTextField} label="Name"/>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={6}>
                                     <Field name="location" disabled={!create} component={renderTextField} label="Location"/>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={6}>
                                     <Field name="date" component={renderDateSimplePicker} disabled={this.props.isMeetupInitialized && moment(this.props.meetup.date).add(1, "d").isBefore(moment().toDate())} label="Date"></Field>
                                 </Grid>
-                                <Grid style={{marginTop: "1rem"}} item xs={12}>
+                                {/* <Grid item xs={12}>
+                                    <Location/>
+                                </Grid> */}
+                                <Grid style={{marginTop: "1rem"}} xs={12}>
                                     <Fab type="submit" variant="extended" color="primary" aria-label="add">{create ? "Add Meetup" : "Edit Meetup"}</Fab>
                                 </Grid>
                             </Grid>
@@ -85,6 +89,7 @@ function mapStateToProps(state, ownProps){
         }
     } else {
         return {
+            initialValues: {date: new Date()},
             isMeetupInitialized: false
         }
     }

@@ -7,6 +7,7 @@ import {getFriends} from "../../actions/friend"
 import {Link} from 'react-router-dom'
 import moment from 'moment';
 import MeetupFriend from "./MeetupFriend"
+import {addGlobalMessage} from '../../actions/globalMessages'
 import {Grid, Button, Typography, Avatar, List, ListItem, ListItemText, ListItemAvatar, IconButton} from "@material-ui/core"
 import WebSocketService from "../../accounts/WebSocket"
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -40,7 +41,6 @@ class Meetup extends Component {
         const socket = this.state.socket
         socket.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, this.props.voteMeetupEvent, this.props.decideMeetupEvent, this.props.deleteMeetupEvent, this.props.addMeetupMember);
         socket.connect(path);
-        console.log(socket.getCallbacks())
     }
 
     componentWillUnmount() {
@@ -57,12 +57,27 @@ class Meetup extends Component {
         this.props.sendMeetupEmails(this.props.uri)
     }
 
+    handleDisabledEmail = () => {
+        this.props.addGlobalMessage("error", "All events must be decided to send email")
+    }
+
+    determineEmailDisable = (events) => {
+        for (var key in events){
+            if ((events[key].chosen) === null){
+                return true
+            }
+        }
+        return false
+    }
+
     render () {
         const [id, name, uri, location, datetime, members, notifs, events] = this.props.meetup
 
         const isMember = (friend) => {
             return friend in members
         }
+
+        const emailDisable = this.determineEmailDisable(events)
         
         const renderInformation = (name, datetime, location) => {
             return (
@@ -78,11 +93,11 @@ class Meetup extends Component {
                                 <ChatIcon />
                             </IconButton>
                         </Link>
-                        <IconButton onClick={() => this.handleEmail()} style={{color: "black"}} aria-label='email'>
+                        <IconButton onClick={!emailDisable ? () => this.handleEmail() : () => this.handleDisabledEmail()} style={!emailDisable ? {color: "black"} : {}} aria-label='email'>
                             <EmailIcon />
                         </IconButton>
                         <Link to={`/meetups/${uri}/edit`}>
-                            <IconButton aria-label='edit'>
+                            <IconButton style={{color: "black"}} aria-label='edit' >
                                 <EditIcon />
                             </IconButton>
                         </Link>
@@ -188,17 +203,18 @@ function mapStateToProps(state){
 }
 
 const mapDispatchToProps = {
-    deleteMeetup,
-    getFriends,
-    getMeetupEvents,
-    addMeetupEvent,
-    reloadMeetupEvent,
-    voteMeetupEvent,
-    decideMeetupEvent,
-    deleteMeetupEvent,
-    sendMeetupEmails,
-    removeNotifs,
-    addMeetupMember
+        deleteMeetup,
+        getFriends,
+        getMeetupEvents,
+        addMeetupEvent,
+        reloadMeetupEvent,
+        voteMeetupEvent,
+        decideMeetupEvent,
+        deleteMeetupEvent,
+        sendMeetupEmails,
+        removeNotifs,
+        addMeetupMember,
+        addGlobalMessage
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Meetup)

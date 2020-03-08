@@ -2,25 +2,60 @@ import React, {Component} from 'react';
 import {reduxForm, Field} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import * as actions from '../../actions';
-import {Typography, Paper, Grid, Fab} from '@material-ui/core';
+import {signup, editUser} from "../../actions/index"
+import {Typography, Paper, Grid, Fab, Button, TextField, Avatar} from '@material-ui/core';
 import renderTextField from '../renderTextField'
+import {Link} from "react-router-dom"
 
 class RegisterComponent extends Component {
 
-    onSubmit = formProps => {
-        this.props.signup(formProps, () => {
-            this.props.history.push("/meetups")
-        });
+    constructor(props){
+        super(props)
+        this.state = {
+            image: null
+        }
     }
 
-    render(){
+    onSubmit = formProps => {
+        console.log(formProps)
+        let data = new FormData()
+        for(var key in formProps) {
+            data.append(key.toString(), formProps[key])
+        }
+        if (this.state.image !== null) {
+            data.append('avatar', this.state.image, this.state.image.name)
+        }   
+        console.log(data)
+        if (this.props.type === "create") {
+            console.log("this one")
+            this.props.signup(data, () => {
+                this.props.history.push("/meetups")
+            });
+        }
+
+        if (this.props.type === "edit") {
+            this.props.editUser(data, this.props.user.id, () => {
+                this.props.history.push(`/profile/${this.props.user.id}`)
+            })
+        }
+       
+    }
+
+    handleImageChange = (e) => {
+        this.setState({
+            image: e.target.files[0]
+        })
+    }
+
+    render() {
         const {handleSubmit} = this.props;
+        const create = this.props.type === "create"
 
         return (
             <div className="inner-wrap">
                 <div className="inner-header">
-                <Typography variant="h5">Register</Typography>
+                    <Typography variant="h5">{create ? "Register" : "Edit User"}</Typography>
+                    {!create && <Link to={`/profile/${this.props.user.id}`}><Button variant="contained" color="primary">Profile</Button></Link>}
                 </div>
                 <div className="form">
                     <Paper elevation={3} style={{padding: "2rem 3rem"}}>
@@ -35,14 +70,22 @@ class RegisterComponent extends Component {
                                 <Grid item xs={12}>
                                     <Field name="email" component={renderTextField} label="Email"/>
                                 </Grid>
+                                {create && 
                                 <Grid item xs={12}>
                                     <Field name="password" type="password" component={renderTextField} label="Password"/>
-                                </Grid> 
+                                </Grid> }
+                                {!create && 
+                                    <Grid item xs={2}>
+                                        <Avatar style={{width: "70px", height: "70px"}} src={this.props.user.avatar}></Avatar>
+                                    </Grid>}
+                                <Grid item xs={10}>
+                                    <TextField fullWidth={true} onChange={this.handleImageChange} inputProps={{ style: {fontSize: 14}}}  type="file"/>
+                                </Grid>
                                 <Grid item xs={12}>
                                     <div>{this.props.errorMessage}</div>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Fab type="submit" variant="extended" color="primary" aria-label="login">Register</Fab>
+                                    <Fab type="submit" variant="extended" color="primary" aria-label="login">{create ? "Register" : "Edit User"}</Fab>
                                 </Grid>
                             </Grid>
                         </form>
@@ -53,11 +96,21 @@ class RegisterComponent extends Component {
     }
 }
 
-function mapStatetoProps(state) {
-    return {errorMessage: state.user.errorMessage}
+function mapStatetoProps(state, ownProps) {
+    if (ownProps.type === "edit" && (state.user.user !== null)) {
+        const user = state.user.user
+        return {initialValues: {first_name: user.first_name, last_name: user.last_name, email: user.email}, errorMessage: state.user.errorMessage, user: user}
+    } else {
+        return {errorMessage: state.user.errorMessage}
+    }
+}
+
+const mapDispatchToProps = {
+    signup,
+    editUser
 }
 
 export default compose (
-    connect(mapStatetoProps, actions),
+    connect(mapStatetoProps, mapDispatchToProps),
     reduxForm({form: 'signup'})
 )(RegisterComponent);

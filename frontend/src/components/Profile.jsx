@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Typography, Button, Paper, Grid} from '@material-ui/core'
+import {Typography, Button, Grid} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 import Friend from "./invite/Friend"
@@ -43,8 +43,7 @@ class Profile extends Component {
                 <div className="pic"><img className="user-avatar" src={this.state.user.avatar}></img></div>
                 <div>
                     <Typography variant="h4">
-                        {this.state.user.first_name}
-                        {this.state.user.last_name}
+                        {this.state.user.first_name} {this.state.user.last_name}
                     </Typography>
                     {this.state.user.email}
                 </div>

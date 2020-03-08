@@ -85,6 +85,7 @@ body {
 .chat-contact-info{
   display: flex;
   align-items: center;
+  padding-right: 10px;
 }
 
 .chat-contact-user-info{
@@ -654,12 +655,11 @@ body {
 
 .meetup-card-bottom{
   display:flex;
-  justify-content: space-between;
+
   padding: 0 2rem 1rem 2rem;
   font-weight: 600;
   font-family: "Lato";
   text-transform: capitalize;
-
 }
 
 .meetup-card-top{
@@ -667,6 +667,12 @@ body {
   display: flex;
   justify-content: space-between;
   text-transform: capitalize;
+  font-weight: 600;
+  font-family: "Lato";
+}
+
+.meetup-card-bottom > .meetup-card-icon {
+  margin-right: 20px;
 }
 
 .meetup-card-icon{
@@ -677,4 +683,25 @@ body {
 .MuiTypography-h5 {
   font-weight: 600 !important;
   font-family: "Lato" !important;
+}
+
+.MuiChip-label{
+  font-weight: 600 !important;
+  font-family: "Lato" !important;
+}
+
+.MuiChip-root{
+  padding: 3px 4px !important;
+  font-size: 0.75rem !important;
+  border-radius: 4px !important;
+  letter-spacing: 0.02857em;
+  text-transform: capitalize;
+  box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12) !important;
+  background-color: #3f51b5 !important;
+  color: white !important;
+  margin: .25rem .25rem !important; 
+}
+
+.MuiChip-deleteIcon{
+  color: white !important;
 }

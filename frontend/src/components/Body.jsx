@@ -25,7 +25,7 @@ class Body extends Component {
                 <Switch>
                     <Route path="/" exact component={HomeComponent}></Route>
                     <UnAuthenticatedRoute path="/login" component={LoginComponent}></UnAuthenticatedRoute>
-                    <UnAuthenticatedRoute path="/register" component={RegisterComponent}></UnAuthenticatedRoute>
+                    <UnAuthenticatedRoute path="/register" component={(props) => <RegisterComponent {...props} type={"create"}/>}></UnAuthenticatedRoute>
                     <AuthenticatedRoute path="/logout" component={LogoutComponent}></AuthenticatedRoute>
                     <AuthenticatedRoute path="/meetups/:uri/events/:id/edit" component={(props) => <MeetupEventForm {...props} type={"edit"}/>}></AuthenticatedRoute>
                     <AuthenticatedRoute path="/meetups/:uri/new" exact component={(props) => <MeetupEventForm {...props} type={"create"}/>}></AuthenticatedRoute>
@@ -37,6 +37,7 @@ class Body extends Component {
                     <AuthenticatedRoute path="/chat" exact component={ChatComponent}></AuthenticatedRoute>
                     <AuthenticatedRoute path="/friends" component={FriendsComponent}></AuthenticatedRoute>
                     <AuthenticatedRoute path="/invites" component={Invites}></AuthenticatedRoute>
+                    <AuthenticatedRoute path="/profile/edit" component={(props) => <RegisterComponent {...props} type={"edit"}/>}></AuthenticatedRoute>
                     <AuthenticatedRoute path="/profile/:id" component={Profile}></AuthenticatedRoute>
                     <Route component={ErrorComponent}></Route>
                 </Switch>

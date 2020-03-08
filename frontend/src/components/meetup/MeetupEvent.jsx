@@ -13,9 +13,7 @@ import ScheduleIcon from '@material-ui/icons/Schedule';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {Link} from 'react-router-dom'
 
-
 class MeetupEvent extends Component {
-
     handleEdit = () => {
         console.log("handle edit function called")
     }

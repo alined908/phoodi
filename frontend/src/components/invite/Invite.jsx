@@ -24,8 +24,7 @@ class Invite extends Component {
     
     render () {
         const inv = this.props.inv
-
-        return (
+        const invite = !this.state.responded ? (
             <Paper className="paper invite" elevation={3} variant="outlined">
                 <div>
                     <Link to={`/profile/${inv.sender.id}`}>{inv.sender.first_name}</Link> {this.props.type === inviteType.meetup ? "- " + inv.meetup.name : ""}
@@ -47,6 +46,12 @@ class Invite extends Component {
                 }
                 {(this.state.responded && this.props.type === inviteType.meetup && this.state.status === 3) && <span>Rejected</span>}
             </Paper>
+        ) : <div></div>
+
+        return (
+            <>
+                {invite}
+            </>
         )
     }
 }

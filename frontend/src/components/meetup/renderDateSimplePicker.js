@@ -1,15 +1,15 @@
 import React from 'react';
-import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
-import moment from "moment"
 
 export default ({ input, label, meta: { touched, invalid, error}, ...custom }) => {
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <DatePicker
+            <KeyboardDatePicker
                 disablePast
                 label={label}
+                format="MM/dd/yyyy"
                 onChange={(val) => input.onChange(val)}
                 value={input.value !== '' ? input.value : null}
                 showTodayButton

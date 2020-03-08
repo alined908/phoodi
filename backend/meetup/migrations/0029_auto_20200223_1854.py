@@ -2,6 +2,7 @@
 
 from django.db import migrations, models
 import meetup.models
+from meetup.helpers import path_and_rename
 
 
 class Migration(migrations.Migration):
@@ -14,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='avatar',
-            field=models.ImageField(blank=True, default='avatar/blank_profile_pic.png', null=True, upload_to=meetup.models.wrapper),
+            field=models.ImageField(blank=True, default='avatar/blank_profile_pic.png', null=True, upload_to=path_and_rename),
         ),
     ]

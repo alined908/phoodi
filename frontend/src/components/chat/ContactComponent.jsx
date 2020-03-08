@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import {roomType} from '../../constants/default-states'
 import Badge from '@material-ui/core/Badge';
 import {removeNotifs} from "../../actions/notifications"
+import NotificationsIcon from '@material-ui/icons/Notifications';
 
 class ContactComponent extends Component {
     constructor(props){
@@ -37,9 +38,8 @@ class ContactComponent extends Component {
                                         <div>{members[member].first_name}</div>
                                         <div className="light-text">{members[member].email}</div>
                                     </div>
-                                    <div><Badge color="primary" badgeContent={this.state.notifs}></Badge></div>
-                                </div> : 
-                                ""
+                        <div>{this.state.notifs > 0 && <Badge color="primary" badgeContent={this.state.notifs}><NotificationsIcon/></Badge>}</div>
+                                </div> : ""
                             )}
                         </>
                     }

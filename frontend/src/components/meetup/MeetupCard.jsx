@@ -30,6 +30,7 @@ const MeetupCard = ({meetup}) => {
                 <div className="meetup-card-inner">
                     <div className="meetup-card-top"> 
                         <Typography variant="h5">{meetup.name} </Typography>
+                        <div className="meetup-card-icon"><TodayIcon/>{moment(meetup.date).local().format("ddd, MMM D")}</div>
                         {meetup.notifs !== null && meetup.notifs > 0 && <Badge badgeContent={meetup.notifs} color="primary">
                             <NotificationsIcon />
                         </Badge>
@@ -38,7 +39,6 @@ const MeetupCard = ({meetup}) => {
                     <div className={classes.middle}>
                     </div>
                     <div className="meetup-card-bottom">
-                        <div className="meetup-card-icon"><TodayIcon/>{moment(meetup.date).local().format("ddd, MMM D")}</div>
                         <div className="meetup-card-icon"><RoomIcon/>{meetup.location}</div>
                         <div className="meetup-card-icon"><AccountCircle/>{Object.keys(meetup.members).length}</div>
                     </div>

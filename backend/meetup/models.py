@@ -10,10 +10,12 @@ import requests
 import random
 from django.contrib.postgres.fields import JSONField, ArrayField
 from rest_framework_jwt.settings import api_settings
-import json
-import os.path
+import json, sys
 from django.db import transaction
-from django.core.mail import EmailMessage
+from .helpers import path_and_rename
+from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 url = "https://api.yelp.com/v3/businesses/search"
 headers = {'Authorization': "Bearer U46B4ff8l6NAdldViS7IeS8HJriDeE9Cd5YZXTUmrdzvtv57AUQiYJVVbEPFp30nhL9YAW2-LjAAQ1cBapJ4uqiOYES8tz9EjM85R8ki9l-54Z1d_1OOWLeY5tTuXXYx"}
@@ -22,7 +24,7 @@ def generate_unique_uri():
     return str(uuid4()).replace('-', '')[:15]
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, first_name, is_staff=False, is_admin=False, password=None, **kwargs):
+    def create_user(self, email, first_name, last_name, avatar, is_staff=False, is_admin=False, password=None, **kwargs):
         if not email:
             raise ValueError("Users must have an email address")
         if not password:
@@ -30,6 +32,8 @@ class UserManager(BaseUserManager):
         user = self.model(email = self.normalize_email(email))
         user.set_password(password)
         user.first_name = first_name
+        user.last_name = last_name
+        user.avatar = avatar
         user.staff = is_staff
         user.admin = is_admin
         user.save(using=self._db)
@@ -53,14 +57,6 @@ class UserManager(BaseUserManager):
         return user
 
 
-def wrapper(instance, filename):
-        ext = filename.split('.')[-1]
-        filename = '{}.{}'.format(uuid4().hex, ext)
-        return os.path.join(path, filename)
-
-def path_and_rename(path):
-    return wrapper
-
 # Create your models here.
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True, max_length=255)
@@ -70,7 +66,7 @@ class User(AbstractBaseUser):
     admin = models.BooleanField(default=False)
     staff = models.BooleanField(default=False)
     confirmed = models.BooleanField(default =False)
-    avatar = models.ImageField(blank=True, null=True, default= "avatar/blank_profile_pic.png", upload_to=path_and_rename('avatar'))
+    avatar = models.ImageField(blank=True, null=True, default="avatar/blank_profile_pic.png", upload_to=path_and_rename)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name']
@@ -79,6 +75,16 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return self.email
+
+    def save(self, *args, **kwargs):
+        if self.avatar:
+            image = Image.open(BytesIO(self.avatar.read()))
+            image.thumbnail((200, 200), Image.ANTIALIAS)
+            output = BytesIO()
+            image.save(output, format='JPEG', quality=90)
+            output.seek(0)
+            self.avatar = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" %self.avatar.name, 'image/jpeg', sys.getsizeof(output), None)
+        super(User, self).save(*args, **kwargs)
 
     def get_full_name(self):
         full_name = '%s %s' % (self.first_name, self.last_name)
@@ -182,8 +188,10 @@ class MeetupEvent(models.Model):
 
     def convert_entries_to_string(self):
         categories = ""
+        print(self.entries)
         for i, key in enumerate(self.entries): 
             category = Category.objects.get(api_label=key)
+            print(key)
             MeetupCategory.objects.create(event=self, category=category)
             if i == len(self.entries) - 1:
                 categories += key
