@@ -1,49 +1,19 @@
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
-from meetup.models import Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite
+from meetup.models import User, Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite
 from django.forms.models import model_to_dict
 from channels.db import database_sync_to_async
 from django.core.exceptions import ObjectDoesNotExist
-from rest_framework_jwt.serializers import VerifyJSONWebTokenSerializer
-from django.contrib.auth import authenticate, get_user_model
-from rest_framework_jwt.settings import api_settings
-from django.utils.translation import ugettext as _
+# from rest_framework_jwt.serializers import VerifyJSONWebTokenSerializer
+# from django.contrib.auth import authenticate, get_user_model
+# from rest_framework_jwt.settings import api_settings
+# from django.utils.translation import ugettext as _
 
-User = get_user_model()
-jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
-jwt_get_username_from_payload = api_settings.JWT_PAYLOAD_GET_USERNAME_HANDLER
-
-class CustomJWTSerializer(VerifyJSONWebTokenSerializer):
-    username_field = 'email'
-
-    def _check_user(self, payload):
-        username = jwt_get_username_from_payload(payload)
-        print("Username: " + username)
-        if not username:
-            msg = _('Invalid payload.')
-            raise serializers.ValidationError
-        
-        try:
-            user = User.objects.get_by_natural_key(username)
-            print(user)
-        except User.DoesNotExist:
-            print("Object does not exist")
-            msg = _("User does not exist")
-            raise serializers.ValidationError(msg)
-        print(user)
-        return user
-
-    def validate(self, attrs):
-        print("validate")
-        token = attrs['token']
-        payload = self._check_payload(token=token)
-        print(payload)
-        user = self._check_user(payload=payload)
-        print('hello')
-        print("User: ", user)
-        return {'token': token, 'user': user}
+# User = get_user_model()
+# jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+# jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+# jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
+# jwt_get_username_from_payload = api_settings.JWT_PAYLOAD_GET_USERNAME_HANDLER
 
 class UserSerializer(serializers.ModelSerializer):
     def to_representation(self, data):
@@ -94,49 +64,13 @@ class FriendshipSerializer(serializers.ModelSerializer):
         try: 
             room = ChatRoom.objects.get(friendship=obj)
         except ObjectDoesNotExist:
-            return None\
+            return None
 
         return room.uri
 
     class Meta:
         model = Friendship
         fields = ('id', 'user', 'created_at', 'chat_room')
-
-class ChatRoomSerializer(serializers.ModelSerializer):
-    members = serializers.SerializerMethodField('_get_members')
-    notifs = serializers.SerializerMethodField('_get_notifs')
-
-    def _get_members(self, obj):
-        mapping = {}
-        for member in obj.members.all():
-            user = member.user
-            mapping.update(UserSerializer(user).data)
-        return mapping
-
-    def _get_notifs(self, obj):
-        user =  self.context['request'].user
-        notifs = user.notifications.filter(actor_object_id=obj.id, description="chat_message").unread()
-        return notifs.count()
-
-    class Meta:
-        model = ChatRoom
-        fields = ('id', 'uri', 'name', 'timestamp', 'members', 'friendship', 'meetup', 'notifs')
-
-class ChatRoomMemberSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField('_get_member')
-
-    def _get_member(self, obj):
-        serializer = UserSerializer(obj.user)
-        return serializer.data
-
-    class Meta:
-        model = ChatRoomMember
-        fields = ['user']
-
-class MessageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ChatRoomMessage
-        fields = ('__all__')
 
 class MeetupSerializer(serializers.ModelSerializer):
     members = serializers.SerializerMethodField('_get_members')
@@ -268,3 +202,69 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('id', 'label', 'api_label')
+
+class ChatRoomSerializer(serializers.ModelSerializer):
+    members = serializers.SerializerMethodField('_get_members')
+    notifs = serializers.SerializerMethodField('_get_notifs')
+
+    def _get_members(self, obj):
+        mapping = {}
+        for member in obj.members.all():
+            user = member.user
+            mapping.update(UserSerializer(user).data)
+        return mapping
+
+    def _get_notifs(self, obj):
+        user =  self.context['user']
+        notifs = user.notifications.filter(actor_object_id=obj.id, description="chat_message").unread()
+        return notifs.count()
+
+    class Meta:
+        model = ChatRoom
+        fields = ('id', 'uri', 'name', 'timestamp', 'members', 'friendship', 'meetup', 'notifs')
+
+class ChatRoomMemberSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField('_get_member')
+
+    def _get_member(self, obj):
+        serializer = UserSerializer(obj.user)
+        return serializer.data
+
+    class Meta:
+        model = ChatRoomMember
+        fields = ['user']
+
+class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChatRoomMessage
+        fields = ('__all__')
+
+# class CustomJWTSerializer(VerifyJSONWebTokenSerializer):
+#     username_field = 'email'
+
+#     def _check_user(self, payload):
+#         username = jwt_get_username_from_payload(payload)
+#         print("Username: " + username)
+#         if not username:
+#             msg = _('Invalid payload.')
+#             raise serializers.ValidationError
+        
+#         try:
+#             user = User.objects.get_by_natural_key(username)
+#             print(user)
+#         except User.DoesNotExist:
+#             print("Object does not exist")
+#             msg = _("User does not exist")
+#             raise serializers.ValidationError(msg)
+#         print(user)
+#         return user
+
+#     def validate(self, attrs):
+#         print("validate")
+#         token = attrs['token']
+#         payload = self._check_payload(token=token)
+#         print(payload)
+#         user = self._check_user(payload=payload)
+#         print('hello')
+#         print("User: ", user)
+#         return {'token': token, 'user': user}

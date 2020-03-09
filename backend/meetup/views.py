@@ -28,7 +28,6 @@ class UserView(APIView):
 
     def get_object(self, pk):
         user = get_object_or_404(User, pk=pk)
-        print(user)
         return user
 
     def get(self, request, *args, **kwargs):
@@ -149,9 +148,12 @@ class MeetupEventsListView(APIView):
         user = request.user
         uri = kwargs['uri']
         meetup = get_object_or_404(Meetup, uri=uri)
-        creator = MeetupMember.objects.get(meetup=meetup, user=user)
-        start, end, title, distance, price, entries = request.data['start'], request.data['end'], request.data['title'], request.data['distance'], request.data['prices'], request.data['entries']
-        event = MeetupEvent.objects.create(creator=creator, meetup=meetup, start=start, end=end, title=title, entries=entries, distance=distance, price=price)
+        creator = get_object_or_404(MeetupMember, meetup=meetup, user=user)
+        try:
+            start, end, title, distance, price, entries = request.data['start'], request.data['end'], request.data['title'], request.data['distance'], request.data['prices'], request.data['entries']
+            event = MeetupEvent.objects.create(creator=creator, meetup=meetup, start=start, end=end, title=title, entries=entries, distance=distance, price=price)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer = MeetupEventSerializer(event)
         return Response({'meetup': uri, 'event': {event.id: serializer.data}})
 
@@ -167,12 +169,16 @@ class MeetupEventsView(APIView):
         serializer = MeetupEventSerializer(event, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-        return Response(serializer.data)
-
+            return Response(serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+        
     def delete(self, request, *args, **kwargs):
-        event = self.get_object(kwargs['id'])
-        event.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        try:
+            event = MeetupEvent.objects.get(pk=kwargs['id'])
+            event.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class MeetupMembersView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -240,7 +246,6 @@ class MeetupEmailView(APIView):
 
     def post(self, request, *args, **kwargs):
         user=request.user
-        print(user)
         uri = kwargs['uri']
         meetup = get_object_or_404(Meetup, uri=uri)
         meetup.send_email()
@@ -251,7 +256,7 @@ class MeetupInviteAllView(APIView):
 
     def get(self, request, *args, **kwargs):
         """
-        Get all invites
+        Get all invites for user
         """
         user = request.user
         invites = user.received_meetupinvites.filter(status=1).all()
@@ -262,7 +267,7 @@ class MeetupInviteListView(APIView):
 
     def get(self, request, *args, **kwargs):
         """
-        Get all invites
+        Get all invites from meetup
         """
         user = request.user
         uri = kwargs['uri']
@@ -281,19 +286,18 @@ class MeetupInviteListView(APIView):
         Create/Send Invite
         """
         user = request.user
-        print(request.data)
         recepient = request.data['email']
         uri = kwargs['uri']
 
         try: 
             meetup = Meetup.objects.get(uri=uri)
         except ObjectDoesNotExist:
-            return Response({"error": "Room does not exist"},status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Room does not exist"},status=status.HTTP_404_NOT_FOUND)
 
         try: 
             invite = User.objects.get(email=recepient)
         except ObjectDoesNotExist:
-            return Response({"error": "User does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
         invite, created = MeetupInvite.objects.get_or_create(meetup=meetup, sender=user, receiver=invite)
 
@@ -301,14 +305,6 @@ class MeetupInviteListView(APIView):
             return Response({"message": "Invite for meetup sent to " + recepient})
         else:
             return Response({"message": "Invite already sent out to " + recepient})
-
-class CategoryListView(APIView):
-    permission_classes = [permissions.AllowAny]
-
-    def get(self, request):
-        categories = Category.objects.all()
-        serializer = CategorySerializer(categories, many=True)
-        return Response({"categories": serializer.data})
 
 class MeetupInviteView(APIView):
 
@@ -337,49 +333,11 @@ class MeetupInviteView(APIView):
         invite.status = num
         invite.save()
 
-        if invite.status == 2:
+        if invite.status == "2":
             message = "Successfully accepted meetup invite."
-        elif invite.status == 3:
+        elif invite.status == "3":
             message = "Rejected meetup invite."
         return Response({"message": message, "invite": MeetupInviteSerializer(invite).data})
-
-class UserFriendsView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request, *args, **kwargs):
-        """
-        Get users friends
-        """
-        pk = kwargs['id']
-        user = User.objects.get(pk=pk)
-        serializer = FriendshipSerializer(user.get_friends(), many=True, context={'user': user})
-
-        return Response(serializer.data)
-
-    def post(self, request, *args, **kwargs):
-        """
-        User adds another user as a friend
-        """
-        user = request.user
-        email = request.data['email']
-
-        try: 
-            friend = User.objects.get(email=email.strip())
-        except ObjectDoesNotExist:
-            return Response({"error": "Email does not exist"},status=status.HTTP_400_BAD_REQUEST)
-        entity = user.get_or_create_friend(friend)
-        serializer = FriendshipSerializer(entity, context={'user': user})
-        
-        return Response({"friend": serializer.data})
-
-    def delete(self, request, *args, **kwargs):
-        """
-        Delete friend
-        """
-        pk = request.data["id"]
-        friendship = get_object_or_404(Meetup, pk=pk)
-        friendship.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class FriendInviteListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -405,7 +363,7 @@ class FriendInviteListView(APIView):
         try: 
             invitee = User.objects.get(email=recepient)
         except ObjectDoesNotExist:
-            return Response({"error": "User does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
         
         #Check if already friends
         friendship = user.is_friend(invitee)
@@ -441,7 +399,58 @@ class FriendInviteView(APIView):
         invite.save()
         serializer = FriendInviteSerializer(invite)
 
-        return Response({"message": "Successfully accepted invite", "invite": serializer.data})
+        if invite.status == "2":
+            message = "Successfully accepted friend invite."
+        elif invite.status == "3":
+            message = "Rejected friend invite."
+
+        return Response({"message": message, "invite": serializer.data})
+
+class CategoryListView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
+        return Response({"categories": serializer.data})
+
+class UserFriendsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        """
+        Get users friends
+        """
+        pk = kwargs['id']
+        user = User.objects.get(pk=pk)
+        serializer = FriendshipSerializer(user.get_friends(), many=True, context={'user': user})
+
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        """
+        User adds another user as a friend
+        """
+        user = request.user
+        email = request.data['email']
+
+        try: 
+            friend = User.objects.get(email=email.strip())
+        except ObjectDoesNotExist:
+            return Response({"error": "Email does not exist"},status=status.HTTP_404_NOT_FOUND)
+        entity = user.get_or_create_friend(friend)
+        serializer = FriendshipSerializer(entity, context={'user': user})
+        
+        return Response({"friend": serializer.data})
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Delete friend
+        """
+        pk = request.data["id"]
+        friendship = get_object_or_404(Friendship, pk=pk)
+        friendship.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class ChatRoomListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -455,7 +464,7 @@ class ChatRoomListView(APIView):
         rooms = {}
     
         for room in chat_rooms.all():
-            serializer = ChatRoomSerializer(room.room, context={'request': request})
+            serializer = ChatRoomSerializer(room.room, context={'user': user})
             rooms[room.room.uri] = serializer.data
 
         return Response ({"rooms": rooms})
@@ -478,7 +487,7 @@ class ChatRoomView(APIView):
         """
         uri = kwargs['uri']
         email = request.data['email']
-        user = User.objects.get(email=email)
+        user = get_object_or_404(User, email=email)
         chat_room = ChatRoom.objects.get(uri=uri)
 
         chat_room.members.get_or_create(
@@ -492,26 +501,12 @@ class ChatRoomView(APIView):
             'message': '%s joined chat' % user.email
         })
 
-class NotificationView(APIView):
-    permission_classes = []
-
-    def delete(self, request, *args, **kwargs):
-        user = request.user
-        description = request.data['type']
-        if 'id' in request.data:
-            id = request.data['id']
-            user.notifications.filter(actor_object_id = id, description=description).mark_all_as_read()
-        else:
-            user.notifications.filter(description=description).mark_all_as_read()
-        count = user.notifications.filter(description=description).unread().count()
-        return Response({description: count})
-
 class ChatRoomMessageView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         uri = kwargs['uri']
-        chat_room = ChatRoom.objects.get(uri=uri)
+        chat_room = get_object_or_404(ChatRoom, uri=uri)
         messages = []
 
         for msg in reversed(chat_room.messages.order_by('-timestamp')[:50]):
@@ -527,7 +522,7 @@ class ChatRoomMessageView(APIView):
         uri = kwargs['uri']
         content = request.data['message']
         user = request.user
-        chat_room = ChatRoom.objects.get(uri=uri)
+        chat_room = get_object_or_404(ChatRoom, uri=uri)
 
         message = ChatRoomMessage.objects.create(
             sender = user, room = chat_room, message = content
@@ -535,3 +530,17 @@ class ChatRoomMessageView(APIView):
         return Response({
             'status': 'Success', 'uri': uri, 'message': MessageSerializer(message).data, 'user': UserSerializer(user).data 
         })
+
+class NotificationView(APIView):
+    permission_classes = []
+
+    def delete(self, request, *args, **kwargs):
+        user = request.user
+        description = request.data['type']
+        if 'id' in request.data:
+            id = request.data['id']
+            user.notifications.filter(actor_object_id = id, description=description).mark_all_as_read()
+        else:
+            user.notifications.filter(description=description).mark_all_as_read()
+        count = user.notifications.filter(description=description).unread().count()
+        return Response({description: count})

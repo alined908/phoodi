@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function GoogleMaps() {
+export default function GoogleMaps(props) {
   const classes = useStyles();
   const [inputValue, setInputValue] = React.useState('');
   const [options, setOptions] = React.useState([]);
@@ -38,7 +38,7 @@ export default function GoogleMaps() {
   if (typeof window !== 'undefined' && !loaded.current) {
     if (!document.querySelector('#google-maps')) {
       loadScript(
-        'https://maps.googleapis.com/maps/api/js?key=AIzaSyBex7pD-cDWPZow2s0FZa1yrIRR0pWvu4M&libraries=places',
+        'https://maps.googleapis.com/maps/api/js?key=AIzaSyDET1HuX2ihqu5OpGTFDZpKDyNeTqX4kQs&libraries=places',
         document.querySelector('head'),
         'google-maps',
       );
@@ -93,11 +93,12 @@ export default function GoogleMaps() {
       options={options}
       autoComplete
       includeInputInList
+      {...props.input}
       disableOpenOnFocus
       renderInput={params => (
         <TextField
           {...params}
-          label="Add a location"
+          label={props.label}
           variant="outlined"
           fullWidth
           onChange={handleChange}

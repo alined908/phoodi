@@ -2,9 +2,9 @@ from rest_framework import status
 from django.test import TestCase
 from rest_framework.test import APIClient
 from django.urls import reverse
-from .models import Meetup, User, MeetupInvite, FriendInvite, MeetupMember, Friendship, MeetupEvent, MeetupEventOption, MeetupEventOptionVote
+from .models import Meetup, User, ChatRoom, ChatRoomMember, ChatRoomMessage, MeetupInvite, Category, FriendInvite, MeetupMember, Friendship, MeetupEvent, MeetupEventOption, MeetupEventOptionVote
 from django.utils.timezone import now  
-from .serializers import MeetupSerializer, UserSerializer
+from .serializers import ChatRoomSerializer, ChatRoomMemberSerializer, MessageSerializer, MeetupSerializer, CategorySerializer, FriendshipSerializer, FriendInviteSerializer, MeetupInviteSerializer, MeetupEventSerializer, UserSerializer, MeetupMemberSerializer
 from .views import MeetupListView
 from django.contrib.auth.hashers import make_password
 import datetime, json
@@ -42,7 +42,7 @@ class UserTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_GET_user_invalid_pk(self):
-        response = client.get("/api/users/" + "100" +"/")
+        response = client.get("/api/users/10000/")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_PATCH_user_valid_payload(self):
@@ -164,31 +164,50 @@ class MeetupEventTest(TestCase):
         self.entries = {"chinese": 1, "italian": 2}
         self.event = MeetupEvent.objects.create(creator=self.member, meetup=self.meetup, title="Event", distance=20000, price="1, 2", start=now(), entries=self.entries)
         self.option = self.event.options.first()
+        self.valid_payload = {"start": now() , "end": now(), "title": "Hello", "distance": 20000, "prices": "1, 2", "entries": self.entries}
+        self.invalid_payload = {"start": now() , "end": now(), "title": "", "distance": 20000, "prices": "1, 2", "entries": self.entries}
+        client.force_authenticate(user=self.user)
 
-    def test_GET_meetupevents(self):
-        pass
+    def test_GET_meetupevents_valid(self):
+        response = client.get("/api/meetups/" + self.meetup.uri +"/events/")
+        serializer = MeetupEventSerializer(self.meetup.events.all(), many=True)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), len(serializer.data))
+
+    def test_GET_meetupevents_invalid(self):
+        response = client.get("/api/meetups/dwadaw/events/")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_POST_meetupevent_valid_payload(self):
-        pass
+        response = client.post("/api/meetups/" + self.meetup.uri +"/events/", data=json.dumps(self.valid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_POST_meetupevent_invalid_payload(self):
-        pass
+        response = client.post("/api/meetups/" + self.meetup.uri +"/events/", data=json.dumps(self.invalid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_PATCH_meetupevent_valid_payload(self):
-        pass
+        response = client.patch("/api/meetups/" + self.meetup.uri +"/events/" + str(self.event.id) +"/", data=json.dumps(self.valid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_PATCH_meetupevent_invalid_payload(self):
-        pass
+        response = client.patch("/api/meetups/" + self.meetup.uri +"/events/" + str(self.event.id) +"/", data=json.dumps(self.invalid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_DELETE_meetupevent_valid_payload(self):
-        pass
+        response = client.delete("/api/meetups/" + self.meetup.uri +"/events/" + str(self.event.id) +"/")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_DELETE_meetupevent_invalid_payload(self):
-        pass
+        response = client.delete("/api/meetups/" + self.meetup.uri +"/events/" + str(100) +"/")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_convert_entries_to_string(self):
         categories = self.event.convert_entries_to_string()
         self.assertEqual(categories, "chinese, italian")
+
+    def test_start_after_end(self):
+        pass
 
     def test_generate_options(self):
         self.assertEqual(self.event.options.count(), 4)
@@ -264,89 +283,51 @@ class MeetupEventTest(TestCase):
 
 class MeetupMemberTest(TestCase):
     def setUp(self):
-        pass
+        self.user = User.objects.create(email="test@gmail.com", password=make_password("password"), first_name="Daniel", last_name="Lee")
+        self.user2 = User.objects.create(email="test2@gmail.com", password=make_password("password"), first_name="Daniel", last_name="Lee")
+        self.user3 = User.objects.create(email="test3@gmail.com", password=make_password("password"), first_name="Daniel", last_name="Lee")
+        self.meetup = Meetup.objects.create(name="Meetup", date=datetime.date.today(), location="Berkeley")
+        self.member = MeetupMember.objects.create(meetup=self.meetup, user=self.user)
+        self.member = MeetupMember.objects.create(meetup=self.meetup, user=self.user3)
+        self.valid_payload = {"email": "test3@gmail.com"}
+        self.invalid_payload = {"email": "test4@gmail.com"}
+        client.force_authenticate(user=self.user)
 
     def test_GET_meetupmembers(self):
-        pass
+        response = client.get("/api/meetups/"+self.meetup.uri+"/members/")
+        serializer = MeetupMemberSerializer(self.meetup.members.all(), many=True)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, serializer.data)
 
     def test_POST_meetupmember_valid_payload(self):
-        pass
+        response = client.post("/api/meetups/" + self.meetup.uri + "/members/", data=json.dumps(self.valid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_POST_meetupmember_invalid_payload(self):
-        pass
+        response = client.post("/api/meetups/" + self.meetup.uri + "/members/", data=json.dumps(self.invalid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_DELETE_meetupmember_valid_payload(self):
-        pass
+        response = client.delete("/api/meetups/" + self.meetup.uri + "/members/", data=json.dumps(self.valid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_DELETE_meetupmember_invalid_payload(self):
-        pass
+        response = client.delete("/api/meetups/" + self.meetup.uri + "/members/", data=json.dumps(self.invalid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 class MeetupEmailViewTest(TestCase):
     def setUp(self):
-        pass
+        self.user = User.objects.create(email="test@gmail.com", password=make_password("password"), first_name="Daniel", last_name="Lee")
+        self.meetup = Meetup.objects.create(name="Meetup", date=datetime.date.today(), location="Berkeley")
+        self.member = MeetupMember.objects.create(meetup=self.meetup, user=self.user)
+        client.force_authenticate(user=self.user)
 
     def test_POST_meetupemail(self):
-        pass
-
-class MeetupInviteViewTest(TestCase):
-    def setUp(self):
-        pass
+        response = client.post("/api/meetups/" + self.meetup.uri + "/email/")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, '%s has been finalized.' % (self.meetup.name,))
     
-    def test_GET_meetupinvite(self):
-        pass
-
-class FriendInviteViewTest(TestCase):
-    def setUp(self):
-        pass
-
-    def test_GET_friendinvite(self):
-        pass
-
-class CategoryViewTest(TestCase):
-    def setUp(self):
-        pass
-
-    def test_GET_category(self):
-        pass
-
-class FriendsViewTest(TestCase):
-    def setUp(self):
-        pass
-
-    def test_GET_friends(self):
-        pass
-
-    def test_POST_friends(self):
-        pass
-
-    def test_DELETE_friends(self):
-        pass
-
-class ChatViewTest(TestCase):
-    def setUp(self):
-        pass
-
-    def test_GET_chatrooms(self):
-        pass
-    
-    def test_POST_chatrooms(self):
-        pass
-
-    def test_PATCH_chatroom(self):
-        pass
-
-    def test_GET_chatmessages(self):
-        pass
-
-    def test_POST_chatmessages(self):
-        pass
-
-class NotificationViewTest(TestCase):
-    def setUp(self):
-        pass
-
-
-
 class InviteTest(TestCase):
 
     def setUp(self):
@@ -354,12 +335,97 @@ class InviteTest(TestCase):
         self.user2 = User.objects.create(email="test2@gmail.com", password=make_password("password"), first_name="Daniel", last_name="Lee")
         self.meetup = Meetup.objects.create(name="Meetup", date=datetime.date.today(), location="Berkeley")
         self.member = MeetupMember.objects.create(meetup=self.meetup, user=self.user)
+        self.meetup_invite = MeetupInvite.objects.create(sender = self.user, receiver=self.user2, meetup=self.meetup)
+        self.friend_invite = FriendInvite.objects.create(sender=self.user, receiver=self.user2)
+        self.valid_payload = {"email": "test2@gmail.com"}
+        self.invalid_payload = {"email": "test3@gmail.com"}
+        client.force_authenticate(user=self.user)
+
+    def test_GET_meetupinvite_user(self):
+        client.force_authenticate(user=self.user2)
+        response = client.get("/api/meetups/invite/")
+        serializer = MeetupInviteSerializer(self.user2.received_meetupinvites.all(), many=True)
+        self.assertEqual(response.data, serializer.data)
+
+    def test_GET_meetupinvite_all_valid(self):
+        client.force_authenticate(user=self.user2)
+        response = client.get("/api/meetups/" + self.meetup.uri + "/invite/")
+        serializer = MeetupInviteSerializer(self.meetup.invs.filter(receiver = self.user2), many=True)
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_GET_meetupinvite_all_invalid(self):
+        response = client.get("/api/meetups/231321/invite/")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_POST_meetupinvite_valid(self):
+        response = client.post("/api/meetups/" + self.meetup.uri + "/invite/", data=json.dumps(self.valid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_POST_meetupinvite_invalid(self):
+        response = client.post("/api/meetups/" + self.meetup.uri + "/invite/", data=json.dumps(self.invalid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_PATCH_meetupinvite_valid_accept(self):
+        client.force_authenticate(user=self.user2)
+        valid_patch_payload = {"status": "2"}
+        response = client.patch("/api/meetups/" + self.meetup.uri + "/invite/" + self.meetup_invite.uri + "/", data=json.dumps(valid_patch_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json()['message'], "Successfully accepted meetup invite.")
+
+    def test_PATCH_meetupinvite_valid_reject(self):
+        client.force_authenticate(user=self.user2)
+        valid_patch_payload = {"status": "3"}
+        response = client.patch("/api/meetups/" + self.meetup.uri + "/invite/" + self.meetup_invite.uri + "/", data=json.dumps(valid_patch_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json()['message'], "Rejected meetup invite.")
+
+    def test_PATCH_meetupinvite_invalid_not_receiver(self):
+        invalid_patch_payload = {"status": "2"}
+        response = client.patch("/api/meetups/" + self.meetup.uri + "/invite/" + self.meetup_invite.uri + "/", data=json.dumps(invalid_patch_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.json()['error'], "Not your invite")
+        
+    def test_GET_friendinvite_valid(self):
+        client.force_authenticate(user=self.user2)
+        response = client.get("/api/friends/invite/")
+        serializer = FriendInviteSerializer(self.user2.received_friendinvites.all(), many=True)
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_POST_friendinvite_valid(self):
+        response = client.post("/api/friends/invite/", data=json.dumps(self.valid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_POST_friendinvite_invalid(self):
+        response = client.post("/api/friends/invite/", data=json.dumps(self.invalid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_PATCH_friendinvite_valid_accept(self):
+        client.force_authenticate(user=self.user2)
+        valid_patch_payload = {"status": "2"}
+        response = client.patch("/api/friends/invite/" + self.friend_invite.uri + "/", data=json.dumps(valid_patch_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json()['message'], "Successfully accepted friend invite.")
+
+    def test_PATCH_friendinvite_valid_reject(self):
+        client.force_authenticate(user=self.user2)
+        valid_patch_payload = {"status": "3"}
+        response = client.patch("/api/friends/invite/" + self.friend_invite.uri + "/", data=json.dumps(valid_patch_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json()['message'], "Rejected friend invite.")
+
+    def test_PATCH_friendinvite_invalid_not_receiver(self):
+        invalid_patch_payload = {"status": "2"}
+        response = client.patch("/api/friends/invite/" + self.friend_invite.uri + "/", data=json.dumps(invalid_patch_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.json()['error'], "Not your invite")
 
     # def test_unable_to_inv_self(self):
     #     pass
 
     def test_on_accept_meetup_inv_create_meetupmember(self):
-        invite = MeetupInvite.objects.create(sender = self.user, receiver=self.user2, meetup=self.meetup)
+        invite = self.meetup_invite
         self.assertEqual(invite.status, 1)
         invite.status = 2
         invite.save()
@@ -367,13 +433,115 @@ class InviteTest(TestCase):
         self.assertEqual(num_member, 1)
 
     def test_on_change_friend_inv_status_create_friendship(self):
-        invite = FriendInvite.objects.create(sender=self.user, receiver=self.user2)
+        invite = self.friend_invite
         self.assertEqual(invite.status, 1)
         invite.status = 2
         invite.save()
         num_friendship = Friendship.objects.filter(creator = self.user, friend= self.user2).count()
         self.assertEqual(num_friendship, 1)
 
+
+class CategoryViewTest(TestCase):
+
+    def test_GET_category(self):
+        response = client.get("/api/categories/")
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
+        self.assertEqual(response.json()['categories'], serializer.data)
+
+class FriendsViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(email="test@gmail.com", password=make_password("password"), first_name="Daniel", last_name="Lee")
+        self.user2 = User.objects.create(email="test2@gmail.com", password=make_password("password"), first_name="Daniel", last_name="Lee")
+        self.user3 = User.objects.create(email="test3@gmail.com", password=make_password("password"), first_name="Daniel", last_name="Lee")
+        self.friendship12 = Friendship.objects.create(creator=self.user, friend=self.user2)
+        self.friendship13 = Friendship.objects.create(creator=self.user, friend=self.user3)
+        client.force_authenticate(user=self.user)
+
+    def test_GET_friends(self):
+        response = client.get("/api/users/" + str(self.user.id) + "/friends/")
+        serializer = FriendshipSerializer(self.user.get_friends(), many=True, context={'user': self.user})
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_POST_friends_valid(self):
+        valid_payload = {"email": "test3@gmail.com"}
+        client.force_authenticate(user=self.user2)
+        response = client.post("/api/users/" + str(self.user2.id) + "/friends/", data=json.dumps(valid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_POST_friends_invalid(self):
+        invalid_payload = {"email": "test4@gmail.com"}
+        client.force_authenticate(user=self.user2)
+        response = client.post("/api/users/" + str(self.user2.id) + "/friends/", data=json.dumps(invalid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_DELETE_friends(self):
+        payload = {"id": self.friendship13.id}
+        response = client.delete("/api/users/" + str(self.user.id) + "/friends/", data=json.dumps(payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Friendship.objects.filter(creator=self.user, friend=self.user3).count(), 0)
+
 class ChatTest(TestCase):
-    pass
+    def setUp(self):
+        self.user = User.objects.create(email="test@gmail.com", password=make_password("password"), first_name="Daniel", last_name="Lee")
+        self.user2 = User.objects.create(email="test2@gmail.com", password=make_password("password"), first_name="Daniel", last_name="Lee")
+        self.user3 = User.objects.create(email="test3@gmail.com", password=make_password("password"), first_name="Daniel", last_name="Lee")
+        self.friendship12 = Friendship.objects.create(creator = self.user, friend = self.user2)
+        self.room = self.friendship12.chatroom_set.first()
+        self.member = self.room.members.first()
+        self.valid_payload = {"email": "test3@gmail.com"}
+        self.invalid_payload = {"email": "test4@gmail.com"}
+        client.force_authenticate(user=self.user)
+
+    def test_GET_chatrooms(self):
+        response = client.get("/api/chats/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        serializer = ChatRoomSerializer(self.room, context={"user": self.user})
+        
+    def test_POST_chatrooms(self):
+        response = client.post("/api/chats/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(self.user.rooms.count(), 2)
+
+    def test_PATCH_chatroom_valid(self):
+        response = client.patch("/api/chats/" + self.room.uri +"/", data=json.dumps(self.valid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(self.room.members.count(), 3)
+
+    def test_PATCH_chatroom_invalid(self):
+        response = client.patch("/api/chats/" + self.room.uri +"/", data=json.dumps(self.invalid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(self.room.members.count(), 2)
+
+    def test_GET_chatmessages_valid(self):
+        ChatRoomMessage.objects.create(room=self.room, message="Hello", sender=self.user)
+        response = client.get("/api/chats/" + self.room.uri + "/messages/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_GET_chatmessages_invalid(self):
+        ChatRoomMessage.objects.create(room=self.room, message="Hello", sender=self.user)
+        response = client.get("/api/chats/dadadw/messages/")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_POST_chatmessages(self):
+        valid_payload = {"message": "hello"}
+        response = client.post("/api/chats/"+ self.room.uri + "/messages/", data=json.dumps(valid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(self.room.messages.count(), 1)
+
+class NotificationViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(email="test@gmail.com", password=make_password("password"), first_name="Daniel", last_name="Lee")
+        self.user2 = User.objects.create(email="test2@gmail.com", password=make_password("password"), first_name="Daniel", last_name="Lee")
+        self.friendship12 = Friendship.objects.create(creator=self.user, friend=self.user2)
+        client.force_authenticate(user=self.user2)
+    
+    def test_DELETE_notifications(self):
+        notifs = self.user2.notifications.filter(description="friend").unread().count()
+        self.assertEqual(notifs, 1)
+        valid_payload = {"type": "friend"}
+        response = client.delete("/api/notifs/", data=json.dumps(valid_payload, default=str), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(self.user2.notifications.filter(description="friend").unread().count(), 0)
 

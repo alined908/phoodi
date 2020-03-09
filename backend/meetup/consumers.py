@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 import json, random, time, requests
 from urllib.parse import parse_qs
 from asgiref.sync import sync_to_async, async_to_sync
-from .serializers import CustomJWTSerializer
+# from .serializers import CustomJWTSerializer
 from channels.db import database_sync_to_async
 from meetup.serializers import MessageSerializer, MeetupEventSerializer, MeetupMemberSerializer, MeetupEventOptionSerializer, MeetupEventOptionVoteSerializer
 url = "https://api.yelp.com/v3/businesses/search"
@@ -55,20 +55,20 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
 
-        if self.scope['user'].id:
-            pass
-        else:
-            try:
-                token = parse_qs(self.scope["query_string"].decode("utf8"))["token"][0]
-                print(token)
-                data = {'token': token}
-                valid_data = CustomJWTSerializer().validate(data)
-                print(valid_data)
-                user = valid_data['user']
-                print("hello")
-                print(user)
-            except:
-                print("errorrrr")
+        # if self.scope['user'].id:
+        #     pass
+        # else:
+        #     try:
+        #         token = parse_qs(self.scope["query_string"].decode("utf8"))["token"][0]
+        #         print(token)
+        #         data = {'token': token}
+        #         valid_data = CustomJWTSerializer().validate(data)
+        #         print(valid_data)
+        #         user = valid_data['user']
+        #         print("hello")
+        #         print(user)
+        #     except:
+        #         print("errorrrr")
         # Join room group
         await self.channel_layer.group_add(
             self.room_group_name,

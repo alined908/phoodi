@@ -68,7 +68,6 @@ class Meetup extends Component {
     }
 
     determineEmailDisable = (events) => {
-        console.log(events)
         if (events === undefined || (Object.keys(events).length === 0 && events.constructor === Object)){
             return true
         }

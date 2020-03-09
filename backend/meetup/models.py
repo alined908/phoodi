@@ -192,6 +192,14 @@ class MeetupEvent(models.Model):
     _original_location = None
     objects = models.Manager()
 
+    def clean(self):
+        if self.title == "":
+            raise ValidationError("Name cannot be blank")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super(MeetupEvent, self).save(*args, **kwargs)
+
     def convert_entries_to_string(self):
         categories = ""
         for i, key in enumerate(self.entries): 

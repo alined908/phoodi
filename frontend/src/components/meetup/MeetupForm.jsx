@@ -58,14 +58,11 @@ class MeetupForm extends Component {
                                     <Field name="name" component={renderTextField} label="Name"/>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <Field name="location" disabled={!create} component={renderTextField} label="Location"/>
+                                    <Field name="location" component={Location} label="Location"/>
                                 </Grid>
                                 <Grid item xs={6}>
                                     <Field name="date" component={renderDateSimplePicker} disabled={this.props.isMeetupInitialized && moment(this.props.meetup.date).add(1, "d").isBefore(moment().toDate())} label="Date"></Field>
                                 </Grid>
-                                {/* <Grid item xs={12}>
-                                    <Location/>
-                                </Grid> */}
                                 <Grid style={{marginTop: "1rem"}} xs={12}>
                                     <Fab type="submit" variant="extended" color="primary" aria-label="add">{create ? "Add Meetup" : "Edit Meetup"}</Fab>
                                 </Grid>
