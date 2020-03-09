@@ -39,34 +39,22 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
     
-    def create_staffuser(self, email, password, first_name):
-        user = self.create_user(
-            email, password=password, first_name=first_name
-        )
-        user.staff = True
-        user.save(using=self._db)
-        return user
-    
-    def create_superuser(self, email, password, first_name):
-        user = self.create_user(
-            email, password=password, first_name=first_name
-        )
-        user.staff = True
-        user.admin = True
-        user.save(using=self._db)
-        return user
-
+    def create_staffuser(self, email, first_name, last_name, avatar, password=None, **kwargs):
+        return self.create_user(email, first_name, last_name, avatar, True, False, password)
+        
+    def create_superuser(self, email, first_name, last_name, avatar, password=None, **kwargs):
+        return self.create_user(email, first_name, last_name, avatar, True, True, password)
 
 # Create your models here.
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True, max_length=255)
     first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255, blank=True, null=True)
+    last_name = models.CharField(max_length=255)
     active = models.BooleanField(default=True)
     admin = models.BooleanField(default=False)
     staff = models.BooleanField(default=False)
     confirmed = models.BooleanField(default =False)
-    avatar = models.ImageField(blank=True, null=True, default="avatar/blank_profile_pic.png", upload_to=path_and_rename)
+    avatar = models.ImageField(blank=True, null=True, upload_to=path_and_rename)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name']
@@ -76,6 +64,14 @@ class User(AbstractBaseUser):
     def __str__(self):
         return self.email
 
+    def clean(self):
+        if self.email == "":
+            raise ValidationError("Email cannot be blank")
+        if self.first_name == "":
+            raise ValidationError("First name cannot be blank")
+        if self.last_name == "":
+            raise ValidationError("Last name cannot be blank")
+
     def save(self, *args, **kwargs):
         if self.avatar:
             image = Image.open(BytesIO(self.avatar.read()))
@@ -84,6 +80,7 @@ class User(AbstractBaseUser):
             image.save(output, format='JPEG', quality=90)
             output.seek(0)
             self.avatar = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" %self.avatar.name, 'image/jpeg', sys.getsizeof(output), None)
+        self.full_clean()
         super(User, self).save(*args, **kwargs)
 
     def get_full_name(self):
@@ -150,10 +147,19 @@ class Meetup(models.Model):
     def __str__(self):
         return self.uri
 
+    def clean(self):
+        if self.name == "":
+            raise ValidationError("Name cannot be blank")
+        if self.location == "":
+            raise ValidationError("Location cannot be blank")
+
+    def save(self, *args, **kwargs):
+        self.full_clean(["uri"])
+        return super(Meetup, self).save(*args, **kwargs)
+
     def send_email(self):
         members = self.members.all()
         emails = [member.user.email for member in members]
-        print(emails)
         subject = self.name + " has been finalized."
         body = '<a href="http://localhost:3000/meetups/' + self.uri +'">Meetup</a>'
         send_mail(subject, body, "meetup022897@gmail.com",emails)
@@ -188,16 +194,13 @@ class MeetupEvent(models.Model):
 
     def convert_entries_to_string(self):
         categories = ""
-        print(self.entries)
         for i, key in enumerate(self.entries): 
             category = Category.objects.get(api_label=key)
-            print(key)
             MeetupCategory.objects.create(event=self, category=category)
             if i == len(self.entries) - 1:
                 categories += key
             else:
                 categories += key + ", "
-        print(categories)
         return categories
 
     def request_yelp_api(self):
@@ -255,7 +258,6 @@ class MeetupEventOption(models.Model):
 
     def handle_vote(self, status, member):
         #Check if user has voted already and delete vote 
-        prev_status = 0
         used_ban = member.used_ban()
         votes =  MeetupEventOptionVote.objects.filter(option = self, member = member)
         
@@ -296,11 +298,6 @@ class MeetupEventOption(models.Model):
                 else:
                     vote.delete()
                     self.score -= self.conversion[vote.status]
-                    if status == 3:
-                        member.ban = False
-                        self.banned = False
-        else:
-            print("Multiple votes for some reason")
 
         member.save()
         self.save()
@@ -344,7 +341,6 @@ class MeetupInvite(Invite):
         super(MeetupInvite, self).__init__(*args, **kwargs)
 
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
-        print("save")
         if self.status != Invite.InviteStatus.OPEN:
             if self.status == Invite.InviteStatus.ACCEPTED:
                 MeetupMember.objects.get_or_create(meetup=self.meetup, user=self.receiver)

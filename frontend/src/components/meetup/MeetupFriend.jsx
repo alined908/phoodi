@@ -53,7 +53,7 @@ const MeetupFriend = (props) => {
         <Link to={`/profile/${props.friend.id}`}>
             <ListItem>
                 <ListItemAvatar>
-                    <Avatar src={props.friend.avatar}/>
+                    <Avatar src={props.friend.avatar}>{props.friend.first_name.charAt(0)}</Avatar>
                 </ListItemAvatar>
                 <ListItemText primary={props.friend.first_name} secondary={<>
                     <Typography component="span" color="inherit" variant="body2"> 

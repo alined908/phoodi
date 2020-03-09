@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import moment from 'moment';
+import {Avatar} from "@material-ui/core"
 
 class ChatMessageComponent extends Component {
     render (){
@@ -30,7 +31,7 @@ class ChatMessageComponent extends Component {
                     <div className={`chat-msg ${is_user_msg ? "is-user": ""}`}>{message}</div>
                 </div>
                 {is_user_msg && <div className="chat-msg-avatar is-user">
-                    <img src={user.avatar} className="user-avatar-xs"/>
+                    <Avatar src={user.avatar}>{user.first_name.charAt(0)}</Avatar>
                 </div>}
             </div>
         )

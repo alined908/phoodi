@@ -72,7 +72,6 @@ class MeetupEventForm extends Component {
             let entry = this.state.entries[i];
             entries[entry.api_label] = entry.id
         }
-        console.log(entries)
         return entries
     }
 
@@ -81,7 +80,6 @@ class MeetupEventForm extends Component {
         const prices = indices.join(", ")
         const uri = this.props.match.params.uri
         const data = {uri: uri, entries: this.handleEntries(), distance: convert[this.state.distance], prices: prices, ...formProps}
-        console.log(data)
 
         if (this.props.type === "create"){
             axios.post(
@@ -108,22 +106,14 @@ class MeetupEventForm extends Component {
         this.setState({distance: val})
     }
 
-    determineClicked = (category) => {
-        if (category.api_label in this.state.entries){
-            return "contained"
-        }
-        return "outlined"
-    }
-
     onTagsChange = (event, values) => {
-        console.log(values)
         this.setState({entries: values})
     }
 
     render () {
         const {handleSubmit} = this.props;
         const create = this.props.type === "create"
-
+   
         return (
             <div className="inner-wrap">
                 <div className="inner-header">
@@ -172,7 +162,7 @@ class MeetupEventForm extends Component {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Typography variant="h6">Categories</Typography>
-                                    <Autocomplete multiple options={this.state.categories} onChange={this.onTagsChange} getOptionLabel={option => option.label} renderInput={
+                                    <Autocomplete multiple value={this.state.entries} options={this.state.categories} onChange={this.onTagsChange} getOptionLabel={option => option.label} renderInput={
                                         params => (<TextField {...params} variant="outlined"/>)}  
                                     />
                                 </Grid>
@@ -203,7 +193,7 @@ function mapStateToProps(state, ownProps){
             initialValues: {title: event.title, start: event.start, end: event.end},
             distance: event.distance,
             price: event.price,
-            entries: event.entries,
+            entries: event.categories,
             isMeetupInitialized: true,
             isMeetupEventsInitialized: true
         }

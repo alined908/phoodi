@@ -17,6 +17,7 @@ import ChatIcon from '@material-ui/icons/Chat';
 import EmailIcon from '@material-ui/icons/Email';
 import AddIcon from '@material-ui/icons/Add';
 import TodayIcon from '@material-ui/icons/Today';
+import AuthenticationService from "../../accounts/AuthenticationService"
 
 class Meetup extends Component {
     constructor(props){
@@ -37,7 +38,8 @@ class Meetup extends Component {
         }
         const uri = this.props.uri
         var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
-        const path = `${ws_scheme}://localhost:8000/ws/meetups/${uri}/`;
+        const token = AuthenticationService.retrieveToken()
+        const path = `${ws_scheme}://localhost:8000/ws/meetups/${uri}/?token=${token}`;
         const socket = this.state.socket
         socket.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, this.props.voteMeetupEvent, this.props.decideMeetupEvent, this.props.deleteMeetupEvent, this.props.addMeetupMember);
         socket.connect(path);
@@ -57,11 +59,20 @@ class Meetup extends Component {
         this.props.sendMeetupEmails(this.props.uri)
     }
 
-    handleDisabledEmail = () => {
-        this.props.addGlobalMessage("error", "All events must be decided to send email")
+    handleDisabledEmail = (events) => {
+        if (Object.keys(events).length === 0 && events.constructor === Object) {
+            this.props.addGlobalMessage("error", "No events created yet")
+        } else {
+            this.props.addGlobalMessage("error", "All events must be decided to send email")
+        }
     }
 
     determineEmailDisable = (events) => {
+        console.log(events)
+        if (events === undefined || (Object.keys(events).length === 0 && events.constructor === Object)){
+            return true
+        }
+    
         for (var key in events){
             if ((events[key].chosen) === null){
                 return true
@@ -70,13 +81,15 @@ class Meetup extends Component {
         return false
     }
 
+    sortEvents = (events) => {
+        const keys = Object.keys(events)
+        keys.sort((a, b) => new Date(events[a].start) - new Date(events[b].start))
+        return keys
+    }
+
     render () {
         const [id, name, uri, location, datetime, members, notifs, events] = this.props.meetup
-
-        const isMember = (friend) => {
-            return friend in members
-        }
-
+        const isMember = (friend) => {return friend in members}
         const emailDisable = this.determineEmailDisable(events)
         
         const renderInformation = (name, datetime, location) => {
@@ -93,7 +106,7 @@ class Meetup extends Component {
                                 <ChatIcon />
                             </IconButton>
                         </Link>
-                        <IconButton onClick={!emailDisable ? () => this.handleEmail() : () => this.handleDisabledEmail()} style={!emailDisable ? {color: "black"} : {}} aria-label='email'>
+                        <IconButton onClick={!emailDisable ? () => this.handleEmail() : () => this.handleDisabledEmail(events)} style={!emailDisable ? {color: "black"} : {}} aria-label='email'>
                             <EmailIcon />
                         </IconButton>
                         <Link to={`/meetups/${uri}/edit`}>
@@ -134,7 +147,7 @@ class Meetup extends Component {
                             <Link to={`/profile/${members[key].user.id}`}>
                                 <ListItem>
                                     <ListItemAvatar>
-                                        <Avatar src={members[key].user.avatar}/>
+                                        <Avatar src={members[key].user.avatar}>{members[key].user.first_name.charAt(0)}</Avatar>
                                     </ListItemAvatar>
                                     <ListItemText  primary={members[key].user.first_name} secondary={<>
                                         <Typography component="span" color="inherit" variant="body2"> 
@@ -155,7 +168,7 @@ class Meetup extends Component {
             return (
                 <>
                     {!this.props.isMeetupEventsInitialized && <div>Initializing Events</div>}
-                    {this.props.isMeetupEventsInitialized && events && Object.keys(events).map((event, index) => 
+                    {this.props.isMeetupEventsInitialized && events && this.sortEvents(events).map((event, index) => 
                         <MeetupEvent number={index} socket={this.state.socket} key={event.id} uri={uri} event={events[event]}></MeetupEvent> 
                     )}
                 </>
@@ -193,12 +206,12 @@ class Meetup extends Component {
     }
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state, ownProps){
     return {
        user: state.user.user,
        friends: state.user.friends,
        isFriendsInitialized: state.user.isFriendsInitialized,
-       isMeetupEventsInitialized: state.meetup.isMeetupEventsInitialized
+       isMeetupEventsInitialized: state.meetup.meetups[ownProps.uri].isMeetupEventsInitialized
     }
 }
 

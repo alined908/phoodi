@@ -13,13 +13,20 @@ class ChatWindowComponent extends Component {
         this.props.setTypingValue(e.target.value);        
     }
 
+    sendMessage = () => {
+        const messageObject = {from: this.props.user.id, text: this.props.message, room: this.props.room.uri}
+        this.props.socket.newChatMessage(messageObject)
+    }
+
     handleSubmit = (e) => {
         if (e.key === "Enter"){
             e.preventDefault();
-            console.log("handle submit")
-            const messageObject = {from: this.props.user.id, text: this.props.message, room: this.props.room.uri}
-            this.props.socket.newChatMessage(messageObject)
+            this.sendMessage()
         }
+    }
+
+    handleClick = (e) => {
+        this.sendMessage()
     }
 
     componentDidUpdate() {
@@ -68,7 +75,7 @@ class ChatWindowComponent extends Component {
                         </input>
                     </form>
                     <div>
-                        <Button style={{borderRadius: 15, fontSize: 11, backgroundColor: "#FFD460"}}>Send</Button>
+                        <Button onClick={() => this.handleClick()} style={{borderRadius: 15, fontSize: 11, backgroundColor: "#FFD460"}}>Send</Button>
                     </div>
                 </div>
                 }

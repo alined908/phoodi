@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'
 import {roomType} from '../../constants/default-states'
-import Badge from '@material-ui/core/Badge';
+import {Avatar, Badge} from '@material-ui/core';
 import {removeNotifs} from "../../actions/notifications"
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
@@ -33,7 +33,7 @@ class ContactComponent extends Component {
                         <>{membersKeys.map((member) => 
                             (member !== this.props.user.id.toString()) ? 
                                 <div className="chat-contact-info">
-                                    <div className="chat-contact-avatar"><img src={members[member].avatar} className="user-avatar-sm"></img></div>
+                                    <div className="chat-contact-avatar"><Avatar src={members[member].avatar}>{members[member].first_name.charAt(0)}</Avatar></div>
                                     <div className="chat-contact-user-info">
                                         <div>{members[member].first_name}</div>
                                         <div className="light-text">{members[member].email}</div>

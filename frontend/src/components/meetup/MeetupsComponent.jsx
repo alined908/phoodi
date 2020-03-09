@@ -49,37 +49,37 @@ class MeetupsComponent extends Component {
         return (
             <div className="inner-wrap">
                 {!this.props.isMeetupsInitialized && <div>Initializing Meetups ....</div>}
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <div className="inner-header">
-                            <Typography variant="h5">Meetups</Typography>
-                            <ButtonGroup color="primary">
-                                <Button variant={this.state.chosen[0] ? "contained" : "outlined"} onClick={() => this.handleFilter(0)}>Past</Button>
-                                <Button variant={this.state.chosen[1] ? "contained" : "outlined"} onClick={() => this.handleFilter(1)}>Today</Button>
-                                <Button variant={this.state.chosen[2] ? "contained" : "outlined"} onClick={() => this.handleFilter(2)}>Week</Button>
-                                <Button variant={this.state.chosen[3] ? "contained" : "outlined"} onClick={() => this.handleFilter(3)}>Later</Button>
-                            </ButtonGroup>
-                            {this.props.isMeetupsInitialized && <Link to="/meetups/new"><Button variant="contained" color="primary">Create Meetup</Button></Link>}
-                        </div>
-                    </Grid>
-                    <div className="meetups-container">
-                        {[0,1, 2, 3].map((index) =>
-                            {return (this.state.chosen[index] && meetups[index].length > 0) && <div className="meetups-range">
-                                <div className="meetups-datespecific">
-                                    <Grid container item xs={12}>
+                {this.props.isMeetupsInitialized && 
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <div className="inner-header">
+                                <Typography variant="h5">Meetups</Typography>
+                                <ButtonGroup color="primary">
+                                    <Button variant={this.state.chosen[0] ? "contained" : "outlined"} onClick={() => this.handleFilter(0)}>Past</Button>
+                                    <Button variant={this.state.chosen[1] ? "contained" : "outlined"} onClick={() => this.handleFilter(1)}>Today</Button>
+                                    <Button variant={this.state.chosen[2] ? "contained" : "outlined"} onClick={() => this.handleFilter(2)}>Week</Button>
+                                    <Button variant={this.state.chosen[3] ? "contained" : "outlined"} onClick={() => this.handleFilter(3)}>Later</Button>
+                                </ButtonGroup>
+                                <Link to="/meetups/new"><Button variant="contained" color="primary">Create Meetup</Button></Link>
+                            </div>
+                        </Grid>
+                        <div className="meetups-container">
+                            <Grid container xs={12} spacing={1}>
+                                {[0,1, 2, 3].map((index) =>
+                                    {return (this.state.chosen[index] && meetups[index].length > 0) && <>
                                         {meetups[index].map((meetup) => 
-                                            <Grid item xs={6}>
+                                            <Grid item xs={4}>
                                                 <div className="meetups-cardwrapper">
                                                     <MeetupCard key={meetup.id} meetup={meetup}/>
                                                 </div>
                                             </Grid>
                                         )}
-                                    </Grid>
-                                </div>
-                            </div>
-                        })}
-                    </div>
-                </Grid>
+                                        </>
+                                })}
+                            </Grid>
+                        </div>
+                    </Grid>
+                }
             </div>
         )
     }

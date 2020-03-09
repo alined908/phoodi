@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Typography, Button, Grid} from '@material-ui/core'
+import {Typography, Button, Grid, Avatar} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 import Friend from "./invite/Friend"
@@ -40,7 +40,9 @@ class Profile extends Component {
     renderProfile = () => {
         return (
             <div className="profile">
-                <div className="pic"><img className="user-avatar" src={this.state.user.avatar}></img></div>
+                <div className="pic">
+                    <Avatar className="user-avatar" src={this.state.user.avatar}>{this.state.user.first_name.charAt(0)}</Avatar>
+                </div>
                 <div>
                     <Typography variant="h4">
                         {this.state.user.first_name} {this.state.user.last_name}

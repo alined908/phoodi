@@ -131,8 +131,8 @@ class MeetupEvent extends Component {
                 <div className="second-header smaller-header">
                     <div className="second-header-left">
                         <Typography variant="h6">Categories - </Typography>
-                        {Object.keys(event.entries).map((entry) => 
-                            <span className="category-chip">{entry}</span>
+                        {event.categories.map((category) => 
+                            <span className="category-chip">{category.label}</span>
                         )}
                     </div>
                     <div className="second-header-left">

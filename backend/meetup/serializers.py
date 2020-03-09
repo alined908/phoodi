@@ -1,9 +1,49 @@
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
-from meetup.models import User, Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite
+from meetup.models import Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite
 from django.forms.models import model_to_dict
 from channels.db import database_sync_to_async
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework_jwt.serializers import VerifyJSONWebTokenSerializer
+from django.contrib.auth import authenticate, get_user_model
+from rest_framework_jwt.settings import api_settings
+from django.utils.translation import ugettext as _
+
+User = get_user_model()
+jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
+jwt_get_username_from_payload = api_settings.JWT_PAYLOAD_GET_USERNAME_HANDLER
+
+class CustomJWTSerializer(VerifyJSONWebTokenSerializer):
+    username_field = 'email'
+
+    def _check_user(self, payload):
+        username = jwt_get_username_from_payload(payload)
+        print("Username: " + username)
+        if not username:
+            msg = _('Invalid payload.')
+            raise serializers.ValidationError
+        
+        try:
+            user = User.objects.get_by_natural_key(username)
+            print(user)
+        except User.DoesNotExist:
+            print("Object does not exist")
+            msg = _("User does not exist")
+            raise serializers.ValidationError(msg)
+        print(user)
+        return user
+
+    def validate(self, attrs):
+        print("validate")
+        token = attrs['token']
+        payload = self._check_payload(token=token)
+        print(payload)
+        user = self._check_user(payload=payload)
+        print('hello')
+        print("User: ", user)
+        return {'token': token, 'user': user}
 
 class UserSerializer(serializers.ModelSerializer):
     def to_representation(self, data):
@@ -27,9 +67,11 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         return {res['id']: res}
 
     def create(self, validated_data):
-        print("create method")
-        print(validated_data)
-        user = User.objects.create_user(email=validated_data['email'], first_name=validated_data['first_name'], last_name=validated_data['last_name'], avatar=validated_data['avatar'], password=validated_data['password'])
+        if "avatar" not in validated_data:
+            avatar = None
+        else:
+            avatar = validated_data['avatar']
+        user = User.objects.create_user(email=validated_data['email'], first_name=validated_data['first_name'], last_name=validated_data['last_name'], avatar=avatar, password=validated_data['password'])
         return user
 
     class Meta:
@@ -152,6 +194,13 @@ class MeetupEventOptionSerializer(serializers.ModelSerializer):
 
 class MeetupEventSerializer(serializers.ModelSerializer):
     options = serializers.SerializerMethodField('_get_options')
+    categories = serializers.SerializerMethodField('_get_categories')
+
+    def _get_categories(self, obj):
+        ids = obj.entries.values()
+        categories = Category.objects.filter(id__in=ids)
+        serializer = CategorySerializer(categories, many=True)
+        return serializer.data
 
     def _get_options(self, obj):
         mapping = {}
@@ -161,7 +210,7 @@ class MeetupEventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MeetupEvent
-        fields = ('id', 'meetup', 'title', 'start', 'end', 'chosen', 'entries', 'options', 'price', 'distance')
+        fields = ('id', 'meetup', 'title', 'start', 'end', 'chosen', 'categories', 'options', 'price', 'distance')
 
 class MeetupMemberSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('_get_user')

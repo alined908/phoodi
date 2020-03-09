@@ -28,12 +28,10 @@ export default function meetupReducer(state = defaultState, action){
                         [action.payload.meetup]: {...state.meetups[action.payload.meetup], 
                             members: {...state.meetups[action.payload.meetup].members, ...action.payload.member}}}}
         case GET_MEETUP_EVENTS:
-           var meetups = {}
-           const data = action.payload.data
-           Object.keys(state.meetups).map((key) => 
-               (key === action.payload.uri) ? meetups[key] = ({...state.meetups[key], events: data}) : (meetups[key] = state.meetups[key])
-           )
-            return {...state, meetups: meetups, isMeetupEventsInitialized: true}
+            return {...state, meetups: {...state.meetups, 
+                    [action.payload.uri]: {...state.meetups[action.payload.uri], 
+                        events: action.payload.data, isMeetupEventsInitialized: true
+                    }}}
         case ADD_MEETUP_EVENT:
             return {...state, 
                         meetups: {...state.meetups, 

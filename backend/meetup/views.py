@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework import permissions, status
+from django.db.models.expressions import RawSQL
 from django.db.models import Q
 import collections
 from datetime import datetime
@@ -25,20 +26,24 @@ def current_user(request):
 class UserView(APIView):
     permission_classes = [permissions.AllowAny]
 
+    def get_object(self, pk):
+        user = get_object_or_404(User, pk=pk)
+        print(user)
+        return user
+
     def get(self, request, *args, **kwargs):
-        pk = kwargs['id']
-        user = User.objects.get(pk=pk)
+        user = self.get_object(kwargs['id'])
         serializer = UserSerializer(user, context={'plain': True})
         return Response(serializer.data)
 
     def patch(self, request, *args, **kwargs):
-        print(request.data)
-        pk = kwargs['id']
-        user = User.objects.get(pk=pk)
+        user = self.get_object(kwargs['id'])
         serializer = UserSerializer(user, data=request.data, partial=True, context={'plain': True})
+        
         if serializer.is_valid():
             serializer.save()
-        return Response(serializer.data)
+            return Response(serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def post(self,request):
         """ Handles POST Request for User Signups
@@ -50,7 +55,6 @@ class UserView(APIView):
             Response: JSON containing appropriate status code and message
         """
         user = request.data
-        print(user)
 
         if not user:
             return Response({"error": 'No data found'})
@@ -59,7 +63,6 @@ class UserView(APIView):
         if serializer.is_valid():
             try:
                 user = serializer.save()
-                print(user)
             except IntegrityError:
                 return Response({"error": 'Email already exists'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         else:
@@ -70,31 +73,32 @@ class UserView(APIView):
 class MeetupListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def format_meetups(self, meetups, user):
+    def format_meetups(self, user):
+        meetups = Meetup.objects.filter(id__in=RawSQL(
+            'SELECT member.meetup_id as id FROM meetup_meetupmember as member WHERE user_id = %s' , (user.id,)
+        )).order_by("date")
+
         meetups_json = {}
-    
+        
         for meetup in meetups.all():
-            serializer = MeetupSerializer(meetup.meetup, context={'user': user})
-            meetups_json[meetup.meetup.uri] = serializer.data
+            serializer = MeetupSerializer(meetup, context={'user': user})
+            meetups_json[meetup.uri] = serializer.data
 
         return meetups_json
-
+        
     def get(self, request, *args, **kwargs):
         user = request.user
-        meetups = user.meetups
-        meetups_json = self.format_meetups(meetups, user)
+        meetups_json = self.format_meetups(user)
         return Response ({"meetups": meetups_json})
 
     def post(self, request, *args, **kwargs):
-        user = request.user
-        date = request.data['date'].split("T")[0]
-        print(request.data['date'])
-        print(date)
-        name = request.data['name']
-        meetup = Meetup.objects.create(date=date, location = request.data['location'], name=request.data['name'])
-        meetup.members.create(user=user, meetup=meetup)
-
-        return Response({'status': 'Success', 'meetup': MeetupSerializer(meetup, context={"user": user}).data, 'message': "new meetup created"})
+        try:
+            user, date, name, location = request.user, request.data['date'], request.data['name'], request.data['location']
+            meetup = Meetup.objects.create(date=date, location=location, name=name)
+            meetup.members.create(user=user, meetup=meetup)
+            return Response({'status': 'Success', 'meetup': MeetupSerializer(meetup, context={"user": user}).data, 'message': "new meetup created"})
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class MeetupView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -114,25 +118,29 @@ class MeetupView(APIView):
         serializer = MeetupSerializer(meetup, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-        return Response(serializer.data)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, *args, **kwargs):
         meetup = self.get_object(kwargs['uri'])
         meetup.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
+    
 class MeetupEventsListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def format_events(self, events):
-        events_json = [(event.id, MeetupEventSerializer(event).data) for event in events]
-        return collections.OrderedDict(events_json)
+        events_json = {}
+
+        for event in events.all():
+            serializer = MeetupEventSerializer(event)
+            events_json[event.id] = serializer.data
+        return events_json
 
     def get(self, request, *args, **kwargs):
         uri = kwargs['uri']
         meetup = get_object_or_404(Meetup, uri=uri)
-        events = meetup.events.all().order_by('start')
-        print(events)
+        events = meetup.events
         events_json = self.format_events(events)
         
         return Response(events_json)
@@ -146,17 +154,6 @@ class MeetupEventsListView(APIView):
         event = MeetupEvent.objects.create(creator=creator, meetup=meetup, start=start, end=end, title=title, entries=entries, distance=distance, price=price)
         serializer = MeetupEventSerializer(event)
         return Response({'meetup': uri, 'event': {event.id: serializer.data}})
-
-class MeetupEmailView(APIView):
-    permissions=[permissions.IsAuthenticated]
-
-    def post(self, request, *args, **kwargs):
-        user=request.user
-        print(user)
-        uri = kwargs['uri']
-        meetup = get_object_or_404(Meetup, uri=uri)
-        meetup.send_email()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class MeetupEventsView(APIView):
     permissions=[permissions.IsAuthenticated]
@@ -237,6 +234,17 @@ class MeetupMembersView(APIView):
         member.delete()
         serializer = MeetupMemberSerializer(meetup.members.all(), many=True)
         return Response(serializer.data)
+
+class MeetupEmailView(APIView):
+    permissions=[permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        user=request.user
+        print(user)
+        uri = kwargs['uri']
+        meetup = get_object_or_404(Meetup, uri=uri)
+        meetup.send_email()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class MeetupInviteAllView(APIView):
     permission_classes = [permissions.IsAuthenticated]

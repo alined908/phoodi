@@ -19,6 +19,7 @@ import {getNumberNotifs} from "../actions/notifications.js"
 import LiveUpdatingBadge from "./LiveUpdatingBadge"
 import SettingsIcon from '@material-ui/icons/Settings';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import AuthenticationService from '../accounts/AuthenticationService'
 
 const drawerWidth = 220;
 
@@ -107,7 +108,8 @@ const Navigation = (props) => {
     console.log("component mount called")
     if (props.authenticated && open) {
       var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
-      const path = `${ws_scheme}://localhost:8000/ws/user/${props.user.id}/`;
+      const token = AuthenticationService.retrieveToken()
+      const path = `${ws_scheme}://localhost:8000/ws/user/${props.user.id}/?token=${token}`;
       socket.connect(path);
       socket.waitForSocketConnection(() => socket.fetchNotifications({user: props.user.id}))
     }

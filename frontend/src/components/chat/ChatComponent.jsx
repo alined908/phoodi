@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {getMessages, setActiveRoom, addMessage, removeActiveRoom} from "../../actions/chat"
 import {getRooms} from '../../actions/chat';
 import WebSocketService from "../../accounts/WebSocket"
+import AuthenticationService from '../../accounts/AuthenticationService';
 
 class ChatComponent extends Component {
     constructor(props){
@@ -41,7 +42,8 @@ class ChatComponent extends Component {
         this.props.setActiveRoom(uri);
         this.props.getMessages(uri);
         var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
-        const path = `${ws_scheme}://localhost:8000/ws/chat/${this.props.match.params.uri}/`;
+        const token = AuthenticationService.retrieveToken()
+        const path = `${ws_scheme}://localhost:8000/ws/chat/${this.props.match.params.uri}/?token=${token}`;
         socket.connect(path);
     }
 
