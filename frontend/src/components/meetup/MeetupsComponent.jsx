@@ -5,6 +5,7 @@ import MeetupCard from "./MeetupCard"
 import {Button, Typography, Grid, ButtonGroup} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import moment from "moment"
+import AddIcon from '@material-ui/icons/Add'
 
 
 class MeetupsComponent extends Component {
@@ -60,7 +61,7 @@ class MeetupsComponent extends Component {
                                     <Button variant={this.state.chosen[2] ? "contained" : "outlined"} onClick={() => this.handleFilter(2)}>Week</Button>
                                     <Button variant={this.state.chosen[3] ? "contained" : "outlined"} onClick={() => this.handleFilter(3)}>Later</Button>
                                 </ButtonGroup>
-                                <Link to="/meetups/new"><Button variant="contained" color="primary">Create Meetup</Button></Link>
+                                <Link to="/meetups/new"><Button variant="contained" color="primary" startIcon={<AddIcon />}>Meetup</Button></Link>
                             </div>
                         </Grid>
                         <div className="meetups-container">
@@ -68,7 +69,7 @@ class MeetupsComponent extends Component {
                                 {[0,1, 2, 3].map((index) =>
                                     {return (this.state.chosen[index] && meetups[index].length > 0) && <>
                                         {meetups[index].map((meetup) => 
-                                            <Grid item xs={4}>
+                                            <Grid item xs={12} sm={6} md={4}>
                                                 <div className="meetups-cardwrapper">
                                                     <MeetupCard key={meetup.id} meetup={meetup}/>
                                                 </div>

@@ -13,23 +13,23 @@ headers = {'Authorization': "Bearer U46B4ff8l6NAdldViS7IeS8HJriDeE9Cd5YZXTUmrdzv
 
 class ChatConsumer(AsyncWebsocketConsumer):
 
-    async def fetch_messages(self, data):
-        print("fetch messages called")
-        room = ChatRoom.objects.get(uri=data['uri'])
-        content = {'command': 'fetch_messages'}
-        if not room:
-            content['error'] = "Unable to identify chat room"
-        messages = reversed(room.messages.order_by('-timestamp')[:50])
-        messages_list = []
+    # async def fetch_messages(self, data):
+    #     print("fetch messages called")
+    #     room = ChatRoom.objects.get(uri=data['uri'])
+    #     content = {'command': 'fetch_messages'}
+    #     if not room:
+    #         content['error'] = "Unable to identify chat room"
+    #     messages = reversed(room.messages.order_by('-timestamp')[:50])
+    #     messages_list = []
 
-        for message in messages:
-            messages_list.append(MessageSerializer(message).data)
-        content['messages'] = messages_list
-        print(content)
-        await self.send(text_data = json.dumps(content))
+    #     for message in messages:
+    #         messages_list.append(MessageSerializer(message).data)
+    #     content['messages'] = messages_list
+    #     print(content)
+    #     await self.send(text_data = json.dumps(content))
 
     async def new_message(self, data):
-        print("new message")
+        # print("new message")
         sender, msg, room = data['from'], data['text'], data['room']
         room_obj = await database_sync_to_async(ChatRoom.objects.get)(uri=room)
         user_obj = await database_sync_to_async(User.objects.get)(pk=sender)
@@ -47,7 +47,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
     commands = {
-        'fetch_messages' : fetch_messages,
+        # 'fetch_messages' : fetch_messages,
         'new_message' : new_message
     }
 
@@ -86,14 +86,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         # Receive message from WebSocket
-        print("ChatConsumer received message from websocket")
+        # print("ChatConsumer received message from websocket")
         json_data = json.loads(text_data)
         await self.commands[json_data['command']](self, json_data)
 
     # Receive message from room group
     async def chat_message(self, event):
         message = event['message']
-        print(message)
+        # print(message)
         await self.send(text_data=json.dumps(message))
 
 class UserNotificationConsumer(AsyncWebsocketConsumer):
@@ -205,12 +205,11 @@ class MeetupConsumer(AsyncWebsocketConsumer):
 
     async def new_event(self, command):
         data = command['data']
-        print("new event function called")
-        meetup, title, location, start, end, entries, prices, distance = data['uri'], data['title'], data['location'], data['start'], data['end'], data['entries'], data['prices'], data['distance']
+        meetup, creator, title, start, end, entries, prices, distance = data['uri'],data['creator'], data['title'], data['start'], data['end'], data['entries'], data['prices'], data['distance']
         meetup_obj = await database_sync_to_async(Meetup.objects.get)(uri=meetup)
-        event = await database_sync_to_async(MeetupEvent.objects.create)(meetup = meetup_obj, title=title, location=location, start=start, end=end, entries=entries, distance=distance, price=prices)
+        creator = await database_sync_to_async(MeetupMember.objects.get)(pk=creator)
+        event = await database_sync_to_async(MeetupEvent.objects.create)(meetup = meetup_obj, creator=creator, title=title, start=start, end=end, entries=entries, distance=distance, price=prices)
         serializer = await self.get_event_serializer(event)
-
 
         content = {
             'command': 'new_event',

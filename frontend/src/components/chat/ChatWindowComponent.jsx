@@ -5,6 +5,7 @@ import {setTypingValue} from "../../actions/chat";
 import {Button} from '@material-ui/core'
 import {Link} from 'react-router-dom';
 import {removeNotifs} from "../../actions/notifications"
+import PersonIcon from "@material-ui/icons/Person"
 
 class ChatWindowComponent extends Component {
     messagesEndRef = React.createRef()
@@ -55,7 +56,7 @@ class ChatWindowComponent extends Component {
                         <Link to={`/meetups/${this.props.room.uri}`}><Button color="primary">Meetup</Button></Link>
                     }
                     {this.props.room && this.props.room.friendship && 
-                        <Link to={`/profile/${this.determineOtherUser()}`}><Button color="primary">Profile</Button></Link>
+                        <Link to={`/profile/${this.determineOtherUser()}`}><Button color="primary" startIcon={<PersonIcon/>}>Profile</Button></Link>
                     }
                 </div>
                 <div className="chat-messages-wrapper" >

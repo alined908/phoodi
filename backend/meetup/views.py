@@ -11,7 +11,6 @@ from rest_framework import permissions, status
 from django.db.models.expressions import RawSQL
 from django.db.models import Q
 import collections
-from datetime import datetime
 from django.forms.models import model_to_dict
 from meetup.serializers import CategorySerializer, UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer, FriendInviteSerializer, MeetupEventSerializer
 
@@ -333,10 +332,12 @@ class MeetupInviteView(APIView):
         invite.status = num
         invite.save()
 
+        message = ""
         if invite.status == "2":
             message = "Successfully accepted meetup invite."
         elif invite.status == "3":
             message = "Rejected meetup invite."
+        print(message)
         return Response({"message": message, "invite": MeetupInviteSerializer(invite).data})
 
 class FriendInviteListView(APIView):

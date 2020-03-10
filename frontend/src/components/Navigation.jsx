@@ -1,24 +1,13 @@
 import React from 'react';
-import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {Button, Drawer, CssBaseline, AppBar, Toolbar, Typography, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import PeopleIcon from '@material-ui/icons/People';
-import ChatIcon from '@material-ui/icons/Chat';
-import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import MailIcon from '@material-ui/icons/Mail';
+import {Menu, ChevronLeft, ChevronRight, People, Person, Settings, Chat,Mail, Assignment, PermContactCalendar, ExitToApp}  from '@material-ui/icons';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Body from "./Body"
-import PersonIcon from '@material-ui/icons/Person';
 import WebSocketService from "../accounts/WebSocket"
 import {getNumberNotifs} from "../actions/notifications.js"
 import LiveUpdatingBadge from "./LiveUpdatingBadge"
-import SettingsIcon from '@material-ui/icons/Settings';
-import AssignmentIcon from '@material-ui/icons/Assignment';
 import AuthenticationService from '../accounts/AuthenticationService'
 
 const drawerWidth = 220;
@@ -37,14 +26,6 @@ const useStyles = makeStyles(theme => ({
     padding: "0 1rem",
     background: "white"
   },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
   hide: {
     display: 'none',
   },
@@ -58,9 +39,6 @@ const useStyles = makeStyles(theme => ({
     marginLeft: '.5rem'
   },
 
-  menuButton: {
-    marginRight: '2rem'
-  },
   actionButton:{
     marginRight: '1rem'
   },
@@ -85,22 +63,14 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     width: '100%',
-    marginLeft: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
+    height: '100%',
   },
 }));
 
 const Navigation = (props) => {
   const classes = useStyles();
   const theme = useTheme();
-  var drawerState = (localStorage.getItem("drawer") === null) ? drawerState = false : JSON.parse(localStorage.getItem("drawer"))
-  const [open, setOpen] = React.useState(drawerState);
+  const [open, setOpen] = React.useState(false);
   const [socket, setSocket] = React.useState(new WebSocketService())
   socket.addNotifCallbacks(props.getNumberNotifs)
 
@@ -122,104 +92,97 @@ const Navigation = (props) => {
   })
 
   const handleDrawerOpen = () => {
-    localStorage.setItem("drawer", "true")
     setOpen(true);
   };
 
   const handleDrawerClose = () => {
-    localStorage.setItem("drawer", "false")
     setOpen(false);
   };
+
+  const isActive = (uri) => {
+    return window.location.pathname.indexOf(uri) > -1
+  }
 
   return (
     <div className={classes.root}>
       <CssBaseline />
       
-      <AppBar position="fixed" className={clsx(classes.appBar, {[classes.appBarShift]: open,})}>
+      <AppBar position="absolute" className={classes.appBar}>
         <Toolbar>
-          {props.authenticated && <IconButton color="black" aria-label="open drawer" onClick={handleDrawerOpen} edge="start" className={clsx(classes.menuButton, open && classes.hide)}>
-            <MenuIcon />
+          {props.authenticated && <IconButton color="black" aria-label="open drawer" onClick={handleDrawerOpen} edge="start">
+            <Menu />
           </IconButton>}
           <Typography className={classes.title} variant="h6" noWrap>
             <Link onClick={handleDrawerClose} to="/">Meetup</Link>
           </Typography>
           {!props.authenticated && 
             <Link to="/login">
-              <Button className={classes.actionButton} startIcon={<ExitToAppIcon/>}>Sign in</Button>
+              <Button className={classes.actionButton} startIcon={<ExitToApp/>}>Sign in</Button>
             </Link>
           }
           {!props.authenticated &&
             <Link to="/register">
-              <Button className={classes.actionButton} startIcon={<AssignmentIcon/>}>Sign Up</Button>
+              <Button className={classes.actionButton} startIcon={<Assignment/>}>Sign Up</Button>
             </Link>
           }
         </Toolbar>
       </AppBar>
       
-      <Drawer className={classes.drawer} variant="persistent" anchor="left" open={open} classes={{ paper: classes.drawerPaper,}}>
+      <Drawer className={classes.drawer} ModalProps={{keepMounted:true}} onClose={handleDrawerClose} variant="temporary" anchor="left" open={open} classes={{ paper: classes.drawerPaper,}}>
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            {theme.direction === 'ltr' ? <ChevronLeft /> : <ChevronRight />}
           </IconButton>
         </div>
         <Divider />
         <List>
-          {/* <Link to="/">
-            <ListItem button key="Home">
-              <ListItemIcon>
-                <HomeIcon/>
-              </ListItemIcon>
-              <ListItemText classes={{primary: classes.drawerText}} primary="Home"/>
-            </ListItem>
-          </Link> */}
-          {props.authenticated && <Link to="/meetups">
-                <ListItem button key="Meetups">
+          {props.authenticated && <Link to="/meetups" onClick={handleDrawerClose}>
+                <ListItem button key="Meetups" selected={isActive("/meetups")}>
                   <ListItemIcon>
-                    <LiveUpdatingBadge type={'meetup'} icon={<PeopleIcon/>} />
+                    <LiveUpdatingBadge type={'meetup'} icon={<People/>} />
                   </ListItemIcon>
                   <ListItemText classes={{primary: classes.drawerText}} primary="Meetups"/>
                 </ListItem>
               </Link>}
-          {props.authenticated && <Link to="/chat">
-              <ListItem button key="Chat">
+          {props.authenticated && <Link to="/chat" onClick={handleDrawerClose}>
+              <ListItem button key="Chat" selected={isActive("/chat")}>
                 <ListItemIcon>
-                <LiveUpdatingBadge type={'chat'} icon={<ChatIcon/>} />
+                <LiveUpdatingBadge type={'chat'} icon={<Chat/>} />
                 </ListItemIcon>
                 <ListItemText classes={{primary: classes.drawerText}} primary="Chat"/>
               </ListItem>
             </Link>}
-          {props.authenticated && <Link to="/friends">
-              <ListItem button key="Friends">
+          {props.authenticated && <Link to="/friends" onClick={handleDrawerClose}>
+              <ListItem button key="Friends" selected={isActive("/friends")}>
                 <ListItemIcon>
-                <LiveUpdatingBadge type={'friend'} icon={<PermContactCalendarIcon/>} />
+                <LiveUpdatingBadge type={'friend'} icon={<PermContactCalendar/>} />
                 </ListItemIcon>
                 <ListItemText classes={{primary: classes.drawerText}} primary="Friends"/>
               </ListItem>
             </Link>}
-          {props.authenticated && <Link to="/invites">
-            <ListItem button key="Invites">
+          {props.authenticated && <Link to="/invites" onClick={handleDrawerClose}>
+            <ListItem button key="Invites" selected={isActive("/invites")}>
               <ListItemIcon>
-                <LiveUpdatingBadge type={'invite'} icon={<MailIcon/>}/>
+                <LiveUpdatingBadge type={'invite'} icon={<Mail/>}/>
               </ListItemIcon>
               <ListItemText classes={{primary: classes.drawerText}} primary="Invites"/>
             </ListItem>
           </Link>}
         </List>
-        
         <Divider />
         <List>
-          {props.authenticated && props.user && <Link to={`/profile/${props.user.id}`}>
-            <ListItem button key="Profile">
+          {props.authenticated && props.user && <Link to={`/profile/${props.user.id}`} onClick={handleDrawerClose}>
+            <ListItem button key="Profile" selected={isActive("/profile")}>
               <ListItemIcon>
-                <PersonIcon/>
+                <Person/>
               </ListItemIcon>
               <ListItemText classes={{primary: classes.drawerText}} primary="Profile"/>
             </ListItem>
           </Link>}
-          {props.authenticated && <Link to="/settings">
-            <ListItem button key="Settings">
+          {props.authenticated && <Link to="/settings" onClick={handleDrawerClose}>
+            <ListItem button key="Settings" selected={isActive("/settings")}>
               <ListItemIcon>
-                <SettingsIcon/>
+                <Settings/>
               </ListItemIcon>
               <ListItemText classes={{primary: classes.drawerText}} primary="Settings"/>
             </ListItem>
@@ -227,7 +190,7 @@ const Navigation = (props) => {
           {props.authenticated && <Link onClick={handleDrawerClose} to="/logout">
             <ListItem button key="Logout">
               <ListItemIcon>
-                <ExitToAppIcon/>
+                <ExitToApp/>
               </ListItemIcon>
               <ListItemText classes={{primary: classes.drawerText}} primary="Logout"/>
             </ListItem>
@@ -235,7 +198,7 @@ const Navigation = (props) => {
         </List>
        
       </Drawer>
-      <main className={clsx(classes.content, {[classes.contentShift]: open,})}>
+      <main className={classes.content}>
         <div className={classes.drawerHeader} />
         <Body></Body>
       </main>

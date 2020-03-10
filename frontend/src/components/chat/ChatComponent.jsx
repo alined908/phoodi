@@ -11,12 +11,15 @@ class ChatComponent extends Component {
     constructor(props){
         super(props)
         this.state = {
-            socket: new WebSocketService()
+            socket: new WebSocketService(),
+            nonMobile: window.matchMedia("(min-width: 768px)").matches
         }
         this.state.socket.addChatCallbacks(this.props.getMessages, this.props.addMessage)
     }
 
     componentDidMount(){
+        const handler = e => this.setState({nonMobile: e.matches});
+        window.matchMedia("(min-width: 768px)").addListener(handler);
         this.props.getRooms()
         if("uri" in this.props.match.params){
             this.getRelevantInfo(this.props.match.params.uri)
@@ -57,7 +60,7 @@ class ChatComponent extends Component {
         }
 
         return (
-            <div className="chat">
+            <div className={"chat " + (this.state.nonMobile ? "" : "chat-mobile")}>
                 <ChatBarComponent rooms={this.props.rooms}/>
                 {renderChatWindow()}
             </div>

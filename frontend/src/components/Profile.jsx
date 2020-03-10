@@ -63,7 +63,7 @@ class Profile extends Component {
                     <Grid container spacing={3}> 
                         
                         {this.state.friends.map((friend) => 
-                            <Grid item xs={4}>
+                            <Grid item xs={12} md={6} lg={4}>
                                 <Friend isUserFriend={isUser} friend={friend}/>
                             </Grid>
                         )}

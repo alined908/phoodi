@@ -38,7 +38,7 @@ class HomeComponent extends Component {
                         <IcecreamIcon className={"cupcake"} height={50} width={50}/> */}
                     </div>
                     <div className="belt">
-                        <WheelIcon height={"auto"} width={600} className={"wheel"}></WheelIcon>
+                        <WheelIcon className={"wheel"}></WheelIcon>
                     </div>
                 </div>
             )

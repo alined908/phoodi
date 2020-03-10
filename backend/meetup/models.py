@@ -197,7 +197,7 @@ class MeetupEvent(models.Model):
             raise ValidationError("Name cannot be blank")
 
     def save(self, *args, **kwargs):
-        self.full_clean()
+        self.full_clean(["entries"])
         return super(MeetupEvent, self).save(*args, **kwargs)
 
     def convert_entries_to_string(self):

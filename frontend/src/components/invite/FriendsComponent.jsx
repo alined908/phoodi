@@ -47,7 +47,7 @@ class FriendsComponent extends Component{
                 {this.props.isFriendsInitialized && <div className="friends">
                     <Grid container spacing={3}>
                         {this.props.friends.map((friend) => 
-                            <Grid item xs={4}>
+                            <Grid item xs={12} md={6} lg={4} >
                                 <Friend isUserFriend={true} friend={friend}/>
                             </Grid>
                         )}

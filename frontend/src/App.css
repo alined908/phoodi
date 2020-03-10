@@ -2,9 +2,9 @@ a, a:hover {
   text-decoration: none;
   color: inherit;
 }
+
 html, body, #root, .MeetupApp{
   background-color: #f5f6fa;
-  height: 100%;
 }
 
 body {
@@ -13,7 +13,8 @@ body {
 
 .horizontal-form{
   display: flex;
-  min-width: 300px;
+  width : 100%;
+  max-width: 300px;
 }
 
 .bar-img{
@@ -24,15 +25,16 @@ body {
 .App {
   text-align: center;
   display: flex;
-  height: 100%;
 }
+
 .chat {
   font-family: "Lato";
   font-weight: 600;
   display: grid;
   grid-template-columns: 30% 70%;
-  height: 100%;
   width: 100%;
+  height: 100%;
+  overflow-y:auto;
 }
 .chat-bar{
   height: 100%;
@@ -318,6 +320,10 @@ body {
   height: calc(100% - 64px);
   width: 100%;
   background-color: #f5f6fa;
+}
+
+main{
+  overflow-y:scroll !important;
 }
 .outer-shell{
   display: flex;
@@ -619,6 +625,14 @@ body {
   width: 100% !important;
 }
 
+.Mui-selected {
+  color: black !important;
+}
+
+.Mui-selected svg{
+  fill: black !important;
+}
+
 .home{
   background-color: white;
 }
@@ -708,4 +722,45 @@ body {
 
 .MuiChip-deleteIcon{
   color: white !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .inner-wrap{
+    padding: 1rem;
+    overflow-y: scroll;
+  }
+
+  .inner-header{
+    padding: 1.5rem;
+  }
+
+  .horizontal-form{
+    margin-left: 20px;
+  }
+
+  .friends {
+    margin-top: 0;
+    padding: 1rem 0;
+  }
+
+  .profile {
+    margin: 1rem 0;
+    width: 100%;
+  }
+
+  .invite{
+    padding: 1rem 1.5rem;
+  }
+
+  .invites .invite:last-child{
+    margin-bottom: 0;
+  }
+
+  .outer-shell{
+    width: 90%;
+  }
+}
+
+.chat-mobile{
+  grid-template-columns: 80% 20%;
 }

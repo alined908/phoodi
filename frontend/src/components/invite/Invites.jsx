@@ -22,7 +22,7 @@ class Invites extends Component {
         return (
             <div className="inner-wrap">
                 <Grid container spacing={3}>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} md={6}>
                         {!this.props.isMeetupInvitesInitialized ? 
                             <div>Initializing Meetup Invites..</div> : 
                             <>
@@ -37,7 +37,7 @@ class Invites extends Component {
                             </>
                         }
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} md={6}>
                         {!this.props.isFriendInvitesInitialized ? 
                             <div>Initializing Friend Invites..</div> :
                             <>
