@@ -5,6 +5,7 @@ a, a:hover {
 
 html, body, #root, .MeetupApp{
   background-color: #f5f6fa;
+  height: 100%;
 }
 
 body {
@@ -25,8 +26,8 @@ body {
 .App {
   text-align: center;
   display: flex;
+  height: 100%;
 }
-
 .chat {
   font-family: "Lato";
   font-weight: 600;
@@ -321,10 +322,6 @@ body {
   width: 100%;
   background-color: #f5f6fa;
 }
-
-main{
-  overflow-y:scroll !important;
-}
 .outer-shell{
   display: flex;
   width: 70%;
@@ -360,6 +357,10 @@ main{
   width: 90%;
 }
 
+.form-paper{
+  padding: 2rem 3rem;
+}
+
 .price-options{
   margin-top: 1rem;
 }
@@ -369,7 +370,6 @@ main{
 
 .meetup-event {
   padding: 0 1.75rem;
-  margin-bottom: 2rem;
   width: 90%;
   margin: 0 auto 2rem auto;
 }
@@ -724,10 +724,26 @@ main{
   color: white !important;
 }
 
+@media only screen and (max-width: 1000px){
+
+  .smaller-header{
+    flex-wrap: wrap;
+  }
+
+  .smaller-header div{
+    padding: .5rem 0 ;
+  }
+
+  .chosen{
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 @media only screen and (max-width: 600px) {
   .inner-wrap{
     padding: 1rem;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 
   .inner-header{
@@ -758,6 +774,51 @@ main{
 
   .outer-shell{
     width: 90%;
+  }
+
+  .form {
+    margin: 2rem auto;
+    width: 100%;
+  }
+
+  .form-paper{
+    padding: 1.5rem 1rem 1rem 1rem;
+  }
+  .inner-header{
+    flex-wrap: wrap;
+    padding: 1rem;
+    justify-content: center;
+  }
+  .inner-header-middle{
+    padding: 1rem 0;
+  }
+
+  .inner-header button{
+    margin-left: 10px;
+  }
+
+  .outer-shell{
+    
+  }
+
+  .meetup-event{
+    padding: 0;
+  }
+
+  .smaller-header{
+    padding: .5rem 1rem !important;
+  }
+
+  .second-header{
+    width: 100%;
+    flex-wrap: wrap
+  }
+  .foursquare{
+    width: 100%;
+  }
+
+  h5{
+    font-size: 1.75rem !important;
   }
 }
 

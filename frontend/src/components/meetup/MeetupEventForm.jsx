@@ -76,6 +76,7 @@ class MeetupEventForm extends Component {
     }
 
     onSubmit = (formProps) => {
+        console.log("on submit")
         const indices = this.state.prices.reduce((out, bool, index) => bool ? out.concat(index+1) : out, [])
         const prices = indices.join(", ")
         const uri = this.props.match.params.uri
@@ -121,7 +122,7 @@ class MeetupEventForm extends Component {
                     <Link to={`/meetups/${this.props.match.params.uri}`}><Button variant="contained" color="primary">Meetup</Button></Link>
                 </div> 
                 <div className="form">
-                    <Paper elevation={3} style={{padding: "2rem 3rem"}}>
+                    <Paper className="form-paper" elevation={3}>
                         <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                             <Grid container style={{padding: "1rem"}} spacing={3}>
                                 <Grid item xs={12}>
@@ -130,13 +131,13 @@ class MeetupEventForm extends Component {
                                 <Grid item xs={12}>
                                     <Field required name="title" component={renderTextField} label="Event Name"></Field>
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={12} md={6}>
                                     <Field required name="start" component={renderDatePicker} label="Start Time"></Field>
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={12} md={6}>
                                     <Field name="end" component={renderDatePicker} label="End Time"></Field>
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={12} md={6}>
                                     <div className="price">
                                         <Typography variant="h6">Price</Typography>
                                         <div className="price-options">
@@ -149,7 +150,7 @@ class MeetupEventForm extends Component {
                                         </div>
                                     </div>
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={12} sm={6}>
                                     <div className="distance">
                                         <Typography variant="h6">Distance (mi)</Typography>
                                         <div className="distance-options">

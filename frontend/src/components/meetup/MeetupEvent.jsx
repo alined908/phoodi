@@ -74,7 +74,7 @@ class MeetupEvent extends Component {
                 <div className="foursquare">
                     <Grid justify="center" container spacing={3}>
                     {keys.map((key) => 
-                        <Grid item xs={6}>
+                        <Grid item xs={12} md={6}>
                             <Restauraunt socket={this.props.socket} key={key} full={true} event={this.props.event.id} meetup={this.props.uri} data={options[key]}/>
                         </Grid>
                     )}
@@ -130,20 +130,20 @@ class MeetupEvent extends Component {
                 {renderHeader(this.props.number)}
                 <div className="second-header smaller-header">
                     <div className="second-header-left">
-                        <Typography variant="h6">Categories - </Typography>
+                        <Typography variant="h6">Categories </Typography>
                         {event.categories.map((category) => 
                             <span className="category-chip">{category.label}</span>
                         )}
                     </div>
                     <div className="second-header-left">
-                        <Typography variant="h6">Price - </Typography>  
+                        <Typography variant="h6">Price </Typography>  
                         {(this.handlePriceChips(event.price)).map((price) => 
                             <span className="category-chip">{price}</span>
                         )
                         }
                     </div>
                     <div className="second-header-left">
-                        <Typography variant="h6">Distance - </Typography>
+                        <Typography variant="h6">Distance </Typography>
                         <span className="category-chip">
                             {(Math.round(event.distance * 0.000621371192)).toFixed(2)}
                         </span>

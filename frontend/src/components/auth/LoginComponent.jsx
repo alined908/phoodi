@@ -23,7 +23,7 @@ class LoginComponent extends Component {
                 <Typography variant="h5">Login</Typography>
                 </div>
                 <div className="form">
-                    <Paper elevation={3} style={{padding: "2rem 3rem"}}>
+                    <Paper className="form-paper" elevation={3}>
                         <form onSubmit={handleSubmit(this.onSubmit)}>
                             <Grid container style={{padding: "1rem"}} spacing={3}>
                                 <Grid item xs={12}>
@@ -32,9 +32,9 @@ class LoginComponent extends Component {
                                 <Grid item xs={12}>
                                     <Field name="password" type="password" component={renderTextField} label="Password"/>
                                 </Grid> 
-                                <Grid item xs={12}>
+                                {this.props.errorMessage && <Grid item xs={12}>
                                     <div>{this.props.errorMessage}</div>
-                                </Grid>
+                                </Grid>}
                                 <Grid item xs={12}>
                                 <Fab type="submit" variant="extended" color="primary" aria-label="login">Login</Fab>
                                 </Grid>

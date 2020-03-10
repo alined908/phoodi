@@ -47,11 +47,11 @@ class HomeComponent extends Component {
         return (
             <div className="home">
                 <div className="top">
-                    {dog()}
+                    {/* {dog()} */}
                     {food()}
-                    <div className="home-banner">
+                    {/* <div className="home-banner">
                         <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h3">Meetup</Typography>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="middle">
                     <div className="middle-header">
@@ -59,42 +59,40 @@ class HomeComponent extends Component {
                         <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h4">Get food with friends faster</Typography>
                         <Typography style={{fontFamily: "Lato", marginTop: ".5rem"}} variant="h6">Schedule events. Choose from options. Meetup!</Typography>
                     </div>
-                    <div className="middle-entry">
+                    <div className="middle-entry left">
                         <div className="middle-entry-img">
                             <HavingFunIcon width={600} height={"auto"}/>
                         </div>
                         <div className="middle-entry-text">
                             <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h4">Find Food Friends</Typography>
-                            <Typography style={{fontFamily: "Lato"}} variant="h7">Bond with friends and people with similar food tastes near you</Typography>
+                            <Typography style={{fontFamily: "Lato"}} variant="h6">Bond with friends and people with similar food tastes near you</Typography>
                         </div>
                     </div>
-                    <div className="middle-entry">
+                    <div className="middle-entry right">
                         <div className="middle-entry-text">
                             <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h4">Schedule Group Meetups</Typography>
-                            <Typography style={{fontFamily: "Lato"}} variant="h7">Create multiple events and instantly add them to your calendar</Typography>
+                            <Typography style={{fontFamily: "Lato"}} variant="h6">Create multiple events and instantly add them to your calendar</Typography>
                         </div>
                         <div className="middle-entry-img">
                             <TastingIcon width={600} height={"auto"}/>
                         </div>
                     </div>
-                    <div className="middle-entry">
+                    <div className="middle-entry left">
                         <div className="middle-entry-img">
                             <StreetFoodIcon width={700} height={"auto"}/>
                         </div>
                         <div className="middle-entry-text">
                             <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h4">Explore New Foods</Typography>
-                            <Typography style={{fontFamily: "Lato"}} variant="h7">See what tastes good in your area</Typography>
+                            <Typography style={{fontFamily: "Lato"}} variant="h6">See what tastes good in your area</Typography>
                         </div>
                     </div>
-                    <div className="middle-entry">
+                    <div className="middle-entry right">
                         <div className="middle-entry-text">
                             <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h4">Chat With Friends</Typography>
-                            <Typography style={{fontFamily: "Lato"}} variant="h7">Talk about what you've been craving</Typography>
+                            <Typography style={{fontFamily: "Lato"}} variant="h6">Talk about what you've been craving</Typography>
                         </div>
                         <div className="middle-entry-img">
-                            
-                            <OnlineFriendsIcon width={900} height={"auto"}/>
-                           
+                            <OnlineFriendsIcon width={800} height={"auto"}/>
                         </div>
                     </div>
                     <div className="middle-tri">

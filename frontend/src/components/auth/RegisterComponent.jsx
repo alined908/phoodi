@@ -58,13 +58,13 @@ class RegisterComponent extends Component {
                     {!create && <Link to={`/profile/${this.props.user.id}`}><Button variant="contained" color="primary">Profile</Button></Link>}
                 </div>
                 <div className="form">
-                    <Paper elevation={3} style={{padding: "2rem 3rem"}}>
+                    <Paper elevation={3} className="form-paper">
                         <form onSubmit={handleSubmit(this.onSubmit)}>
                             <Grid container style={{padding: "1rem"}} spacing={3}>
-                                <Grid item xs={6}>
+                                <Grid item xs={12} sm={6}>
                                     <Field name="first_name" component={renderTextField} label="First Name"/>
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={12} sm={6}>
                                     <Field name="last_name" component={renderTextField} label="Last Name"/>
                                 </Grid>
                                 <Grid item xs={12}>
@@ -74,16 +74,16 @@ class RegisterComponent extends Component {
                                 <Grid item xs={12}>
                                     <Field name="password" type="password" component={renderTextField} label="Password"/>
                                 </Grid> }
+                                <Grid item xs={12}>
                                 {!create && 
-                                    <Grid item xs={2}>
                                         <Avatar style={{width: "70px", height: "70px"}} src={this.props.user.avatar}></Avatar>
-                                    </Grid>}
-                                <Grid item xs={10}>
+                                    }
+                                
                                     <TextField fullWidth={true} onChange={this.handleImageChange} inputProps={{ style: {fontSize: 14}}}  type="file"/>
                                 </Grid>
-                                <Grid item xs={12}>
+                                {this.props.errorMessage && <Grid item xs={12}>
                                     <div>{this.props.errorMessage}</div>
-                                </Grid>
+                                </Grid>}
                                 <Grid item xs={12}>
                                     <Fab type="submit" variant="extended" color="primary" aria-label="login">{create ? "Register" : "Edit User"}</Fab>
                                 </Grid>

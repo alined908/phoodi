@@ -69,7 +69,7 @@ class MeetupsComponent extends Component {
                                 {[0,1, 2, 3].map((index) =>
                                     {return (this.state.chosen[index] && meetups[index].length > 0) && <>
                                         {meetups[index].map((meetup) => 
-                                            <Grid item xs={12} sm={6} md={4}>
+                                            <Grid item xs={12} sm={6} lg={4}>
                                                 <div className="meetups-cardwrapper">
                                                     <MeetupCard key={meetup.id} meetup={meetup}/>
                                                 </div>

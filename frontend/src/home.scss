@@ -11,12 +11,13 @@
   
   .top {
       display:flex;
-      padding: 10% 10% 10% 15%;
+      width: 100%;
       margin: auto 0;
       border-bottom: 2px solid #edf0f6;
       background-color: #dff7e5;
-      height: 90vh;
+      height: 100%;
       align-items: center;
+      justify-content: center;
   }
 
   .home-banner{
@@ -48,7 +49,7 @@
 
   .middle-entry-text{
       display: flex;
-      height: 100px;
+      height: 100%;
       flex-direction: column;
       justify-content: space-evenly;
   }
@@ -73,14 +74,12 @@
       display:flex;
       align-items: center;
       padding: 4rem 0;
-      width: 70%;
-      margin: 0 auto;
       flex-direction: column;
       text-align: center;
+      background-color: white;
   }
   .bottom-button{
-      margin-top: 1rem;
-      max-width: 20%;
+      margin-top: 1rem; 
   }
 
   .middle-img-enter-active{
@@ -152,4 +151,73 @@
           margin-right: 25px;
       }
   }
+  @media only screen and (max-width: 1600px){
+    .middle-entry-img{
+        transform: scale(0.9)
+    }
+    .food-belt{
+        transform: scale(0.9)
+    }
 
+    .left {
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .right {
+        padding: 0;
+        flex-direction: column-reverse;
+    }
+
+    .middle-entry{
+        padding: 3rem 0;
+        justify-content: center;
+        width: 85%;
+    }
+
+    .middle-entry-text{
+        margin-top: 1rem;
+        text-align:center;
+
+        h4{
+            margin-bottom: 1rem;
+        }
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+
+    .middle{
+        padding-bottom: 0;
+    }
+
+    .middle-header{
+        padding: 3rem 0 0 0;
+        width: 85%;
+    }
+
+    .middle-tri{
+        margin-top: 4rem;
+        flex-direction:  column;
+    }
+
+    .middle-tri-col{
+        margin: 2rem 0;
+    }
+
+    .middle-entry-img{
+        transform: scale(0.45)
+    }
+
+    .food-belt{
+        transform: scale(0.6);
+    }
+
+    .top{
+        padding: 1rem;
+    }
+
+    .bottom{
+        padding-top: 2rem;
+    }
+}

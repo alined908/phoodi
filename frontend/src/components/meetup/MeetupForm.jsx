@@ -39,7 +39,7 @@ class MeetupForm extends Component {
         return (
             <div className="inner-wrap">
                 <div className="inner-header">
-                    <Typography variant="h5">{create ? "Create New Meetup" : "Edit Meetup"}</Typography>
+                    <Typography variant="h5">{create ? "Create Meetup" : "Edit Meetup"}</Typography>
                     {create ? <Link to={"/meetups"}>
                         <Button variant="contained" color="primary">Meetups</Button>
                         </Link> :
@@ -48,7 +48,7 @@ class MeetupForm extends Component {
                     
                 </div>
                 <div className="form">
-                    <Paper elevation={3} style={{padding: "2rem 3rem"}}>
+                    <Paper elevation={3} className="form-paper">
                         <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                             <Grid container style={{padding: "1rem"}} spacing={3}>
                                 <Grid item xs={12}>
@@ -57,10 +57,10 @@ class MeetupForm extends Component {
                                 <Grid item xs={12}>
                                     <Field name="name" component={renderTextField} label="Name"/>
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={12} md={6}>
                                     <Field name="location" component={Location} label="Location"/>
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={12} md={6}>
                                     <Field name="date" component={renderDateSimplePicker} disabled={this.props.isMeetupInitialized && moment(this.props.meetup.date).add(1, "d").isBefore(moment().toDate())} label="Date"></Field>
                                 </Grid>
                                 <Grid style={{marginTop: "1rem"}} xs={12}>

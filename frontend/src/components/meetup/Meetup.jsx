@@ -180,13 +180,13 @@ class Meetup extends Component {
                     <Grid item xs={12}>
                         {renderInformation(name, datetime, location)}
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} md={6}>
                         <div className="inner-header">
                             <Typography variant="h5">Members</Typography>
                         </div>
                         {renderMembers(members)}
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} md={6}>
                         <div className="inner-header">
                             <Typography variant="h5">Friends</Typography>
                         </div>
