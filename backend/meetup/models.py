@@ -6,11 +6,9 @@ from django.conf import settings
 from django.utils.timezone import now
 from uuid import uuid4
 from django.core.exceptions import ObjectDoesNotExist
-import requests
-import random
+import requests, random, json, sys, time
 from django.contrib.postgres.fields import JSONField, ArrayField
 from rest_framework_jwt.settings import api_settings
-import json, sys
 from django.db import transaction
 from .helpers import path_and_rename
 from PIL import Image
@@ -213,7 +211,7 @@ class MeetupEvent(models.Model):
 
     def request_yelp_api(self):
         categories = self.convert_entries_to_string()
-        params = {"location": self.meetup.location, "limit": 30, "categories": categories, "radius": self.distance, "price": self.price}
+        params = {"location": self.meetup.location, "limit": 30, "categories": categories, "radius": self.distance, "price": self.price, "open_at": int(time.mktime(self.start.timetuple()))}
         r = requests.get(url=url, params=params, headers=headers)
         options = r.json()['businesses']
         return options
