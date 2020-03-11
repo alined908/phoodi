@@ -6,6 +6,7 @@ import {Button} from '@material-ui/core'
 import {Link} from 'react-router-dom';
 import {removeNotifs} from "../../actions/notifications"
 import PersonIcon from "@material-ui/icons/Person"
+import PeopleIcon from "@material-ui/icons/People"
 
 class ChatWindowComponent extends Component {
     messagesEndRef = React.createRef()
@@ -53,7 +54,7 @@ class ChatWindowComponent extends Component {
             <div className="chat-window" ref={this.chatsRef}>
                 <div className="chat-header">
                     {this.props.room && this.props.room.meetup && 
-                        <Link to={`/meetups/${this.props.room.uri}`}><Button color="primary">Meetup</Button></Link>
+                        <Link to={`/meetups/${this.props.room.uri}`}><Button color="primary" startIcon={<PeopleIcon/>}>Meetup</Button></Link>
                     }
                     {this.props.room && this.props.room.friendship && 
                         <Link to={`/profile/${this.determineOtherUser()}`}><Button color="primary" startIcon={<PersonIcon/>}>Profile</Button></Link>

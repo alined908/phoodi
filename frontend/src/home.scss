@@ -4,9 +4,22 @@
       height: 100%;
   }
 
+  .dog {
+
+  }
+
+  .scrollbot{
+      position:absolute;
+      bottom: 1rem;
+  }
+
   .wheel {
       height: 100%;
-      width: 600px;
+      width: 620px;
+  }
+
+  .food-belt{
+      margin-top: -3rem;
   }
   
   .top {
@@ -86,12 +99,118 @@
     transition: all 400ms;
   }
 
-  .svg {
-      animation: rotate 3.5s linear infinite;
+  .middle-header:hover svg {
+      animation: shake 1s linear infinite;
   }
+
+
+
+  .claw{
+    position: absolute;
+    top: 8%;
+    right: 37%;
+
+    .base {
+        background-color: rgb(220, 220, 220);
+        width: 80px;
+        height: 20px;
+        border-radius: 0 0 10px 10px;
+    }
+
+    .claw-body{
+        display: flex;
+        width: 100%;
+        .claw-left{
+            height: 100%;
+
+            .left-top{
+                background: linear-gradient(to left,  rgb(220, 220, 220) 30%, black 70%);
+                width: 40px;
+                height: 5px;
+                transform: rotate(-45deg);
+            }
+
+            .left-bot{
+                background-color: black;
+                width: 30px;
+                height: 5px;
+                transform: rotate(50deg) translate(60%, 200%);
+                animation: open-left 15s linear infinite;
+            }
+
+            @keyframes open-left {
+                0%{
+                    transform: rotate(50deg) translate(60%, 200%);
+                }
+                5%{
+                    transform: rotate(70deg) translate(60%, 200%);
+                }
+                10%{
+                    transform: rotate(50deg) translate(60%, 200%);
+                }
+                100%{
+                    transform: rotate(50deg) translate(60%, 200%);
+                }
+            }
+        }
+
+        .claw-right{
+            height: 100%;
+            .right-top{
+                background: linear-gradient(to right,  rgb(220, 220, 220) 30%, black 70%);
+                width: 40px;
+                height: 5px;
+                transform: rotate(45deg);
+            }
+
+            .right-bot{
+                background-color: black;
+                width: 30px;
+                height: 5px;
+                transform: rotate(-50deg) translate(-30%, 380%);
+                animation: open-right 15s linear infinite;
+            }
+            
+            @keyframes open-right{
+                0%{
+                    transform: rotate(-50deg) translate(-30%, 380%);
+                }
+                5%{
+                    transform: rotate(-70deg) translate(-50%, 380%);
+                }
+                10%{
+                    transform: rotate(-50deg) translate(-30%, 380%);
+                }
+                100%{
+                    transform: rotate(-50deg) translate(-30%, 380%);
+                }
+            }
+        }
+    }
+      
+  }
+
 
   .clock {
       fill: #5DDEF5;
+  }
+
+  @keyframes shake{
+    10%, 90% {
+        transform: translate3d(-.5px, -.5px, 0);
+      }
+    
+      20%, 80% {
+        transform: translate3d(.5px, .5px, 0);
+      }
+    
+      30%, 50%, 70% {
+        transform: translate3d(-.5px, -.5px, 0);
+      }
+    
+      40%, 60% {
+        transform: translate3d(.5px, .5px, 0);
+      }
   }
   
     #chain_st {
@@ -107,22 +226,133 @@
     to { stroke-dashoffset: -5; }
     }
 
-  @keyframes rotate{
-    80%{
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+  .cupcake {
+      position: absolute;
   }
 
-  .cupcake {
-      animation: moveFood 15s linear infinite;
+  .svg-1{
+      animation: moveFood 15s linear infinite, changeFood1 75s linear infinite;
   }
+
+  @keyframes changeFood1 {
+      0%{
+          opacity: 1
+      }
+      19.99%{
+          opacity: 1
+      }
+      20%{
+          opacity: 0
+      }
+      100%{
+          opacity: 0
+      }
+  }
+
+  .svg-2{
+    animation: moveFood 15s linear infinite, changeFood2 75s linear infinite;
+}
+
+@keyframes changeFood2 {
+    0%{
+        opacity: 0
+    }
+    20%{
+        opacity: 0
+    }
+    20.01%{
+        opacity: 1
+    }
+    39.99%{
+        opacity: 1
+    }
+    40%{
+        opacity: 0
+    }
+    100%{
+        opacity: 0
+    }
+}
+
+.svg-3{
+    animation: moveFood 15s linear infinite, changeFood3 75s linear infinite;
+}
+
+@keyframes changeFood3 {
+    0%{
+        opacity: 0
+    }
+    40%{
+        opacity: 0
+    }
+    40.01%{
+        opacity: 1
+    }
+    59.99%{
+        opacity: 1
+    }
+    60%{
+        opacity: 0
+    }
+    100%{
+        opacity: 0
+    }
+}
+
+.svg-4{
+    animation: moveFood 15s linear infinite, changeFood4 75s linear infinite;
+}
+
+@keyframes changeFood4 {
+    0%{
+        opacity: 0
+    }
+    60%{
+        opacity: 0
+    }
+    60.01%{
+        opacity: 1
+    }
+    79.99%{
+        opacity: 1
+    }
+    80%{
+        opacity: 0
+    }
+    100%{
+        opacity: 0
+    }
+}
+
+.svg-5{
+    animation: moveFood 15s linear infinite, changeFood5 75s linear infinite;
+}
+
+@keyframes changeFood5 {
+    0%{
+        opacity: 0
+    }
+    80%{
+        opacity: 0
+    }
+    80.01%{
+        opacity: 1
+    }
+    99.99%{
+        opacity: 1
+    }
+    100%{
+        opacity: 0
+    }
+}
+
 
   @keyframes moveFood {
       0%{
-          transform: translate(700%, -700%)
+          transform: translate(700%, -550%)
+      }
+      5%{
+          transform: translate(700%, -550%)
       }
       10% {
         transform: translate(700%, 0%)
@@ -135,7 +365,7 @@
         transform: rotate(-45deg) translateX(-200%) rotate(45deg)
       }
       100%{
-        transform: translate(-125%, 700%)
+        transform: translate(-125%, 950%) rotate(360deg)
       }
   }
 
@@ -144,7 +374,7 @@
       display: flex;
       justify-content: flex-start;
       width: 85%;
-      margin-top: 27px;
+      margin-top: 30px;
       margin-left: 95px;
     
       :not(:last-child) {
@@ -221,3 +451,26 @@
         padding-top: 2rem;
     }
 }
+
+$dog-color: #fdb44e;
+
+.dog{
+    position:absolute;
+    bottom: 10%;
+    left: 25%;
+    background-color: $dog-color;
+    height: 35px;
+    width: 56px;
+    border-radius: 0 0 120px 0;
+}
+
+.body{
+    background-color: $dog-color;
+    height: 50px;
+    width: 90px;
+    position: relative;
+    top: 20px;
+    right: 70px;
+    border-radius: 0 0 60px 0;
+}
+

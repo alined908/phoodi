@@ -15,7 +15,9 @@ class Map extends Component {
             longitude: this.props.location[1],
             zoom: 14,
             bearing: 0,
-            pitch: 0
+            pitch: 0,
+            width: "100%",
+            height: "100%"
           }
         };
     }
@@ -36,14 +38,13 @@ class Map extends Component {
         return (
           <ReactMapGL
             {...this.state.viewport}
-            width="450px"
-            height="350px"
+            className="map"
             mapStyle="mapbox://styles/mapbox/light-v9"
             onViewportChange={viewport => this.setState({viewport})}
             onLoad={this.onLoad}
             mapboxApiAccessToken={token}
           >
-            <div style={{position: 'absolute', right: 10, top: 10}}>
+            <div style={{position: 'absolute', left: 10, top: 10}}>
                 <NavigationControl showCompass={false}/>
             </div>
             <Marker latitude={this.props.location[0]} longitude={this.props.location[1]} offsetLeft={-10} offsetTop={-25}>

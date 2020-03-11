@@ -11,14 +11,11 @@ import Skeleton from '@material-ui/lab/Skeleton';
 const useStyles = makeStyles({
     paper: {
         width: "100%",
-        height: "300px",
+        height: "100%",
     },
     middle: {
-        backgroundPosition: 'center', 
-        backgroundSize: 'cover', 
-        backgroundRepeat: 'no-repeat',
-        height: "250px",
-        margin: "1rem 0"
+        height: "150px",
+        margin: "1rem 0",
     }
 })
 
@@ -40,6 +37,7 @@ const MeetupCard = ({meetup}) => {
                             }  
                         </div>
                         <div className={classes.middle}>
+                            <Skeleton animation="wave" variant="rect" height="100%"></Skeleton>
                         </div>
                         <div className="meetup-card-bottom">
                             <div className="meetup-card-icon"><RoomIcon/>{meetup.location}</div>

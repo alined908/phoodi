@@ -1,13 +1,12 @@
 import React, {Component} from "react";
 import '../home.scss'
-import {Typography, Button} from '@material-ui/core'
+import {Typography, Button, IconButton} from '@material-ui/core'
 import {Link} from 'react-router-dom'
-import {ReactComponent as CupcakeIcon} from '../assets/ice-cream.svg'
-import {ReactComponent as WatermelonIcon} from '../assets/watermelon.svg'
-import {ReactComponent as DonutIcon} from '../assets/mini-donut.svg'
-import {ReactComponent as CakeIcon} from '../assets/cake.svg'
-import {ReactComponent as IcecreamIcon} from '../assets/icecream.svg'
-import {ReactComponent as BreadIcon} from '../assets/bread.svg'
+import {ReactComponent as IceCreamIcon} from '../assets/ice-cream.svg'
+import {ReactComponent as CandyAppleIcon} from '../assets/food-and-restaurant.svg'
+import {ReactComponent as PuddingIcon} from '../assets/svgs/chocolate.svg'
+import {ReactComponent as ChocolateIcon} from '../assets/chocolate.svg'
+import {ReactComponent as CupCakeIcon} from '../assets/cupcake.svg'
 import {ReactComponent as HavingFunIcon} from '../assets/svgs/undraw_having_fun_iais.svg'
 import {ReactComponent as TastingIcon} from "../assets/svgs/undraw_tasting_de22.svg"
 import {ReactComponent as ClockIcon} from "../assets/clock.svg"
@@ -17,25 +16,50 @@ import {ReactComponent as BreakFastIcon} from "../assets/svgs/undraw_breakfast_p
 import {ReactComponent as HamburgerIcon} from "../assets/svgs/undraw_Hamburger_8ge6.svg"
 import {ReactComponent as DonutLoveIcon} from "../assets/svgs/undraw_donut_love_kau1.svg"
 import {ReactComponent as WheelIcon} from "../assets/wheel.svg"
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 class HomeComponent extends Component {
 
+    handleScroll = () => {
+        var middle = document.querySelector(".middle")
+        middle.scrollIntoView({ behavior: "smooth" })
+    }
+
     render() {
-        const dog = () => {
+        const tophand = () => {
             return (
-                <div></div>
+                <div className="claw">
+                    <div className="base">
+                    </div>
+                    <div className="claw-body">
+                        <div className="claw-left">
+                            <div className="left-top">
+                            </div> 
+                            <div className="left-bot">
+                            </div>  
+                        </div>
+                        <div className="claw-right">
+                            <div className="right-top">
+                            </div> 
+                            <div className="right-bot">
+                            </div>  
+                        </div>
+                    </div>
+                    
+                </div>
             )
         }
+
 
         const food = () => {
             return (
                 <div className="food-belt">
                     <div className="food">
-                        <CupcakeIcon className={"cupcake"} height={50} width={50}/>
-                        {/* <WatermelonIcon className={"cupcake"} height={50} width={50}/>
-                        <DonutIcon className={"cupcake"} height={50} width={50}/>
-                        <BreadIcon className={"cupcake"} height={50} width={50}/>
-                        <IcecreamIcon className={"cupcake"} height={50} width={50}/> */}
+                        <IceCreamIcon className={"cupcake svg-1"} height={50} width={50}/>
+                        <CandyAppleIcon className={"cupcake svg-2"} height={50} width={50}/>
+                        <PuddingIcon className={"cupcake svg-3"} height={50} width={50}/>
+                        <ChocolateIcon className={"cupcake svg-4"} height={50} width={50}/>
+                        <CupCakeIcon className={"cupcake svg-5"} height={50} width={50}/>
                     </div>
                     <div className="belt">
                         <WheelIcon className={"wheel"}></WheelIcon>
@@ -47,11 +71,12 @@ class HomeComponent extends Component {
         return (
             <div className="home">
                 <div className="top">
-                    {/* {dog()} */}
+                    {tophand()}
                     {food()}
                     {/* <div className="home-banner">
                         <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h3">Meetup</Typography>
                     </div> */}
+                    <div className="scrollbot" onClick={this.handleScroll}><IconButton><KeyboardArrowDownIcon color="inherit" size="large"/></IconButton></div>
                 </div>
                 <div className="middle">
                     <div className="middle-header">

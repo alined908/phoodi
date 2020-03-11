@@ -6,7 +6,7 @@ import Restauraunt from "./Restauraunt"
 import moment from "moment"
 import CachedIcon from "@material-ui/icons/Cached";
 import EditIcon from '@material-ui/icons/Edit';
-import {IconButton, Typography, Grid} from '@material-ui/core'
+import {IconButton, Typography, Grid, Grow} from '@material-ui/core'
 import {compose} from 'redux';
 import Map from "./Map"
 import ScheduleIcon from '@material-ui/icons/Schedule';
@@ -73,10 +73,12 @@ class MeetupEvent extends Component {
             return (
                 <div className="foursquare">
                     <Grid justify="center" container spacing={3}>
-                    {keys.map((key) => 
-                        <Grid item xs={12} md={6}>
-                            <Restauraunt socket={this.props.socket} key={key} full={true} event={this.props.event.id} meetup={this.props.uri} data={options[key]}/>
-                        </Grid>
+                    {keys.map((key, index) => 
+                        <Grow in={true} timeout={300 * (index + 1)}>
+                            <Grid item xs={12} md={6}>
+                                <Restauraunt socket={this.props.socket} key={key} full={true} event={this.props.event.id} meetup={this.props.uri} data={options[key]}/>
+                            </Grid>
+                        </Grow>
                     )}
                     </Grid>
                 </div>

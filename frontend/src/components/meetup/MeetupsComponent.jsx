@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {getMeetups} from "../../actions/meetup";
 import MeetupCard from "./MeetupCard"
-import {Button, Typography, Grid, ButtonGroup} from '@material-ui/core'
+import {Button, Typography, Grid, ButtonGroup, Grow} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import moment from "moment"
 import AddIcon from '@material-ui/icons/Add'
@@ -68,11 +68,13 @@ class MeetupsComponent extends Component {
                             <Grid container xs={12} spacing={1}>
                                 {[0,1, 2, 3].map((index) =>
                                     {return (this.state.chosen[index] && meetups[index].length > 0) && <>
-                                        {meetups[index].map((meetup) => 
+                                        {meetups[index].map((meetup, i) => 
                                             <Grid item xs={12} sm={6} lg={4}>
-                                                <div className="meetups-cardwrapper">
-                                                    <MeetupCard key={meetup.id} meetup={meetup}/>
-                                                </div>
+                                                <Grow in={true} timeout={Math.max((index + 1) * 200, 500)}>
+                                                    <div className="meetups-cardwrapper">
+                                                        <MeetupCard key={meetup.id} meetup={meetup}/>
+                                                    </div>
+                                                </Grow>
                                             </Grid>
                                         )}
                                         </>

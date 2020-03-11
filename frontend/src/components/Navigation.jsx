@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     padding: "0 1rem",
-    background: "white"
+    background: "white",
   },
   hide: {
     display: 'none',
