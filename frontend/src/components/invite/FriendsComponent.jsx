@@ -4,7 +4,7 @@ import {sendFriendInvite} from "../../actions/invite"
 import {connect} from 'react-redux'
 import {compose} from 'redux'
 import {reduxForm, Field} from 'redux-form';
-import {Button, Typography, Paper, Grid, ListItem, ListItemAvatar, Avatar, ListItemText} from '@material-ui/core';
+import {Button, Typography, Grid} from '@material-ui/core';
 import {removeNotifs} from "../../actions/notifications"
 import renderTextField from "../renderTextField"
 import Friend from "./Friend"

@@ -103,12 +103,13 @@
       animation: shake 1s linear infinite;
   }
 
-
-
   .claw{
     position: absolute;
-    top: 8%;
-    right: 37%;
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    margin-top: 30px;
+    transform: translate(346%, -1045%);
 
     .base {
         background-color: rgb(220, 220, 220);
@@ -351,6 +352,7 @@
       0%{
           transform: translate(700%, -550%)
       }
+     
       5%{
           transform: translate(700%, -550%)
       }
@@ -362,10 +364,10 @@
         transform: translate(-60%, 0%)
       }
       95% {
-        transform: rotate(-45deg) translateX(-200%) rotate(45deg)
+        transform: rotate(-45deg) translateX(-200%) 
       }
       100%{
-        transform: translate(-125%, 950%) rotate(360deg)
+        transform: translate(-125%, 950%) rotate(720deg)
       }
   }
 
@@ -445,11 +447,19 @@
 
     .top{
         padding: 1rem;
+        height: 500px;
+        position: relative;
+    }
+
+    .scrollbot{
+        position: absolute; 
+        bottom: 0; 
     }
 
     .bottom{
         padding-top: 2rem;
     }
+
 }
 
 $dog-color: #fdb44e;

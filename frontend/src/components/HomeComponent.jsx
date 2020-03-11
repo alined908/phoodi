@@ -54,6 +54,7 @@ class HomeComponent extends Component {
         const food = () => {
             return (
                 <div className="food-belt">
+                    {tophand()}
                     <div className="food">
                         <IceCreamIcon className={"cupcake svg-1"} height={50} width={50}/>
                         <CandyAppleIcon className={"cupcake svg-2"} height={50} width={50}/>
@@ -71,11 +72,7 @@ class HomeComponent extends Component {
         return (
             <div className="home">
                 <div className="top">
-                    {tophand()}
                     {food()}
-                    {/* <div className="home-banner">
-                        <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h3">Meetup</Typography>
-                    </div> */}
                     <div className="scrollbot" onClick={this.handleScroll}><IconButton><KeyboardArrowDownIcon color="inherit" size="large"/></IconButton></div>
                 </div>
                 <div className="middle">

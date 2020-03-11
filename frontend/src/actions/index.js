@@ -8,7 +8,7 @@ export const signup = (formProps, redirectOnSuccess) => async dispatch => {
         const response = await axios.post('http://localhost:8000/api/users/', 
             formProps, {headers: {"Content-Type": 'multipart/form-data'
         }})
-        AuthenticationService.registerSuccessfulLogin(response.data.token)
+        AuthenticationService.registerSuccessfulLogin(response.data.token, response.data.expiration)
         console.log(response)
         localStorage.setItem("user", JSON.stringify(response.data.user[Object.keys(response.data.user)[0]]))
         dispatch({type: AUTH_USER, payload: response.data});
@@ -22,6 +22,7 @@ export const signup = (formProps, redirectOnSuccess) => async dispatch => {
 
 export const signout = () => async dispatch => {
     localStorage.removeItem('token')
+    localStorage.removeItem('expiration')
     dispatch({type: CLEAR_STORE,payload: {}})
     history.push('/')
 }
@@ -29,10 +30,12 @@ export const signout = () => async dispatch => {
 export const signin = (formProps, redirectOnSuccess) => async dispatch => {
     try {
         const response = await axios.post('http://localhost:8000/api/token-auth/', formProps)
-        //Combine next two lines later
-        console.log(response)
-        AuthenticationService.registerSuccessfulLogin(response.data.token)
+        console.log(response.data)
+        AuthenticationService.registerSuccessfulLogin(response.data.token, response.data.expiration)
         localStorage.setItem("user", JSON.stringify(response.data.user[Object.keys(response.data.user)[0]]))
+        const response2 = await axios.post(`http://localhost:8000/api/token-refresh/`, {"token": AuthenticationService.retrieveToken()})
+        localStorage.setItem("refresh", response2.data.token)
+        console.log(response2.data)
         dispatch({type: AUTH_USER, payload: response.data});
         redirectOnSuccess();
     }
