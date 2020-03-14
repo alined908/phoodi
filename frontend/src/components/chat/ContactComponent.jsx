@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'
-import {roomType} from '../../constants/default-states'
 import {Avatar, Badge} from '@material-ui/core';
 import {removeNotifs} from "../../actions/notifications"
 import NotificationsIcon from '@material-ui/icons/Notifications';

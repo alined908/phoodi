@@ -329,15 +329,14 @@ class MeetupInviteView(APIView):
         if user != invite.receiver:
             return Response({"error": "Not your invite"}, status=status.HTTP_400_BAD_REQUEST)
 
-        invite.status = num
+        invite.status = int(num)
         invite.save()
 
         message = ""
-        if invite.status == "2":
+        if invite.status == 2:
             message = "Successfully accepted meetup invite."
-        elif invite.status == "3":
+        elif invite.status == 3:
             message = "Rejected meetup invite."
-        print(message)
         return Response({"message": message, "invite": MeetupInviteSerializer(invite).data})
 
 class FriendInviteListView(APIView):
@@ -396,13 +395,14 @@ class FriendInviteView(APIView):
         if user != invite.receiver:
             return Response({"error": "Not your invite"}, status=status.HTTP_400_BAD_REQUEST)
         
-        invite.status = num
+        invite.status = int(num)
         invite.save()
         serializer = FriendInviteSerializer(invite)
 
-        if invite.status == "2":
+        message = ""
+        if invite.status == 2:
             message = "Successfully accepted friend invite."
-        elif invite.status == "3":
+        elif invite.status == 3:
             message = "Rejected friend invite."
 
         return Response({"message": message, "invite": serializer.data})

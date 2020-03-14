@@ -1,4 +1,4 @@
-import {GET_ROOMS, ADD_ROOM, SET_ACTIVE_ROOM, GET_MESSAGES, SET_TYPING_VALUE, ADD_MESSAGE, REMOVE_ACTIVE_ROOM} from "../constants/action-types"
+import {GET_ROOMS, SET_ACTIVE_ROOM, GET_MESSAGES, SET_TYPING_VALUE, ADD_MESSAGE, REMOVE_ACTIVE_ROOM} from "../constants/action-types"
 import axios from 'axios';
 
 export const getRooms = () => async dispatch => {

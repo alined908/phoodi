@@ -4,9 +4,10 @@ from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager)
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.utils.timezone import now
+from backend.settings import YELP_API_KEY
 from uuid import uuid4
 from django.core.exceptions import ObjectDoesNotExist
-import requests, random, json, sys, time
+import requests, random, json, sys, time, os
 from django.contrib.postgres.fields import JSONField, ArrayField
 from rest_framework_jwt.settings import api_settings
 from django.db import transaction
@@ -16,7 +17,7 @@ from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 url = "https://api.yelp.com/v3/businesses/search"
-headers = {'Authorization': "Bearer U46B4ff8l6NAdldViS7IeS8HJriDeE9Cd5YZXTUmrdzvtv57AUQiYJVVbEPFp30nhL9YAW2-LjAAQ1cBapJ4uqiOYES8tz9EjM85R8ki9l-54Z1d_1OOWLeY5tTuXXYx"}
+headers = {'Authorization': "Bearer " + YELP_API_KEY}
 
 def generate_unique_uri():
     return str(uuid4()).replace('-', '')[:15]

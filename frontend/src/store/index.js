@@ -2,7 +2,7 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import reducers from "../reducers"
 import reduxThunk from 'redux-thunk';
 import {userDefaultState} from "../constants/default-states"
-import AuthenticationService from '../accounts/AuthenticationService'
+// import AuthenticationService from '../accounts/AuthenticationService'
 
 // const checkJWTExpiration = store => next => action => {
 //     const token = AuthenticationService.retrieveToken()

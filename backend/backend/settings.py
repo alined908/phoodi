@@ -1,6 +1,7 @@
 import datetime
 import os
-
+from dotenv import load_dotenv
+load_dotenv()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -9,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'xx&*8u7e5&-cnysnglfp$(17$_5lcv%%=ssp@obu14xia$s!9t'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,7 +39,8 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": ['redis://localhost:6379/'],
+            # "hosts": ['redis://localhost:6379/'],
+            "hosts": [('redis', 6379)],
         },
     },
 }
@@ -112,13 +114,13 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'jwt_db',
-        'USER' : 'daniel',
-        'PASSWORD' : 'Dogmanblue1',
-        'HOST' : 'localhost',
-        'PORT' : '5432',
+        'NAME': os.environ.get("DB_NAME"),
+        'USER': os.environ.get("DB_USER"),
+        'PASSWORD': os.environ.get("DB_PASSWORD"),
+        'HOST': 'db',
+        'PORT': 5432,
         'TEST': {
-            'NAME': 'test_jwt_db'
+            'NAME': os.environ.get("DB_TEST_NAME"),
         }
     }
 }
@@ -144,10 +146,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'meetup022897@gmail.com'
-EMAIL_HOST_PASSWORD = 'Meetup022897!'
-EMAIL_PORT = 587
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = os.environ.get("EMAIL_PORT")
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -169,15 +171,16 @@ USE_TZ = True
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-AWS_ACCESS_KEY_ID = 'AKIATIKKZOM552KQ7GY2'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'meetup-static'
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 AWS_LOCATION = 'static'
 
+YELP_API_KEY = os.environ.get("YELP_API_KEY")
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'meetup/static'),

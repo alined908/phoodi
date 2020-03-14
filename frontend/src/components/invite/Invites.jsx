@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 import {getUserMeetupInvites, respondMeetupInvite, getUserFriendInvites, respondFriendInvite} from "../../actions/invite"
-import {inviteType, inviteStatus} from '../../constants/default-states'
+import {inviteType} from '../../constants/default-states'
 import {connect} from 'react-redux'
 import Invite from "./Invite"
 import {Grid, Typography} from "@material-ui/core"

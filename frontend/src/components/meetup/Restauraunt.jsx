@@ -41,7 +41,7 @@ class Restauraunt extends Component {
     determineRating = (rating) => {
         const numFilledStars = Math.floor(rating)
         const numEmptyStars = Math.floor(5 - rating)
-        const numHalfStars = rating % 1 == 0 ? 0: 1
+        const numHalfStars = rating % 1 === 0 ? 0: 1
 
         var stars = []
 
@@ -49,11 +49,11 @@ class Restauraunt extends Component {
             stars.push(<StarIcon fontSize="inherit"></StarIcon>)
         }
 
-        for (var i = 0; i < numHalfStars; i++){
+        for (var j = 0; j < numHalfStars; j++){
             stars.push(<StarHalfIcon fontSize="inherit"></StarHalfIcon>)
         }
 
-        for (var i = 0; i < numEmptyStars; i++){
+        for (var k = 0; k < numEmptyStars; k++){
             stars.push(<StarBorderIcon fontSize="inherit"></StarBorderIcon>)
         }
         return stars
@@ -79,7 +79,7 @@ class Restauraunt extends Component {
     renderActions = (status, scores, banned) => {
         const [like, dislike, ban] = [this.determineClicked(status, voteStatus.like), this.determineClicked(status, voteStatus.dislike), this.determineClicked(status, voteStatus.ban)]
         const checkOwn = (status) => {
-            if (this.props.user.id in this.props.option.votes && this.props.option.votes[this.props.user.id].status == status) {
+            if (this.props.user.id in this.props.option.votes && this.props.option.votes[this.props.user.id].status === status) {
                 return "myclick"
             } else {
                 return ""
@@ -113,7 +113,7 @@ class Restauraunt extends Component {
                 <div className="rst">
                     <div className="rst-info">
                         <span >
-                        <a className="rst-name" target="_blank" href={data.url}>{data.name} <LaunchIcon fontSize={"inherit"} fontWeight="inherit"/></a></span>
+                        <a className="rst-name" target="_blank" rel="noopener noreferrer" href={data.url}>{data.name} <LaunchIcon fontSize={"inherit"} fontWeight="inherit"/></a></span>
                         <span className="rst-rating">{this.determineRating(data.rating)}</span>
                     </div>
                     <div className="rst-img" style={{backgroundImage: `url(${data.image_url})`}}>
