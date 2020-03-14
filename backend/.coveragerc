@@ -6,4 +6,3 @@
     meetup/__init__.py
     meetup/admin.py
     meetup/apps.py
-    meetup/CalendarAPI.py
