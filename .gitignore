@@ -1,6 +1,4 @@
 /backend/htmlcov
 /backend/htmlcov/*
-.env
-.env-docker
 /data/
 /data/*
