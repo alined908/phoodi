@@ -22,7 +22,7 @@ export const signup = (formProps, redirectOnSuccess) => async dispatch => {
 
 export const signout = () => async dispatch => {
     localStorage.removeItem('token')
-    localStorage.removeItem('expiration')
+    // localStorage.removeItem('expiration')
     dispatch({type: CLEAR_STORE,payload: {}})
     history.push('/')
 }
@@ -31,11 +31,11 @@ export const signin = (formProps, redirectOnSuccess) => async dispatch => {
     try {
         const response = await axios.post('/api/token-auth/', formProps)
         console.log(response.data)
-        AuthenticationService.registerSuccessfulLogin(response.data.token, response.data.expiration)
+        AuthenticationService.registerSuccessfulLogin(response.data.token,)
         localStorage.setItem("user", JSON.stringify(response.data.user[Object.keys(response.data.user)[0]]))
-        const response2 = await axios.post(`/api/token-refresh/`, {"token": AuthenticationService.retrieveToken()})
-        localStorage.setItem("refresh", response2.data.token)
-        console.log(response2.data)
+        // const response2 = await axios.post(`/api/token-refresh/`, {"token": AuthenticationService.retrieveToken()})
+        // localStorage.setItem("refresh", response2.data.token)
+        // console.log(response2.data)
         dispatch({type: AUTH_USER, payload: response.data});
         redirectOnSuccess();
     }

@@ -1,8 +1,8 @@
 class AuthenticationService{
 
-    registerSuccessfulLogin(token, expiration){
+    registerSuccessfulLogin(token){
         localStorage.setItem('token', token);
-        localStorage.setItem('expiration', expiration.toString())
+        // localStorage.setItem('expiration', expiration.toString())
         console.log("register successfull login");
     }
 
@@ -10,9 +10,9 @@ class AuthenticationService{
         return localStorage.getItem('token');
     }
 
-    retrieveExpiration(){
-        return localStorage.getItem('expiration')
-    }
+    // retrieveExpiration(){
+    //     return localStorage.getItem('expiration')
+    // }
 
     logout(){
         localStorage.removeItem('token');
