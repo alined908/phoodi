@@ -2,3 +2,4 @@
 /backend/htmlcov/*
 /data/
 /data/*
+!**/__pycache__/
