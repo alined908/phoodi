@@ -39,7 +39,7 @@ class Meetup extends Component {
         const uri = this.props.uri
         var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
         const token = AuthenticationService.retrieveToken()
-        const path = `${ws_scheme}://localhost:8000/ws/meetups/${uri}/?token=${token}`;
+        const path = `/ws/meetups/${uri}/?token=${token}`;
         const socket = this.state.socket
         socket.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, this.props.voteMeetupEvent, this.props.decideMeetupEvent, this.props.deleteMeetupEvent, this.props.addMeetupMember);
         socket.connect(path);

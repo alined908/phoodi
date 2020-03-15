@@ -27,9 +27,9 @@ class Profile extends Component {
 
     getInformation = async () => {
         const [profile, friends] = await Promise.all([
-            axios.get(`http://localhost:8000/api/users/${this.props.match.params.id}/`), 
+            axios.get(`/api/users/${this.props.match.params.id}/`), 
             axios.get(
-                `http://localhost:8000/api/users/${this.props.match.params.id}/friends/`, {headers: {
+                `/api/users/${this.props.match.params.id}/friends/`, {headers: {
                     "Authorization": `JWT ${localStorage.getItem('token')}`
                 }}
             )]

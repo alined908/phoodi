@@ -5,7 +5,7 @@ import {history} from '../components/MeetupApp'
 
 export const signup = (formProps, redirectOnSuccess) => async dispatch => {
     try {
-        const response = await axios.post('http://localhost:8000/api/users/', 
+        const response = await axios.post('/api/users/', 
             formProps, {headers: {"Content-Type": 'multipart/form-data'
         }})
         AuthenticationService.registerSuccessfulLogin(response.data.token, response.data.expiration)
@@ -29,11 +29,11 @@ export const signout = () => async dispatch => {
 
 export const signin = (formProps, redirectOnSuccess) => async dispatch => {
     try {
-        const response = await axios.post('http://localhost:8000/api/token-auth/', formProps)
+        const response = await axios.post('/api/token-auth/', formProps)
         console.log(response.data)
         AuthenticationService.registerSuccessfulLogin(response.data.token, response.data.expiration)
         localStorage.setItem("user", JSON.stringify(response.data.user[Object.keys(response.data.user)[0]]))
-        const response2 = await axios.post(`http://localhost:8000/api/token-refresh/`, {"token": AuthenticationService.retrieveToken()})
+        const response2 = await axios.post(`/api/token-refresh/`, {"token": AuthenticationService.retrieveToken()})
         localStorage.setItem("refresh", response2.data.token)
         console.log(response2.data)
         dispatch({type: AUTH_USER, payload: response.data});
@@ -47,7 +47,7 @@ export const signin = (formProps, redirectOnSuccess) => async dispatch => {
 
 export const getProfile = (id) => {
     try {
-        const response = axios.get(`http://localhost:8000/api/users/${id}/`)
+        const response = axios.get(`/api/users/${id}/`)
         return response.data
     } catch(e){
         console.log(e)
@@ -56,7 +56,7 @@ export const getProfile = (id) => {
 
 export const editUser = (formProps, user_id, redirectOnSuccess) => async dispatch => {
     try {
-        const response = await axios.patch(`http://localhost:8000/api/users/${user_id}/`, formProps, {headers: {
+        const response = await axios.patch(`/api/users/${user_id}/`, formProps, {headers: {
             "Authorization": `JWT ${localStorage.getItem('token')}`, "Content-Type": 'multipart/form-data'
         }})
         console.log(response.data)

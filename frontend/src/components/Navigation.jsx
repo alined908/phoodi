@@ -79,7 +79,7 @@ const Navigation = (props) => {
     if (props.authenticated && open) {
       var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
       const token = AuthenticationService.retrieveToken()
-      const path = `${ws_scheme}://localhost:8000/ws/user/${props.user.id}/?token=${token}`;
+      const path = `/ws/user/${props.user.id}/?token=${token}`;
       socket.connect(path);
       socket.waitForSocketConnection(() => socket.fetchNotifications({user: props.user.id}))
     }

@@ -46,7 +46,7 @@ class ChatComponent extends Component {
         this.props.getMessages(uri);
         var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
         const token = AuthenticationService.retrieveToken()
-        const path = `${ws_scheme}://localhost:8000/ws/chat/${this.props.match.params.uri}/?token=${token}`;
+        const path = `/ws/chat/${this.props.match.params.uri}/?token=${token}`;
         socket.connect(path);
     }
 

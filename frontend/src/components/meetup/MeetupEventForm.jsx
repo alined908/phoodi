@@ -38,7 +38,7 @@ class MeetupEventForm extends Component {
 
     async componentDidMount(){
         if (localStorage.getItem("categories") === null) {
-            await axios.get("http://localhost:8000/api/categories/")
+            await axios.get("/api/categories/")
             .then((response) =>
                 localStorage.setItem("categories", JSON.stringify(response.data.categories)
             ))
@@ -84,13 +84,13 @@ class MeetupEventForm extends Component {
 
         if (this.props.type === "create"){
             axios.post(
-                `http://localhost:8000/api/meetups/${uri}/events/`, data, {headers: {
+                `/api/meetups/${uri}/events/`, data, {headers: {
                     "Authorization": `JWT ${localStorage.getItem('token')}`
             }})
         } 
         if (this.props.type === "edit") {
             axios.patch(
-                `http://localhost:8000/api/meetups/${uri}/events/${this.props.match.params.id}/`, data, {headers: {
+                `/api/meetups/${uri}/events/${this.props.match.params.id}/`, data, {headers: {
                     "Authorization": `JWT ${localStorage.getItem('token')}`
             }})
         }

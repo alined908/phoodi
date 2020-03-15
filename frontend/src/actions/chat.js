@@ -4,7 +4,7 @@ import axios from 'axios';
 export const getRooms = () => async dispatch => {
     try {
         const response = await axios.get(
-            "http://localhost:8000/api/chats/", {headers: {
+            "/api/chats/", {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
             }}
         )
@@ -33,7 +33,7 @@ export const getMessages = (room) => async dispatch => {
     console.log("get messages action")
     try {
         const response = await axios.get(
-            `http://localhost:8000/api/chats/${room}/messages/`, {headers: {
+            `/api/chats/${room}/messages/`, {headers: {
             "Authorization": `JWT ${localStorage.getItem('token')}`
         }})
         console.log(response)
