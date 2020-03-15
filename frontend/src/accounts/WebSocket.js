@@ -13,7 +13,9 @@ export default class WebSocketService {
     }
 
     connect(path){
-        this.socketRef = new WebSocket(path);
+        var url = new URL(path, window.location.href)
+        url.protocol = url.protocol.replace('http', 'ws')
+        this.socketRef = new WebSocket(url.href);
         
         this.socketRef.onmessage = e => {
             console.log("Step 2 - Channel sends message from backend")
