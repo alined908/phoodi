@@ -85,6 +85,35 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Yelp Api** - Generate food options
 
 ## Author
-
 * **Daniel Lee** 
+
+## Todo 
+- [ ] Add elevation/shadows to cards + onhover
+- [ ] Add last name to avatar
+- [ ] Meetup invite errorHide tokens|api keys - (google javascript api + website request)
+- [ ] Add transitions
+- [ ] Form validation
+- [ ] Reload event (if price or distance or categories changes)
+- [ ] Validation for time and date
+- [ ] Fix form data when meetup event refresh
+- [ ] Add ability to get current location
+- [ ] Add google social auth 
+- [ ] Add ability to add categories to a user (Preferences)
+- [ ] Handle user preferences
+- [ ] Probably change distance to be for overall event
+- [ ] Give chat some more css upgrades
+- [ ] Change meetups page to calendar 
+- [ ] Filter chat rooms by meetup and friends (and search)
+- [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
+- [ ] Load chat messages smartly
+- [ ] Edit chat messages and add emojis, upload picture
+- [ ] Change display of meetups
+- [ ] Add scrollable notifications box for meetupevent 
+- [ ] Connect people with categories
+- [ ] List meetups within a certain radius (set by user)
+- [ ] Authenticate JWT automatically after expiration
+- [ ] Authenticate Websocket
+- [ ] Write tests for frontend
+- [ ] Write tests for consumers
+
 
