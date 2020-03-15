@@ -88,6 +88,8 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Daniel Lee** 
 
 ## Todo 
+- [ ] Fix responsiveness for all viewports
+- [ ] Let mapbox be resizable 
 - [ ] Add elevation/shadows to cards + onhover
 - [ ] Add last name to avatar
 - [ ] Meetup invite errorHide tokens|api keys - (google javascript api + website request)
