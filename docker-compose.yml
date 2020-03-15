@@ -38,7 +38,7 @@ services:
             - node-modules:/app/node-modules
         ports: 
             - "3000:3000"
-        command: npm start
+        command: npm build
     redis:
         image: "redis:5.0.7"
     worker_channels:
