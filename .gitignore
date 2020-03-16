@@ -2,10 +2,10 @@
 /backend/htmlcov/*
 /data/
 /data/*
-!**/__pycache__/
-.env
-.env-docker
-.coverage
+**/__pycache__/
+/.env
+/.env-docker
+/.coverage
 /backend/backend/__pycache__/*
 /backend/backend/__pycache__
 /backend/meetup/__pycache__/*
