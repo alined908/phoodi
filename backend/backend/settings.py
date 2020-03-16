@@ -61,6 +61,7 @@ REST_FRAMEWORK = {
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
     'http://localhost',
+    'http://ec2-54-67-104-152.us-west-1.compute.amazonaws.com'
 )
 CORS_ALLOW_CREDENTIALS = True
 
@@ -70,9 +71,6 @@ JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7)
 }
-
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'home'
 
 AUTH_USER_MODEL = 'meetup.User'
 
