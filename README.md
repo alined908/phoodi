@@ -88,6 +88,8 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Daniel Lee** 
 
 ## Todo 
+- [ ] Redirect http to https
+- [ ] Git ignore env and env.docker
 - [ ] Fix responsiveness for all viewports
 - [ ] Let mapbox be resizable 
 - [ ] Add elevation/shadows to cards + onhover
