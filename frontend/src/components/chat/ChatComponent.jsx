@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
-import ChatBarComponent from "./ChatBarComponent"
-import ChatWindowComponent from "./ChatWindowComponent"
+import {ChatBarComponent, ChatWindowComponent} from "../components"
 import {connect} from "react-redux";
 import {getMessages, setActiveRoom, addMessage, removeActiveRoom} from "../../actions/chat"
 import {getRooms} from '../../actions/chat';

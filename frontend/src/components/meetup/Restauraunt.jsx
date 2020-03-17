@@ -1,19 +1,13 @@
 import React, {Component} from 'react'
 import {connect} from "react-redux"
 import {voteStatus} from "../../constants/default-states"
-import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
-import ThumbDownOutlinedIcon from '@material-ui/icons/ThumbDownOutlined';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import ThumbDownIcon from '@material-ui/icons/ThumbDown';
-import CancelIcon from '@material-ui/icons/Cancel';
-import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
-import StarIcon from '@material-ui/icons/Star';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
-import StarHalfIcon from '@material-ui/icons/StarHalf';
-import RoomIcon from '@material-ui/icons/Room';
-import PhoneIcon from '@material-ui/icons/Phone';
+import {
+    ThumbUpOutlined as ThumbUpOutlinedIcon, ThumbDownOutlined as ThumbDownOutlinedIcon, ThumbUp as ThumbUpIcon, ThumbDown as ThumbDownIcon, 
+    Cancel as CancelIcon, CancelOutlined as CancelOutlinedIcon, Star as StarIcon, StarBorder as StarBorderIcon, StarHalf as StarHalfIcon, 
+    Room as RoomIcon, Phone as PhoneIcon, Launch as LaunchIcon
+} from '@material-ui/icons'
 import {ADD_GLOBAL_MESSAGE} from '../../constants/action-types'
-import LaunchIcon from '@material-ui/icons/Launch';
+
 
 class Restauraunt extends Component {
 

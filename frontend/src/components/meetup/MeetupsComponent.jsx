@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {getMeetups} from "../../actions/meetup";
-import MeetupCard from "./MeetupCard"
+import {MeetupCard} from "../components"
 import {Button, Typography, Grid, ButtonGroup, Grow} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import moment from "moment"
@@ -53,7 +53,7 @@ class MeetupsComponent extends Component {
                 {this.props.isMeetupsInitialized && 
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
-                            <div className="inner-header">
+                            <div className="inner-header elevate">
                                 <Typography variant="h5">Meetups</Typography>
                                 <ButtonGroup color="primary">
                                     <Button variant={this.state.chosen[0] ? "contained" : "outlined"} onClick={() => this.handleFilter(0)}>Past</Button>

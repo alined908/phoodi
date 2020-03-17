@@ -1,14 +1,14 @@
 import React from "react"
 import {Link} from "react-router-dom"
-import {Paper, ListItem, ListItemAvatar, ListItemText, Typography, Avatar, Button} from '@material-ui/core'
+import {ListItem, ListItemAvatar, ListItemText, Typography, Avatar, Button} from '@material-ui/core'
 
 const Friend = (props) => {
     return (
         <Link to={`/profile/${props.friend.user.id}`}>
-            <Paper elevation={3} variant="outlined">
+            <div className="friend-chat elevate">
                 <ListItem>
                     <ListItemAvatar>
-                        <Avatar src={props.friend.user.avatar}/>
+                        <Avatar src={props.friend.user.avatar}>{props.friend.user.first_name.charAt(0)}{props.friend.user.last_name.charAt(0)}</Avatar>
                     </ListItemAvatar>
                     <ListItemText primary={props.friend.user.first_name} secondary={<>
                         <Typography component="span" color="inherit" variant="body2"> 
@@ -19,7 +19,7 @@ const Friend = (props) => {
                     </ListItemText>
                     {props.isUserFriend && <Link to={`/chat/${props.friend.chat_room}`}><Button variant="contained" color="primary">Chat</Button></Link>}
                 </ListItem>
-            </Paper>
+            </div>
         </Link>
     )
 }

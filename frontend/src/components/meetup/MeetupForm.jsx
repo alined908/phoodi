@@ -5,10 +5,8 @@ import {compose} from 'redux';
 import {Button, Typography, Paper, Grid, Fab} from '@material-ui/core';
 import {addMeetup, editMeetup, getMeetup} from "../../actions/meetup";
 import {Link} from 'react-router-dom'
-import renderTextField from '../renderTextField'
-import renderDateSimplePicker from "./renderDateSimplePicker"
+import {renderTextField, renderDateSimplePicker, Location} from '../components'
 import moment from "moment"
-import Location from "./Location"
 
 class MeetupForm extends Component {
 

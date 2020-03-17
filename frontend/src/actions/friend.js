@@ -1,9 +1,9 @@
 import {GET_FRIENDS, DELETE_FRIEND} from '../constants/action-types'
-import axios from 'axios'
+import {axiosClient} from '../accounts/axiosClient'
 
 export const getFriends = (id) => async dispatch => {
     try {
-        const response = await axios.get(
+        const response = await axiosClient.get(
             `/api/users/${id}/friends/`, {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
             }}
@@ -17,7 +17,7 @@ export const getFriends = (id) => async dispatch => {
 
 export const deleteFriend = (id) => async dispatch => {
     try {
-        const response = await axios.delete(
+        const response = await axiosClient.delete(
             "/api/friends/", {"id": id}, {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
             }}

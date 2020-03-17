@@ -1,24 +1,12 @@
 import React, {Component} from 'react';
 import {Route, Switch} from 'react-router-dom';
-import LogoutComponent from "./auth/LogoutComponent";
-import ErrorComponent from "./auth/ErrorComponent";
-import RegisterComponent from "./auth/RegisterComponent";
-import ChatComponent from "./chat/ChatComponent"
-import MeetupsComponent from "./meetup/MeetupsComponent";
-import HomeComponent from "./HomeComponent";
-import MeetupPageComponent from "./meetup/MeetupPageComponent"
-import FriendsComponent from './invite/FriendsComponent';
-import MeetupEventForm from "./meetup/MeetupEventForm"
+import {LogoutComponent, ErrorComponent, RegisterComponent, ChatComponent, MeetupsComponent, HomeComponent, 
+    MeetupPageComponent, FriendsComponent, MeetupEventForm, LoginComponent, Invites, MeetupForm, Profile, GlobalMessage
+} from "./components"
 import AuthenticatedRoute from "../accounts/AuthenticatedRoute";
 import UnAuthenticatedRoute from "../accounts/UnAuthenticatedRoute";
-import LoginComponent from "./auth/LoginComponent";
-import Invites from "./invite/Invites"
-import MeetupForm from "./meetup/MeetupForm"
-import Profile from "./Profile"
-import GlobalMessage from "./GlobalMessage"
 
 class Body extends Component {
-
     render () {
         return (
             <div className="c">

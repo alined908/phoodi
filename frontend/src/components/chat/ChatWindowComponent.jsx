@@ -1,12 +1,11 @@
 import React, {Component} from 'react'
-import ChatMessageComponent from "./ChatMessageComponent"
+import {ChatMessageComponent} from "../components"
 import {connect} from 'react-redux'
 import {setTypingValue} from "../../actions/chat";
 import {Button} from '@material-ui/core'
 import {Link} from 'react-router-dom';
 import {removeNotifs} from "../../actions/notifications"
-import PersonIcon from "@material-ui/icons/Person"
-import PeopleIcon from "@material-ui/icons/People"
+import {PersonIcon, PeopleIcon} from "@material-ui/icons"
 
 class ChatWindowComponent extends Component {
     messagesEndRef = React.createRef()

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Contact from "./ContactComponent";
+import {ContactComponent} from "../components";
 import {connect} from 'react-redux';
 
 class ChatBarComponent extends Component {
@@ -10,7 +10,7 @@ class ChatBarComponent extends Component {
                 {!this.props.isRoomsInitialized && <div>Initializing Contacts...</div>}
                 <div className="chat-bar-top">Contacts</div>
                 {this.props.isRoomsInitialized && this.props.rooms.map((room) => 
-                    <Contact key={room.id} room={Object.values(room)}></Contact>
+                    <ContactComponent key={room.id} room={Object.values(room)}></ContactComponent>
                 )}
             </div>
         )

@@ -1,9 +1,9 @@
 import {GET_ROOMS, SET_ACTIVE_ROOM, GET_MESSAGES, SET_TYPING_VALUE, ADD_MESSAGE, REMOVE_ACTIVE_ROOM} from "../constants/action-types"
-import axios from 'axios';
+import {axiosClient} from '../accounts/axiosClient'
 
 export const getRooms = () => async dispatch => {
     try {
-        const response = await axios.get(
+        const response = await axiosClient.get(
             "/api/chats/", {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
             }}
@@ -32,7 +32,7 @@ export const removeActiveRoom = () => {
 export const getMessages = (room) => async dispatch => {
     console.log("get messages action")
     try {
-        const response = await axios.get(
+        const response = await axiosClient.get(
             `/api/chats/${room}/messages/`, {headers: {
             "Authorization": `JWT ${localStorage.getItem('token')}`
         }})

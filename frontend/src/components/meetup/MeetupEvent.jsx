@@ -2,15 +2,11 @@ import React, {Component} from 'react'
 import {Button} from "@material-ui/core"
 import {connect} from 'react-redux'
 import {deleteMeetupEvent} from "../../actions/meetup"
-import Restauraunt from "./Restauraunt"
 import moment from "moment"
-import CachedIcon from "@material-ui/icons/Cached";
-import EditIcon from '@material-ui/icons/Edit';
+import {Cached as CachedIcon, Edit as EditIcon, Schedule as ScheduleIcon, Delete as DeleteIcon} from '@material-ui/icons'
 import {IconButton, Typography, Grid, Grow} from '@material-ui/core'
 import {compose} from 'redux';
-import Map from "./Map"
-import ScheduleIcon from '@material-ui/icons/Schedule';
-import DeleteIcon from '@material-ui/icons/Delete';
+import {Restauraunt, Map} from '../components'
 import {Link} from 'react-router-dom'
 
 class MeetupEvent extends Component {
@@ -53,7 +49,7 @@ class MeetupEvent extends Component {
 
         const renderHeader = (number) => {
             return (
-                <div className="meetup-event-header">
+                <div className="meetup-event-header elevate">
                     <div className="inner-header smaller-header">
                         <Typography variant="h5">#{number+1} - {event.title}</Typography>
                         <div className="inner-header-middle">
@@ -75,7 +71,7 @@ class MeetupEvent extends Component {
                     <Grid justify="center" container spacing={3}>
                     {keys.map((key, index) => 
                         <Grow in={true} timeout={300 * (index + 1)}>
-                            <Grid item xs={12} md={6}>
+                            <Grid item justify={index % 2 === 0 ? "flex-end" : "flex-start"} container xs={12} md={6} sm={12}>
                                 <Restauraunt socket={this.props.socket} key={key} full={true} event={this.props.event.id} meetup={this.props.uri} data={options[key]}/>
                             </Grid>
                         </Grow>
@@ -121,8 +117,14 @@ class MeetupEvent extends Component {
 
             return (
                 <div className="chosen">
-                    <Restauraunt socket={this.props.socket} key={chosen.id} full={false} event={this.props.event.id} meetup={this.props.uri} data={chosen}></Restauraunt>
-                    <div className="map-wrapper"><Map location={position}/></div>
+                    <div className="chosen-restauraunt elevate">
+                        <Restauraunt socket={this.props.socket} key={chosen.id} full={false} event={this.props.event.id} meetup={this.props.uri} data={chosen}></Restauraunt>
+                    </div>
+                    <div className="chosen-map elevate2">
+                        <div className="map-wrapper">
+                            <Map location={position}/>
+                        </div>
+                    </div>
                 </div>
             )
         }
@@ -130,7 +132,7 @@ class MeetupEvent extends Component {
         return (
             <div className="meetup-event">
                 {renderHeader(this.props.number)}
-                <div className="second-header smaller-header">
+                <div className="second-header smaller-header elevate">
                     <div className="second-header-left">
                         <Typography variant="h6">Categories </Typography>
                         {event.categories.map((category) => 

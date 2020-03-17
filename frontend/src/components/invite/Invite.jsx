@@ -25,7 +25,7 @@ class Invite extends Component {
     render () {
         const inv = this.props.inv
         const invite = !this.state.responded ? (
-            <Paper className="paper invite" elevation={3} variant="outlined">
+            <Paper className="paper invite elevate" elevation={3} variant="outlined">
                 <div>
                     <Link to={`/profile/${inv.sender.id}`}>{inv.sender.first_name}</Link> {this.props.type === inviteType.meetup ? "- " + inv.meetup.name : ""}
                 </div>

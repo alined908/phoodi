@@ -4,7 +4,7 @@ import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {signup, editUser} from "../../actions/index"
 import {Typography, Paper, Grid, Fab, Button, TextField, Avatar} from '@material-ui/core';
-import renderTextField from '../renderTextField'
+import {renderTextField} from '../components'
 import {Link} from "react-router-dom"
 
 class RegisterComponent extends Component {
@@ -53,7 +53,7 @@ class RegisterComponent extends Component {
 
         return (
             <div className="inner-wrap">
-                <div className="inner-header">
+                <div className="inner-header elevate">
                     <Typography variant="h5">{create ? "Register" : "Edit User"}</Typography>
                     {!create && <Link to={`/profile/${this.props.user.id}`}><Button variant="contained" color="primary">Profile</Button></Link>}
                 </div>
@@ -76,7 +76,7 @@ class RegisterComponent extends Component {
                                 </Grid> }
                                 <Grid item xs={12}>
                                 {!create && 
-                                        <Avatar style={{width: "70px", height: "70px"}} src={this.props.user.avatar}></Avatar>
+                                        <Avatar style={{width: "70px", height: "70px"}} src={this.props.user.avatar}>{this.props.user.first_name.charAt(0)}{this.props.user.last_name.charAt(0)}</Avatar>
                                     }
                                 
                                     <TextField fullWidth={true} onChange={this.handleImageChange} inputProps={{ style: {fontSize: 14}}}  type="file"/>

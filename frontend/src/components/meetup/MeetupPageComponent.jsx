@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import {connect} from "react-redux";
 import {getMeetup} from "../../actions/meetup"
-import Meetup from "./Meetup";
+import {Meetup} from '../components';
 
 class MeetupPageComponent extends Component {
     constructor(props){

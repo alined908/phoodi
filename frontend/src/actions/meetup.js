@@ -1,10 +1,10 @@
 import {GET_MEETUPS, ADD_MEETUP, ADD_MEETUP_MEMBER, ADD_GLOBAL_MESSAGE, DELETE_MEETUP, EDIT_MEETUP, VOTE_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, ADD_MEETUP_EVENT, EDIT_MEETUP_EVENT} from "../constants/action-types";
-import axios from 'axios';
+import {axiosClient} from '../accounts/axiosClient';
 import {history} from '../components/MeetupApp'
 
 export const getMeetups = () => async dispatch => {
     try {
-        const response = await axios.get(
+        const response = await axiosClient.get(
             "/api/meetups/", {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
             }}
@@ -17,7 +17,7 @@ export const getMeetups = () => async dispatch => {
 
 export const getMeetup = (uri) => async dispatch => {
     try {
-        const response = await axios.get(
+        const response = await axiosClient.get(
             `/api/meetups/${uri}/`, {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
             }}
@@ -34,7 +34,7 @@ export const addMeetup = (formProps, redirectOnSuccess) => async dispatch => {
         date: formProps.date.getFullYear()+ "-" + ("0"+(formProps.date.getMonth()+1)).slice(-2) + "-" + ("0" + formProps.date.getDate()).slice(-2)
     }
     try {
-        const response = await axios.post(
+        const response = await axiosClient.post(
             `/api/meetups/`, params, {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
         }})
@@ -53,7 +53,7 @@ export const editMeetup = (formProps, uri, redirectOnSuccess) => async dispatch 
         date: date.getFullYear()+ "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2)
     }
     try {
-        const response = await axios.patch(
+        const response = await axiosClient.patch(
             `/api/meetups/${uri}/`, params, {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
         }})
@@ -67,7 +67,7 @@ export const editMeetup = (formProps, uri, redirectOnSuccess) => async dispatch 
 
 export const deleteMeetup = (uri) => async dispatch => {
     try {
-        const response = await axios.delete(
+        const response = await axiosClient.delete(
             `/api/meetups/${uri}/`, {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
         }})
@@ -81,7 +81,7 @@ export const deleteMeetup = (uri) => async dispatch => {
 
 export const getMeetupEvents = (uri) => async dispatch => {
     try {
-        const response = await axios.get(
+        const response = await axiosClient.get(
             `/api/meetups/${uri}/events/`, {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
         }})
@@ -119,7 +119,7 @@ export const addMeetupMember = (event) => async dispatch => {
 export const sendMeetupEmails = (uri) => async dispatch => {
 
     try {
-        await axios.post(
+        await axiosClient.post(
             `/api/meetups/${uri}/email/`, {}, {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
         }})

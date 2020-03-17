@@ -4,7 +4,7 @@ import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {signin} from "../../actions/index"
 import {Typography, Paper, Grid, Fab} from '@material-ui/core';
-import renderTextField from '../renderTextField'
+import {renderTextField} from '../components'
 
 class LoginComponent extends Component {
 
@@ -19,7 +19,7 @@ class LoginComponent extends Component {
 
         return (
             <div className="inner-wrap">
-                <div className="inner-header">
+                <div className="inner-header elevate">
                 <Typography variant="h5">Login</Typography>
                 </div>
                 <div className="form">

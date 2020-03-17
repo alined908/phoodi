@@ -6,8 +6,7 @@ import {compose} from 'redux'
 import {reduxForm, Field} from 'redux-form';
 import {Button, Typography, Grid} from '@material-ui/core';
 import {removeNotifs} from "../../actions/notifications"
-import renderTextField from "../renderTextField"
-import Friend from "./Friend"
+import {renderTextField, Friend} from '../components'
 
 class FriendsComponent extends Component{
 
@@ -39,7 +38,7 @@ class FriendsComponent extends Component{
             <div className="inner-wrap">   
                 {!this.props.isFriendsInitialized && <div>...Initializing Friends</div>}
                 {this.props.isFriendsInitialized && 
-                    <div className="inner-header">
+                    <div className="inner-header elevate">
                         <Typography variant="h5">Friends</Typography>
                         {sendFriendRequestForm()}
                     </div>

@@ -4,10 +4,9 @@ import {Button, Drawer, CssBaseline, AppBar, Toolbar, Typography, Divider, IconB
 import {Menu, ChevronLeft, ChevronRight, People, Person, Settings, Chat,Mail, Assignment, PermContactCalendar, ExitToApp}  from '@material-ui/icons';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import Body from "./Body"
+import {Body, LiveUpdatingBadge} from './components'
 import WebSocketService from "../accounts/WebSocket"
 import {getNumberNotifs} from "../actions/notifications.js"
-import LiveUpdatingBadge from "./LiveUpdatingBadge"
 import AuthenticationService from '../accounts/AuthenticationService'
 
 const drawerWidth = 220;
@@ -77,7 +76,6 @@ const Navigation = (props) => {
   React.useEffect(() => {
     console.log("component mount called")
     if (props.authenticated && open) {
-      var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
       const token = AuthenticationService.retrieveToken()
       const path = `/ws/user/${props.user.id}/?token=${token}`;
       socket.connect(path);

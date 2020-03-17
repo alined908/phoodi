@@ -13,7 +13,7 @@ class ChatMessageComponent extends Component {
         return (
             <div className={`chat-msg-wrapper ${is_user_msg ? "is-user": ""}`}>
                 {!is_user_msg && <div className="chat-msg-avatar">
-                    <Avatar src={user.avatar}>{user.first_name.charAt(0)}</Avatar>
+                    <Avatar src={user.avatar}>{user.first_name.charAt(0)}{user.last_name.charAt(0)}</Avatar>
                 </div>}
                 <div>
                     <div className={`chat-msg-info ${is_user_msg ? "is-user": ""}`}>
@@ -27,7 +27,7 @@ class ChatMessageComponent extends Component {
                     <div className={`chat-msg ${is_user_msg ? "is-user": ""}`}>{message}</div>
                 </div>
                 {is_user_msg && <div className="chat-msg-avatar is-user">
-                    <Avatar src={user.avatar}>{user.first_name.charAt(0)}</Avatar>
+                    <Avatar src={user.avatar}>{user.first_name.charAt(0)}{user.last_name.charAt(0)}</Avatar>
                 </div>}
             </div>
         )

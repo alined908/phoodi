@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Typography, Button, Grid, Avatar} from '@material-ui/core'
 import {Link} from 'react-router-dom'
-import axios from 'axios'
-import Friend from "./invite/Friend"
+import {axiosClient} from "../accounts/axiosClient"
+import {Friend} from "./components"
 
 class Profile extends Component {
     constructor(props){
@@ -27,8 +27,8 @@ class Profile extends Component {
 
     getInformation = async () => {
         const [profile, friends] = await Promise.all([
-            axios.get(`/api/users/${this.props.match.params.id}/`), 
-            axios.get(
+            axiosClient.get(`/api/users/${this.props.match.params.id}/`), 
+            axiosClient.get(
                 `/api/users/${this.props.match.params.id}/friends/`, {headers: {
                     "Authorization": `JWT ${localStorage.getItem('token')}`
                 }}
@@ -41,7 +41,7 @@ class Profile extends Component {
         return (
             <div className="profile">
                 <div className="pic">
-                    <Avatar className="user-avatar" src={this.state.user.avatar}>{this.state.user.first_name.charAt(0)}</Avatar>
+                    <Avatar className="user-avatar" src={this.state.user.avatar}>{this.state.user.first_name.charAt(0)}{this.state.user.last_name.charAt(0)}</Avatar>
                 </div>
                 <div>
                     <Typography variant="h4">
@@ -56,7 +56,7 @@ class Profile extends Component {
     renderFriends = (isUser) => {
         return (
             <>
-                <div className="inner-header">
+                <div className="inner-header elevate">
                     <Typography variant="h5">Friends</Typography>
                 </div>
                 <div className="friends">
@@ -79,7 +79,7 @@ class Profile extends Component {
 
         return (
             <div className="inner-wrap">
-                <div className="inner-header">
+                <div className="inner-header elevate">
                     <Typography variant="h5">Profile</Typography>
                     {isUser && 
                         <Link to="/profile/edit">

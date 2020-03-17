@@ -1,10 +1,7 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import {TextField, Grid, Typography, makeStyles} from '@material-ui/core'
 import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
 
@@ -38,7 +35,7 @@ export default function GoogleMaps(props) {
   if (typeof window !== 'undefined' && !loaded.current) {
     if (!document.querySelector('#google-maps')) {
       loadScript(
-        'https://maps.googleapis.com/maps/api/js?key=AIzaSyDET1HuX2ihqu5OpGTFDZpKDyNeTqX4kQs&libraries=places',
+        `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`,
         document.querySelector('head'),
         'google-maps',
       );

@@ -1,9 +1,6 @@
 import React from 'react'
 import {makeStyles, Typography, Paper, Badge} from '@material-ui/core'
-import {AccountCircle} from '@material-ui/icons';
-import TodayIcon from '@material-ui/icons/Today';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import RoomIcon from '@material-ui/icons/Room';
+import {Today as TodayIcon, Notifications as NotificationsIcon, Room as RoomIcon, AccountCircle} from '@material-ui/icons'
 import {Link} from 'react-router-dom'
 import moment from 'moment';
 import Skeleton from '@material-ui/lab/Skeleton';

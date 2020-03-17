@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Router } from 'react-router';
 import {Provider} from 'react-redux'
-import Navigation from "./Navigation"
+import {Navigation} from "./components"
 import {store} from "../store/index";
 import createBrowserHistory from 'history/createBrowserHistory'
 export const history = createBrowserHistory()

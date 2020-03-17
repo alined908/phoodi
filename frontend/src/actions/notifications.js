@@ -1,5 +1,5 @@
 import {GET_NOTIFS, REMOVE_NOTIFS} from "../constants/action-types"
-import axios from "axios";
+import {axiosClient} from "../accounts/axiosClient";
 
 export const getNumberNotifs = (event) => async dispatch => {
     dispatch({type: GET_NOTIFS, payload: event.message})
@@ -8,7 +8,7 @@ export const getNumberNotifs = (event) => async dispatch => {
 export const removeNotifs = (data) => async dispatch => {
     console.log(data)
     try {
-        const response = await axios.delete(
+        const response = await axiosClient.delete(
             '/api/notifs/', {data: data, headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
         }})

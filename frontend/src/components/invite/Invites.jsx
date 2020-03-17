@@ -2,7 +2,7 @@ import React, {Component} from "react"
 import {getUserMeetupInvites, respondMeetupInvite, getUserFriendInvites, respondFriendInvite} from "../../actions/invite"
 import {inviteType} from '../../constants/default-states'
 import {connect} from 'react-redux'
-import Invite from "./Invite"
+import {Invite} from "../components"
 import {Grid, Typography} from "@material-ui/core"
 
 class Invites extends Component {
@@ -26,7 +26,7 @@ class Invites extends Component {
                         {!this.props.isMeetupInvitesInitialized ? 
                             <div>Initializing Meetup Invites..</div> : 
                             <>
-                                <div className="inner-header">
+                                <div className="inner-header elevate">
                                     <Typography variant="h5">Meetup Invites</Typography>
                                 </div>
                                 <div className="invites">
@@ -41,7 +41,7 @@ class Invites extends Component {
                         {!this.props.isFriendInvitesInitialized ? 
                             <div>Initializing Friend Invites..</div> :
                             <>
-                                <div className="inner-header">
+                                <div className="inner-header elevate">
                                     <Typography variant="h5">Friend Invites</Typography>
                                 </div>
                                 <div className="invites">

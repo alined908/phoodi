@@ -1,22 +1,15 @@
 import React, {Component} from 'react'
-import MeetupEvent from "./MeetupEvent"
+import {MeetupFriend, MeetupEvent} from '../components'
 import {connect} from 'react-redux';
 import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, addMeetupMember, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent} from '../../actions/meetup';
 import {removeNotifs} from '../../actions/notifications'
 import {getFriends} from "../../actions/friend"
 import {Link} from 'react-router-dom'
 import moment from 'moment';
-import MeetupFriend from "./MeetupFriend"
 import {addGlobalMessage} from '../../actions/globalMessages'
 import {Grid, Button, Typography, Avatar, List, ListItem, ListItemText, ListItemAvatar, IconButton} from "@material-ui/core"
-import WebSocketService from "../../accounts/WebSocket"
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import RoomIcon from '@material-ui/icons/Room';
-import ChatIcon from '@material-ui/icons/Chat';
-import EmailIcon from '@material-ui/icons/Email';
-import AddIcon from '@material-ui/icons/Add';
-import TodayIcon from '@material-ui/icons/Today';
+import WebSocketService from "../../accounts/WebSocket";
+import {Delete as DeleteIcon, Edit as EditIcon, Room as RoomIcon, Chat as ChatIcon, Email as EmailIcon, Add as AddIcon, Today as TodayIcon} from '@material-ui/icons'
 import AuthenticationService from "../../accounts/AuthenticationService"
 
 class Meetup extends Component {
@@ -93,7 +86,7 @@ class Meetup extends Component {
         
         const renderInformation = (name, datetime, location) => {
             return (
-                <div className="inner-header">
+                <div className="inner-header elevate">
                     <Typography variant="h5">{name}</Typography>
                     <div className="inner-header-middle">
                         <div className="inner-header-icons"><TodayIcon/> {moment(datetime).local().format("dddd, MMMM D")}</div>
@@ -123,14 +116,15 @@ class Meetup extends Component {
 
         const renderFriends = () => {
             return (
-                <div className='outer-shell'>
+                <div className='outer-shell elevate'>
                     <List style={{width: "100%"}}>
                         {this.props.friends.map((friend) => 
                             <MeetupFriend 
-                            key={friend.id} 
-                            friend={friend.user} 
-                            isMember={isMember(friend.user.id)} 
-                            uri={uri}/>
+                                key={friend.id} 
+                                friend={friend.user} 
+                                isMember={isMember(friend.user.id)} 
+                                uri={uri}
+                            />
                         )}
                     </List>
                 </div>
@@ -140,13 +134,13 @@ class Meetup extends Component {
         const renderMembers = (members) => {
             return (
 
-                <div className="outer-shell">
+                <div className="outer-shell elevate">
                     <List style={{width: "100%"}}>
                         {Object.keys(members).map((key) => 
                             <Link to={`/profile/${members[key].user.id}`}>
                                 <ListItem>
                                     <ListItemAvatar>
-                                        <Avatar src={members[key].user.avatar}>{members[key].user.first_name.charAt(0)}</Avatar>
+                                        <Avatar src={members[key].user.avatar}>{members[key].user.first_name.charAt(0)}{members[key].user.last_name.charAt(0)}</Avatar>
                                     </ListItemAvatar>
                                     <ListItemText  primary={members[key].user.first_name} secondary={<>
                                         <Typography component="span" color="inherit" variant="body2"> 
@@ -181,19 +175,19 @@ class Meetup extends Component {
                         {renderInformation(name, datetime, location)}
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <div className="inner-header">
+                        <div className="inner-header elevate">
                             <Typography variant="h5">Members</Typography>
                         </div>
                         {renderMembers(members)}
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <div className="inner-header">
+                        <div className="inner-header elevate">
                             <Typography variant="h5">Friends</Typography>
                         </div>
                         {renderFriends()}
                     </Grid>
                     <Grid item xs={12}>
-                        <div className="inner-header">
+                        <div className="inner-header elevate">
                             <Typography variant="h5">Events</Typography>
                             <Link socket={this.state.socket} to={`/meetups/${this.props.uri}/new`}><Button startIcon={<AddIcon />} className="button" variant="contained" color="primary">Event</Button></Link>
                         </div>

@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import {reduxForm, Field} from 'redux-form';
-import renderDatePicker from "./renderDatePicker"
 import {Button, Typography, Paper, Grid, ButtonGroup, Slider, Fab, TextField} from '@material-ui/core';
-import renderTextField from '../renderTextField'
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {addMeetupEvent, getMeetup, getMeetupEvents} from "../../actions/meetup"
+import {renderDatePicker, renderTextField} from '../components'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import {Link} from 'react-router-dom'
-import axios from "axios"
+import {axiosClient} from "../../accounts/axiosClient"
 import {history} from '../MeetupApp'
 
 const marks = [{value: 0.25},{value: 0.50},{value: 1},{value: 2},{value: 3},{value: 5},{value: 10},{value: 25}]
@@ -38,7 +37,7 @@ class MeetupEventForm extends Component {
 
     async componentDidMount(){
         if (localStorage.getItem("categories") === null) {
-            await axios.get("/api/categories/")
+            await axiosClient.get("/api/categories/")
             .then((response) =>
                 localStorage.setItem("categories", JSON.stringify(response.data.categories)
             ))
@@ -83,13 +82,13 @@ class MeetupEventForm extends Component {
         const data = {uri: uri, entries: this.handleEntries(), distance: convert[this.state.distance], prices: prices, ...formProps}
 
         if (this.props.type === "create"){
-            axios.post(
+            axiosClient.post(
                 `/api/meetups/${uri}/events/`, data, {headers: {
                     "Authorization": `JWT ${localStorage.getItem('token')}`
             }})
         } 
         if (this.props.type === "edit") {
-            axios.patch(
+            axiosClient.patch(
                 `/api/meetups/${uri}/events/${this.props.match.params.id}/`, data, {headers: {
                     "Authorization": `JWT ${localStorage.getItem('token')}`
             }})

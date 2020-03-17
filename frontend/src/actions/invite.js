@@ -1,9 +1,9 @@
 import {GET_MEETUP_INVITES, GET_FRIEND_INVITES, ADD_GLOBAL_MESSAGE} from '../constants/action-types'
-import axios from 'axios'
+import {axiosClient} from '../accounts/axiosClient'
 
 export const getUserFriendInvites = () => async dispatch => {
     try {
-        const response = await axios.get(
+        const response = await axiosClient.get(
             "/api/friends/invite/", {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
             }}
@@ -17,7 +17,7 @@ export const getUserFriendInvites = () => async dispatch => {
 
 export const getUserMeetupInvites = () => async dispatch => {
     try {
-        const response = await axios.get(
+        const response = await axiosClient.get(
             "/api/meetups/invite/", {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
             }}
@@ -31,7 +31,7 @@ export const getUserMeetupInvites = () => async dispatch => {
 
 export const sendMeetupInvite = (roomURI, email) => async dispatch => {
     try {
-        const response = await axios.post(
+        const response = await axiosClient.post(
             `/api/meetups/${roomURI}/invite/`, {"email": email}, {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
             }}
@@ -45,7 +45,7 @@ export const sendMeetupInvite = (roomURI, email) => async dispatch => {
 
 export const sendFriendInvite = (formProps) => async dispatch => {
     try {
-        const response = await axios.post(
+        const response = await axiosClient.post(
             `/api/friends/invite/`, {"email": formProps.email}, {headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
             }}
@@ -58,7 +58,7 @@ export const sendFriendInvite = (formProps) => async dispatch => {
 
 export const respondFriendInvite = (inviteURI, status) => async dispatch => {
     try {
-        const response = await axios.patch(
+        const response = await axiosClient.patch(
             `/api/friends/invite/${inviteURI}/`, {"status": status},{headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
             }}
@@ -72,7 +72,7 @@ export const respondFriendInvite = (inviteURI, status) => async dispatch => {
 
 export const respondMeetupInvite = (roomURI, inviteURI, status) => async dispatch => {
     try {
-        const response = await axios.patch(
+        const response = await axiosClient.patch(
             `/api/meetups/${roomURI}/invite/${inviteURI}/`, {"status": status},{headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
             }}
