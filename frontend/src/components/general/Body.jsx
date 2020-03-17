@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {Route, Switch} from 'react-router-dom';
 import {LogoutComponent, ErrorComponent, RegisterComponent, ChatComponent, MeetupsComponent, HomeComponent, 
     MeetupPageComponent, FriendsComponent, MeetupEventForm, LoginComponent, Invites, MeetupForm, Profile, GlobalMessage
-} from "./components"
-import AuthenticatedRoute from "../accounts/AuthenticatedRoute";
-import UnAuthenticatedRoute from "../accounts/UnAuthenticatedRoute";
+} from "../components"
+import AuthenticatedRoute from "../../accounts/AuthenticatedRoute";
+import UnAuthenticatedRoute from "../../accounts/UnAuthenticatedRoute";
 
 class Body extends Component {
     render () {

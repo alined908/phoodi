@@ -4,10 +4,10 @@ import {Button, Drawer, CssBaseline, AppBar, Toolbar, Typography, Divider, IconB
 import {Menu, ChevronLeft, ChevronRight, People, Person, Settings, Chat,Mail, Assignment, PermContactCalendar, ExitToApp}  from '@material-ui/icons';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {Body, LiveUpdatingBadge} from './components'
-import WebSocketService from "../accounts/WebSocket"
-import {getNumberNotifs} from "../actions/notifications.js"
-import AuthenticationService from '../accounts/AuthenticationService'
+import {Body, LiveUpdatingBadge} from '../components'
+import WebSocketService from "../../accounts/WebSocket"
+import {getNumberNotifs} from "../../actions/notifications.js"
+import AuthenticationService from '../../accounts/AuthenticationService'
 
 const drawerWidth = 220;
 

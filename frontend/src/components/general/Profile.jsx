@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Typography, Button, Grid, Avatar} from '@material-ui/core'
 import {Link} from 'react-router-dom'
-import {axiosClient} from "../accounts/axiosClient"
-import {Friend} from "./components"
+import {axiosClient} from "../../accounts/axiosClient"
+import {Friend} from "../components"
 
 class Profile extends Component {
     constructor(props){

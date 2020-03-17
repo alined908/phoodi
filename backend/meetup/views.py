@@ -166,6 +166,7 @@ class MeetupEventsView(APIView):
     def patch(self, request, *args, **kwargs):
         event = self.get_object(kwargs['id'])
         serializer = MeetupEventSerializer(event, data=request.data, partial=True)
+        
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

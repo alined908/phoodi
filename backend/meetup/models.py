@@ -223,6 +223,10 @@ class MeetupEvent(models.Model):
         for option in options[:4]:
             MeetupEventOption.objects.create(event=self, option=json.dumps(option))
 
+    def delete_options(self):
+        options = self.options.all()
+        return options.delete()
+
     def handle_decide(self, randomBool):
         """
         Randomly choose or select highest count

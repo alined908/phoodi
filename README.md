@@ -88,18 +88,25 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Daniel Lee** 
 
 ## Todo 
+- [ ] When other user submits message, chat message component rerenders
 - [ ] Redirect http to https
-- [ ] Git ignore env and env.docker
+- [x] Fix base url for axios
+- [x] Git ignore env and env.docker
 - [ ] Fix responsiveness for all viewports
-- [ ] Let mapbox be resizable 
-- [ ] Add elevation/shadows to cards + onhover
-- [ ] Add last name to avatar
-- [ ] Meetup invite errorHide tokens|api keys - (google javascript api + website request)
+- [x] Let mapbox be resizable 
+- [x] Add elevation/shadows to cards + onhover
+- [x] Add last name to avatar
+- [x] Minify import statements
+- [ ] Natural transition to new options when meetup event is changed
+- [ ] Meetup invite error
+- [x] Hide tokens|api keys - (google javascript api + website request)
 - [ ] Add transitions
+- [ ] Search Users
 - [ ] Form validation
-- [ ] Reload event (if price or distance or categories changes)
+- [ ] Edit in multiple categories but only shows Korean for example
+- [x] Reload event (if price or distance or categories changes)
 - [ ] Validation for time and date
-- [ ] Fix form data when meetup event refresh
+- [x] Fix form data when meetup event refresh
 - [ ] Add ability to get current location
 - [ ] Add google social auth 
 - [ ] Add ability to add categories to a user (Preferences)
@@ -119,6 +126,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Authenticate Websocket
 - [ ] Write tests for frontend
 - [ ] Write tests for consumers
-- [ ] Continuous integration 
+- [ ] Continuous integration
+- [ ] Handle 404 page
 
 

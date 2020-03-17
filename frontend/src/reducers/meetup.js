@@ -2,7 +2,6 @@ import {GET_MEETUPS, ADD_MEETUP, ADD_MEETUP_MEMBER, DELETE_MEETUP, EDIT_MEETUP, 
 
 const defaultState = {
     meetups: {},
-    activeMeetup: null,
     isMeetupsInitialized: false,
     isMeetupEventsInitialized: false,
 }

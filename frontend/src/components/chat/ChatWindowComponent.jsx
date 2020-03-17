@@ -5,7 +5,7 @@ import {setTypingValue} from "../../actions/chat";
 import {Button} from '@material-ui/core'
 import {Link} from 'react-router-dom';
 import {removeNotifs} from "../../actions/notifications"
-import {PersonIcon, PeopleIcon} from "@material-ui/icons"
+import {Person as PersonIcon, People as PeopleIcon} from "@material-ui/icons"
 
 class ChatWindowComponent extends Component {
     messagesEndRef = React.createRef()

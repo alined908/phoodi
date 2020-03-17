@@ -23,46 +23,62 @@ const validate = values => {
     return errors
 }
 
+const convertPricesToState = (prices) => {
+    const nums = prices !== undefined ? prices.replace(/ /g,'').split(",") : "";
+    var state = [false, false, false, false]
+    for (var i = 0; i < nums.length; i++){
+        const entry = parseInt(nums[i]) - 1
+        state[entry] = true 
+    }
+    return state
+}
+ 
 class MeetupEventForm extends Component {
     constructor(props){
         super(props)
         this.state = {
-            categories: [],
-            entries: [],
-            prices: [true, true , false, false],
-            distance: 10
+            categories: localStorage.getItem('categories') === null ? [] : JSON.parse(localStorage.getItem('categories')),
+            entries: props.entries ? props.entries : [],
+            prices: props.prices ? convertPricesToState(props.prices) : [true, true , false, false],
+            distance: props.distance ? reconvert[this.props.distance] : 10,
+            initialized: props.isMeetupInitialized && props.isMeetupEventsInitialized
         }
         this.onTagsChange = this.onTagsChange.bind(this)
     }
 
     async componentDidMount(){
-        if (localStorage.getItem("categories") === null) {
-            await axiosClient.get("/api/categories/")
-            .then((response) =>
-                localStorage.setItem("categories", JSON.stringify(response.data.categories)
-            ))
-        } 
-
         if (!this.props.isMeetupInitialized){
             this.props.getMeetup(this.props.match.params.uri)
         } 
         if (!this.props.isMeetupEventsInitialized){
             this.props.getMeetupEvents(this.props.match.params.uri)
         }
-        
-        if (this.props.type === "create"){
-            this.setState({
-                categories: JSON.parse(localStorage.getItem('categories')),
-            })
-        } 
 
-        if (this.props.type === "edit"){
-            this.setState({
-                categories: JSON.parse(localStorage.getItem('categories')),
-                entries: this.props.entries,
-                distance: reconvert[this.props.distance]
-            })
+        if (localStorage.getItem("categories") === null) {
+            await axiosClient.get("/api/categories/")
+            .then((response) =>
+                localStorage.setItem("categories", JSON.stringify(response.data.categories)
+            ))
+            .then((response) => 
+                this.setState({categories: response.data.categories})
+            )
+        } 
+    }
+
+    static getDerivedStateFromProps(props, state){
+        console.log("derived state")
+        if (!state.initialized && props.isMeetupEventsInitialized && props.isMeetupInitialized){
+            console.log(props.prices)
+            console.log(state)
+            return {
+                title: props.title,
+                entries: props.entries,
+                prices: convertPricesToState(props.prices),
+                distance: reconvert[props.distance],
+                initialized: true
+            }
         }
+        return null;
     }
 
     handleEntries = () => {
@@ -75,11 +91,10 @@ class MeetupEventForm extends Component {
     }
 
     onSubmit = (formProps) => {
-        console.log("on submit")
         const indices = this.state.prices.reduce((out, bool, index) => bool ? out.concat(index+1) : out, [])
         const prices = indices.join(", ")
         const uri = this.props.match.params.uri
-        const data = {uri: uri, entries: this.handleEntries(), distance: convert[this.state.distance], prices: prices, ...formProps}
+        const data = {entries: this.handleEntries(), distance: convert[this.state.distance], price: prices, ...formProps}
 
         if (this.props.type === "create"){
             axiosClient.post(
@@ -111,7 +126,6 @@ class MeetupEventForm extends Component {
     }
 
     render () {
-        const {handleSubmit} = this.props;
         const create = this.props.type === "create"
    
         return (
@@ -122,7 +136,7 @@ class MeetupEventForm extends Component {
                 </div> 
                 <div className="form">
                     <Paper className="form-paper" elevation={3}>
-                        <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                        <form onSubmit={this.props.handleSubmit(this.onSubmit.bind(this))}>
                             <Grid container style={{padding: "1rem"}} spacing={3}>
                                 <Grid item xs={12}>
                                     <Typography variant="h6">Meetup Event Information</Typography>
@@ -188,11 +202,9 @@ function mapStateToProps(state, ownProps){
     if (ownProps.type === "edit" && (uri in state.meetup.meetups) && ("events" in meetup)){
         const event = meetup.events[id]
         return {
-            meetup: meetup,
-            event: event,
             initialValues: {title: event.title, start: event.start, end: event.end},
             distance: event.distance,
-            price: event.price,
+            prices: event.price,
             entries: event.categories,
             isMeetupInitialized: true,
             isMeetupEventsInitialized: true
@@ -220,5 +232,5 @@ const mapDispatchToProps = {
 
 export default compose (
     connect(mapStateToProps, mapDispatchToProps),
-    reduxForm({form: 'event', validate})
+    reduxForm({form: 'event', validate, enableReinitialize : true })
 )(MeetupEventForm);

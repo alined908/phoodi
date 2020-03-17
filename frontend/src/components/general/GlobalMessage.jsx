@@ -2,7 +2,7 @@ import React from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import {connect} from 'react-redux'
-import {removeGlobalMessage} from "../actions/globalMessages"
+import {removeGlobalMessage} from "../../actions/globalMessages"
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
