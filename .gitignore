@@ -2,7 +2,7 @@
 /backend/htmlcov/*
 /data/
 /data/*
-**/__pycache__/
+**/__pycache__/*
 .env
 .env-docker
 .coverage
@@ -16,4 +16,4 @@
 /.pytest_cache
 /backend/db.sqlite3
 *.rdb
-/nginx/certs
+nginx/certs/*
