@@ -1,7 +1,7 @@
 import {CLEAR_STORE, GET_ROOMS, REMOVE_ACTIVE_ROOM, ADD_ROOM, SET_ACTIVE_ROOM, SET_TYPING_VALUE, ADD_MESSAGE, GET_MESSAGES} from "../constants/action-types"
 
 const defaultState = {
-    rooms: [],
+    rooms: {},
     isRoomsInitialized: false,
     activeRoom: null,
     isActiveRoomSet: false,

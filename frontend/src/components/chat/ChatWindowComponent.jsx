@@ -2,10 +2,10 @@ import React, {Component} from 'react'
 import {ChatMessageComponent} from "../components"
 import {connect} from 'react-redux'
 import {setTypingValue} from "../../actions/chat";
-import {Button} from '@material-ui/core'
+import {Button, Tooltip} from '@material-ui/core'
 import {Link} from 'react-router-dom';
 import {removeNotifs} from "../../actions/notifications"
-import {Person as PersonIcon, People as PeopleIcon} from "@material-ui/icons"
+import {Person as PersonIcon, Event as EventIcon} from "@material-ui/icons"
 
 class ChatWindowComponent extends Component {
     messagesEndRef = React.createRef()
@@ -50,13 +50,23 @@ class ChatWindowComponent extends Component {
     render () {
     
         return (
-            <div className="chat-window" ref={this.chatsRef}>
+            <div className="chat-window elevate" ref={this.chatsRef}>
                 <div className="chat-header">
                     {this.props.room && this.props.room.meetup && 
-                        <Link to={`/meetups/${this.props.room.uri}`}><Button color="primary" startIcon={<PeopleIcon/>}>Meetup</Button></Link>
+                        <Link to={`/meetups/${this.props.room.uri}`}>
+                            <Tooltip title="Go to Meetup">
+                                <Button color="primary" startIcon={<EventIcon/>}>
+                                  {this.props.room.name}
+                                </Button>
+                            </Tooltip>
+                        </Link>
                     }
                     {this.props.room && this.props.room.friendship && 
-                        <Link to={`/profile/${this.determineOtherUser()}`}><Button color="primary" startIcon={<PersonIcon/>}>Profile</Button></Link>
+                        <Link to={`/profile/${this.determineOtherUser()}`}>
+                            <Tooltip title="Go to Profile">
+                                <Button color="primary" startIcon={<PersonIcon/>}>Profile</Button>
+                            </Tooltip>
+                        </Link>
                     }
                 </div>
                 <div className="chat-messages-wrapper" >
@@ -72,11 +82,11 @@ class ChatWindowComponent extends Component {
                             onChange={this.handleChange} 
                             onKeyPress={this.handleSubmit}
                             value={this.props.message} 
-                            placeholder="Type a message here">
+                            placeholder="Type a message here...">
                         </input>
                     </form>
                     <div>
-                        <Button onClick={() => this.handleClick()} style={{borderRadius: 15, fontSize: 11, backgroundColor: "#FFD460"}}>Send</Button>
+                        <Button onClick={() => this.handleClick()} style={{borderRadius: 15, fontSize: 10, fontFamily: "Lato", fontWeight: "700", backgroundColor: "#FFD460"}}>Send</Button>
                     </div>
                 </div>
                 }

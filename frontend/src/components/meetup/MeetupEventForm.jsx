@@ -57,19 +57,19 @@ class MeetupEventForm extends Component {
         if (localStorage.getItem("categories") === null) {
             await axiosClient.get("/api/categories/")
             .then((response) =>
-                localStorage.setItem("categories", JSON.stringify(response.data.categories)
-            ))
-            .then((response) => 
-                this.setState({categories: response.data.categories})
-            )
+                this.handleCategoriesReceived(response.data.categories)
+            );
         } 
+    }
+
+    handleCategoriesReceived = (categories) => {
+        localStorage.setItem("categories", JSON.stringify(categories));
+        this.setState({categories: categories});
     }
 
     static getDerivedStateFromProps(props, state){
         console.log("derived state")
-        if (!state.initialized && props.isMeetupEventsInitialized && props.isMeetupInitialized){
-            console.log(props.prices)
-            console.log(state)
+        if (props.type === "edit" && !state.initialized && props.isMeetupEventsInitialized && props.isMeetupInitialized){
             return {
                 title: props.title,
                 entries: props.entries,
@@ -127,15 +127,15 @@ class MeetupEventForm extends Component {
 
     render () {
         const create = this.props.type === "create"
-   
+        console.log(this.state.entries)
         return (
             <div className="inner-wrap">
-                <div className="inner-header">
+                <div className="inner-header elevate">
                     <Typography variant="h5">{create ? "Create New Event" : "Edit Event"}</Typography>
                     <Link to={`/meetups/${this.props.match.params.uri}`}><Button variant="contained" color="primary">Meetup</Button></Link>
                 </div> 
                 <div className="form">
-                    <Paper className="form-paper" elevation={3}>
+                    <Paper className="form-paper elevate">
                         <form onSubmit={this.props.handleSubmit(this.onSubmit.bind(this))}>
                             <Grid container style={{padding: "1rem"}} spacing={3}>
                                 <Grid item xs={12}>
@@ -176,8 +176,9 @@ class MeetupEventForm extends Component {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Typography variant="h6">Categories</Typography>
-                                    <Autocomplete multiple value={this.state.entries} options={this.state.categories} onChange={this.onTagsChange} getOptionLabel={option => option.label} renderInput={
-                                        params => (<TextField {...params} variant="outlined"/>)}  
+                                    {console.log(this.state.categories)}
+                                    <Autocomplete multiple value={this.state.entries} options={this.state.categories} onChange={this.onTagsChange} getOptionLabel={option => option.label} 
+                                        renderInput={params => (<TextField {...params} variant="outlined"/>)}  
                                     />
                                 </Grid>
                                 <Grid item xs={12}>

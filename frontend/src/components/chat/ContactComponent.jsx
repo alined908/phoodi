@@ -54,7 +54,6 @@ const mapDispatchToProps = {
 
 function mapStateToProps(state){
     return {
-        user: state.user.user,
         currentRoom: state.chat.activeRoom
     }
 }

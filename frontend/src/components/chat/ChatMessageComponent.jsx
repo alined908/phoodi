@@ -5,7 +5,6 @@ import {Avatar} from "@material-ui/core"
 class ChatMessageComponent extends Component {
     render (){
         const [id, message, timestamp, is_read, room, sender, receipient] = Object.values(this.props.message)
-        console.log(sender)
         let user_obj = this.props.user
         var is_user_msg = user_obj.id === sender
         const user = this.props.members[sender]

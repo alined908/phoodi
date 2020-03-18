@@ -89,6 +89,7 @@ export default function GoogleMaps(props) {
       filterOptions={x => x}
       options={options}
       autoComplete
+      autoHighlight
       includeInputInList
       {...props.input}
       disableOpenOnFocus

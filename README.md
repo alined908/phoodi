@@ -87,46 +87,68 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Author
 * **Daniel Lee** 
 
-## Todo 
-- [ ] When other user submits message, chat message component rerenders
-- [ ] Redirect http to https
+## Todo Done
 - [x] Fix base url for axios
 - [x] Git ignore env and env.docker
-- [ ] Fix responsiveness for all viewports
 - [x] Let mapbox be resizable 
 - [x] Add elevation/shadows to cards + onhover
 - [x] Add last name to avatar
 - [x] Minify import statements
-- [ ] Natural transition to new options when meetup event is changed
-- [ ] Meetup invite error
 - [x] Hide tokens|api keys - (google javascript api + website request)
-- [ ] Add transitions
-- [ ] Search Users
-- [ ] Form validation
-- [ ] Edit in multiple categories but only shows Korean for example
 - [x] Reload event (if price or distance or categories changes)
-- [ ] Validation for time and date
 - [x] Fix form data when meetup event refresh
-- [ ] Add ability to get current location
-- [ ] Add google social auth 
-- [ ] Add ability to add categories to a user (Preferences)
-- [ ] Handle user preferences
-- [ ] Probably change distance to be for overall event
+- [x] Redirect http to https
+- [x] Filter chat rooms by meetup and friends
+
+## Todo Chat
+- [ ] Search chat rooms
+- [ ] When other user submits message, chat message component rerenders
+- [ ] Add avatar to chat room for meetup + (x members)
 - [ ] Give chat some more css upgrades
-- [ ] Change meetups page to calendar 
-- [ ] Filter chat rooms by meetup and friends (and search)
 - [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
 - [ ] Load chat messages smartly
 - [ ] Edit chat messages and add emojis, upload picture
+
+## Todo UI
+- [ ] Add tooltips to icons
+- [ ] Fix responsiveness for all viewports
+- [ ] Natural transition to new options when meetup event is changed
+- [ ] Add transitions
+
+## Todo Meetup
+- [ ] Change meetups page to calendar 
 - [ ] Change display of meetups
+- [ ] Meetup email message nice html
+- [ ] Create event , bugs on categories loads
+- [ ] Edit in multiple categories but only shows Korean for example
+- [ ] Add ability to get current location
+- [ ] Probably change distance to be for overall event
 - [ ] Add scrollable notifications box for meetupevent 
+
+## Todo Users
+- [ ] Search Users
+- [ ] Add ability to add categories to a user (Preferences)
+- [ ] Handle user preferences
+- [ ] Add google social auth 
+- [ ] Confirm email
+- [ ] Change password
+
+## Todo General
+- [ ] Form validation
 - [ ] Connect people with categories
 - [ ] List meetups within a certain radius (set by user)
 - [ ] Authenticate JWT automatically after expiration
 - [ ] Authenticate Websocket
 - [ ] Write tests for frontend
 - [ ] Write tests for consumers
-- [ ] Continuous integration
+- [ ] Safari presentation
+
+## Todo Invite
+- [ ] Meetup invite error
+- [ ] Validation for time and date
+
+## Todo Deploy
+- [ ] Add ssl certificate to website
+- [ ] Disable redux dev tools in production
 - [ ] Handle 404 page
-
-
+- [ ] Continuous integration
