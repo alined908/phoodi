@@ -12,7 +12,7 @@
             "admin": false,
             "staff": false,
             "confirmed": false,
-            "avatar": "avatar/blank_profile_pic.png"
+            "avatar": null
         }
     },
     {
@@ -28,7 +28,7 @@
             "admin": false,
             "staff": false,
             "confirmed": false,
-            "avatar": "avatar/blank_profile_pic.png"
+            "avatar": null
         }
     },
     {
@@ -44,7 +44,7 @@
             "admin": true,
             "staff": true,
             "confirmed": false,
-            "avatar": "avatar/blank_profile_pic.png"
+            "avatar": null
         }
     },
     {
@@ -60,7 +60,7 @@
             "admin": false,
             "staff": false,
             "confirmed": false,
-            "avatar": "avatar/blank_profile_pic.png"
+            "avatar": null
         }
     }
 ]

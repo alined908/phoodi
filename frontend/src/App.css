@@ -12,7 +12,7 @@
 
 ::-webkit-scrollbar-thumb {
 	border-radius: 10px;
-	background: #8f94fb;
+	background: #3b444b;
 }
 
 a, a:hover {
@@ -66,8 +66,9 @@ body {
 }
 
 .chat-bar-contacts{
-  height: calc(100% - 60px - 60px);
+  height: calc(100% - 60px - 62px);
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .chat-bar-top{
   display: flex;
@@ -85,7 +86,14 @@ body {
   background: #F7F9FD;
   margin-top: auto;
   width: 100%;
-  padding: 0 1rem
+  padding: 0 1rem;
+}
+
+.chat-bar-none{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .chat-window{
@@ -116,9 +124,17 @@ body {
   font-weight: 600;
 }
 
+.meetup-avatars{
+  display:flex;
+  padding: 0 .5rem;
+  align-items: center;
+}
+
 .light-text{
   font-weight: 400;
   color: grey;
+  font-size: 12.5px;
+  letter-spacing: 0.4px;
 }
 .chat-contact:hover{
   background-color: #f1f9ff !important;
@@ -196,19 +212,23 @@ body {
   font-weight: 600;
   padding: 1rem;
   margin: .5rem 0;
-  color: #2C3552;
-  background: #FFFFFF;
+  color: black;
+  background: linear-gradient(to right, #cfd9df, #e2ebf0);
+  word-wrap: break-word;
   border-radius: 5px;
-
+  border: 1px solid #eeeeef;
 }
 
 .chat-msg-info{
   display:flex;
   align-items: center;
-
   color: black;
   font-size: .8rem;
   justify-content: flex-start;
+}
+
+.chat-msg-id{
+  color: rgba(40, 40, 40, .8);
 }
 
 .chat-msg-info.is-user{
@@ -217,11 +237,13 @@ body {
 
 .chat-msg-time{
   margin-left: 5px;
-  color: lightslategrey;
+  color:lightslategrey;
   font-size: .75rem;
 }
 .chat-msg.is-user{
-  background: #DEE3EE;
+  color: black;
+  background: linear-gradient(to right, #ffafbd, #ffc3a0)
+  
 }
 
 .chat-input{

@@ -1,22 +1,31 @@
 import React, {Component} from 'react'
 import {ChatMessageComponent} from "../components"
 import {connect} from 'react-redux'
-import {setTypingValue} from "../../actions/chat";
 import {Button, Tooltip} from '@material-ui/core'
 import {Link} from 'react-router-dom';
 import {removeNotifs} from "../../actions/notifications"
 import {Person as PersonIcon, Event as EventIcon} from "@material-ui/icons"
 
 class ChatWindowComponent extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            value: ""
+        }
+    }
+
     messagesEndRef = React.createRef()
     
     handleChange = (e) => {
-        this.props.setTypingValue(e.target.value);        
+        this.setState({value: e.target.value})       
     }
 
     sendMessage = () => {
-        const messageObject = {from: this.props.user.id, text: this.props.message, room: this.props.room.uri}
-        this.props.socket.newChatMessage(messageObject)
+        if (this.state.value.length > 0 ){
+            const messageObject = {from: this.props.user.id, text: this.state.value, room: this.props.room.uri}
+            this.props.socket.newChatMessage(messageObject)
+            this.setState({value: ""})
+        } 
     }
 
     handleSubmit = (e) => {
@@ -56,7 +65,7 @@ class ChatWindowComponent extends Component {
                         <Link to={`/meetups/${this.props.room.uri}`}>
                             <Tooltip title="Go to Meetup">
                                 <Button color="primary" startIcon={<EventIcon/>}>
-                                  {this.props.room.name}
+                                  Meetup
                                 </Button>
                             </Tooltip>
                         </Link>
@@ -71,24 +80,32 @@ class ChatWindowComponent extends Component {
                 </div>
                 <div className="chat-messages-wrapper" >
                     <div className="chat-messages">
-                        {this.props.activeChatMembers && this.props.messages && this.props.messages.map((msg) => <ChatMessageComponent user={this.props.user} message={msg.message} members={this.props.activeChatMembers}/>)}
+                        {this.props.activeChatMembers && this.props.messages && this.props.messages.map((msg) => 
+                            <ChatMessageComponent user={this.props.user} message={msg.message} members={this.props.activeChatMembers}/>
+                        )}
                         <div ref={this.messagesEndRef} />
                     </div>
                 </div>
-                {this.props.activeChatMembers && <div ref={(el) => { this.messagesEnd = el; }} className="chat-input">
-                    <form className="chat-input-form">
-                        <input className="chat-input"
-                            type="text"
-                            onChange={this.handleChange} 
-                            onKeyPress={this.handleSubmit}
-                            value={this.props.message} 
-                            placeholder="Type a message here...">
-                        </input>
-                    </form>
-                    <div>
-                        <Button onClick={() => this.handleClick()} style={{borderRadius: 15, fontSize: 10, fontFamily: "Lato", fontWeight: "700", backgroundColor: "#FFD460"}}>Send</Button>
+                {this.props.activeChatMembers && 
+                    <div ref={(el) => { this.messagesEnd = el; }} className="chat-input">
+                        <form className="chat-input-form">
+                            <input className="chat-input"
+                                type="text"
+                                onChange={this.handleChange} 
+                                onKeyPress={this.handleSubmit}
+                                value={this.state.value} 
+                                placeholder="Type a message here...">
+                            </input>
+                        </form>
+                        <div>
+                            <Button onClick={() => this.handleClick()} 
+                                style={{borderRadius: 15, fontSize: 10, fontFamily: "Lato", 
+                                fontWeight: "700", backgroundColor: "#FFD460"}}
+                            >
+                                Send
+                            </Button>
+                        </div>
                     </div>
-                </div>
                 }
             </div>
         )
@@ -100,7 +117,6 @@ function mapStateToProps(state){
         return {
             activeChatMembers: state.chat.rooms[state.chat.activeRoom].members,
             user: state.user.user,
-            message: state.chat.setTypingValue,
             room: state.chat.rooms[state.chat.activeRoom]
         }
     } else {
@@ -113,7 +129,6 @@ function mapStateToProps(state){
 }
 
 const mapDispatchToProps = {
-    setTypingValue,
     removeNotifs
 }
 

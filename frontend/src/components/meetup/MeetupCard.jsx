@@ -1,6 +1,7 @@
 import React from 'react'
 import {makeStyles, Typography, Paper, Badge} from '@material-ui/core'
-import {Today as TodayIcon, Notifications as NotificationsIcon, Room as RoomIcon, AccountCircle} from '@material-ui/icons'
+import {Today as TodayIcon, Notifications as NotificationsIcon, Room as RoomIcon, AccountCircle as AccountCircleIcon} from '@material-ui/icons'
+import {GroupAvatars} from "../components"
 import {Link} from 'react-router-dom'
 import moment from 'moment';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -18,6 +19,9 @@ const useStyles = makeStyles({
 
 const MeetupCard = ({meetup}) => {
     const classes = useStyles();
+    const members = Object.values(meetup.members)
+    const users = []
+    members.map((member) => users.push(member.user))
 
     return (
         <>
@@ -38,7 +42,10 @@ const MeetupCard = ({meetup}) => {
                         </div>
                         <div className="meetup-card-bottom">
                             <div className="meetup-card-icon"><RoomIcon/>{meetup.location}</div>
-                            <div className="meetup-card-icon"><AccountCircle/>{Object.keys(meetup.members).length}</div>
+                            <div className="meetup-card-icon">
+                                <GroupAvatars members={users}/>
+                                {users.length + " member"}{users.length > 1 ? "s" : ""}
+                            </div>
                         </div>
                     </div>
                 </Paper>

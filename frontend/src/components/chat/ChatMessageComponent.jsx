@@ -23,7 +23,7 @@ class ChatMessageComponent extends Component {
                             {moment(timestamp).local().format("MMM DD hh:mm A")}
                         </div>
                     </div>
-                    <div className={`chat-msg ${is_user_msg ? "is-user": ""}`}>{message}</div>
+                    <div className={`chat-msg elevate ${is_user_msg ? "is-user": ""}`}>{message}</div>
                 </div>
                 {is_user_msg && <div className="chat-msg-avatar is-user">
                     <Avatar src={user.avatar}>{user.first_name.charAt(0)}{user.last_name.charAt(0)}</Avatar>

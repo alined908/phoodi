@@ -98,13 +98,14 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Reload event (if price or distance or categories changes)
 - [x] Fix form data when meetup event refresh
 - [x] Redirect http to https
-- [x] Filter chat rooms by meetup and friends
 
 ## Todo Chat
-- [ ] Search chat rooms
-- [ ] When other user submits message, chat message component rerenders
-- [ ] Add avatar to chat room for meetup + (x members)
-- [ ] Give chat some more css upgrades
+- [x] Filter chat rooms by meetup and friends
+- [x] Search chat rooms
+- [x] When other user submits message, chat message component doesn't rerender
+- [x] Add avatar to chat room for meetup + (x members)
+- [x] Give chat some more css upgrades
+- [ ] Handle timestamp logic
 - [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
 - [ ] Load chat messages smartly
 - [ ] Edit chat messages and add emojis, upload picture
@@ -116,6 +117,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Add transitions
 
 ## Todo Meetup
+- [ ] Meetup Card handle word overflow
 - [ ] Change meetups page to calendar 
 - [ ] Change display of meetups
 - [ ] Meetup email message nice html

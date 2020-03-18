@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {ContactComponent} from "../components";
 import {connect} from 'react-redux';
 import {IconButton, Tooltip} from '@material-ui/core'
-import {Event as EventIcon, Person as PersonIcon, Search as SearchIcon} from '@material-ui/icons';
+import {Event as EventIcon, Person as PersonIcon, Search as SearchIcon, Error as ErrorIcon} from '@material-ui/icons';
 const opposite = {"friend": "meetup", "meetup": "friend"}
 
 class ChatBarComponent extends Component {
@@ -109,8 +109,12 @@ class ChatBarComponent extends Component {
                         </Tooltip>
                     </div>
                 </div>
-                {(this.props.isRoomsInitialized && rooms.length === 0) && <div>No Chat Rooms match criteria</div>}
                 <div className="chat-bar-contacts">
+                    {(this.props.isRoomsInitialized && rooms.length === 0) && 
+                        <div className="chat-bar-none">
+                            <ErrorIcon style={{color: "rgb(255, 212, 96)"}}/> &nbsp; No chat rooms match criteria!
+                        </div>
+                    }
                     {this.props.isRoomsInitialized && rooms.map((room) => 
                         <ContactComponent user={this.props.user} key={room.id} room={Object.values(room)}></ContactComponent>
                     )}
