@@ -84,14 +84,12 @@ export default function GoogleMaps(props) {
 
   return (
     <Autocomplete
-      id="google-map-demo"
       getOptionLabel={option => (typeof option === 'string' ? option : option.description)}
       filterOptions={x => x}
       options={options}
       autoComplete
       autoHighlight
-      includeInputInList
-      {...props.input}
+      includeInputInList  
       disableOpenOnFocus
       renderInput={params => (
         <TextField

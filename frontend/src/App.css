@@ -15,6 +15,11 @@
 	background: #3b444b;
 }
 
+.rainbow {
+  background: linear-gradient(to right,#1e3c72, #2a5298);
+  
+}
+
 a, a:hover {
   text-decoration: none;
   color: inherit;
@@ -32,7 +37,7 @@ body {
 .horizontal-form{
   display: flex;
   width : 100%;
-  max-width: 300px;
+  max-width: 400px;
 }
 
 .bar-img{
@@ -69,6 +74,7 @@ body {
   height: calc(100% - 60px - 62px);
   overflow-y: auto;
   overflow-x: hidden;
+  background-color: white;
 }
 .chat-bar-top{
   display: flex;
@@ -77,7 +83,7 @@ body {
   padding: .75rem 1rem;
   border-bottom: 1px solid #edf0f6;
   height: 60px;
-  font-size: 15px;
+  font-size: 18px;
   background: #F7F9FD;
 }
 .chat-bar-search{
@@ -126,7 +132,7 @@ body {
 
 .meetup-avatars{
   display:flex;
-  padding: 0 .5rem;
+  padding: 0 1rem;
   align-items: center;
 }
 
@@ -178,6 +184,7 @@ body {
   width: 90%;
   margin: 0 auto;
   padding: 1.5rem 0;
+  background: white;
 }
 
 .chat-messages-wrapper{
@@ -394,10 +401,11 @@ body {
   display: flex;
   width: 70%;
   margin: 1rem auto 0 auto;
+  padding: 0 .1rem 0 0;
   border: 1px solid #eeeeef;
   border-radius: 4px;
   height: calc(100% - 3rem - 1rem - 12px - 1rem);
-  max-height: 250px;
+  max-height: 218px;
   background-color: white;
   overflow-y: auto;
   font-weight: 600 !important;
@@ -757,15 +765,15 @@ body {
 
 .meetup-card-bottom{
   display:flex;
-
-  padding: 0 2rem 1rem 2rem;
+  justify-content: space-between;
+  padding: 0 1rem 1rem 1rem;
   font-weight: 600;
   font-family: "Lato";
   text-transform: capitalize;
 }
 
 .meetup-card-top{
-  padding: 1rem 2rem 0rem 2rem;
+  padding: 1rem 1.25rem 0rem 1.25rem;
   display: flex;
   justify-content: space-between;
   text-transform: capitalize;
@@ -776,14 +784,29 @@ body {
   
 }
 
-.meetup-card-bottom > .meetup-card-icon {
-  margin-right: 20px;
+.meetup-card-bottom > .meetup-card-icon:not(:last-child) {
+  margin-right: 30px;
 }
 
 .meetup-card-icon{
   display: flex;
   align-items: center;
+  
+}
+
+.meetup-card-icon.flex-clip {
+  max-width: 150px;
+}
+
+.meetup-card-icon.flex-clip-2{
+  max-width: 200px;
+}
+
+.meetup-card-icon > .flex-ellipse {
+  min-width: 0;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .MuiTypography-h5 {

@@ -111,13 +111,13 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Edit chat messages and add emojis, upload picture
 
 ## Todo UI
-- [ ] Add tooltips to icons
+- [x] Add tooltips to icons
 - [ ] Fix responsiveness for all viewports
 - [ ] Natural transition to new options when meetup event is changed
 - [ ] Add transitions
 
 ## Todo Meetup
-- [ ] Meetup Card handle word overflow
+- [x] Meetup Card handle word overflow
 - [ ] Change meetups page to calendar 
 - [ ] Change display of meetups
 - [ ] Meetup email message nice html
@@ -126,9 +126,10 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Add ability to get current location
 - [ ] Probably change distance to be for overall event
 - [ ] Add scrollable notifications box for meetupevent 
+- [ ] Change categories to be asynchronous autcomplete
 
 ## Todo Users
-- [ ] Search Users
+- [x] Search Users
 - [ ] Add ability to add categories to a user (Preferences)
 - [ ] Handle user preferences
 - [ ] Add google social auth 

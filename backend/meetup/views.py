@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework import permissions, status
 from django.db.models.expressions import RawSQL
 from django.db.models import Q
+from random import shuffle
 import collections
 from django.forms.models import model_to_dict
 from meetup.serializers import CategorySerializer, UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer, FriendInviteSerializer, MeetupEventSerializer
@@ -22,26 +23,14 @@ def current_user(request):
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
 
-class UserView(APIView):
-    permission_classes = [permissions.AllowAny]
-
-    def get_object(self, pk):
-        user = get_object_or_404(User, pk=pk)
-        return user
+class UserListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        user = self.get_object(kwargs['id'])
-        serializer = UserSerializer(user, context={'plain': True})
-        return Response(serializer.data)
-
-    def patch(self, request, *args, **kwargs):
-        user = self.get_object(kwargs['id'])
-        serializer = UserSerializer(user, data=request.data, partial=True, context={'plain': True})
+        users = User.objects.all()
         
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        serializer = UserSerializer(users, many=True, context={'plain': True})
+        return Response(serializer.data)
 
     def post(self,request):
         """ Handles POST Request for User Signups
@@ -67,6 +56,27 @@ class UserView(APIView):
             return Response({"error" : serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
         return Response({"token": user.get_token(), "user": serializer.data})
+
+class UserView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get_object(self, pk):
+        user = get_object_or_404(User, pk=pk)
+        return user
+
+    def get(self, request, *args, **kwargs):
+        user = self.get_object(kwargs['id'])
+        serializer = UserSerializer(user, context={'plain': True})
+        return Response(serializer.data)
+
+    def patch(self, request, *args, **kwargs):
+        user = self.get_object(kwargs['id'])
+        serializer = UserSerializer(user, data=request.data, partial=True, context={'plain': True})
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
     
 class MeetupListView(APIView):
     permission_classes = [permissions.IsAuthenticated]

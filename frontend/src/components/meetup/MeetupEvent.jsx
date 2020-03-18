@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {deleteMeetupEvent} from "../../actions/meetup"
 import moment from "moment"
 import {Cached as CachedIcon, Edit as EditIcon, Schedule as ScheduleIcon, Delete as DeleteIcon} from '@material-ui/icons'
-import {IconButton, Typography, Grid, Grow} from '@material-ui/core'
+import {IconButton, Typography, Grid, Grow, Tooltip} from '@material-ui/core'
 import {compose} from 'redux';
 import {Restauraunt, Map} from '../components'
 import {Link} from 'react-router-dom'
@@ -85,18 +85,24 @@ class MeetupEvent extends Component {
             return (
                 <div className="mte-actions">
                     {!this.props.chosen && 
-                        <IconButton onClick={() => this.handleReload()} color="primary" aria-label="reload">
-                            <CachedIcon />
-                        </IconButton>
+                        <Tooltip title="Reload">
+                            <IconButton onClick={() => this.handleReload()} color="primary" aria-label="reload">
+                                <CachedIcon />
+                            </IconButton>
+                        </Tooltip>
                     }
                     <Link to={`/meetups/${this.props.uri}/events/${this.props.event.id}/edit`}>
-                        <IconButton color="inherit" aria-label="edit">
-                            <EditIcon></EditIcon>
-                        </IconButton>
+                        <Tooltip title="Edit">
+                            <IconButton color="inherit" aria-label="edit">
+                                <EditIcon></EditIcon>
+                            </IconButton>
+                        </Tooltip>
                     </Link>
-                    <IconButton onClick={() => this.handleDelete()} color="secondary" aria-label="delete">
-                        <DeleteIcon />
-                    </IconButton>
+                    <Tooltip title="Delete">
+                        <IconButton onClick={() => this.handleDelete()} color="secondary" aria-label="delete">
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
                 </div>
             )
         }
@@ -104,9 +110,9 @@ class MeetupEvent extends Component {
         const renderFinalizeActions = () => {
             return (
                 <div className="mte-factions">
-                    {!this.props.chosen && <Button className="button" size="small" variant="contained" color="primary" onClick={() => this.handleDecide()}>Decide</Button>}
-                    {!this.props.chosen && <Button className="button" size="small" variant="contained" color="primary"onClick={() => this.handleRandom()}>Random</Button>}
-                    {this.props.chosen && <Button className="button" size="small" variant="contained" color="primary" onClick={() => this.handleRedecide()}>Redecide</Button>}
+                    {!this.props.chosen && <Button className="button rainbow" size="small" variant="contained" color="primary" onClick={() => this.handleDecide()}>Decide</Button>}
+                    {!this.props.chosen && <Button className="button rainbow" size="small" variant="contained" color="primary" onClick={() => this.handleRandom()}>Random</Button>}
+                    {this.props.chosen && <Button className="button" size="small" variant="contained" onClick={() => this.handleRedecide()}>Redecide</Button>}
                 </div>
             )
         }

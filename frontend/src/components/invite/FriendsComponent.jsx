@@ -1,14 +1,21 @@
 import React, {Component} from 'react'
 import {getFriends, deleteFriend} from "../../actions/friend"
 import {sendFriendInvite} from "../../actions/invite"
+import {addGlobalMessage} from "../../actions/globalMessages"
 import {connect} from 'react-redux'
-import {compose} from 'redux'
-import {reduxForm, Field} from 'redux-form';
 import {Button, Typography, Grid} from '@material-ui/core';
 import {removeNotifs} from "../../actions/notifications"
-import {renderTextField, Friend} from '../components'
+import {Friend, AsynchronousAutocomplete} from '../components'
 
 class FriendsComponent extends Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            email: ""
+        }
+        this.handleClick = this.handleClick.bind(this)
+        this.handleType = this.handleType.bind(this)
+    }
 
     componentDidMount(){    
         this.props.getFriends(this.props.user.id);
@@ -17,30 +24,41 @@ class FriendsComponent extends Component{
         }
     }
 
-    onSubmit = (formProps) => {
-        this.props.sendFriendInvite(formProps)
+    handleSubmit = (e) => {
+        e.preventDefault()
+        if (this.props.user.email === this.state.email){
+            this.props.addGlobalMessage("error", "Cannot invite yourself.")
+        } else {
+            this.props.sendFriendInvite({email: this.state.email})
+        }
+        
+    }
+
+    handleType = (e) => {
+        this.setState({email: e.target.value})
+    }
+
+    handleClick = (e, value) => {
+        let email;
+        if (value === null){
+            email = ""
+        } else {
+            email = value.email
+        }
+        this.setState({email})
     }
 
     render(){
-        const sendFriendRequestForm = () => {
-            return (
-                <form className="horizontal-form" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                    <div>{this.props.errorMessage}</div>
-                    <Field name="email" component={renderTextField} {...{size:"small"}} label="Email"/>
-                    <Button size="small" type="submit" variant="contained" color="primary">Send</Button>
-                </form>
-            )
-        }
-
-        const {handleSubmit} = this.props;
-
         return (
             <div className="inner-wrap">   
                 {!this.props.isFriendsInitialized && <div>...Initializing Friends</div>}
                 {this.props.isFriendsInitialized && 
                     <div className="inner-header elevate">
                         <Typography variant="h5">Friends</Typography>
-                        {sendFriendRequestForm()}
+                        <form className="horizontal-form" onSubmit={this.handleSubmit}>
+                            <AsynchronousAutocomplete url={"/api/users/"} handleClick={this.handleClick} handleType={this.handleType}></AsynchronousAutocomplete>
+                            <Button size="small" type="submit" variant="contained" color="primary">Send</Button>
+                        </form>
                     </div>
                 }
                 {this.props.isFriendsInitialized && <div className="friends">
@@ -70,7 +88,8 @@ const mapDispatchToProps = {
     getFriends,
     deleteFriend,
     removeNotifs,
-    sendFriendInvite
+    sendFriendInvite,
+    addGlobalMessage
 }
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), reduxForm({form: 'friend'}))(FriendsComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(FriendsComponent)

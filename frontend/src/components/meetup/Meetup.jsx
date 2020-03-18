@@ -7,7 +7,7 @@ import {getFriends} from "../../actions/friend"
 import {Link} from 'react-router-dom'
 import moment from 'moment';
 import {addGlobalMessage} from '../../actions/globalMessages'
-import {Grid, Button, Typography, Avatar, List, ListItem, ListItemText, ListItemAvatar, IconButton} from "@material-ui/core"
+import {Grid, Button, Typography, Avatar, List, ListItem, ListItemText, ListItemAvatar, IconButton, Tooltip} from "@material-ui/core"
 import WebSocketService from "../../accounts/WebSocket";
 import {Delete as DeleteIcon, Edit as EditIcon, Room as RoomIcon, Chat as ChatIcon, Email as EmailIcon, Add as AddIcon, Today as TodayIcon} from '@material-ui/icons'
 import AuthenticationService from "../../accounts/AuthenticationService"
@@ -94,21 +94,29 @@ class Meetup extends Component {
                     </div>
                     <div>
                         <Link to={`/chat/${this.props.uri}`}>
-                            <IconButton color="primary" aria-label='chat'>
-                                <ChatIcon />
-                            </IconButton>
+                            <Tooltip title="Chat">
+                                <IconButton color="primary" aria-label='chat'>
+                                    <ChatIcon/>
+                                </IconButton>
+                            </Tooltip>
                         </Link>
-                        <IconButton onClick={!emailDisable ? () => this.handleEmail() : () => this.handleDisabledEmail(events)} style={!emailDisable ? {color: "black"} : {}} aria-label='email'>
-                            <EmailIcon />
-                        </IconButton>
+                        <Tooltip title="Email">
+                            <IconButton onClick={!emailDisable ? () => this.handleEmail() : () => this.handleDisabledEmail(events)} style={!emailDisable ? {color: "black"} : {}} aria-label='email'>
+                                <EmailIcon />
+                            </IconButton>
+                        </Tooltip>
                         <Link to={`/meetups/${uri}/edit`}>
-                            <IconButton style={{color: "black"}} aria-label='edit' >
-                                <EditIcon />
-                            </IconButton>
+                            <Tooltip title="Edit">
+                                <IconButton style={{color: "black"}} aria-label='edit' >
+                                    <EditIcon />
+                                </IconButton>
+                            </Tooltip>
                         </Link>
-                        <IconButton onClick={() => this.handleDelete()} color="secondary" aria-label='delete'>
-                            <DeleteIcon />
-                        </IconButton>
+                        <Tooltip title="Delete">
+                            <IconButton onClick={() => this.handleDelete()} color="secondary" aria-label='delete'>
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
                     </div>
                 </div>
             )
@@ -117,7 +125,7 @@ class Meetup extends Component {
         const renderFriends = () => {
             return (
                 <div className='outer-shell elevate'>
-                    <List style={{width: "100%"}}>
+                    <List style={{width: "100%", padding: "0"}}>
                         {this.props.friends.map((friend) => 
                             <MeetupFriend 
                                 key={friend.id} 
@@ -135,7 +143,7 @@ class Meetup extends Component {
             return (
 
                 <div className="outer-shell elevate">
-                    <List style={{width: "100%"}}>
+                    <List style={{width: "100%", padding: "0"}}>
                         {Object.keys(members).map((key) => 
                             <Link to={`/profile/${members[key].user.id}`}>
                                 <ListItem>

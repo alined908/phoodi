@@ -6,6 +6,9 @@ const useStyles = makeStyles(theme => ({
     small: {
       width: theme.spacing(3),
       height: theme.spacing(3),
+      marginLeft: "-14px",
+      border: "1px solid #fafafa",
+      fontSize: ".75rem"
     }
   }));
 
