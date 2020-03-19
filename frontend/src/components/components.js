@@ -45,6 +45,7 @@ import LiveUpdatingBadge from "./general/LiveUpdatingBadge"
 import Navigation from "./general/Navigation"
 import Profile from "./general/Profile"
 import GroupAvatars from './general/GroupAvatars'
+import NotificationWrapper from "./general/NotificationWrapper"
 
 export {
     ErrorComponent, LoginComponent, LogoutComponent, RegisterComponent, 
@@ -52,5 +53,5 @@ export {
     Friend, FriendsComponent, Invite, Invites,
     Map, Meetup, MeetupCard, MeetupEvent, MeetupEventForm, MeetupFriend, MeetupForm, MeetupPageComponent, MeetupsComponent, Restauraunt,
     CategoryAutocomplete, UserAutocomplete, Location, renderTextField, renderDatePicker, renderDateSimplePicker,
-    Body, GlobalMessage, GroupAvatars, HomeComponent, LiveUpdatingBadge, Navigation, Profile
+    Body, GlobalMessage, GroupAvatars, HomeComponent, LiveUpdatingBadge, Navigation, Profile, NotificationWrapper
 }

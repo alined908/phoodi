@@ -207,7 +207,7 @@ class MeetupEvent(models.Model):
             if i == len(self.entries) - 1:
                 categories += key
             else:
-                categories += key + ", "
+                categories += key + ","
         return categories
 
     def request_yelp_api(self):

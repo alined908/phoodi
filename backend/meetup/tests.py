@@ -204,7 +204,7 @@ class MeetupEventTest(TestCase):
 
     def test_convert_entries_to_string(self):
         categories = self.event.convert_entries_to_string()
-        self.assertEqual(categories, "chinese, italian")
+        self.assertEqual(categories, "chinese,italian")
 
     def test_start_after_end(self):
         pass

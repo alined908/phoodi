@@ -81,7 +81,7 @@ class ChatWindowComponent extends Component {
                 <div className="chat-messages-wrapper" >
                     <div className="chat-messages">
                         {this.props.activeChatMembers && this.props.messages && this.props.messages.map((msg) => 
-                            <ChatMessageComponent user={this.props.user} message={msg.message} members={this.props.activeChatMembers}/>
+                            <ChatMessageComponent key={msg.id} user={this.props.user} message={msg.message} members={this.props.activeChatMembers}/>
                         )}
                         <div ref={this.messagesEndRef} />
                     </div>

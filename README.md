@@ -98,38 +98,40 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Reload event (if price or distance or categories changes)
 - [x] Fix form data when meetup event refresh
 - [x] Redirect http to https
-
-## Todo Chat
 - [x] Filter chat rooms by meetup and friends
 - [x] Search chat rooms
 - [x] When other user submits message, chat message component doesn't rerender
 - [x] Add avatar to chat room for meetup + (x members)
 - [x] Give chat some more css upgrades
+- [x] Add tooltips to icons
+- [x] Meetup Card handle word overflow
+- [x] Search Users
+- [x] Handle websocket setup for notifications
+- [x] Create event , bugs on categories loads
+- [x] Edit in multiple categories but only shows Korean for example
+
+## Todo Chat
 - [ ] Handle timestamp logic
-- [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
+- [ ] Rearrange chat contacts (and list notifications) based off of whoever     messaged recently
 - [ ] Load chat messages smartly
 - [ ] Edit chat messages and add emojis, upload picture
 
 ## Todo UI
-- [x] Add tooltips to icons
 - [ ] Fix responsiveness for all viewports
 - [ ] Natural transition to new options when meetup event is changed
 - [ ] Add transitions
 
 ## Todo Meetup
-- [x] Meetup Card handle word overflow
 - [ ] Change meetups page to calendar 
 - [ ] Change display of meetups
 - [ ] Meetup email message nice html
-- [ ] Create event , bugs on categories loads
-- [ ] Edit in multiple categories but only shows Korean for example
+
 - [ ] Add ability to get current location
 - [ ] Probably change distance to be for overall event
 - [ ] Add scrollable notifications box for meetupevent 
 - [ ] Change categories to be asynchronous autcomplete
 
 ## Todo Users
-- [x] Search Users
 - [ ] Add ability to add categories to a user (Preferences)
 - [ ] Handle user preferences
 - [ ] Add google social auth 

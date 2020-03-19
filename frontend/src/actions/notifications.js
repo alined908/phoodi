@@ -2,6 +2,7 @@ import {GET_NOTIFS, REMOVE_NOTIFS} from "../constants/action-types"
 import {axiosClient} from "../accounts/axiosClient";
 
 export const getNumberNotifs = (event) => async dispatch => {
+    console.log(event.message)
     dispatch({type: GET_NOTIFS, payload: event.message})
 }
 

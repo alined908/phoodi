@@ -121,7 +121,7 @@ class ChatBarComponent extends Component {
                 </div>
                 <div className="chat-bar-search">
                     <SearchIcon/>
-                    <input class="chat-input" type="text" placeholder="Search Contacts..." value={this.state.searchInput} onChange={this.handleSearchInputChange}></input>
+                    <input className="chat-input" type="text" placeholder="Search Contacts..." value={this.state.searchInput} onChange={this.handleSearchInputChange}></input>
                 </div>
             </div>
         )

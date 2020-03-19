@@ -19,8 +19,8 @@ const GroupAvatars = (props) => {
 
     return (
         <AvatarGroup>
-            {upToThree.map((member) => 
-                <Tooltip title={member.first_name}>
+            {upToThree.map((member, index) => 
+                <Tooltip key={index} title={member.first_name}>
                     <Avatar className={classes.small} src={member.avatar}>
                         {member.first_name.charAt(0)}
                         {member.last_name.charAt(0)}

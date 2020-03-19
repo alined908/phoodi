@@ -36,7 +36,7 @@ class ContactComponent extends Component {
                         </div> : 
                         <>{membersKeys.map((member) => 
                             (member !== this.props.user.id.toString()) ? 
-                                <div className="chat-contact-info">
+                                <div key={member.id} className="chat-contact-info">
                                     <div className="chat-contact-avatar">
                                         <Avatar src={members[member].avatar}>
                                             {members[member].first_name.charAt(0)}{members[member].last_name.charAt(0)}

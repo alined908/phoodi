@@ -5,9 +5,6 @@ import {Menu, ChevronLeft, ChevronRight, People, Person, Settings, Chat,Mail, As
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {Body, LiveUpdatingBadge} from '../components'
-import WebSocketService from "../../accounts/WebSocket"
-import {getNumberNotifs} from "../../actions/notifications.js"
-import AuthenticationService from '../../accounts/AuthenticationService'
 
 const drawerWidth = 220;
 
@@ -70,24 +67,6 @@ const Navigation = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [socket, setSocket] = React.useState(new WebSocketService())
-  socket.addNotifCallbacks(props.getNumberNotifs)
-
-  React.useEffect(() => {
-    console.log("component mount called")
-    if (props.authenticated) {
-      const token = AuthenticationService.retrieveToken()
-      const path = `/ws/user/${props.user.id}/?token=${token}`;
-      socket.connect(path);
-      socket.waitForSocketConnection(socket.fetchNotifications({user: props.user.id}))
-    }
-
-    return () => {
-      if(props.authenticated && socket.exists()) {
-        socket.disconnect()
-      }
-    }
-  })
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -107,7 +86,7 @@ const Navigation = (props) => {
       
       <AppBar position="absolute" className={classes.appBar}>
         <Toolbar>
-          {props.authenticated && <IconButton color="black" aria-label="open drawer" onClick={handleDrawerOpen} edge="start">
+          {props.authenticated && <IconButton aria-label="open drawer" onClick={handleDrawerOpen} edge="start">
             <Menu />
           </IconButton>}
           <Typography className={classes.title} variant="h6" noWrap>
@@ -211,8 +190,4 @@ function mapStatetoProps(state) {
   }
 }
 
-const mapDispatchToProps = {
-  getNumberNotifs
-}
-
-export default connect(mapStatetoProps, mapDispatchToProps)(Navigation)
+export default connect(mapStatetoProps)(Navigation)
