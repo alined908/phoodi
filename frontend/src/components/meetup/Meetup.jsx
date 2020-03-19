@@ -197,7 +197,11 @@ class Meetup extends Component {
                     <Grid item xs={12}>
                         <div className="inner-header elevate">
                             <Typography variant="h5">Events</Typography>
-                            <Link socket={this.state.socket} to={`/meetups/${this.props.uri}/new`}><Button startIcon={<AddIcon />} className="button" variant="contained" color="primary">Event</Button></Link>
+                            <Link socket={this.state.socket} to={`/meetups/${this.props.uri}/new`}>
+                                <Button startIcon={<AddIcon />} className="button rainbow" variant="contained" color="primary">
+                                    Event
+                                </Button>
+                            </Link>
                         </div>
                     </Grid>
                     <Grid item xs={12}>{renderEvents(events)}</Grid>

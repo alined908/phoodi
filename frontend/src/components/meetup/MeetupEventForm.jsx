@@ -130,8 +130,11 @@ class MeetupEventForm extends Component {
                                 <Grid item xs={12}>
                                     <Typography variant="h6">Meetup Event Information</Typography>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} md={6}>
                                     <Field required name="title" component={renderTextField} label="Event Name"></Field>
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <CategoryAutocomplete entries={this.state.entries} handleClick={this.onTagsChange}/>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <Field required name="start" component={renderDatePicker} label="Start Time"></Field>
@@ -163,10 +166,7 @@ class MeetupEventForm extends Component {
                                         </div>  
                                     </div>
                                 </Grid>
-                                <Grid item xs={12}>
-                                    <Typography variant="h6">Categories</Typography>
-                                    <CategoryAutocomplete entries={this.state.entries} handleClick={this.onTagsChange}/>
-                                </Grid>
+                                
                                 <Grid item xs={12}>
                                     <Fab color="primary" variant="extended" type="submit" aria-label="add"> 
                                         {create ? "Add Event" : "Edit Event"}

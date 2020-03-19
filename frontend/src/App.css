@@ -16,7 +16,7 @@
 }
 
 .rainbow {
-  background: linear-gradient(to right,#1e3c72, #2a5298);
+  background: linear-gradient(to right,#232526, #414345);
   
 }
 
@@ -585,6 +585,7 @@ body {
 .friend-chat{
   background-color: white;
   border-radius: 5px;
+  border-bottom: 1px solid #edf0f6;
 }
 
 .friends {

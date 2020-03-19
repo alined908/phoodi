@@ -7,6 +7,7 @@ import {
     Room as RoomIcon, Phone as PhoneIcon, Launch as LaunchIcon
 } from '@material-ui/icons'
 import {ADD_GLOBAL_MESSAGE} from '../../constants/action-types'
+import {Tooltip} from '@material-ui/core'
 
 
 class Restauraunt extends Component {
@@ -83,19 +84,24 @@ class Restauraunt extends Component {
         return (
             <div className="rst-actions">
                 <div className={"rst-action-icon " + checkOwn(voteStatus.like)}>
-                    {!like && <ThumbUpOutlinedIcon disabled={banned} className="clickable" onClick={() => this.handleClick(voteStatus.like)}/>}
-                    {like && <ThumbUpIcon disabled={banned} className="clickable" color="primary" onClick={() => this.handleClick(voteStatus.like)}/>}
+                    
+                        {!like && <Tooltip title="Like"><ThumbUpOutlinedIcon disabled={banned} className="clickable" onClick={() => this.handleClick(voteStatus.like)}/></Tooltip>}
+                        {like && <Tooltip title="Undo Like"><ThumbUpIcon disabled={banned} className="clickable" color="primary" onClick={() => this.handleClick(voteStatus.like)}/></Tooltip>}
+                    
                     <span className="rst-action-score">{scores[1]}</span>
                 </div>
                 <div className={"rst-action-icon " + checkOwn(voteStatus.dislike)}>
-                    {!dislike && <ThumbDownOutlinedIcon disabled={banned} className="clickable" onClick={() => this.handleClick(voteStatus.dislike)}/>}
-                    {dislike && <ThumbDownIcon disabled={banned} className="clickable" onClick={() => this.handleClick(voteStatus.dislike)}/>}
-                    <span className="rst-action-score">{scores[2]}</span>
+                    
+                        {!dislike && <Tooltip title="Dislike"><ThumbDownOutlinedIcon disabled={banned} className="clickable" onClick={() => this.handleClick(voteStatus.dislike)}/></Tooltip>}
+                        {dislike && <Tooltip title="Undo Dislike"><ThumbDownIcon disabled={banned} className="clickable" onClick={() => this.handleClick(voteStatus.dislike)}/></Tooltip>}
+                        <span className="rst-action-score">{scores[2]}</span>
+                    
                 </div>
                 <div className={"rst-action-icon " + checkOwn(voteStatus.ban)}>
-                    {banned && <CancelIcon disabled={!ban} className="clickable" color="secondary" onClick={() => this.handleClick(voteStatus.ban)}/>}
-                    {!banned && <CancelOutlinedIcon className="clickable" onClick={() => this.handleClick(voteStatus.ban)}/>}
-                    <span className="rst-action-score">{scores[3]}</span>
+                        {!banned && <Tooltip title="Ban"><CancelOutlinedIcon className="clickable" onClick={() => this.handleClick(voteStatus.ban)}/></Tooltip>}
+                        {banned && <Tooltip title="Undo Ban"><CancelIcon disabled={!ban} className="clickable" color="secondary" onClick={() => this.handleClick(voteStatus.ban)}/></Tooltip>}
+                        <span className="rst-action-score">{scores[3]}</span>
+                    
                 </div>
             </div>
         )
@@ -106,8 +112,13 @@ class Restauraunt extends Component {
             <>
                 <div className="rst">
                     <div className="rst-info">
-                        <span >
-                        <a className="rst-name" target="_blank" rel="noopener noreferrer" href={data.url}>{data.name} <LaunchIcon fontSize={"inherit"} fontWeight="inherit"/></a></span>
+                        <span>
+                            <Tooltip title="More information on Yelp page" placement="top">
+                                <a className="rst-name" target="_blank" rel="noopener noreferrer" href={data.url}>
+                                    {data.name} <LaunchIcon fontSize={"inherit"} fontWeight="inherit"/>
+                                </a>
+                            </Tooltip>
+                        </span>
                         <span className="rst-rating">{this.determineRating(data.rating)}</span>
                     </div>
                     <div className="rst-img" style={{backgroundImage: `url(${data.image_url})`}}>
@@ -153,8 +164,12 @@ class Restauraunt extends Component {
                 <div className="rst-horizontal">  
                     {this.renderRestauraunt(data)}
                     <div className="rst-horz-info">
-                        <div className="rst-horz-info-entry"><RoomIcon/> {data.location.address1}, {data.location.city} {data.location.state} {data.location.zip_code}</div>
-                        <div className="rst-horz-info-entry"><PhoneIcon/> {this.formatPhoneNumber(data.phone)}</div>
+                        <div className="rst-horz-info-entry">
+                            <RoomIcon/> {data.location.address1}, {data.location.city} {data.location.state} {data.location.zip_code}
+                        </div>
+                        <div className="rst-horz-info-entry">
+                            <PhoneIcon/> {this.formatPhoneNumber(data.phone)}
+                        </div>
                     </div>
                 </div>
             )

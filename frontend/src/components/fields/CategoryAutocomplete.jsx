@@ -36,12 +36,10 @@ const CategoryAutocomplete = (props) => {
     }, [loading]);
   return (
     <Autocomplete
-      size="small"
       multiple
       value={props.entries}
       autoHighlight
       freeSolo
-      style={{ width: 400 }}
       open={open}
       onOpen={() => {
         setOpen(true);
@@ -67,10 +65,12 @@ const CategoryAutocomplete = (props) => {
                 ))}
             </>
       )}}
+      
       renderInput={params => (
         <TextField
           {...params}
           variant="outlined"
+          label="Categories"
           InputProps={{
             ...params.InputProps,
             endAdornment: (
