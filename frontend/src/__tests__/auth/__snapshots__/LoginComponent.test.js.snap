@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoginComponent renders without crashing given props 1`] = `
+<div
+  className="inner-wrap"
+>
+  <div
+    className="inner-header elevate"
+  >
+    <WithStyles(ForwardRef(Typography))
+      variant="h5"
+    >
+      Login
+    </WithStyles(ForwardRef(Typography))>
+  </div>
+  <div
+    className="form"
+  >
+    <WithStyles(ForwardRef(Paper))
+      className="form-paper"
+      elevation={3}
+    >
+      <form>
+        <WithStyles(ForwardRef(Grid))
+          container={true}
+          spacing={3}
+          style={
+            Object {
+              "padding": "1rem",
+            }
+          }
+        >
+          <WithStyles(ForwardRef(Grid))
+            item={true}
+            xs={12}
+          >
+            <Field
+              component={[Function]}
+              label="Email"
+              name="email"
+            />
+          </WithStyles(ForwardRef(Grid))>
+          <WithStyles(ForwardRef(Grid))
+            item={true}
+            xs={12}
+          >
+            <Field
+              component={[Function]}
+              label="Password"
+              name="password"
+              type="password"
+            />
+          </WithStyles(ForwardRef(Grid))>
+          <WithStyles(ForwardRef(Grid))
+            item={true}
+            xs={12}
+          >
+            <WithStyles(ForwardRef(Fab))
+              aria-label="login"
+              color="primary"
+              type="submit"
+              variant="extended"
+            >
+              Login
+            </WithStyles(ForwardRef(Fab))>
+          </WithStyles(ForwardRef(Grid))>
+        </WithStyles(ForwardRef(Grid))>
+      </form>
+    </WithStyles(ForwardRef(Paper))>
+  </div>
+</div>
+`;

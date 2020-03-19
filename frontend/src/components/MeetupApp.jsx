@@ -3,7 +3,7 @@ import { Router } from 'react-router';
 import {Provider} from 'react-redux'
 import {Navigation} from "./components"
 import {store} from "../store/index";
-import createBrowserHistory from 'history/createBrowserHistory'
+import {createBrowserHistory} from 'history'
 export const history = createBrowserHistory()
 
 class MeetupApp extends Component {

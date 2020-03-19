@@ -59,3 +59,5 @@ export default compose (
     connect(mapStatetoProps, mapDispatchToProps),
     reduxForm({form: 'signin'})
 )(LoginComponent);
+
+export {LoginComponent as UnderlyingLoginComponent}
