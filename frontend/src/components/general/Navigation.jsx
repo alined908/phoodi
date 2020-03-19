@@ -75,11 +75,11 @@ const Navigation = (props) => {
 
   React.useEffect(() => {
     console.log("component mount called")
-    if (props.authenticated && open) {
+    if (props.authenticated) {
       const token = AuthenticationService.retrieveToken()
       const path = `/ws/user/${props.user.id}/?token=${token}`;
       socket.connect(path);
-      socket.waitForSocketConnection(() => socket.fetchNotifications({user: props.user.id}))
+      socket.waitForSocketConnection(socket.fetchNotifications({user: props.user.id}))
     }
 
     return () => {

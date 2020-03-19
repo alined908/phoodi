@@ -30,11 +30,12 @@ import MeetupsComponent from "./meetup/MeetupsComponent";
 import Restauraunt from "./meetup/Restauraunt";
 
 //fields
-import AsynchronousAutocomplete from "./fields/AsynchronousAutocomplete"
+import CategoryAutocomplete from "./fields/CategoryAutocomplete"
 import Location from "./fields/Location"
 import renderTextField from "./fields/renderTextField"
 import renderDatePicker from "./fields/renderDatePicker"
 import renderDateSimplePicker from "./fields/renderDateSimplePicker"
+import UserAutocomplete from "./fields/UserAutocomplete"
 
 //General
 import Body from "./general/Body"
@@ -50,6 +51,6 @@ export {
     ChatBarComponent, ChatComponent, ChatMessageComponent, ChatWindowComponent, ContactComponent,
     Friend, FriendsComponent, Invite, Invites,
     Map, Meetup, MeetupCard, MeetupEvent, MeetupEventForm, MeetupFriend, MeetupForm, MeetupPageComponent, MeetupsComponent, Restauraunt,
-    AsynchronousAutocomplete, Location, renderTextField, renderDatePicker, renderDateSimplePicker,
+    CategoryAutocomplete, UserAutocomplete, Location, renderTextField, renderDatePicker, renderDateSimplePicker,
     Body, GlobalMessage, GroupAvatars, HomeComponent, LiveUpdatingBadge, Navigation, Profile
 }

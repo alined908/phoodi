@@ -5,7 +5,7 @@ import {addGlobalMessage} from "../../actions/globalMessages"
 import {connect} from 'react-redux'
 import {Button, Typography, Grid} from '@material-ui/core';
 import {removeNotifs} from "../../actions/notifications"
-import {Friend, AsynchronousAutocomplete} from '../components'
+import {Friend, UserAutocomplete} from '../components'
 
 class FriendsComponent extends Component{
     constructor(props){
@@ -56,7 +56,7 @@ class FriendsComponent extends Component{
                     <div className="inner-header elevate">
                         <Typography variant="h5">Friends</Typography>
                         <form className="horizontal-form" onSubmit={this.handleSubmit}>
-                            <AsynchronousAutocomplete url={"/api/users/"} handleClick={this.handleClick} handleType={this.handleType}></AsynchronousAutocomplete>
+                            <UserAutocomplete url={"/api/users/"} handleClick={this.handleClick} handleType={this.handleType}></UserAutocomplete>
                             <Button size="small" type="submit" variant="contained" color="primary">Send</Button>
                         </form>
                     </div>

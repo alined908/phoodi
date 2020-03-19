@@ -159,7 +159,7 @@ class MeetupEventsListView(APIView):
         meetup = get_object_or_404(Meetup, uri=uri)
         creator = get_object_or_404(MeetupMember, meetup=meetup, user=user)
         try:
-            start, end, title, distance, price, entries = request.data['start'], request.data['end'], request.data['title'], request.data['distance'], request.data['prices'], request.data['entries']
+            start, end, title, distance, price, entries = request.data['start'], request.data['end'], request.data['title'], request.data['distance'], request.data['price'], request.data['entries']
             event = MeetupEvent.objects.create(creator=creator, meetup=meetup, start=start, end=end, title=title, entries=entries, distance=distance, price=price)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -4,7 +4,7 @@ import {Button, Typography, Paper, Grid, ButtonGroup, Slider, Fab, TextField} fr
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {addMeetupEvent, getMeetup, getMeetupEvents} from "../../actions/meetup"
-import {renderDatePicker, renderTextField} from '../components'
+import {renderDatePicker, renderTextField, CategoryAutocomplete} from '../components'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import {Link} from 'react-router-dom'
 import {axiosClient} from "../../accounts/axiosClient"
@@ -37,7 +37,6 @@ class MeetupEventForm extends Component {
     constructor(props){
         super(props)
         this.state = {
-            categories: localStorage.getItem('categories') === null ? [] : JSON.parse(localStorage.getItem('categories')),
             entries: props.entries ? props.entries : [],
             prices: props.prices ? convertPricesToState(props.prices) : [true, true , false, false],
             distance: props.distance ? reconvert[this.props.distance] : 10,
@@ -47,28 +46,17 @@ class MeetupEventForm extends Component {
     }
 
     async componentDidMount(){
-        if (!this.props.isMeetupInitialized){
-            this.props.getMeetup(this.props.match.params.uri)
-        } 
-        if (!this.props.isMeetupEventsInitialized){
-            this.props.getMeetupEvents(this.props.match.params.uri)
+        if (!this.props.isMeetupInitialized || !this.props.isMeetupEventsInitialized){
+            await Promise.all(
+                [   
+                    this.props.getMeetup(this.props.match.params.uri), 
+                    this.props.getMeetupEvents(this.props.match.params.uri)
+                ]
+            )
         }
-
-        if (localStorage.getItem("categories") === null) {
-            await axiosClient.get("/api/categories/")
-            .then((response) =>
-                this.handleCategoriesReceived(response.data.categories)
-            );
-        } 
-    }
-
-    handleCategoriesReceived = (categories) => {
-        localStorage.setItem("categories", JSON.stringify(categories));
-        this.setState({categories: categories});
     }
 
     static getDerivedStateFromProps(props, state){
-        console.log("derived state")
         if (props.type === "edit" && !state.initialized && props.isMeetupEventsInitialized && props.isMeetupInitialized){
             return {
                 title: props.title,
@@ -95,6 +83,7 @@ class MeetupEventForm extends Component {
         const prices = indices.join(", ")
         const uri = this.props.match.params.uri
         const data = {entries: this.handleEntries(), distance: convert[this.state.distance], price: prices, ...formProps}
+        console.log(data)
 
         if (this.props.type === "create"){
             axiosClient.post(
@@ -127,7 +116,7 @@ class MeetupEventForm extends Component {
 
     render () {
         const create = this.props.type === "create"
-        console.log(this.state.entries)
+
         return (
             <div className="inner-wrap">
                 <div className="inner-header elevate">
@@ -176,10 +165,7 @@ class MeetupEventForm extends Component {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Typography variant="h6">Categories</Typography>
-                                    {console.log(this.state.categories)}
-                                    <Autocomplete multiple value={this.state.entries} options={this.state.categories} onChange={this.onTagsChange} getOptionLabel={option => option.label} 
-                                        renderInput={params => (<TextField {...params} variant="outlined"/>)}  
-                                    />
+                                    <CategoryAutocomplete entries={this.state.entries} handleClick={this.onTagsChange}/>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Fab color="primary" variant="extended" type="submit" aria-label="add"> 
@@ -220,7 +206,7 @@ function mapStateToProps(state, ownProps){
             },
             isMeetupInitialized: false,
             isMeetupEventsInitialized: false,
-            entries: {},
+            entries: [],
         }
     }
 }

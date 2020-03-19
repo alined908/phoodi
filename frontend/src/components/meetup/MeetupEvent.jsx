@@ -112,7 +112,7 @@ class MeetupEvent extends Component {
                 <div className="mte-factions">
                     {!this.props.chosen && <Button className="button rainbow" size="small" variant="contained" color="primary" onClick={() => this.handleDecide()}>Decide</Button>}
                     {!this.props.chosen && <Button className="button rainbow" size="small" variant="contained" color="primary" onClick={() => this.handleRandom()}>Random</Button>}
-                    {this.props.chosen && <Button className="button" size="small" variant="contained" onClick={() => this.handleRedecide()}>Redecide</Button>}
+                    {this.props.chosen && <Button className="button rainbow" size="small" variant="contained" color="primary" onClick={() => this.handleRedecide()}>Redecide</Button>}
                 </div>
             )
         }
