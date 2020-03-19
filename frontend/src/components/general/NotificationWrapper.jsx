@@ -16,10 +16,7 @@ class NotificationWrapper extends Component {
     componentDidMount(){
         console.log("notification wrapper app component did mount")
         if (this.props.authenticated) {
-            const token = AuthenticationService.retrieveToken()
-            const path = `/ws/user/${this.props.user.id}/?token=${token}`;
-            this.state.socket.connect(path);
-            this.state.socket.waitForSocketConnection(()=>this.state.socket.fetchNotifications({user: this.props.user.id}))
+            this.connectSocket()
         }
     }
 
@@ -27,8 +24,17 @@ class NotificationWrapper extends Component {
         if(this.props.authenticated !== prevProps.authenticated){
             if(this.state.socket.exists()) {
                 this.state.socket.disconnect()
+            } else {
+                this.connectSocket()
             }
         }
+    }
+
+    connectSocket = () => {
+        const token = AuthenticationService.retrieveToken()
+        const path = `/ws/user/${this.props.user.id}/?token=${token}`;
+        this.state.socket.connect(path);
+        this.state.socket.waitForSocketConnection(()=>this.state.socket.fetchNotifications({user: this.props.user.id}))
     }
 
     render() {

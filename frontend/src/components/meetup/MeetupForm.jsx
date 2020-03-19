@@ -9,19 +9,12 @@ import {renderTextField, renderDateSimplePicker, Location} from '../components'
 import moment from "moment"
 
 class MeetupForm extends Component {
-
-    onSubmit = (formProps) => {
-        if (this.props.type === "create") {
-            this.props.addMeetup(formProps, (uri) => {
-                this.props.history.push(`/meetups/${uri}`)
-            })
+    constructor(props){
+        super(props)
+        this.state = {
+            location: ""
         }
-        
-        if (this.props.type === "edit"){
-            this.props.editMeetup(formProps, this.props.meetup.uri, (uri) => [
-                this.props.history.push(`/meetups/${uri}`)
-            ])
-        }
+        this.handleClick = this.handleClick.bind(this)
     }
 
     componentDidMount() {
@@ -29,6 +22,34 @@ class MeetupForm extends Component {
             this.props.getMeetup(this.props.match.params.uri)
         }
     }
+
+    onSubmit = (formProps) => {
+        let data = {...formProps, location: this.state.location}
+
+        if (this.props.type === "create") {
+            this.props.addMeetup(data, (uri) => {
+                this.props.history.push(`/meetups/${uri}`)
+            })
+        }
+        
+        if (this.props.type === "edit"){
+            this.props.editMeetup(data, this.props.meetup.uri, (uri) => [
+                this.props.history.push(`/meetups/${uri}`)
+            ])
+        }
+    }
+
+    handleClick = (e, value) => {
+        let location;
+        if (value === null){
+            location = ""
+        } else {
+            location = value.description
+        }
+        this.setState({location})
+    }
+
+
 
     render (){
         const {handleSubmit} = this.props;
@@ -56,7 +77,7 @@ class MeetupForm extends Component {
                                     <Field name="name" component={renderTextField} label="Name"/>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
-                                    <Field name="location" component={Location} label="Location"/>
+                                    <Location label="Location" handleClick={this.handleClick}/>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <Field name="date" component={renderDateSimplePicker} disabled={this.props.isMeetupInitialized && moment(this.props.meetup.date).add(1, "d").isBefore(moment().toDate())} label="Date"></Field>

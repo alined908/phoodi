@@ -89,6 +89,7 @@ export default function GoogleMaps(props) {
       options={options}
       autoComplete
       autoHighlight
+      onChange={props.handleClick}
       includeInputInList  
       disableOpenOnFocus
       renderInput={params => (

@@ -101,7 +101,12 @@ class MeetupListView(APIView):
 
     def post(self, request, *args, **kwargs):
         try:
+            print(request.user)
+            print(request.data['date'])
+            print(request.data['name'])
+            print(request.data['location'])
             user, date, name, location = request.user, request.data['date'], request.data['name'], request.data['location']
+            print('hello')
             meetup = Meetup.objects.create(date=date, location=location, name=name)
             meetup.members.create(user=user, meetup=meetup)
             return Response({'status': 'Success', 'meetup': MeetupSerializer(meetup, context={"user": user}).data, 'message': "new meetup created"})

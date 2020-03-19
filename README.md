@@ -125,7 +125,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Change meetups page to calendar 
 - [ ] Change display of meetups
 - [ ] Meetup email message nice html
-
 - [ ] Add ability to get current location
 - [ ] Probably change distance to be for overall event
 - [ ] Add scrollable notifications box for meetupevent 
