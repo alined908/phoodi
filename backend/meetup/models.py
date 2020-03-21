@@ -131,16 +131,14 @@ class User(AbstractBaseUser):
         token = jwt_encode_handler(payload)
         return token
 
-class Profile(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255, default="profile")
-    location = models.CharField(max_length=30,blank=True)
-
 class Meetup(models.Model):
     uri = models.URLField(default=generate_unique_uri)
     location = models.TextField()
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
     name = models.CharField(max_length=255, default="Meetup")
     date = models.DateField()
+    # public = models.BooleanField()
     objects = models.Manager()
 
     def __str__(self):
@@ -173,11 +171,6 @@ class MeetupMember(models.Model):
     def used_ban(self):
         return self.ban
 
-class Category(models.Model):
-    label = models.CharField(max_length=255)
-    api_label = models.CharField(max_length=255)
-    objects = models.Manager()
-
 class MeetupEvent(models.Model):
     meetup = models.ForeignKey(Meetup, related_name="events", on_delete=models.CASCADE)
     creator = models.ForeignKey(MeetupMember, related_name="created_events", on_delete=models.CASCADE)
@@ -203,7 +196,7 @@ class MeetupEvent(models.Model):
         categories = ""
         for i, key in enumerate(self.entries): 
             category = Category.objects.get(api_label=key)
-            MeetupCategory.objects.create(event=self, category=category)
+            MeetupCategory.objects.create(event=self, category=category, meetup=self.meetup)
             if i == len(self.entries) - 1:
                 categories += key
             else:
@@ -312,11 +305,6 @@ class MeetupEventOption(models.Model):
 
         member.save()
         self.save()
-                  
-class MeetupCategory(models.Model):
-    event = models.ForeignKey(MeetupEvent, related_name="categories", on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, related_name="meetup_events", on_delete=models.CASCADE)
-    objects = models.Manager()
 
 class MeetupEventOptionVote(models.Model):
     class Vote(models.IntegerChoices):
@@ -369,9 +357,24 @@ class FriendInvite(Invite):
                 Friendship.objects.get_or_create(creator=self.sender, friend=self.receiver)
         super(FriendInvite, self).save(force_insert, force_update, *args, **kwargs)
         
+class Category(models.Model):
+    label = models.CharField(max_length=255)
+    api_label = models.CharField(max_length=255)
+    objects = models.Manager()
+
 class Preference(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="preferences")
-    label = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="preferences")
+    category = models.ForeignKey(Category, on_delete = models.CASCADE)
+    name = models.CharField(max_length=255)
+    ranking = models.PositiveSmallIntegerField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    objects = models.Manager()
+
+class MeetupCategory(models.Model):
+    meetup = models.ForeignKey(Meetup, related_name="meetup_categories", on_delete=models.CASCADE)
+    event = models.ForeignKey(MeetupEvent, related_name="event_categories", on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, related_name="meetup_events", on_delete=models.CASCADE)
+    objects = models.Manager()
 
 class Friendship(models.Model):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="friend_creators", on_delete=models.CASCADE)

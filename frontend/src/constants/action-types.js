@@ -46,3 +46,9 @@ export const REMOVE_NOTIFS = 'remove_chat_notifs';
 //Errors
 export const ADD_GLOBAL_MESSAGE = 'add_global_message';
 export const REMOVE_GLOBAL_MESSAGE = 'remove_global_message';
+
+//Preferences
+export const GET_PREFERENCES = 'get_preferences';
+export const ADD_PREFERENCE = "add_preference";
+export const EDIT_PREFERENCE = 'edit_preference';
+export const DELETE_PREFERENCE = 'delete_preference';

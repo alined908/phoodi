@@ -86,7 +86,7 @@ class ChatWindowComponent extends Component {
                         <div ref={this.messagesEndRef} />
                     </div>
                 </div>
-                {this.props.activeChatMembers && 
+                {this.props.activeChatMembers ? 
                     <div ref={(el) => { this.messagesEnd = el; }} className="chat-input">
                         <form className="chat-input-form">
                             <input className="chat-input"
@@ -105,6 +105,9 @@ class ChatWindowComponent extends Component {
                                 Send
                             </Button>
                         </div>
+                    </div> :
+                    <div className="chat-input"> 
+
                     </div>
                 }
             </div>

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
-from meetup.models import User, Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite
+from meetup.models import User, Preference, MeetupCategory, Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite
 from django.forms.models import model_to_dict
 from channels.db import database_sync_to_async
 from django.core.exceptions import ObjectDoesNotExist
@@ -47,6 +47,22 @@ class UserSerializerWithToken(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'email', 'first_name', 'last_name', 'password', 'avatar')
+
+class PreferenceSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField('_get_user')
+    category = serializers.SerializerMethodField('_get_category')
+
+    def _get_user(self, obj):
+        serializer = UserSerializer(obj.user, context={"plain": True})
+        return serializer.data
+
+    def _get_category(self, obj):
+        serializer = CategorySerializer(obj.category)
+        return serializer.data
+
+    class Meta:
+        model = Preference
+        fields = ('id', 'user', 'category', 'name', 'ranking', 'timestamp')
     
 class FriendshipSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('_get_friend')

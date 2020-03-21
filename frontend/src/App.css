@@ -1,7 +1,10 @@
 /* Scrollbar*/
+:root{
+  --bg-color: #f5f7fa  11.2%;
+}
 
 ::-webkit-scrollbar{
-  width: 7px;
+  width: 6.5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -17,7 +20,7 @@
 
 .rainbow {
   background: linear-gradient(to right,#232526, #414345);
-  
+  color: white !important;
 }
 
 a, a:hover {
@@ -84,12 +87,12 @@ body {
   border-bottom: 1px solid #edf0f6;
   height: 60px;
   font-size: 18px;
-  background: #F7F9FD;
+  background: var(--bg-color);
 }
 .chat-bar-search{
   display:flex;
   align-items: center;
-  background: #F7F9FD;
+  background: var(--bg-color);
   margin-top: auto;
   width: 100%;
   padding: 0 1rem;
@@ -116,7 +119,7 @@ body {
   padding: .75rem 1rem;
   border-bottom: 1px solid #edf0f6;
   height: 60px;
-  background: #F7F9FD;
+  background: var(--bg-color);
 }
 
 .chat-contact{
@@ -262,7 +265,7 @@ body {
   width: 100%;
   height: 62px;
   padding: .5rem 1rem;
-  background: #F7F9FD;
+  background: var(--bg-color);
   color: #2b2c33;
   border: 0;
   font-size: .8rem;
@@ -401,9 +404,9 @@ body {
   display: flex;
   width: 70%;
   margin: 1rem auto 0 auto;
-  padding: 0 .1rem 0 0;
+  padding: 0 .05rem 0 0;
   border: 1px solid #eeeeef;
-  border-radius: 4px;
+  border-radius: 7px;
   height: calc(100% - 3rem - 1rem - 12px - 1rem);
   max-height: 218px;
   background-color: white;
@@ -584,7 +587,6 @@ body {
 
 .friend-chat{
   background-color: white;
-  border-radius: 5px;
   border-bottom: 1px solid #edf0f6;
 }
 
@@ -659,8 +661,8 @@ body {
 }
 
 .user-avatar {
-  width: 100px !important;
-  height: 100px !important;
+  width: 80px !important;
+  height: 80px !important;
   font-size: 2rem !important;
 }
 
@@ -678,17 +680,6 @@ body {
   vertical-align: middle;
 }
 
-
-.profile{
-  display: flex;
-  padding: 2rem;
-  margin: 2rem auto;
-  width: 60%;
-  border: 1px solid #eeeeef;
-  border-radius: 4px;
-  align-items: center;
-  background-color: white;
-}
 
 .categories {
   display: flex;
@@ -735,9 +726,12 @@ body {
 }
 
 .meetups-container{
-  width: 95%;
+  padding: 1rem;
+  height: calc(100% - 60px);
   margin: 0 auto;
   display: flex;
+  font-family: "Lato";
+  font-weight: 600;
 }
 
 .meetup-card-inner{
@@ -800,7 +794,7 @@ body {
 }
 
 .meetup-card-icon.flex-clip-2{
-  max-width: 200px;
+  max-width: 140px;
 }
 
 .meetup-card-icon > .flex-ellipse {
@@ -964,4 +958,215 @@ body {
 
 .chat-mobile .chat-messages{
   min-height: 300px;
+}
+
+.meetups-inner-wrap{
+  margin: 0 0 0 2rem;
+  height: 100%;
+  width: 100%;
+}
+
+.meetups-component{
+  height: 85%;
+  display: flex;
+  width: 85%;
+  margin: auto;
+}
+
+.meetups-categories{
+  font-family: "Lato";
+  margin: auto 0;
+  font-weight: 600;
+  max-width: 350px;
+  height: 100%;
+}
+
+.meetups-categories-inner{
+  background-color: white;
+  height: 100%;
+  width: 100%;
+}
+
+.preset{
+  height: calc(100% - 60px - 60px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #F7F9FD;
+  padding: 0 1rem;
+}
+
+.preset-category{
+  display:flex;
+  align-items: center;
+  border-radius: 4px;
+  background-color: rgb(255,255,255);
+  height: calc(2rem + 10px);
+  margin: .5rem 0;
+  padding: 0 1rem;
+  cursor: pointer;
+}
+
+.active {
+  border: 2px solid #3f51b5;
+  border-radius: 4px; 
+}
+
+.preset-category img {
+  width: auto;
+  height: 20px;
+}
+
+.preset-category span{
+  margin-left: 10px;
+}
+
+.search {
+  display:flex;
+  align-items: center;
+  padding: 0 1rem;
+  height: 60px;
+  width: 100%;
+  min-width: 300px;
+  background-color: white;
+}
+
+.meetups-inner-header{
+  background-color: white !important;
+}
+
+.meetups-search-bar{
+  display:flex;
+  flex: 1 1 0;
+  padding: 0 2rem;
+  align-items: center;
+}
+
+.meetups-categories-top, .meetups-inner-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .75rem 1rem;
+  border-bottom: 1px solid #edf0f6;
+  height: 60px;
+  font-size: 18px;
+  font-family: "Lato";
+  font-weight: 600;
+  background: white;
+}
+
+.category-autocomplete{
+  width: 100%;
+  margin-left: 5px;
+}
+
+.category-autocomplete .MuiInputBase-input, .category-autocomplete .MuiFormLabel-root {
+  font-size: .8rem;
+  font-weight: 600;
+  font-family: "Lato";
+}
+
+
+/*Profile*/
+.profile{
+  height: 80%;
+  display: flex;
+  width: 80%;
+  margin: auto;
+}
+
+.column{
+  font-family: "Lato";
+  margin: auto 0;
+  font-weight: 600;
+  max-width: 350px;
+  height: 100%;
+  min-height: 100%;
+}
+.column-center{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  margin: 0 2rem;
+  font-family: "Lato";
+  font-weight: 600;
+}
+
+.column-center .column-middle{
+  height: calc(100% - 60px);
+}
+
+.column-inner{
+  background-color: white;
+  height: 100%;
+  width: 100%;
+  box-shadow: 0 10px 20px rgba(3,27,78,.1) !important;
+  transition: box-shadow .25s linear !important;
+}
+
+.profile-header{
+  flex: 1 1 0;
+}
+
+.profile-content{
+  display: flex;
+  align-items: center;
+  padding: 2rem;
+  height: 100%;
+}
+
+.profile-content-name{
+  font-size: 2rem;
+  margin-top: -.5rem;
+}
+
+.profile-content-email{
+  font-weight: 500;
+  color: grey;
+  font-size: 14px;
+}
+
+.recent-activity{
+  flex: 2 1 0;
+}
+
+
+.column-inner:not(:first-child){
+  margin-top: 2rem;
+}
+
+.column-top{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .75rem 1rem;
+  border-bottom: 1px solid #edf0f6;
+  height: 60px;
+  font-size: 18px;
+  font-family: "Lato";
+  font-weight: 600;
+  background: #F7F9FD;
+}
+
+.column-middle{
+  height: calc(100% - 60px - 62px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: white;
+}
+
+.column-bottom{
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  height: 62px;
+  width: 100%;
+  min-width: 300px;
+  background-color: #F7F9FD;
+}
+
+.preference {
+  background-color: white;
+  border-bottom: 1px solid #edf0f6;
+  cursor: pointer;
 }

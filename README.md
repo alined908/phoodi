@@ -110,6 +110,12 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Create event , bugs on categories loads
 - [x] Edit in multiple categories but only shows Korean for example
 
+## Todo Categories 
+- [ ] Clean up categories
+- [x] Allow users to add their favorite categories/foods
+- [ ] Add categories to meetup
+- [ ] Meetups Page filterable by categories
+
 ## Todo Chat
 - [ ] Handle timestamp logic
 - [ ] Rearrange chat contacts (and list notifications) based off of whoever     messaged recently
@@ -120,6 +126,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Fix responsiveness for all viewports
 - [ ] Natural transition to new options when meetup event is changed
 - [ ] Add transitions
+- [ ] Top right add notifications or on hamburger (red dot)
 
 ## Todo Meetup
 - [ ] Change meetups page to calendar 
@@ -146,6 +153,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Write tests for frontend
 - [ ] Write tests for consumers
 - [ ] Safari presentation
+- [ ] Separate css files
 
 ## Todo Invite
 - [ ] Meetup invite error

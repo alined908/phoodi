@@ -9,6 +9,8 @@ urlpatterns=[
     path('users/', views.UserListView.as_view()),
     path('users/<id>/', views.UserView.as_view()),
     path('users/<id>/friends/', views.UserFriendsView.as_view()),
+    path('users/<id>/preferences/', views.UserPreferenceListView.as_view()),
+    path('users/<id>/preferences/<pref_id>/', views.UserPreferenceView.as_view()),
     path("categories/", views.CategoryListView.as_view()),
     path("meetups/", views.MeetupListView.as_view()),
     path("meetups/invite/", views.MeetupInviteAllView.as_view()),

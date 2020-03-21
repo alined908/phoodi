@@ -20,6 +20,7 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     padding: "0 1rem",
+    
     background: "white",
   },
   hide: {
@@ -32,7 +33,9 @@ const useStyles = makeStyles(theme => ({
   title: {
     color: "black",
     flexGrow: 1,
-    marginLeft: '.5rem'
+    marginLeft: '.5rem',
+    fontWeight: "600",
+    fontFamily: "Lato",
   },
 
   actionButton:{

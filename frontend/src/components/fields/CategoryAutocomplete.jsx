@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextField, CircularProgress} from '@material-ui/core';
+import {TextField, CircularProgress, makeStyles} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {axiosClient} from "../../accounts/axiosClient"
 import parse from 'autosuggest-highlight/parse';
@@ -11,11 +11,23 @@ function sleep(delay = 0) {
   });
 }
 
+const useStyles = makeStyles({
+  underline: {
+    "&&&:before": {
+      borderBottom: "none"
+    },
+    "&&:after": {
+      borderBottom: "none"
+    }
+  }
+});
+
 const CategoryAutocomplete = (props) => {
     const [open, setOpen] = React.useState(false);
     const [loaded, setLoaded] = React.useState(false);
     const [options, setOptions] = React.useState([]);
     const loading = open && options.length === 0 && !loaded;
+    const classes = useStyles()
 
     React.useEffect(() => {
 
@@ -37,6 +49,8 @@ const CategoryAutocomplete = (props) => {
   return (
     <Autocomplete
       multiple
+      className="category-autocomplete"
+      size={props.size}
       value={props.entries}
       autoHighlight
       freeSolo
@@ -69,10 +83,12 @@ const CategoryAutocomplete = (props) => {
       renderInput={params => (
         <TextField
           {...params}
-          variant="outlined"
-          label="Categories"
+          fullWidth
+          variant="filled"
+          label={props.label}
           InputProps={{
             ...params.InputProps,
+            classes,
             endAdornment: (
               <>
                 {loading ? <CircularProgress color="inherit" size={20} /> : null}
@@ -80,8 +96,9 @@ const CategoryAutocomplete = (props) => {
               </>
             ),
           }}
-        />
-      )}
+        /> 
+      )
+    }
     />
   );
 }

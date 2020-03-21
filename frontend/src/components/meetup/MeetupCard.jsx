@@ -27,11 +27,17 @@ const MeetupCard = ({meetup}) => {
         <>
         {meetup ? 
             <Link to={`/meetups/${meetup.uri}`}>
-                <Paper className={classes.paper + " elevate"}>
+                <Paper square={true} className={classes.paper + " elevate"}>
                     <div className="meetup-card-inner">
                         <div className="meetup-card-top"> 
-                            <div className="meetup-card-icon flex-clip-2"><Tooltip title={meetup.name}><Typography className="flex-ellipse" variant="h5">{meetup.name}</Typography></Tooltip></div>
-                            <div className="meetup-card-icon"><TodayIcon/>{moment(meetup.date).local().format("dddd, MMMM D")}</div>
+                            <div className="meetup-card-icon flex-clip-2">
+                                <Tooltip title={meetup.name}>
+                                    <Typography className="flex-ellipse" variant="h5">{meetup.name}</Typography>
+                                </Tooltip>
+                            </div>
+                            <div className="meetup-card-icon">
+                                <TodayIcon/>{moment(meetup.date).local().format("dddd, MMMM D")}
+                            </div>
                             {meetup.notifs !== null && meetup.notifs > 0 && <Badge badgeContent={meetup.notifs} color="primary">
                                 <NotificationsIcon />
                             </Badge>

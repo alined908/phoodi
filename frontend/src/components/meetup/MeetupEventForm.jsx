@@ -5,7 +5,6 @@ import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {addMeetupEvent, getMeetup, getMeetupEvents} from "../../actions/meetup"
 import {renderDatePicker, renderTextField, CategoryAutocomplete} from '../components'
-import Autocomplete from '@material-ui/lab/Autocomplete'
 import {Link} from 'react-router-dom'
 import {axiosClient} from "../../accounts/axiosClient"
 import {history} from '../MeetupApp'
@@ -134,7 +133,7 @@ class MeetupEventForm extends Component {
                                     <Field required name="title" component={renderTextField} label="Event Name"></Field>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
-                                    <CategoryAutocomplete entries={this.state.entries} handleClick={this.onTagsChange}/>
+                                    <CategoryAutocomplete form={true} label="Search Categories..." size="medium" entries={this.state.entries} handleClick={this.onTagsChange}/>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <Field required name="start" component={renderDatePicker} label="Start Time"></Field>

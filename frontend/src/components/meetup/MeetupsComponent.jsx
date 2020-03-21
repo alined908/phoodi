@@ -1,18 +1,38 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {getMeetups} from "../../actions/meetup";
-import {MeetupCard} from "../components"
-import {Button, Typography, Grid, ButtonGroup, Grow} from '@material-ui/core'
+import {MeetupCard, CategoryAutocomplete} from "../components"
+import {Button, Grid, ButtonGroup, Grow, Tooltip, IconButton} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import moment from "moment"
-import AddIcon from '@material-ui/icons/Add'
-
+import { Lock as LockIcon, Public as PublicIcon, ArrowBack as ArrowBackIcon, Add as AddIcon, Search as SearchIcon, Edit as EditIcon} from '@material-ui/icons'
+import {getPreferences} from "../../actions/index"
 
 class MeetupsComponent extends Component {
     constructor(props){
         super(props)
         this.state = {
-            chosen: [false, true, true, true]
+            chosen: [false, true, true, true],
+            entries: [],
+            filters: {"private": true, "public": false},
+            collapse: {"categories": false},
+            preferences: [],
+            clickedPreferences: []
+        }
+    }
+
+    async componentDidMount(){
+        await Promise.all[
+            this.props.getMeetups(),
+            this.props.getPreferences(this.props.user.id)
+        ]
+    }
+
+    componentDidUpdate(){
+        if (this.props.preferences !== this.state.preferences){
+            this.setState({
+                preferences: this.props.preferences,
+            })
         }
     }
 
@@ -22,8 +42,21 @@ class MeetupsComponent extends Component {
         this.setState({chosen})
     }
 
-    componentDidMount(){
-        this.props.getMeetups();
+    handlePreferenceClick = (index) => {
+        var category = this.state.preferences[index].category
+        const clickedPrefs = [...this.state.clickedPreferences]
+        var entries;
+        if (!clickedPrefs[index]){
+            entries = [...this.state.entries, category]
+        } else {
+            entries = this.state.entries.filter(entry => entry!==category)
+        }
+        clickedPrefs[index] = !clickedPrefs[index]
+
+        this.setState({
+            clickedPreferences: clickedPrefs,
+            entries: entries
+        })
     }
 
     divideMeetups = (meetups) => {
@@ -44,26 +77,86 @@ class MeetupsComponent extends Component {
         return [past, today, week, later]
     }
 
+    onTagsChange = (event, values) => {
+        this.setState({entries: values})
+    }
+
     render(){
         const meetups = this.divideMeetups(this.props.meetups)
 
+        const renderPreset = () => {
+            return (
+                <div className="preset">
+                    {this.state.preferences.map((pref, index) => 
+                        <div className={"preset-category " + (this.state.clickedPreferences[index] ? "active" : "")} onClick={() => this.handlePreferenceClick(index)}>
+                            <span>{pref.category.label}</span>
+                        </div>
+                    )}
+                </div>
+            )
+        }
+
         return (
-            <div className="inner-wrap">
-                {!this.props.isMeetupsInitialized && <div>Initializing Meetups ....</div>}
-                {this.props.isMeetupsInitialized && 
-                    <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                            <div className="inner-header elevate">
-                                <Typography variant="h5">Meetups</Typography>
-                                <ButtonGroup color="primary">
-                                    <Button variant={this.state.chosen[0] ? "contained" : "outlined"} onClick={() => this.handleFilter(0)}>Past</Button>
-                                    <Button variant={this.state.chosen[1] ? "contained" : "outlined"} onClick={() => this.handleFilter(1)}>Today</Button>
-                                    <Button variant={this.state.chosen[2] ? "contained" : "outlined"} onClick={() => this.handleFilter(2)}>Week</Button>
-                                    <Button variant={this.state.chosen[3] ? "contained" : "outlined"} onClick={() => this.handleFilter(3)}>Later</Button>
-                                </ButtonGroup>
-                                <Link to="/meetups/new"><Button variant="contained" color="primary" startIcon={<AddIcon />}>Meetup</Button></Link>
+            <div className="meetups-component">
+                <div className="meetups-categories">
+                    <div className="meetups-categories-inner elevate">
+                        <div className="meetups-categories-top">
+                            <div>Preferences</div>
+                            <div>
+                                <Link to={{pathname: `/profile/${this.props.user.id}`, state: {locked: false}}}>
+                                    <Tooltip title="Edit Preferences">
+                                        <IconButton style={{color: "black"}} edge="end">
+                                            <EditIcon/>
+                                        </IconButton>
+                                    </Tooltip>
+                                </Link>
+                                {/* <Tooltip title="Collapse">
+                                    <IconButton color={this.state.collapse["categories"] ?  "primary": "default"}>
+                                        <ArrowBackIcon/>
+                                    </IconButton>
+                                </Tooltip> */}
                             </div>
-                        </Grid>
+                        </div>
+                        {renderPreset()}
+                        <div className="search">
+                            <ButtonGroup color="primary" size="small">
+                                <Button variant={this.state.chosen[0] ? "contained" : "outlined"} onClick={() => this.handleFilter(0)}>Past</Button>
+                                <Button variant={this.state.chosen[1] ? "contained" : "outlined"} onClick={() => this.handleFilter(1)}>Today</Button>
+                                <Button variant={this.state.chosen[2] ? "contained" : "outlined"} onClick={() => this.handleFilter(2)}>Week</Button>
+                                <Button variant={this.state.chosen[3] ? "contained" : "outlined"} onClick={() => this.handleFilter(3)}>Later</Button>
+                            </ButtonGroup>
+                        </div>
+                    </div>
+                </div>
+                <div className="meetups-inner-wrap">
+                    <div className="meetups-inner-header elevate">
+                            <div>
+                                Meetups
+                                <Tooltip title="Public Meetups">
+                                        <IconButton color={this.state.filters["public"] ? "default" : "primary"} edge="end">
+                                            <PublicIcon/>
+                                        </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Private Meetups">
+                                    <IconButton color={this.state.filters["private"] ? "default" : "primary"}>
+                                        <LockIcon/>
+                                    </IconButton>
+                                </Tooltip>
+                            </div>   
+                            <div className="meetups-search-bar">
+                                <SearchIcon/>
+                                <CategoryAutocomplete fullWidth={true} size="small" entries={this.state.entries} handleClick={this.onTagsChange} label="Search Categories..."/>
+                            </div>
+                            <Link to="/meetups/new">
+                                <Tooltip title="Add Meetup">
+                                    <IconButton style={{color: "black"}}>
+                                        <AddIcon/>
+                                    </IconButton>
+                                </Tooltip>
+                            </Link>
+                    </div>
+                    {!this.props.isMeetupsInitialized && <div>Initializing Meetups ....</div>}
+                    {this.props.isMeetupsInitialized && 
                         <div className="meetups-container">
                             <Grid container spacing={1}>
                                 {[0,1, 2, 3].map((index) =>
@@ -79,11 +172,12 @@ class MeetupsComponent extends Component {
                                                 </Grid>
                                             )}
                                         </React.Fragment>
-                                })}
+                                    }
+                                )}
                             </Grid>
                         </div>
-                    </Grid>
-                }
+                    }
+                </div>
             </div>
         )
     }
@@ -93,11 +187,14 @@ function mapStateToProps(state){
     return {
         isMeetupsInitialized: state.meetup.isMeetupsInitialized,
         meetups: Object.values(state.meetup.meetups),
+        preferences: state.user.preferences,
+        user: state.user.user
     }
 }
 
 const mapDispatchToProps = {
-    getMeetups
+    getMeetups,
+    getPreferences
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MeetupsComponent);

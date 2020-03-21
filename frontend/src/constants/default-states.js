@@ -3,6 +3,7 @@ export const userDefaultState = {
     friends: [],
     isFriendsInitialized: false,
     invites: {meetups: [], friends: []},
+    preferences: [],
     isMeetupInvitesInitialized: false,
     isFriendInvitesInitialized: false,
 }
