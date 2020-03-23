@@ -15,4 +15,5 @@ class PathAndRename(object):
         # return the whole path to the file
         return os.path.join(self.path, filename)
 
-path_and_rename = PathAndRename("avatar")
+path_and_rename_avatar = PathAndRename("avatar")
+path_and_rename_category = PathAndRename("category")

@@ -154,28 +154,70 @@ class UserPreferenceView(APIView):
 class MeetupListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def format_meetups(self, user):
-        meetups = Meetup.objects.filter(id__in=RawSQL(
-            'SELECT member.meetup_id as id FROM meetup_meetupmember as member WHERE user_id = %s' , (user.id,)
-        )).order_by("date")
+    def format_meetups(self, user, categories):
+        if categories:
+            category_ids = [int(x) for x in categories.split(',')]
+        else:
+            category_ids = []
+
+        if not category_ids:
+            meetups = Meetup.objects.filter(id__in=RawSQL(
+                'SELECT member.meetup_id as id FROM meetup_meetupmember as member WHERE user_id = %s' , (user.id,)
+            )).order_by("date")
+        else:
+            meetups = Meetup.objects.filter(Q(id__in=RawSQL(
+                'SELECT DISTINCT category.meetup_id \
+                FROM meetup_meetupcategory as category \
+                WHERE category_id = ANY(%s)' , (category_ids,))) 
+                & 
+                Q(id__in=RawSQL(
+                    'SELECT member.meetup_id as id \
+                    FROM meetup_meetupmember as member \
+                    WHERE user_id = %s' , (user.id,)
+                ))).order_by("date")
 
         meetups_json = {}
-        
         for meetup in meetups.all():
             serializer = MeetupSerializer(meetup, context={'user': user})
+            meetups_json[meetup.uri] = serializer.data
+        return meetups_json
+
+    def format_public_meetups(self, user, categories):
+        if categories:
+            category_ids = [int(x) for x in categories.split(',')]
+        else:
+            category_ids = []
+
+        if not category_ids:
+            meetups = Meetup.objects.filter(public=True).order_by("date")
+        else:
+            meetups = Meetup.objects.filter(id__in=RawSQL(
+                'SELECT DISTINCT category.meetup_id \
+                FROM meetup_meetupcategory as category \
+                WHERE category_id = ANY(%s)' , (category_ids,))).filter(public=True).order_by("date")
+
+        meetups_json = {}
+        for meetup in meetups.all():
+            serializer = MeetupSerializer(meetup)
             meetups_json[meetup.uri] = serializer.data
 
         return meetups_json
         
     def get(self, request, *args, **kwargs):
         user = request.user
-        meetups_json = self.format_meetups(user)
-        return Response ({"meetups": meetups_json})
+        if request.GET.get('type') == "public":
+            meetups = self.format_public_meetups(user, request.GET.get('categories'))
+        elif request.GET.get('type') == "private":
+            meetups = self.format_meetups(user, request.GET.get('categories'))
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response ({"meetups": meetups})
 
     def post(self, request, *args, **kwargs):
         try:
-            user, date, name, location = request.user, request.data['date'], request.data['name'], request.data['location']
-            meetup = Meetup.objects.create(date=date, location=location, name=name)
+            user, date, name, location, public = request.user, request.data['date'], request.data['name'], request.data['location'], request.data['public']
+            meetup = Meetup.objects.create(date=date, location=location, name=name, public=public)
             meetup.members.create(user=user, meetup=meetup)
             return Response({'status': 'Success', 'meetup': MeetupSerializer(meetup, context={"user": user}).data, 'message': "new meetup created"})
         except:

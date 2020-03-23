@@ -91,6 +91,7 @@ class FriendshipSerializer(serializers.ModelSerializer):
 class MeetupSerializer(serializers.ModelSerializer):
     members = serializers.SerializerMethodField('_get_members')
     notifs = serializers.SerializerMethodField('_get_notifs')
+    categories = serializers.SerializerMethodField('_get_categories')
 
     def _get_members(self, obj):
         mapping = {}
@@ -105,9 +106,15 @@ class MeetupSerializer(serializers.ModelSerializer):
         notifs = user.notifications.filter(actor_object_id=obj.id, description="meetup").unread()
         return notifs.count()
 
+    def _get_categories(self, obj):
+        meetup_categories = obj.meetup_categories.all()
+        categories = list(set([meetup_category.category for meetup_category in meetup_categories]))
+        serializer = CategorySerializer(categories, many=True)
+        return serializer.data
+
     class Meta:
         model = Meetup
-        fields = ('id', 'name', 'uri', 'location', 'date', 'members', 'notifs')
+        fields = ('id', 'name', 'uri', 'location', 'date', 'members', 'notifs', 'public', 'categories')
 
 class MeetupEventOptionVoteSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('_get_user')
@@ -217,7 +224,7 @@ class FriendInviteSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('id', 'label', 'api_label')
+        fields = ('id', 'label', 'api_label', 'image')
 
 class ChatRoomSerializer(serializers.ModelSerializer):
     members = serializers.SerializerMethodField('_get_members')

@@ -41,6 +41,7 @@ const CategoryAutocomplete = (props) => {
                         "Authorization": `JWT ${localStorage.getItem('token')}`
                     }});
                 await sleep(1e3);
+                console.log(response.data.categories)
                 setOptions(response.data.categories);
                 setLoaded(true);
             })();

@@ -87,62 +87,44 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Author
 * **Daniel Lee** 
 
-## Todo Done
-- [x] Fix base url for axios
-- [x] Git ignore env and env.docker
-- [x] Let mapbox be resizable 
-- [x] Add elevation/shadows to cards + onhover
-- [x] Add last name to avatar
-- [x] Minify import statements
-- [x] Hide tokens|api keys - (google javascript api + website request)
-- [x] Reload event (if price or distance or categories changes)
-- [x] Fix form data when meetup event refresh
-- [x] Redirect http to https
-- [x] Filter chat rooms by meetup and friends
-- [x] Search chat rooms
-- [x] When other user submits message, chat message component doesn't rerender
-- [x] Add avatar to chat room for meetup + (x members)
-- [x] Give chat some more css upgrades
-- [x] Add tooltips to icons
-- [x] Meetup Card handle word overflow
-- [x] Search Users
-- [x] Handle websocket setup for notifications
-- [x] Create event , bugs on categories loads
-- [x] Edit in multiple categories but only shows Korean for example
+## Todo Categories/Preferences
+- [ ] Clean up categories/Add icons
+- [ ] Change name of preference
+- [ ] Reorder preferences
 
-## Todo Categories 
-- [ ] Clean up categories
-- [x] Allow users to add their favorite categories/foods
-- [ ] Add categories to meetup
-- [ ] Meetups Page filterable by categories
+## Todo Invite
+- [ ] Meetup invite error
+- [ ] Make sure you can't invite yourself
+- [ ] Validation for time and date
+
+## Todo Users
+- [ ] Add google social auth 
+- [ ] Confirm email
+- [ ] Change password
+- [ ] Past activity
 
 ## Todo Chat
 - [ ] Handle timestamp logic
-- [ ] Rearrange chat contacts (and list notifications) based off of whoever     messaged recently
+- [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
 - [ ] Load chat messages smartly
 - [ ] Edit chat messages and add emojis, upload picture
-
-## Todo UI
-- [ ] Fix responsiveness for all viewports
-- [ ] Natural transition to new options when meetup event is changed
-- [ ] Add transitions
-- [ ] Top right add notifications or on hamburger (red dot)
 
 ## Todo Meetup
 - [ ] Change meetups page to calendar 
 - [ ] Change display of meetups
 - [ ] Meetup email message nice html
 - [ ] Add ability to get current location
+- [ ] Filter meetups near me by radius
 - [ ] Probably change distance to be for overall event
 - [ ] Add scrollable notifications box for meetupevent 
-- [ ] Change categories to be asynchronous autcomplete
 
-## Todo Users
-- [ ] Add ability to add categories to a user (Preferences)
-- [ ] Handle user preferences
-- [ ] Add google social auth 
-- [ ] Confirm email
-- [ ] Change password
+---------------------------------------
+
+## Todo UI
+- [ ] Fix responsiveness for all viewports
+- [ ] Natural transition to new options when meetup event is changed
+- [ ] Add transitions
+- [ ] Top right add notifications or on hamburger (red dot)
 
 ## Todo General
 - [ ] Form validation
@@ -154,10 +136,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Write tests for consumers
 - [ ] Safari presentation
 - [ ] Separate css files
-
-## Todo Invite
-- [ ] Meetup invite error
-- [ ] Validation for time and date
 
 ## Todo Deploy
 - [ ] Add ssl certificate to website

@@ -1,6 +1,6 @@
-from .models import User, ChatRoom, ChatRoomMessage, ChatRoomMember, MeetupMember, MeetupEventOptionVote, Meetup, MeetupEvent, MeetupEventOption, MeetupInvite, FriendInvite, Friendship
+from .models import User, ChatRoom, MeetupCategory, ChatRoomMessage, ChatRoomMember, MeetupMember, MeetupEventOptionVote, Meetup, MeetupEvent, MeetupEventOption, MeetupInvite, FriendInvite, Friendship
 from channels.layers import get_channel_layer
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save, pre_save, post_delete
 from django.dispatch import receiver
 from asgiref.sync import async_to_sync
 from notifications.signals import notify
@@ -40,8 +40,11 @@ def handle_generate_options_on_meetup_event_field_change(sender, instance, **kwa
     else:
         previous = MeetupEvent.objects.get(pk=instance.id)
         if previous.price != instance.price or previous.distance != instance.distance or previous.entries != instance.entries or previous.start != instance.start:
+            if previous.entries != instance.entries:
+                previous.event_categories.all().delete()
             instance.delete_options()
             instance.generate_options()
+        
 
 @receiver(post_save, sender = MeetupEvent)
 def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):

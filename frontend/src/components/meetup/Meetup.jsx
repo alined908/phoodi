@@ -9,7 +9,7 @@ import moment from 'moment';
 import {addGlobalMessage} from '../../actions/globalMessages'
 import {Grid, Button, Typography, Avatar, List, ListItem, ListItemText, ListItemAvatar, IconButton, Tooltip} from "@material-ui/core"
 import WebSocketService from "../../accounts/WebSocket";
-import {Delete as DeleteIcon, Edit as EditIcon, Room as RoomIcon, Chat as ChatIcon, Email as EmailIcon, Add as AddIcon, Today as TodayIcon} from '@material-ui/icons'
+import {Delete as DeleteIcon, Edit as EditIcon, Room as RoomIcon, Chat as ChatIcon,  Lock as LockIcon, Public as PublicIcon, Email as EmailIcon, Add as AddIcon, Today as TodayIcon} from '@material-ui/icons'
 import AuthenticationService from "../../accounts/AuthenticationService"
 
 class Meetup extends Component {
@@ -80,7 +80,7 @@ class Meetup extends Component {
     }
 
     render () {
-        const [id, name, uri, location, datetime, members, notifs, events] = this.props.meetup
+        const [id, name, uri, location, datetime, members, notifs, isPublic, categories, events] = this.props.meetup
         const isMember = (friend) => {return friend in members}
         const emailDisable = this.determineEmailDisable(events)
         
@@ -89,6 +89,12 @@ class Meetup extends Component {
                 <div className="inner-header elevate">
                     <Typography variant="h5">{name}</Typography>
                     <div className="inner-header-middle">
+                        <div className="inner-header-icons">
+                            {isPublic ? 
+                                <><PublicIcon/> Public</> :
+                                <><LockIcon/> Private</>
+                            }
+                        </div>
                         <div className="inner-header-icons"><TodayIcon/> {moment(datetime).local().format("dddd, MMMM D")}</div>
                         <div className="inner-header-icons"><RoomIcon/> {location}</div>
                     </div>

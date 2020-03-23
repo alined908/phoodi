@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {reduxForm, Field} from 'redux-form';
 import {compose} from 'redux';
-import {Button, Typography, Paper, Grid, Fab} from '@material-ui/core';
+import {Button, Typography, Paper, Grid, Fab, Radio, FormControlLabel} from '@material-ui/core';
 import {addMeetup, editMeetup, getMeetup} from "../../actions/meetup";
 import {Link} from 'react-router-dom'
 import {renderTextField, renderDateSimplePicker, Location} from '../components'
@@ -12,7 +12,8 @@ class MeetupForm extends Component {
     constructor(props){
         super(props)
         this.state = {
-            location: ""
+            location: "",
+            public: false
         }
         this.handleClick = this.handleClick.bind(this)
     }
@@ -24,7 +25,7 @@ class MeetupForm extends Component {
     }
 
     onSubmit = (formProps) => {
-        let data = {...formProps, location: this.state.location}
+        let data = {...formProps, location: this.state.location, public: this.state.public}
 
         if (this.props.type === "create") {
             this.props.addMeetup(data, (uri) => {
@@ -49,6 +50,9 @@ class MeetupForm extends Component {
         this.setState({location})
     }
 
+    handlePublicClick = (type) => {
+        this.setState({...this.state, public: type})
+    }
 
 
     render (){
@@ -73,14 +77,18 @@ class MeetupForm extends Component {
                                 <Grid item xs={12}>
                                     <Typography variant="h6">Meetup Information</Typography>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} md={6}>
                                     <Field name="name" component={renderTextField} label="Name"/>
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <Field name="date" component={renderDateSimplePicker} disabled={this.props.isMeetupInitialized && moment(this.props.meetup.date).add(1, "d").isBefore(moment().toDate())} label="Date"></Field>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <Location label="Location" handleClick={this.handleClick}/>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
-                                    <Field name="date" component={renderDateSimplePicker} disabled={this.props.isMeetupInitialized && moment(this.props.meetup.date).add(1, "d").isBefore(moment().toDate())} label="Date"></Field>
+                                    <FormControlLabel label="Public" control={<Radio color="primary" checked={this.state.public} onClick={() => this.handlePublicClick(true)}/>} />
+                                    <FormControlLabel label="Private" control={<Radio color="primary" checked={!this.state.public} onClick={() => this.handlePublicClick(false)}/>}/>
                                 </Grid>
                                 <Grid style={{marginTop: "1rem"}} xs={12}>
                                     <Fab type="submit" variant="extended" color="primary" aria-label="add">{create ? "Add Meetup" : "Edit Meetup"}</Fab>

@@ -24,7 +24,7 @@ class Profile extends Component {
     componentDidMount(){
         this.props.getPreferences(this.props.match.params.id)
         this.getInformation()
-        this.getUserLocation()
+        
     }
 
     componentDidUpdate(prevProps){
@@ -32,24 +32,6 @@ class Profile extends Component {
             this.props.getPreferences(this.props.match.params.id)
             this.getInformation()
         }
-    }
-
-    getUserLocation = () => {
-        const options = {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge:1000
-        }
-
-        const onSuccess = (position) => {
-            console.log(position)
-        }
-        
-        const onError = (error) => {
-            console.warn(error.message)
-        }
-
-        navigator.geolocation.getCurrentPosition(onSuccess, onError, options)
     }
 
     getInformation = async () => {
@@ -124,36 +106,38 @@ class Profile extends Component {
                         </div>  
                         <div className="column-middle">
                             {this.props.preferences.map((pref, index) => 
-                                <div className="preference">
-                                    <ListItem>
-                                        #{index + 1}
-                                        <ListItemAvatar>
+                                <Tooltip placement="left" title={pref.category.label}>
+                                    <div className="preference">
+                                        <ListItem>
+                                            #{index + 1}
+                                            <ListItemAvatar>
 
-                                        </ListItemAvatar>
-                                        
-                                        <ListItemText primary={<Typography variant="body" style={{fontWeight: "600", fontFamily: "Lato"}}>{pref.category.label}</Typography>} >
-                                        </ListItemText>
-                                        {isUser && (!this.state.locked ?
-                                            <>  
-                                                <Tooltip title="Edit">
-                                                    <IconButton onClick={() => this.handleEdit(pref)} style={{color: "black"}} size="small">
-                                                        <EditIcon fontSize="inherit">
+                                            </ListItemAvatar>
+                                            <ListItemText primary={<Typography variant="body" style={{fontWeight: "600", fontFamily: "Lato"}}>{pref.category.label}</Typography>} >
+                                            </ListItemText>
+                                            
+                                            {isUser && (!this.state.locked ?
+                                                <>  
+                                                    <Tooltip title="Edit">
+                                                        <IconButton onClick={() => this.handleEdit(pref)} style={{color: "black"}} size="small">
+                                                            <EditIcon fontSize="inherit">
 
-                                                        </EditIcon>
-                                                    </IconButton>
-                                                </Tooltip>
-                                                <Tooltip title="Delete">
-                                                    <IconButton onClick={() => this.handleDelete(pref)} color="secondary" size="small">
-                                                        <DeleteIcon fontSize="inherit">
+                                                            </EditIcon>
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                    <Tooltip title="Delete">
+                                                        <IconButton onClick={() => this.handleDelete(pref)} color="secondary" size="small">
+                                                            <DeleteIcon fontSize="inherit">
 
-                                                        </DeleteIcon>
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </>: <></>
-                                            )
-                                        }
-                                    </ListItem>
-                                </div>
+                                                            </DeleteIcon>
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                </>: <></>
+                                                )
+                                            }
+                                        </ListItem>
+                                    </div>
+                                </Tooltip>
                             )}
                         </div>
                         <div className="column-bottom">

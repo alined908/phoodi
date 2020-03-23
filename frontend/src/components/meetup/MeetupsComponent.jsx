@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {getMeetups} from "../../actions/meetup";
+import {getMeetups, getPublicMeetups} from "../../actions/meetup";
 import {MeetupCard, CategoryAutocomplete} from "../components"
-import {Button, Grid, ButtonGroup, Grow, Tooltip, IconButton} from '@material-ui/core'
+import {Grid, Grow, Tooltip, IconButton, FormGroup, FormControlLabel, Checkbox} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import moment from "moment"
 import { Lock as LockIcon, Public as PublicIcon, ArrowBack as ArrowBackIcon, Add as AddIcon, Search as SearchIcon, Edit as EditIcon} from '@material-ui/icons'
@@ -14,8 +14,8 @@ class MeetupsComponent extends Component {
         this.state = {
             chosen: [false, true, true, true],
             entries: [],
-            filters: {"private": true, "public": false},
-            collapse: {"categories": false},
+            public: true,
+            collapse: {categories: false},
             preferences: [],
             clickedPreferences: []
         }
@@ -23,9 +23,11 @@ class MeetupsComponent extends Component {
 
     async componentDidMount(){
         await Promise.all[
-            this.props.getMeetups(),
+            //this.props.getMeetups(),
+            this.props.getPublicMeetups({categories: []}),
             this.props.getPreferences(this.props.user.id)
         ]
+        this.getUserLocation()
     }
 
     componentDidUpdate(){
@@ -36,10 +38,45 @@ class MeetupsComponent extends Component {
         }
     }
 
+    getUserLocation = () => {
+        const options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge:1000
+        }
+
+        const onSuccess = (position) => {
+            console.log(position)
+        }
+        
+        const onError = (error) => {
+            console.warn(error.message)
+        }
+
+        navigator.geolocation.getCurrentPosition(onSuccess, onError, options)
+    }
+
     handleFilter = (type) => {
         const chosen = [...this.state.chosen]
         chosen[type] = !chosen[type] 
         this.setState({chosen})
+    }
+
+    handleMeetupsType = (type) => {
+        var publicBool = this.state.public;
+        if (type === "public") {
+            if (!publicBool){
+                publicBool = true
+            }
+        } else if (type === "private"){
+            if (publicBool){
+                publicBool = false
+            }
+        }
+        this.setState({public: publicBool}, () => publicBool ? 
+            this.props.getPublicMeetups({categories: this.state.entries}) : 
+            this.props.getMeetups({categories: this.state.entries})
+        )
     }
 
     handlePreferenceClick = (index) => {
@@ -49,14 +86,14 @@ class MeetupsComponent extends Component {
         if (!clickedPrefs[index]){
             entries = [...this.state.entries, category]
         } else {
-            entries = this.state.entries.filter(entry => entry!==category)
+            entries = this.state.entries.filter(entry => entry !== category)
         }
         clickedPrefs[index] = !clickedPrefs[index]
 
         this.setState({
             clickedPreferences: clickedPrefs,
             entries: entries
-        })
+        }, () => this.props.getPublicMeetups({categories: entries}))
     }
 
     divideMeetups = (meetups) => {
@@ -78,7 +115,25 @@ class MeetupsComponent extends Component {
     }
 
     onTagsChange = (event, values) => {
-        this.setState({entries: values})
+        var clickedPrefs = [...this.state.clickedPreferences]
+        for(var i = 0; i < clickedPrefs.length; i ++){
+            if (clickedPrefs[i]){
+                let pref = this.state.preferences[i]
+                let category = pref.category
+                if (!values.includes(category)){
+                    clickedPrefs[i] = !clickedPrefs[i]
+                }
+            }
+        }
+
+        this.setState(
+            {
+                entries: values,
+                clickedPreferences: clickedPrefs
+            },
+            () => this.props.getPublicMeetups({categories: values})
+        )
+
     }
 
     render(){
@@ -119,12 +174,12 @@ class MeetupsComponent extends Component {
                         </div>
                         {renderPreset()}
                         <div className="search">
-                            <ButtonGroup color="primary" size="small">
-                                <Button variant={this.state.chosen[0] ? "contained" : "outlined"} onClick={() => this.handleFilter(0)}>Past</Button>
-                                <Button variant={this.state.chosen[1] ? "contained" : "outlined"} onClick={() => this.handleFilter(1)}>Today</Button>
-                                <Button variant={this.state.chosen[2] ? "contained" : "outlined"} onClick={() => this.handleFilter(2)}>Week</Button>
-                                <Button variant={this.state.chosen[3] ? "contained" : "outlined"} onClick={() => this.handleFilter(3)}>Later</Button>
-                            </ButtonGroup>
+                            <FormGroup row>
+                                <FormControlLabel label="Past" control={<Checkbox color="primary" size="small" checked={this.state.chosen[0]} onChange={() => this.handleFilter(0)}/>}/>
+                                <FormControlLabel label="Today" control={<Checkbox color="primary" size="small" checked={this.state.chosen[1]} onChange={() => this.handleFilter(1)}/>}/>
+                                <FormControlLabel label="Week" control={<Checkbox color="primary" size="small" checked={this.state.chosen[2]} onChange={() => this.handleFilter(2)}/>}/>
+                                <FormControlLabel label="Later" control={<Checkbox color="primary" size="small" checked={this.state.chosen[3]} onChange={() => this.handleFilter(3)}/>}/>
+                            </FormGroup>
                         </div>
                     </div>
                 </div>
@@ -133,12 +188,12 @@ class MeetupsComponent extends Component {
                             <div>
                                 Meetups
                                 <Tooltip title="Public Meetups">
-                                        <IconButton color={this.state.filters["public"] ? "default" : "primary"} edge="end">
+                                        <IconButton onClick={() => this.handleMeetupsType("public")} color={this.state.public ? "primary" :"default"} edge="end">
                                             <PublicIcon/>
                                         </IconButton>
                                 </Tooltip>
                                 <Tooltip title="Private Meetups">
-                                    <IconButton color={this.state.filters["private"] ? "default" : "primary"}>
+                                    <IconButton onClick={() => this.handleMeetupsType("private")} color={this.state.public ? "default" : "primary"}>
                                         <LockIcon/>
                                     </IconButton>
                                 </Tooltip>
@@ -155,7 +210,7 @@ class MeetupsComponent extends Component {
                                 </Tooltip>
                             </Link>
                     </div>
-                    {!this.props.isMeetupsInitialized && <div>Initializing Meetups ....</div>}
+                    {/* {!this.props.isMeetupsInitialized && <div>Initializing Meetups ....</div>} */}
                     {this.props.isMeetupsInitialized && 
                         <div className="meetups-container">
                             <Grid container spacing={1}>
@@ -194,7 +249,8 @@ function mapStateToProps(state){
 
 const mapDispatchToProps = {
     getMeetups,
-    getPreferences
+    getPreferences,
+    getPublicMeetups
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MeetupsComponent);

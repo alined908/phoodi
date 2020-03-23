@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {Button, Drawer, CssBaseline, AppBar, Toolbar, Typography, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core'
-import {Menu, ChevronLeft, ChevronRight, People, Person, Settings, Chat,Mail, Assignment, PermContactCalendar, ExitToApp}  from '@material-ui/icons';
+import {Menu, ChevronLeft, ChevronRight, People as PeopleIcon, Person as PersonIcon, Settings as SettingsIcon, ChatOutlined as ChatOutlinedIcon, MailOutlined as MailOutlinedIcon, Assignment, PermContactCalendar as PermContactCalendarIcon, ExitToApp, EventNote as EventNoteIcon}  from '@material-ui/icons';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {Body, LiveUpdatingBadge} from '../components'
@@ -37,7 +37,9 @@ const useStyles = makeStyles(theme => ({
     fontWeight: "600",
     fontFamily: "Lato",
   },
-
+  icon: {
+    color: "#03396c"
+  },
   actionButton:{
     marginRight: '1rem'
   },
@@ -119,15 +121,23 @@ const Navigation = (props) => {
           {props.authenticated && <Link to="/meetups" onClick={handleDrawerClose}>
                 <ListItem button key="Meetups" selected={isActive("/meetups")}>
                   <ListItemIcon>
-                    <LiveUpdatingBadge type={'meetup'} icon={<People/>} />
+                    <LiveUpdatingBadge type={'meetup'} icon={<PeopleIcon className={classes.icon}/>} />
                   </ListItemIcon>
                   <ListItemText classes={{primary: classes.drawerText}} primary="Meetups"/>
                 </ListItem>
               </Link>}
+          {props.authenticated && <Link to="/calendar" onClick={handleDrawerClose}>
+                <ListItem button key="Calendar" selected={isActive("/calendar")}>
+                  <ListItemIcon>
+                    <EventNoteIcon className={classes.icon}/>
+                  </ListItemIcon>
+                  <ListItemText classes={{primary: classes.drawerText}} primary="Calendar"/>
+                </ListItem>
+            </Link>}
           {props.authenticated && <Link to="/chat" onClick={handleDrawerClose}>
               <ListItem button key="Chat" selected={isActive("/chat")}>
                 <ListItemIcon>
-                <LiveUpdatingBadge type={'chat'} icon={<Chat/>} />
+                <LiveUpdatingBadge type={'chat'} icon={<ChatOutlinedIcon className={classes.icon}/>} />
                 </ListItemIcon>
                 <ListItemText classes={{primary: classes.drawerText}} primary="Chat"/>
               </ListItem>
@@ -135,7 +145,7 @@ const Navigation = (props) => {
           {props.authenticated && <Link to="/friends" onClick={handleDrawerClose}>
               <ListItem button key="Friends" selected={isActive("/friends")}>
                 <ListItemIcon>
-                <LiveUpdatingBadge type={'friend'} icon={<PermContactCalendar/>} />
+                <LiveUpdatingBadge type={'friend'} icon={<PermContactCalendarIcon className={classes.icon}/>} />
                 </ListItemIcon>
                 <ListItemText classes={{primary: classes.drawerText}} primary="Friends"/>
               </ListItem>
@@ -143,7 +153,7 @@ const Navigation = (props) => {
           {props.authenticated && <Link to="/invites" onClick={handleDrawerClose}>
             <ListItem button key="Invites" selected={isActive("/invites")}>
               <ListItemIcon>
-                <LiveUpdatingBadge type={'invite'} icon={<Mail/>}/>
+                <LiveUpdatingBadge type={'invite'} icon={<MailOutlinedIcon className={classes.icon}/>}/>
               </ListItemIcon>
               <ListItemText classes={{primary: classes.drawerText}} primary="Invites"/>
             </ListItem>
@@ -154,7 +164,7 @@ const Navigation = (props) => {
           {props.authenticated && props.user && <Link to={`/profile/${props.user.id}`} onClick={handleDrawerClose}>
             <ListItem button key="Profile" selected={isActive("/profile")}>
               <ListItemIcon>
-                <Person/>
+                <PersonIcon className={classes.icon}/>
               </ListItemIcon>
               <ListItemText classes={{primary: classes.drawerText}} primary="Profile"/>
             </ListItem>
@@ -162,7 +172,7 @@ const Navigation = (props) => {
           {props.authenticated && <Link to="/settings" onClick={handleDrawerClose}>
             <ListItem button key="Settings" selected={isActive("/settings")}>
               <ListItemIcon>
-                <Settings/>
+                <SettingsIcon className={classes.icon}/>
               </ListItemIcon>
               <ListItemText classes={{primary: classes.drawerText}} primary="Settings"/>
             </ListItem>
@@ -170,7 +180,7 @@ const Navigation = (props) => {
           {props.authenticated && <Link onClick={handleDrawerClose} to="/logout">
             <ListItem button key="Logout">
               <ListItemIcon>
-                <ExitToApp/>
+                <ExitToApp className={classes.icon}/>
               </ListItemIcon>
               <ListItemText classes={{primary: classes.drawerText}} primary="Logout"/>
             </ListItem>

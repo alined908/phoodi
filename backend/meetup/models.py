@@ -11,7 +11,7 @@ import requests, random, json, sys, time, os
 from django.contrib.postgres.fields import JSONField, ArrayField
 from rest_framework_jwt.settings import api_settings
 from django.db import transaction
-from .helpers import path_and_rename
+from .helpers import path_and_rename_avatar, path_and_rename_category
 from PIL import Image
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -53,7 +53,7 @@ class User(AbstractBaseUser):
     admin = models.BooleanField(default=False)
     staff = models.BooleanField(default=False)
     confirmed = models.BooleanField(default =False)
-    avatar = models.ImageField(blank=True, null=True, upload_to=path_and_rename)
+    avatar = models.ImageField(blank=True, null=True, upload_to=path_and_rename_avatar)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name']
@@ -76,9 +76,9 @@ class User(AbstractBaseUser):
             image = Image.open(BytesIO(self.avatar.read()))
             image.thumbnail((200, 200), Image.ANTIALIAS)
             output = BytesIO()
-            image.save(output, format='JPEG', quality=90)
+            image.save(output, format='PNG', quality=90)
             output.seek(0)
-            self.avatar = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" %self.avatar.name, 'image/jpeg', sys.getsizeof(output), None)
+            self.avatar = InMemoryUploadedFile(output, 'ImageField', "%s.png" %self.avatar.name, 'image/png', sys.getsizeof(output), None)
         self.full_clean()
         super(User, self).save(*args, **kwargs)
 
@@ -138,7 +138,7 @@ class Meetup(models.Model):
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     name = models.CharField(max_length=255, default="Meetup")
     date = models.DateField()
-    # public = models.BooleanField()
+    public = models.BooleanField()
     objects = models.Manager()
 
     def __str__(self):
@@ -206,8 +206,8 @@ class MeetupEvent(models.Model):
     def request_yelp_api(self):
         categories = self.convert_entries_to_string()
         params = {"location": self.meetup.location, "limit": 30, "categories": categories, "radius": self.distance, "price": self.price, "open_at": int(time.mktime(self.start.timetuple()))}
-        r = requests.get(url=url, params=params, headers=headers)
-        options = r.json()['businesses']
+        response = requests.get(url=url, params=params, headers=headers)
+        options = response.json()['businesses']
         return options
 
     def generate_options(self):
@@ -360,7 +360,19 @@ class FriendInvite(Invite):
 class Category(models.Model):
     label = models.CharField(max_length=255)
     api_label = models.CharField(max_length=255)
+    image = models.ImageField(blank=True, null=True, upload_to="category")
     objects = models.Manager()
+
+    def save(self, *args, **kwargs):
+        if self.image:
+            image = Image.open(BytesIO(self.image.read()))
+            image.thumbnail((100, 100), Image.ANTIALIAS)
+            output = BytesIO()
+            image.save(output, format='PNG', quality=100)
+            output.seek(0)
+            self.image = InMemoryUploadedFile(output, 'ImageField', "%s.png" %self.image.name, 'image/png', sys.getsizeof(output), None)
+        self.full_clean()
+        super(Category, self).save(*args, **kwargs)
 
 class Preference(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="preferences")

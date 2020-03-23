@@ -2,15 +2,54 @@ import {GET_MEETUPS, ADD_MEETUP, ADD_MEETUP_MEMBER, ADD_GLOBAL_MESSAGE, DELETE_M
 import {axiosClient} from '../accounts/axiosClient';
 import {history} from '../components/MeetupApp'
 
-export const getMeetups = () => async dispatch => {
+export const getMeetups = (data) => async dispatch => {
+    const ids = []
+    for (var category in data.categories){
+        ids.push(data.categories[category].id)
+    }
+    const categories = ids.join(",")
+
     try {
-        const response = await axiosClient.get(
-            "/api/meetups/", {headers: {
+        const response = await axiosClient.request({
+            method: "GET",
+            url: "/api/meetups/", 
+            headers: {
                 "Authorization": `JWT ${localStorage.getItem('token')}`
-            }}
-        )
+            },
+            params: {
+                type: "private",
+                categories: categories
+            }
+        })
+        console.log(response.data.meetups)
         dispatch({type: GET_MEETUPS, payload: response.data.meetups})
     } catch(e){
+        console.log(e)
+    }
+}
+
+export const getPublicMeetups = (data) => async dispatch => {
+    const ids = []
+    for (var category in data.categories){
+        ids.push(data.categories[category].id)
+    }
+    const categories = ids.join(",")
+
+    try {
+        const response = await axiosClient.request({
+            method: "GET",
+            url: "/api/meetups/", 
+            headers: {
+                "Authorization": `JWT ${localStorage.getItem('token')}`
+            },
+            params: {
+                type: "public",
+                categories: categories
+            }
+        })
+        console.log(response.data)
+        dispatch({type: GET_MEETUPS, payload: response.data.meetups})
+    } catch(e) {
         console.log(e)
     }
 }

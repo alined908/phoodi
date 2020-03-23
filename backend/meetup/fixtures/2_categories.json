@@ -9,30 +9,6 @@
     },
     {
         "model": "meetup.category",
-        "pk": 2,
-        "fields": {
-            "label": "Afghan Food",
-            "api_label": "afghani"
-        }
-    },
-    {
-        "model": "meetup.category",
-        "pk": 3,
-        "fields": {
-            "label": "African Food",
-            "api_label": "african"
-        }
-    },
-    {
-        "model": "meetup.category",
-        "pk": 4,
-        "fields": {
-            "label": "Arabian Food",
-            "api_label": "arabian"
-        }
-    },
-    {
-        "model": "meetup.category",
         "pk": 5,
         "fields": {
             "label": "Argentine Food",
@@ -61,14 +37,6 @@
         "fields": {
             "label": "Australian Food",
             "api_label": "australian"
-        }
-    },
-    {
-        "model": "meetup.category",
-        "pk": 9,
-        "fields": {
-            "label": "Austrian Food",
-            "api_label": "austrian"
         }
     },
     {
@@ -121,22 +89,6 @@
     },
     {
         "model": "meetup.category",
-        "pk": 16,
-        "fields": {
-            "label": "Beer Garden",
-            "api_label": "beergarden"
-        }
-    },
-    {
-        "model": "meetup.category",
-        "pk": 17,
-        "fields": {
-            "label": "Beer Hall",
-            "api_label": "beerhall"
-        }
-    },
-    {
-        "model": "meetup.category",
         "pk": 18,
         "fields": {
             "label": "Belgian Food",
@@ -165,14 +117,6 @@
         "fields": {
             "label": "Bistros",
             "api_label": "bistros"
-        }
-    },
-    {
-        "model": "meetup.category",
-        "pk": 22,
-        "fields": {
-            "label": "Brasseries",
-            "api_label": "brasseries"
         }
     },
     {
@@ -225,14 +169,6 @@
     },
     {
         "model": "meetup.category",
-        "pk": 29,
-        "fields": {
-            "label": "Bulgarian Food",
-            "api_label": "bulgarian"
-        }
-    },
-    {
-        "model": "meetup.category",
         "pk": 30,
         "fields": {
             "label": "Burgers",
@@ -249,26 +185,10 @@
     },
     {
         "model": "meetup.category",
-        "pk": 32,
-        "fields": {
-            "label": "Butcher",
-            "api_label": "butcher"
-        }
-    },
-    {
-        "model": "meetup.category",
         "pk": 33,
         "fields": {
             "label": "Cafes",
             "api_label": "cafes"
-        }
-    },
-    {
-        "model": "meetup.category",
-        "pk": 34,
-        "fields": {
-            "label": "Cafeteria",
-            "api_label": "cafeteria"
         }
     },
     {
@@ -1526,5 +1446,5 @@
             "label": "Wraps",
             "api_label": "wraps"
         }
-    },
+    }
 ]
