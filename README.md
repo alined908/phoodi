@@ -88,14 +88,11 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Daniel Lee** 
 
 ## Todo Categories/Preferences
-- [ ] Clean up categories/Add icons
 - [ ] Change name of preference
 - [ ] Reorder preferences
 
 ## Todo Invite
-- [ ] Meetup invite error
-- [ ] Make sure you can't invite yourself
-- [ ] Validation for time and date
+- [ ] Meetup invite error (no notification received)
 
 ## Todo Users
 - [ ] Add google social auth 
@@ -128,6 +125,7 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo General
 - [ ] Form validation
+- [ ] Validation for time and date
 - [ ] Connect people with categories
 - [ ] List meetups within a certain radius (set by user)
 - [ ] Authenticate JWT automatically after expiration

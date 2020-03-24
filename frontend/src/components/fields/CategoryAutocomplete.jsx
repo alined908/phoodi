@@ -19,6 +19,19 @@ const useStyles = makeStyles({
     "&&:after": {
       borderBottom: "none"
     }
+  },
+  option: {
+    height: "2rem",
+    display: "flex",
+    alignItems: "center",
+    fontFamily: "Lato",
+    fontWeight: "600",
+    fontSize: ".8rem"
+  },
+  icon : {
+    width: "auto",
+    height: "20px",
+    marginRight: "15px"
   }
 });
 
@@ -72,13 +85,14 @@ const CategoryAutocomplete = (props) => {
         const parts = parse(option.label, matches)
         
         return(
-            <>
-                {parts.map((part, index) => (
-                  <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                    {part.text}
-                  </span>
-                ))}
-            </>
+            <div className={classes.option}> 
+              <img className={classes.icon} src={`${process.env.REACT_APP_S3_STATIC_URL}${option.api_label}.png`}></img>
+              {parts.map((part, index) => (
+                <span key={index} style={{ color: part.highlight ? "red" : "black" }}>
+                  {part.text}
+                </span>
+              ))}
+            </div>
       )}}
       
       renderInput={params => (

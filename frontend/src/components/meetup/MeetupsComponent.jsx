@@ -144,6 +144,7 @@ class MeetupsComponent extends Component {
                 <div className="preset">
                     {this.state.preferences.map((pref, index) => 
                         <div className={"preset-category " + (this.state.clickedPreferences[index] ? "active" : "")} onClick={() => this.handlePreferenceClick(index)}>
+                            <img src={`${process.env.REACT_APP_S3_STATIC_URL}${pref.category.api_label}.png`}></img>
                             <span>{pref.category.label}</span>
                         </div>
                     )}

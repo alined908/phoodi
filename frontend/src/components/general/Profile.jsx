@@ -109,9 +109,11 @@ class Profile extends Component {
                                 <Tooltip placement="left" title={pref.category.label}>
                                     <div className="preference">
                                         <ListItem>
-                                            #{index + 1}
+                                            <span style={{marginRight: "20px"}}>{index + 1}</span>
                                             <ListItemAvatar>
+                                                <Avatar src={`${process.env.REACT_APP_S3_STATIC_URL}${pref.category.api_label}.png`} variant="square">
 
+                                                </Avatar>
                                             </ListItemAvatar>
                                             <ListItemText primary={<Typography variant="body" style={{fontWeight: "600", fontFamily: "Lato"}}>{pref.category.label}</Typography>} >
                                             </ListItemText>
