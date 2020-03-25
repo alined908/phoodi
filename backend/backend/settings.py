@@ -57,7 +57,7 @@ REST_FRAMEWORK = {
     ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
-
+  
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
     'http://localhost',

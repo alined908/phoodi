@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Avatar, IconButton, Tooltip, ListItem, ListItemAvatar, ListItemText, Typography} from '@material-ui/core'
+import {Avatar, IconButton, Tooltip} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import {axiosClient} from "../../accounts/axiosClient"
 import {getPreferences, addPreference, editPreference, deletePreference} from "../../actions/index"
-import {Lock as LockIcon, LockOpen as LockOpenIcon, Search as SearchIcon, Edit as EditIcon, Delete as DeleteIcon} from '@material-ui/icons';
-import {Friend, CategoryAutocomplete} from "../components"
+import {Lock as LockIcon, LockOpen as LockOpenIcon, Search as SearchIcon, Edit as EditIcon} from '@material-ui/icons';
+import {Friend, CategoryAutocomplete, Preferences} from "../components"
 
 class Profile extends Component {
     constructor(props){
@@ -24,7 +24,6 @@ class Profile extends Component {
     componentDidMount(){
         this.props.getPreferences(this.props.match.params.id)
         this.getInformation()
-        
     }
 
     componentDidUpdate(prevProps){
@@ -105,42 +104,7 @@ class Profile extends Component {
                             </div>
                         </div>  
                         <div className="column-middle">
-                            {this.props.preferences.map((pref, index) => 
-                                <Tooltip placement="left" title={pref.category.label}>
-                                    <div className="preference">
-                                        <ListItem>
-                                            <span style={{marginRight: "20px"}}>{index + 1}</span>
-                                            <ListItemAvatar>
-                                                <Avatar src={`${process.env.REACT_APP_S3_STATIC_URL}${pref.category.api_label}.png`} variant="square">
-
-                                                </Avatar>
-                                            </ListItemAvatar>
-                                            <ListItemText primary={<Typography variant="body" style={{fontWeight: "600", fontFamily: "Lato"}}>{pref.category.label}</Typography>} >
-                                            </ListItemText>
-                                            
-                                            {isUser && (!this.state.locked ?
-                                                <>  
-                                                    <Tooltip title="Edit">
-                                                        <IconButton onClick={() => this.handleEdit(pref)} style={{color: "black"}} size="small">
-                                                            <EditIcon fontSize="inherit">
-
-                                                            </EditIcon>
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                    <Tooltip title="Delete">
-                                                        <IconButton onClick={() => this.handleDelete(pref)} color="secondary" size="small">
-                                                            <DeleteIcon fontSize="inherit">
-
-                                                            </DeleteIcon>
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                </>: <></>
-                                                )
-                                            }
-                                        </ListItem>
-                                    </div>
-                                </Tooltip>
-                            )}
+                            <Preferences locked={this.state.locked} isUser={isUser}/>
                         </div>
                         <div className="column-bottom">
                             {!this.state.locked && <>
@@ -235,7 +199,6 @@ class Profile extends Component {
 function mapStateToProps(state) {
     return {
         user: state.user.user,
-        preferences: state.user.preferences
     }
 }
 
