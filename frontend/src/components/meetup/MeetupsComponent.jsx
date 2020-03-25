@@ -86,7 +86,7 @@ class MeetupsComponent extends Component {
         if (!clickedPrefs[index]){
             entries = [...this.state.entries, category]
         } else {
-            entries = this.state.entries.filter(entry => entry !== category)
+            entries = this.state.entries.filter(entry => JSON.stringify(entry) !== JSON.stringify(category))
         }
         clickedPrefs[index] = !clickedPrefs[index]
 
@@ -116,9 +116,7 @@ class MeetupsComponent extends Component {
 
     onTagsChange = (event, values) => {
         var clickedPrefs = [...this.state.clickedPreferences]
-        console.log(clickedPrefs)
-        console.log(values)
-        console.log('hello')
+  
         for(var i = 0; i < clickedPrefs.length; i ++){
             if (clickedPrefs[i]){
                 let pref = this.state.preferences[i]
@@ -131,12 +129,10 @@ class MeetupsComponent extends Component {
 
         for(var j = 0; j < values.length; j++){
             let category = values[j];
-            console.log(category)
-            for(var z=0; z < this.state.preferences; z++){
+
+            for(var z=0; z < this.state.preferences.length; z++){
                 let preference = this.state.preferences[z];
-                console.log(preference)
-                console.log(clickedPrefs[z])
-                if (preference.category === category && clickedPrefs[z] !== true){
+                if (JSON.stringify(preference.category) === JSON.stringify(category) && clickedPrefs[z] !== true){
                     clickedPrefs[z] = true
                 }
             }
