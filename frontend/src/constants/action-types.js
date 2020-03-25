@@ -52,3 +52,4 @@ export const GET_PREFERENCES = 'get_preferences';
 export const ADD_PREFERENCE = "add_preference";
 export const EDIT_PREFERENCE = 'edit_preference';
 export const DELETE_PREFERENCE = 'delete_preference';
+export const REORDER_PREFERENCES = 'reorder_preference';

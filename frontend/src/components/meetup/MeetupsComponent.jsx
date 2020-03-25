@@ -116,12 +116,28 @@ class MeetupsComponent extends Component {
 
     onTagsChange = (event, values) => {
         var clickedPrefs = [...this.state.clickedPreferences]
+        console.log(clickedPrefs)
+        console.log(values)
+        console.log('hello')
         for(var i = 0; i < clickedPrefs.length; i ++){
             if (clickedPrefs[i]){
                 let pref = this.state.preferences[i]
                 let category = pref.category
                 if (!values.includes(category)){
                     clickedPrefs[i] = !clickedPrefs[i]
+                }
+            }
+        }
+
+        for(var j = 0; j < values.length; j++){
+            let category = values[j];
+            console.log(category)
+            for(var z=0; z < this.state.preferences; z++){
+                let preference = this.state.preferences[z];
+                console.log(preference)
+                console.log(clickedPrefs[z])
+                if (preference.category === category && clickedPrefs[z] !== true){
+                    clickedPrefs[z] = true
                 }
             }
         }

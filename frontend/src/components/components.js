@@ -47,6 +47,7 @@ import Profile from "./general/Profile"
 import GroupAvatars from './general/GroupAvatars'
 import NotificationWrapper from "./general/NotificationWrapper"
 import Preferences from "./general/Preferences"
+import Preference from "./general/Preference"
 
 export {
     ErrorComponent, LoginComponent, LogoutComponent, RegisterComponent, 
@@ -54,4 +55,4 @@ export {
     Friend, FriendsComponent, Invite, Invites,
     Map, Meetup, MeetupCard, MeetupEvent, MeetupEventForm, MeetupFriend, MeetupForm, MeetupPageComponent, MeetupsComponent, Restauraunt,
     CategoryAutocomplete, UserAutocomplete, Location, renderTextField, renderDatePicker, renderDateSimplePicker,
-    Body, GlobalMessage, GroupAvatars, HomeComponent, LiveUpdatingBadge, Navigation, Profile, NotificationWrapper, Preferences}
+    Body, GlobalMessage, GroupAvatars, HomeComponent, LiveUpdatingBadge, Navigation, Profile, NotificationWrapper, Preferences, Preference}

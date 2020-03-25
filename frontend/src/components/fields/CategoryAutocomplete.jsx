@@ -19,19 +19,6 @@ const useStyles = makeStyles({
     "&&:after": {
       borderBottom: "none"
     }
-  },
-  option: {
-    height: "2rem",
-    display: "flex",
-    alignItems: "center",
-    fontFamily: "Lato",
-    fontWeight: "600",
-    fontSize: ".8rem"
-  },
-  icon : {
-    width: "auto",
-    height: "20px",
-    marginRight: "15px"
   }
 });
 
@@ -54,7 +41,6 @@ const CategoryAutocomplete = (props) => {
                         "Authorization": `JWT ${localStorage.getItem('token')}`
                     }});
                 await sleep(1e3);
-                console.log(response.data.categories)
                 setOptions(response.data.categories);
                 setLoaded(true);
             })();
@@ -85,8 +71,8 @@ const CategoryAutocomplete = (props) => {
         const parts = parse(option.label, matches)
         
         return(
-            <div className={classes.option}> 
-              <img className={classes.icon} src={`${process.env.REACT_APP_S3_STATIC_URL}${option.api_label}.png`}></img>
+            <div style={{height: "2rem", display: "flex", alignItems: "center", fontFamily: "Lato", fontWeight: "600", fontSize: ".8rem"}}> 
+              <img style={{width: "auto", height: "20px", marginRight: "15px"}} src={`${process.env.REACT_APP_S3_STATIC_URL}${option.api_label}.png`}></img>
               {parts.map((part, index) => (
                 <span key={index} style={{ color: part.highlight ? "red" : "black" }}>
                   {part.text}

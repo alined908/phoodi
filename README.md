@@ -89,7 +89,10 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Categories/Preferences
 - [ ] Change name of preference
-- [ ] Reorder preferences
+- [x] Reorder preferences
+- [ ] Create categories page (most popular)
+- [ ] Individual category page showing stats
+- [ ] Clickable categories + different presentation 
 
 ## Todo Invite
 - [ ] Meetup invite error (no notification received)

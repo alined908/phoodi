@@ -104,7 +104,7 @@ class Profile extends Component {
                             </div>
                         </div>  
                         <div className="column-middle">
-                            <Preferences locked={this.state.locked} isUser={isUser}/>
+                            <Preferences locked={this.state.locked} isUser={isUser} user={this.props.user.id.toString()}/>
                         </div>
                         <div className="column-bottom">
                             {!this.state.locked && <>

@@ -1,74 +1,46 @@
 import React, {Component} from 'react';
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
-import {ListItem, ListItemAvatar, ListItemText, Typography, Tooltip, Avatar, IconButton} from '@material-ui/core'
-import { editPreference, deletePreference} from "../../actions/index"
+import {reorderPreferences} from "../../actions/index"
 import {connect} from 'react-redux'
-import {Delete as DeleteIcon, Edit as EditIcon} from '@material-ui/icons'
+import {Preference} from "../components"
+
+const SortablePreference = SortableElement(({pref, sortIndex, locked, isUser}) => {
+
+    return (
+        <Preference pref={pref} sortIndex={sortIndex} locked={locked} isUser={isUser}/>
+    )
+})
+
+const SortablePreferenceList = SortableContainer(({preferences, isUser, locked}) => {
+ 
+    return (
+        <div>
+            {preferences.map((pref, index) => (
+                <SortablePreference key={`pref-${pref.id}`} index={index} sortIndex={index} isUser={isUser} locked={locked} pref={pref}/>
+            ))}
+        </div>
+    )
+})
 
 class Preferences extends Component {
-
-    handleEdit = (pref) => {
-        this.props.editPreference(this.props.user.id, pref.id)
-    }
-
-    handleDelete = (pref) => {
-        this.props.deletePreference(this.props.user.id, pref.id)
-    }
-
     onSortEnd = ({oldIndex, newIndex}) => {
-
+        this.props.reorderPreferences({oldRanking: oldIndex + 1, newRanking: newIndex + 1}, this.props.user)
     }
 
     render () {
-        const SortablePreference = SortableElement(({props}) => {
-            console.log("HFWAFWAFW")
-            console.log('hello3334667')
-            const pref = props.pref
-            const index = props.index
-
-            return (
-                <Tooltip placement="left" title={pref.category.label}>
-                    <div className="preference">
-                        <ListItem>
-                            <span style={{marginRight: "20px"}}>{index + 1}</span>
-                            <ListItemAvatar>
-                                <Avatar src={`${process.env.REACT_APP_S3_STATIC_URL}${pref.category.api_label}.png`} variant="square"/>
-                            </ListItemAvatar>
-                            <ListItemText primary={<Typography variant="body" style={{fontWeight: "600", fontFamily: "Lato"}}>{pref.category.label}</Typography>} >
-                            </ListItemText>
-                            {this.props.isUser && (!this.props.locked ?
-                                <>  
-                                    {/* <Tooltip title="Edit">
-                                        <IconButton onClick={() => this.handleEdit(pref)} style={{color: "black"}} size="small">
-                                            <EditIcon fontSize="inherit"/>
-                                        </IconButton>
-                                    </Tooltip> */}
-                                    <Tooltip title="Delete">
-                                        <IconButton onClick={() => this.handleDelete(pref)} color="secondary" size="small">
-                                            <DeleteIcon fontSize="inherit"/>
-                                        </IconButton>
-                                    </Tooltip>
-                                </>: <></>
-                                )
-                            }
-                        </ListItem>
-                    </div>
-                </Tooltip>
-            )
-        })
-        
-        const SortablePreferenceList = SortableContainer(({preferences}) => {
-            return (
-                <div className="column-middle">
-                    {preferences.map((pref, index) => (
-                        <SortablePreference key={`pref-${pref.id}`} index={index} pref={pref}/>
-                    ))}
-                </div>
-            )
-        })
-
-        return <SortablePreferenceList preferences={this.props.preferences} onSortEnd={this.onSortEnd}/>
-    }
+        let props = {isUser: this.props.isUser, locked: this.props.locked, preferences: this.props.preferences}
+        return (
+            <div className="column-middle">
+                {(this.props.isUser && !this.props.locked) ?
+                    <SortablePreferenceList {...props} onSortEnd={this.onSortEnd}/> : 
+                    <>
+                        {this.props.preferences.map((pref, index) => {
+                            return <Preference pref={pref} isUser={this.props.isUser} locked={this.props.locked} sortIndex={index}></Preference>
+                        })}
+                    </>
+                }
+            </div> 
+        )}
 }
 function mapStateToProps(state) {
     return {
@@ -77,8 +49,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-    editPreference,
-    deletePreference
+    reorderPreferences
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Preferences)

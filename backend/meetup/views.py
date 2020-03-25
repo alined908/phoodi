@@ -122,7 +122,7 @@ class UserPreferenceListView(APIView):
     def get(self, request, *args, **kwargs):
         pk = kwargs['id']
         user = User.objects.get(pk=pk)
-        preferences = Preference.objects.filter(user=user)
+        preferences = Preference.objects.filter(user=user).order_by('ranking')
         serializer = PreferenceSerializer(preferences, many=True)
         return Response(serializer.data)
 
@@ -133,6 +133,15 @@ class UserPreferenceListView(APIView):
         pref_count = user.preferences.all().count()
         preference = Preference.objects.create(user=user, category=category, name=category.label, ranking=(pref_count + 1))
         serializer = PreferenceSerializer(preference)
+        return Response(serializer.data)
+
+    def patch(self, request, *args, **kwargs):
+        user = request.user
+        old_ranking, new_ranking = request.data['oldRanking'], request.data['newRanking']
+        moved_preference = Preference.objects.filter(user=user, ranking=old_ranking)[0]
+        moved_preference.reorder_preferences(new_ranking)
+        preferences = Preference.objects.filter(user=user).order_by('ranking')
+        serializer = PreferenceSerializer(preferences, many=True)
         return Response(serializer.data)
 
 class UserPreferenceView(APIView):

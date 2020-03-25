@@ -11,6 +11,7 @@ import requests, random, json, sys, time, os
 from django.contrib.postgres.fields import JSONField, ArrayField
 from rest_framework_jwt.settings import api_settings
 from django.db import transaction
+from django.db.models import F
 from .helpers import path_and_rename_avatar, path_and_rename_category
 from PIL import Image
 from io import BytesIO
@@ -381,6 +382,17 @@ class Preference(models.Model):
     ranking = models.PositiveSmallIntegerField()
     timestamp = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
+
+    def reorder_preferences(self, new_rank):
+        old_rank = self.ranking
+        if old_rank == new_rank:
+            pass
+        elif old_rank < new_rank:
+            Preference.objects.filter(user=self.user, ranking__lte=new_rank, ranking__gte=old_rank).update(ranking=F('ranking') - 1)
+        else:
+            Preference.objects.filter(user=self.user, ranking__lte=old_rank, ranking__gte=new_rank).update(ranking=F('ranking') + 1)
+        self.ranking = new_rank
+        self.save()
 
 class MeetupCategory(models.Model):
     meetup = models.ForeignKey(Meetup, related_name="meetup_categories", on_delete=models.CASCADE)

@@ -42,9 +42,6 @@ services:
             - "1000:1000"
         command: npm start 
         stdin_open: true
-        environment:
-            - CHOKIDAR_USEPOLLING=true
-            - CI=true
     redis:
         image: "redis:5.0.7"
     worker_channels:

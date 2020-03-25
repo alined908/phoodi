@@ -1,4 +1,4 @@
-import {AUTH_USER, CLEAR_STORE, AUTH_ERROR, EDIT_USER, GET_FRIENDS, ADD_FRIEND, DELETE_FRIEND,  GET_MEETUP_INVITES, GET_FRIEND_INVITES, GET_PREFERENCES, ADD_PREFERENCE, DELETE_PREFERENCE, EDIT_PREFERENCE} from "../constants/action-types"
+import {AUTH_USER, CLEAR_STORE, AUTH_ERROR, EDIT_USER, GET_FRIENDS, ADD_FRIEND, DELETE_FRIEND,  GET_MEETUP_INVITES, GET_FRIEND_INVITES, GET_PREFERENCES, ADD_PREFERENCE, DELETE_PREFERENCE, REORDER_PREFERENCES, EDIT_PREFERENCE} from "../constants/action-types"
 import {userDefaultState} from "../constants/default-states"
 
 export default function(state = userDefaultState, action){
@@ -25,6 +25,8 @@ export default function(state = userDefaultState, action){
         case ADD_PREFERENCE:
             return {...state, preferences: [...state.preferences, action.payload]}
         case EDIT_PREFERENCE:
+            return {...state, preferences: action.payload}
+        case REORDER_PREFERENCES:
             return {...state, preferences: action.payload}
         case DELETE_PREFERENCE:
             return {...state, preferences: action.payload}
