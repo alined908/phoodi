@@ -1187,6 +1187,8 @@ body {
 }
 
 .categories-section{
+  display: flex;
+  flex-direction: column;
   width: 90%;
   height: 90%;
   margin: auto;
@@ -1196,12 +1198,24 @@ body {
 
 .categories-horz{
   display:flex;
-  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  width: 75%;
+  margin: 0 auto 2rem auto;
 }
 
 .categories-horz-entries{
   display:flex;
-  width: 100%;
+  margin-top: .5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.categories-horz-description{
+  display:flex;
+  align-items: center;
+  margin-right: 1rem;
+  font-size: 1.5rem;
 }
 
 .categories-horz-entry {
@@ -1209,7 +1223,33 @@ body {
   justify-content: center;
   align-items: center;
   background-color: white;
-  border-radius: 1px solid #edf0f6;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  margin:.5rem 0;
   padding: 1rem;
   margin-right: 1rem;
+}
+
+.categories-horz-entry:hover{
+  border: 2px solid #3f51b5; 
+}
+
+.categories-horz-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border: 1px solid #edf0f6;
+  padding: 1rem;
+  margin: .5rem 0;
+  border-radius: 4px;
+  margin-right: 1rem;
+  width: 150px;
+}
+
+.categories-chosen {
+  display: flex;
+  flex: 1;
+  width: 70%;
+  margin: 0 auto;
 }

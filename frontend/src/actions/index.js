@@ -91,7 +91,7 @@ export const addPreference = (data, user_id) => async dispatch => {
         console.log(response.data)
         return Promise.all[dispatch({type: ADD_PREFERENCE, payload: response.data}), dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "success", message: "Successfully added preference"}})]
     } catch(e) {
-        dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Unable to add preference."}})
+        dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "error", message: e.response.data.error}})
     }
 }
 

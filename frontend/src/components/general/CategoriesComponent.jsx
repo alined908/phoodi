@@ -1,6 +1,9 @@
 import React, {Component} from 'react'
 import {axiosClient} from "../../accounts/axiosClient"
-import {Avatar} from '@material-ui/core'
+import {Avatar, IconButton, Tooltip} from '@material-ui/core'
+import Skeleton from '@material-ui/lab/Skeleton';
+import CachedIcon from '@material-ui/icons/Cached';
+import {Link} from 'react-router-dom'
 
 class CategoriesComponent extends Component {
     constructor(props){
@@ -8,7 +11,9 @@ class CategoriesComponent extends Component {
         this.state = {
             category: "",
             popular: [],
-            random: []
+            random: [],
+            popularCategoriesLoaded: false,
+            randomCategoriesLoaded: false
         }
     }
 
@@ -25,9 +30,17 @@ class CategoriesComponent extends Component {
                 }}),
             ]
         )
-        console.log(popular.data.categories)
-        console.log(random.data.categories)
-        this.setState({popular: popular.data.categories, random: random.data.categories})
+        this.setState({popular: popular.data.categories, random: random.data.categories, popularCategoriesLoaded: true,  randomCategoriesLoaded: true})
+    }
+
+    handleReload = async () => {
+        this.setState({randomCategoriesLoaded: false})
+
+        const response = await axiosClient.get(
+            `/api/categories/?random=true`, {headers: {
+                "Authorization": `JWT ${localStorage.getItem('token')}`
+        }})
+        this.setState({random: response.data.categories, randomCategoriesLoaded: true})
     }
 
     render () {
@@ -35,30 +48,52 @@ class CategoriesComponent extends Component {
             <div className="categories-section">
                 <div className="categories-horz">
                     <div className="categories-horz-description">
-                        Popular Categories
+                        Most Popular Categories
                     </div>
                     <div className="categories-horz-entries">
-                        {this.state.popular.map((popular) => (
-                            <div classname="categories-horz-entry elevate">
-                                <Avatar src={`${process.env.REACT_APP_S3_STATIC_URL}${popular.api_label}.png`} variant="square"/> {popular.label}
-                            </div>
-                        ))}
+                        {this.state.popularCategoriesLoaded ? 
+                            this.state.popular.map((popular) => (
+                                <Link to={`/category/${popular.api_label}`}>
+                                    <div className="categories-horz-entry elevate">
+                                        <Avatar src={`${process.env.REACT_APP_S3_STATIC_URL}${popular.api_label}.png`} variant="square"/> {popular.label}
+                                    </div>
+                                </Link>
+                            )) :
+                            [...Array(16).keys()].map((each) => (
+                                <div className="categories-horz-placeholder elevate">
+                                    <Skeleton animation="wave" variant="circle" height={40} width={40}/>
+                                    <Skeleton animation="wave" height={10} width={60} style={{ marginLeft: 10 }} />
+                                </div>
+                            ))
+                        }
                     </div>
                 </div>
                 <div className="categories-horz">
                     <div className="categories-horz-description">
-                        Random Categories
+                        Discover New Categories 
+                        <Tooltip title="Reload">
+                            <IconButton onClick={this.handleReload} color="primary">
+                                <CachedIcon></CachedIcon>
+                            </IconButton>
+                        </Tooltip>
                     </div>
                     <div className="categories-horz-entries">
-                        {this.state.random.map((random) => (
-                            <div classname="categories-horz-entry elevate">
-                                <Avatar src={`${process.env.REACT_APP_S3_STATIC_URL}${random.api_label}.png`} variant="square"/> {random.label}
-                            </div>
-                        ))}
+                        {this.state.randomCategoriesLoaded ? 
+                            this.state.random.map((random) => (
+                                <Link to={`/category/${random.api_label}`}>
+                                    <div className="categories-horz-entry elevate">
+                                        <Avatar src={`${process.env.REACT_APP_S3_STATIC_URL}${random.api_label}.png`} variant="square"/> {random.label}
+                                    </div>
+                                </Link>
+                            )) :
+                            [...Array(36).keys()].map((each) => (
+                                <div className="categories-horz-placeholder elevate">
+                                    <Skeleton animation="wave" variant="circle" height={40} width={40}/>
+                                    <Skeleton animation="wave" height={10} width={60} style={{ marginLeft: 10 }} />
+                                </div>
+                            ))
+                        }
                     </div>
-                </div>
-                <div className="categories-chosen">
-
                 </div>
             </div>
         )

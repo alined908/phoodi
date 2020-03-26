@@ -90,9 +90,7 @@ python manage.py loaddata meetup/fixtures/*.json
 Day 1 + 2
 ---------------------------------------
 ## Todo Categories/Preferences
-- [ ] Create categories page (most popular)
 - [ ] Individual category page showing stats
-- [ ] Clickable categories + different presentation
 
 ## Todo Users
 - [ ] Past activity
@@ -141,6 +139,7 @@ Day 3 + 4
 - [ ] Delete Friend, Give friend/meetupmember nickname 
 - [ ] Edit chat messages and add emojis, upload picture
 - [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
+- [ ] Clickable categories + different presentation
 - [ ] Disable redux dev tools in production
 - [ ] Separate css files
 - [ ] Handle timestamp logic

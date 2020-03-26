@@ -4,13 +4,14 @@ import {ListItem, ListItemAvatar, ListItemText, Typography, Tooltip, Avatar, Ico
 import {Delete as DeleteIcon, Edit as EditIcon} from '@material-ui/icons'
 import { editPreference, deletePreference} from "../../actions/index"
 
-const Preference = ({pref, sortIndex, locked, isUser}) => {
+const Preference = ({pref, sortIndex, locked, isUser, user}) => {
     const handleEdit = (pref) => {
-        this.props.editPreference(this.props.user.id, pref.id)
+        this.props.editPreference(user.id, pref.id)
     }
 
     const handleDelete = (pref) => {
-        this.props.deletePreference(this.props.user.id, pref.id)
+        console.log("handle delete")
+        this.props.deletePreference(user.id, pref.id)
     }
 
     return (

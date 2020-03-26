@@ -42,7 +42,6 @@ services:
             - 8003:8003
         command: npm start
         stdin_open: true
-        tty: true
     redis:
         image: "redis:5.0.7"
     worker_channels:

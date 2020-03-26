@@ -130,6 +130,10 @@ class UserPreferenceListView(APIView):
         user = request.user
         category_id = request.data['category_id']
         category = Category.objects.get(pk=category_id)
+
+        if Preference.objects.get(user=user, category=category).exists():
+            return Response({"error": "Already a preference"},status=status.HTTP_400_BAD_REQUEST)
+
         pref_count = user.preferences.all().count()
         preference = Preference.objects.create(user=user, category=category, name=category.label, ranking=(pref_count + 1))
         serializer = PreferenceSerializer(preference)
@@ -546,20 +550,19 @@ class CategoryListView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request, *args, **kwargs):
-        print("hello")
         if request.GET.get('popular', False):
             categories = Category.objects.filter(id__in=RawSQL(
                 'SELECT p.id FROM (SELECT pref.category_id as id, COUNT(*) as num\
                 FROM meetup_preference as pref \
                 GROUP BY pref.category_id \
                 ORDER BY COUNT(*) DESC) as p\
-                LIMIT 10', params=()))
+                LIMIT 16', params=()))
         elif request.GET.get('random', False):
             categories = Category.objects.filter(id__in=RawSQL(
                 'SELECT id \
                 FROM meetup_category \
                 ORDER BY random() \
-                LIMIT 10', params=()))
+                LIMIT 36', params=()))
         else:
             categories = Category.objects.all()
         serializer = CategorySerializer(categories, many=True)
