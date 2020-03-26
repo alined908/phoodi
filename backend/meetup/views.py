@@ -131,7 +131,7 @@ class UserPreferenceListView(APIView):
         category_id = request.data['category_id']
         category = Category.objects.get(pk=category_id)
 
-        if Preference.objects.get(user=user, category=category).exists():
+        if Preference.objects.filter(user=user, category=category).exists():
             return Response({"error": "Already a preference"},status=status.HTTP_400_BAD_REQUEST)
 
         pref_count = user.preferences.all().count()
@@ -562,7 +562,7 @@ class CategoryListView(APIView):
                 'SELECT id \
                 FROM meetup_category \
                 ORDER BY random() \
-                LIMIT 36', params=()))
+                LIMIT 33', params=()))
         else:
             categories = Category.objects.all()
         serializer = CategorySerializer(categories, many=True)

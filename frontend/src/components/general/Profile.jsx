@@ -87,7 +87,7 @@ class Profile extends Component {
                             <div>Preferences</div>
                             <div>
                                 {isUser && (this.state.locked ?
-                                    <Tooltip title="Click to Unlock">
+                                    <Tooltip title="Click to Reorder">
                                         <IconButton color="primary" onClick={this.handleLock}>
                                             <LockIcon>
                                             </LockIcon>
@@ -105,11 +105,8 @@ class Profile extends Component {
                         </div>  
                         <Preferences locked={this.state.locked} isUser={isUser} user={this.props.user.id.toString()}/>
                         <div className="column-bottom">
-                            {!this.state.locked && <>
-                                <SearchIcon/>
-                                <CategoryAutocomplete fullWidth={true} size="small" entries={this.state.entries} handleClick={this.onTagsChange} label="Search to add categories.."/>
-                            </>
-                            }
+                            <SearchIcon/>
+                            <CategoryAutocomplete fullWidth={true} size="small" entries={this.state.entries} handleClick={this.onTagsChange} label="Search to add categories.."/>
                         </div> 
                     </div>
                 </div>

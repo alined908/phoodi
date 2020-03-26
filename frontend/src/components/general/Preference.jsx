@@ -4,14 +4,14 @@ import {ListItem, ListItemAvatar, ListItemText, Typography, Tooltip, Avatar, Ico
 import {Delete as DeleteIcon, Edit as EditIcon} from '@material-ui/icons'
 import { editPreference, deletePreference} from "../../actions/index"
 
-const Preference = ({pref, sortIndex, locked, isUser, user}) => {
+const Preference = ({pref, sortIndex, locked, isUser, user, ...props}) => {
     const handleEdit = (pref) => {
-        this.props.editPreference(user.id, pref.id)
+        props.editPreference(user.id, pref.id)
     }
 
-    const handleDelete = (pref) => {
+    const handleDelete = (pref, user) => {
         console.log("handle delete")
-        this.props.deletePreference(user.id, pref.id)
+        props.deletePreference(user.id, pref.id)
     }
 
     return (
@@ -24,7 +24,7 @@ const Preference = ({pref, sortIndex, locked, isUser, user}) => {
                     </ListItemAvatar>
                     <ListItemText primary={<Typography variant="body" style={{fontWeight: "600", fontFamily: "Lato"}}>{pref.category.label}</Typography>} >
                     </ListItemText>
-                    {isUser && (!locked ?
+                    {((isUser && locked) &&
                         <>  
                             {/* <Tooltip title="Edit">
                                 <IconButton onClick={() => handleEdit(pref)} style={{color: "black"}} size="small">
@@ -32,12 +32,12 @@ const Preference = ({pref, sortIndex, locked, isUser, user}) => {
                                 </IconButton>
                             </Tooltip> */}
                             <Tooltip title="Delete">
-                                <IconButton onClick={() => handleDelete(pref)} color="secondary" size="small">
+                                <IconButton onClick={() => handleDelete(pref, user)} color="secondary" size="small">
                                     <DeleteIcon fontSize="inherit"/>
                                 </IconButton>
                             </Tooltip>
-                        </>: <></>
-                        )
+                        </>
+                    )
                     }
                 </ListItem>
             </div>
