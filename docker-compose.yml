@@ -14,7 +14,7 @@ services:
     db:
         image: postgres:12.0-alpine
         ports: 
-            - "5432:5432"
+            - 5432:5432
         environment: 
             - POSTGRES_USER=postgres
             - POSTGRES_HOST=db
@@ -26,7 +26,7 @@ services:
         volumes: 
             - ./backend:/app
         ports: 
-            - "8000:8000"
+            - 8000:8000
         command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
         env_file:
             - ./.env
@@ -39,9 +39,10 @@ services:
             - ./frontend:/app
             - node_modules:/app/node_modules
         ports: 
-            - "1000:1000"
-        command: npm start 
+            - 8003:8003
+        command: npm start
         stdin_open: true
+        tty: true
     redis:
         image: "redis:5.0.7"
     worker_channels:
@@ -51,12 +52,12 @@ services:
             - db
             - redis
         ports:
-            - "8002:8002"
+            - 8002:8002
     channels:
         <<: *backend
         command: daphne -b 0.0.0.0 -p 8001 backend.asgi:application
         ports: 
-            - "8001:8001"
+            - 8001:8001
         depends_on:
             - db
             - redis

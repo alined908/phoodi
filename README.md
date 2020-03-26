@@ -87,59 +87,62 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Author
 * **Daniel Lee** 
 
+Day 1 + 2
+---------------------------------------
 ## Todo Categories/Preferences
-- [ ] Change name of preference
-- [x] Reorder preferences
 - [ ] Create categories page (most popular)
 - [ ] Individual category page showing stats
-- [ ] Clickable categories + different presentation 
-
-## Todo Invite
-- [ ] Meetup invite error (no notification received)
+- [ ] Clickable categories + different presentation
 
 ## Todo Users
-- [ ] Add google social auth 
-- [ ] Confirm email
-- [ ] Change password
 - [ ] Past activity
-
-## Todo Chat
-- [ ] Handle timestamp logic
-- [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
-- [ ] Load chat messages smartly
-- [ ] Edit chat messages and add emojis, upload picture
+- [ ] User set radius
+- [ ] Add friends, redux action
 
 ## Todo Meetup
-- [ ] Change meetups page to calendar 
+- [ ] Say Meetups Near Location at top
 - [ ] Change display of meetups
 - [ ] Meetup email message nice html
-- [ ] Add ability to get current location
 - [ ] Filter meetups near me by radius
 - [ ] Probably change distance to be for overall event
-- [ ] Add scrollable notifications box for meetupevent 
+- [ ] Join a public meetup functionality + authorization
+- [ ] Delete notif on meetup click
 
+## Todo Chat
+- [ ] Load chat messages smartly
+
+Day 3 + 4
 ---------------------------------------
-
 ## Todo UI
 - [ ] Fix responsiveness for all viewports
-- [ ] Natural transition to new options when meetup event is changed
-- [ ] Add transitions
-- [ ] Top right add notifications or on hamburger (red dot)
+- [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
 
 ## Todo General
-- [ ] Form validation
-- [ ] Validation for time and date
-- [ ] Connect people with categories
-- [ ] List meetups within a certain radius (set by user)
+- [ ] Form validation + Validation for time and date
 - [ ] Authenticate JWT automatically after expiration
 - [ ] Authenticate Websocket
 - [ ] Write tests for frontend
 - [ ] Write tests for consumers
 - [ ] Safari presentation
-- [ ] Separate css files
 
 ## Todo Deploy
 - [ ] Add ssl certificate to website
-- [ ] Disable redux dev tools in production
 - [ ] Handle 404 page
+
+## Todo Next Iteration
+- [ ] Add google social auth 
+- [ ] Confirm email
+- [ ] Change password
+- [ ] Find people who have similar food taste near you?
+- [ ] Change name of preference
+- [ ] Refactor onTagsChange of MeetupsComponent
+- [ ] Add calendar of meetups
+- [ ] Add scrollable notifications box for meetupevent 
+- [ ] Delete Friend, Give friend/meetupmember nickname 
+- [ ] Edit chat messages and add emojis, upload picture
+- [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
+- [ ] Disable redux dev tools in production
+- [ ] Separate css files
+- [ ] Handle timestamp logic
 - [ ] Continuous integration
+- [ ] Bundle chat messages together

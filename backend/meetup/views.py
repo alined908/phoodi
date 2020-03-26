@@ -545,10 +545,34 @@ class FriendInviteView(APIView):
 class CategoryListView(APIView):
     permission_classes = [permissions.AllowAny]
 
-    def get(self, request):
-        categories = Category.objects.all()
+    def get(self, request, *args, **kwargs):
+        print("hello")
+        if request.GET.get('popular', False):
+            categories = Category.objects.filter(id__in=RawSQL(
+                'SELECT p.id FROM (SELECT pref.category_id as id, COUNT(*) as num\
+                FROM meetup_preference as pref \
+                GROUP BY pref.category_id \
+                ORDER BY COUNT(*) DESC) as p\
+                LIMIT 10', params=()))
+        elif request.GET.get('random', False):
+            categories = Category.objects.filter(id__in=RawSQL(
+                'SELECT id \
+                FROM meetup_category \
+                ORDER BY random() \
+                LIMIT 10', params=()))
+        else:
+            categories = Category.objects.all()
         serializer = CategorySerializer(categories, many=True)
         return Response({"categories": serializer.data})
+
+class CategoryView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        api_label = kwargs['api_label']
+        category = Category.objects.get(api_label=api_label)
+        serializer = CategorySerializer(category)
+        return Response(serializer.data)
 
 class ChatRoomListView(APIView):
     permission_classes = [permissions.IsAuthenticated]

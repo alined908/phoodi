@@ -12,6 +12,7 @@ urlpatterns=[
     path('users/<id>/preferences/', views.UserPreferenceListView.as_view()),
     path('users/<id>/preferences/<pref_id>/', views.UserPreferenceView.as_view()),
     path("categories/", views.CategoryListView.as_view()),
+    path("categories/<api_label>/", views.CategoryView.as_view()),
     path("meetups/", views.MeetupListView.as_view()),
     path("meetups/invite/", views.MeetupInviteAllView.as_view()),
     path("meetups/<uri>/", views.MeetupView.as_view()),
