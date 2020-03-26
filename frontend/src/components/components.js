@@ -46,6 +46,8 @@ import Navigation from "./general/Navigation"
 import Profile from "./general/Profile"
 import GroupAvatars from './general/GroupAvatars'
 import NotificationWrapper from "./general/NotificationWrapper"
+import CalendarComponent from "./general/CalendarComponent"
+import CategoriesComponent from "./general/CategoriesComponent"
 import Preferences from "./general/Preferences"
 import Preference from "./general/Preference"
 
@@ -55,4 +57,4 @@ export {
     Friend, FriendsComponent, Invite, Invites,
     Map, Meetup, MeetupCard, MeetupEvent, MeetupEventForm, MeetupFriend, MeetupForm, MeetupPageComponent, MeetupsComponent, Restauraunt,
     CategoryAutocomplete, UserAutocomplete, Location, renderTextField, renderDatePicker, renderDateSimplePicker,
-    Body, GlobalMessage, GroupAvatars, HomeComponent, LiveUpdatingBadge, Navigation, Profile, NotificationWrapper, Preferences, Preference}
+    Body, GlobalMessage, GroupAvatars, HomeComponent, LiveUpdatingBadge, Navigation, Profile, NotificationWrapper, Preferences, Preference, CalendarComponent, CategoriesComponent}

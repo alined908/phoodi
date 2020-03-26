@@ -1,7 +1,9 @@
 import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {Button, Drawer, CssBaseline, AppBar, Toolbar, Typography, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core'
-import {Menu, ChevronLeft, ChevronRight, People as PeopleIcon, Person as PersonIcon, Settings as SettingsIcon, ChatOutlined as ChatOutlinedIcon, MailOutlined as MailOutlinedIcon, Assignment, PermContactCalendar as PermContactCalendarIcon, ExitToApp, EventNote as EventNoteIcon}  from '@material-ui/icons';
+import {Button, Drawer, CssBaseline, AppBar, Toolbar, Typography, Divider, IconButton, List, ListItem, ListItemIcon, Badge, ListItemText} from '@material-ui/core'
+import {Menu, ChevronLeft, ChevronRight, People as PeopleIcon, 
+  Person as PersonIcon, Settings as SettingsIcon, ChatOutlined as ChatOutlinedIcon, MailOutlined as MailOutlinedIcon, 
+  Assignment, PermContactCalendar as PermContactCalendarIcon, ExitToApp, EventNote as EventNoteIcon, Category as CategoryIcon}  from '@material-ui/icons';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {Body, LiveUpdatingBadge} from '../components'
@@ -65,7 +67,7 @@ const useStyles = makeStyles(theme => ({
     }),
     width: '100%',
     height: '100%',
-  },
+  }
 }));
 
 const Navigation = (props) => {
@@ -85,6 +87,16 @@ const Navigation = (props) => {
     return window.location.pathname.indexOf(uri) > -1
   }
 
+  const isNotifs = (notifs) => {
+    let count = 0;
+
+    for(let value of Object.values(notifs)){
+      count += value
+    }
+
+    return count > 0;
+  }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -92,7 +104,7 @@ const Navigation = (props) => {
       <AppBar position="absolute" className={classes.appBar}>
         <Toolbar>
           {props.authenticated && <IconButton aria-label="open drawer" onClick={handleDrawerOpen} edge="start">
-            <Menu />
+            <Badge color="secondary" variant="dot" invisible={!isNotifs(props.notifs)}><Menu /></Badge>
           </IconButton>}
           <Typography className={classes.title} variant="h6" noWrap>
             <Link onClick={handleDrawerClose} to="/">Meetup</Link>
@@ -126,6 +138,14 @@ const Navigation = (props) => {
                   <ListItemText classes={{primary: classes.drawerText}} primary="Meetups"/>
                 </ListItem>
               </Link>}
+            {props.authenticated && <Link to="/category" onClick={handleDrawerClose}>
+                <ListItem button key="Categories" selected={isActive("/category")}>
+                  <ListItemIcon>
+                    <CategoryIcon className={classes.icon}/>
+                  </ListItemIcon>
+                  <ListItemText classes={{primary: classes.drawerText}} primary="Categories"/>
+                </ListItem>
+            </Link>}
           {props.authenticated && <Link to="/calendar" onClick={handleDrawerClose}>
                 <ListItem button key="Calendar" selected={isActive("/calendar")}>
                   <ListItemIcon>
@@ -133,14 +153,6 @@ const Navigation = (props) => {
                   </ListItemIcon>
                   <ListItemText classes={{primary: classes.drawerText}} primary="Calendar"/>
                 </ListItem>
-            </Link>}
-          {props.authenticated && <Link to="/chat" onClick={handleDrawerClose}>
-              <ListItem button key="Chat" selected={isActive("/chat")}>
-                <ListItemIcon>
-                <LiveUpdatingBadge type={'chat'} icon={<ChatOutlinedIcon className={classes.icon}/>} />
-                </ListItemIcon>
-                <ListItemText classes={{primary: classes.drawerText}} primary="Chat"/>
-              </ListItem>
             </Link>}
           {props.authenticated && <Link to="/friends" onClick={handleDrawerClose}>
               <ListItem button key="Friends" selected={isActive("/friends")}>
@@ -150,6 +162,15 @@ const Navigation = (props) => {
                 <ListItemText classes={{primary: classes.drawerText}} primary="Friends"/>
               </ListItem>
             </Link>}
+          {props.authenticated && <Link to="/chat" onClick={handleDrawerClose}>
+              <ListItem button key="Chat" selected={isActive("/chat")}>
+                <ListItemIcon>
+                <LiveUpdatingBadge type={'chat'} icon={<ChatOutlinedIcon className={classes.icon}/>} />
+                </ListItemIcon>
+                <ListItemText classes={{primary: classes.drawerText}} primary="Chat"/>
+              </ListItem>
+            </Link>}
+          
           {props.authenticated && <Link to="/invites" onClick={handleDrawerClose}>
             <ListItem button key="Invites" selected={isActive("/invites")}>
               <ListItemIcon>
@@ -200,6 +221,7 @@ function mapStatetoProps(state) {
   return {
     authenticated: state.user.authenticated,
     user: state.user.user,
+    notifs: state.notifs
   }
 }
 

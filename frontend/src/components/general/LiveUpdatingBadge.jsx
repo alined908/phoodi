@@ -18,7 +18,7 @@ class LiveUpdatingBadge extends Component {
 
     render () {
         return (
-            <Badge badgeContent={this.determineType(this.props.type)} color="primary">
+            <Badge badgeContent={this.determineType(this.props.type)} color="secondary">
                   {this.props.icon}
             </Badge>
         )

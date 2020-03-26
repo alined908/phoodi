@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Route, Switch} from 'react-router-dom';
-import {LogoutComponent, ErrorComponent, RegisterComponent, ChatComponent, MeetupsComponent, HomeComponent, 
+import {LogoutComponent, ErrorComponent, RegisterComponent, ChatComponent, MeetupsComponent, HomeComponent, CategoriesComponent, CalendarComponent,
     MeetupPageComponent, FriendsComponent, MeetupEventForm, LoginComponent, Invites, MeetupForm, Profile, GlobalMessage
 } from "../components"
 import AuthenticatedRoute from "../../accounts/AuthenticatedRoute";
@@ -11,23 +11,25 @@ class Body extends Component {
         return (
             <div className="c">
                 <Switch>
-                    <Route path="/" exact component={HomeComponent}></Route>
-                    <UnAuthenticatedRoute path="/login" component={LoginComponent}></UnAuthenticatedRoute>
-                    <UnAuthenticatedRoute path="/register" component={(props) => <RegisterComponent {...props} type={"create"}/>}></UnAuthenticatedRoute>
-                    <AuthenticatedRoute path="/logout" component={LogoutComponent}></AuthenticatedRoute>
-                    <AuthenticatedRoute path="/meetups/:uri/events/:id/edit" component={(props) => <MeetupEventForm {...props} type={"edit"}/>}></AuthenticatedRoute>
-                    <AuthenticatedRoute path="/meetups/:uri/new" exact component={(props) => <MeetupEventForm {...props} type={"create"}/>}></AuthenticatedRoute>
-                    <AuthenticatedRoute path="/meetups/:uri/edit" exact component={(props) => <MeetupForm {...props} type={"edit"}/>}></AuthenticatedRoute>
-                    <AuthenticatedRoute path="/meetups/new" exact component={(props) => <MeetupForm {...props} type={"create"}/>}></AuthenticatedRoute>
-                    <AuthenticatedRoute path="/meetups/:uri" component={MeetupPageComponent}></AuthenticatedRoute>
-                    <AuthenticatedRoute path="/meetups" exact component={MeetupsComponent}></AuthenticatedRoute>
-                    <AuthenticatedRoute path="/chat/:uri" component={ChatComponent}></AuthenticatedRoute>
-                    <AuthenticatedRoute path="/chat" exact component={ChatComponent}></AuthenticatedRoute>
-                    <AuthenticatedRoute path="/friends" component={FriendsComponent}></AuthenticatedRoute>
-                    <AuthenticatedRoute path="/invites" component={Invites}></AuthenticatedRoute>
-                    <AuthenticatedRoute path="/profile/edit" component={(props) => <RegisterComponent {...props} type={"edit"}/>}></AuthenticatedRoute>
-                    <AuthenticatedRoute path="/profile/:id" component={Profile}></AuthenticatedRoute>
-                    <Route component={ErrorComponent}></Route>
+                    <Route path="/" exact component={HomeComponent}/>
+                    <UnAuthenticatedRoute path="/login" component={LoginComponent}/>
+                    <UnAuthenticatedRoute path="/register" component={(props) => <RegisterComponent {...props} type={"create"}/>}/>
+                    <AuthenticatedRoute path="/logout" component={LogoutComponent}/>
+                    <AuthenticatedRoute path="/meetups/:uri/events/:id/edit" component={(props) => <MeetupEventForm {...props} type={"edit"}/>}/>
+                    <AuthenticatedRoute path="/meetups/:uri/new" exact component={(props) => <MeetupEventForm {...props} type={"create"}/>}/>
+                    <AuthenticatedRoute path="/meetups/:uri/edit" exact component={(props) => <MeetupForm {...props} type={"edit"}/>}/>
+                    <AuthenticatedRoute path="/meetups/new" exact component={(props) => <MeetupForm {...props} type={"create"}/>}/>
+                    <AuthenticatedRoute path="/meetups/:uri" component={MeetupPageComponent}/>
+                    <AuthenticatedRoute path="/meetups" exact component={MeetupsComponent}/>
+                    <AuthenticatedRoute path="/chat/:uri" component={ChatComponent}/>
+                    <AuthenticatedRoute path="/chat" exact component={ChatComponent}/>
+                    <AuthenticatedRoute path="/category" component={CategoriesComponent}/>
+                    <AuthenticatedRoute path="/calendar" exact component={CalendarComponent}/>
+                    <AuthenticatedRoute path="/friends" component={FriendsComponent}/>
+                    <AuthenticatedRoute path="/invites" component={Invites}/>
+                    <AuthenticatedRoute path="/profile/edit" component={(props) => <RegisterComponent {...props} type={"edit"}/>}/>
+                    <AuthenticatedRoute path="/profile/:id" component={Profile}/>
+                    <Route component={ErrorComponent}/>
                 </Switch>
                 <GlobalMessage/>
             </div>

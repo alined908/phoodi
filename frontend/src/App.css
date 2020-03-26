@@ -407,7 +407,7 @@ body {
   padding: 0 .05rem 0 0;
   border: 1px solid #eeeeef;
   border-radius: 7px;
-  height: calc(100% - 3rem - 1rem - 12px - 1rem);
+  height: calc(100% - 3rem - 1rem - 18px - 1rem);
   max-height: 218px;
   background-color: white;
   overflow-y: auto;
@@ -1171,4 +1171,45 @@ body {
   background-color: white;
   border-bottom: 1px solid #edf0f6;
   cursor: pointer;
+}
+
+.calendar{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  height: 80%;
+  margin: auto;
+  font-family: "Lato";
+  font-weight: 600;
+  font-size: 3rem;
+  background-color: white;
+}
+
+.categories-section{
+  width: 90%;
+  height: 90%;
+  margin: auto;
+  font-family: "Lato";
+  font-weight: 600;
+}
+
+.categories-horz{
+  display:flex;
+  width: 100%;
+}
+
+.categories-horz-entries{
+  display:flex;
+  width: 100%;
+}
+
+.categories-horz-entry {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 1px solid #edf0f6;
+  padding: 1rem;
+  margin-right: 1rem;
 }
