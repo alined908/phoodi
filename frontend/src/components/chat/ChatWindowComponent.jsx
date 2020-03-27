@@ -12,11 +12,14 @@ class ChatWindowComponent extends Component {
     constructor(props){
         super(props);
         this.state = {
-            value: ""
+            value: "",
+            bound: true
         }
     }
     componentDidUpdate() {
-        this.scrollToBottom();
+        if (this.state.bound){
+            this.scrollToBottom();
+        }
     }
 
     messagesEndRef = React.createRef()
@@ -41,9 +44,15 @@ class ChatWindowComponent extends Component {
 
     handleScroll = (e) => {
         console.log(e.target.scrollTop)
-        if (e.target.scrollTop === 0 && this.props.messages.length > 50) {
+        if (e.target.scrollTop === 0 && this.props.messages.length > 49) {
             console.log('hello')
             this.props.getMoreMessages(this.props.room.uri, this.props.messages[0].id)
+        }
+
+        if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight){
+            this.setState({bound: true})
+        } else{
+            this.setState({bound: false})
         }
     }
 

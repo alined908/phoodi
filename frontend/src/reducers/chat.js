@@ -24,11 +24,11 @@ export default function chatReducer(state = defaultState, action){
         case GET_MESSAGES:
             return {...state, messages: action.payload, isMessagesInitialized: true}
         case GET_MORE_MESSAGES:
-            return {...state, messages: [action.payload, ...state.messages]}
+            return {...state, messages: [...action.payload, ...state.messages]}
         case SET_TYPING_VALUE:
             return {...state, setTypingValue: action.payload}
         case ADD_MESSAGE:
-            return {...state, setTypingValue: '', messages: [...state.messages, {"message": action.payload.message}]}
+            return {...state, setTypingValue: '', messages: [...state.messages, action.payload.message]}
         case CLEAR_STORE:
             return defaultState
         default:

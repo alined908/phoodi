@@ -108,9 +108,6 @@ Day 1 + 2
 - [ ] Join a public meetup functionality + authorization
 - [ ] Delete notif on meetup click
 
-## Todo Chat
-- [ ] Load chat messages smartly
-
 Day 3 + 4
 ---------------------------------------
 ## Todo UI
@@ -130,6 +127,7 @@ Day 3 + 4
 - [ ] Handle 404 page
 
 ## Todo Next Iteration
+- [ ] Reload animation on chat scroll up
 - [ ] Create meetup with member 
 - [ ] Add google social auth 
 - [ ] Confirm email
