@@ -51,6 +51,7 @@ import CategoriesComponent from "./general/CategoriesComponent"
 import CategoryComponent from "./general/CategoryComponent"
 import Preferences from "./general/Preferences"
 import Preference from "./general/Preference"
+import SettingsComponent from "./general/SettingsComponent"
 
 export {
     ErrorComponent, LoginComponent, LogoutComponent, RegisterComponent, 
@@ -58,4 +59,5 @@ export {
     Friend, FriendsComponent, Invite, Invites,
     Map, Meetup, MeetupCard, MeetupEvent, MeetupEventForm, MeetupFriend, MeetupForm, MeetupPageComponent, MeetupsComponent, Restauraunt,
     CategoryAutocomplete, UserAutocomplete, Location, renderTextField, renderDatePicker, renderDateSimplePicker,
-    Body, GlobalMessage, GroupAvatars, HomeComponent, LiveUpdatingBadge, Navigation, Profile, NotificationWrapper, Preferences, Preference, CalendarComponent, CategoriesComponent, CategoryComponent}
+    Body, GlobalMessage, GroupAvatars, HomeComponent, LiveUpdatingBadge, Navigation, Profile, NotificationWrapper, 
+    Preferences, Preference, CalendarComponent, CategoriesComponent, CategoryComponent, SettingsComponent}

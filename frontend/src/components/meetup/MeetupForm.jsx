@@ -7,27 +7,33 @@ import {addMeetup, editMeetup, getMeetup} from "../../actions/meetup";
 import {Link} from 'react-router-dom'
 import {renderTextField, renderDateSimplePicker, Location} from '../components'
 import moment from "moment"
+import Geocode from "react-geocode";
 
 class MeetupForm extends Component {
     constructor(props){
         super(props)
         this.state = {
             location: "",
-            latitude: "",
-            longitude: "",
+            latitude: null,
+            longitude: null,
             public: false
         }
         this.handleClick = this.handleClick.bind(this)
     }
 
     componentDidMount() {
-        if (!this.props.isMeetupInitialized && this.props.type === "edit") {
-            this.props.getMeetup(this.props.match.params.uri)
+        Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_API_KEY}`)
+        if (this.props.type === "edit") {
+            if (!this.props.isMeetupInitialized) {
+                this.props.getMeetup(this.props.match.params.uri)
+                
+            }
         }
+        
     }
 
     onSubmit = (formProps) => {
-        let data = {...formProps, location: this.state.location, public: this.state.public}
+        let data = {...formProps, location: this.state.location, public: this.state.public, longitude: this.state.longitude, latitude: this.state.latitude}
 
         if (this.props.type === "create") {
             this.props.addMeetup(data, (uri) => {
@@ -43,12 +49,21 @@ class MeetupForm extends Component {
     }
 
     handleClick = (e, value) => {
-        console.log(value)
         let location;
         if (value === null){
             location = ""
+            
         } else {
             location = value.description
+            Geocode.fromAddress(location).then(
+                response => {
+                    const geolocation = response.results[0].geometry.location
+                    this.setState({longitude: geolocation.lng, latitude: geolocation.lat})
+                },
+                error => {
+                    console.error(error);
+                }
+            )
         }
         this.setState({location})
     }

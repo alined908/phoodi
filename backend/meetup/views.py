@@ -236,9 +236,10 @@ class MeetupListView(APIView):
 
     def post(self, request, *args, **kwargs):
         try:
-            user, date, name, location, public = request.user, request.data['date'], request.data['name'], request.data['location'], request.data['public']
-            meetup = Meetup.objects.create(date=date, location=location, name=name, public=public)
-            meetup.members.create(user=user, meetup=meetup)
+            user, date, name, location = request.user, request.data['date'], request.data['name'], request.data['location']
+            public, latitude, longitude = request.data['public'], request.data['latitude'], request.data['longitude']
+            meetup = Meetup.objects.create(date=date, location=location, name=name, public=public, latitude=latitude, longitude=longitude)
+            meetup.members.create(user=user, meetup=meetup, admin=True)
             return Response({'status': 'Success', 'meetup': MeetupSerializer(meetup, context={"user": user}).data, 'message': "new meetup created"})
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -91,7 +91,6 @@ Day 1 + 2
 ---------------------------------------
 ## Todo Categories/Preferences
 - [ ] Category Page show nearby meetups
-- [ ] Most popular categories test sql
 
 ## Todo Users
 - [ ] Past activity
@@ -100,13 +99,13 @@ Day 1 + 2
 
 ## Todo Meetup
 - [ ] Say Meetups Near Location at top
-- [ ] Get lat long from autocomplete
 - [ ] Change display of meetups
 - [ ] Meetup email message nice html
 - [ ] Filter meetups near me by radius
 - [ ] Probably change distance to be for overall event
 - [ ] Join a public meetup functionality + authorization
-- [ ] Delete notif on meetup click
+- [ ] Edit Meetup Form
+- [ ] Doesnt work if starttime is late (no entries, or categories suckl)
 
 Day 3 + 4
 ---------------------------------------
@@ -127,7 +126,7 @@ Day 3 + 4
 - [ ] Handle 404 page
 
 ## Todo Next Iteration
-- [ ] Reload animation on chat scroll up
+- [ ] Reload animation on chat scroll up/Throttle scroll event
 - [ ] Create meetup with member 
 - [ ] Add google social auth 
 - [ ] Confirm email

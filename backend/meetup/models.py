@@ -55,6 +55,9 @@ class User(AbstractBaseUser):
     admin = models.BooleanField(default=False)
     staff = models.BooleanField(default=False)
     confirmed = models.BooleanField(default =False)
+    radius = models.IntegerField(blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
     avatar = models.ImageField(blank=True, null=True, upload_to=path_and_rename_avatar)
 
     USERNAME_FIELD = 'email'
@@ -152,8 +155,8 @@ class User(AbstractBaseUser):
 class Meetup(models.Model):
     uri = models.URLField(default=generate_unique_uri)
     location = models.TextField()
-    longitude = models.DecimalField(max_digits=9, decimal_places=6)
-    latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    longitude = models.FloatField()
+    latitude = models.FloatField()
     name = models.CharField(max_length=255, default="Meetup")
     date = models.DateField()
     public = models.BooleanField()

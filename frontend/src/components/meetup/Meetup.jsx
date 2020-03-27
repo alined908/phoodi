@@ -80,7 +80,7 @@ class Meetup extends Component {
     }
 
     render () {
-        const [id, name, uri, location, datetime, members, notifs, isPublic, categories, events] = this.props.meetup
+        const [id, name, uri, location, datetime, members, notifs, isPublic, categories, latitude, longitude, events] = this.props.meetup
         const isMember = (friend) => {return friend in members}
         const emailDisable = this.determineEmailDisable(events)
         

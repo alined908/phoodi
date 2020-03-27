@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Route, Switch} from 'react-router-dom';
 import {LogoutComponent, ErrorComponent, RegisterComponent, ChatComponent, MeetupsComponent, HomeComponent, CategoriesComponent, CalendarComponent, CategoryComponent,
-    MeetupPageComponent, FriendsComponent, MeetupEventForm, LoginComponent, Invites, MeetupForm, Profile, GlobalMessage
+    MeetupPageComponent, FriendsComponent, MeetupEventForm, LoginComponent, Invites, MeetupForm, Profile, GlobalMessage, SettingsComponent
 } from "../components"
 import AuthenticatedRoute from "../../accounts/AuthenticatedRoute";
 import UnAuthenticatedRoute from "../../accounts/UnAuthenticatedRoute";
@@ -28,6 +28,7 @@ class Body extends Component {
                     <AuthenticatedRoute path="/calendar" exact component={CalendarComponent}/>
                     <AuthenticatedRoute path="/friends" component={FriendsComponent}/>
                     <AuthenticatedRoute path="/invites" component={Invites}/>
+                    <AuthenticatedRoute path="/settings" component={SettingsComponent}/>
                     <AuthenticatedRoute path="/profile/edit" component={(props) => <RegisterComponent {...props} type={"edit"}/>}/>
                     <AuthenticatedRoute path="/profile/:id" component={Profile}/>
                     <Route component={ErrorComponent}/>
