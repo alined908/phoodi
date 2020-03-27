@@ -6,12 +6,12 @@ import { editPreference, deletePreference} from "../../actions/index"
 
 const Preference = ({pref, sortIndex, locked, isUser, user, ...props}) => {
     const handleEdit = (pref) => {
-        props.editPreference(user.id, pref.id)
+        props.editPreference(user.id, pref.category.id)
     }
 
     const handleDelete = (pref, user) => {
         console.log("handle delete")
-        props.deletePreference(user.id, pref.id)
+        props.deletePreference(user.id, pref.category.id)
     }
 
     return (

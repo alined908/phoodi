@@ -91,14 +91,16 @@ Day 1 + 2
 ---------------------------------------
 ## Todo Categories/Preferences
 - [ ] Individual category page showing stats
+- [ ] Most popular categories test sql
 
 ## Todo Users
 - [ ] Past activity
-- [ ] User set radius
+- [ ] User set radius, location
 - [ ] Add friends, redux action
 
 ## Todo Meetup
 - [ ] Say Meetups Near Location at top
+- [ ] Get lat long from autocomplete
 - [ ] Change display of meetups
 - [ ] Meetup email message nice html
 - [ ] Filter meetups near me by radius

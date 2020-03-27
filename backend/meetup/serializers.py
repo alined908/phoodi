@@ -226,6 +226,26 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ('id', 'label', 'api_label', 'image')
 
+class CategoryVerboseSerializer(CategorySerializer):
+    preference = serializers.SerializerMethodField('_get_preference')
+    num_liked = serializers.SerializerMethodField('_get_numliked')
+
+    def _get_preference(self, obj):
+        user = self.context.get("user")
+        preference = Preference.objects.filter(user=user, category=obj)
+        if preference.exists():
+            return PreferenceSerializer(preference[0]).data
+        else:
+            return None
+
+    def _get_numliked(self, obj):
+        count = Preference.objects.filter(category=obj).count()
+        return count
+
+    class Meta(CategorySerializer.Meta):
+        model = Category
+        fields = ('id', 'label', 'api_label', 'image', 'num_liked', 'preference')
+
 class ChatRoomSerializer(serializers.ModelSerializer):
     members = serializers.SerializerMethodField('_get_members')
     notifs = serializers.SerializerMethodField('_get_notifs')

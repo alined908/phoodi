@@ -24,7 +24,7 @@ const SortablePreferenceList = SortableContainer(({preferences, isUser, locked, 
 
 class Preferences extends Component {
     onSortEnd = ({oldIndex, newIndex}) => {
-        this.props.reorderPreferences({oldRanking: oldIndex + 1, newRanking: newIndex + 1}, this.props.user)
+        this.props.reorderPreferences({oldRanking: oldIndex + 1, newRanking: newIndex + 1}, this.props.user.id)
     }
 
     render () {

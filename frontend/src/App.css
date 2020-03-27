@@ -1253,3 +1253,51 @@ body {
   width: 70%;
   margin: 0 auto;
 }
+
+.category {
+  display: flex;
+  flex-direction: column;
+  height: 90%;
+  margin: auto;
+  font-family: "Lato";
+  font-weight: 600;
+  width: 70%;
+}
+
+.category-header{
+  display: flex;
+  font-size: 2.5rem;
+  background-color: white;
+  justify-content: space-between;
+}
+
+.category-header-avatar{
+  display:flex;
+  align-items: center;
+  padding: 1rem 0;
+  padding-left: 2rem
+}
+
+.category-avatar{
+  margin-right: 20px;
+}
+
+.category-actions{
+  padding-right: 1rem;
+}
+
+.category-actions-like{
+  font-size: 11px;
+  margin-top: 5px;
+  margin-left: 2px;
+  font-family: "Lato";
+  font-weight: 600;
+}
+
+.category-social {
+  height: 100%;
+  margin-top: 2rem;
+}
+.category-friends{
+  height: 100%;
+}

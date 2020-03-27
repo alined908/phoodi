@@ -12,6 +12,7 @@ from django.contrib.postgres.fields import JSONField, ArrayField
 from rest_framework_jwt.settings import api_settings
 from django.db import transaction
 from django.db.models import F
+from django.db.models.expressions import RawSQL
 from .helpers import path_and_rename_avatar, path_and_rename_category
 from PIL import Image
 from io import BytesIO
@@ -106,6 +107,23 @@ class User(AbstractBaseUser):
 
     def get_friends(self):
         friends = Friendship.objects.raw('SELECT * FROM meetup_friendship WHERE creator_id= %s OR friend_id = %s', [self.id, self.id])
+        return friends
+
+    def get_friends_by_category(self, category):
+        print(category.id)
+        friends = Friendship.objects.filter(id__in=RawSQL(
+            '(SELECT a.id AS id \
+            FROM meetup_friendship AS a \
+            INNER JOIN meetup_preference AS b \
+            ON a.friend_id=b.user_id \
+            AND a.creator_id=%s AND b.category_id=%s) \
+            UNION \
+            (SELECT a.id AS id \
+            FROM meetup_friendship AS a \
+            INNER JOIN meetup_preference AS b \
+            ON a.creator_id=b.user_id \
+            AND a.friend_id=%s AND b.category_id=%s) \
+            ', [self.id, category.id, self.id, category.id]))
         return friends
 
     def get_friend(self, friend):
@@ -393,6 +411,9 @@ class Preference(models.Model):
             Preference.objects.filter(user=self.user, ranking__lte=old_rank, ranking__gte=new_rank).update(ranking=F('ranking') + 1)
         self.ranking = new_rank
         self.save()
+
+    def reorder_preferences_delete(self):
+        Preference.objects.filter(user=self.user, ranking__gt=self.ranking).update(ranking=F('ranking') - 1)
 
 class MeetupCategory(models.Model):
     meetup = models.ForeignKey(Meetup, related_name="meetup_categories", on_delete=models.CASCADE)

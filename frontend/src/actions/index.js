@@ -121,9 +121,9 @@ export const reorderPreferences = (data, user_id) => async dispatch => {
     }
 }
 
-export const deletePreference = (user_id, pref_id) => async dispatch => {
+export const deletePreference = (user_id, category_id) => async dispatch => {
     try {
-        const response = await axiosClient.delete(`/api/users/${user_id}/preferences/${pref_id}/`,  {headers: {
+        const response = await axiosClient.delete(`/api/users/${user_id}/preferences/${category_id}/`,  {headers: {
             "Authorization": `JWT ${localStorage.getItem('token')}`
             }}
         )

@@ -13,7 +13,7 @@ from django.db.models import Q
 from random import shuffle
 import collections
 from django.forms.models import model_to_dict
-from meetup.serializers import PreferenceSerializer, CategorySerializer, UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer, FriendInviteSerializer, MeetupEventSerializer
+from meetup.serializers import PreferenceSerializer, CategorySerializer, CategoryVerboseSerializer, UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer, FriendInviteSerializer, MeetupEventSerializer
 
 @api_view(['GET'])
 def current_user(request):
@@ -87,7 +87,12 @@ class UserFriendsView(APIView):
         """
         pk = kwargs['id']
         user = User.objects.get(pk=pk)
-        serializer = FriendshipSerializer(user.get_friends(), many=True, context={'user': user})
+
+        if request.GET.get('category', False):
+            category = Category.objects.get(api_label=request.GET.get('category'))
+            serializer = FriendshipSerializer(user.get_friends_by_category(category), many=True, context={'user': user})
+        else:
+            serializer = FriendshipSerializer(user.get_friends(), many=True, context={'user': user})
 
         return Response(serializer.data)
 
@@ -155,10 +160,12 @@ class UserPreferenceView(APIView):
         pass
 
     def delete(self, request, *args, **kwargs):
-        user = request.user
-        pref_pk = kwargs['pref_id']
-
-        preference = Preference.objects.get(pk=pref_pk)
+        pk = kwargs['id']
+        user = User.objects.get(pk=pk)
+        category_pk = kwargs['category_id']
+        category = Category.objects.get(pk=category_pk)
+        preference = Preference.objects.get(user=user, category=category)
+        preference.reorder_preferences_delete()
         preference.delete()
         preferences = user.preferences.all()
         serializer = PreferenceSerializer(preferences, many=True)
@@ -562,7 +569,7 @@ class CategoryListView(APIView):
                 'SELECT id \
                 FROM meetup_category \
                 ORDER BY random() \
-                LIMIT 33', params=()))
+                LIMIT 26', params=()))
         else:
             categories = Category.objects.all()
         serializer = CategorySerializer(categories, many=True)
@@ -574,7 +581,7 @@ class CategoryView(APIView):
     def get(self, request, *args, **kwargs):
         api_label = kwargs['api_label']
         category = Category.objects.get(api_label=api_label)
-        serializer = CategorySerializer(category)
+        serializer = CategoryVerboseSerializer(category, context={"user": request.user})
         return Response(serializer.data)
 
 class ChatRoomListView(APIView):

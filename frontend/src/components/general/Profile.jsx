@@ -46,10 +46,6 @@ class Profile extends Component {
         this.setState({user: profile.data, friends: friends.data, filteredFriends: friends.data, userLoaded: true})
     }
 
-    handleDelete = (pref) => {
-        this.props.deletePreference(this.props.user.id, pref.id)
-    }
-
     handleLock = () => {
         this.setState({locked: !this.state.locked})
     }
@@ -200,8 +196,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
     getPreferences,
     addPreference,
-    editPreference,
-    deletePreference
+    editPreference
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile)

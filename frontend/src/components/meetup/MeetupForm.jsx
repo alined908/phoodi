@@ -13,6 +13,8 @@ class MeetupForm extends Component {
         super(props)
         this.state = {
             location: "",
+            latitude: "",
+            longitude: "",
             public: false
         }
         this.handleClick = this.handleClick.bind(this)
@@ -41,6 +43,7 @@ class MeetupForm extends Component {
     }
 
     handleClick = (e, value) => {
+        console.log(value)
         let location;
         if (value === null){
             location = ""

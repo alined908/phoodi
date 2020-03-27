@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {axiosClient} from "../../accounts/axiosClient"
-import {Avatar, IconButton, Tooltip} from '@material-ui/core'
+import {Avatar, IconButton, Tooltip, Grow} from '@material-ui/core'
 import Skeleton from '@material-ui/lab/Skeleton';
 import CachedIcon from '@material-ui/icons/Cached';
 import {Link} from 'react-router-dom'
@@ -52,12 +52,14 @@ class CategoriesComponent extends Component {
                     </div>
                     <div className="categories-horz-entries">
                         {this.state.popularCategoriesLoaded ? 
-                            this.state.popular.map((popular) => (
-                                <Link to={`/category/${popular.api_label}`}>
-                                    <div className="categories-horz-entry elevate">
-                                        <Avatar src={`${process.env.REACT_APP_S3_STATIC_URL}${popular.api_label}.png`} variant="square"/> {popular.label}
-                                    </div>
-                                </Link>
+                            this.state.popular.map((popular, index) => (
+                                <Grow in={true} timeout={Math.max((index + 1) * 70)}>
+                                    <Link to={`/category/${popular.api_label}`}>
+                                        <div className="categories-horz-entry elevate">
+                                            <Avatar src={`${process.env.REACT_APP_S3_STATIC_URL}${popular.api_label}.png`} variant="square"/> {popular.label}
+                                        </div>
+                                    </Link>
+                                </Grow>
                             )) :
                             [...Array(16).keys()].map((each) => (
                                 <div className="categories-horz-placeholder elevate">
@@ -79,14 +81,16 @@ class CategoriesComponent extends Component {
                     </div>
                     <div className="categories-horz-entries">
                         {this.state.randomCategoriesLoaded ? 
-                            this.state.random.map((random) => (
-                                <Link to={`/category/${random.api_label}`}>
-                                    <div className="categories-horz-entry elevate">
-                                        <Avatar src={`${process.env.REACT_APP_S3_STATIC_URL}${random.api_label}.png`} variant="square"/> {random.label}
-                                    </div>
-                                </Link>
+                            this.state.random.map((random, index) => (
+                                <Grow in={true} timeout={Math.max((index + 1) * 70)}>
+                                    <Link to={`/category/${random.api_label}`}>
+                                        <div className="categories-horz-entry elevate">
+                                            <Avatar src={`${process.env.REACT_APP_S3_STATIC_URL}${random.api_label}.png`} variant="square"/> {random.label}
+                                        </div>
+                                    </Link>
+                                </Grow>
                             )) :
-                            [...Array(36).keys()].map((each) => (
+                            [...Array(26).keys()].map((each) => (
                                 <div className="categories-horz-placeholder elevate">
                                     <Skeleton animation="wave" variant="circle" height={40} width={40}/>
                                     <Skeleton animation="wave" height={10} width={60} style={{ marginLeft: 10 }} />
