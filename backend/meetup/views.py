@@ -639,16 +639,10 @@ class ChatRoomMessageView(APIView):
     def get(self, request, *args, **kwargs):
         uri = kwargs['uri']
         chat_room = get_object_or_404(ChatRoom, uri=uri)
-        messages = []
-
-        for msg in reversed(chat_room.messages.order_by('-timestamp')[:50]):
-            message = MessageSerializer(msg).data
-            messages.append({'message': message})
-
-        return Response({
-            'id': chat_room.id, 'uri': chat_room.uri,
-            'messages': messages
-        })
+        messages = ChatRoomMessage.objects.raw('SELECT * FROM meetup_chatroommessage AS c WHERE c.room_id=%s ORDER BY c.id DESC LIMIT 50', [chat_room.id])
+        serializer = MessageSerializer(reversed(messages), many=True)
+    
+        return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
         uri = kwargs['uri']

@@ -280,7 +280,7 @@ class ChatRoomMemberSerializer(serializers.ModelSerializer):
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatRoomMessage
-        fields = ('__all__')
+        fields = ('id', 'message', 'timestamp', 'is_read', 'room_id', 'sender_id')
 
 # class CustomJWTSerializer(VerifyJSONWebTokenSerializer):
 #     username_field = 'email'

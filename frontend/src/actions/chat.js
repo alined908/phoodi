@@ -1,4 +1,4 @@
-import {GET_ROOMS, SET_ACTIVE_ROOM, GET_MESSAGES, SET_TYPING_VALUE, ADD_MESSAGE, REMOVE_ACTIVE_ROOM} from "../constants/action-types"
+import {GET_ROOMS, SET_ACTIVE_ROOM, GET_MESSAGES, GET_MORE_MESSAGES, SET_TYPING_VALUE, ADD_MESSAGE, REMOVE_ACTIVE_ROOM} from "../constants/action-types"
 import {axiosClient} from '../accounts/axiosClient'
 
 export const getRooms = () => async dispatch => {
@@ -41,6 +41,20 @@ export const getMessages = (room) => async dispatch => {
     } catch(e){
         console.log(e);
     }
+}
+
+export const getMoreMessages = (room, last_message_id) => async dispatch => {
+    console.log("get more messages")
+    try {
+        const response = await axiosClient.get(
+            `/api/chats/${room}/messages/`, {params: {last: last_message_id}, headers: {
+                "Authorization": `JWT ${localStorage.getItem('token')}`
+        }})
+        dispatch({type: GET_MORE_MESSAGES, payload: response.data})
+    } catch(e){
+        console.log(e)
+    }
+
 }
 
 export const setTypingValue = (value) => {

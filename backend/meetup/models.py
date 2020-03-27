@@ -110,7 +110,6 @@ class User(AbstractBaseUser):
         return friends
 
     def get_friends_by_category(self, category):
-        print(category.id)
         friends = Friendship.objects.filter(id__in=RawSQL(
             '(SELECT a.id AS id \
             FROM meetup_friendship AS a \

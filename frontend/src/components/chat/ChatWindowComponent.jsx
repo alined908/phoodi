@@ -4,7 +4,9 @@ import {connect} from 'react-redux'
 import {Button, Tooltip} from '@material-ui/core'
 import {Link} from 'react-router-dom';
 import {removeNotifs} from "../../actions/notifications"
+import {getMoreMessages} from "../../actions/chat"
 import {Person as PersonIcon, Event as EventIcon} from "@material-ui/icons"
+import throttle from 'lodash/throttle'
 
 class ChatWindowComponent extends Component {
     constructor(props){
@@ -12,6 +14,9 @@ class ChatWindowComponent extends Component {
         this.state = {
             value: ""
         }
+    }
+    componentDidUpdate() {
+        this.scrollToBottom();
     }
 
     messagesEndRef = React.createRef()
@@ -23,8 +28,7 @@ class ChatWindowComponent extends Component {
     sendMessage = () => {
         if (this.state.value.length > 0 ){
             const messageObject = {from: this.props.user.id, text: this.state.value, room: this.props.room.uri}
-            this.props.socket.newChatMessage(messageObject)
-            this.setState({value: ""})
+            this.setState({value: ""}, () => this.props.socket.newChatMessage(messageObject))
         } 
     }
 
@@ -35,13 +39,19 @@ class ChatWindowComponent extends Component {
         }
     }
 
+    handleScroll = (e) => {
+        console.log(e.target.scrollTop)
+        if (e.target.scrollTop === 0 && this.props.messages.length > 50) {
+            console.log('hello')
+            this.props.getMoreMessages(this.props.room.uri, this.props.messages[0].id)
+        }
+    }
+
+
     handleClick = (e) => {
         this.sendMessage()
     }
 
-    componentDidUpdate() {
-        this.scrollToBottom();
-    }
     scrollToBottom = () => {    
         this.messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     };
@@ -78,10 +88,10 @@ class ChatWindowComponent extends Component {
                         </Link>
                     }
                 </div>
-                <div className="chat-messages-wrapper" >
+                <div className="chat-messages-wrapper" onScroll={this.handleScroll} ref={this.messagesRef}>
                     <div className="chat-messages">
                         {this.props.activeChatMembers && this.props.messages && this.props.messages.map((msg) => 
-                            <ChatMessageComponent key={msg.id} user={this.props.user} message={msg.message} members={this.props.activeChatMembers}/>
+                            <ChatMessageComponent key={msg.id} user={this.props.user} message={msg} members={this.props.activeChatMembers}/>
                         )}
                         <div ref={this.messagesEndRef} />
                     </div>
@@ -132,7 +142,8 @@ function mapStateToProps(state){
 }
 
 const mapDispatchToProps = {
-    removeNotifs
+    removeNotifs,
+    getMoreMessages
 }
 
 

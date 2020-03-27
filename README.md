@@ -90,7 +90,7 @@ python manage.py loaddata meetup/fixtures/*.json
 Day 1 + 2
 ---------------------------------------
 ## Todo Categories/Preferences
-- [ ] Individual category page showing stats
+- [ ] Category Page show nearby meetups
 - [ ] Most popular categories test sql
 
 ## Todo Users
@@ -130,6 +130,7 @@ Day 3 + 4
 - [ ] Handle 404 page
 
 ## Todo Next Iteration
+- [ ] Create meetup with member 
 - [ ] Add google social auth 
 - [ ] Confirm email
 - [ ] Change password
