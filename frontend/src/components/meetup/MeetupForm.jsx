@@ -12,12 +12,10 @@ import Geocode from "react-geocode";
 class MeetupForm extends Component {
     constructor(props){
         super(props)
-        this.state = {
-            location: "",
-            latitude: null,
-            longitude: null,
-            public: false
-        }
+        const values = props.meetup ? 
+            {location: props.meetup.location, latitude: props.meetup.latitude, longitude: props.meetup.longitude, public: props.meetup.public}
+            :{location: "", latitude: null, longitude: null, public: false}
+        this.state = {...values}
         this.handleClick = this.handleClick.bind(this)
     }
 
@@ -26,10 +24,8 @@ class MeetupForm extends Component {
         if (this.props.type === "edit") {
             if (!this.props.isMeetupInitialized) {
                 this.props.getMeetup(this.props.match.params.uri)
-                
             }
-        }
-        
+        }   
     }
 
     onSubmit = (formProps) => {
@@ -102,7 +98,7 @@ class MeetupForm extends Component {
                                     <Field name="date" component={renderDateSimplePicker} disabled={this.props.isMeetupInitialized && moment(this.props.meetup.date).add(1, "d").isBefore(moment().toDate())} label="Date"></Field>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
-                                    <Location label="Location" handleClick={this.handleClick}/>
+                                    <Location label="Location" handleClick={this.handleClick} textValue={this.state.location}/>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <FormControlLabel label="Public" control={<Radio color="primary" checked={this.state.public} onClick={() => this.handlePublicClick(true)}/>} />
@@ -125,7 +121,7 @@ function mapStateToProps(state, ownProps){
     if (ownProps.type === "edit" && (ownProps.match.params.uri in state.meetup.meetups)){
         const meetup = state.meetup.meetups[ownProps.match.params.uri]
         return {
-            initialValues: {name: meetup.name, date: moment(meetup.date).add(1, 'days').format('YYYY-MM-DD'), location: meetup.location},
+            initialValues: {name: meetup.name, date: moment(meetup.date).add(1, 'days').format('YYYY-MM-DD')},
             meetup: meetup,
             isMeetupInitialized: true
         }

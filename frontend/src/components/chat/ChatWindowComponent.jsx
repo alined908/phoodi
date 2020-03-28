@@ -43,8 +43,8 @@ class ChatWindowComponent extends Component {
     }
 
     handleScroll = (e) => {
-        console.log(e.target.scrollTop)
-        if (e.target.scrollTop === 0 && this.props.messages.length > 49) {
+        // console.log(e.target.scrollTop)
+        if (e.target.scrollTop === 0 && this.props.messages && this.props.messages.length > 49) {
             console.log('hello')
             this.props.getMoreMessages(this.props.room.uri, this.props.messages[0].id)
         }

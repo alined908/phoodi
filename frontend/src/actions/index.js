@@ -1,4 +1,4 @@
-import {AUTH_USER, AUTH_ERROR, CLEAR_STORE, EDIT_USER, ADD_GLOBAL_MESSAGE, GET_PREFERENCES, REORDER_PREFERENCES, ADD_PREFERENCE, DELETE_PREFERENCE, EDIT_PREFERENCE} from "../constants/action-types"
+import {AUTH_USER, AUTH_ERROR, CLEAR_STORE, ADD_SETTINGS, EDIT_USER, ADD_GLOBAL_MESSAGE, GET_PREFERENCES, REORDER_PREFERENCES, ADD_PREFERENCE, DELETE_PREFERENCE, EDIT_PREFERENCE} from "../constants/action-types"
 import {axiosClient} from '../accounts/axiosClient'
 import AuthenticationService from "../accounts/AuthenticationService";
 import {history} from '../components/MeetupApp'
@@ -135,5 +135,20 @@ export const deletePreference = (user_id, category_id) => async dispatch => {
         )
     } catch(e) {
         dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Unable to delete preference."}})
+    }
+}
+
+export const addSettings = (data) => async dispatch => {
+    try {
+        const response = await axiosClient.post('/api/users/settings/', data, {headers: {
+            "Authorization": `JWT ${localStorage.getItem('token')}`
+        }})
+        console.log(response.data)
+        return Promise.all([
+            dispatch({type: ADD_SETTINGS, payload: response.data}),
+            dispatch({type:ADD_GLOBAL_MESSAGE, payload: {type: "success", message: "Successfully saved settings."}})
+        ])
+    } catch(e){
+        dispatch({type:ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Unable to save settings."}})
     }
 }

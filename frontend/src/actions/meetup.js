@@ -44,7 +44,10 @@ export const getPublicMeetups = (data) => async dispatch => {
             },
             params: {
                 type: "public",
-                categories: categories
+                categories: categories,
+                latitude: data.coords.latitude,
+                longitude: data.coords.longitude,
+                radius: data.coords.radius
             }
         })
         console.log(response.data)

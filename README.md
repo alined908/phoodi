@@ -22,7 +22,7 @@ coverage report
 **2. Run tests for frontend**
 ```
 cd frontend
-not yet implemented
+npm test
 ```
 
 ## Deployment (For AWS EC2, Amazon Linux 2)
@@ -94,7 +94,6 @@ Day 1 + 2
 
 ## Todo Users
 - [ ] Past activity
-- [ ] User set radius, location
 - [ ] Add friends, redux action
 
 ## Todo Meetup
@@ -102,9 +101,7 @@ Day 1 + 2
 - [ ] Change display of meetups
 - [ ] Meetup email message nice html
 - [ ] Filter meetups near me by radius
-- [ ] Probably change distance to be for overall event
 - [ ] Join a public meetup functionality + authorization
-- [ ] Edit Meetup Form
 - [ ] Doesnt work if starttime is late (no entries, or categories suckl)
 
 Day 3 + 4
@@ -126,6 +123,8 @@ Day 3 + 4
 - [ ] Handle 404 page
 
 ## Todo Next Iteration
+- [ ] Edit Meetup Form On reload doesnt populate data
+- [ ] Specify proptypes
 - [ ] Reload animation on chat scroll up/Throttle scroll event
 - [ ] Create meetup with member 
 - [ ] Add google social auth 

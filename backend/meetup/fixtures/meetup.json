@@ -4,8 +4,8 @@
         "pk": 1,
         "fields": {
             "location": "Berkeley",
-            "longitude": 37.871853,
-            "latitude": -122.258423,
+            "latitude": 37.871853,
+            "longitude": -122.258423,
             "name": "Let's get some food",
             "date": "2020-03-03",
             "public": true

@@ -72,15 +72,3 @@ export const addMessage = (message) => async dispatch => {
         console.log(e);
     }
 }
-    
-// export const setRoom = () => async dispatch => {
-//     try {
-
-//     }
-// }
-
-// export const addRoom = () = async dispatch = {
-//     try {
-
-//     }
-// }

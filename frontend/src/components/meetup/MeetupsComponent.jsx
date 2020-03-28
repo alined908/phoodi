@@ -5,7 +5,7 @@ import {MeetupCard, CategoryAutocomplete} from "../components"
 import {Grid, Grow, Tooltip, IconButton, FormGroup, FormControlLabel, Checkbox} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import moment from "moment"
-import { Lock as LockIcon, Public as PublicIcon, ArrowBack as ArrowBackIcon, Add as AddIcon, Search as SearchIcon, Edit as EditIcon} from '@material-ui/icons'
+import { Lock as LockIcon, Public as PublicIcon, Add as AddIcon, Search as SearchIcon, Edit as EditIcon} from '@material-ui/icons'
 import {getPreferences} from "../../actions/index"
 
 class MeetupsComponent extends Component {
@@ -17,17 +17,23 @@ class MeetupsComponent extends Component {
             public: true,
             collapse: {categories: false},
             preferences: [],
-            clickedPreferences: []
+            clickedPreferences: [],
+            coords: {
+                latitude: props.user.settings.latitude, 
+                longitude: props.user.settings.longitude,
+                radius: props.user.settings.radius
+            }
         }
     }
-
+    
     async componentDidMount(){
+        this.getUserLocation()
         await Promise.all[
             //this.props.getMeetups(),
-            this.props.getPublicMeetups({categories: []}),
+            this.props.getPublicMeetups({categories: [], coords: this.state.coords}),
             this.props.getPreferences(this.props.user.id)
         ]
-        this.getUserLocation()
+        
     }
 
     componentDidUpdate(){
@@ -46,7 +52,11 @@ class MeetupsComponent extends Component {
         }
 
         const onSuccess = (position) => {
-            console.log(position)
+            const coords = {latitude: position.coords.latitude, longitude: position.coords.longitude}
+            if (this.state.coords.latitude === null && this.state.coords.longitude === null){
+                this.setState({coords: coords})
+            }
+           
         }
         
         const onError = (error) => {
@@ -74,7 +84,7 @@ class MeetupsComponent extends Component {
             }
         }
         this.setState({public: publicBool}, () => publicBool ? 
-            this.props.getPublicMeetups({categories: this.state.entries}) : 
+            this.props.getPublicMeetups({categories: this.state.entries, coords: this.state.coords}) : 
             this.props.getMeetups({categories: this.state.entries})
         )
     }
@@ -93,7 +103,7 @@ class MeetupsComponent extends Component {
         this.setState({
             clickedPreferences: clickedPrefs,
             entries: entries
-        }, () => this.props.getPublicMeetups({categories: entries}))
+        }, () => this.state.public ? this.props.getPublicMeetups({categories: entries, coords: this.state.coords}) : this.props.getMeetups({categories: entries}))
     }
 
     divideMeetups = (meetups) => {
@@ -143,7 +153,7 @@ class MeetupsComponent extends Component {
                 entries: values,
                 clickedPreferences: clickedPrefs
             },
-            () => this.props.getPublicMeetups({categories: values})
+            () => this.state.public ? this.props.getPublicMeetups({categories: values, coords: this.state.coords}) : this.props.getMeetups({categories: values})
         )
 
     }

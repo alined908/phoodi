@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
-from meetup.models import Preference, MeetupCategory, Category, User, ChatRoom, ChatRoomMember, ChatRoomMessage, Meetup, Friendship, MeetupInvite, MeetupMember, FriendInvite, MeetupEvent
+from meetup.models import Preference, MeetupCategory, UserSettings, Category, User, ChatRoom, ChatRoomMember, ChatRoomMessage, Meetup, Friendship, MeetupInvite, MeetupMember, FriendInvite, MeetupEvent
 from django.db import IntegrityError
 from rest_framework.decorators import api_view
 from django.http import HttpResponse, HttpResponseRedirect
@@ -11,9 +11,10 @@ from rest_framework import permissions, status
 from django.db.models.expressions import RawSQL
 from django.db.models import Q
 from random import shuffle
+from ipware import get_client_ip
 import collections
 from django.forms.models import model_to_dict
-from meetup.serializers import PreferenceSerializer, CategorySerializer, CategoryVerboseSerializer, UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer, FriendInviteSerializer, MeetupEventSerializer
+from meetup.serializers import PreferenceSerializer, UserSettingsSerializer, CategorySerializer, CategoryVerboseSerializer, UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer, FriendInviteSerializer, MeetupEventSerializer
 
 @api_view(['GET'])
 def current_user(request):
@@ -77,6 +78,24 @@ class UserView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class UserSettingsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        settings = UserSettings.objects.get(user=user)
+        serializer = UserSettingsSerializer(settings)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        radius, location, latitude, longitude = request.data['radius'], request.data['location'], request.data['latitude'], request.data['longitude']
+        if UserSettings.objects.filter(user=user).exists():
+            UserSettings.objects.filter(user=user).delete()
+        settings = UserSettings.objects.create(user = user, radius = radius, location = location, latitude = latitude, longitude = longitude)
+        serializer = UserSettingsSerializer(settings)
+        return Response(serializer.data) 
 
 class UserFriendsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -202,31 +221,50 @@ class MeetupListView(APIView):
             meetups_json[meetup.uri] = serializer.data
         return meetups_json
 
-    def format_public_meetups(self, user, categories):
+    def format_public_meetups(self, user, categories, coords, num_results=25):
+        print(coords)
         if categories:
             category_ids = [int(x) for x in categories.split(',')]
         else:
             category_ids = []
 
+        latitude, longitude, radius = coords[0], coords[1], coords[2]
+        distance_query = RawSQL(
+            ' SELECT id FROM \
+                (SELECT *, (3959 * acos(cos(radians(%s)) * cos(radians(latitude)) * \
+                                        cos(radians(longitude) - radians(%s)) + \
+                                        sin(radians(%s)) * sin(radians(latitude)))) \
+                    AS distance \
+                    FROM meetup_meetup) \
+                AS distances \
+                WHERE distance < %s \
+                ORDER BY distance \
+                OFFSET 0 \
+                LIMIT %s' , (latitude, longitude, latitude, radius, num_results,)
+        )
+
         if not category_ids:
-            meetups = Meetup.objects.filter(public=True).order_by("date")
+            meetups = Meetup.objects.filter(public=True, id__in=distance_query).order_by("date")
         else:
-            meetups = Meetup.objects.filter(id__in=RawSQL(
+            meetups = Meetup.objects.filter(Q(public=True) & Q(id__in=RawSQL(
                 'SELECT DISTINCT category.meetup_id \
                 FROM meetup_meetupcategory as category \
-                WHERE category_id = ANY(%s)' , (category_ids,))).filter(public=True).order_by("date")
+                WHERE category_id = ANY(%s)' , (category_ids,)))
+                &
+                Q(id__in=distance_query)).order_by("date")
 
         meetups_json = {}
         for meetup in meetups.all():
             serializer = MeetupSerializer(meetup)
             meetups_json[meetup.uri] = serializer.data
-
+        print(meetups_json)
         return meetups_json
         
     def get(self, request, *args, **kwargs):
         user = request.user
         if request.GET.get('type') == "public":
-            meetups = self.format_public_meetups(user, request.GET.get('categories'))
+            coords = [request.GET.get('latitude'), request.GET.get('longitude'), request.GET.get('radius')]
+            meetups = self.format_public_meetups(user, request.GET.get('categories'), coords)
         elif request.GET.get('type') == "private":
             meetups = self.format_meetups(user, request.GET.get('categories'))
         else:

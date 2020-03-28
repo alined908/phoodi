@@ -55,9 +55,6 @@ class User(AbstractBaseUser):
     admin = models.BooleanField(default=False)
     staff = models.BooleanField(default=False)
     confirmed = models.BooleanField(default =False)
-    radius = models.IntegerField(blank=True, null=True)
-    latitude = models.FloatField(blank=True, null=True)
-    longitude = models.FloatField(blank=True, null=True)
     avatar = models.ImageField(blank=True, null=True, upload_to=path_and_rename_avatar)
 
     USERNAME_FIELD = 'email'
@@ -151,6 +148,14 @@ class User(AbstractBaseUser):
         payload = jwt_payload_handler(self)
         token = jwt_encode_handler(payload)
         return token
+
+class UserSettings(models.Model):
+    user = models.ForeignKey(User, related_name="settings", on_delete=models.CASCADE)
+    radius = models.IntegerField(default=10)
+    location = models.TextField(blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
+    objects = models.Manager()
 
 class Meetup(models.Model):
     uri = models.URLField(default=generate_unique_uri)

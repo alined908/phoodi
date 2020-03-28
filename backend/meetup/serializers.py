@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
-from meetup.models import User, Preference, MeetupCategory, Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite
+from meetup.models import User, Preference, UserSettings, MeetupCategory, Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite
 from django.forms.models import model_to_dict
 from channels.db import database_sync_to_async
 from django.core.exceptions import ObjectDoesNotExist
@@ -16,16 +16,22 @@ from django.core.exceptions import ObjectDoesNotExist
 # jwt_get_username_from_payload = api_settings.JWT_PAYLOAD_GET_USERNAME_HANDLER
 
 class UserSerializer(serializers.ModelSerializer):
+    settings = serializers.SerializerMethodField('_get_settings')
+
     def to_representation(self, data):
         res = super(UserSerializer, self).to_representation(data)
         if self.context.get("plain"):
             return res
         else:
             return {res['id']: res}
+
+    def _get_settings(self, obj):
+        serializer = UserSettingsSerializer(obj.settings.all().first())
+        return serializer.data
         
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'avatar')
+        fields = ('id', 'email', 'first_name', 'last_name', 'avatar', 'settings')
 
 class UserSerializerWithToken(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
@@ -47,6 +53,11 @@ class UserSerializerWithToken(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'email', 'first_name', 'last_name', 'password', 'avatar')
+
+class UserSettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserSettings
+        fields = ('radius', 'location', 'latitude', 'longitude')
 
 class PreferenceSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('_get_user')

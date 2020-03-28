@@ -86,6 +86,7 @@ export default function GoogleMaps(props) {
     <Autocomplete
       getOptionLabel={option => (typeof option === 'string' ? option : option.description)}
       filterOptions={x => x}
+      value={props.textValue}
       options={options}
       autoComplete
       autoHighlight
