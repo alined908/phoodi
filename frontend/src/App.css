@@ -623,6 +623,11 @@ body {
   align-items: center;
 }
 
+.second-header-left .MuiTypography-h6{
+  font-family: "Lato" !important;
+  font-weight: 600 !important;
+}
+
 .smaller-header{
   padding: .75rem 2rem !important;
 }

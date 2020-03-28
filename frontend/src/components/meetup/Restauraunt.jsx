@@ -56,7 +56,9 @@ class Restauraunt extends Component {
 
     handleClick = (status) => {
         //If vote is ban and option vote is not ban and option is not banned and already used ban
-
+        if (!this.props.isUserMember){
+            return;
+        }
         this.props.socket.voteMeetupEvent({
             user: this.props.user.id,
             option: this.props.option.id, 

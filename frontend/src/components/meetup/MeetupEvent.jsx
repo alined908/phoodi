@@ -56,7 +56,7 @@ class MeetupEvent extends Component {
                             <div className="inner-header-icons"><ScheduleIcon/> {moment(event.start).local().format("h:mm A")} - {moment(event.end).local().format("h:mm A")}</div>
                         </div>
                         <div>
-                            {renderActions()}
+                            {this.props.isUserMember && renderActions()}
                         </div>
                     </div>
                 </div>
@@ -72,7 +72,7 @@ class MeetupEvent extends Component {
                     {keys.map((key, index) => 
                         <Grow in={true} timeout={300 * (index + 1)}>
                             <Grid item justify={index % 2 === 0 ? "flex-end" : "flex-start"} container xs={12} md={6} sm={12}>
-                                <Restauraunt socket={this.props.socket} key={key} full={true} event={this.props.event.id} meetup={this.props.uri} data={options[key]}/>
+                                <Restauraunt socket={this.props.socket} key={key} full={true} isUserMember={this.props.isUserMember} event={this.props.event.id} meetup={this.props.uri} data={options[key]}/>
                             </Grid>
                         </Grow>
                     )}
@@ -124,7 +124,7 @@ class MeetupEvent extends Component {
             return (
                 <div className="chosen">
                     <div className="chosen-restauraunt elevate">
-                        <Restauraunt socket={this.props.socket} key={chosen.id} full={false} event={this.props.event.id} meetup={this.props.uri} data={chosen}></Restauraunt>
+                        <Restauraunt socket={this.props.socket} isUserMember={this.props.isUserMember} key={chosen.id} full={false} event={this.props.event.id} meetup={this.props.uri} data={chosen}></Restauraunt>
                     </div>
                     <div className="chosen-map elevate2">
                         <div className="map-wrapper">
@@ -158,7 +158,7 @@ class MeetupEvent extends Component {
                             {(Math.round(event.distance * 0.000621371192)).toFixed(2)}
                         </span>
                     </div>
-                    {renderFinalizeActions()}
+                    {this.props.isUserMember && renderFinalizeActions()}
                 </div>
                 {!this.props.chosen && renderFourSquare(event.options)}
                 {this.props.chosen && renderChosen(event.options[this.props.chosen])}

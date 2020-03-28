@@ -62,11 +62,17 @@ class Meetup extends Component {
     }
 
     handlePublicMeetupJoin = async () => {
-        const response = await axiosClient.post(
-            `/api/meetups/${this.props.uri}/members/`, {email: this.props.user.email}, {headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
-        }})
-        console.log(response.data)
+        try {
+            const response = await axiosClient.post(
+                `/api/meetups/${this.props.uri}/members/`, {email: this.props.user.email}, {headers: {
+                    "Authorization": `JWT ${localStorage.getItem('token')}`
+            }})
+            console.log(response.data)
+            this.props.addGlobalMessage("success", "Successfully joined meetup")
+        }
+        catch(e){
+            this.props.addGlobalMessage("error", "Not able to join this meetup")
+        }
     }
 
     determineEmailDisable = (events) => {
@@ -91,7 +97,7 @@ class Meetup extends Component {
     render () {
         const [id, name, uri, location, datetime, members, notifs, isPublic, categories, latitude, longitude, events] = this.props.meetup
         const isMember = (friend) => {return friend in members}
-        const isUserMember = () => {
+        const determineUserMember = () => {
             var isUserMember = false;
             for (var key of Object.keys(members)){
                 const member = members[key]
@@ -101,6 +107,7 @@ class Meetup extends Component {
             }
             return isUserMember
         }
+        const isUserMember = determineUserMember()
         const emailDisable = this.determineEmailDisable(events)
         
         const renderInformation = (name, datetime, location) => {
@@ -117,7 +124,7 @@ class Meetup extends Component {
                         <div className="inner-header-icons"><TodayIcon/> {moment(datetime).local().format("dddd, MMMM D")}</div>
                         <div className="inner-header-icons"><RoomIcon/> {location}</div>
                     </div>
-                    <div>
+                    {isUserMember && <div>
                         <Link to={`/chat/${this.props.uri}`}>
                             <Tooltip title="Chat">
                                 <IconButton color="primary" aria-label='chat'>
@@ -142,7 +149,7 @@ class Meetup extends Component {
                                 <DeleteIcon />
                             </IconButton>
                         </Tooltip>
-                    </div>
+                    </div>}
                 </div>
             )
         }
@@ -195,7 +202,7 @@ class Meetup extends Component {
                 <>
                     {!this.props.isMeetupEventsInitialized && <div>Initializing Events</div>}
                     {this.props.isMeetupEventsInitialized && events && this.sortEvents(events).map((event, index) => 
-                        <MeetupEvent number={index} socket={this.state.socket} key={event.id} uri={uri} event={events[event]}></MeetupEvent> 
+                        <MeetupEvent number={index} socket={this.state.socket} key={event.id} uri={uri} event={events[event]} isUserMember={isUserMember}></MeetupEvent> 
                     )}
                 </>
             )
@@ -210,7 +217,7 @@ class Meetup extends Component {
                     <Grid item xs={12} md={6}>
                         <div className="inner-header elevate">
                             <Typography variant="h5">Members</Typography>
-                            {!isUserMember() && 
+                            {!isUserMember && 
                                 <Button onClick={this.handlePublicMeetupJoin} style={{background: "#45B649", color: "white"}} variant="contained">
                                     Join Meetup
                                 </Button>}
@@ -226,11 +233,13 @@ class Meetup extends Component {
                     <Grid item xs={12}>
                         <div className="inner-header elevate">
                             <Typography variant="h5">Events</Typography>
-                            <Link socket={this.state.socket} to={`/meetups/${this.props.uri}/new`}>
-                                <Button startIcon={<AddIcon />} className="button rainbow" variant="contained" color="primary">
-                                    Event
-                                </Button>
-                            </Link>
+                            {isUserMember && 
+                                <Link socket={this.state.socket} to={`/meetups/${this.props.uri}/new`}>
+                                    <Button startIcon={<AddIcon />} className="button rainbow" variant="contained" color="primary">
+                                        Event
+                                    </Button>
+                                </Link>
+                            }
                         </div>
                     </Grid>
                     <Grid item xs={12}>{renderEvents(events)}</Grid>
