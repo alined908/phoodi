@@ -88,15 +88,10 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Daniel Lee** 
 
 ## Todo Meetup
-- [ ] Meetup email message nice html
-- [ ] Join a public meetup functionality + authorization
 - [ ] Doesnt work if starttime is late (no entries, or categories suckl)
 
-## Todo UI
-- [ ] Fix responsiveness for all viewports
-- [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
-
 ## Todo General
+- [ ] Fix responsiveness for all viewports
 - [ ] Form validation + Validation for time and date
 - [ ] Authenticate JWT automatically after expiration
 - [ ] Authenticate Websocket
@@ -106,9 +101,11 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Deploy
 - [ ] Add ssl certificate to website
-- [ ] Handle 404 page
 
 ## Todo Next Iteration
+- [ ] Handle 404 page
+- [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
+- [ ] Meetup email message nice html
 - [ ] Meetupmembers give roles and allow admin to give roles/kick/etc
 - [ ] Add friends, redux action/websockets
 - [ ] Edit Meetup Form On reload doesnt populate data
