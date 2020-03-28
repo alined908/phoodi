@@ -87,21 +87,11 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Author
 * **Daniel Lee** 
 
-Day 1 + 2
----------------------------------------
-## Todo Users
-- [ ] Past activity
-- [ ] Add friends, redux action
-
 ## Todo Meetup
-- [ ] Say Meetups Near Location at top
-- [ ] Change display of meetups
 - [ ] Meetup email message nice html
 - [ ] Join a public meetup functionality + authorization
 - [ ] Doesnt work if starttime is late (no entries, or categories suckl)
 
-Day 3 + 4
----------------------------------------
 ## Todo UI
 - [ ] Fix responsiveness for all viewports
 - [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
@@ -119,13 +109,14 @@ Day 3 + 4
 - [ ] Handle 404 page
 
 ## Todo Next Iteration
+- [ ] Meetupmembers give roles and allow admin to give roles/kick/etc
+- [ ] Add friends, redux action/websockets
 - [ ] Edit Meetup Form On reload doesnt populate data
 - [ ] Specify proptypes
 - [ ] Reload animation on chat scroll up/Throttle scroll event
 - [ ] Create meetup with member 
 - [ ] Add google social auth 
-- [ ] Confirm email
-- [ ] Change password
+- [ ] Confirm email, Change password
 - [ ] Find people who have similar food taste near you?
 - [ ] Change name of preference
 - [ ] Refactor onTagsChange of MeetupsComponent
@@ -140,3 +131,4 @@ Day 3 + 4
 - [ ] Handle timestamp logic
 - [ ] Continuous integration
 - [ ] Bundle chat messages together
+- [ ] Past activity

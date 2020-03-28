@@ -16,7 +16,7 @@ def create_chat_room_for_meetup(sender, instance, created, **kwargs):
         ChatRoom.objects.create(uri=uri, name=name, meetup=instance)
 
 @receiver(post_save, sender=MeetupMember)
-def create_chat_room_member(sender, instance, created, **kwargs):
+def create_chat_room_member_and_update_meetup_with_member(sender, instance, created, **kwargs):
     from .serializers import MeetupMemberSerializer
     meetup = instance.meetup
     user = instance.user

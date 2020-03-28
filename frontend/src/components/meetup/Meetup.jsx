@@ -11,6 +11,7 @@ import {Grid, Button, Typography, Avatar, List, ListItem, ListItemText, ListItem
 import WebSocketService from "../../accounts/WebSocket";
 import {Delete as DeleteIcon, Edit as EditIcon, Room as RoomIcon, Chat as ChatIcon,  Lock as LockIcon, Public as PublicIcon, Email as EmailIcon, Add as AddIcon, Today as TodayIcon} from '@material-ui/icons'
 import AuthenticationService from "../../accounts/AuthenticationService"
+import {axiosClient} from '../../accounts/axiosClient'
 
 class Meetup extends Component {
     constructor(props){
@@ -60,6 +61,14 @@ class Meetup extends Component {
         }
     }
 
+    handlePublicMeetupJoin = async () => {
+        const response = await axiosClient.post(
+            `/api/meetups/${this.props.uri}/members/`, {email: this.props.user.email}, {headers: {
+                "Authorization": `JWT ${localStorage.getItem('token')}`
+        }})
+        console.log(response.data)
+    }
+
     determineEmailDisable = (events) => {
         if (events === undefined || (Object.keys(events).length === 0 && events.constructor === Object)){
             return true
@@ -82,6 +91,16 @@ class Meetup extends Component {
     render () {
         const [id, name, uri, location, datetime, members, notifs, isPublic, categories, latitude, longitude, events] = this.props.meetup
         const isMember = (friend) => {return friend in members}
+        const isUserMember = () => {
+            var isUserMember = false;
+            for (var key of Object.keys(members)){
+                const member = members[key]
+                if (JSON.stringify(member.user) === JSON.stringify(this.props.user)){
+                    isUserMember = true
+                }
+            }
+            return isUserMember
+        }
         const emailDisable = this.determineEmailDisable(events)
         
         const renderInformation = (name, datetime, location) => {
@@ -191,6 +210,10 @@ class Meetup extends Component {
                     <Grid item xs={12} md={6}>
                         <div className="inner-header elevate">
                             <Typography variant="h5">Members</Typography>
+                            {!isUserMember() && 
+                                <Button onClick={this.handlePublicMeetupJoin} style={{background: "#45B649", color: "white"}} variant="contained">
+                                    Join Meetup
+                                </Button>}
                         </div>
                         {renderMembers(members)}
                     </Grid>

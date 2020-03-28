@@ -148,7 +148,9 @@ class Profile extends Component {
                             <div>Past Activity</div>
                         </div>
                         <div className="column-middle">
-                            
+                            <div style={{height: "100%", fontSize: "2.5rem", display: "flex", justifyContent: "center", alignItems:"center"}}>
+                                Coming Soon...
+                            </div>
                         </div>
                     </div>
                 </div>

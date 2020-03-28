@@ -82,7 +82,9 @@ class CategoryComponent extends Component {
             <div className="category">
                 <div className="category-header elevate">
                     <div className="category-header-avatar">
-                        <span className="category-avatar"><Avatar style={{width: 100, height: 100}} src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`} variant="square"/></span>
+                        <span className="category-avatar">
+                            <Avatar style={{width: 100, height: 100}} src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`} variant="square"/>
+                        </span>
                         <span>{category.label}</span>
                     </div>
                     <div className="category-actions">
@@ -109,7 +111,7 @@ class CategoryComponent extends Component {
                         <div className="column">
                             <div className="column-inner">
                                 <div className="column-top">
-                                    <div>Friends That Also Like {category.label}</div>
+                                    <div>Friends That Like {category.label}</div>
                                     <div></div>
                                 </div>
                                 <div className="column-middle">

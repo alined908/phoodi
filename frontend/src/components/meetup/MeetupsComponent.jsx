@@ -234,6 +234,14 @@ class MeetupsComponent extends Component {
                             </Link>
                     </div>
                     {/* {!this.props.isMeetupsInitialized && <div>Initializing Meetups ....</div>} */}
+                    {this.state.public ? 
+                        <div style={{fontSize: "1.5rem", marginTop: "1rem", fontWeight: 600, fontFamily: "Lato", paddingLeft: "1.5rem"}}>
+                            Public Meetups within ({this.state.coords.radius} mi)
+                        </div> :
+                        <div style={{fontSize: "1.5rem", marginTop: "1rem", fontWeight: 600, fontFamily: "Lato", paddingLeft: "1.5rem"}}>
+                            Your Private Meetups
+                        </div>
+                    }   
                     {this.props.isMeetupsInitialized && 
                         <div className="meetups-container">
                             <Grid container spacing={1}>

@@ -1,5 +1,5 @@
 import React from 'react'
-import {makeStyles, Typography, Paper, Badge, Tooltip} from '@material-ui/core'
+import {makeStyles, Typography, Paper, Badge, Tooltip, Avatar} from '@material-ui/core'
 import {Today as TodayIcon, Notifications as NotificationsIcon, Room as RoomIcon, AccountCircle as AccountCircleIcon} from '@material-ui/icons'
 import {GroupAvatars} from "../components"
 import {Link} from 'react-router-dom'
@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     paper: {
         width: "100%",
         height: "100%",
-        minWidth: "330px"
+        minWidth: "330px",
     },
     middle: {
         height: "150px",
@@ -44,9 +44,23 @@ const MeetupCard = ({meetup}) => {
                             </Badge>
                             }  
                         </div>
-                        <div className={classes.middle}>
-                            <Skeleton animation="wave" variant="rect" height="100%"></Skeleton>
-                        </div>
+                        {meetup.categories.length === 0 ?
+                            <div className={classes.middle}>
+                                <Skeleton animation="wave" variant="rect" height="100%"></Skeleton>
+                            </div> :
+                            <div className={classes.middle} style={{padding: "0 1.5rem", borderTop: "1px solid rgb(211,211,211, 0.4)", borderBottom: "1px solid rgb(211,211,211, 0.4)"}}>
+                                <div className="meetup-card-events">Events</div>
+                                <div className="meetup-card-categories">
+                                    {meetup.categories.slice(0, 4).map((category) => 
+                                        <div className="meetup-card-category">
+                                            <Avatar style={{width: 28, height: 28}} src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`} variant="square"/>
+                                            {category.label}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        }
+                        
                         <div className="meetup-card-bottom">
                             <Tooltip title={meetup.location}><div className="meetup-card-icon flex-clip"><RoomIcon/><div className="flex-ellipse">{meetup.location}</div></div></Tooltip>
                             <div className="meetup-card-icon">
