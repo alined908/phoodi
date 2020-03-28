@@ -1295,11 +1295,18 @@ body {
 }
 
 .category-social {
+  display: flex;
   height: 100%;
   margin-top: 2rem;
 }
 .category-friends{
+  
   height: 100%;
+}
+
+.category-meetups{
+  width: 100%;
+  padding: 0 2rem;
 }
 
 .settings {

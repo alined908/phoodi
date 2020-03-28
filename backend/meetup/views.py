@@ -222,12 +222,14 @@ class MeetupListView(APIView):
         return meetups_json
 
     def format_public_meetups(self, user, categories, coords, num_results=25):
-        print(coords)
         if categories:
-            category_ids = [int(x) for x in categories.split(',')]
+            try:
+                category_ids = [int(x) for x in categories.split(',')]
+            except:
+                category = Category.objects.get(api_label=categories)
+                category_ids = [category.id]
         else:
             category_ids = []
-
         latitude, longitude, radius = coords[0], coords[1], coords[2]
         distance_query = RawSQL(
             ' SELECT id FROM \
@@ -240,7 +242,7 @@ class MeetupListView(APIView):
                 WHERE distance < %s \
                 ORDER BY distance \
                 OFFSET 0 \
-                LIMIT %s' , (latitude, longitude, latitude, radius, num_results,)
+                LIMIT %s' , (latitude, longitude, latitude, 400, num_results,)
         )
 
         if not category_ids:
@@ -257,7 +259,7 @@ class MeetupListView(APIView):
         for meetup in meetups.all():
             serializer = MeetupSerializer(meetup)
             meetups_json[meetup.uri] = serializer.data
-        print(meetups_json)
+
         return meetups_json
         
     def get(self, request, *args, **kwargs):

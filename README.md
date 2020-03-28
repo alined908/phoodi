@@ -89,9 +89,6 @@ python manage.py loaddata meetup/fixtures/*.json
 
 Day 1 + 2
 ---------------------------------------
-## Todo Categories/Preferences
-- [ ] Category Page show nearby meetups
-
 ## Todo Users
 - [ ] Past activity
 - [ ] Add friends, redux action
@@ -100,7 +97,6 @@ Day 1 + 2
 - [ ] Say Meetups Near Location at top
 - [ ] Change display of meetups
 - [ ] Meetup email message nice html
-- [ ] Filter meetups near me by radius
 - [ ] Join a public meetup functionality + authorization
 - [ ] Doesnt work if starttime is late (no entries, or categories suckl)
 

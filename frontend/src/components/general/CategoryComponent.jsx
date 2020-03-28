@@ -1,7 +1,8 @@
 import React, {Component} from "react"
 import {axiosClient} from '../../accounts/axiosClient'
-import {Avatar, Tooltip, IconButton} from '@material-ui/core'
-import {Friend} from '../components'
+import {Avatar, Tooltip, IconButton, Grid, Grow} from '@material-ui/core'
+import {getPublicMeetups} from "../../actions/meetup";
+import {Friend, MeetupCard} from '../components'
 import {FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon, Search as SearchIcon} from '@material-ui/icons';
 import {addPreference, deletePreference} from '../../actions/index'
 import {connect} from 'react-redux'
@@ -12,6 +13,7 @@ class CategoryComponent extends Component {
         this.state = {
             category: {},
             friends: [],
+            meetups: [],
             loadingError: false,
             liked: false,
             numLiked: 0
@@ -31,7 +33,7 @@ class CategoryComponent extends Component {
 
     getInformation = async () => {
         try {
-            const [category, friends] = await Promise.all
+            const [category, friends, meetups] = await Promise.all
                 ([
                     axiosClient.get(
                         `/api/categories/${this.props.match.params.api_label}/`, {headers: {
@@ -40,10 +42,26 @@ class CategoryComponent extends Component {
                     axiosClient.get(
                          `/api/users/${this.props.user.id}/friends/`, {params: {category: this.props.match.params.api_label} ,headers: {
                             "Authorization": `JWT ${localStorage.getItem('token')}`
-                    }})
+                    }}),
+                    axiosClient.request({
+                        method: "GET",
+                        url: "/api/meetups/", 
+                        headers: {
+                            "Authorization": `JWT ${localStorage.getItem('token')}`
+                        },
+                        params: {
+                            type: "public",
+                            categories: this.props.match.params.api_label,
+                            latitude: this.props.user.settings.latitude,
+                            longitude: this.props.user.settings.longitude,
+                            radius: this.props.user.settings.radius
+                        }
+                    })
                 ])
-            console.log(friends)
-            this.setState({category: category.data, categoryLoaded: true, liked: category.data.preference !== null, numLiked: category.data.num_liked, friends: friends.data})
+            this.setState({
+                category: category.data, categoryLoaded: true, liked: category.data.preference !== null, 
+                numLiked: category.data.num_liked, friends: friends.data, meetups: Object.values(meetups.data.meetups)
+            })
         } catch(e){
             this.setState({loadingError: true})
         }
@@ -60,7 +78,6 @@ class CategoryComponent extends Component {
 
     render () {
         const category = this.state.category
-
         return (
             <div className="category">
                 <div className="category-header elevate">
@@ -101,13 +118,27 @@ class CategoryComponent extends Component {
                                     )}
                                 </div> 
                                 <div className="column-bottom">
-                                
+
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="category-meetups">
-                        
+                        <div style={{fontSize: "1.5rem", marginBottom: "1rem"}}>
+                            Meetups Near You With <span style={{fontColor: "red"}}>{category.label} </span>Events           
+                        </div>
+                        <Grid container spacing={1}>
+                            {this.state.meetups.map((meetup, index) =>
+                                <Grid key={meetup.id} item xs={12} sm={6}>
+                                    <Grow in={true} timeout={Math.max((index + 1) * 200, 500)}>
+                                        <div className="meetups-cardwrapper">
+                                            <MeetupCard key={meetup.id} meetup={meetup}/>
+                                        </div>
+                                    </Grow>
+                                </Grid>
+                            )}
+                            
+                        </Grid>
                     </div>
                 </div>
                 
@@ -124,7 +155,8 @@ function mapStateToProps(state){
 
 const mapDispatchToProps = {
     addPreference,
-    deletePreference
+    deletePreference,
+    getPublicMeetups
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryComponent)
