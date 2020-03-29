@@ -248,7 +248,7 @@ class MeetupsComponent extends Component {
                                     {return (this.state.chosen[index] && meetups[index].length > 0) && 
                                         <React.Fragment key={index}>
                                             {meetups[index].map((meetup, i) => 
-                                                <Grid key={meetup.id} item xs={12} sm={6} lg={4}>
+                                                <Grid key={meetup.id} item xs={12} lg={6} xl={4}>
                                                     <Grow in={true} timeout={Math.max((index + 1) * 200, 500)}>
                                                         <div className="meetups-cardwrapper">
                                                             <MeetupCard key={meetup.id} meetup={meetup}/>

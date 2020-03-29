@@ -119,9 +119,7 @@ class CategoryComponent extends Component {
                                         <Friend isUserFriend={true} friend={friend}/>
                                     )}
                                 </div> 
-                                <div className="column-bottom">
-
-                                </div>
+                              
                             </div>
                         </div>
                     </div>

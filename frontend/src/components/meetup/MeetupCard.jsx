@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     paper: {
         width: "100%",
         height: "100%",
-        minWidth: "330px",
+        minWidth: "320px",
     },
     middle: {
         height: "150px",

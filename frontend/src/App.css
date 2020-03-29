@@ -874,136 +874,6 @@ body {
   color: white !important;
 }
 
-@media only screen and (max-width: 1350px){
-  .foursquare{
-    width: 90%;
-  }
-  
-}
-
-@media only screen and (max-width: 1150px){
-  .map-wrapper{
-    width: 400px;
-    height: 330px;
-  }
-}
-
-@media only screen and (max-width: 1000px){
-
-  .smaller-header{
-    flex-wrap: wrap;
-  }
-
-  .smaller-header div{
-    padding: .5rem 0 ;
-  }
-
-  .chosen{
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-@media only screen and (max-width: 600px) {
-  .inner-wrap{
-    padding: 1rem;
-    overflow-y: auto;
-  }
-
-  .inner-header{
-    padding: 1.5rem;
-  }
-
-  .horizontal-form{
-    margin-left: 20px;
-  }
-
-  .friends {
-    margin-top: 0;
-    padding: 1rem 0;
-  }
-
-  .profile {
-    margin: 1rem 0;
-    width: 100%;
-  }
-
-  .invite{
-    padding: 1rem 1.5rem;
-  }
-
-  .invites .invite:last-child{
-    margin-bottom: 0;
-  }
-
-  .outer-shell{
-    width: 90%;
-  }
-
-  .form {
-    margin: 2rem auto;
-    width: 100%;
-  }
-
-  .form-paper{
-    padding: 1.5rem 1rem 1rem 1rem;
-  }
-  .inner-header{
-    flex-wrap: wrap;
-    padding: 1rem;
-    justify-content: center;
-  }
-  .inner-header-middle{
-    padding: 1rem 0;
-  }
-
-  .inner-header button{
-    margin-left: 10px;
-  }
-
-  .meetup-event{
-    padding: 0;
-  }
-
-  .smaller-header{
-    padding: .5rem 1rem !important;
-  }
-
-  .second-header{
-    width: 100%;
-    flex-wrap: wrap
-  }
-  .foursquare{
-    width: 100%;
-  }
-
-  h5{
-    font-size: 1.75rem !important;
-  }
-
-  .chosen{
-    width: 100%;
-  }
-
-  .map-wrapper{
-    width: calc(300px + 2rem);
-    height: 300px;
-  }
-
-  .c{
-    height: calc(100% - 56px);
-  }
-}
-
-.chat-mobile{
-  grid-template-columns: repeat(1, 1fr);
-  grid-template-areas: "column-1" "column-1" "column-1" "column-1" "column-1" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2" "column-2";
-}
-
-.chat-mobile .chat-messages{
-  min-height: 300px;
-}
-
 .meetups-inner-wrap{
   margin: 0 0 0 2rem;
   height: 100%;
@@ -1204,6 +1074,7 @@ body {
 
 .column-middle{
   height: calc(100% - 60px - 62px);
+  min-height: 200px;
   overflow-y: auto;
   overflow-x: hidden;
   background-color: white;
@@ -1352,13 +1223,18 @@ body {
   margin-top: 2rem;
 }
 .category-friends{
-  
   height: 100%;
+  min-width: 300px;
 }
 
 .category-meetups{
   width: 100%;
   padding: 0 2rem;
+}
+
+.categories-horz{
+  width: 100%;
+  justify-content: center;
 }
 
 .settings {
@@ -1398,4 +1274,242 @@ body {
 .reset-dimensions img{
   width: 20px;
   height: 20px;
+}
+
+@media only screen and (max-width: 1350px){
+  .foursquare{
+    width: 90%;
+  }
+  
+  .meetups-component{
+    width: 90%;
+    height: 90%;
+  }
+
+  .profile{
+    width: 90%;
+    height: 90%;
+  }
+}
+
+@media only screen and (max-width: 1150px){
+  .map-wrapper{
+    width: 400px;
+    height: 330px;
+  }
+
+  
+}
+
+@media only screen and (max-width: 1000px){
+
+  .smaller-header{
+    flex-wrap: wrap;
+  }
+
+  .smaller-header div{
+    padding: .5rem 0 ;
+  }
+
+  .chosen{
+    flex-direction: column;
+    align-items: center;
+  }
+
+  
+}
+
+@media only screen and (max-width: 600px) {
+  .inner-wrap{
+    padding: 1rem;
+    overflow-y: auto;
+  }
+
+  .inner-header{
+    padding: 1.5rem;
+  }
+
+  .horizontal-form{
+    margin-left: 20px;
+  }
+
+  .friends {
+    margin-top: 0;
+    padding: 1rem 0;
+  }
+
+  .profile {
+    margin: 1rem 0;
+    width: 100%;
+  }
+
+  .invite{
+    padding: 1rem 1.5rem;
+  }
+
+  .invites .invite:last-child{
+    margin-bottom: 0;
+  }
+
+  .outer-shell{
+    width: 90%;
+  }
+
+  .form {
+    margin: 2rem auto;
+    width: 100%;
+  }
+
+  .form-paper{
+    padding: 1.5rem 1rem 1rem 1rem;
+  }
+  .inner-header{
+    flex-wrap: wrap;
+    padding: 1rem;
+    justify-content: center;
+  }
+  .inner-header-middle{
+    padding: 1rem 0;
+  }
+
+  .inner-header button{
+    margin-left: 10px;
+  }
+
+  .meetup-event{
+    padding: 0;
+  }
+
+  .smaller-header{
+    padding: .5rem 1rem !important;
+  }
+
+  .second-header{
+    width: 100%;
+    flex-wrap: wrap
+  }
+  .foursquare{
+    width: 100%;
+  }
+
+  h5{
+    font-size: 1.75rem !important;
+  }
+
+  .chosen{
+    width: 100%;
+  }
+
+  .map-wrapper{
+    width: calc(300px + 2rem);
+    height: 300px;
+  }
+
+  .c{
+    height: calc(100% - 56px);
+  }
+
+  .category{
+    width: 90%;
+  }
+  .category-header{
+    font-size: 1.5rem;
+  }
+  .category-actions{
+    padding-right: 0;
+  }
+  
+  .category-social{
+    flex-direction: column;
+  }
+  
+  .category-meetups{
+    padding: 0 0;
+  }
+
+  .category-friends{
+    margin-bottom: 2rem;
+  }
+
+  .calendar {
+    height: 40%;
+    font-size: 2rem;
+  }
+  .c {
+    min-height: 400px;
+  }
+
+  .profile{
+    height: 90%;
+    width: 90%;
+    flex-direction: column;
+  }
+
+  .profile .column{
+    margin: 2rem 0;
+  }
+
+  .profile .column:nth-child(1){
+    order: 2
+  }
+  .profile .column-center{
+    margin: 0;
+    order: 1
+  }
+
+  .profile .column:nth-child(3){
+    order: 3
+  }
+
+  .inner-header-middle div{
+    margin: 0 10px;
+  }
+  .meetups-component {
+    height: 95%;
+    flex-direction: column;
+  }
+
+  .meetups-inner-wrap{
+    margin: 2rem 0 0 0;
+  }
+
+  .meetups-inner-header{
+    flex-wrap: wrap;
+    height: auto;
+  }
+
+  .meetups-search-bar {
+    padding: 0 1rem;
+  }
+
+  .meetups-container {
+    padding: 0;
+  }
+
+  .preset{
+    min-height: 150px;
+  }
+
+  .settings {
+    width: 80%;
+    height: 60%;
+    padding: 1rem 2rem;
+  }
+}
+
+.chat-mobile{
+  min-height: 700px;
+  padding: 1rem 0;
+  height: 90%;
+  width: 90%;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-areas: "column-1" "column-2"
+}
+
+.chat-mobile .chat-bar{
+  max-height: 400px;
+}
+
+.MuiAvatar-root img{
+  min-height: 20px;
 }

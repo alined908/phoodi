@@ -88,7 +88,6 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Daniel Lee** 
 
 ## Todo General
-- [ ] Fix responsiveness for all viewports
 - [ ] Authenticate JWT automatically after expiration
 - [ ] Authenticate Websocket
 - [ ] Write tests for frontend
