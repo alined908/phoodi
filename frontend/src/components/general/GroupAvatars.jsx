@@ -1,6 +1,14 @@
 import React from 'react';
-import {Avatar, Tooltip, makeStyles} from '@material-ui/core'
+import {Avatar, Tooltip, makeStyles, Badge} from '@material-ui/core'
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
+import {connect} from 'react-redux'
+
+Array.prototype.swap = function (x,y) {
+    var b = this[x];
+    this[x] = this[y];
+    this[y] = b;
+    return this;
+}
 
 const useStyles = makeStyles(theme => ({
     small: {
@@ -9,21 +17,49 @@ const useStyles = makeStyles(theme => ({
       marginLeft: "-14px",
       border: "1px solid #fafafa",
       fontSize: ".75rem"
+    },
+    badge: {
+        backgroundColor: 'inherit',
+        border: "0",
     }
   }));
 
 const GroupAvatars = (props) => {
-    const members = props.members;
-    const upToThree = members.slice(0, 3)
     const classes = useStyles();
+    const members = props.members;
+    const user = JSON.stringify(props.user)
+    var userInMembers = false;
+
+    for (var i = 0; i < members.length; i++){
+        if (JSON.stringify(members[i]) === user){
+            userInMembers = true
+            members.swap(0,i);
+            break;
+        }
+    }
+    const upToThree = members.slice(0, 3)
 
     return (
         <AvatarGroup>
             {upToThree.map((member, index) => 
+                (userInMembers && index === 0) ?
+                    <Badge  
+                        color="primary"
+                        overlap="circle" 
+                        anchorOrigin={{vertical: 'bottom', horizontal: 'left'}} 
+                        variant="dot"
+                        style={{border: 0, marginLeft: "0"}}
+                    >
+                        <Tooltip key={index} title={member.first_name}>
+                            <Avatar className={classes.small} src={member.avatar}>
+                                {member.first_name.charAt(0)}{member.last_name.charAt(0)}
+                            </Avatar>
+                        </Tooltip>
+                    </Badge>
+                :
                 <Tooltip key={index} title={member.first_name}>
                     <Avatar className={classes.small} src={member.avatar}>
-                        {member.first_name.charAt(0)}
-                        {member.last_name.charAt(0)}
+                        {member.first_name.charAt(0)}{member.last_name.charAt(0)}
                     </Avatar>
                 </Tooltip>
             )}
@@ -36,4 +72,10 @@ const GroupAvatars = (props) => {
     )
 }
 
-export default GroupAvatars
+function mapStateToProps(state){
+    return {
+        user: state.user.user
+    }
+}
+
+export default connect(mapStateToProps)(GroupAvatars)

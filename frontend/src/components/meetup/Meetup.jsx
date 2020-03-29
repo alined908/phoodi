@@ -9,7 +9,8 @@ import moment from 'moment';
 import {addGlobalMessage} from '../../actions/globalMessages'
 import {Grid, Button, Typography, Avatar, List, ListItem, ListItemText, ListItemAvatar, IconButton, Tooltip} from "@material-ui/core"
 import WebSocketService from "../../accounts/WebSocket";
-import {Delete as DeleteIcon, Edit as EditIcon, Room as RoomIcon, Chat as ChatIcon,  Lock as LockIcon, Public as PublicIcon, Email as EmailIcon, Add as AddIcon, Today as TodayIcon} from '@material-ui/icons'
+import {Delete as DeleteIcon, Edit as EditIcon, Room as RoomIcon, Chat as ChatIcon, VerifiedUser as VerifiedUserIcon, 
+    Lock as LockIcon, Public as PublicIcon, Email as EmailIcon, Add as AddIcon, Today as TodayIcon} from '@material-ui/icons'
 import AuthenticationService from "../../accounts/AuthenticationService"
 import {axiosClient} from '../../accounts/axiosClient'
 
@@ -182,13 +183,15 @@ class Meetup extends Component {
                                     <ListItemAvatar>
                                         <Avatar src={members[key].user.avatar}>{members[key].user.first_name.charAt(0)}{members[key].user.last_name.charAt(0)}</Avatar>
                                     </ListItemAvatar>
-                                    <ListItemText  primary={members[key].user.first_name} secondary={<>
-                                        <Typography component="span" color="inherit" variant="body2"> 
-                                            {members[key].user.email + " "}
-                                        </Typography>
-                                        </>
-                                    }>
+                                    <ListItemText  primary={members[key].user.first_name} secondary={
+                                            <>
+                                                <Typography component="span" color="inherit" variant="body2"> 
+                                                    {members[key].user.email + " "}
+                                                </Typography>
+                                            </>
+                                        }>
                                     </ListItemText>
+                                    {JSON.stringify(members[key].user) === JSON.stringify(this.props.user) && <VerifiedUserIcon style={{color: "#3f51b5"}}/>}
                                 </ListItem>
                             </Link>
                         )}

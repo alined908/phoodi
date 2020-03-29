@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {deleteMeetupEvent} from "../../actions/meetup"
 import moment from "moment"
 import {Cached as CachedIcon, Edit as EditIcon, Schedule as ScheduleIcon, Delete as DeleteIcon} from '@material-ui/icons'
-import {IconButton, Typography, Grid, Grow, Tooltip} from '@material-ui/core'
+import {IconButton, Typography, Grid, Grow, Tooltip, Avatar} from '@material-ui/core'
 import {compose} from 'redux';
 import {Restauraunt, Map} from '../components'
 import {Link} from 'react-router-dom'
@@ -142,19 +142,24 @@ class MeetupEvent extends Component {
                     <div className="second-header-left">
                         <Typography variant="h6">Categories </Typography>
                         {event.categories.map((category) => 
-                            <span className="category-chip">{category.label}</span>
+                            <Link to={`/category/${category.api_label}`}>
+                                <span className="category-chip elevate category-chip-hover">
+                                    <Avatar style={{width: 20, height: 20}} src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`} variant="square"/>
+                                    {category.label}
+                                </span>
+                            </Link>
                         )}
                     </div>
                     <div className="second-header-left">
                         <Typography variant="h6">Price </Typography>  
                         {(this.handlePriceChips(event.price)).map((price) => 
-                            <span className="category-chip">{price}</span>
+                            <span className="category-chip elevate">{price}</span>
                         )
                         }
                     </div>
                     <div className="second-header-left">
                         <Typography variant="h6">Distance </Typography>
-                        <span className="category-chip">
+                        <span className="category-chip elevate">
                             {(Math.round(event.distance * 0.000621371192)).toFixed(2)}
                         </span>
                     </div>

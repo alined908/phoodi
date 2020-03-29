@@ -88,7 +88,8 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Daniel Lee** 
 
 ## Todo Meetup
-- [ ] Doesnt work if starttime is late (no entries, or categories suckl)
+- [ ] Doesnt work if starttime is late (no entries, or categories sucks)
+- [ ] Indicate if user is part of meetup
 
 ## Todo General
 - [ ] Fix responsiveness for all viewports

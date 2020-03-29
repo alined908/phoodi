@@ -62,7 +62,14 @@ const MeetupCard = ({meetup}) => {
                         }
                         
                         <div className="meetup-card-bottom">
-                            <Tooltip title={meetup.location}><div className="meetup-card-icon flex-clip"><RoomIcon/><div className="flex-ellipse">{meetup.location}</div></div></Tooltip>
+                            <Tooltip title={meetup.location}>
+                                <div className="meetup-card-icon flex-clip">
+                                    <RoomIcon/>
+                                    <div className="flex-ellipse">
+                                        {meetup.location}
+                                    </div>
+                                </div>
+                            </Tooltip>
                             <div className="meetup-card-icon">
                                 <GroupAvatars members={users}/>
                                 {users.length + " member"}{users.length > 1 ? "s" : ""}

@@ -24,6 +24,9 @@ const useStyles = makeStyles(theme => ({
       marginTop: -12,
       marginLeft: -12,
     },
+    check: {
+        color: green[500]
+    }
   }));
 
 
@@ -62,7 +65,7 @@ const MeetupFriend = (props) => {
                     </>
                 }>
                 </ListItemText>
-                {props.isMember && <CheckCircleIcon></CheckCircleIcon>}
+                {props.isMember && <CheckCircleIcon className={classes.check}/>}
                 {!props.isMember && 
                     <div className={classes.wrapper}>
                         <Button variant="contained" disabled={loading} color="primary" size="small" onClick={(event) => handleClick(event)}>

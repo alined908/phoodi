@@ -694,21 +694,27 @@ body {
 }
 
 .category-chip{
+  display:flex;
     padding: 3px 8px;
     font-size: 0.75rem;
     box-sizing: border-box;
-    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    font-weight: 500;
     line-height: 1.55;
     border-radius: 4px;
     letter-spacing: 0.02857em;
-    text-transform: capitalize;
-    box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
-    background-color: #3f51b5;
-    color: white;
+    text-transform: capitalize;  
+    color: black;
+    font-family: "Lato";
+    font-weight: 600;
     margin: .25rem .25rem;
+    align-items: center;
+    background-color: #FFDFD3;
+    border: 1px solid #eeeeef;
 }
+
+.category-chip-hover:hover{
+  border: 1px solid black;
+}
+
 
 .category {
   margin: .5rem;
@@ -1368,4 +1374,19 @@ body {
 .settings-save {
   display: flex;
   justify-content: flex-end;
+}
+
+.MuiAvatarGroup-root .MuiBadge-dot{
+  min-width: 5px;
+  height: 5px;
+  background-color: #44b700;
+}
+
+.category-chip .MuiAvatar-colorDefault{
+  background-color: inherit;
+}
+
+.reset-dimensions img{
+  width: 20px;
+  height: 20px;
 }

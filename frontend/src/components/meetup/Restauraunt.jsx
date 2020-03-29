@@ -7,7 +7,9 @@ import {
     Room as RoomIcon, Phone as PhoneIcon, Launch as LaunchIcon
 } from '@material-ui/icons'
 import {ADD_GLOBAL_MESSAGE} from '../../constants/action-types'
+import {Avatar} from '@material-ui/core'
 import {Tooltip} from '@material-ui/core'
+import {Skeleton} from '@material-ui/lab'
 
 
 class Restauraunt extends Component {
@@ -127,9 +129,13 @@ class Restauraunt extends Component {
                     </div>
                 </div>
                 <div className="rst-categories">{data.price} &#8226; {data.categories.map((category) =>
-                    <div className="category-chip">{category.title}</div>
+                    <div className="category-chip">
+                        <Avatar style={{width: 20, height: 20}} src={`${process.env.REACT_APP_S3_STATIC_URL}${category.alias}.png`} variant="square">
+                            <img style={{width: 20, height: 20}} src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}></img>
+                        </Avatar>
+                        {category.title}
+                    </div>
                     )}
-                
                 </div>
             </>
         )
