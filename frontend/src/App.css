@@ -19,7 +19,7 @@
 }
 
 .rainbow {
-  background: linear-gradient(to right,#232526, #414345);
+  background: linear-gradient(to right,#0f0c29, #302b63, #24243e);
   color: white !important;
 }
 
@@ -397,6 +397,7 @@ body {
   display: flex;
   justify-content: center;
   height: calc(100% - 64px);
+  min-height: 800px;
   width: 100%;
   background-color: #f5f6fa;
 }

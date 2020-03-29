@@ -3,12 +3,6 @@ import {Avatar, Tooltip, makeStyles, Badge} from '@material-ui/core'
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import {connect} from 'react-redux'
 
-Array.prototype.swap = function (x,y) {
-    var b = this[x];
-    this[x] = this[y];
-    this[y] = b;
-    return this;
-}
 
 const useStyles = makeStyles(theme => ({
     small: {
@@ -33,7 +27,9 @@ const GroupAvatars = (props) => {
     for (var i = 0; i < members.length; i++){
         if (JSON.stringify(members[i]) === user){
             userInMembers = true
-            members.swap(0,i);
+            var b = members[i]
+            members[i] = members[0]
+            members[0] = b
             break;
         }
     }

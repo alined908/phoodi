@@ -29,7 +29,7 @@ export const getMeetups = (data) => async dispatch => {
 }
 
 export const getPublicMeetups = (data) => async dispatch => {
-    const ids = []
+    var ids = []
     for (var category in data.categories){
         ids.push(data.categories[category].id)
     }

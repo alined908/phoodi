@@ -89,11 +89,9 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Meetup
 - [ ] Doesnt work if starttime is late (no entries, or categories sucks)
-- [ ] Indicate if user is part of meetup
 
 ## Todo General
 - [ ] Fix responsiveness for all viewports
-- [ ] Form validation + Validation for time and date
 - [ ] Authenticate JWT automatically after expiration
 - [ ] Authenticate Websocket
 - [ ] Write tests for frontend
@@ -104,6 +102,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Add ssl certificate to website
 
 ## Todo Next Iteration
+- [ ] Form validation + Validation for time and date
 - [ ] Handle 404 page
 - [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
 - [ ] Meetup email message nice html
@@ -123,7 +122,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Delete Friend, Give friend/meetupmember nickname 
 - [ ] Edit chat messages and add emojis, upload picture
 - [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
-- [ ] Clickable categories + different presentation
 - [ ] Disable redux dev tools in production
 - [ ] Separate css files
 - [ ] Handle timestamp logic

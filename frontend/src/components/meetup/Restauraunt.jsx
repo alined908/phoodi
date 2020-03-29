@@ -128,13 +128,15 @@ class Restauraunt extends Component {
                     <div className="rst-img" style={{backgroundImage: `url(${data.image_url})`}}>
                     </div>
                 </div>
-                <div className="rst-categories">{data.price} &#8226; {data.categories.map((category) =>
-                    <div className="category-chip">
-                        <Avatar style={{width: 20, height: 20}} src={`${process.env.REACT_APP_S3_STATIC_URL}${category.alias}.png`} variant="square">
-                            <img style={{width: 20, height: 20}} src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}></img>
-                        </Avatar>
-                        {category.title}
-                    </div>
+                <div className="rst-categories">
+                    {data.price} &#8226; 
+                    {data.categories.map((category) =>
+                        <div className="category-chip">
+                            <Avatar style={{width: 20, height: 20}} src={`${process.env.REACT_APP_S3_STATIC_URL}${category.alias}.png`} variant="square">
+                                <img style={{width: 20, height: 20}} src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}></img>
+                            </Avatar>
+                            {category.title}
+                        </div>
                     )}
                 </div>
             </>

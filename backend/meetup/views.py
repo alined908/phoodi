@@ -223,6 +223,7 @@ class MeetupListView(APIView):
 
     def format_public_meetups(self, user, categories, coords, num_results=25):
         if categories:
+            print(categories)
             try:
                 category_ids = [int(x) for x in categories.split(',')]
             except:
@@ -230,6 +231,7 @@ class MeetupListView(APIView):
                 category_ids = [category.id]
         else:
             category_ids = []
+
         latitude, longitude, radius = coords[0], coords[1], coords[2]
         distance_query = RawSQL(
             ' SELECT id FROM \
