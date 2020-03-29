@@ -87,9 +87,6 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Author
 * **Daniel Lee** 
 
-## Todo Meetup
-- [ ] Doesnt work if starttime is late (no entries, or categories sucks)
-
 ## Todo General
 - [ ] Fix responsiveness for all viewports
 - [ ] Authenticate JWT automatically after expiration

@@ -99,7 +99,6 @@ class MeetupsComponent extends Component {
             entries = this.state.entries.filter(entry => JSON.stringify(entry) !== JSON.stringify(category))
         }
         clickedPrefs[index] = !clickedPrefs[index]
-        console.log(entries)
         this.setState({
             clickedPreferences: clickedPrefs,
             entries: entries

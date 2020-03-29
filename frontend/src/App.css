@@ -455,6 +455,14 @@ body {
   margin: 0 auto 2rem auto;
 }
 
+.explanation {
+  background-color: white;
+  padding: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
 .meetups-range {
   width: 100%;
   margin: 1.5rem 0;

@@ -240,7 +240,6 @@ class MeetupEvent(models.Model):
             "price": self.price, 
             "open_at": int(format(self.start, 'U'))
         }
-        print(params["open_at"])
         response = requests.get(url=url, params=params, headers=headers)
         options = response.json()['businesses']
         return options

@@ -3,7 +3,7 @@ import {Button} from "@material-ui/core"
 import {connect} from 'react-redux'
 import {deleteMeetupEvent} from "../../actions/meetup"
 import moment from "moment"
-import {Cached as CachedIcon, Edit as EditIcon, Schedule as ScheduleIcon, Delete as DeleteIcon} from '@material-ui/icons'
+import {Cached as CachedIcon, Edit as EditIcon, Schedule as ScheduleIcon, Delete as DeleteIcon, Error as ErrorIcon} from '@material-ui/icons'
 import {IconButton, Typography, Grid, Grow, Tooltip, Avatar} from '@material-ui/core'
 import {compose} from 'redux';
 import {Restauraunt, Map} from '../components'
@@ -68,15 +68,23 @@ class MeetupEvent extends Component {
             
             return (
                 <div className="foursquare">
-                    <Grid justify="center" container spacing={3}>
-                    {keys.map((key, index) => 
-                        <Grow in={true} timeout={300 * (index + 1)}>
-                            <Grid item justify={index % 2 === 0 ? "flex-end" : "flex-start"} container xs={12} md={6} sm={12}>
-                                <Restauraunt socket={this.props.socket} key={key} full={true} isUserMember={this.props.isUserMember} event={this.props.event.id} meetup={this.props.uri} data={options[key]}/>
-                            </Grid>
-                        </Grow>
-                    )}
-                    </Grid>
+                    {keys.length > 1 ?
+                        <Grid justify="center" container spacing={3}>
+                            {keys.map((key, index) => 
+                                <Grow in={true} timeout={300 * (index + 1)}>
+                                    <Grid item justify={index % 2 === 0 ? "flex-end" : "flex-start"} container xs={12} md={6} sm={12}>
+                                        <Restauraunt socket={this.props.socket} key={key} full={true} isUserMember={this.props.isUserMember} event={this.props.event.id} meetup={this.props.uri} data={options[key]}/>
+                                    </Grid>
+                                </Grow>
+                            )}
+                        </Grid>:
+                        <div className="explanation elevate">
+                            <span style={{marginRight: "1rem"}}><ErrorIcon style={{color: "rgb(255, 212, 96)"}}/></span>
+                            <span>No options available. 
+                            This may be due to no options being available at this time or the categories specified don't have enough options.
+                            Press the edit button to add more categories or change time if inputted incorrectly.</span>
+                        </div>
+                    }
                 </div>
             )
         }
