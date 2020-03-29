@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.utils.timezone import now
 from backend.settings import YELP_API_KEY
+from django.utils.dateformat import format
 from uuid import uuid4
 from django.core.exceptions import ObjectDoesNotExist
 import requests, random, json, sys, time, os
@@ -231,7 +232,15 @@ class MeetupEvent(models.Model):
 
     def request_yelp_api(self):
         categories = self.convert_entries_to_string()
-        params = {"location": self.meetup.location, "limit": 30, "categories": categories, "radius": self.distance, "price": self.price, "open_at": int(time.mktime(self.start.timetuple()))}
+        params = {
+            "location": self.meetup.location, 
+            "limit": 30, 
+            "categories": categories, 
+            "radius": self.distance, 
+            "price": self.price, 
+            "open_at": int(format(self.start, 'U'))
+        }
+        print(params["open_at"])
         response = requests.get(url=url, params=params, headers=headers)
         options = response.json()['businesses']
         return options
