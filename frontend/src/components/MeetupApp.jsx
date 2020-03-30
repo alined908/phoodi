@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Router } from 'react-router';
 import {Provider} from 'react-redux'
-import {Navigation, NotificationWrapper} from "./components"
+import {Navigation, NotificationWrapper, LocationService} from "./components"
 import {store} from "../store/index";
 import {createBrowserHistory} from 'history'
 
@@ -13,8 +13,8 @@ class MeetupApp extends Component {
         return (
             <div className="MeetupApp">
                 <Provider store={store}>
-                    <NotificationWrapper> 
-                    </NotificationWrapper>  
+                    <NotificationWrapper/>
+                    <LocationService/>
                     <Router history={history}>
                         <Navigation></Navigation>
                     </Router>

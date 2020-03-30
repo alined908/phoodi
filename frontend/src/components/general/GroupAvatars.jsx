@@ -21,16 +21,17 @@ const useStyles = makeStyles(theme => ({
 const GroupAvatars = (props) => {
     const classes = useStyles();
     const members = props.members;
-    const user = JSON.stringify(props.user)
+    const user = props.user
     var userInMembers = false;
 
     for (var i = 0; i < members.length; i++){
-        if (JSON.stringify(members[i]) === user){
+        if (members[i].id === user.id){
             userInMembers = true
             var b = members[i]
             members[i] = members[0]
             members[0] = b
             break;
+            console.log(userInMembers)
         }
     }
     const upToThree = members.slice(0, 3)

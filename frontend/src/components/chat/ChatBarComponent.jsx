@@ -93,7 +93,6 @@ class ChatBarComponent extends Component {
 
         return (
             <div className="chat-bar elevate">
-                {!this.props.isRoomsInitialized && <div>Initializing Contacts...</div>}
                 <div className="chat-bar-top">
                     <div>Contacts</div>
                     <div>
@@ -110,6 +109,7 @@ class ChatBarComponent extends Component {
                     </div>
                 </div>
                 <div className="chat-bar-contacts">
+                    {!this.props.isRoomsInitialized && <div>Initializing Contacts...</div>}
                     {(this.props.isRoomsInitialized && rooms.length === 0) && 
                         <div className="chat-bar-none">
                             <ErrorIcon style={{color: "rgb(255, 212, 96)"}}/> &nbsp; No chat rooms match criteria!

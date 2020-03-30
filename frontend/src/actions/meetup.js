@@ -21,7 +21,6 @@ export const getMeetups = (data) => async dispatch => {
                 categories: categories
             }
         })
-        console.log(response.data.meetups)
         dispatch({type: GET_MEETUPS, payload: response.data.meetups})
     } catch(e){
         console.log(e)

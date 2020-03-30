@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {Button, Drawer, CssBaseline, AppBar, Toolbar, Typography, Divider, IconButton, List, ListItem, ListItemIcon, Badge, ListItemText} from '@material-ui/core'
+import {Button, Drawer, CssBaseline, withStyles, AppBar, Toolbar, Typography, Divider, IconButton, ListItemAvatar, Avatar, List, ListItem, ListItemIcon, Badge, ListItemText} from '@material-ui/core'
 import {Menu, ChevronLeft, ChevronRight, People as PeopleIcon, 
   Person as PersonIcon, Settings as SettingsIcon, ChatOutlined as ChatOutlinedIcon, MailOutlined as MailOutlinedIcon, 
   Assignment, PermContactCalendar as PermContactCalendarIcon, ExitToApp, EventNote as EventNoteIcon, Category as CategoryIcon}  from '@material-ui/icons';
@@ -9,6 +9,36 @@ import {connect} from 'react-redux';
 import {Body, LiveUpdatingBadge} from '../components'
 
 const drawerWidth = 220;
+
+const StyledBadge = withStyles((theme) => ({
+  badge: {
+    backgroundColor: '#44b700',
+    color: '#44b700',
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    '&::after': {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      borderRadius: '50%',
+      animation: '$ripple 1.2s infinite ease-in-out',
+      border: '1px solid currentColor',
+      content: '""',
+    },
+    right: "28%"
+  },
+  '@keyframes ripple': {
+    '0%': {
+      transform: 'scale(.8)',
+      opacity: 1,
+    },
+    '100%': {
+      transform: 'scale(2.4)',
+      opacity: 0,
+    },
+  },
+}))(Badge);
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -67,6 +97,19 @@ const useStyles = makeStyles(theme => ({
     }),
     width: '100%',
     height: '100%',
+  },
+  primary: {
+    fontWeight: 600,
+    fontFamily: "Lato",
+    fontSize: ".9rem"
+  },
+  self: {
+    marginTop: "auto"
+  },
+  secondary: {
+    fontWeight: 600,
+    fontFamily: "Lato",
+    fontSize: ".75rem"
   }
 }));
 
@@ -207,7 +250,37 @@ const Navigation = (props) => {
             </ListItem>
           </Link>}
         </List>
-       
+        <Divider />
+        {props.authenticated && 
+          <ListItem className={classes.self}>
+            <ListItemAvatar>
+              <StyledBadge
+                  overlap="circle"
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  variant="dot"
+                >
+                <Avatar className={classes.avatar} src={props.user.avatar}>
+                  {props.user.first_name.charAt(0)}{props.user.last_name.charAt(0)}
+                </Avatar>
+              </StyledBadge>
+            </ListItemAvatar>
+            <ListItemText 
+                primaryTypographyProps={{className: classes.primary}}
+                primary={props.user.first_name + " " + props.user.last_name} 
+                secondary={
+                    <>
+                        <Typography className={classes.secondary} component="span" color="inherit" variant="body2"> 
+                            {props.user.email + " "}
+                        </Typography>
+                    </>
+                }
+            >
+            </ListItemText>
+          </ListItem>
+        }
       </Drawer>
       <main className={classes.content}>
         <div className={classes.drawerHeader} />

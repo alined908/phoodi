@@ -129,7 +129,7 @@ class CategoryComponent extends Component {
                         </div>
                         <Grid container spacing={1}>
                             {this.state.meetups.map((meetup, index) =>
-                                <Grid key={meetup.id} item xs={12} sm={6}>
+                                <Grid key={meetup.id} item xs={12} lg={6} >
                                     <Grow in={true} timeout={Math.max((index + 1) * 200, 500)}>
                                         <div className="meetups-cardwrapper">
                                             <MeetupCard key={meetup.id} meetup={meetup}/>

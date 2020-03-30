@@ -95,20 +95,24 @@ class Meetup extends Component {
         return keys
     }
 
+    determineIsFriendMember = (friend, members) => {
+        return friend in members
+    }
+
+    determineIsUserMember = (members) => {
+        var isUserMember = false;
+        for (var key of Object.keys(members)){
+            const member = members[key]
+            if (member.user.id === this.props.user.id){
+                isUserMember = true
+            }
+        }
+        return isUserMember
+    }
+
     render () {
         const [id, name, uri, location, datetime, members, notifs, isPublic, categories, latitude, longitude, events] = this.props.meetup
-        const isMember = (friend) => {return friend in members}
-        const determineUserMember = () => {
-            var isUserMember = false;
-            for (var key of Object.keys(members)){
-                const member = members[key]
-                if (JSON.stringify(member.user) === JSON.stringify(this.props.user)){
-                    isUserMember = true
-                }
-            }
-            return isUserMember
-        }
-        const isUserMember = determineUserMember()
+        const isUserMember = this.determineIsUserMember(members)
         const emailDisable = this.determineEmailDisable(events)
         
         const renderInformation = (name, datetime, location) => {
@@ -163,7 +167,7 @@ class Meetup extends Component {
                             <MeetupFriend 
                                 key={friend.id} 
                                 friend={friend.user} 
-                                isMember={isMember(friend.user.id)} 
+                                isMember={this.determineIsFriendMember(friend.user.id, members)} 
                                 uri={uri}
                             />
                         )}

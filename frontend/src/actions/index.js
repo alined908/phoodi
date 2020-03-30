@@ -74,7 +74,6 @@ export const getPreferences = (user_id) => async dispatch => {
             "Authorization": `JWT ${localStorage.getItem('token')}`
             }}
         )
-        console.log(response.data)
         dispatch({type: GET_PREFERENCES, payload: response.data})
     } catch(e) {
         console.log(e)
@@ -150,5 +149,12 @@ export const addSettings = (data) => async dispatch => {
         ])
     } catch(e){
         dispatch({type:ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Unable to save settings."}})
+    }
+}
+
+export const setUserSettings = (data) => {
+    return {
+        type: ADD_SETTINGS,
+        payload: {...data, radius: 25}
     }
 }

@@ -25,7 +25,7 @@ def current_user(request):
     return Response(serializer.data)
 
 class UserListView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request, *args, **kwargs):
         users = User.objects.all()
@@ -104,6 +104,7 @@ class UserFriendsView(APIView):
         """
         Get users friends
         """
+        
         pk = kwargs['id']
         user = User.objects.get(pk=pk)
 
@@ -112,7 +113,7 @@ class UserFriendsView(APIView):
             serializer = FriendshipSerializer(user.get_friends_by_category(category), many=True, context={'user': user})
         else:
             serializer = FriendshipSerializer(user.get_friends(), many=True, context={'user': user})
-
+        print(serializer.data)
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
@@ -244,7 +245,7 @@ class MeetupListView(APIView):
                 WHERE distance < %s \
                 ORDER BY distance \
                 OFFSET 0 \
-                LIMIT %s' , (latitude, longitude, latitude, 400, num_results,)
+                LIMIT %s' , (latitude, longitude, latitude, radius, num_results,)
         )
 
         if not category_ids:
@@ -624,7 +625,9 @@ class CategoryView(APIView):
     def get(self, request, *args, **kwargs):
         api_label = kwargs['api_label']
         category = Category.objects.get(api_label=api_label)
+        print(category)
         serializer = CategoryVerboseSerializer(category, context={"user": request.user})
+        print(serializer.data)
         return Response(serializer.data)
 
 class ChatRoomListView(APIView):

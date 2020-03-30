@@ -91,13 +91,15 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Authenticate JWT automatically after expiration
 - [ ] Authenticate Websocket
 - [ ] Write tests for frontend
-- [ ] Write tests for consumers
 - [ ] Safari presentation
 
 ## Todo Deploy
 - [ ] Add ssl certificate to website
 
 ## Todo Next Iteration
+- [ ] Fallback if no latitude/longitude provided.
+- [ ] Get user location before render
+- [ ] Write tests for consumers
 - [ ] Form validation + Validation for time and date
 - [ ] Handle 404 page
 - [ ] Add transitions (ex Natural transition to new options when meetup event is changed)

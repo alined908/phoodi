@@ -830,15 +830,16 @@ body {
 .meetup-card-icon{
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
   
 }
 
 .meetup-card-icon.flex-clip {
-  max-width: 150px;
+  max-width: calc(100% - 170px);
 }
 
 .meetup-card-icon.flex-clip-2{
-  max-width: 140px;
+  max-width: calc(100% - 120px);
 }
 
 .meetup-card-icon > .flex-ellipse {
@@ -1124,6 +1125,7 @@ body {
   flex-direction: column;
   align-items: center;
   width: 75%;
+  max-width: 1100px;
   margin: 0 auto 2rem auto;
 }
 

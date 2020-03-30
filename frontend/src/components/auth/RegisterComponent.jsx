@@ -17,7 +17,6 @@ class RegisterComponent extends Component {
     }
 
     onSubmit = formProps => {
-        console.log(formProps)
         let data = new FormData()
         for(var key in formProps) {
             data.append(key.toString(), formProps[key])
@@ -25,7 +24,6 @@ class RegisterComponent extends Component {
         if (this.state.image !== null) {
             data.append('avatar', this.state.image, this.state.image.name)
         }   
-        console.log(data)
         if (this.props.type === "create") {
             console.log("this one")
             this.props.signup(data, () => {

@@ -70,9 +70,11 @@ const MeetupCard = ({meetup}) => {
                                     </div>
                                 </div>
                             </Tooltip>
-                            <div className="meetup-card-icon">
+                            <div className="meetup-card-icon flex-clip">
                                 <GroupAvatars members={users}/>
-                                {users.length + " member"}{users.length > 1 ? "s" : ""}
+                                <span className="flex-ellipse" style={{display: "flex", overflow:"hidden"}}>
+                                    {users.length + " member"}{users.length > 1 ? "s" : ""}
+                                </span>
                             </div>
                         </div>
                     </div>

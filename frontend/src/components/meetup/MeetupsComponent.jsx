@@ -15,22 +15,15 @@ class MeetupsComponent extends Component {
             chosen: [false, true, true, true],
             entries: [],
             public: true,
-            collapse: {categories: false},
             preferences: [],
             clickedPreferences: [],
-            coords: {
-                latitude: props.user.settings.latitude, 
-                longitude: props.user.settings.longitude,
-                radius: props.user.settings.radius
-            }
         }
     }
     
     async componentDidMount(){
-        this.getUserLocation()
         await Promise.all[
             //this.props.getMeetups(),
-            this.props.getPublicMeetups({categories: [], coords: this.state.coords}),
+            this.props.getPublicMeetups({categories: [], coords: {...this.props.user.settings}}),
             this.props.getPreferences(this.props.user.id)
         ]
         
@@ -42,28 +35,6 @@ class MeetupsComponent extends Component {
                 preferences: this.props.preferences,
             })
         }
-    }
-
-    getUserLocation = () => {
-        const options = {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge:1000
-        }
-
-        const onSuccess = (position) => {
-            const coords = {latitude: position.coords.latitude, longitude: position.coords.longitude}
-            if (this.state.coords.latitude === null && this.state.coords.longitude === null){
-                this.setState({coords: coords})
-            }
-           
-        }
-        
-        const onError = (error) => {
-            console.warn(error.message)
-        }
-
-        navigator.geolocation.getCurrentPosition(onSuccess, onError, options)
     }
 
     handleFilter = (type) => {
@@ -84,7 +55,7 @@ class MeetupsComponent extends Component {
             }
         }
         this.setState({public: publicBool}, () => publicBool ? 
-            this.props.getPublicMeetups({categories: this.state.entries, coords: this.state.coords}) : 
+            this.props.getPublicMeetups({categories: this.state.entries, coords: {...this.props.user.settings}}) : 
             this.props.getMeetups({categories: this.state.entries})
         )
     }
@@ -102,7 +73,7 @@ class MeetupsComponent extends Component {
         this.setState({
             clickedPreferences: clickedPrefs,
             entries: entries
-        }, () => this.state.public ? this.props.getPublicMeetups({categories: entries, coords: this.state.coords}) : this.props.getMeetups({categories: entries}))
+        }, () => this.state.public ? this.props.getPublicMeetups({categories: entries, coords: {...this.props.user.settings}}) : this.props.getMeetups({categories: entries}))
     }
 
     divideMeetups = (meetups) => {
@@ -152,7 +123,7 @@ class MeetupsComponent extends Component {
                 entries: values,
                 clickedPreferences: clickedPrefs
             },
-            () => this.state.public ? this.props.getPublicMeetups({categories: values, coords: this.state.coords}) : this.props.getMeetups({categories: values})
+            () => this.state.public ? this.props.getPublicMeetups({categories: values, coords: {...this.props.user.settings}}) : this.props.getMeetups({categories: values})
         )
 
     }
@@ -187,11 +158,6 @@ class MeetupsComponent extends Component {
                                         </IconButton>
                                     </Tooltip>
                                 </Link>
-                                {/* <Tooltip title="Collapse">
-                                    <IconButton color={this.state.collapse["categories"] ?  "primary": "default"}>
-                                        <ArrowBackIcon/>
-                                    </IconButton>
-                                </Tooltip> */}
                             </div>
                         </div>
                         {renderPreset()}
@@ -207,35 +173,35 @@ class MeetupsComponent extends Component {
                 </div>
                 <div className="meetups-inner-wrap">
                     <div className="meetups-inner-header elevate">
-                            <div>
-                                Meetups
-                                <Tooltip title="Public Meetups">
-                                        <IconButton onClick={() => this.handleMeetupsType("public")} color={this.state.public ? "primary" :"default"} edge="end">
-                                            <PublicIcon/>
-                                        </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Private Meetups">
-                                    <IconButton onClick={() => this.handleMeetupsType("private")} color={this.state.public ? "default" : "primary"}>
-                                        <LockIcon/>
+                        <div>
+                            Meetups
+                            <Tooltip title="Public Meetups">
+                                    <IconButton onClick={() => this.handleMeetupsType("public")} color={this.state.public ? "primary" :"default"} edge="end">
+                                        <PublicIcon/>
                                     </IconButton>
-                                </Tooltip>
-                            </div>   
-                            <div className="meetups-search-bar">
-                                <SearchIcon/>
-                                <CategoryAutocomplete fullWidth={true} size="small" entries={this.state.entries} handleClick={this.onTagsChange} label="Search Categories..."/>
-                            </div>
-                            <Link to="/meetups/new">
-                                <Tooltip title="Add Meetup">
-                                    <IconButton style={{color: "black"}}>
-                                        <AddIcon/>
-                                    </IconButton>
-                                </Tooltip>
-                            </Link>
+                            </Tooltip>
+                            <Tooltip title="Private Meetups">
+                                <IconButton onClick={() => this.handleMeetupsType("private")} color={this.state.public ? "default" : "primary"}>
+                                    <LockIcon/>
+                                </IconButton>
+                            </Tooltip>
+                        </div>   
+                        <div className="meetups-search-bar">
+                            <SearchIcon/>
+                            <CategoryAutocomplete fullWidth={true} size="small" entries={this.state.entries} handleClick={this.onTagsChange} label="Search Categories..."/>
+                        </div>
+                        <Link to="/meetups/new">
+                            <Tooltip title="Add Meetup">
+                                <IconButton style={{color: "black"}}>
+                                    <AddIcon/>
+                                </IconButton>
+                            </Tooltip>
+                        </Link>
                     </div>
                     {/* {!this.props.isMeetupsInitialized && <div>Initializing Meetups ....</div>} */}
                     {this.state.public ? 
                         <div style={{fontSize: "1.5rem", marginTop: "1rem", fontWeight: 600, fontFamily: "Lato", paddingLeft: "1.5rem"}}>
-                            Public Meetups within ({this.state.coords.radius} mi)
+                            Public Meetups within ({this.props.user.settings ? this.props.user.settings.radius : "X"} mi)
                         </div> :
                         <div style={{fontSize: "1.5rem", marginTop: "1rem", fontWeight: 600, fontFamily: "Lato", paddingLeft: "1.5rem"}}>
                             Your Private Meetups

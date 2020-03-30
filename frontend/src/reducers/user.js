@@ -11,6 +11,7 @@ export default function(state = userDefaultState, action){
         case EDIT_USER:
             return {...state, user: {...action.payload}}
         case ADD_SETTINGS:
+            console.log(action.payload)
             return {...state, user: {...state.user, settings: {...action.payload}}}
         case GET_FRIENDS:
             return {...state, isFriendsInitialized: true, friends: action.payload}
