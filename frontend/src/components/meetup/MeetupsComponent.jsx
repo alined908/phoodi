@@ -190,6 +190,13 @@ class MeetupsComponent extends Component {
                             <SearchIcon/>
                             <CategoryAutocomplete fullWidth={true} size="small" entries={this.state.entries} handleClick={this.onTagsChange} label="Search Categories..."/>
                         </div>
+                        <div className="category-chip">
+                            {this.state.public ? 
+                                <>{this.props.user.settings ? this.props.user.settings.radius : "X"} miles</> :
+                                <>X miles</>
+                            }
+                        </div>
+                        
                         <Link to="/meetups/new">
                             <Tooltip title="Add Meetup">
                                 <IconButton style={{color: "black"}}>
@@ -198,15 +205,7 @@ class MeetupsComponent extends Component {
                             </Tooltip>
                         </Link>
                     </div>
-                    {/* {!this.props.isMeetupsInitialized && <div>Initializing Meetups ....</div>} */}
-                    {this.state.public ? 
-                        <div style={{fontSize: "1.5rem", marginTop: "1rem", fontWeight: 600, fontFamily: "Lato", paddingLeft: "1.5rem"}}>
-                            Public Meetups within ({this.props.user.settings ? this.props.user.settings.radius : "X"} mi)
-                        </div> :
-                        <div style={{fontSize: "1.5rem", marginTop: "1rem", fontWeight: 600, fontFamily: "Lato", paddingLeft: "1.5rem"}}>
-                            Your Private Meetups
-                        </div>
-                    }   
+                    {/* {!this.props.isMeetupsInitialized && <div>Initializing Meetups ....</div>} */} 
                     {this.props.isMeetupsInitialized && 
                         <div className="meetups-container">
                             <Grid container spacing={1}>

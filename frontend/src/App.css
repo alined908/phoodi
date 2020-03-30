@@ -962,7 +962,7 @@ body {
 .meetups-search-bar{
   display:flex;
   flex: 1 1 0;
-  padding: 0 2rem;
+  padding: 0 1rem 0 1rem;
   align-items: center;
 }
 
@@ -1447,6 +1447,10 @@ body {
     flex-direction: column;
   }
 
+  .category .column{
+    max-width : none;
+  }
+
   .profile .column{
     margin: 2rem 0;
   }
@@ -1481,7 +1485,7 @@ body {
   }
 
   .meetups-search-bar {
-    padding: 0 1rem;
+    padding: 0 0 0 1rem;
   }
 
   .meetups-container {

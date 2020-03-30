@@ -88,15 +88,16 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Daniel Lee** 
 
 ## Todo General
-- [ ] Authenticate JWT automatically after expiration
-- [ ] Authenticate Websocket
 - [ ] Write tests for frontend
 - [ ] Safari presentation
+- [ ] Authenticate JWT automatically after expiration
+- [ ] Authenticate Websocket
 
 ## Todo Deploy
 - [ ] Add ssl certificate to website
 
 ## Todo Next Iteration
+- [ ] Pagination on entities
 - [ ] Fallback if no latitude/longitude provided.
 - [ ] Get user location before render
 - [ ] Write tests for consumers

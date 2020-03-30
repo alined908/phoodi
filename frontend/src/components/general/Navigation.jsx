@@ -172,7 +172,43 @@ const Navigation = (props) => {
           </IconButton>
         </div>
         <Divider />
-        <List>
+        <List style={{padding: 0}}>
+          {props.authenticated &&
+            <Link to={`/profile/${props.user.id}`}>
+              <ListItem className={classes.self}>
+                <ListItemAvatar>
+                  <StyledBadge
+                      overlap="circle"
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                      }}
+                      variant="dot"
+                    >
+                    <Avatar className={classes.avatar} src={props.user.avatar}>
+                      {props.user.first_name.charAt(0)}{props.user.last_name.charAt(0)}
+                    </Avatar>
+                  </StyledBadge>
+                </ListItemAvatar>
+                <ListItemText 
+                    primaryTypographyProps={{className: classes.primary}}
+                    primary={props.user.first_name + " " + props.user.last_name} 
+                    secondary={
+                        <>
+                            <Typography className={classes.secondary} component="span" color="inherit" variant="body2"> 
+                                {props.user.email + " "}
+                            </Typography>
+                        </>
+                    }
+                >
+                </ListItemText>
+              </ListItem>
+            </Link> 
+          }
+          </List>
+          <Divider />
+          <List>
+          
           {props.authenticated && <Link to="/meetups" onClick={handleDrawerClose}>
                 <ListItem button key="Meetups" selected={isActive("/meetups")}>
                   <ListItemIcon>
@@ -251,36 +287,6 @@ const Navigation = (props) => {
           </Link>}
         </List>
         <Divider />
-        {props.authenticated && 
-          <ListItem className={classes.self}>
-            <ListItemAvatar>
-              <StyledBadge
-                  overlap="circle"
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                  }}
-                  variant="dot"
-                >
-                <Avatar className={classes.avatar} src={props.user.avatar}>
-                  {props.user.first_name.charAt(0)}{props.user.last_name.charAt(0)}
-                </Avatar>
-              </StyledBadge>
-            </ListItemAvatar>
-            <ListItemText 
-                primaryTypographyProps={{className: classes.primary}}
-                primary={props.user.first_name + " " + props.user.last_name} 
-                secondary={
-                    <>
-                        <Typography className={classes.secondary} component="span" color="inherit" variant="body2"> 
-                            {props.user.email + " "}
-                        </Typography>
-                    </>
-                }
-            >
-            </ListItemText>
-          </ListItem>
-        }
       </Drawer>
       <main className={classes.content}>
         <div className={classes.drawerHeader} />
