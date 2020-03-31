@@ -14,8 +14,7 @@ class MeetupEvent extends Component {
         super(props)
         this.state = {
             searchOpen: false,
-            searchInput: "",
-            searchPlace: null
+            searchInput: ""
         }
     }
 
@@ -41,16 +40,6 @@ class MeetupEvent extends Component {
         this.props.socket.redecideMeetupEvent({meetup: this.props.uri, event:this.props.event.id})
     }
 
-    handleNewOption = () => {
-        console.log("this clicked")
-        console.log(this.state)
-        console.log(this.state.searchPlace)
-        if (this.state.searchPlace !== null) {
-            console.log('this sent')
-            this.props.socket.addEventOption({meetup: this.props.uri, event: this.props.event.id, place: this.state.searchPlace})
-        }
-    }
-
     handlePriceChips = (prices) => {
         var priceList = prices.replace(/\s/g, '').split(",");
         for (var i = 0; i < priceList.length; i++){
@@ -68,10 +57,9 @@ class MeetupEvent extends Component {
     }
 
     handleSearchValueClick = (e, value) => {
-        console.log(value)
-        this.setState({searchInput: value.description, searchPlace: value.place_id})
+        this.props.socket.addEventOption({meetup: this.props.uri, event: this.props.event.id, option: JSON.stringify(value)})
+        this.setState({searchInput: ""})
     }
-
 
     render () {
         const event = this.props.event
@@ -121,6 +109,13 @@ class MeetupEvent extends Component {
         const renderActions = () => {
             return (
                 <div className="mte-actions">
+                    {(!this.props.chosen && !this.state.searchOpen) &&
+                        <Tooltip title="Add Option">
+                            <IconButton style={{color: "#4caf50"}} onClick={this.handleSearchOption}>
+                                <SearchIcon/>
+                            </IconButton>
+                        </Tooltip>
+                    }
                     {!this.props.chosen &&
                         (event.random &&
                         <Tooltip title="Reload">
@@ -203,29 +198,18 @@ class MeetupEvent extends Component {
                     </div>
                     {this.props.isUserMember && renderFinalizeActions()}
                 </div>
-                {!this.props.chosen && renderFourSquare(event.options)}
                 {!this.props.chosen && 
                     <div>
-                        {!this.state.searchOpen ? 
-                            <div className="meetup-event-add-option elevate rainbow" style={{cursor: "pointer"}} onClick={this.handleSearchOption}>
-                                <AddIcon/> Search For Option
-                            </div>
-                            :
+                        {this.state.searchOpen &&
                             <div className="meetup-event-add-option-search elevate">
                                 <RestaurauntAutocomplete 
                                     coords={this.props.coords} 
                                     radius={this.props.settings.radius} 
                                     label="Type a restauraunt name..."
                                     textValue={this.state.searchInput}
-                                    handleSearchValue={this.handleSearchValue}
                                     handleSearchValueClick={this.handleSearchValueClick}
                                 />
-                                <Tooltip title="Enter">
-                                    <IconButton color="primary" onClick={this.handleNewOption}>
-                                        <SearchIcon/>
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Enter">
+                                <Tooltip title="Close">
                                     <IconButton color="primary" onClick={this.handleSearchOption}>
                                         <CloseIcon/>
                                     </IconButton>
@@ -234,6 +218,7 @@ class MeetupEvent extends Component {
                         }                       
                     </div>
                 }
+                {!this.props.chosen && renderFourSquare(event.options)}
                 {this.props.chosen && renderChosen(event.options[this.props.chosen])}
                 
             </div>

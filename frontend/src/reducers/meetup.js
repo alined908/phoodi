@@ -64,8 +64,15 @@ export default function meetupReducer(state = defaultState, action){
             })
             return {...state, meetups: {...state.meetups, [uri] : {...state.meetups[uri], events: events}}}
         case ADD_EVENT_OPTION:
-            console.log("hello add_event_option reducer")
-            return state
+            var mt_uri = action.payload.uri
+            var et_id = action.payload.event_id
+            return {...state, 
+                meetups: {...state.meetups, 
+                    [mt_uri]: {...state.meetups[mt_uri], 
+                        events: {...state.meetups[mt_uri].events, 
+                            [et_id]: {...state.meetups[mt_uri].events[et_id], 
+                                options: {...state.meetups[mt_uri].events[et_id].options, ...action.payload.option}
+                }}}}}
         case CLEAR_STORE:
             return defaultState
         default:

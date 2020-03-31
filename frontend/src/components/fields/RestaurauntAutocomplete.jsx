@@ -1,56 +1,29 @@
 import React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-import {TextField, Grid, Typography, makeStyles, Paper, Divider, InputBase, IconButton} from '@material-ui/core'
+import {TextField, Grid, Typography, makeStyles, Paper, Divider, InputBase, IconButton, ListItemAvatar, ListItemText, Avatar} from '@material-ui/core'
 import parse from 'autosuggest-highlight/parse';
+import match from 'autosuggest-highlight/match';
 import throttle from 'lodash/throttle';
-
-function loadScript(src, position, id) {
-  if (!position) {
-    return;
-  }
-
-  const script = document.createElement('script');
-  script.setAttribute('async', '');
-  script.setAttribute('id', id);
-  script.src = src;
-  position.appendChild(script);
-}
-
-const autocompleteService = { current: null };
+import axios from 'axios'
 
 const useStyles = makeStyles(theme => ({
   icon: {
     color: theme.palette.text.secondary,
     marginRight: theme.spacing(2),
   },
-  underline: {
-    "&&&:before": {
-      borderBottom: "none"
-    },
-    "&&:after": {
-      borderBottom: "none"
-    }
+  text : {
+      fontFamily: "Lato",
+      fontWeight: "600",
+      fontSize: ".8rem",
+      color: "black"
   }
 }));
 
 export default function RestaurauntAutocomplete(props) {
   const classes = useStyles();
   const [inputValue, setInputValue] = React.useState('');
-  const [options, setOptions] = React.useState([]);
-  const loaded = React.useRef(false);
-
-  if (typeof window !== 'undefined' && !loaded.current) {
-    if (!document.querySelector('#google-maps')) {
-      loadScript(
-        `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`,
-        document.querySelector('head'),
-        'google-maps',
-      );
-    }
-
-    loaded.current = true;
-  }
+  const [options, setOptions] = React.useState([]);  
 
   const handleChange = event => {
     setInputValue(event.target.value);
@@ -60,31 +33,39 @@ export default function RestaurauntAutocomplete(props) {
     () =>
       throttle((request, callback) => {
         var params = {
-            ...request, 
-            types: ['establishment']
+            term: request.input, 
+            latitude: props.coords.latitude,
+            longitude: props.coords.longitude,
+            limit: 8
         }
         console.log(params)
-        autocompleteService.current.getPlacePredictions(params, callback);
+        axios.request({
+            method: "GET",
+            url: 'https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search', 
+            headers: {
+              Authorization: `Bearer ${process.env.REACT_APP_YELP_API_KEY}`
+            },
+            params: params
+        })
+        .then((res) => {
+          console.log(res.data)
+          callback(res.data.businesses)
+        })
+        .catch((err) => {
+          console.log ('error')
+        })
       }, 200),
     [],
   );
 
   React.useEffect(() => {
-    let active = true;
-
-    if (!autocompleteService.current && window.google) {
-      autocompleteService.current = new window.google.maps.places.AutocompleteService();
-    }
-    if (!autocompleteService.current) {
-      return undefined;
-    }
+    let active = true
 
     if (inputValue === '') {
       setOptions([]);
       return undefined;
     }
     
-
     fetch({ input: inputValue}, results => {
       if (active) {
         setOptions(results || []);
@@ -99,7 +80,7 @@ export default function RestaurauntAutocomplete(props) {
   return (
     <Autocomplete
       style={{width: "100%"}}
-      getOptionLabel={option => (typeof option === 'string' ? option : option.description)}
+      getOptionLabel={option => (typeof option === 'string' ? option : option.name)}
       filterOptions={x => x}
       value={props.textValue}
       options={options}
@@ -116,29 +97,27 @@ export default function RestaurauntAutocomplete(props) {
         />
       )}
       renderOption={option => {
-        const matches = option.structured_formatting.main_text_matched_substrings;
-        const parts = parse(
-          option.structured_formatting.main_text,
-          matches.map(match => [match.offset, match.offset + match.length]),
-        );
+        const matches = match(option.name, inputValue)
+        const parts = parse(option.name, matches)
 
         return (
-          <Grid container alignItems="center">
-            <Grid item>
-              <LocationOnIcon className={classes.icon} />
-            </Grid>
-            <Grid item xs>
-              {parts.map((part, index) => (
-                <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                  {part.text}
-                </span>
-              ))}
-
-              <Typography variant="body2" color="textSecondary">
-                {option.structured_formatting.secondary_text}
-              </Typography>
-            </Grid>
-          </Grid>
+        <>
+            <ListItemAvatar>
+                <Avatar variant="square" src={option.image_url}>{option.name.charAt(0)}</Avatar>
+            </ListItemAvatar>
+            <ListItemText 
+                primary={
+                    <>
+                        {parts.map((part, index) => (
+                            <span key={index} className={classes.text} style={{ color: part.highlight ? "red" : "black" }}>
+                                {part.text}
+                            </span>
+                        ))}
+                    </>
+                } 
+            >
+            </ListItemText>
+        </>
         );
       }}
     />

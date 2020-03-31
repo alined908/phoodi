@@ -359,34 +359,20 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         )
 
     @sync_to_async
-    def new_option_helper(self, event_id, place):
-        print("new option helper")
-        url = 'https://maps.googleapis.com/maps/api/place/details/json'
-        print(os.environ.get("GOOGLE_API_KEY"))
-        params = {
-            "place_id": place, 
-            "key": os.environ.get("GOOGLE_API_KEY")
-        }
-        response = requests.get(url=url, params=params)
-        data = response.json()
-        options = {}
-        options['name'] = data['result']['name']
-        options['phone'] = data['result']['international_phone_number']
-        options['coordinates'] = {"latitude": data['result']['geometry']['location']['lat'], "longitude":  data['result']['geometry']['location']['lon']} 
-        options['location'] = data['result']['formatted_address']
-        options['price'] = max(int(data['result']['price_level'], 1) * "$"
+    def new_option_helper(self, event_id, option):
         event = MeetupEvent.objects.get(pk=event_id)
-        serializer = MeetupEventSerializer(event)
+        meetup_option = MeetupEventOption.objects.create(event=event, option=option)
+        serializer = MeetupEventOptionSerializer(meetup_option)
         return serializer.data
 
     async def new_option(self, command):
         data = command['data']
-        meetup, event_id, place = data['meetup'], data['event'], data['place']
-        event = await self.new_option_helper(event_id, place)
+        meetup, event_id, option_json = data['meetup'], data['event'], data['option']
+        option = await self.new_option_helper(event_id, option_json)
 
         content = {
             'command': 'new_option',
-            'message': {"uri": meetup, "event_id": event_id, "event": event}
+            'message': {"uri": meetup, "event_id": event_id, "option": option}
         }
 
         await self.channel_layer.group_send(
