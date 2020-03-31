@@ -1,6 +1,6 @@
 import React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {TextField, makeStyles, ListItemAvatar, ListItemText, Avatar} from '@material-ui/core'
+import {TextField, makeStyles, ListItemAvatar, ListItemText, Avatar, InputAdornment, Typography} from '@material-ui/core'
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import throttle from 'lodash/throttle';
@@ -10,8 +10,11 @@ const useStyles = makeStyles({
   text : {
       fontFamily: "Lato",
       fontWeight: "600",
-      fontSize: ".8rem",
+      fontSize: "1rem",
       color: "black"
+  },
+  secondary : {
+    fontSize: ".8rem"
   },
   root: {
     background: "white"
@@ -96,6 +99,7 @@ export default function RestaurauntAutocomplete(props) {
         <TextField
           {...params}
           label={props.label}
+          value={props.textValue}
           fullWidth
           variant="filled"
           onChange={handleChange}
@@ -123,7 +127,14 @@ export default function RestaurauntAutocomplete(props) {
                             </span>
                         ))}
                     </>
-                } 
+                }
+                secondary={
+                    <>
+                        <Typography component="span" color="inherit" variant="body2" className={classes.secondary}> 
+                            {option.location.display_address.join(" ")}
+                        </Typography>
+                    </>
+                }>
             >
             </ListItemText>
         </>

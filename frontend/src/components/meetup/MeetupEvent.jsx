@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Button} from "@material-ui/core"
 import {connect} from 'react-redux'
 import {deleteMeetupEvent} from "../../actions/meetup"
+import {addGlobalMessage} from "../../actions/globalMessages"
 import moment from "moment"
 import {Cached as CachedIcon, Edit as EditIcon, Close as CloseIcon, Search as SearchIcon, Schedule as ScheduleIcon, Delete as DeleteIcon, Error as ErrorIcon, Add as AddIcon} from '@material-ui/icons'
 import {IconButton, Typography, Grid, Grow, Tooltip, Avatar, Divider} from '@material-ui/core'
@@ -59,6 +60,7 @@ class MeetupEvent extends Component {
     handleSearchValueClick = (e, value) => {
         if (value !== null){
             this.props.socket.addEventOption({meetup: this.props.uri, event: this.props.event.id, option: JSON.stringify(value)})
+            this.props.addGlobalMessage("success", "Successfully added option")
         }
         this.setState({searchInput: ""})
     }
@@ -204,6 +206,7 @@ class MeetupEvent extends Component {
                     <>
                         {this.state.searchOpen &&
                             <div className="meetup-event-add-option-search elevate">
+                                <img style={{width: 20, height: 20, marginLeft: 10}} src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}></img>
                                 <RestaurauntAutocomplete 
                                     coords={this.props.coords} 
                                     radius={this.props.settings.radius} 
@@ -237,7 +240,8 @@ function mapStateToProps(state, props) {
 }
 
 const mapDispatchToProps = {
-    deleteMeetupEvent
+    deleteMeetupEvent,
+    addGlobalMessage
 }
 
 export default compose(

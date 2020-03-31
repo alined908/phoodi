@@ -464,7 +464,7 @@ body {
 }
 
 .meetup-event-add-option-search {
-  width: 40%;
+  width: 45%;
   margin: 2rem auto 0 auto;
   border-radius: 5px;
   color: white;
@@ -475,6 +475,10 @@ body {
   align-items: center;
   border: 1px solid #eeeeef;
   overflow: hidden;
+}
+
+.restauraunt-autocomplete .MuiInputAdornment-filled.MuiInputAdornment-positionStart:not(.MuiInputAdornment-hiddenLabel) {
+  margin-top: 0;
 }
 
 .divider{

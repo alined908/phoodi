@@ -96,6 +96,9 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Add ssl certificate to website
 
 ## Todo Next Iteration
+- [ ] Search bar on top app nav bar
+- [ ] MeetupEventOption Delete
+- [ ] Friends delete
 - [ ] Authenticate JWT automatically after expiration
 - [ ] Authenticate Websocket
 - [ ] Info dissapears on meetup edit form reload
