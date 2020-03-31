@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {deleteMeetupEvent} from "../../actions/meetup"
 import moment from "moment"
 import {Cached as CachedIcon, Edit as EditIcon, Close as CloseIcon, Search as SearchIcon, Schedule as ScheduleIcon, Delete as DeleteIcon, Error as ErrorIcon, Add as AddIcon} from '@material-ui/icons'
-import {IconButton, Typography, Grid, Grow, Tooltip, Avatar} from '@material-ui/core'
+import {IconButton, Typography, Grid, Grow, Tooltip, Avatar, Divider} from '@material-ui/core'
 import {compose} from 'redux';
 import {Restauraunt, Map, RestaurauntAutocomplete} from '../components'
 import {Link} from 'react-router-dom'
@@ -57,7 +57,9 @@ class MeetupEvent extends Component {
     }
 
     handleSearchValueClick = (e, value) => {
-        this.props.socket.addEventOption({meetup: this.props.uri, event: this.props.event.id, option: JSON.stringify(value)})
+        if (value !== null){
+            this.props.socket.addEventOption({meetup: this.props.uri, event: this.props.event.id, option: JSON.stringify(value)})
+        }
         this.setState({searchInput: ""})
     }
 
@@ -199,7 +201,7 @@ class MeetupEvent extends Component {
                     {this.props.isUserMember && renderFinalizeActions()}
                 </div>
                 {!this.props.chosen && 
-                    <div>
+                    <>
                         {this.state.searchOpen &&
                             <div className="meetup-event-add-option-search elevate">
                                 <RestaurauntAutocomplete 
@@ -209,6 +211,7 @@ class MeetupEvent extends Component {
                                     textValue={this.state.searchInput}
                                     handleSearchValueClick={this.handleSearchValueClick}
                                 />
+                                <Divider className="divider" orientation="vertical" />
                                 <Tooltip title="Close">
                                     <IconButton color="primary" onClick={this.handleSearchOption}>
                                         <CloseIcon/>
@@ -216,7 +219,7 @@ class MeetupEvent extends Component {
                                 </Tooltip>
                             </div>
                         }                       
-                    </div>
+                    </>
                 }
                 {!this.props.chosen && renderFourSquare(event.options)}
                 {this.props.chosen && renderChosen(event.options[this.props.chosen])}

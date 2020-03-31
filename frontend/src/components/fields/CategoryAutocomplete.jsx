@@ -5,12 +5,6 @@ import {axiosClient} from "../../accounts/axiosClient"
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 
-function sleep(delay = 0) {
-  return new Promise(resolve => {
-    setTimeout(resolve, delay);
-  });
-}
-
 const useStyles = makeStyles({
   underline: {
     "&&&:before": {

@@ -13,7 +13,7 @@ class Map extends Component {
           viewport: {
             latitude: this.props.location[0],
             longitude: this.props.location[1],
-            zoom: 15,
+            zoom: 14.75,
             bearing: 0,
             pitch: 0,
           }
@@ -24,7 +24,7 @@ class Map extends Component {
         const viewport = {
             ...this.state.viewport,
             zoom: 15,
-            transitionDuration: 5000,
+            transitionDuration: 3000,
             transitionInterpolator: new FlyToInterpolator(),
             transitionEasing: d3.easeSin
         }
@@ -41,7 +41,7 @@ class Map extends Component {
             className="map"
             mapStyle="mapbox://styles/mapbox/streets-v11"
             onViewportChange={viewport => this.setState({viewport})}
-            // onLoad={this.onLoad}
+            onLoad={this.onLoad}
             mapboxApiAccessToken={token}
           >
             <div style={{position: 'absolute', left: 10, top: 10}}>

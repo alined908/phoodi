@@ -1,24 +1,30 @@
 import React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import {TextField, Grid, Typography, makeStyles, Paper, Divider, InputBase, IconButton, ListItemAvatar, ListItemText, Avatar} from '@material-ui/core'
+import {TextField, makeStyles, ListItemAvatar, ListItemText, Avatar} from '@material-ui/core'
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import throttle from 'lodash/throttle';
 import axios from 'axios'
 
-const useStyles = makeStyles(theme => ({
-  icon: {
-    color: theme.palette.text.secondary,
-    marginRight: theme.spacing(2),
-  },
+const useStyles = makeStyles({
   text : {
       fontFamily: "Lato",
       fontWeight: "600",
       fontSize: ".8rem",
       color: "black"
+  },
+  root: {
+    background: "white"
+  },
+  underline: {
+    "&&&:before": {
+      borderBottom: "none"
+    },
+    "&&:after": {
+      borderBottom: "none"
+    }
   }
-}));
+});
 
 export default function RestaurauntAutocomplete(props) {
   const classes = useStyles();
@@ -79,7 +85,7 @@ export default function RestaurauntAutocomplete(props) {
 
   return (
     <Autocomplete
-      style={{width: "100%"}}
+        className="restauraunt-autocomplete"
       getOptionLabel={option => (typeof option === 'string' ? option : option.name)}
       filterOptions={x => x}
       value={props.textValue}
@@ -93,7 +99,12 @@ export default function RestaurauntAutocomplete(props) {
           {...params}
           label={props.label}
           fullWidth
+          variant="filled"
           onChange={handleChange}
+          InputProps={{
+            ...params.InputProps,
+            classes
+          }}
         />
       )}
       renderOption={option => {

@@ -455,17 +455,28 @@ body {
   margin: 0 auto 2rem auto;
 }
 
-.meetup-event-add-option, .meetup-event-add-option-search {
-  width: 50%;
-  margin: 0 auto;
-  height: 60px;
-  border-radius: 10px;
+.restauraunt-autocomplete{
+  width: 100%;
+}
+
+.restauraunt-autocomplete .MuiFilledInput-root, .restauraunt-autocomplete .MuiFilledInput-root:hover, .restauraunt-autocomplete .MuiFilledInput-root:active, .restauraunt-autocomplete .MuiFilledInput-root:focus{
+  background-color: white !important;
+}
+
+.meetup-event-add-option-search {
+  width: 40%;
+  margin: 2rem auto 0 auto;
+  border-radius: 5px;
   color: white;
   font-weight: 500;
   font-size: 1.2rem;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.divider{
+  height: 28px !important;
 }
 
 .meetup-event-add-option:hover{
@@ -475,7 +486,6 @@ body {
 .meetup-event-add-option-search {
   background-color: white;
   color: black;
-  padding: 0 1rem;
 }
 
 .explanation {
@@ -1007,7 +1017,7 @@ body {
   margin-left: 5px;
 }
 
-.category-autocomplete .MuiInputBase-input, .category-autocomplete .MuiFormLabel-root {
+.category-autocomplete .MuiInputBase-input, .restauraunt-autocomplete .MuiInputBase-input, .restauraunt-autocomplete .MuiFormLabel-root, .category-autocomplete .MuiFormLabel-root {
   font-size: .8rem;
   font-weight: 600;
   font-family: "Lato";
