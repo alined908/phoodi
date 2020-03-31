@@ -2,7 +2,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.exceptions import DenyConnection
 from .models import User, ChatRoom, ChatRoomMessage, MeetupMember,ChatRoomMember, MeetupEventOptionVote, Meetup, MeetupEvent, MeetupEventOption
 from django.core.exceptions import ObjectDoesNotExist
-import json, random, time, requests
+import json, random, time, requests, os
 from urllib.parse import parse_qs
 from asgiref.sync import sync_to_async, async_to_sync
 # from .serializers import CustomJWTSerializer
@@ -200,15 +200,16 @@ class MeetupConsumer(AsyncWebsocketConsumer):
 
     @sync_to_async
     def get_event_serializer(self, event):
-        event.generate_options()
+        if event.random:
+            event.generate_options()
         return MeetupEventSerializer(event).data
 
     async def new_event(self, command):
         data = command['data']
-        meetup, creator, title, start, end, entries, prices, distance = data['uri'],data['creator'], data['title'], data['start'], data['end'], data['entries'], data['prices'], data['distance']
+        meetup, creator, title, start, end, entries, prices, distance,random = data['uri'],data['creator'], data['title'], data['start'], data['end'], data['entries'], data['prices'], data['distance'], data['random']
         meetup_obj = await database_sync_to_async(Meetup.objects.get)(uri=meetup)
         creator = await database_sync_to_async(MeetupMember.objects.get)(pk=creator)
-        event = await database_sync_to_async(MeetupEvent.objects.create)(meetup = meetup_obj, creator=creator, title=title, start=start, end=end, entries=entries, distance=distance, price=prices)
+        event = await database_sync_to_async(MeetupEvent.objects.create)(meetup = meetup_obj, creator=creator, title=title, start=start, end=end, entries=entries, distance=distance, price=prices, random=random)
         serializer = await self.get_event_serializer(event)
 
         content = {
@@ -260,7 +261,6 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         option.handle_vote(status, member)
         event_serializer = MeetupEventOptionSerializer(option)
         member_serializer = MeetupMemberSerializer(member)
-        print(member_serializer.data)
         return event_serializer.data, event, member_serializer.data
 
     async def vote_event(self, command):
@@ -358,6 +358,44 @@ class MeetupConsumer(AsyncWebsocketConsumer):
             }
         )
 
+    @sync_to_async
+    def new_option_helper(self, event_id, place):
+        print("new option helper")
+        url = 'https://maps.googleapis.com/maps/api/place/details/json'
+        print(os.environ.get("GOOGLE_API_KEY"))
+        params = {
+            "place_id": place, 
+            "key": os.environ.get("GOOGLE_API_KEY")
+        }
+        response = requests.get(url=url, params=params)
+        data = response.json()
+        options = {}
+        options['name'] = data['result']['name']
+        options['phone'] = data['result']['international_phone_number']
+        options['coordinates'] = {"latitude": data['result']['geometry']['location']['lat'], "longitude":  data['result']['geometry']['location']['lon']} 
+        options['location'] = data['result']['formatted_address']
+        options['price'] = max(int(data['result']['price_level'], 1) * "$"
+        event = MeetupEvent.objects.get(pk=event_id)
+        serializer = MeetupEventSerializer(event)
+        return serializer.data
+
+    async def new_option(self, command):
+        data = command['data']
+        meetup, event_id, place = data['meetup'], data['event'], data['place']
+        event = await self.new_option_helper(event_id, place)
+
+        content = {
+            'command': 'new_option',
+            'message': {"uri": meetup, "event_id": event_id, "event": event}
+        }
+
+        await self.channel_layer.group_send(
+            self.meetup_group_name, {
+                'type': 'meetup_event',
+                'meetup_event': content
+            }
+        )
+
 
     commands = {
         'fetch_events': fetch_events,
@@ -366,7 +404,8 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         'delete_event': delete_event, #check
         'vote_event': vote_event, #check
         'decide_event': decide_event, #check
-        'redecide_event': redecide_event #check
+        'redecide_event': redecide_event, #check
+        'new_option': new_option
     }
 
     async def receive(self, text_data):

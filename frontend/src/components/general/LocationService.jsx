@@ -6,7 +6,7 @@ import {setUserSettings} from '../../actions/index'
 class LocationService extends Component {
     constructor(props){
         super(props)
-        if(!props.user.settings){
+        if(props.user && !props.user.settings){
             this.getUserLocation()
         }
     }

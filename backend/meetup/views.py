@@ -113,7 +113,6 @@ class UserFriendsView(APIView):
             serializer = FriendshipSerializer(user.get_friends_by_category(category), many=True, context={'user': user})
         else:
             serializer = FriendshipSerializer(user.get_friends(), many=True, context={'user': user})
-        print(serializer.data)
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
@@ -224,7 +223,6 @@ class MeetupListView(APIView):
 
     def format_public_meetups(self, user, categories, coords, num_results=25):
         if categories:
-            print(categories)
             try:
                 category_ids = [int(x) for x in categories.split(',')]
             except:
@@ -338,8 +336,8 @@ class MeetupEventsListView(APIView):
         meetup = get_object_or_404(Meetup, uri=uri)
         creator = get_object_or_404(MeetupMember, meetup=meetup, user=user)
         try:
-            start, end, title, distance, price, entries = request.data['start'], request.data['end'], request.data['title'], request.data['distance'], request.data['price'], request.data['entries']
-            event = MeetupEvent.objects.create(creator=creator, meetup=meetup, start=start, end=end, title=title, entries=entries, distance=distance, price=price)
+            start, end, title, distance, price, entries, random = request.data['start'], request.data['end'], request.data['title'], request.data['distance'], request.data['price'], request.data['entries'], request.data['random']
+            event = MeetupEvent.objects.create(creator=creator, meetup=meetup, start=start, end=end, title=title, entries=entries, distance=distance, price=price, random=random)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer = MeetupEventSerializer(event)
@@ -625,9 +623,7 @@ class CategoryView(APIView):
     def get(self, request, *args, **kwargs):
         api_label = kwargs['api_label']
         category = Category.objects.get(api_label=api_label)
-        print(category)
         serializer = CategoryVerboseSerializer(category, context={"user": request.user})
-        print(serializer.data)
         return Response(serializer.data)
 
 class ChatRoomListView(APIView):

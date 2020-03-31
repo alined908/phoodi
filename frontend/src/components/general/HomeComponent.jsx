@@ -54,7 +54,7 @@ class HomeComponent extends Component {
         const food = () => {
             return (
                 <div className="food-belt">
-                    {tophand()}
+                    {/* {tophand()} */}
                     <div className="food">
                         <IceCreamIcon className={"cupcake svg-1"} height={50} width={50}/>
                         <CandyAppleIcon className={"cupcake svg-2"} height={50} width={50}/>

@@ -76,13 +76,14 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Built With
 
-* **Docker** - Deployment
+* **Docker/AWS EC2** - Deployment
 * **Django** - Backend
 * **React/Redux** - Frontend
 * **Postgres** - Database
 * **Nginx** - Web Server
 * **Redis** - Channel layer for django channels
 * **Yelp Api** - Generate food options
+* **Material UI** - Design
 
 ## Author
 * **Daniel Lee** 
@@ -90,13 +91,16 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo General
 - [ ] Write tests for frontend
 - [ ] Safari presentation
-- [ ] Authenticate JWT automatically after expiration
-- [ ] Authenticate Websocket
 
 ## Todo Deploy
 - [ ] Add ssl certificate to website
 
 ## Todo Next Iteration
+- [ ] Authenticate JWT automatically after expiration
+- [ ] Authenticate Websocket
+- [ ] Info dissapears on meetup edit form reload
+- [ ] Suggest restauraunt
+- [ ] Change lock icon + default public/private
 - [ ] Pagination on entities
 - [ ] Fallback if no latitude/longitude provided.
 - [ ] Get user location before render

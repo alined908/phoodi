@@ -39,7 +39,7 @@ def handle_generate_options_on_meetup_event_field_change(sender, instance, **kwa
         pass
     else:
         previous = MeetupEvent.objects.get(pk=instance.id)
-        if previous.price != instance.price or previous.distance != instance.distance or previous.entries != instance.entries or previous.start != instance.start:
+        if previous.price != instance.price or previous.distance != instance.distance or previous.entries != instance.entries or previous.start != instance.start or (not previous.random and instance.random):
             if previous.entries != instance.entries:
                 previous.event_categories.all().delete()
             instance.delete_options()
@@ -52,7 +52,8 @@ def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
     meetup = instance.meetup
     
     if created:
-        instance.generate_options()
+        if instance.random:
+            instance.generate_options()
         #Handle Notif Update
         for member in meetup.members.all():
             if member != instance.creator:

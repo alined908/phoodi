@@ -1,4 +1,4 @@
-import {GET_MEETUPS, ADD_MEETUP, ADD_MEETUP_MEMBER, DELETE_MEETUP, EDIT_MEETUP, CLEAR_STORE, VOTE_MEETUP_EVENT, ADD_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, EDIT_MEETUP_EVENT} from '../constants/action-types';
+import {GET_MEETUPS, ADD_MEETUP, ADD_MEETUP_MEMBER, DELETE_MEETUP, EDIT_MEETUP, CLEAR_STORE, VOTE_MEETUP_EVENT, ADD_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, EDIT_MEETUP_EVENT, ADD_EVENT_OPTION} from '../constants/action-types';
 
 const defaultState = {
     meetups: {},
@@ -63,6 +63,9 @@ export default function meetupReducer(state = defaultState, action){
                 }
             })
             return {...state, meetups: {...state.meetups, [uri] : {...state.meetups[uri], events: events}}}
+        case ADD_EVENT_OPTION:
+            console.log("hello add_event_option reducer")
+            return state
         case CLEAR_STORE:
             return defaultState
         default:

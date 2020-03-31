@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {MeetupFriend, MeetupEvent} from '../components'
 import {connect} from 'react-redux';
-import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, addMeetupMember, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent} from '../../actions/meetup';
+import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, addMeetupMember, addEventOption, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent} from '../../actions/meetup';
 import {removeNotifs} from '../../actions/notifications'
 import {getFriends} from "../../actions/friend"
 import {Link} from 'react-router-dom'
@@ -36,7 +36,9 @@ class Meetup extends Component {
         const token = AuthenticationService.retrieveToken()
         const path = `/ws/meetups/${uri}/?token=${token}`;
         const socket = this.state.socket
-        socket.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, this.props.voteMeetupEvent, this.props.decideMeetupEvent, this.props.deleteMeetupEvent, this.props.addMeetupMember);
+        socket.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, 
+            this.props.voteMeetupEvent, this.props.decideMeetupEvent, this.props.deleteMeetupEvent, 
+            this.props.addMeetupMember, this.props.addEventOption);
         socket.connect(path);
     }
 
@@ -195,7 +197,7 @@ class Meetup extends Component {
                                             </>
                                         }>
                                     </ListItemText>
-                                    {JSON.stringify(members[key].user) === JSON.stringify(this.props.user) && <VerifiedUserIcon style={{color: "#3f51b5"}}/>}
+                                    {JSON.stringify(members[key].user) === JSON.stringify(this.props.user) && <Tooltip title="You"><VerifiedUserIcon style={{color: "#3f51b5"}}/></Tooltip>}
                                 </ListItem>
                             </Link>
                         )}
@@ -209,7 +211,7 @@ class Meetup extends Component {
                 <>
                     {!this.props.isMeetupEventsInitialized && <div>Initializing Events</div>}
                     {this.props.isMeetupEventsInitialized && events && this.sortEvents(events).map((event, index) => 
-                        <MeetupEvent number={index} socket={this.state.socket} key={event.id} uri={uri} event={events[event]} isUserMember={isUserMember}></MeetupEvent> 
+                        <MeetupEvent number={index} socket={this.state.socket} key={event.id} uri={uri} event={events[event]} isUserMember={isUserMember} coords={{latitude: latitude, longitude: longitude}}/>
                     )}
                 </>
             )
@@ -277,7 +279,8 @@ const mapDispatchToProps = {
         sendMeetupEmails,
         removeNotifs,
         addMeetupMember,
-        addGlobalMessage
+        addGlobalMessage,
+        addEventOption
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Meetup)

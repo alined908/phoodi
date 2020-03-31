@@ -3,7 +3,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import {sendMeetupInvite} from '../../actions/invite'
 import {connect} from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Typography, Avatar, CircularProgress, ListItem, ListItemText,ListItemAvatar} from "@material-ui/core"
+import { Button, Typography, Avatar, CircularProgress, ListItem, ListItemText,ListItemAvatar, Tooltip} from "@material-ui/core"
 import {Link} from 'react-router-dom'
 import { green } from '@material-ui/core/colors';
 
@@ -65,7 +65,7 @@ const MeetupFriend = (props) => {
                     </>
                 }>
                 </ListItemText>
-                {props.isMember && <CheckCircleIcon className={classes.check}/>}
+                {props.isMember && <Tooltip title="Member"><CheckCircleIcon className={classes.check}/></Tooltip>}
                 {!props.isMember && 
                     <div className={classes.wrapper}>
                         <Button variant="contained" disabled={loading} color="primary" size="small" onClick={(event) => handleClick(event)}>

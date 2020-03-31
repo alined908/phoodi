@@ -9,8 +9,6 @@ import {
 import {ADD_GLOBAL_MESSAGE} from '../../constants/action-types'
 import {Avatar} from '@material-ui/core'
 import {Tooltip} from '@material-ui/core'
-import {Skeleton} from '@material-ui/lab'
-
 
 class Restauraunt extends Component {
 

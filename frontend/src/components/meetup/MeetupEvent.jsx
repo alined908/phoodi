@@ -3,15 +3,20 @@ import {Button} from "@material-ui/core"
 import {connect} from 'react-redux'
 import {deleteMeetupEvent} from "../../actions/meetup"
 import moment from "moment"
-import {Cached as CachedIcon, Edit as EditIcon, Schedule as ScheduleIcon, Delete as DeleteIcon, Error as ErrorIcon} from '@material-ui/icons'
+import {Cached as CachedIcon, Edit as EditIcon, Close as CloseIcon, Search as SearchIcon, Schedule as ScheduleIcon, Delete as DeleteIcon, Error as ErrorIcon, Add as AddIcon} from '@material-ui/icons'
 import {IconButton, Typography, Grid, Grow, Tooltip, Avatar} from '@material-ui/core'
 import {compose} from 'redux';
-import {Restauraunt, Map} from '../components'
+import {Restauraunt, Map, RestaurauntAutocomplete} from '../components'
 import {Link} from 'react-router-dom'
 
 class MeetupEvent extends Component {
-    handleEdit = () => {
-        console.log("handle edit function called")
+    constructor(props){
+        super(props)
+        this.state = {
+            searchOpen: false,
+            searchInput: "",
+            searchPlace: null
+        }
     }
 
     handleDelete = () => {
@@ -36,6 +41,16 @@ class MeetupEvent extends Component {
         this.props.socket.redecideMeetupEvent({meetup: this.props.uri, event:this.props.event.id})
     }
 
+    handleNewOption = () => {
+        console.log("this clicked")
+        console.log(this.state)
+        console.log(this.state.searchPlace)
+        if (this.state.searchPlace !== null) {
+            console.log('this sent')
+            this.props.socket.addEventOption({meetup: this.props.uri, event: this.props.event.id, place: this.state.searchPlace})
+        }
+    }
+
     handlePriceChips = (prices) => {
         var priceList = prices.replace(/\s/g, '').split(",");
         for (var i = 0; i < priceList.length; i++){
@@ -43,6 +58,20 @@ class MeetupEvent extends Component {
         }
         return priceList;
     }
+
+    handleSearchOption = () => {
+        this.setState({searchOpen: !this.state.searchOpen})
+    }
+
+    handleSearchValue = (e) => {
+        this.setState({searchInput: e.target.value})
+    }
+
+    handleSearchValueClick = (e, value) => {
+        console.log(value)
+        this.setState({searchInput: value.description, searchPlace: value.place_id})
+    }
+
 
     render () {
         const event = this.props.event
@@ -92,12 +121,13 @@ class MeetupEvent extends Component {
         const renderActions = () => {
             return (
                 <div className="mte-actions">
-                    {!this.props.chosen && 
+                    {!this.props.chosen &&
+                        (event.random &&
                         <Tooltip title="Reload">
                             <IconButton onClick={() => this.handleReload()} color="primary" aria-label="reload">
                                 <CachedIcon />
                             </IconButton>
-                        </Tooltip>
+                        </Tooltip>)
                     }
                     <Link to={`/meetups/${this.props.uri}/events/${this.props.event.id}/edit`}>
                         <Tooltip title="Edit">
@@ -118,8 +148,8 @@ class MeetupEvent extends Component {
         const renderFinalizeActions = () => {
             return (
                 <div className="mte-factions">
-                    {!this.props.chosen && <Button className="button rainbow" size="small" variant="contained" color="primary" onClick={() => this.handleDecide()}>Decide</Button>}
-                    {!this.props.chosen && <Button className="button rainbow" size="small" variant="contained" color="primary" onClick={() => this.handleRandom()}>Random</Button>}
+                    {(!this.props.chosen && Object.keys(event.options).length > 0) && <Button className="button rainbow" size="small" variant="contained" color="primary" onClick={() => this.handleDecide()}>Decide</Button>}
+                    {(!this.props.chosen && Object.keys(event.options).length > 0)&& <Button className="button rainbow" size="small" variant="contained" color="primary" onClick={() => this.handleRandom()}>Random</Button>}
                     {this.props.chosen && <Button className="button rainbow" size="small" variant="contained" color="primary" onClick={() => this.handleRedecide()}>Redecide</Button>}
                 </div>
             )
@@ -174,6 +204,36 @@ class MeetupEvent extends Component {
                     {this.props.isUserMember && renderFinalizeActions()}
                 </div>
                 {!this.props.chosen && renderFourSquare(event.options)}
+                {!this.props.chosen && 
+                    <div>
+                        {!this.state.searchOpen ? 
+                            <div className="meetup-event-add-option elevate rainbow" style={{cursor: "pointer"}} onClick={this.handleSearchOption}>
+                                <AddIcon/> Search For Option
+                            </div>
+                            :
+                            <div className="meetup-event-add-option-search elevate">
+                                <RestaurauntAutocomplete 
+                                    coords={this.props.coords} 
+                                    radius={this.props.settings.radius} 
+                                    label="Type a restauraunt name..."
+                                    textValue={this.state.searchInput}
+                                    handleSearchValue={this.handleSearchValue}
+                                    handleSearchValueClick={this.handleSearchValueClick}
+                                />
+                                <Tooltip title="Enter">
+                                    <IconButton color="primary" onClick={this.handleNewOption}>
+                                        <SearchIcon/>
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Enter">
+                                    <IconButton color="primary" onClick={this.handleSearchOption}>
+                                        <CloseIcon/>
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
+                        }                       
+                    </div>
+                }
                 {this.props.chosen && renderChosen(event.options[this.props.chosen])}
                 
             </div>
@@ -183,7 +243,8 @@ class MeetupEvent extends Component {
 
 function mapStateToProps(state, props) {
     return {
-        chosen: state.meetup.meetups[props.uri].events[props.event.id].chosen
+        chosen: state.meetup.meetups[props.uri].events[props.event.id].chosen,
+        settings: state.user.user.settings
     }
 }
 

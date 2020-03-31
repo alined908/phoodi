@@ -455,6 +455,29 @@ body {
   margin: 0 auto 2rem auto;
 }
 
+.meetup-event-add-option, .meetup-event-add-option-search {
+  width: 50%;
+  margin: 0 auto;
+  height: 60px;
+  border-radius: 10px;
+  color: white;
+  font-weight: 500;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.meetup-event-add-option:hover{
+  background: #0f0c29;
+}
+
+.meetup-event-add-option-search {
+  background-color: white;
+  color: black;
+  padding: 0 1rem;
+}
+
 .explanation {
   background-color: white;
   padding: 1rem;
@@ -1191,6 +1214,7 @@ body {
 
 .category-header{
   display: flex;
+  padding: 1rem 0.5rem;
   font-size: 2.5rem;
   background-color: white;
   justify-content: space-between;
@@ -1232,6 +1256,16 @@ body {
 .category-meetups{
   width: 100%;
   padding: 0 2rem;
+}
+
+.category-header-title{
+  display: flex;
+  width: 100%;
+  background-color: white;
+  padding: 1rem;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  justify-content: flex-start;
 }
 
 .categories-horz{

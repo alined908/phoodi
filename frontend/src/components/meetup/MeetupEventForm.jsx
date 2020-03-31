@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {reduxForm, Field} from 'redux-form';
-import {Button, Typography, Paper, Grid, ButtonGroup, Slider, Fab, TextField} from '@material-ui/core';
+import {Button, Typography, Paper, Grid, ButtonGroup, Slider, Fab, TextField,  Radio, FormControlLabel} from '@material-ui/core';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {addMeetupEvent, getMeetup, getMeetupEvents} from "../../actions/meetup"
@@ -38,7 +38,8 @@ class MeetupEventForm extends Component {
         this.state = {
             entries: props.entries ? props.entries : [],
             prices: props.prices ? convertPricesToState(props.prices) : [true, true , false, false],
-            distance: props.distance ? reconvert[this.props.distance] : 10,
+            distance: props.distance ? reconvert[props.distance] : 10,
+            random: props.random ? props.random : true,
             initialized: props.isMeetupInitialized && props.isMeetupEventsInitialized
         }
         this.onTagsChange = this.onTagsChange.bind(this)
@@ -81,9 +82,9 @@ class MeetupEventForm extends Component {
         const indices = this.state.prices.reduce((out, bool, index) => bool ? out.concat(index+1) : out, [])
         const prices = indices.join(", ")
         const uri = this.props.match.params.uri
-        const data = {entries: this.handleEntries(), distance: convert[this.state.distance], price: prices, ...formProps}
+        const data = {entries: this.handleEntries(), distance: convert[this.state.distance], price: prices, random: this.state.random,...formProps}
         console.log(data)
-
+        
         if (this.props.type === "create"){
             axiosClient.post(
                 `/api/meetups/${uri}/events/`, data, {headers: {
@@ -107,6 +108,10 @@ class MeetupEventForm extends Component {
 
     handleDistance = (e, val) => {
         this.setState({distance: val})
+    }
+
+    handleRandomClick = (type) => {
+        this.setState({random: type})
     }
 
     onTagsChange = (event, values) => {
@@ -154,7 +159,11 @@ class MeetupEventForm extends Component {
                                         </div>
                                     </div>
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} md={6}>
+                                    <FormControlLabel label="Random" control={<Radio color="primary" checked={this.state.random} onClick={() => this.handleRandomClick(true)}/>} />
+                                    <FormControlLabel label="Custom" control={<Radio color="primary" checked={!this.state.random} onClick={() => this.handleRandomClick(false)}/>}/>
+                                </Grid>
+                                <Grid item xs={12}>
                                     <div className="distance">
                                         <Typography variant="h6">Distance (mi)</Typography>
                                         <div className="distance-options">
@@ -192,6 +201,7 @@ function mapStateToProps(state, ownProps){
             distance: event.distance,
             prices: event.price,
             entries: event.categories,
+            random: event.random,
             isMeetupInitialized: true,
             isMeetupEventsInitialized: true
         }

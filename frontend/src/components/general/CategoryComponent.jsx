@@ -124,8 +124,8 @@ class CategoryComponent extends Component {
                         </div>
                     </div>
                     <div className="category-meetups">
-                        <div style={{fontSize: "1.5rem", marginBottom: "1rem"}}>
-                            Meetups Near You With <span style={{fontColor: "red"}}>{category.label} </span>Events           
+                        <div className="category-header-title elevate">
+                            Meetups Near You With <span style={{color: "#f50057", padding: "0 0.5rem"}}>  {category.label}</span> Events           
                         </div>
                         <Grid container spacing={1}>
                             {this.state.meetups.map((meetup, index) =>

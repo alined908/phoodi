@@ -206,7 +206,8 @@ class MeetupEvent(models.Model):
     price = models.CharField(max_length=10)
     start = models.DateTimeField()
     end = models.DateTimeField(blank=True, null=True)
-    chosen = models.IntegerField(blank=True, null=True) 
+    chosen = models.IntegerField(blank=True, null=True)
+    random = models.BooleanField()
     entries = JSONField()
     _original_location = None
     objects = models.Manager()
