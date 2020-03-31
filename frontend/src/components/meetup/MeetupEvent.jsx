@@ -87,7 +87,7 @@ class MeetupEvent extends Component {
             
             return (
                 <div className="foursquare">
-                    {keys.length > 1 ?
+                    {keys.length > 0 ?
                         <Grid justify="center" container spacing={3}>
                             {keys.map((key, index) => 
                                 <Grow in={true} timeout={300 * (index + 1)}>
@@ -213,7 +213,7 @@ class MeetupEvent extends Component {
                                 />
                                 <Divider className="divider" orientation="vertical" />
                                 <Tooltip title="Close">
-                                    <IconButton color="primary" onClick={this.handleSearchOption}>
+                                    <IconButton color="secondary" onClick={this.handleSearchOption}>
                                         <CloseIcon/>
                                     </IconButton>
                                 </Tooltip>

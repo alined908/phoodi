@@ -44,7 +44,6 @@ export default function RestaurauntAutocomplete(props) {
             longitude: props.coords.longitude,
             limit: 8
         }
-        console.log(params)
         axios.request({
             method: "GET",
             url: 'https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search', 
@@ -54,7 +53,6 @@ export default function RestaurauntAutocomplete(props) {
             params: params
         })
         .then((res) => {
-          console.log(res.data)
           callback(res.data.businesses)
         })
         .catch((err) => {
