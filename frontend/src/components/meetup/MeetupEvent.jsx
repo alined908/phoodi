@@ -111,7 +111,7 @@ class MeetupEvent extends Component {
         const renderActions = () => {
             return (
                 <div className="mte-actions">
-                    {(!this.props.chosen && !this.state.searchOpen) &&
+                    {(!this.props.chosen) &&
                         <Tooltip title="Add Option">
                             <IconButton style={{color: "#4caf50"}} onClick={this.handleSearchOption}>
                                 <SearchIcon/>
