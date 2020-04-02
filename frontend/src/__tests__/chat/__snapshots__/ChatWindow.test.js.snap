@@ -1,0 +1,148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing given props 1`] = `
+<div
+  className="chat-window elevate"
+>
+  <div
+    className="chat-header"
+  >
+    <Link
+      to="/profile/2"
+    >
+      <WithStyles(ForwardRef(Tooltip))
+        title="Go to Profile"
+      >
+        <WithStyles(ForwardRef(Button))
+          color="primary"
+          startIcon={<UNDEFINED />}
+        >
+          Profile
+        </WithStyles(ForwardRef(Button))>
+      </WithStyles(ForwardRef(Tooltip))>
+    </Link>
+  </div>
+  <div
+    className="chat-messages-wrapper"
+    onScroll={[Function]}
+  >
+    <div
+      className="chat-messages"
+    >
+      <ChatMessageComponent
+        key="1"
+        members={
+          Object {
+            "1": Object {
+              "avatar": null,
+              "email": "example@gmail.com",
+              "first_name": "Daniel",
+              "id": 1,
+              "last_name": "Lee",
+            },
+            "2": Object {
+              "avatar": null,
+              "email": "example2@gmail.com",
+              "first_name": "Bob",
+              "id": 2,
+              "last_name": "Jim",
+            },
+          }
+        }
+        message={
+          Object {
+            "id": 1,
+            "is_read": false,
+            "message": "hello",
+            "room_id": 1,
+            "sender_id": 1,
+            "timestamp": 1487030400000,
+          }
+        }
+        user={
+          Object {
+            "avatar": null,
+            "email": "example@gmail.com",
+            "first_name": "Daniel",
+            "id": 1,
+            "last_name": "Lee",
+          }
+        }
+      />
+      <ChatMessageComponent
+        key="1"
+        members={
+          Object {
+            "1": Object {
+              "avatar": null,
+              "email": "example@gmail.com",
+              "first_name": "Daniel",
+              "id": 1,
+              "last_name": "Lee",
+            },
+            "2": Object {
+              "avatar": null,
+              "email": "example2@gmail.com",
+              "first_name": "Bob",
+              "id": 2,
+              "last_name": "Jim",
+            },
+          }
+        }
+        message={
+          Object {
+            "id": 1,
+            "is_read": false,
+            "message": "hello",
+            "room_id": 1,
+            "sender_id": 1,
+            "timestamp": 1487030400000,
+          }
+        }
+        user={
+          Object {
+            "avatar": null,
+            "email": "example@gmail.com",
+            "first_name": "Daniel",
+            "id": 1,
+            "last_name": "Lee",
+          }
+        }
+      />
+      <div />
+    </div>
+  </div>
+  <div
+    className="chat-input"
+  >
+    <form
+      className="chat-input-form"
+    >
+      <input
+        className="chat-input"
+        onChange={[Function]}
+        onKeyPress={[Function]}
+        placeholder="Type a message here..."
+        type="text"
+        value=""
+      />
+    </form>
+    <div>
+      <WithStyles(ForwardRef(Button))
+        onClick={[Function]}
+        style={
+          Object {
+            "backgroundColor": "#FFD460",
+            "borderRadius": 15,
+            "fontFamily": "Lato",
+            "fontSize": 10,
+            "fontWeight": "700",
+          }
+        }
+      >
+        Send
+      </WithStyles(ForwardRef(Button))>
+    </div>
+  </div>
+</div>
+`;

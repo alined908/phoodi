@@ -157,3 +157,4 @@ const mapDispatchToProps = {
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatWindowComponent)
+export {ChatWindowComponent as UnderlyingChatWindowComponent}
