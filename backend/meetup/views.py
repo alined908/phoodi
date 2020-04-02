@@ -11,7 +11,6 @@ from rest_framework import permissions, status
 from django.db.models.expressions import RawSQL
 from django.db.models import Q
 from random import shuffle
-from ipware import get_client_ip
 import collections
 from django.forms.models import model_to_dict
 from meetup.serializers import PreferenceSerializer, UserSettingsSerializer, CategorySerializer, CategoryVerboseSerializer, UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer, FriendInviteSerializer, MeetupEventSerializer
