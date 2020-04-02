@@ -29,43 +29,20 @@ class ChatBarComponent extends Component {
         }
     }
 
-    filterRooms = (type) => {
-        var rooms = this.state.isSearched ? this.state.searchedRooms : this.state.rooms;
-        var isFiltered;
-        var newRooms; 
-
-        if (!this.state.filters[type]) {
-            if (!this.state.filters[opposite[type]]){
-                newRooms = rooms.filter(room => (type === "meetup" ? room.meetup === null : room.friendship === null))
-            } else {
-                newRooms = []
-            }
-            isFiltered = true
-        } else {
-            if (!this.state.filters[opposite[type]]){
-                newRooms = rooms
-                isFiltered = false
-            } else {
-                newRooms = rooms.filter(room => (type === "meetup" ?  room.friendship === null : room.meetup === null))
-                isFiltered = true
-            }
-        }
-
-        var filters = {...this.state.filters}
-        filters[type] = !filters[type]
-        this.setState({filters, isFiltered, filteredRooms: newRooms, liveRooms: newRooms})
-    }
-
-    handleSearchInputChange = (e) => {
-        var filter = e.target.value;
-        var rooms = this.state.isFiltered ? this.state.filteredRooms : this.state.rooms;
-        var isSearched = e.target.value.length === 0 ? false : true;
+    filterAndSearch = () => {
+        var rooms = this.state.rooms
+        var filter = this.state.searchInput
+        var filterMeetup = this.state.filters["meetup"]
+        var filterFriend = this.state.filters["friend"]
+        console.log(filterMeetup)
+        console.log(filterFriend)
         var newRooms;
 
         newRooms = rooms.filter((room) => {
+        
             let meetupCriteria = false;
             if (room.meetup !== null) {
-                meetupCriteria = room.name.toLowerCase().includes(filter.toLowerCase())
+                meetupCriteria = room.name.toLowerCase().includes(filter.toLowerCase()) && !filterMeetup
             }
 
             let friendCriteria = false;
@@ -79,13 +56,24 @@ class ChatBarComponent extends Component {
                 }
                 const friendName = friend.first_name + " " + friend.last_name
 
-                friendCriteria = (friendName.toLowerCase().includes(filter.toLowerCase())) || (friend.email.toLowerCase().includes(filter.toLowerCase()))
+                friendCriteria = ((friendName.toLowerCase().includes(filter.toLowerCase())) || (friend.email.toLowerCase().includes(filter.toLowerCase()))) && !filterFriend
             }
 
             return meetupCriteria || friendCriteria
         })
 
-        this.setState({searchInput: filter, isSearched, searchedRooms: newRooms, liveRooms: newRooms})
+        this.setState({liveRooms: newRooms})
+    }
+
+    filterRooms = (type) => {
+        var filters = {...this.state.filters}
+        filters[type] = !filters[type]
+        this.setState({filters}, () => this.filterAndSearch())
+    }
+
+    handleSearchInputChange = (e) => {
+        var filter = e.target.value;
+        this.setState({searchInput: filter}, () => this.filterAndSearch())
     }
 
     render (){
@@ -136,3 +124,4 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps)(ChatBarComponent)
+export {ChatBarComponent as UnderlyingChatBarComponent}

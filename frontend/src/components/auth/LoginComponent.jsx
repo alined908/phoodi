@@ -32,9 +32,11 @@ class LoginComponent extends Component {
                                 <Grid item xs={12}>
                                     <Field name="password" type="password" component={renderTextField} label="Password"/>
                                 </Grid> 
-                                {this.props.errorMessage && <Grid item xs={12}>
-                                    <div>{this.props.errorMessage}</div>
-                                </Grid>}
+                                {this.props.errorMessage && 
+                                    <Grid item xs={12}>
+                                        <div>{this.props.errorMessage}</div>
+                                    </Grid>
+                                }
                                 <Grid item xs={12}>
                                 <Fab type="submit" variant="extended" color="primary" aria-label="login">Login</Fab>
                                 </Grid>

@@ -41,13 +41,14 @@ const GroupAvatars = (props) => {
             {upToThree.map((member, index) => 
                 (userInMembers && index === 0) ?
                     <Badge  
+                        key={index}
                         color="primary"
                         overlap="circle" 
                         anchorOrigin={{vertical: 'bottom', horizontal: 'left'}} 
                         variant="dot"
                         style={{border: 0, marginLeft: "0"}}
                     >
-                        <Tooltip key={index} title={member.first_name}>
+                        <Tooltip title={member.first_name}>
                             <Avatar className={classes.small} src={member.avatar}>
                                 {member.first_name.charAt(0)}{member.last_name.charAt(0)}
                             </Avatar>

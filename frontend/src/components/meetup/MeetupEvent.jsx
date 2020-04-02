@@ -85,7 +85,7 @@ class MeetupEvent extends Component {
         }
 
         const renderFourSquare = (options) => {
-            const keys = Object.keys(options)
+            const keys = Object.keys(options).reverse()
             
             return (
                 <div className="foursquare">
@@ -210,7 +210,7 @@ class MeetupEvent extends Component {
                                 <RestaurauntAutocomplete 
                                     coords={this.props.coords} 
                                     radius={this.props.settings.radius} 
-                                    label="Type a restauraunt name..."
+                                    label="Type a restauraunt name or category..."
                                     textValue={this.state.searchInput}
                                     handleSearchValueClick={this.handleSearchValueClick}
                                 />

@@ -71,6 +71,7 @@ body {
   color: black;
   grid-area: column-1;
   border-radius: 5px;
+  overflow-y: auto;
 }
 
 .chat-bar-contacts{

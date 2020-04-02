@@ -15,8 +15,9 @@ class ContactComponent extends Component {
     }
 
     handleClick = (id) => {
-        this.props.removeNotifs({type: "chat_message", id: id})
-        this.setState({notifs: 0})  
+        this.setState({notifs: 0}, 
+            () => this.props.removeNotifs({type: "chat_message", id: id})
+        )  
     }
 
     render (){
@@ -25,18 +26,19 @@ class ContactComponent extends Component {
         const membersKeys = Object.keys(members)
 
         return (
-            <Link to={`/chat/${uri}`} onClick={notifs > 0 ? () => this.handleClick(id): null} className="contact-link" >
+            <Link key={id} to={`/chat/${uri}`} onClick={notifs > 0 ? () => this.handleClick(id): null} className="contact-link" >
                 <div className={`chat-contact ${current_room ? 'curr-room': ""}`}>
                     <div>
                         {name}
                     </div>
                     {meetup ? 
                         <div className="meetup-avatars light-text">
-                            <GroupAvatars members={Object.values(members)}></GroupAvatars>{membersKeys.length + " member"}{membersKeys.length > 1 ? "s" : ""}
+                            <GroupAvatars members={Object.values(members)}/>
+                            {membersKeys.length + " member"}{membersKeys.length > 1 ? "s" : ""}
                         </div> : 
                         <>{membersKeys.map((member) => 
                             (member !== this.props.user.id.toString()) ? 
-                                <div key={member.id} className="chat-contact-info">
+                                <div key={member} className="chat-contact-info">
                                     <div className="chat-contact-avatar">
                                         <Avatar src={members[member].avatar}>
                                             {members[member].first_name.charAt(0)}{members[member].last_name.charAt(0)}
@@ -50,12 +52,13 @@ class ContactComponent extends Component {
                                             {members[member].email}
                                         </div>
                                     </div>
-                                    <div>
-                                        {this.state.notifs > 0 && 
-                                        <Badge color="secondary" variant="dot" badgeContent={this.state.notifs}>
-                                            <NotificationsIcon/>
-                                        </Badge>}
-                                    </div>
+                                    {this.state.notifs > 0 && 
+                                        <div className="chat-contact-notifications">
+                                            <Badge color="secondary" variant="dot" badgeContent={this.state.notifs}>
+                                                <NotificationsIcon/>
+                                            </Badge>
+                                        </div>
+                                    }
                                 </div> : ""
                             )}
                         </>
@@ -77,3 +80,4 @@ function mapStateToProps(state){
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactComponent)
+export {ContactComponent as UnderlyingContactComponent}

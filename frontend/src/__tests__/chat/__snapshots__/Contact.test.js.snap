@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContactComponent unit renders without crashing given props 1`] = `
+<Link
+  className="contact-link"
+  key="1"
+  onClick={null}
+  to="/chat/abc"
+>
+  <div
+    className="chat-contact "
+  >
+    <div>
+      Room
+    </div>
+    <div
+      className="chat-contact-info"
+      key="2"
+    >
+      <div
+        className="chat-contact-avatar"
+      >
+        <WithStyles(ForwardRef(Avatar))
+          src={null}
+        >
+          B
+          J
+        </WithStyles(ForwardRef(Avatar))>
+      </div>
+      <div
+        className="chat-contact-user-info"
+      >
+        <div>
+          Bob
+        </div>
+        <div
+          className="light-text"
+        >
+          example2@gmail.com
+        </div>
+      </div>
+    </div>
+  </div>
+</Link>
+`;
