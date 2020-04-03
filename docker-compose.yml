@@ -13,6 +13,8 @@ services:
             - ./nginx/certs:/etc/nginx/certs
         depends_on: 
             - channels
+            - frontend
+            - backend
     db:
         image: postgres:12.0-alpine
         ports: 
