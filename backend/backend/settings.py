@@ -15,7 +15,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', 'ec2-54-67-104-152.us-west-1.compute.amazonaws.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', 'ec2-52-9-232-105.us-west-1.compute.amazonaws.com']
 
 
 # Application definition
@@ -65,7 +65,9 @@ CORS_ORIGIN_WHITELIST = (
     'https://localhost:8003',
     'http://localhost',
     'https://localhost',
-    'http://ec2-54-67-104-152.us-west-1.compute.amazonaws.com'
+    'http://ec2-52-9-232-105.us-west-1.compute.amazonaws.com',
+    'https://phoodie.me'
+    'https://www.phoodie.me'
 )
 CORS_ALLOW_CREDENTIALS = True
 

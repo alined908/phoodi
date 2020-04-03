@@ -93,9 +93,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Safari presentation
 - [ ] Have to click all fields?
 
-## Todo Deploy
-- [ ] Add ssl certificate to website
-
 ## Todo Next Iteration
 - [ ] Block people, admin functionality for meetup member
 - [ ] Search bar on top app nav bar
