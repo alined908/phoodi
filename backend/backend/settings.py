@@ -66,7 +66,7 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost',
     'https://localhost',
     'http://ec2-52-9-232-105.us-west-1.compute.amazonaws.com',
-    'https://phoodie.me'
+    'https://phoodie.me',
     'https://www.phoodie.me'
 )
 CORS_ALLOW_CREDENTIALS = True
