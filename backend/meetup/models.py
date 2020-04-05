@@ -4,7 +4,7 @@ from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager)
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.utils.timezone import now
-from backend.settings import YELP_API_KEY
+from backend.settings import YELP_API_KEY, BASE_URL
 from django.utils.dateformat import format
 from uuid import uuid4
 from django.core.exceptions import ObjectDoesNotExist
@@ -185,7 +185,7 @@ class Meetup(models.Model):
         members = self.members.all()
         emails = [member.user.email for member in members]
         subject = self.name + " has been finalized."
-        body = '<a href="http://localhost:3000/meetups/' + self.uri +'">Meetup</a>'
+        body = '<a href="'+ BASE_URL + self.uri +'">Meetup</a>'
         send_mail(subject, body, "meetup022897@gmail.com",emails)
 
 class MeetupMember(models.Model):

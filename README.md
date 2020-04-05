@@ -89,47 +89,68 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Daniel Lee** 
 
 ## Todo General
-- [ ] Write tests for frontend
+- [ ] Handle 404 page
 - [ ] Safari presentation
-- [ ] Have to click all fields?
-
-## Todo Next Iteration
-- [ ] Block people, admin functionality for meetup member
+- [ ] Have to click all fields/ Inconsistent meetup?
 - [ ] Search bar on top app nav bar
-- [ ] MeetupEventOption Delete
-- [ ] Friends delete
+- [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
+
+## Todo Testing 
+- [ ] Write tests for frontend
+- [ ] Specify proptypes
+- [ ] Write tests for consumers
+- [ ] Fallback if no latitude/longitude provided.
+- [ ] Form validation + Validation for time and date
+
+## Todo Authentication
 - [ ] Authenticate JWT automatically after expiration
 - [ ] Authenticate Websocket
-- [ ] Info dissapears on meetup edit form reload
-- [ ] Suggest restauraunt
-- [ ] Change lock icon + default public/private
-- [ ] Pagination on entities
-- [ ] Fallback if no latitude/longitude provided.
-- [ ] Get user location before render
-- [ ] Write tests for consumers
-- [ ] Form validation + Validation for time and date
-- [ ] Handle 404 page
-- [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
-- [ ] Meetup email message nice html
-- [ ] Meetupmembers give roles and allow admin to give roles/kick/etc
-- [ ] Add friends, redux action/websockets
-- [ ] Edit Meetup Form On reload doesnt populate data
-- [ ] Specify proptypes
-- [ ] Reload animation on chat scroll up/Throttle scroll event
-- [ ] Create meetup with member 
+
+## Todo User
 - [ ] Add google social auth 
 - [ ] Confirm email, Change password
-- [ ] Find people who have similar food taste near you?
-- [ ] Change name of preference
-- [ ] Refactor onTagsChange of MeetupsComponent
-- [ ] Add calendar of meetups
-- [ ] Add scrollable notifications box for meetupevent 
-- [ ] Delete Friend, Give friend/meetupmember nickname 
-- [ ] Edit chat messages and add emojis, upload picture
-- [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
-- [ ] Disable redux dev tools in production
-- [ ] Separate css files
-- [ ] Handle timestamp logic
-- [ ] Continuous integration
-- [ ] Bundle chat messages together
+- [ ] Get user location before render
+- [ ] Settings doesnt populate after save and reload
 - [ ] Past activity
+- [ ] Change name of preference
+
+## Todo Friends
+- [ ] Friends delete
+- [ ] Give nickname
+
+## Todo Invite
+- [ ] Change meetup friend state if invite sent
+
+## Todo Meetup
+- [ ] Meetup email message nice html
+- [ ] Block people, admin functionality for meetup member
+- [ ] MeetupEventOption Delete
+- [ ] Info dissapears on meetup edit form reload
+- [ ] Custom event doesn't automatically render
+- [ ] Add scrollable notifications box for meetup
+- [ ] Create meetup with member
+- [ ] Refactor onTagsChange of MeetupsComponent
+- [ ] Add friends, redux action/websockets
+
+## Todo Chat
+- [ ] Bundle chat messages together
+- [ ] Edit chat messages and add emojis, upload picture
+- [ ] Reload animation on chat scroll up/Throttle scroll event
+- [ ] Send invite through chat
+- [ ] Handle timestamp logic
+- [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
+
+## Todo UI
+- [ ] Change lock icon + default public/private
+- [ ] Pagination on entities
+- [ ] Ellipsis on navbar avatar email
+
+## Todo Deploy
+- [ ] Disable redux dev tools in production
+- [ ] Continuous integration
+- [ ] Separate css files
+- [ ] Disable console.log + errors
+
+## Todo New Features
+- [ ] Add calendar of meetups
+- [ ] Find people who have similar food taste near you?
