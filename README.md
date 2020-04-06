@@ -97,7 +97,6 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Testing 
 - [ ] Write tests for frontend
-- [ ] Specify proptypes
 - [ ] Write tests for consumers
 - [ ] Fallback if no latitude/longitude provided.
 - [ ] Form validation + Validation for time and date
