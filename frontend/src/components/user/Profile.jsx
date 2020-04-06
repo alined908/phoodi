@@ -101,7 +101,7 @@ class Profile extends Component {
                                 )}
                             </div>
                         </div>  
-                        <Preferences locked={this.state.locked} isUser={isUser} user={this.props.user.id.toString()}/>
+                        <Preferences locked={this.state.locked} isUser={isUser}/>
                         <div className="column-bottom">
                             <SearchIcon/>
                             <CategoryAutocomplete fullWidth={true} size="small" entries={this.state.entries} handleClick={this.onTagsChange} label="Search to add categories.."/>
@@ -169,7 +169,7 @@ class Profile extends Component {
                         </div>
                         <div className="column-middle">
                             {this.state.filteredFriends.map((friend) => 
-                                <Friend isUserFriend={isUser} friend={friend}/>
+                                <Friend key={friend.id} isUserFriend={isUser} friend={friend}/>
                             )}
                         </div> 
                         <div className="column-bottom">

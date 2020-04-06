@@ -30,7 +30,12 @@ class CategoriesComponent extends Component {
                 }}),
             ]
         )
-        this.setState({popular: popular.data.categories, random: random.data.categories, popularCategoriesLoaded: true,  randomCategoriesLoaded: true})
+        this.setState({
+            popular: popular.data.categories, 
+            random: random.data.categories, 
+            popularCategoriesLoaded: true,  
+            randomCategoriesLoaded: true
+        })
     }
 
     handleReload = async () => {
@@ -102,6 +107,10 @@ class CategoriesComponent extends Component {
             </div>
         )
     }
+}
+
+CategoriesComponent.propTypes = {
+
 }
 
 export default CategoriesComponent

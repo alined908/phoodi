@@ -3,6 +3,8 @@ import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 import {reorderPreferences} from "../../actions/index"
 import {connect} from 'react-redux'
 import {Preference} from "../components"
+import PropTypes from "prop-types"
+import {preferencePropType, userPropType} from "../../constants/prop-types"
 
 const SortablePreference = SortableElement(({pref, sortIndex, locked, isUser, user}) => {
 
@@ -35,13 +37,22 @@ class Preferences extends Component {
                     <SortablePreferenceList {...props} onSortEnd={this.onSortEnd}/> : 
                     <>
                         {this.props.preferences.map((pref, index) => {
-                            return <Preference pref={pref} isUser={this.props.isUser} locked={this.props.locked} sortIndex={index} user={this.props.user}></Preference>
+                            return <Preference key={pref.id} pref={pref} isUser={this.props.isUser} locked={this.props.locked} sortIndex={index} user={this.props.user}></Preference>
                         })}
                     </>
                 }
             </div> 
         )}
 }
+
+Preferences.propTypes = {
+    preferences: PropTypes.arrayOf(preferencePropType),
+    user: userPropType,
+    reorderPreferences: PropTypes.func.isRequired,
+    locked: PropTypes.bool.isRequired,
+    isUser: PropTypes.bool.isRequired,
+}
+
 function mapStateToProps(state) {
     return {
         preferences: state.user.preferences,

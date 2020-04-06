@@ -6,6 +6,8 @@ import {Friend, MeetupCard} from '../components'
 import {FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon} from '@material-ui/icons';
 import {addPreference, deletePreference} from '../../actions/index'
 import {connect} from 'react-redux'
+import PropTypes from "prop-types"
+import {userPropType} from "../../constants/prop-types"
 
 class CategoryComponent extends Component {
     constructor(props){
@@ -145,6 +147,18 @@ class CategoryComponent extends Component {
             </div>
         )
     }
+}
+
+CategoryComponent.propTypes = {
+    user: userPropType,
+    addPreference: PropTypes.func.isRequired,
+    deletePreference: PropTypes.func.isRequired,
+    getPublicMeetups: PropTypes.func.isRequired,
+    match: PropTypes.shape({
+        params: PropTypes.shape({
+          api_label: PropTypes.string.isRequired
+        })
+    }),
 }
 
 function mapStateToProps(state){
