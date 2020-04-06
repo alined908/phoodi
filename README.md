@@ -1,5 +1,5 @@
 # Meetup App
-Demo @ http://ec2-54-67-104-152.us-west-1.compute.amazonaws.com/
+Demo @ https://phoodie.me
 
 The purpose of the application is to allow friend groups to schedule meetups and decide where to eat quickly.  We always run into the problem where no one knows what to eat, where to eat, and when to eat.  The hope is that this will simplify the process.  Eventually, the goal is to connect people with other nearby people that share common food interests and hobbies. Use cases of this includes college campuses, metropolitan cities, etc. The end goal is to recreate a more social Yelp.
 
