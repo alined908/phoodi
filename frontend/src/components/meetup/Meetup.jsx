@@ -13,6 +13,8 @@ import {Delete as DeleteIcon, Edit as EditIcon, Room as RoomIcon, Chat as ChatIc
     Lock as LockIcon, Public as PublicIcon, Email as EmailIcon, Add as AddIcon, Today as TodayIcon} from '@material-ui/icons'
 import AuthenticationService from "../../accounts/AuthenticationService"
 import {axiosClient} from '../../accounts/axiosClient'
+import PropTypes from 'prop-types'
+import {meetupPropType, userPropType, friendPropType} from '../../constants/prop-types'
 
 class Meetup extends Component {
     constructor(props){
@@ -23,16 +25,15 @@ class Meetup extends Component {
     }
 
     componentDidMount () {
-        this.props.getMeetupEvents(this.props.uri)
+        const uri = this.props.meetup.uri
+        this.props.getMeetupEvents(uri)
         if (!this.props.isFriendsInitialized){
             this.props.getFriends(this.props.user.id)
         } 
        
-        if (this.props.notifs > 0){
+        if (this.props.meetup.notifs > 0){
             this.props.removeNotifs({type: "meetup", id: this.props.id})
         }
-        const uri = this.props.uri
-        var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
         const token = AuthenticationService.retrieveToken()
         const path = `/ws/meetups/${uri}/?token=${token}`;
         const socket = this.state.socket
@@ -48,12 +49,12 @@ class Meetup extends Component {
     
     handleDelete = () => {
         if (window.confirm("Are you sure you want to delete")){
-            this.props.deleteMeetup(this.props.uri);
+            this.props.deleteMeetup(this.props.meetup.uri);
         }
     }
 
     handleEmail = () => {
-        this.props.sendMeetupEmails(this.props.uri)
+        this.props.sendMeetupEmails(this.props.meetup.uri)
     }
 
     handleDisabledEmail = (events) => {
@@ -67,7 +68,7 @@ class Meetup extends Component {
     handlePublicMeetupJoin = async () => {
         try {
             const response = await axiosClient.post(
-                `/api/meetups/${this.props.uri}/members/`, {email: this.props.user.email}, {headers: {
+                `/api/meetups/${this.props.meetup.uri}/members/`, {email: this.props.user.email}, {headers: {
                     "Authorization": `JWT ${localStorage.getItem('token')}`
             }})
             console.log(response.data)
@@ -113,9 +114,9 @@ class Meetup extends Component {
     }
 
     render () {
-        const [id, name, uri, location, datetime, members, notifs, isPublic, categories, latitude, longitude, events] = this.props.meetup
-        const isUserMember = this.determineIsUserMember(members)
-        const emailDisable = this.determineEmailDisable(events)
+        const meetup =  this.props.meetup
+        const isUserMember = this.determineIsUserMember(meetup.members)
+        const emailDisable = this.determineEmailDisable(meetup.events)
         
         const renderInformation = (name, datetime, location) => {
             return (
@@ -123,7 +124,7 @@ class Meetup extends Component {
                     <Typography variant="h5">{name}</Typography>
                     <div className="inner-header-middle">
                         <div className="inner-header-icons">
-                            {isPublic ? 
+                            {meetup.public ? 
                                 <><PublicIcon/> Public</> :
                                 <><LockIcon/> Private</>
                             }
@@ -132,7 +133,7 @@ class Meetup extends Component {
                         <div className="inner-header-icons"><RoomIcon/> {location}</div>
                     </div>
                     {isUserMember && <div>
-                        <Link to={`/chat/${this.props.uri}`}>
+                        <Link to={`/chat/${this.props.meetup.uri}`}>
                             <Tooltip title="Chat">
                                 <IconButton color="primary" aria-label='chat'>
                                     <ChatIcon/>
@@ -140,11 +141,11 @@ class Meetup extends Component {
                             </Tooltip>
                         </Link>
                         <Tooltip title="Email">
-                            <IconButton onClick={!emailDisable ? () => this.handleEmail() : () => this.handleDisabledEmail(events)} style={!emailDisable ? {color: "black"} : {}} aria-label='email'>
+                            <IconButton onClick={!emailDisable ? () => this.handleEmail() : () => this.handleDisabledEmail(meetup.events)} style={!emailDisable ? {color: "black"} : {}} aria-label='email'>
                                 <EmailIcon />
                             </IconButton>
                         </Tooltip>
-                        <Link to={`/meetups/${uri}/edit`}>
+                        <Link to={`/meetups/${meetup.uri}/edit`}>
                             <Tooltip title="Edit">
                                 <IconButton style={{color: "black"}} aria-label='edit' >
                                     <EditIcon />
@@ -169,8 +170,8 @@ class Meetup extends Component {
                             <MeetupFriend 
                                 key={friend.id} 
                                 friend={friend.user} 
-                                isMember={this.determineIsFriendMember(friend.user.id, members)} 
-                                uri={uri}
+                                isMember={this.determineIsFriendMember(friend.user.id, meetup.members)} 
+                                uri={meetup.uri}
                             />
                         )}
                     </List>
@@ -184,12 +185,15 @@ class Meetup extends Component {
                 <div className="outer-shell elevate">
                     <List style={{width: "100%", padding: "0"}}>
                         {Object.keys(members).map((key) => 
-                            <Link to={`/profile/${members[key].user.id}`}>
+                            <Link key={key} to={`/profile/${members[key].user.id}`}>
                                 <ListItem>
                                     <ListItemAvatar>
-                                        <Avatar src={members[key].user.avatar}>{members[key].user.first_name.charAt(0)}{members[key].user.last_name.charAt(0)}</Avatar>
+                                        <Avatar src={members[key].user.avatar}>
+                                            {members[key].user.first_name.charAt(0)}
+                                            {members[key].user.last_name.charAt(0)}
+                                        </Avatar>
                                     </ListItemAvatar>
-                                    <ListItemText  primary={members[key].user.first_name} secondary={
+                                    <ListItemText primary={members[key].user.first_name} secondary={
                                             <>
                                                 <Typography component="span" color="inherit" variant="body2"> 
                                                     {members[key].user.email + " "}
@@ -197,7 +201,11 @@ class Meetup extends Component {
                                             </>
                                         }>
                                     </ListItemText>
-                                    {JSON.stringify(members[key].user) === JSON.stringify(this.props.user) && <Tooltip title="You"><VerifiedUserIcon style={{color: "#3f51b5"}}/></Tooltip>}
+                                    {JSON.stringify(members[key].user) === JSON.stringify(this.props.user) && 
+                                        <Tooltip title="You">
+                                            <VerifiedUserIcon style={{color: "#3f51b5"}}/>
+                                        </Tooltip>
+                                    }
                                 </ListItem>
                             </Link>
                         )}
@@ -211,7 +219,10 @@ class Meetup extends Component {
                 <>
                     {!this.props.isMeetupEventsInitialized && <div>Initializing Events</div>}
                     {this.props.isMeetupEventsInitialized && events && this.sortEvents(events).map((event, index) => 
-                        <MeetupEvent number={index} socket={this.state.socket} key={event.id} uri={uri} event={events[event]} isUserMember={isUserMember} coords={{latitude: latitude, longitude: longitude}}/>
+                        <MeetupEvent key={event.id} number={index} socket={this.state.socket}  
+                            uri={meetup.uri} event={events[event]} isUserMember={isUserMember} 
+                            coords={{latitude: meetup.latitude, longitude: meetup.longitude}}
+                        />
                     )}
                 </>
             )
@@ -221,7 +232,7 @@ class Meetup extends Component {
             <div className="inner-wrap">
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        {renderInformation(name, datetime, location)}
+                        {renderInformation(meetup.name, meetup.datetime, meetup.location)}
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <div className="inner-header elevate">
@@ -231,7 +242,7 @@ class Meetup extends Component {
                                     Join Meetup
                                 </Button>}
                         </div>
-                        {renderMembers(members)}
+                        {renderMembers(meetup.members)}
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <div className="inner-header elevate">
@@ -251,11 +262,24 @@ class Meetup extends Component {
                             }
                         </div>
                     </Grid>
-                    <Grid item xs={12}>{renderEvents(events)}</Grid>
+                    <Grid item xs={12}>{renderEvents(meetup.events)}</Grid>
                 </Grid>
             </div>
         )
     }
+}
+
+Meetup.propTypes = {
+    meetup: meetupPropType,
+    user: userPropType, friends: PropTypes.arrayOf(friendPropType),
+    isFriendsInitialized: PropTypes.bool.isRequired, isMeetupEventsInitialized: PropTypes.bool,
+    deleteMeetup: PropTypes.func.isRequired, getFriends: PropTypes.func.isRequired,
+    getMeetupEvents: PropTypes.func.isRequired, addMeetupEvent: PropTypes.func.isRequired,
+    reloadMeetupEvent: PropTypes.func.isRequired, voteMeetupEvent: PropTypes.func.isRequired,
+    decideMeetupEvent: PropTypes.func.isRequired, deleteMeetupEvent: PropTypes.func.isRequired,
+    sendMeetupEmails: PropTypes.func.isRequired, removeNotifs: PropTypes.func.isRequired,
+    addMeetupMember: PropTypes.func.isRequired, addGlobalMessage: PropTypes.func.isRequired,
+    addEventOption: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state, ownProps){
@@ -263,13 +287,13 @@ function mapStateToProps(state, ownProps){
        user: state.user.user,
        friends: state.user.friends,
        isFriendsInitialized: state.user.isFriendsInitialized,
-       isMeetupEventsInitialized: state.meetup.meetups[ownProps.uri].isMeetupEventsInitialized
+       isMeetupEventsInitialized: state.meetup.meetups[ownProps.meetup.uri].isMeetupEventsInitialized
     }
 }
 
 const mapDispatchToProps = {
         deleteMeetup,
-        getFriends,
+        getFriends, 
         getMeetupEvents,
         addMeetupEvent,
         reloadMeetupEvent,

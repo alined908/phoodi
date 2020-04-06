@@ -3,6 +3,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import {connect} from 'react-redux'
 import {removeGlobalMessage} from "../../actions/globalMessages"
+import PropTypes from "prop-types"
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -31,6 +32,14 @@ const GlobalMessage = (props) => {
         } 
     </div>
   );
+}
+
+GlobalMessage.propTypes = {
+  removeGlobalMessage: PropTypes.func.isRequired,
+  messages: PropTypes.arrayOf(PropTypes.shape({
+    type: PropTypes.string.isRequired,
+    message: PropTypes.string.isRequired
+  }))
 }
 
 const mapDispatchToProps = {

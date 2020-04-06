@@ -3,7 +3,7 @@ import {axiosClient} from '../../accounts/axiosClient'
 import {Avatar, Tooltip, IconButton, Grid, Grow} from '@material-ui/core'
 import {getPublicMeetups} from "../../actions/meetup";
 import {Friend, MeetupCard} from '../components'
-import {FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon, Search as SearchIcon} from '@material-ui/icons';
+import {FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon} from '@material-ui/icons';
 import {addPreference, deletePreference} from '../../actions/index'
 import {connect} from 'react-redux'
 

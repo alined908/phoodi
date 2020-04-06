@@ -4,6 +4,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import {axiosClient} from "../../accounts/axiosClient"
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
+import PropTypes from "prop-types"
 
 function sleep(delay = 0) {
   return new Promise(resolve => {
@@ -25,7 +26,7 @@ const UserAutocomplete = (props) => {
 
         if (!loaded){
             (async () => {
-                const response = await axiosClient.get(props.url, {headers: {
+                const response = await axiosClient.get("/api/users/", {headers: {
                         "Authorization": `JWT ${localStorage.getItem('token')}`
                     }});
                 await sleep(1e3);
@@ -33,7 +34,7 @@ const UserAutocomplete = (props) => {
                 setLoaded(true);
             })();
         }
-    }, [loading]);
+    }, [loading, loaded]);
 
   return (
     <Autocomplete
@@ -106,6 +107,11 @@ const UserAutocomplete = (props) => {
       )}
     />
   );
+}
+
+UserAutocomplete.propTypes = {
+  handleClick: PropTypes.func.isRequired,
+  handleType: PropTypes.func.isRequired
 }
 
 export default UserAutocomplete

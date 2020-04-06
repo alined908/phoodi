@@ -6,6 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Button, Typography, Avatar, CircularProgress, ListItem, ListItemText,ListItemAvatar, Tooltip} from "@material-ui/core"
 import {Link} from 'react-router-dom'
 import { green } from '@material-ui/core/colors';
+import PropTypes from 'prop-types'
+import { userPropType } from "../../constants/prop-types";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -77,6 +79,13 @@ const MeetupFriend = (props) => {
             </ListItem>
         </Link>
     )
+}
+
+MeetupFriend.propTypes = {
+    sendMeetupInvite: PropTypes.func.isRequired,
+    friend: userPropType,
+    isMember: PropTypes.bool.isRequired,
+    uri: PropTypes.string.isRequired
 }
 
 const mapDispatchToProps = {

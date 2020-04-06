@@ -1,10 +1,11 @@
 import React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {TextField, makeStyles, ListItemAvatar, ListItemText, Avatar, InputAdornment, Typography} from '@material-ui/core'
+import {TextField, makeStyles, ListItemAvatar, ListItemText, Avatar, Typography} from '@material-ui/core'
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import throttle from 'lodash/throttle';
 import axios from 'axios'
+import PropTypes from "prop-types"
 
 const useStyles = makeStyles({
   text : {
@@ -142,4 +143,10 @@ export default function RestaurauntAutocomplete(props) {
       }}
     />
   );
+}
+
+RestaurauntAutocomplete.propTypes = {
+  textValue: PropTypes.string.isRequired,
+  handleSearchValueClick: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired
 }

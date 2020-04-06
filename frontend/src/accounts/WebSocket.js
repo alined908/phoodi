@@ -13,10 +13,9 @@ export default class WebSocketService {
     }
 
     connect(path){
-        var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
-        var url = new URL(path, process.env.REACT_APP_BASE_URL)
+        const baseURL = (process.env.NODE_ENV === 'production') ? process.env.REACT_APP_PROD_BASE_URL: process.env.REACT_APP_DEV_BASE_URL
+        var url = new URL(path, baseURL)
         url.protocol = url.protocol.replace('http', 'ws')
-        console.log(url.href)
         this.socketRef = new WebSocket(url.href);
         
         this.socketRef.onmessage = e => {

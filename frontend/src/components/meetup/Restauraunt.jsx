@@ -7,8 +7,9 @@ import {
     Room as RoomIcon, Phone as PhoneIcon, Launch as LaunchIcon
 } from '@material-ui/icons'
 import {ADD_GLOBAL_MESSAGE} from '../../constants/action-types'
-import {Avatar} from '@material-ui/core'
-import {Tooltip} from '@material-ui/core'
+import {Avatar, Tooltip} from '@material-ui/core'
+import PropTypes from 'prop-types';
+import {meetupEventOptionPropType, meetupMemberPropType, userPropType} from '../../constants/prop-types'
 
 class Restauraunt extends Component {
 
@@ -41,15 +42,15 @@ class Restauraunt extends Component {
         var stars = []
 
         for(var i = 0; i < numFilledStars; i++){
-            stars.push(<StarIcon fontSize="inherit"></StarIcon>)
+            stars.push(<StarIcon fontSize="inherit"/>)
         }
 
         for (var j = 0; j < numHalfStars; j++){
-            stars.push(<StarHalfIcon fontSize="inherit"></StarHalfIcon>)
+            stars.push(<StarHalfIcon fontSize="inherit"/>)
         }
 
         for (var k = 0; k < numEmptyStars; k++){
-            stars.push(<StarBorderIcon fontSize="inherit"></StarBorderIcon>)
+            stars.push(<StarBorderIcon fontSize="inherit"/>)
         }
         return stars
     }
@@ -86,24 +87,55 @@ class Restauraunt extends Component {
         return (
             <div className="rst-actions">
                 <div className={"rst-action-icon " + checkOwn(voteStatus.like)}>
-                    
-                        {!like && <Tooltip title="Like"><ThumbUpOutlinedIcon disabled={banned} className="clickable" onClick={() => this.handleClick(voteStatus.like)}/></Tooltip>}
-                        {like && <Tooltip title="Undo Like"><ThumbUpIcon disabled={banned} className="clickable" color="primary" onClick={() => this.handleClick(voteStatus.like)}/></Tooltip>}
-                    
+                    {!like ?  
+                        <Tooltip title="Like">
+                            <ThumbUpOutlinedIcon 
+                                disabled={banned} className="clickable" 
+                                onClick={() => this.handleClick(voteStatus.like)}
+                            />
+                        </Tooltip> :
+                        <Tooltip title="Undo Like">
+                            <ThumbUpIcon 
+                                disabled={banned} className="clickable" 
+                                color="primary" onClick={() => this.handleClick(voteStatus.like)}
+                            />
+                        </Tooltip>
+                    }
                     <span className="rst-action-score">{scores[1]}</span>
                 </div>
                 <div className={"rst-action-icon " + checkOwn(voteStatus.dislike)}>
-                    
-                        {!dislike && <Tooltip title="Dislike"><ThumbDownOutlinedIcon disabled={banned} className="clickable" onClick={() => this.handleClick(voteStatus.dislike)}/></Tooltip>}
-                        {dislike && <Tooltip title="Undo Dislike"><ThumbDownIcon disabled={banned} className="clickable" onClick={() => this.handleClick(voteStatus.dislike)}/></Tooltip>}
-                        <span className="rst-action-score">{scores[2]}</span>
-                    
+                    {!dislike ? 
+                        <Tooltip title="Dislike">
+                            <ThumbDownOutlinedIcon 
+                                disabled={banned} className="clickable" 
+                                onClick={() => this.handleClick(voteStatus.dislike)}
+                            />
+                        </Tooltip> :
+                        <Tooltip title="Undo Dislike">
+                            <ThumbDownIcon 
+                                disabled={banned} className="clickable" 
+                                onClick={() => this.handleClick(voteStatus.dislike)}
+                            />
+                        </Tooltip>
+                    } 
+                    <span className="rst-action-score">{scores[2]}</span>
                 </div>
                 <div className={"rst-action-icon " + checkOwn(voteStatus.ban)}>
-                        {!banned && <Tooltip title="Ban"><CancelOutlinedIcon className="clickable" onClick={() => this.handleClick(voteStatus.ban)}/></Tooltip>}
-                        {banned && <Tooltip title="Undo Ban"><CancelIcon disabled={!ban} className="clickable" color="secondary" onClick={() => this.handleClick(voteStatus.ban)}/></Tooltip>}
-                        <span className="rst-action-score">{scores[3]}</span>
-                    
+                    {!banned ? 
+                        <Tooltip title="Ban">
+                            <CancelOutlinedIcon 
+                                className="clickable" 
+                                onClick={() => this.handleClick(voteStatus.ban)}
+                            />
+                        </Tooltip> :
+                        <Tooltip title="Undo Ban">
+                            <CancelIcon 
+                                disabled={!ban} className="clickable" 
+                                color="secondary" onClick={() => this.handleClick(voteStatus.ban)}
+                            />
+                        </Tooltip>
+                    }
+                    <span className="rst-action-score">{scores[3]}</span>
                 </div>
             </div>
         )
@@ -129,9 +161,13 @@ class Restauraunt extends Component {
                 <div className="rst-categories">
                     {data.price} &#8226; 
                     {data.categories.map((category) =>
-                        <div className="category-chip">
-                            <Avatar style={{width: 20, height: 20}} src={`${process.env.REACT_APP_S3_STATIC_URL}${category.alias}.png`} variant="square">
-                                <img style={{width: 20, height: 20}} src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}></img>
+                        <div key={category.id} className="category-chip">
+                            <Avatar 
+                                style={{width: 20, height: 20}} variant="square"
+                                src={`${process.env.REACT_APP_S3_STATIC_URL}${category.alias}.png`}
+                            >
+                                <img style={{width: 20, height: 20}} alt={"&#9787;"}
+                                    src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}/>
                             </Avatar>
                             {category.title}
                         </div>
@@ -186,6 +222,18 @@ class Restauraunt extends Component {
     }
 }
 
+Restauraunt.propTypes = {
+    socket: PropTypes.object.isRequired,
+    isUserMember: PropTypes.bool.isRequired,
+    event: PropTypes.number.isRequired,
+    meetup: PropTypes.string.isRequired,
+    full: PropTypes.bool.isRequired,
+    data: PropTypes.object.isRequired,
+    option: meetupEventOptionPropType,
+    members: PropTypes.objectOf(meetupMemberPropType),
+    user: userPropType
+}
+
 function mapStateToProps(state, props) { 
     return {
         option: state.meetup.meetups[props.meetup].events[props.event].options[props.data.id],
@@ -194,4 +242,4 @@ function mapStateToProps(state, props) {
     }
 }
 
-export default connect(mapStateToProps, null)(Restauraunt)
+export default connect(mapStateToProps)(Restauraunt)

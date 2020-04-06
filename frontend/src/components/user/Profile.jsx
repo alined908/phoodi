@@ -3,9 +3,11 @@ import {connect} from 'react-redux'
 import {Avatar, IconButton, Tooltip} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import {axiosClient} from "../../accounts/axiosClient"
-import {getPreferences, addPreference, editPreference, deletePreference} from "../../actions/index"
+import {getPreferences, addPreference, editPreference} from "../../actions/index"
 import {Lock as LockIcon, LockOpen as LockOpenIcon, Search as SearchIcon, Edit as EditIcon} from '@material-ui/icons';
 import {Friend, CategoryAutocomplete, Preferences} from "../components"
+import PropTypes from "prop-types"
+import { userPropType } from '../../constants/prop-types'
 
 class Profile extends Component {
     constructor(props){
@@ -187,6 +189,13 @@ class Profile extends Component {
             </div>
         )
     }
+}
+
+Profile.propTypes = {
+    user: userPropType,
+    getPreferences: PropTypes.func.isRequired, 
+    addPreference: PropTypes.func.isRequired,
+    editPreference: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

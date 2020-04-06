@@ -53,7 +53,7 @@ class CategoriesComponent extends Component {
                     <div className="categories-horz-entries">
                         {this.state.popularCategoriesLoaded ? 
                             this.state.popular.map((popular, index) => (
-                                <Grow in={true} timeout={Math.max((index + 1) * 70)}>
+                                <Grow key={popular.id} in={true} timeout={Math.max((index + 1) * 70)}>
                                     <Link to={`/category/${popular.api_label}`}>
                                         <div className="categories-horz-entry elevate">
                                             <Avatar src={`${process.env.REACT_APP_S3_STATIC_URL}${popular.api_label}.png`} variant="square"/> {popular.label}
@@ -61,8 +61,8 @@ class CategoriesComponent extends Component {
                                     </Link>
                                 </Grow>
                             )) :
-                            [...Array(16).keys()].map((each) => (
-                                <div className="categories-horz-placeholder elevate">
+                            [...Array(16).keys()].map((num) => (
+                                <div key={num} className="categories-horz-placeholder elevate">
                                     <Skeleton animation="wave" variant="circle" height={40} width={40}/>
                                     <Skeleton animation="wave" height={10} width={60} style={{ marginLeft: 10 }} />
                                 </div>
@@ -82,7 +82,7 @@ class CategoriesComponent extends Component {
                     <div className="categories-horz-entries">
                         {this.state.randomCategoriesLoaded ? 
                             this.state.random.map((random, index) => (
-                                <Grow in={true} timeout={Math.max((index + 1) * 70)}>
+                                <Grow key={random.id} in={true} timeout={Math.max((index + 1) * 70)}>
                                     <Link to={`/category/${random.api_label}`}>
                                         <div className="categories-horz-entry elevate">
                                             <Avatar src={`${process.env.REACT_APP_S3_STATIC_URL}${random.api_label}.png`} variant="square"/> {random.label}
@@ -90,8 +90,8 @@ class CategoriesComponent extends Component {
                                     </Link>
                                 </Grow>
                             )) :
-                            [...Array(26).keys()].map((each) => (
-                                <div className="categories-horz-placeholder elevate">
+                            [...Array(26).keys()].map((num) => (
+                                <div key={num} className="categories-horz-placeholder elevate">
                                     <Skeleton animation="wave" variant="circle" height={40} width={40}/>
                                     <Skeleton animation="wave" height={10} width={60} style={{ marginLeft: 10 }} />
                                 </div>

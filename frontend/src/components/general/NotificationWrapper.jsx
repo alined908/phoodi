@@ -3,6 +3,8 @@ import {connect} from 'react-redux';
 import AuthenticationService from "../../accounts/AuthenticationService"
 import WebSocketService from '../../accounts/WebSocket';
 import {getNumberNotifs} from "../../actions/notifications"
+import PropTypes from "prop-types"
+import {userPropType} from "../../constants/prop-types"
 
 class NotificationWrapper extends Component {
     constructor(props){
@@ -14,7 +16,6 @@ class NotificationWrapper extends Component {
     }
 
     componentDidMount(){
-        console.log("notification wrapper app component did mount")
         if (this.props.authenticated) {
             this.connectSocket()
         }
@@ -43,6 +44,12 @@ class NotificationWrapper extends Component {
         )
     }
 }   
+
+NotificationWrapper.propTypes = {
+    authenticated: PropTypes.string.isRequired,
+    user: userPropType,
+    getNumberNotifs: PropTypes.func.isRequired
+}
 
 function mapStateToProps(state) {
     return {

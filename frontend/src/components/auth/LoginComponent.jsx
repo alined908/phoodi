@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {signin} from "../../actions/index"
 import {Typography, Paper, Grid, Fab} from '@material-ui/core';
 import {renderTextField} from '../components'
+import PropTypes from "prop-types"
 
 class LoginComponent extends Component {
 
@@ -49,8 +50,15 @@ class LoginComponent extends Component {
     }
 }
 
+LoginComponent.propTypes = {
+    errorMessage: PropTypes.string,
+    signin: PropTypes.func.isRequired
+}
+
 function mapStatetoProps(state) {
-    return {errorMessage: state.user.errorMessage}
+    return {
+        errorMessage: state.user.errorMessage
+    }
 }
 
 const mapDispatchToProps = {

@@ -41,9 +41,9 @@ class ChatComponent extends Component {
 
     getRelevantInfo(uri) {
         const socket = this.state.socket
+        console.log(socket)
         this.props.setActiveRoom(uri);
         this.props.getMessages(uri);
-        var ws_scheme = window.location.protocol === "https:" ? "wss": "ws"
         const token = AuthenticationService.retrieveToken()
         const path = `/ws/chat/${this.props.match.params.uri}/?token=${token}`;
         socket.connect(path);

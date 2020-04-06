@@ -2,6 +2,7 @@ import React, {Component} from "react"
 import ReactMapGL, {Marker, NavigationControl, FlyToInterpolator} from "react-map-gl"
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import * as d3 from 'd3-ease'
+import PropTypes from 'prop-types'
 
 const token = process.env.REACT_APP_MAPBOX_API_KEY;
 
@@ -11,8 +12,8 @@ class Map extends Component {
         super(props);
         this.state = {
           viewport: {
-            latitude: this.props.location[0],
-            longitude: this.props.location[1],
+            latitude: this.props.location.latitude,
+            longitude: this.props.location.longitude,
             zoom: 14.75,
             bearing: 0,
             pitch: 0,
@@ -47,12 +48,19 @@ class Map extends Component {
             <div style={{position: 'absolute', left: 10, top: 10}}>
                 <NavigationControl showCompass={false}/>
             </div>
-            <Marker latitude={this.props.location[0]} longitude={this.props.location[1]} offsetLeft={-10} offsetTop={-25}>
+            <Marker latitude={this.props.location.latitude} longitude={this.props.location.longitude} offsetLeft={-10} offsetTop={-25}>
               <LocationOnIcon fontSize="large" color="secondary"></LocationOnIcon>
             </Marker>
           </ReactMapGL>
         );
       }
+}
+
+Map.propTypes = {
+  location: PropTypes.shape({
+    latitude: PropTypes.number.isRequired,
+    longitude: PropTypes.number.isRequired
+  })
 }
 
 export default Map

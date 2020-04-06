@@ -6,7 +6,9 @@ import {Link} from 'react-router-dom';
 import {removeNotifs} from "../../actions/notifications"
 import {getMoreMessages} from "../../actions/chat"
 import {Person as PersonIcon, Event as EventIcon} from "@material-ui/icons"
-import throttle from 'lodash/throttle'
+import PropTypes from 'prop-types';
+// import throttle from 'lodash/throttle'
+import {chatMessagePropType} from "../../constants/prop-types"
 
 class ChatWindowComponent extends Component {
     constructor(props){
@@ -42,6 +44,7 @@ class ChatWindowComponent extends Component {
         }
     }
 
+    //Throttle this later
     handleScroll = (e) => {
         // console.log(e.target.scrollTop)
         if (e.target.scrollTop === 0 && this.props.messages && this.props.messages.length > 49) {
@@ -106,7 +109,7 @@ class ChatWindowComponent extends Component {
                     </div>
                 </div>
                 {this.props.activeChatMembers ? 
-                    <div ref={(el) => { this.messagesEnd = el; }} className="chat-input">
+                    <div ref={(el) => { this.messagesEnd = el; }} className="chat-input-wrapper">
                         <form className="chat-input-form">
                             <input className="chat-input"
                                 type="text"
@@ -132,6 +135,17 @@ class ChatWindowComponent extends Component {
             </div>
         )
     }
+}
+
+ChatWindowComponent.propTypes = {
+    socket: PropTypes.object.isRequired,
+    isMessagesInitialized: PropTypes.bool,
+    activeRoom: PropTypes.string,
+    messages: PropTypes.arrayOf(
+        chatMessagePropType
+    ),
+    removeNotifs: PropTypes.func,
+    getMoreMessages: PropTypes.func
 }
 
 function mapStateToProps(state){

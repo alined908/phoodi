@@ -4,6 +4,8 @@ import {inviteType} from '../../constants/default-states'
 import {connect} from 'react-redux'
 import {Invite} from "../components"
 import {Grid, Typography} from "@material-ui/core"
+import PropTypes from "prop-types"
+import {invitePropType} from '../../constants/prop-types'
 
 class Invites extends Component {
 
@@ -56,6 +58,13 @@ class Invites extends Component {
             </div>
         )
     }
+}
+
+Invites.propTypes = {
+    isFriendInvitesInitialized: PropTypes.bool.isRequired, isMeetupInvitesInitialized: PropTypes.bool.isRequired,
+    meetupInvites: PropTypes.arrayOf(invitePropType), friendInvites: PropTypes.arrayOf(invitePropType),
+    respondFriendInvite: PropTypes.func.isRequired, respondMeetupInvite: PropTypes.func.isRequired,
+    getUserMeetupInvites: PropTypes.func.isRequired, getUserFriendInvites: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

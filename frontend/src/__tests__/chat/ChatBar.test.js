@@ -11,8 +11,8 @@ const members = {
     2: user2
 }
 const rooms = {
-    friend: {id: 1, uri: "abc", name: "Friend", timestamp: Date.now(), members: members, friendship: 1, meetup:null, notifs: 0},
-    meetup: {id: 2, uri: "xyz", name: "Meetup", timestamp: Date.now(), members: members, friendship: null, meetup:1, notifs: 3}
+    friend: {id: 1, uri: "abc", name: "Friend", timestamp: Date.now().toString(), members: members, friendship: 1, meetup:null, notifs: 0},
+    meetup: {id: 2, uri: "xyz", name: "Meetup", timestamp: Date.now().toString(), members: members, friendship: null, meetup:1, notifs: 3}
 }
 
 describe("ChatBarComponent unit", () => {
@@ -27,7 +27,7 @@ describe("ChatBarComponent unit", () => {
 
     it ('correctly displays message when there are no chat rooms', () => {
         const props = {
-            rooms: {},
+            rooms: [],
             user: user,
             isRoomsInitialized: true
         }
@@ -37,7 +37,7 @@ describe("ChatBarComponent unit", () => {
 
     it ('correctly filters out rooms onclick', () => {
         const props = {
-            rooms: {},
+            rooms: [],
             user: user,
             isRoomsInitialized: true
         }
@@ -48,12 +48,12 @@ describe("ChatBarComponent unit", () => {
         expect(wrapper.find("Connect(ContactComponent)")).toHaveLength(2)
         friendButton.simulate('click')
         expect(wrapper.find("Connect(ContactComponent)")).toHaveLength(1)
-        expect(wrapper.find("Connect(ContactComponent)").first().props().room.includes(rooms.meetup.uri)).toEqual(true)
+        expect(wrapper.find("Connect(ContactComponent)").first().props().room.uri).toEqual(rooms.meetup.uri)
         friendButton.simulate('click')
         expect(wrapper.find("Connect(ContactComponent)")).toHaveLength(2)
         meetupButton.simulate('click')
         expect(wrapper.find("Connect(ContactComponent)")).toHaveLength(1)
-        expect(wrapper.find("Connect(ContactComponent)").first().props().room.includes(rooms.friend.uri)).toEqual(true)
+        expect(wrapper.find("Connect(ContactComponent)").first().props().room.uri).toEqual(rooms.friend.uri)
         meetupButton.simulate('click')
         expect(wrapper.find("Connect(ContactComponent)")).toHaveLength(2)
         meetupButton.simulate('click')
@@ -63,7 +63,7 @@ describe("ChatBarComponent unit", () => {
 
     it ('correctly filters out rooms onsearch', () => {
         const props = {
-            rooms: {},
+            rooms: [],
             user: user,
             isRoomsInitialized: true
         }
@@ -73,16 +73,16 @@ describe("ChatBarComponent unit", () => {
         chatInput.simulate("change", {target: {value: "me"}})
         expect(wrapper.state('searchInput')).toEqual("me")
         expect(wrapper.find("Connect(ContactComponent)")).toHaveLength(1)
-        expect(wrapper.find("Connect(ContactComponent)").first().props().room.includes(rooms.meetup.uri)).toEqual(true)
+        expect(wrapper.find("Connect(ContactComponent)").first().props().room.uri).toEqual(rooms.meetup.uri)
         chatInput.simulate("change", {target: {value: user2.first_name}})
         expect(wrapper.state('searchInput')).toEqual(user2.first_name)
         expect(wrapper.find("Connect(ContactComponent)")).toHaveLength(1)
-        expect(wrapper.find("Connect(ContactComponent)").first().props().room.includes(rooms.friend.uri)).toEqual(true)
+        expect(wrapper.find("Connect(ContactComponent)").first().props().room.uri).toEqual(rooms.friend.uri)
     })
 
     it ('correctly filters out rooms onsearch and onclick', () => {
         const props = {
-            rooms: {},
+            rooms: [],
             user: user,
             isRoomsInitialized: true
         }

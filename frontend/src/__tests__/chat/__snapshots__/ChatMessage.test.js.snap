@@ -1,43 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChatMessageComponent renders without crashing given props 1`] = `
-<div
-  className="chat-msg-wrapper is-user"
->
-  <div>
-    <div
-      className="chat-msg-info is-user"
-    >
-      <div
-        className="chat-msg-id"
-      >
-        Daniel
-      </div>
-      <div
-        className="chat-msg-time"
-      >
-        Feb 13 04:00 PM
-      </div>
-    </div>
-    <div
-      className="chat-msg elevate is-user"
-    >
-      hello
-    </div>
-  </div>
-  <div
-    className="chat-msg-avatar is-user"
-  >
-    <WithStyles(ForwardRef(Avatar))
-      src={null}
-    >
-      D
-      L
-    </WithStyles(ForwardRef(Avatar))>
-  </div>
-</div>
-`;
-
 exports[`ChatMessageComponent unit renders without crashing given props 1`] = `
 <div
   className="chat-msg-wrapper is-user"
@@ -54,7 +16,7 @@ exports[`ChatMessageComponent unit renders without crashing given props 1`] = `
       <div
         className="chat-msg-time"
       >
-        Feb 13 04:00 PM
+        Invalid date
       </div>
     </div>
     <div

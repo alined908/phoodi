@@ -114,7 +114,6 @@ class MeetupForm extends Component {
             </div>
         )
     }
-
 }
 
 function mapStateToProps(state, ownProps){

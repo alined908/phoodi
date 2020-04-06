@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {reduxForm, Field} from 'redux-form';
-import {Button, Typography, Paper, Grid, ButtonGroup, Slider, Fab, TextField,  Radio, FormControlLabel} from '@material-ui/core';
+import {Button, Typography, Paper, Grid, ButtonGroup, Slider, Fab, Radio, FormControlLabel} from '@material-ui/core';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {addMeetupEvent, getMeetup, getMeetupEvents} from "../../actions/meetup"

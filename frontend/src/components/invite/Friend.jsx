@@ -2,6 +2,9 @@ import React from "react"
 import {Link} from "react-router-dom"
 import {ListItem, ListItemAvatar, ListItemText, Tooltip, Typography, Avatar, makeStyles, IconButton} from '@material-ui/core'
 import ChatIcon from '@material-ui/icons/Chat';
+import {friendPropType} from '../../constants/prop-types'
+import PropTypes from 'prop-types'
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
     primary: {
@@ -12,13 +15,22 @@ const useStyles = makeStyles({
 
 const Friend = (props) => {
     const classes = useStyles()
+    const history = useHistory();
+
+    const handleClick = (e) => {
+        e.preventDefault()
+        history.push(`/chat/${props.friend.chat_room}`)
+    }
 
     return (
         <Link to={`/profile/${props.friend.user.id}`}>
             <div className="friend-chat">
                 <ListItem>
                     <ListItemAvatar>
-                        <Avatar src={props.friend.user.avatar}>{props.friend.user.first_name.charAt(0)}{props.friend.user.last_name.charAt(0)}</Avatar>
+                        <Avatar src={props.friend.user.avatar}>
+                            {props.friend.user.first_name.charAt(0)}
+                            {props.friend.user.last_name.charAt(0)}
+                        </Avatar>
                     </ListItemAvatar>
                     <ListItemText 
                         primaryTypographyProps={{className: classes.primary}}
@@ -32,18 +44,22 @@ const Friend = (props) => {
                         }
                     >
                     </ListItemText>
-                    {props.isUserFriend && <Link to={`/chat/${props.friend.chat_room}`}>
-                            <Tooltip title="Chat">
-                                <IconButton color="primary">
-                                    <ChatIcon></ChatIcon>
-                                </IconButton>
-                            </Tooltip>
-                        </Link>
+                    {props.isUserFriend && 
+                        <Tooltip title="Chat">
+                            <IconButton color="primary" onClick={handleClick}>
+                                <ChatIcon/>
+                            </IconButton>
+                        </Tooltip>
                     }
                 </ListItem>
             </div>
         </Link>
     )
+}
+
+Friend.propTypes = {
+    friend: friendPropType,
+    isUserFriend: PropTypes.bool.isRequired
 }
 
 export default Friend

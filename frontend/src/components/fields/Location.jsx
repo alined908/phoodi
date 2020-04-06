@@ -4,6 +4,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import {TextField, Grid, Typography, makeStyles} from '@material-ui/core'
 import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
+import PropTypes from 'prop-types'
 
 function loadScript(src, position, id) {
   if (!position) {
@@ -26,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function GoogleMaps(props) {
+export default function Location(props) {
   const classes = useStyles();
   const [inputValue, setInputValue] = React.useState('');
   const [options, setOptions] = React.useState([]);
@@ -92,7 +93,6 @@ export default function GoogleMaps(props) {
       autoHighlight
       onChange={props.handleClick}
       includeInputInList  
-      disableOpenOnFocus
       renderInput={params => (
         <TextField
           {...params}
@@ -130,4 +130,10 @@ export default function GoogleMaps(props) {
       }}
     />
   );
+}
+
+Location.propTypes = {
+  textValue: PropTypes.string.isRequired,
+  handleClick: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired
 }

@@ -1,6 +1,8 @@
 import React, {Component} from "react"
 import {connect} from 'react-redux'
 import {Badge} from '@material-ui/core'
+import PropTypes from "prop-types"
+import {notifsPropType} from "../../constants/prop-types"
 
 class LiveUpdatingBadge extends Component {
 
@@ -23,6 +25,11 @@ class LiveUpdatingBadge extends Component {
             </Badge>
         )
     }
+}
+
+LiveUpdatingBadge.propTypes = {
+    type: PropTypes.string.isRequired,
+    notifs: notifsPropType
 }
 
 function mapStateToProps(state) {

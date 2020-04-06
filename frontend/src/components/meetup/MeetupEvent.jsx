@@ -4,11 +4,13 @@ import {connect} from 'react-redux'
 import {deleteMeetupEvent} from "../../actions/meetup"
 import {addGlobalMessage} from "../../actions/globalMessages"
 import moment from "moment"
-import {Cached as CachedIcon, Edit as EditIcon, Close as CloseIcon, Search as SearchIcon, Schedule as ScheduleIcon, Delete as DeleteIcon, Error as ErrorIcon, Add as AddIcon} from '@material-ui/icons'
+import {Cached as CachedIcon, Edit as EditIcon, Close as CloseIcon, Search as SearchIcon, Schedule as ScheduleIcon, Delete as DeleteIcon, Error as ErrorIcon} from '@material-ui/icons'
 import {IconButton, Typography, Grid, Grow, Tooltip, Avatar, Divider} from '@material-ui/core'
 import {compose} from 'redux';
 import {Restauraunt, Map, RestaurauntAutocomplete} from '../components'
 import {Link} from 'react-router-dom'
+import PropTypes from 'prop-types';
+import {meetupEventPropType} from "../../constants/prop-types"
 
 class MeetupEvent extends Component {
     constructor(props){
@@ -92,9 +94,13 @@ class MeetupEvent extends Component {
                     {keys.length > 0 ?
                         <Grid justify="center" container spacing={3}>
                             {keys.map((key, index) => 
-                                <Grow in={true} timeout={300 * (index + 1)}>
+                                <Grow key={key} in={true} timeout={300 * (index + 1)}>
                                     <Grid item justify={index % 2 === 0 ? "flex-end" : "flex-start"} container xs={12} md={6} sm={12}>
-                                        <Restauraunt socket={this.props.socket} key={key} full={true} isUserMember={this.props.isUserMember} event={this.props.event.id} meetup={this.props.uri} data={options[key]}/>
+                                        <Restauraunt 
+                                            socket={this.props.socket} full={true} 
+                                            isUserMember={this.props.isUserMember} event={this.props.event.id} 
+                                            meetup={this.props.uri} data={options[key]}
+                                        />
                                     </Grid>
                                 </Grow>
                             )}
@@ -156,12 +162,16 @@ class MeetupEvent extends Component {
 
         const renderChosen = (chosen) => {
             const option = JSON.parse(chosen.option)
-            const position = [option.coordinates.latitude, option.coordinates.longitude]
+            const position = {latitude: option.coordinates.latitude, longitude: option.coordinates.longitude}
 
             return (
                 <div className="chosen">
                     <div className="chosen-restauraunt elevate">
-                        <Restauraunt socket={this.props.socket} isUserMember={this.props.isUserMember} key={chosen.id} full={false} event={this.props.event.id} meetup={this.props.uri} data={chosen}></Restauraunt>
+                        <Restauraunt 
+                            key={chosen.id} socket={this.props.socket} 
+                            isUserMember={this.props.isUserMember} full={false} 
+                            event={this.props.event.id} meetup={this.props.uri} data={chosen}
+                        />
                     </div>
                     <div className="chosen-map elevate2">
                         <div className="map-wrapper">
@@ -179,7 +189,7 @@ class MeetupEvent extends Component {
                     <div className="second-header-left">
                         <Typography variant="h6">Categories </Typography>
                         {event.categories.map((category) => 
-                            <Link to={`/category/${category.api_label}`}>
+                            <Link key={category.id} to={`/category/${category.api_label}`}>
                                 <span className="category-chip elevate category-chip-hover">
                                     <Avatar style={{width: 20, height: 20}} src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`} variant="square"/>
                                     {category.label}
@@ -189,8 +199,8 @@ class MeetupEvent extends Component {
                     </div>
                     <div className="second-header-left">
                         <Typography variant="h6">Price </Typography>  
-                        {(this.handlePriceChips(event.price)).map((price) => 
-                            <span className="category-chip elevate">{price}</span>
+                        {(this.handlePriceChips(event.price)).map((price, index) => 
+                            <span key={index} className="category-chip elevate">{price}</span>
                         )
                         }
                     </div>
@@ -206,7 +216,8 @@ class MeetupEvent extends Component {
                     <>
                         {this.state.searchOpen &&
                             <div className="meetup-event-add-option-search elevate">
-                                <img style={{width: 20, height: 20, marginLeft: 10}} src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}></img>
+                                <img style={{width: 20, height: 20, marginLeft: 10}} alt={"&#9787;"}
+                                src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}/>
                                 <RestaurauntAutocomplete 
                                     coords={this.props.coords} 
                                     radius={this.props.settings.radius} 
@@ -230,6 +241,22 @@ class MeetupEvent extends Component {
             </div>
         )
     }
+}
+
+MeetupEvent.propTypes = {
+    number: PropTypes.number.isRequired,
+    socket: PropTypes.object.isRequired,
+    uri: PropTypes.string.isRequired,
+    isUserMember: PropTypes.bool.isRequired,
+    coords: PropTypes.shape({
+        latitude: PropTypes.number.isRequired,
+        longitude: PropTypes.number.isRequired
+    }),
+    event: meetupEventPropType,
+    chosen: PropTypes.number,
+    settings: PropTypes.object.isRequired,
+    deleteMeetupEvent: PropTypes.func.isRequired,
+    addGlobalMessage: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state, props) {

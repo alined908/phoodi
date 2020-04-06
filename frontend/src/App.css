@@ -276,6 +276,14 @@ body {
   font-weight: 600;
 }
 
+.chat-input-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+  background: var(--bg-color);
+}
+
 .chat-input-form{
   width: 100%;
 }
@@ -340,7 +348,6 @@ body {
   overflow: hidden; 
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
-
 }
 
 .rst-img{
@@ -970,10 +977,6 @@ body {
 .preset-category img {
   width: auto;
   height: 20px;
-}
-
-.preset-category span{
-  margin-left: 15px;
 }
 
 .search {

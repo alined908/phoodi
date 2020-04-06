@@ -1,16 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {ListItem, ListItemAvatar, ListItemText, Typography, Tooltip, Avatar, IconButton} from '@material-ui/core'
-import {Delete as DeleteIcon, Edit as EditIcon} from '@material-ui/icons'
+import {Delete as DeleteIcon} from '@material-ui/icons'
 import { editPreference, deletePreference} from "../../actions/index"
 
 const Preference = ({pref, sortIndex, locked, isUser, user, ...props}) => {
-    const handleEdit = (pref) => {
-        props.editPreference(user.id, pref.category.id)
-    }
+    // const handleEdit = (pref) => {
+    //     props.editPreference(user.id, pref.category.id)
+    // }
 
     const handleDelete = (pref, user) => {
-        console.log("handle delete")
         props.deletePreference(user.id, pref.category.id)
     }
 

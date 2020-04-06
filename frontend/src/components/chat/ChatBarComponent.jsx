@@ -3,7 +3,8 @@ import {ContactComponent} from "../components";
 import {connect} from 'react-redux';
 import {IconButton, Tooltip} from '@material-ui/core'
 import {Event as EventIcon, Person as PersonIcon, Search as SearchIcon, Error as ErrorIcon} from '@material-ui/icons';
-const opposite = {"friend": "meetup", "meetup": "friend"}
+import PropTypes from 'prop-types';
+import {chatRoomPropType, userPropType,} from "../../constants/prop-types"
 
 class ChatBarComponent extends Component {
     constructor(props){
@@ -34,8 +35,6 @@ class ChatBarComponent extends Component {
         var filter = this.state.searchInput
         var filterMeetup = this.state.filters["meetup"]
         var filterFriend = this.state.filters["friend"]
-        console.log(filterMeetup)
-        console.log(filterFriend)
         var newRooms;
 
         newRooms = rooms.filter((room) => {
@@ -104,7 +103,7 @@ class ChatBarComponent extends Component {
                         </div>
                     }
                     {this.props.isRoomsInitialized && rooms.map((room) => 
-                        <ContactComponent user={this.props.user} key={room.id} room={Object.values(room)}></ContactComponent>
+                        <ContactComponent user={this.props.user} key={room.id} room={room}></ContactComponent>
                     )}
                 </div>
                 <div className="chat-bar-search">
@@ -114,6 +113,14 @@ class ChatBarComponent extends Component {
             </div>
         )
     }
+}
+
+ChatBarComponent.propTypes = {
+    rooms: PropTypes.arrayOf(
+        chatRoomPropType
+    ),
+    user: userPropType,
+    isRoomsInitialized: PropTypes.bool
 }
 
 const mapStateToProps = (state) => {

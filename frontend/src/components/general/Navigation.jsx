@@ -7,6 +7,8 @@ import {Menu, ChevronLeft, ChevronRight, People as PeopleIcon,
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {Body, LiveUpdatingBadge} from '../components'
+import PropTypes from "prop-types"
+import { userPropType, notifsPropType} from '../../constants/prop-types';
 
 const drawerWidth = 220;
 
@@ -261,7 +263,7 @@ const Navigation = (props) => {
         </List>
         <Divider />
         <List>
-          {props.authenticated && props.user && <Link to={`/profile/${props.user.id}`} onClick={handleDrawerClose}>
+          {(props.authenticated && props.user) && <Link to={`/profile/${props.user.id}`} onClick={handleDrawerClose}>
             <ListItem button key="Profile" selected={isActive("/profile")}>
               <ListItemIcon>
                 <PersonIcon className={classes.icon}/>
@@ -294,6 +296,12 @@ const Navigation = (props) => {
       </main>
     </div>
   );
+}
+
+Navigation.propTypes = {
+  authenticated: PropTypes.string.isRequired,
+  user: userPropType,
+  notifs: notifsPropType
 }
 
 function mapStatetoProps(state) {

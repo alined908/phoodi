@@ -2,7 +2,8 @@ import React from 'react';
 import {Avatar, Tooltip, makeStyles, Badge} from '@material-ui/core'
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import {connect} from 'react-redux'
-
+import { userPropType } from '../../constants/prop-types';
+import PropTypes from "prop-types"
 
 const useStyles = makeStyles(theme => ({
     small: {
@@ -31,7 +32,6 @@ const GroupAvatars = (props) => {
             members[i] = members[0]
             members[0] = b
             break;
-            console.log(userInMembers)
         }
     }
     const upToThree = members.slice(0, 3)
@@ -68,6 +68,11 @@ const GroupAvatars = (props) => {
             }
         </AvatarGroup>
     )
+}
+
+GroupAvatars.propTypes = {
+    user: userPropType,
+    members: PropTypes.arrayOf(userPropType)
 }
 
 function mapStateToProps(state){

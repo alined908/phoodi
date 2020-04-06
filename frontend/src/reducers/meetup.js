@@ -2,8 +2,7 @@ import {GET_MEETUPS, ADD_MEETUP, ADD_MEETUP_MEMBER, DELETE_MEETUP, EDIT_MEETUP, 
 
 const defaultState = {
     meetups: {},
-    isMeetupsInitialized: false,
-    isMeetupEventsInitialized: false,
+    isMeetupsInitialized: false
 }
 
 export default function meetupReducer(state = defaultState, action){
@@ -16,7 +15,7 @@ export default function meetupReducer(state = defaultState, action){
             return {...state, meetups: {...state.meetups, [action.payload.uri]: {...action.payload}}}
         case DELETE_MEETUP:
             var meetups = {}
-            Object.keys(state.meetups).map((key) => {
+            Object.keys(state.meetups).forEach((key) => {
                 if (key !== action.payload){
                     meetups[key] = state.meetups[key]
                 }
@@ -57,7 +56,7 @@ export default function meetupReducer(state = defaultState, action){
         case DELETE_MEETUP_EVENT:
             var events = {}
             const uri = action.payload.uri
-            Object.keys(state.meetups[uri].events).map((key) => {
+            Object.keys(state.meetups[uri].events).forEach((key) => {
                 if (key !== action.payload.event.toString()){
                     events[key] = state.meetups[uri].events[key]
                 }

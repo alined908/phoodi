@@ -11,8 +11,8 @@ const members = {
     2: user2
 }
 const rooms = {
-    friend: {id: 1, uri: "abc", name: "Room", timestamp: Date.now(), members: members, friendship: 1, meetup:null, notifs: 0},
-    meetup: {id: 2, uri: "xyz", name: "Room", timestamp: Date.now(), members: members, friendship: null, meetup:1, notifs: 3}
+    friend: {id: 1, uri: "abc", name: "Room", timestamp: Date.now().toString(), members: members, friendship: 1, meetup:null, notifs: 0},
+    meetup: {id: 2, uri: "xyz", name: "Room", timestamp: Date.now().toString(), members: members, friendship: null, meetup:1, notifs: 3}
 }
 
 
@@ -21,7 +21,7 @@ describe("ContactComponent unit", () => {
     it ('renders without crashing given props', () => {
         const props = {
             user: user,
-            room: Object.values(rooms.friend)
+            room: rooms.friend
         }
         const wrapper = shallow(<UnderlyingContactComponent {...props}/>)
         expect(wrapper).toMatchSnapshot()
@@ -30,7 +30,7 @@ describe("ContactComponent unit", () => {
     it ('determines if contact is friend', () => {
         const props = {
             user: user,
-            room: Object.values(rooms.friend)
+            room: rooms.friend
         }
 
         const wrapper = shallow(<UnderlyingContactComponent {...props}/>)
@@ -41,7 +41,7 @@ describe("ContactComponent unit", () => {
     it ('determines if contact is meetup', () => {
         const props = {
             user: user,
-            room: Object.values(rooms.meetup)
+            room: rooms.meetup
         }
 
         const wrapper = shallow(<UnderlyingContactComponent {...props}/>)
@@ -52,7 +52,7 @@ describe("ContactComponent unit", () => {
     it ('determines if contact is current room', () => {
         const props = {
             user: user,
-            room: Object.values(rooms.friend),
+            room: rooms.friend,
             currentRoom: "abc"
         }
         const wrapper = shallow(<UnderlyingContactComponent {...props}/>)
@@ -62,17 +62,17 @@ describe("ContactComponent unit", () => {
     it ('determines if contact is not current room', () => {
         const props = {
             user: user,
-            room: Object.values(rooms.friend),
+            room: rooms.friend,
             currentRoom: "xyz"
         }
         const wrapper = shallow(<UnderlyingContactComponent {...props}/>)
         expect(wrapper.find(".curr-room")).toHaveLength(0)
     })
 
-    it ('renders notifications', () => {
+    it ('renders and removes notifications', () => {
         const props = {
             user: user,
-            room: Object.values(rooms.meetup),
+            room: rooms.meetup,
             currentRoom: "abc",
             removeNotifs: jest.fn()
         }

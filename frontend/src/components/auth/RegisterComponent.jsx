@@ -6,6 +6,8 @@ import {signup, editUser} from "../../actions/index"
 import {Typography, Paper, Grid, Fab, Button, TextField, Avatar} from '@material-ui/core';
 import {renderTextField} from '../components'
 import {Link} from "react-router-dom"
+import PropTypes from "prop-types"
+import {userPropType} from "../../constants/prop-types"
 
 class RegisterComponent extends Component {
 
@@ -94,12 +96,25 @@ class RegisterComponent extends Component {
     }
 }
 
+RegisterComponent.propTypes = {
+    errorMessage: PropTypes.string,
+    signup: PropTypes.func.isRequired,
+    editUser: PropTypes.func.isRequired,
+    user: userPropType
+}
+
 function mapStatetoProps(state, ownProps) {
     if (ownProps.type === "edit" && (state.user.user !== null)) {
         const user = state.user.user
-        return {initialValues: {first_name: user.first_name, last_name: user.last_name, email: user.email}, errorMessage: state.user.errorMessage, user: user}
+        return {
+            initialValues: {first_name: user.first_name, last_name: user.last_name, email: user.email}, 
+            errorMessage: state.user.errorMessage, 
+            user: user
+        }
     } else {
-        return {errorMessage: state.user.errorMessage}
+        return {
+            errorMessage: state.user.errorMessage
+        }
     }
 }
 

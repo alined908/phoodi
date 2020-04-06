@@ -1,9 +1,11 @@
 import React from 'react';
-import {TextField, CircularProgress, makeStyles} from '@material-ui/core';
+import {TextField, CircularProgress, makeStyles, Avatar} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {axiosClient} from "../../accounts/axiosClient"
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
+import PropTypes from "prop-types"
+import { categoryPropType } from '../../constants/prop-types';
 
 const useStyles = makeStyles({
   underline: {
@@ -39,7 +41,7 @@ const CategoryAutocomplete = (props) => {
                 setLoaded(true);
             })();
         }
-    }, [loading]);
+    }, [loading, loaded]);
   return (
     <Autocomplete
       multiple
@@ -66,7 +68,13 @@ const CategoryAutocomplete = (props) => {
         
         return(
             <div style={{height: "2rem", display: "flex", alignItems: "center", fontFamily: "Lato", fontWeight: "600", fontSize: ".8rem"}}> 
-              <img style={{width: "auto", height: "20px", marginRight: "15px"}} src={`${process.env.REACT_APP_S3_STATIC_URL}${option.api_label}.png`}></img>
+              <Avatar 
+                  style={{width: 20, height: 20, marginRight: 15}} variant="square"
+                  src={`${process.env.REACT_APP_S3_STATIC_URL}${option.api_label}.png`}
+              >
+                  <img style={{width: 20, height: 20}} alt={"&#9787;"}
+                      src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}/>
+              </Avatar>
               {parts.map((part, index) => (
                 <span key={index} style={{ color: part.highlight ? "red" : "black" }}>
                   {part.text}
@@ -96,6 +104,13 @@ const CategoryAutocomplete = (props) => {
     }
     />
   );
+}
+
+CategoryAutocomplete.propTypes = {
+  size: PropTypes.string,
+  entries: PropTypes.arrayOf(categoryPropType),
+  handleClick: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired
 }
 
 export default CategoryAutocomplete

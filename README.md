@@ -113,6 +113,8 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Settings doesnt populate after save and reload
 - [ ] Past activity
 - [ ] Change name of preference
+- [ ] Change presentation of upload avatar
+- [ ] User object, settings only show for myself.
 
 ## Todo Friends
 - [ ] Friends delete
@@ -131,14 +133,17 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Create meetup with member
 - [ ] Refactor onTagsChange of MeetupsComponent
 - [ ] Add friends, redux action/websockets
+- [ ] Create Restauraunt Entity (primary key = yelp_id)
 
 ## Todo Chat
 - [ ] Bundle chat messages together
 - [ ] Edit chat messages and add emojis, upload picture
-- [ ] Reload animation on chat scroll up/Throttle scroll event
+- [ ] Reload animation on chat scroll up
+- [ ] Throttle scroll event
 - [ ] Send invite through chat
 - [ ] Handle timestamp logic
 - [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
+- [ ] More messages below 
 
 ## Todo UI
 - [ ] Change lock icon + default public/private
@@ -146,10 +151,11 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Ellipsis on navbar avatar email
 
 ## Todo Deploy
+- [ ] Serve build for reach app
 - [ ] Disable redux dev tools in production
 - [ ] Continuous integration
 - [ ] Separate css files
-- [ ] Disable console.log + errors
+- [ ] Cache images
 
 ## Todo New Features
 - [ ] Add calendar of meetups

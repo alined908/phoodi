@@ -1,10 +1,11 @@
 import React from 'react'
 import {makeStyles, Typography, Paper, Badge, Tooltip, Avatar} from '@material-ui/core'
-import {Today as TodayIcon, Notifications as NotificationsIcon, Room as RoomIcon, AccountCircle as AccountCircleIcon} from '@material-ui/icons'
+import {Today as TodayIcon, Notifications as NotificationsIcon, Room as RoomIcon} from '@material-ui/icons'
 import {GroupAvatars} from "../components"
 import {Link} from 'react-router-dom'
 import moment from 'moment';
 import Skeleton from '@material-ui/lab/Skeleton';
+import {meetupPropType} from "../../constants/prop-types"
 
 const useStyles = makeStyles({
     paper: {
@@ -52,7 +53,7 @@ const MeetupCard = ({meetup}) => {
                                 <div className="meetup-card-events">Events</div>
                                 <div className="meetup-card-categories">
                                     {meetup.categories.slice(0, 4).map((category) => 
-                                        <div className="meetup-card-category">
+                                        <div key={category.id} className="meetup-card-category">
                                             <Avatar style={{width: 28, height: 28}} src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`} variant="square"/>
                                             {category.label}
                                         </div>
@@ -84,4 +85,9 @@ const MeetupCard = ({meetup}) => {
         </>
     )
 }
+
+MeetupCard.propTypes = {
+    meetup: meetupPropType
+}
+
 export default MeetupCard

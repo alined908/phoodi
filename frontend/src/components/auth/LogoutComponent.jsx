@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import * as actions from "../../actions";
+import {signout} from "../../actions/index";
+import PropTypes from "prop-types"
 
 class LogoutComponent extends Component {
     componentDidMount(){
@@ -17,4 +18,12 @@ class LogoutComponent extends Component {
     }
 }
 
-export default connect(null, actions)(LogoutComponent);
+LogoutComponent.propTypes = {
+    signout: PropTypes.func.isRequired
+}
+
+const mapDispatchToProps = {
+    signout
+}
+
+export default connect(null, mapDispatchToProps)(LogoutComponent);

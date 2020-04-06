@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders without crashing given props 1`] = `
+exports[`ChatWindowComponent unit  renders without crashing given props 1`] = `
 <div
   className="chat-window elevate"
 >
@@ -56,7 +56,7 @@ exports[`renders without crashing given props 1`] = `
             "message": "hello",
             "room_id": 1,
             "sender_id": 1,
-            "timestamp": 1487030400000,
+            "timestamp": "1487030400000",
           }
         }
         user={
@@ -96,7 +96,7 @@ exports[`renders without crashing given props 1`] = `
             "message": "hello",
             "room_id": 1,
             "sender_id": 1,
-            "timestamp": 1487030400000,
+            "timestamp": "1487030400000",
           }
         }
         user={
@@ -112,9 +112,7 @@ exports[`renders without crashing given props 1`] = `
       <div />
     </div>
   </div>
-  <div
-    className="chat-input"
-  >
+  <div>
     <form
       className="chat-input-form"
     >

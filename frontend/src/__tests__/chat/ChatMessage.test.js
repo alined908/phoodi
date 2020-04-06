@@ -3,7 +3,7 @@ import {shallow} from 'enzyme';
 import {ChatMessageComponent} from "../../components/components" 
 
 Date.now = jest.fn(() => new Date(Date.UTC(2017, 1, 14)).valueOf())
-const message = {id: 1, message: "hello", timestamp: Date.now(), is_read: false, room_id: 1, sender_id: 1}
+const message = {id: 1, message: "hello", timestamp: Date.now().toString(), is_read: false, room_id: 1, sender_id: 1}
 const user = {id: 1, email: "example@gmail.com", first_name: "Daniel", last_name: "Lee", avatar: null}
 const user2 = {id: 2, email: "example2@gmail.com", first_name: "Bob", last_name: "Jim", avatar: null}
 const members = {

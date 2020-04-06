@@ -14,10 +14,9 @@ class MeetupPageComponent extends Component {
 
     render () {
         const meetup = this.props.meetups[this.props.match.params.uri]
-        
         return (
             <>
-                {meetup && <Meetup key={meetup.id} uri={meetup.uri} notifs={meetup.notifs} meetup={Object.values(meetup)}></Meetup>}
+                {meetup && <Meetup key={meetup.id} meetup={meetup}/>}
             </>
         )
     }

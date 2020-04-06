@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {setUserSettings} from '../../actions/index'
-
+import { userPropType } from '../../constants/prop-types'
+import PropTypes from "prop-types"
 
 class LocationService extends Component {
     constructor(props){
@@ -34,6 +35,11 @@ class LocationService extends Component {
     render(){
         return <></>
     }
+}
+
+LocationService.propTypes = {
+    user: userPropType,
+    setUserSettings: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

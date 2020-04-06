@@ -2,11 +2,13 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {getMeetups, getPublicMeetups} from "../../actions/meetup";
 import {MeetupCard, CategoryAutocomplete} from "../components"
-import {Grid, Grow, Tooltip, IconButton, FormGroup, FormControlLabel, Checkbox} from '@material-ui/core'
+import {Grid, Grow, Tooltip, IconButton, FormGroup, FormControlLabel, Checkbox, Avatar} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import moment from "moment"
 import { Lock as LockIcon, Public as PublicIcon, Add as AddIcon, Search as SearchIcon, Edit as EditIcon} from '@material-ui/icons'
 import {getPreferences} from "../../actions/index"
+import PropTypes from "prop-types"
+import { userPropType, preferencePropType, meetupPropType} from '../../constants/prop-types';
 
 class MeetupsComponent extends Component {
     constructor(props){
@@ -135,8 +137,10 @@ class MeetupsComponent extends Component {
             return (
                 <div className="preset">
                     {this.state.preferences.map((pref, index) => 
-                        <div className={"preset-category " + (this.state.clickedPreferences[index] ? "active" : "")} onClick={() => this.handlePreferenceClick(index)}>
-                            <img src={`${process.env.REACT_APP_S3_STATIC_URL}${pref.category.api_label}.png`}></img>
+                        <div key={pref.id} className={"preset-category " + (this.state.clickedPreferences[index] ? "active" : "")} onClick={() => this.handlePreferenceClick(index)}>
+                            <Avatar varaint="square"
+                                src={`${process.env.REACT_APP_S3_STATIC_URL}${pref.category.api_label}.png`}
+                            />
                             <span>{pref.category.label}</span>
                         </div>
                     )}
@@ -163,10 +167,22 @@ class MeetupsComponent extends Component {
                         {renderPreset()}
                         <div className="search">
                             <FormGroup row>
-                                <FormControlLabel label="Past" control={<Checkbox color="primary" size="small" checked={this.state.chosen[0]} onChange={() => this.handleFilter(0)}/>}/>
-                                <FormControlLabel label="Today" control={<Checkbox color="primary" size="small" checked={this.state.chosen[1]} onChange={() => this.handleFilter(1)}/>}/>
-                                <FormControlLabel label="Week" control={<Checkbox color="primary" size="small" checked={this.state.chosen[2]} onChange={() => this.handleFilter(2)}/>}/>
-                                <FormControlLabel label="Later" control={<Checkbox color="primary" size="small" checked={this.state.chosen[3]} onChange={() => this.handleFilter(3)}/>}/>
+                                <FormControlLabel 
+                                    label="Past" control={<Checkbox color="primary" size="small" 
+                                    checked={this.state.chosen[0]} onChange={() => this.handleFilter(0)}/>}
+                                />
+                                <FormControlLabel 
+                                    label="Today" control={<Checkbox color="primary" size="small" 
+                                    checked={this.state.chosen[1]} onChange={() => this.handleFilter(1)}/>}
+                                />
+                                <FormControlLabel 
+                                    label="Week" control={<Checkbox color="primary" size="small" 
+                                    checked={this.state.chosen[2]} onChange={() => this.handleFilter(2)}/>}
+                                />
+                                <FormControlLabel 
+                                    label="Later" control={<Checkbox color="primary" size="small" 
+                                    checked={this.state.chosen[3]} onChange={() => this.handleFilter(3)}/>}
+                                />
                             </FormGroup>
                         </div>
                     </div>
@@ -176,19 +192,28 @@ class MeetupsComponent extends Component {
                         <div>
                             Meetups
                             <Tooltip title="Public Meetups">
-                                    <IconButton onClick={() => this.handleMeetupsType("public")} color={this.state.public ? "primary" :"default"} edge="end">
+                                    <IconButton 
+                                        onClick={() => this.handleMeetupsType("public")} 
+                                        color={this.state.public ? "primary" :"default"} edge="end"
+                                    >
                                         <PublicIcon/>
                                     </IconButton>
                             </Tooltip>
                             <Tooltip title="Private Meetups">
-                                <IconButton onClick={() => this.handleMeetupsType("private")} color={this.state.public ? "default" : "primary"}>
+                                <IconButton 
+                                    onClick={() => this.handleMeetupsType("private")} 
+                                    color={this.state.public ? "default" : "primary"}
+                                >
                                     <LockIcon/>
                                 </IconButton>
                             </Tooltip>
                         </div>   
                         <div className="meetups-search-bar">
                             <SearchIcon/>
-                            <CategoryAutocomplete fullWidth={true} size="small" entries={this.state.entries} handleClick={this.onTagsChange} label="Search Categories..."/>
+                            <CategoryAutocomplete 
+                                fullWidth={true} size="small" entries={this.state.entries} 
+                                handleClick={this.onTagsChange} label="Search Categories..."
+                            />
                         </div>
                         <div className="category-chip">
                             {this.state.public ? 
@@ -231,6 +256,15 @@ class MeetupsComponent extends Component {
             </div>
         )
     }
+}
+
+MeetupsComponent.propTypes = {
+    isMeetupsInitialized: PropTypes.bool.isRequired,
+    meetups: PropTypes.arrayOf(meetupPropType).isRequired,
+    user: userPropType,
+    preferences: PropTypes.arrayOf(preferencePropType).isRequired,
+    getMeetups: PropTypes.func.isRequired,
+    getPreferences: PropTypes.func.isRequired, getPublicMeetups: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state){

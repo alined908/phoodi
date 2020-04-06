@@ -6,6 +6,8 @@ import {inviteType, inviteStatus} from '../../constants/default-states'
 import {removeNotifs} from "../../actions/notifications"
 import {Paper} from '@material-ui/core'
 import {Link} from 'react-router-dom'
+import PropTypes from 'prop-types'
+import {invitePropType} from '../../constants/prop-types'
 
 class Invite extends Component {
     constructor(props){
@@ -54,6 +56,14 @@ class Invite extends Component {
             </>
         )
     }
+}
+
+Invite.propTypes = {
+    inv: invitePropType,
+    type: PropTypes.string.isRequired,
+    respondFriendInvite: PropTypes.func.isRequired,
+    respondMeetupInvite: PropTypes.func.isRequired,
+    removeNotifs: PropTypes.func.isRequired
 }
 
 const mapDispatchToProps = {

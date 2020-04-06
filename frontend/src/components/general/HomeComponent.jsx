@@ -26,29 +26,29 @@ class HomeComponent extends Component {
     }
 
     render() {
-        const tophand = () => {
-            return (
-                <div className="claw">
-                    <div className="base">
-                    </div>
-                    <div className="claw-body">
-                        <div className="claw-left">
-                            <div className="left-top">
-                            </div> 
-                            <div className="left-bot">
-                            </div>  
-                        </div>
-                        <div className="claw-right">
-                            <div className="right-top">
-                            </div> 
-                            <div className="right-bot">
-                            </div>  
-                        </div>
-                    </div>
+        // const tophand = () => {
+        //     return (
+        //         <div className="claw">
+        //             <div className="base">
+        //             </div>
+        //             <div className="claw-body">
+        //                 <div className="claw-left">
+        //                     <div className="left-top">
+        //                     </div> 
+        //                     <div className="left-bot">
+        //                     </div>  
+        //                 </div>
+        //                 <div className="claw-right">
+        //                     <div className="right-top">
+        //                     </div> 
+        //                     <div className="right-bot">
+        //                     </div>  
+        //                 </div>
+        //             </div>
                     
-                </div>
-            )
-        }
+        //         </div>
+        //     )
+        // }
 
 
         const food = () => {
@@ -73,81 +73,117 @@ class HomeComponent extends Component {
             <div className="home">
                 <div className="top">
                     {food()}
-                    <div className="scrollbot" onClick={this.handleScroll}><IconButton><KeyboardArrowDownIcon color="inherit" size="large"/></IconButton></div>
+                    <div className="scrollbot" onClick={this.handleScroll}>
+                        <IconButton>
+                            <KeyboardArrowDownIcon color="inherit" size="large"/>
+                        </IconButton>
+                    </div>
                 </div>
                 <div className="middle">
                     <div className="middle-header">
-                        <ClockIcon className={"svg"} width={50} height={"auto"} />
-                        <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h4">Get food with friends faster</Typography>
-                        <Typography style={{fontFamily: "Lato", marginTop: ".5rem"}} variant="h6">Schedule events. Choose from options. Meetup!</Typography>
+                        <ClockIcon className={"svg"} width={50} height="100%"/>
+                        <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h4">
+                            Get food with friends faster
+                        </Typography>
+                        <Typography style={{fontFamily: "Lato", marginTop: ".5rem"}} variant="h6">
+                            Schedule events. Choose from options. Meetup!
+                        </Typography>
                     </div>
                     <div className="middle-entry left">
                         <div className="middle-entry-img">
-                            <HavingFunIcon width={600} height={"auto"}/>
+                            <HavingFunIcon width={600} height="100%"/>
                         </div>
                         <div className="middle-entry-text">
-                            <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h4">Find Food Friends</Typography>
-                            <Typography style={{fontFamily: "Lato"}} variant="h6">Bond with friends and people with similar food tastes near you</Typography>
+                            <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h4">
+                                Find Food Friends
+                            </Typography>
+                            <Typography style={{fontFamily: "Lato"}} variant="h6">
+                                Bond with friends and people with similar food tastes near you
+                            </Typography>
                         </div>
                     </div>
                     <div className="middle-entry right">
                         <div className="middle-entry-text">
-                            <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h4">Schedule Group Meetups</Typography>
-                            <Typography style={{fontFamily: "Lato"}} variant="h6">Create multiple events and instantly add them to your calendar</Typography>
+                            <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h4">
+                                Schedule Group Meetups
+                            </Typography>
+                            <Typography style={{fontFamily: "Lato"}} variant="h6">
+                                Create multiple events and instantly add them to your calendar
+                            </Typography>
                         </div>
                         <div className="middle-entry-img">
-                            <TastingIcon width={600} height={"auto"}/>
+                            <TastingIcon width={600} height="100%"/>
                         </div>
                     </div>
                     <div className="middle-entry left">
                         <div className="middle-entry-img">
-                            <StreetFoodIcon width={700} height={"auto"}/>
+                            <StreetFoodIcon width={700} height="100%"/>
                         </div>
                         <div className="middle-entry-text">
-                            <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h4">Explore New Foods</Typography>
-                            <Typography style={{fontFamily: "Lato"}} variant="h6">See what tastes good in your area</Typography>
+                            <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h4">
+                                Explore New Foods
+                            </Typography>
+                            <Typography style={{fontFamily: "Lato"}} variant="h6">
+                                See what tastes good in your area
+                            </Typography>
                         </div>
                     </div>
                     <div className="middle-entry right">
                         <div className="middle-entry-text">
-                            <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h4">Chat With Friends</Typography>
-                            <Typography style={{fontFamily: "Lato"}} variant="h6">Talk about what you've been craving</Typography>
+                            <Typography style={{fontFamily: "Lato", fontWeight: 600}} variant="h4">
+                                Chat With Friends
+                            </Typography>
+                            <Typography style={{fontFamily: "Lato"}} variant="h6">
+                                Talk about what you've been craving
+                            </Typography>
                         </div>
                         <div className="middle-entry-img">
-                            <OnlineFriendsIcon width={800} height={"auto"}/>
+                            <OnlineFriendsIcon width={800} height="100%"/>
                         </div>
                     </div>
                     <div className="middle-tri">
                         <div className="middle-tri-col">
                             <div className="middle-tri-col-img">
-                                <BreakFastIcon height={200} width={"auto"}/>
+                                <BreakFastIcon height={200} width="100%"/>
                             </div>
                             <div className="middle-tri-col-txt">
-                                <Typography  style={{fontFamily: "Lato", marginBottom: "1rem", fontWeight: 600}} variant="h5">Simplify Lunch</Typography>
+                                <Typography  style={{fontFamily: "Lato", marginBottom: "1rem", fontWeight: 600}} variant="h5">
+                                    Simplify Lunch
+                                </Typography>
                             </div>
                         </div>
                         <div className="middle-tri-col">
                             <div className="middle-tri-col-img">
-                                <HamburgerIcon height={200} width={"auto"}/>
+                                <HamburgerIcon height={200} width="100%"/>
                             </div>
                             <div className="middle-tri-col-txt">
-                                <Typography style={{fontFamily: "Lato",  marginBottom: "1rem", fontWeight: 600}} variant="h5">Simplify Dinner</Typography>
+                                <Typography style={{fontFamily: "Lato",  marginBottom: "1rem", fontWeight: 600}} variant="h5">
+                                    Simplify Dinner
+                                </Typography>
                             </div>
                         </div>
                         <div className="middle-tri-col">
                             <div className="middle-tri-col-img">
-                                <DonutLoveIcon height={200} width={"auto"}/>
+                                <DonutLoveIcon height={200} width="100%"/>
                             </div>
                             <div className="middle-tri-col-txt">
-                                <Typography style={{fontFamily: "Lato",  marginBottom: "1rem", fontWeight: 600}} variant="h5">Simplify Dessert</Typography>
+                                <Typography style={{fontFamily: "Lato",  marginBottom: "1rem", fontWeight: 600}} variant="h5">
+                                    Simplify Dessert
+                                </Typography>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="bottom">
-                    <Typography style={{fontFamily: "Lato",  margin: "1rem", fontWeight: 600}} variant="h3">Meet with Friends</Typography>
+                    <Typography style={{fontFamily: "Lato",  margin: "1rem", fontWeight: 600}} variant="h3">
+                        Meet with Friends
+                    </Typography>
                     <div className="bottom-button">
-                        <Link to="/register"><Button style={{padding: "1rem"}} variant="contained" color="primary">Start Exploring</Button></Link>
+                        <Link to="/register">
+                            <Button style={{padding: "1rem"}} variant="contained" color="primary">
+                                Start Exploring
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             </div>

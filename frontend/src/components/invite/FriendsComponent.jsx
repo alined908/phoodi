@@ -6,6 +6,8 @@ import {connect} from 'react-redux'
 import {Button, Typography, Grid} from '@material-ui/core';
 import {removeNotifs} from "../../actions/notifications"
 import {Friend, UserAutocomplete} from '../components'
+import PropTypes from 'prop-types'
+import { friendPropType, userPropType } from '../../constants/prop-types'
 
 class FriendsComponent extends Component{
     constructor(props){
@@ -56,7 +58,7 @@ class FriendsComponent extends Component{
                     <div className="inner-header elevate">
                         <Typography variant="h5">Friends</Typography>
                         <form className="horizontal-form" onSubmit={this.handleSubmit}>
-                            <UserAutocomplete url={"/api/users/"} handleClick={this.handleClick} handleType={this.handleType}></UserAutocomplete>
+                            <UserAutocomplete handleClick={this.handleClick} handleType={this.handleType}/>
                             <Button size="small" type="submit" variant="contained" color="primary">Send</Button>
                         </form>
                     </div>
@@ -64,7 +66,7 @@ class FriendsComponent extends Component{
                 {this.props.isFriendsInitialized && <div className="friends">
                     <Grid container spacing={3}>
                         {this.props.friends.map((friend) => 
-                            <Grid item xs={12} md={6} lg={4} >
+                            <Grid key={friend.id} item xs={12} md={6} lg={4} >
                                 <Friend isUserFriend={true} friend={friend}/>
                             </Grid>
                         )}
@@ -73,6 +75,16 @@ class FriendsComponent extends Component{
             </div>
         )
     }
+}
+
+FriendsComponent.propTypes = {
+    user: userPropType,
+    friends: PropTypes.arrayOf(friendPropType),
+    isFriendsInitialized: PropTypes.bool.isRequired,
+    notifs: PropTypes.number,
+    getFriends: PropTypes.func.isRequired, deleteFriend: PropTypes.func.isRequired,
+    removeNotifs: PropTypes.func.isRequired, sendFriendInvite: PropTypes.func.isRequired,
+    addGlobalMessage: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state){

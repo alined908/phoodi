@@ -4,6 +4,7 @@ import {Location} from '../components'
 import Geocode from "react-geocode";
 import {connect} from 'react-redux'
 import {addSettings} from '../../actions/index'
+import PropTypes from "prop-types"
 
 class SettingsComponent extends Component {
     constructor(props){
@@ -87,6 +88,16 @@ class SettingsComponent extends Component {
             </div>
         )
     }
+}
+
+SettingsComponent.propTypes = {
+    settings: PropTypes.shape({
+        radius: PropTypes.number,
+        location: PropTypes.string,
+        latitude: PropTypes.number,
+        longitude: PropTypes.number
+    }),
+    addSettings: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state){

@@ -18,7 +18,6 @@ import Invite from "./invite/Invite"
 import Invites from "./invite/Invites"
 
 //meetup
-import Map from "./meetup/Map"
 import Meetup from "./meetup/Meetup";
 import MeetupCard from "./meetup/MeetupCard";
 import MeetupEvent from "./meetup/MeetupEvent";
@@ -37,6 +36,7 @@ import renderDatePicker from "./fields/renderDatePicker"
 import renderDateSimplePicker from "./fields/renderDateSimplePicker"
 import UserAutocomplete from "./fields/UserAutocomplete"
 import RestaurauntAutocomplete from "./fields/RestaurauntAutocomplete"
+import Map from "./fields/Map"
 
 //General
 import Body from "./general/Body"
@@ -44,22 +44,29 @@ import GlobalMessage from "./general/GlobalMessage"
 import HomeComponent from "./general/HomeComponent";
 import LiveUpdatingBadge from "./general/LiveUpdatingBadge"
 import Navigation from "./general/Navigation"
-import Profile from "./general/Profile"
+
 import GroupAvatars from './general/GroupAvatars'
 import NotificationWrapper from "./general/NotificationWrapper"
 import CalendarComponent from "./general/CalendarComponent"
-import CategoriesComponent from "./general/CategoriesComponent"
-import CategoryComponent from "./general/CategoryComponent"
-import Preferences from "./general/Preferences"
-import Preference from "./general/Preference"
-import SettingsComponent from "./general/SettingsComponent"
-import LocationService from "./general/LocationService"
+
+//User
+import SettingsComponent from "./user/SettingsComponent"
+import LocationService from "./user/LocationService"
+import Profile from "./user/Profile"
+
+//Category
+import CategoriesComponent from "./category/CategoriesComponent"
+import CategoryComponent from "./category/CategoryComponent"
+import Preferences from "./category/Preferences"
+import Preference from "./category/Preference"
 
 export {
     ErrorComponent, LoginComponent, LogoutComponent, RegisterComponent, 
     ChatBarComponent, ChatComponent, ChatMessageComponent, ChatWindowComponent, ContactComponent,
     Friend, FriendsComponent, Invite, Invites,
-    Map, Meetup, MeetupCard, MeetupEvent, MeetupEventForm, MeetupFriend, MeetupForm, MeetupPageComponent, MeetupsComponent, Restauraunt,
-    RestaurauntAutocomplete, CategoryAutocomplete, UserAutocomplete, Location, renderTextField, renderDatePicker, renderDateSimplePicker,
-    Body, GlobalMessage, GroupAvatars, HomeComponent, LiveUpdatingBadge, Navigation, Profile, NotificationWrapper, 
-    Preferences, Preference, CalendarComponent, CategoriesComponent, CategoryComponent, SettingsComponent, LocationService}
+    Meetup, MeetupCard, MeetupEvent, MeetupEventForm, MeetupFriend, MeetupForm, MeetupPageComponent, MeetupsComponent, Restauraunt,
+    RestaurauntAutocomplete, CategoryAutocomplete, UserAutocomplete, Location, renderTextField, renderDatePicker, renderDateSimplePicker, Map,
+    CategoriesComponent, CategoryComponent, Preferences, Preference,
+    Profile, SettingsComponent, LocationService,
+    Body, GlobalMessage, GroupAvatars, HomeComponent, LiveUpdatingBadge, Navigation, NotificationWrapper, CalendarComponent
+}
