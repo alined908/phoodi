@@ -1,10 +1,10 @@
 from django.db import models
-from django.core.mail import send_mail
+from django.core.mail import send_mail, send_mass_mail, EmailMultiAlternatives
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager)
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.utils.timezone import now
-from backend.settings import YELP_API_KEY, BASE_URL
+from backend.settings import YELP_API_KEY, BASE_URL, BASE_DEV_URL
 from django.utils.dateformat import format
 from uuid import uuid4
 from django.core.exceptions import ObjectDoesNotExist
@@ -14,10 +14,11 @@ from rest_framework_jwt.settings import api_settings
 from django.db import transaction
 from django.db.models import F
 from django.db.models.expressions import RawSQL
-from .helpers import path_and_rename_avatar, path_and_rename_category
+from .helpers import path_and_rename_avatar, path_and_rename_category, send_mass_html_mail
 from PIL import Image
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.template.loader import render_to_string
 
 url = "https://api.yelp.com/v3/businesses/search"
 headers = {'Authorization': "Bearer " + YELP_API_KEY}
@@ -182,11 +183,20 @@ class Meetup(models.Model):
         return super(Meetup, self).save(*args, **kwargs)
 
     def send_email(self):
-        members = self.members.all()
-        emails = [member.user.email for member in members]
         subject = self.name + " has been finalized."
-        body = '<a href="'+ BASE_URL + self.uri +'">Meetup</a>'
-        send_mail(subject, body, "meetup022897@gmail.com",emails)
+        messages = []
+
+        for member in self.members.all():
+            user = member.user
+            email = user.email
+            first_name = user.first_name
+            params = {"first_name": first_name, "meetup_uri": BASE_DEV_URL + "meetups/" + self.uri}
+            msg_plain = render_to_string('meetup.txt', params)
+            msg_html = render_to_string('meetup.html', params)
+            message = (subject, msg_plain, msg_html, "team@phoodie.me", [email])
+            messages.append(message)
+            
+        send_mass_html_mail(messages)
 
 class MeetupMember(models.Model):
     meetup = models.ForeignKey(Meetup, related_name="members", on_delete=models.CASCADE)

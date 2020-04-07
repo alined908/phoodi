@@ -95,7 +95,8 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),
+                 os.path.join(BASE_DIR, 'meetup', 'templates', 'meetup')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -152,7 +153,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = os.environ.get("EMAIL_HOST")
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_PASSWORD = os.getenv('SENDGRID_API_KEY')
 EMAIL_PORT = os.environ.get("EMAIL_PORT")
 
 # Internationalization
@@ -186,6 +187,7 @@ AWS_LOCATION = 'static'
 
 YELP_API_KEY = os.environ.get("YELP_API_KEY")
 BASE_URL = os.environ.get("BASE_URL")
+BASE_DEV_URL = os.environ.get("BASE_DEV_URL")
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'meetup/static'),

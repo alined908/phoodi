@@ -93,7 +93,14 @@ class MeetupsComponent extends Component {
                 past.push(meetup)
             }
         }
-        return [past, today, week, later]
+        const dividedMeetups = [past, today, week, later]
+        var filteredMeetups = []
+        dividedMeetups.forEach((range, i) => {
+            if (this.state.chosen[i]){
+                filteredMeetups = filteredMeetups.concat(range)
+            }
+        })
+        return filteredMeetups
     }
 
     onTagsChange = (event, values) => {
@@ -125,19 +132,25 @@ class MeetupsComponent extends Component {
                 entries: values,
                 clickedPreferences: clickedPrefs
             },
-            () => this.state.public ? this.props.getPublicMeetups({categories: values, coords: {...this.props.user.settings}}) : this.props.getMeetups({categories: values})
+            () => this.state.public ? 
+                this.props.getPublicMeetups({categories: values, coords: {...this.props.user.settings}}) : 
+                this.props.getMeetups({categories: values})
         )
 
     }
 
     render(){
-        const meetups = this.divideMeetups(this.props.meetups)
+        const filteredMeetups = this.divideMeetups(this.props.meetups)
+        const numMeetups = filteredMeetups.length
 
         const renderPreset = () => {
             return (
                 <div className="preset">
                     {this.state.preferences.map((pref, index) => 
-                        <div key={pref.id} className={"preset-category " + (this.state.clickedPreferences[index] ? "active" : "")} onClick={() => this.handlePreferenceClick(index)}>
+                        <div 
+                            key={pref.id} className={"preset-category " + (this.state.clickedPreferences[index] ? "active" : "")} 
+                            onClick={() => this.handlePreferenceClick(index)}
+                        >
                             <Avatar varaint="square"
                                 src={`${process.env.REACT_APP_S3_STATIC_URL}${pref.category.api_label}.png`}
                             />
@@ -234,20 +247,14 @@ class MeetupsComponent extends Component {
                     {this.props.isMeetupsInitialized && 
                         <div className="meetups-container">
                             <Grid container spacing={1}>
-                                {[0,1, 2, 3].map((index) =>
-                                    {return (this.state.chosen[index] && meetups[index].length > 0) && 
-                                        <React.Fragment key={index}>
-                                            {meetups[index].map((meetup, i) => 
-                                                <Grid key={meetup.id} item xs={12} lg={6} xl={4}>
-                                                    <Grow in={true} timeout={Math.max((index + 1) * 200, 500)}>
-                                                        <div className="meetups-cardwrapper">
-                                                            <MeetupCard key={meetup.id} meetup={meetup}/>
-                                                        </div>
-                                                    </Grow>
-                                                </Grid>
-                                            )}
-                                        </React.Fragment>
-                                    }
+                                {filteredMeetups.map((meetup, i) => 
+                                    <Grid key={meetup.id} item xs={12} lg={6} xl={4}>
+                                        <Grow in={true} timeout={Math.max((i + 1) * 50, 500)}>
+                                            <div className="meetups-cardwrapper">
+                                                <MeetupCard key={meetup.id} meetup={meetup}/>
+                                            </div>
+                                        </Grow>
+                                    </Grid>
                                 )}
                             </Grid>
                         </div>

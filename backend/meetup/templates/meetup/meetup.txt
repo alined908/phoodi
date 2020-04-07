@@ -1,0 +1,7 @@
+Hi {{first_name}},
+
+The schedule for Meetup has been finalized. Here is an itinerary of the events.
+
+Link for meetup is {{meetup_uri}}
+
+Thanks for using our service!

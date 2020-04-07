@@ -254,7 +254,7 @@ class Meetup extends Component {
                         <div className="inner-header elevate">
                             <Typography variant="h5">Events</Typography>
                             {isUserMember && 
-                                <Link socket={this.state.socket} to={`/meetups/${this.props.uri}/new`}>
+                                <Link socket={this.state.socket} to={`/meetups/${meetup.uri}/new`}>
                                     <Button startIcon={<AddIcon />} className="button rainbow" variant="contained" color="primary">
                                         Event
                                     </Button>

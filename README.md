@@ -123,7 +123,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Change meetup friend state if invite sent
 
 ## Todo Meetup
-- [ ] Meetup email message nice html
+- [x] Meetup email message nice html
 - [ ] Block people, admin functionality for meetup member
 - [ ] MeetupEventOption Delete
 - [ ] Info dissapears on meetup edit form reload
@@ -146,8 +146,9 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo UI
 - [ ] Change lock icon + default public/private
-- [ ] Pagination on entities
-- [ ] Ellipsis on navbar avatar email
+- [x] Pagination on entities
+- [x] Ellipsis on navbar avatar email
+- [ ] Favicon
 
 ## Todo Deploy
 - [ ] Serve build for reach app
@@ -155,6 +156,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Continuous integration
 - [ ] Separate css files
 - [ ] Cache images
+- [ ] Link Headers (react-helmet)
 
 ## Todo New Features
 - [ ] Add calendar of meetups

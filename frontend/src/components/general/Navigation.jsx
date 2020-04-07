@@ -112,6 +112,12 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 600,
     fontFamily: "Lato",
     fontSize: ".75rem"
+  },
+  ellipsis: {
+    width: 130,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis"
   }
 }));
 
@@ -193,7 +199,7 @@ const Navigation = (props) => {
                   </StyledBadge>
                 </ListItemAvatar>
                 <ListItemText 
-                    primaryTypographyProps={{className: classes.primary}}
+                    primaryTypographyProps={{className: `${classes.primary} ${classes.ellipsis}`}}
                     primary={props.user.first_name + " " + props.user.last_name} 
                     secondary={
                         <>
@@ -202,6 +208,7 @@ const Navigation = (props) => {
                             </Typography>
                         </>
                     }
+                    secondaryTypographyProps={{className: classes.ellipsis}}
                 >
                 </ListItemText>
               </ListItem>

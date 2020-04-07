@@ -104,7 +104,10 @@ class Profile extends Component {
                         <Preferences locked={this.state.locked} isUser={isUser}/>
                         <div className="column-bottom">
                             <SearchIcon/>
-                            <CategoryAutocomplete fullWidth={true} size="small" entries={this.state.entries} handleClick={this.onTagsChange} label="Search to add categories.."/>
+                            <CategoryAutocomplete 
+                                fullWidth={true} size="small" entries={this.state.entries} 
+                                handleClick={this.onTagsChange} label="Search to add categories.."
+                            />
                         </div> 
                     </div>
                 </div>

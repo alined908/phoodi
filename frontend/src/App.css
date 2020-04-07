@@ -786,12 +786,18 @@ body {
 }
 
 .meetups-container{
-  padding: 1rem;
+  margin: .5rem;
   height: calc(100% - 60px);
-  margin: 0 auto;
+  padding: .5rem;
   display: flex;
   font-family: "Lato";
   font-weight: 600;
+  position: relative;
+  overflow-y: auto;
+}
+
+.meetups-container::-webkit-scrollbar{
+  display: none;
 }
 
 .meetup-card-inner{
