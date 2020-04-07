@@ -89,6 +89,7 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Daniel Lee** 
 
 ## Todo General
+- [ ] Create demo video
 - [ ] Handle 404 page
 - [ ] Safari presentation
 - [ ] Have to click all fields/ Inconsistent meetup?
@@ -125,7 +126,8 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo Meetup
 - [x] Meetup email message nice html
 - [x] Send email, loading bar
-- [x] Loading bar for progress
+- [x] Loading bar for reload
+- [ ] Loading bar for restauraunt autocomplete
 - [ ] Block people, admin functionality for meetup member
 - [ ] MeetupEventOption Delete
 - [ ] Info dissapears on meetup edit form reload
@@ -135,6 +137,8 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Refactor onTagsChange of MeetupsComponent
 - [ ] Add friends, redux action/websockets
 - [ ] Create Restauraunt Entity (primary key = yelp_id)
+- [ ] Outline itinerary of meetup
+- [ ] Reload old events, no options return
 
 ## Todo Chat
 - [ ] Bundle chat messages together
@@ -151,6 +155,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Pagination on entities
 - [x] Ellipsis on navbar avatar email
 - [ ] Favicon
+- [ ] Add preferences warning if no preferences
 
 ## Todo Deploy
 - [ ] Serve build for reach app

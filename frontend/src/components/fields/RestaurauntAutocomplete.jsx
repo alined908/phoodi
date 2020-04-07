@@ -1,6 +1,6 @@
 import React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {TextField, makeStyles, ListItemAvatar, ListItemText, Avatar, Typography} from '@material-ui/core'
+import {TextField, makeStyles, ListItemAvatar, ListItemText, Avatar, Typography, CircularProgress} from '@material-ui/core'
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import throttle from 'lodash/throttle';
@@ -34,9 +34,11 @@ export default function RestaurauntAutocomplete(props) {
   const classes = useStyles();
   const [inputValue, setInputValue] = React.useState('');
   const [options, setOptions] = React.useState([]);  
+  const loading = inputValue.length > 0 && options.length === 0;
 
   const handleChange = event => {
     setInputValue(event.target.value);
+    setOptions([])
   };
 
   const fetch = React.useMemo(
@@ -73,7 +75,7 @@ export default function RestaurauntAutocomplete(props) {
       setOptions([]);
       return undefined;
     }
-    
+
     fetch({ input: inputValue}, results => {
       if (active) {
         setOptions(results || []);
@@ -83,11 +85,11 @@ export default function RestaurauntAutocomplete(props) {
     return () => {
       active = false;
     };
-  }, [inputValue, fetch]);
+  }, [inputValue, fetch, loading]);
 
   return (
     <Autocomplete
-        className="restauraunt-autocomplete"
+      className="restauraunt-autocomplete"
       getOptionLabel={option => (typeof option === 'string' ? option : option.name)}
       filterOptions={x => x}
       value={props.textValue}
@@ -95,7 +97,8 @@ export default function RestaurauntAutocomplete(props) {
       autoComplete
       autoHighlight
       onChange={props.handleSearchValueClick}
-      includeInputInList  
+      includeInputInList 
+      loading={loading} 
       renderInput={params => (
         <TextField
           {...params}
@@ -106,7 +109,13 @@ export default function RestaurauntAutocomplete(props) {
           onChange={handleChange}
           InputProps={{
             ...params.InputProps,
-            classes
+            classes,
+            endAdornment: (
+              <React.Fragment>
+                {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                {params.InputProps.endAdornment}
+              </React.Fragment>
+            ),
           }}
         />
       )}
