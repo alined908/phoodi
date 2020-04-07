@@ -143,9 +143,8 @@ class Meetup extends Component {
                         <Tooltip title="Email">
                             <div style={{width: 48, minHeight: 48}}>
                                 <ProgressIcon 
-                                    disabled={emailDisable}
+                                    disabled={emailDisable}  icon={<EmailIcon />} ariaLabel="email" check={true}
                                     handleClick={!emailDisable ? () => this.handleEmail() : () => this.handleDisabledEmail(meetup.events)} 
-                                    icon={<EmailIcon />}
                                 />
                             </div>
                         </Tooltip>

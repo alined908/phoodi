@@ -56,15 +56,24 @@ const ProgressIcon = (props) => {
     return (
         <span className={classes.wrapper}>
             <IconButton 
-                onClick={(event) => handleClick(event, props.handleClick)}
-                aria-label={props.ariaLabel} disabled={loading || success || props.disabled}
-                className={"" + (success ? classes.check : classes.normal)}
+                onClick={(event) => handleClick(event, props.handleClick)} color={props.color}
+                aria-label={props.ariaLabel} className={"" + ((props.check && success) ? classes.check : classes.normal)}
+                disabled={loading || (props.check && (success || props.disabled))}
             >
-                {(success && !props.disabled) ? <CheckIcon/> : props.icon}
+                {(success && !props.disabled && props.check) ? <CheckIcon/> : props.icon}
             </IconButton>
             {loading && <CircularProgress size={50} className={classes.fabProgress} />}
         </span>
     )
+}
+
+ProgressIcon.propTypes = {
+    disabled: PropTypes.bool,
+    handleClick: PropTypes.func,
+    icon: PropTypes.any,
+    ariaLabel: PropTypes.string,
+    color: PropTypes.string,
+    check: PropTypes.bool,
 }
 
 export default ProgressIcon

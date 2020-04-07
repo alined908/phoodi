@@ -4,10 +4,11 @@ import {connect} from 'react-redux'
 import {deleteMeetupEvent} from "../../actions/meetup"
 import {addGlobalMessage} from "../../actions/globalMessages"
 import moment from "moment"
-import {Cached as CachedIcon, Edit as EditIcon, Close as CloseIcon, Search as SearchIcon, Schedule as ScheduleIcon, Delete as DeleteIcon, Error as ErrorIcon} from '@material-ui/icons'
+import {Cached as CachedIcon, Edit as EditIcon, Close as CloseIcon, Search as SearchIcon, 
+    Schedule as ScheduleIcon, Delete as DeleteIcon, Error as ErrorIcon} from '@material-ui/icons'
 import {IconButton, Typography, Grid, Grow, Tooltip, Avatar, Divider} from '@material-ui/core'
 import {compose} from 'redux';
-import {Restauraunt, Map, RestaurauntAutocomplete} from '../components'
+import {Restauraunt, Map, RestaurauntAutocomplete, ProgressIcon} from '../components'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types';
 import {meetupEventPropType} from "../../constants/prop-types"
@@ -128,11 +129,15 @@ class MeetupEvent extends Component {
                     }
                     {!this.props.chosen &&
                         (event.random &&
-                        <Tooltip title="Reload">
-                            <IconButton onClick={() => this.handleReload()} color="primary" aria-label="reload">
-                                <CachedIcon />
-                            </IconButton>
-                        </Tooltip>)
+                            <Tooltip title="Reload">
+                                <div style={{width: 48, minHeight: 48}}>
+                                    <ProgressIcon 
+                                        disabled={false} icon={<CachedIcon />} ariaLabel="reload" check={false}
+                                        color="primary" handleClick={() => this.handleReload()} 
+                                    />
+                                </div>
+                            </Tooltip>
+                        )
                     }
                     <Link to={`/meetups/${this.props.uri}/events/${this.props.event.id}/edit`}>
                         <Tooltip title="Edit">
