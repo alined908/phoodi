@@ -44,7 +44,7 @@ import GlobalMessage from "./general/GlobalMessage"
 import HomeComponent from "./general/HomeComponent";
 import LiveUpdatingBadge from "./general/LiveUpdatingBadge"
 import Navigation from "./general/Navigation"
-
+import ProgressIcon from "./general/ProgressIcon"
 import GroupAvatars from './general/GroupAvatars'
 import NotificationWrapper from "./general/NotificationWrapper"
 import CalendarComponent from "./general/CalendarComponent"
@@ -68,5 +68,5 @@ export {
     RestaurauntAutocomplete, CategoryAutocomplete, UserAutocomplete, Location, renderTextField, renderDatePicker, renderDateSimplePicker, Map,
     CategoriesComponent, CategoryComponent, Preferences, Preference,
     Profile, SettingsComponent, LocationService,
-    Body, GlobalMessage, GroupAvatars, HomeComponent, LiveUpdatingBadge, Navigation, NotificationWrapper, CalendarComponent
+    Body, GlobalMessage, GroupAvatars, HomeComponent, LiveUpdatingBadge, Navigation, NotificationWrapper, CalendarComponent, ProgressIcon
 }

@@ -46,7 +46,7 @@ class NotificationWrapper extends Component {
 }   
 
 NotificationWrapper.propTypes = {
-    authenticated: PropTypes.string.isRequired,
+    authenticated: PropTypes.string,
     user: userPropType,
     getNumberNotifs: PropTypes.func.isRequired
 }

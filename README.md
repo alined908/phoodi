@@ -124,6 +124,7 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Meetup
 - [x] Meetup email message nice html
+- [x] Send email, loading bar
 - [ ] Block people, admin functionality for meetup member
 - [ ] MeetupEventOption Delete
 - [ ] Info dissapears on meetup edit form reload

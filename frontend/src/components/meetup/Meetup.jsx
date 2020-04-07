@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {MeetupFriend, MeetupEvent} from '../components'
+import {MeetupFriend, MeetupEvent, ProgressIcon} from '../components'
 import {connect} from 'react-redux';
 import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, addMeetupMember, addEventOption, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent} from '../../actions/meetup';
 import {removeNotifs} from '../../actions/notifications'
@@ -132,7 +132,7 @@ class Meetup extends Component {
                         <div className="inner-header-icons"><TodayIcon/> {moment(datetime).local().format("dddd, MMMM D")}</div>
                         <div className="inner-header-icons"><RoomIcon/> {location}</div>
                     </div>
-                    {isUserMember && <div>
+                    {isUserMember && <div className="meetup-actions">
                         <Link to={`/chat/${this.props.meetup.uri}`}>
                             <Tooltip title="Chat">
                                 <IconButton color="primary" aria-label='chat'>
@@ -141,9 +141,13 @@ class Meetup extends Component {
                             </Tooltip>
                         </Link>
                         <Tooltip title="Email">
-                            <IconButton onClick={!emailDisable ? () => this.handleEmail() : () => this.handleDisabledEmail(meetup.events)} style={!emailDisable ? {color: "black"} : {}} aria-label='email'>
-                                <EmailIcon />
-                            </IconButton>
+                            <div style={{width: 48, minHeight: 48}}>
+                                <ProgressIcon 
+                                    disabled={emailDisable}
+                                    handleClick={!emailDisable ? () => this.handleEmail() : () => this.handleDisabledEmail(meetup.events)} 
+                                    icon={<EmailIcon />}
+                                />
+                            </div>
                         </Tooltip>
                         <Link to={`/meetups/${meetup.uri}/edit`}>
                             <Tooltip title="Edit">

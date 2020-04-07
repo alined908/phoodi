@@ -306,7 +306,7 @@ const Navigation = (props) => {
 }
 
 Navigation.propTypes = {
-  authenticated: PropTypes.string.isRequired,
+  authenticated: PropTypes.string,
   user: userPropType,
   notifs: notifsPropType
 }

@@ -888,6 +888,10 @@ body {
   
 }
 
+.meetup-actions{
+  display: flex;
+}
+
 .meetup-card-icon.flex-clip {
   max-width: calc(100% - 170px);
 }

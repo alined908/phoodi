@@ -1,5 +1,5 @@
 import React from "react"
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import {CheckCircle as CheckCircleIcon, Check as CheckIcon} from '@material-ui/icons';
 import {sendMeetupInvite} from '../../actions/invite'
 import {connect} from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
@@ -34,6 +34,7 @@ const useStyles = makeStyles(theme => ({
 
 const MeetupFriend = (props) => {
     const [loading, setLoading] = React.useState(false)
+    const [success, setSuccess] = React.useState(false);
     const classes = useStyles();
     const timer = React.useRef();
 
@@ -46,9 +47,11 @@ const MeetupFriend = (props) => {
     const handleClick = (e) => {
         e.preventDefault()
         if (!loading) {
+            setSuccess(false);
             setLoading(true);
             timer.current = setTimeout(() => {
                 setLoading(false);
+                setSuccess(true);
               }, 800);
         }
         props.sendMeetupInvite(props.uri, props.friend.email)
@@ -70,7 +73,11 @@ const MeetupFriend = (props) => {
                 {props.isMember && <Tooltip title="Member"><CheckCircleIcon className={classes.check}/></Tooltip>}
                 {!props.isMember && 
                     <div className={classes.wrapper}>
-                        <Button variant="contained" disabled={loading} color="primary" size="small" onClick={(event) => handleClick(event)}>
+                        <Button 
+                            variant="contained" endIcon={success ? <CheckIcon/> : <></>} 
+                            disabled={loading || success} color="primary" 
+                            size="small" onClick={(event) => handleClick(event)}
+                        >
                             Invite
                         </Button>
                         {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
