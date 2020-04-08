@@ -2,20 +2,20 @@ import React, {Component} from "react";
 import '../../home.css'
 import {Typography, Button, IconButton} from '@material-ui/core'
 import {Link} from 'react-router-dom'
-import {ReactComponent as IceCreamIcon} from '../../assets/ice-cream.svg'
-import {ReactComponent as CandyAppleIcon} from '../../assets/food-and-restaurant.svg'
+import {ReactComponent as IceCreamIcon} from '../../assets/svgs/ice-cream.svg'
+import {ReactComponent as CandyAppleIcon} from '../../assets/svgs/food-and-restaurant.svg'
 import {ReactComponent as PuddingIcon} from '../../assets/svgs/chocolate.svg'
-import {ReactComponent as ChocolateIcon} from '../../assets/chocolate.svg'
-import {ReactComponent as CupCakeIcon} from '../../assets/cupcake.svg'
+import {ReactComponent as ChocolateIcon} from '../../assets/svgs/chocolate2.svg'
+import {ReactComponent as CupCakeIcon} from '../../assets/svgs/cupcake.svg'
 import {ReactComponent as HavingFunIcon} from '../../assets/svgs/undraw_having_fun_iais.svg'
 import {ReactComponent as TastingIcon} from "../../assets/svgs/undraw_tasting_de22.svg"
-import {ReactComponent as ClockIcon} from "../../assets/clock.svg"
+import {ReactComponent as ClockIcon} from "../../assets/svgs/clock.svg"
 import {ReactComponent as StreetFoodIcon} from "../../assets/svgs/undraw_street_food_hm5i.svg"
 import {ReactComponent as OnlineFriendsIcon} from "../../assets/svgs/undraw_online_friends_x73e.svg"
 import {ReactComponent as BreakFastIcon} from "../../assets/svgs/undraw_breakfast_psiw.svg"
 import {ReactComponent as HamburgerIcon} from "../../assets/svgs/undraw_Hamburger_8ge6.svg"
 import {ReactComponent as DonutLoveIcon} from "../../assets/svgs/undraw_donut_love_kau1.svg"
-import {ReactComponent as WheelIcon} from "../../assets/wheel.svg"
+import {ReactComponent as WheelIcon} from "../../assets/svgs/wheel.svg"
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 class HomeComponent extends Component {

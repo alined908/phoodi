@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`LoginComponent renders without crashing given props 1`] = `
+exports[`LoginComponent unit renders without crashing given props 1`] = `
 <div
   className="inner-wrap"
 >

@@ -90,7 +90,7 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo General
 - [ ] Create demo video
-- [ ] Handle 404 page
+- [x] Handle 404 page
 - [ ] Safari presentation
 - [ ] Have to click all fields/ Inconsistent meetup?
 - [ ] Search bar on top app nav bar
@@ -98,6 +98,7 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Testing 
 - [ ] Write tests for frontend
+- [ ] Write more tests for api
 - [ ] Write tests for consumers
 - [ ] Fallback if no latitude/longitude provided.
 - [ ] Form validation + Validation for time and date
@@ -127,7 +128,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Meetup email message nice html
 - [x] Send email, loading bar
 - [x] Loading bar for reload
-- [ ] Loading bar for restauraunt autocomplete
+- [x] Loading bar for restauraunt autocomplete
 - [ ] Block people, admin functionality for meetup member
 - [ ] MeetupEventOption Delete
 - [ ] Info dissapears on meetup edit form reload
@@ -139,6 +140,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Create Restauraunt Entity (primary key = yelp_id)
 - [ ] Outline itinerary of meetup
 - [ ] Reload old events, no options return
+- [ ] Notification Bell doesnt appear if public and member
 
 ## Todo Chat
 - [ ] Bundle chat messages together
@@ -149,6 +151,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Handle timestamp logic
 - [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
 - [ ] More messages below 
+- [ ] Notification Bell doesnt appear
 
 ## Todo UI
 - [ ] Change lock icon + default public/private
@@ -158,7 +161,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Add preferences warning if no preferences
 
 ## Todo Deploy
-- [ ] Serve build for reach app
+- [ ] Serve build for react app
 - [ ] Disable redux dev tools in production
 - [ ] Continuous integration
 - [ ] Separate css files

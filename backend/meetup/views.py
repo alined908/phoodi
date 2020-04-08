@@ -14,6 +14,7 @@ from random import shuffle
 import collections
 from django.forms.models import model_to_dict
 from meetup.serializers import PreferenceSerializer, UserSettingsSerializer, CategorySerializer, CategoryVerboseSerializer, UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer, FriendInviteSerializer, MeetupEventSerializer
+from ipware import get_client_ip
 
 @api_view(['GET'])
 def current_user(request):
@@ -220,7 +221,17 @@ class MeetupListView(APIView):
             meetups_json[meetup.uri] = serializer.data
         return meetups_json
 
-    def format_public_meetups(self, user, categories, coords, num_results=25):
+    def format_public_meetups(self, user, categories, coords, request, num_results=25):
+        client_ip, is_routable = get_client_ip(request)
+        if client_ip is None:
+            print("cannot get ip")
+        else:
+            print("got ip")
+            print(client_ip)
+            if is_routable:
+                pass
+            else:
+                pass
         if categories:
             try:
                 category_ids = [int(x) for x in categories.split(',')]
@@ -266,7 +277,7 @@ class MeetupListView(APIView):
         user = request.user
         if request.GET.get('type') == "public":
             coords = [request.GET.get('latitude'), request.GET.get('longitude'), request.GET.get('radius')]
-            meetups = self.format_public_meetups(user, request.GET.get('categories'), coords)
+            meetups = self.format_public_meetups(user, request.GET.get('categories'), coords, request)
         elif request.GET.get('type') == "private":
             meetups = self.format_meetups(user, request.GET.get('categories'))
         else:

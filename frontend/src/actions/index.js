@@ -1,4 +1,5 @@
-import {AUTH_USER, AUTH_ERROR, CLEAR_STORE, ADD_SETTINGS, EDIT_USER, ADD_GLOBAL_MESSAGE, GET_PREFERENCES, REORDER_PREFERENCES, ADD_PREFERENCE, DELETE_PREFERENCE, EDIT_PREFERENCE} from "../constants/action-types"
+import {AUTH_USER, AUTH_ERROR, CLEAR_STORE, ADD_SETTINGS, EDIT_USER, ADD_GLOBAL_MESSAGE, GET_PREFERENCES, 
+    REORDER_PREFERENCES, ADD_PREFERENCE, DELETE_PREFERENCE, EDIT_PREFERENCE} from "../constants/action-types"
 import {axiosClient} from '../accounts/axiosClient'
 import AuthenticationService from "../accounts/AuthenticationService";
 import {history} from '../components/MeetupApp'
@@ -22,6 +23,7 @@ export const signup = (formProps, redirectOnSuccess) => async dispatch => {
 
 export const signout = () => async dispatch => {
     localStorage.removeItem('token')
+    localStorage.removeItem('user')
     // localStorage.removeItem('expiration')
     dispatch({type: CLEAR_STORE,payload: {}})
     history.push('/')
@@ -31,7 +33,7 @@ export const signin = (formProps, redirectOnSuccess) => async dispatch => {
     try {
         const response = await axiosClient.post('/api/token-auth/', formProps)
         console.log(response.data)
-        AuthenticationService.registerSuccessfulLogin(response.data.token,)
+        AuthenticationService.registerSuccessfulLogin(response.data.token)
         localStorage.setItem("user", JSON.stringify(response.data.user[Object.keys(response.data.user)[0]]))
         // const response2 = await axiosClient.post(`/api/token-refresh/`, {"token": AuthenticationService.retrieveToken()})
         // localStorage.setItem("refresh", response2.data.token)

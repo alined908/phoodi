@@ -1,5 +1,5 @@
 import React from "react"
-import {Check as CheckIcon, SentimentSatisfied} from '@material-ui/icons';
+import {Check as CheckIcon} from '@material-ui/icons';
 import {IconButton, CircularProgress, makeStyles} from "@material-ui/core"
 import { green } from '@material-ui/core/colors';
 import PropTypes from 'prop-types'
