@@ -3,4 +3,5 @@ RUN mkdir /app
 WORKDIR /app
 COPY . .
 RUN npm install
+RUN npm install serve
 EXPOSE 8003
