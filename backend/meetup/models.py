@@ -190,12 +190,12 @@ class Meetup(models.Model):
             user = member.user
             email = user.email
             first_name = user.first_name
-            params = {"first_name": first_name, "meetup_uri": BASE_DEV_URL + "meetups/" + self.uri}
+            params = {"first_name": first_name, "meetup_uri": BASE_URL + "meetups/" + self.uri}
             msg_plain = render_to_string('meetup.txt', params)
             msg_html = render_to_string('meetup.html', params)
             message = (subject, msg_plain, msg_html, "team@phoodie.me", [email])
             messages.append(message)
-            
+
         send_mass_html_mail(messages)
 
 class MeetupMember(models.Model):
