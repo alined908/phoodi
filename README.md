@@ -161,8 +161,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Add preferences warning if no preferences
 
 ## Todo Deploy
-- [ ] Serve build for react app
-- [ ] Disable redux dev tools in production
+- [x] Serve build for react app
 - [ ] Continuous integration
 - [ ] Separate css files
 - [ ] Cache images
