@@ -13,7 +13,6 @@ class LocationService extends Component {
     }
 
     getUserLocation = () => {
-        console.log('hello')
         const options = {
             enableHighAccuracy: true,
             timeout: 5000,

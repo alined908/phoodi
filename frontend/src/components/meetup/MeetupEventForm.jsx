@@ -8,6 +8,7 @@ import {renderDatePicker, renderTextField, CategoryAutocomplete} from '../compon
 import {Link} from 'react-router-dom'
 import {axiosClient} from "../../accounts/axiosClient"
 import {history} from '../MeetupApp'
+import {addGlobalMessage} from '../../actions/globalMessages'
 
 const marks = [{value: 0.25},{value: 0.50},{value: 1},{value: 2},{value: 3},{value: 5},{value: 10},{value: 25}]
 const convert = {0.25: 400, 0.50: 800, 1: 1600, 2: 3200, 3: 4800, 5: 8000, 10: 16000, 25: 40000}
@@ -78,25 +79,33 @@ class MeetupEventForm extends Component {
         return entries
     }
 
-    onSubmit = (formProps) => {
+    onSubmit = async (formProps) => {
         const indices = this.state.prices.reduce((out, bool, index) => bool ? out.concat(index+1) : out, [])
         const prices = indices.join(", ")
         const uri = this.props.match.params.uri
         const data = {entries: this.handleEntries(), distance: convert[this.state.distance], price: prices, random: this.state.random,...formProps}
-        console.log(data)
         
         if (this.props.type === "create"){
-            axiosClient.post(
-                `/api/meetups/${uri}/events/`, data, {headers: {
-                    "Authorization": `JWT ${localStorage.getItem('token')}`
-            }})
+            try {
+                const response = await axiosClient.post(
+                    `/api/meetups/${uri}/events/`, data, {headers: {
+                        "Authorization": `JWT ${localStorage.getItem('token')}`
+                }})
+            }  catch(e){
+                this.props.addGlobalMessage("error", "Something went wrong")
+            }
         } 
         if (this.props.type === "edit") {
-            axiosClient.patch(
-                `/api/meetups/${uri}/events/${this.props.match.params.id}/`, data, {headers: {
-                    "Authorization": `JWT ${localStorage.getItem('token')}`
-            }})
+            try {
+                const response = axiosClient.patch(
+                    `/api/meetups/${uri}/events/${this.props.match.params.id}/`, data, {headers: {
+                        "Authorization": `JWT ${localStorage.getItem('token')}`
+                }})
+            } catch(e){
+                this.props.addGlobalMessage("error", "Something went wrong")
+            }
         }
+        
         history.push(`/meetups/${uri}`)
     }
 
@@ -223,7 +232,8 @@ function mapStateToProps(state, ownProps){
 const mapDispatchToProps = {
     addMeetupEvent,
     getMeetup,
-    getMeetupEvents
+    getMeetupEvents,
+    addGlobalMessage
 }
 
 export default compose (
