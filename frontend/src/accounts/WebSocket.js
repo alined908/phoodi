@@ -13,10 +13,6 @@ export default class WebSocketService {
     }
 
     connect(path){
-        console.log('hello'),
-        console.log(process.env.NODE_ENV)
-        console.log(process.env.REACT_APP_PROD_BASE_URL)
-        console.log(process.env.REACT_APP_DEV_BASE_URL)
         const baseURL = (process.env.NODE_ENV === 'production') ? process.env.REACT_APP_PROD_BASE_URL: process.env.REACT_APP_DEV_BASE_URL
         var url = new URL(path, baseURL)
         url.protocol = url.protocol.replace('http', 'ws')
