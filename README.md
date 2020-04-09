@@ -130,10 +130,10 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Loading bar for reload
 - [x] Loading bar for restauraunt autocomplete
 - [x] Load categories for meetup event custom
+- [x] Custom event doesn't automatically render
 - [ ] Block people, admin functionality for meetup member
 - [ ] MeetupEventOption Delete
 - [ ] Info dissapears on meetup edit form reload
-- [ ] Custom event doesn't automatically render
 - [ ] Add scrollable notifications box for meetup
 - [ ] Create meetup with member
 - [ ] Refactor onTagsChange of MeetupsComponent
@@ -171,3 +171,6 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo New Features
 - [ ] Add calendar of meetups
 - [ ] Find people who have similar food taste near you?
+
+## Todo Next Iteration
+- [ ] Possible convert forms to Backdrop Form Dialogs
