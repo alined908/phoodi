@@ -48,6 +48,7 @@ export default function RestaurauntAutocomplete(props) {
             term: request.input, 
             latitude: props.coords.latitude,
             longitude: props.coords.longitude,
+            radius: props.radius,
             limit: 8
         }
         axios.request({

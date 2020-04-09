@@ -225,7 +225,7 @@ class MeetupEvent extends Component {
                                 src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}/>
                                 <RestaurauntAutocomplete 
                                     coords={this.props.coords} 
-                                    radius={this.props.settings.radius} 
+                                    radius={event.distance} 
                                     label="Type a restauraunt name or category..."
                                     textValue={this.state.searchInput}
                                     handleSearchValueClick={this.handleSearchValueClick}
