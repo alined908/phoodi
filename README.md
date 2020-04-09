@@ -157,7 +157,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Change lock icon + default public/private
 - [x] Pagination on entities
 - [x] Ellipsis on navbar avatar email
-- [ ] Favicon
+- [x] Favicon
 - [ ] Add preferences warning if no preferences
 
 ## Todo Deploy
@@ -165,7 +165,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Continuous integration
 - [ ] Separate css files
 - [ ] Cache images
-- [ ] Link Headers (react-helmet)
+- [x] Link Headers (react-helmet)
 
 ## Todo New Features
 - [ ] Add calendar of meetups
