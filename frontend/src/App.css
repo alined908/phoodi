@@ -100,11 +100,16 @@ body {
   padding: 0 1rem;
 }
 
-.chat-bar-none{
+.no-entity{
   display:flex;
   justify-content: center;
   align-items: center;
   height: 100%;
+  padding: 0 1.5rem;
+}
+
+.no-entity-text{
+  margin-left: 1rem;
 }
 
 .chat-window{
@@ -968,7 +973,7 @@ body {
   height: calc(100% - 60px - 60px);
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: #F7F9FD;
+  background-color: rgb(250,250,250);
   padding: 0 1rem;
 }
 

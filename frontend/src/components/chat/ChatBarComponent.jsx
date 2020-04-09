@@ -98,8 +98,9 @@ class ChatBarComponent extends Component {
                 <div className="chat-bar-contacts">
                     {!this.props.isRoomsInitialized && <div>Initializing Contacts...</div>}
                     {(this.props.isRoomsInitialized && rooms.length === 0) && 
-                        <div className="chat-bar-none">
-                            <ErrorIcon style={{color: "rgb(255, 212, 96)"}}/> &nbsp; No chat rooms match criteria!
+                        <div className="no-entity">
+                            <ErrorIcon style={{color: "rgb(255, 212, 96)"}}/>
+                            <span className="no-entity-text">No chat rooms match criteria!</span>
                         </div>
                     }
                     {this.props.isRoomsInitialized && rooms.map((room) => 

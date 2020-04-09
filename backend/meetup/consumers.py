@@ -144,12 +144,12 @@ class UserNotificationConsumer(AsyncWebsocketConsumer):
         content = {
             'command': 'fetch_notifs',
             'message': {
-                            "chat_message": chat_notifs, 
-                            "friend_inv": friend_inv_notifs, 
-                            "meetup_inv": meetup_inv_notifs,
-                            "meetup": meetup_notifs,
-                            "friend": friend_notifs
-                        }
+                "chat_message": chat_notifs, 
+                "friend_inv": friend_inv_notifs, 
+                "meetup_inv": meetup_inv_notifs,
+                "meetup": meetup_notifs,
+                "friend": friend_notifs
+            }
         }
 
         await self.channel_layer.group_send(
@@ -206,10 +206,14 @@ class MeetupConsumer(AsyncWebsocketConsumer):
 
     async def new_event(self, command):
         data = command['data']
-        meetup, creator, title, start, end, entries, prices, distance,random = data['uri'],data['creator'], data['title'], data['start'], data['end'], data['entries'], data['prices'], data['distance'], data['random']
+        meetup, creator, title, start, end = data['uri'],data['creator'], data['title'], data['start'], data['end']
+        entries, prices, distance, random = data['entries'], data['prices'], data['distance'], data['random']
         meetup_obj = await database_sync_to_async(Meetup.objects.get)(uri=meetup)
         creator = await database_sync_to_async(MeetupMember.objects.get)(pk=creator)
-        event = await database_sync_to_async(MeetupEvent.objects.create)(meetup = meetup_obj, creator=creator, title=title, start=start, end=end, entries=entries, distance=distance, price=prices, random=random)
+        event = await database_sync_to_async(MeetupEvent.objects.create)(
+            meetup = meetup_obj, creator=creator, title=title, start=start, end=end, 
+            entries=entries, distance=distance, price=prices, random=random
+            )
         serializer = await self.get_event_serializer(event)
 
         content = {

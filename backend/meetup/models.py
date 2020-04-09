@@ -231,6 +231,8 @@ class MeetupEvent(models.Model):
         return super(MeetupEvent, self).save(*args, **kwargs)
 
     def convert_entries_to_string(self):
+        print("hello")
+        print(self.entries)
         categories = ""
         for i, key in enumerate(self.entries): 
             category = Category.objects.get(api_label=key)

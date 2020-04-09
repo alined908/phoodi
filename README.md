@@ -129,6 +129,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Send email, loading bar
 - [x] Loading bar for reload
 - [x] Loading bar for restauraunt autocomplete
+- [x] Load categories for meetup event custom
 - [ ] Block people, admin functionality for meetup member
 - [ ] MeetupEventOption Delete
 - [ ] Info dissapears on meetup edit form reload
@@ -139,7 +140,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Add friends, redux action/websockets
 - [ ] Create Restauraunt Entity (primary key = yelp_id)
 - [ ] Outline itinerary of meetup
-- [ ] Reload old events, no options return
+- [ ] Reload old events, no options return  
 - [ ] Notification Bell doesnt appear if public and member
 
 ## Todo Chat
@@ -151,14 +152,14 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Handle timestamp logic
 - [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
 - [ ] More messages below 
-- [ ] Notification Bell doesnt appear
+- [ ] Notification Bell doesnt appear on new messages
 
 ## Todo UI
-- [ ] Change lock icon + default public/private
+- [x] Change lock icon + default public/private
 - [x] Pagination on entities
 - [x] Ellipsis on navbar avatar email
 - [x] Favicon
-- [ ] Add preferences warning if no preferences
+- [x] Add preferences warning if no preferences
 
 ## Todo Deploy
 - [x] Serve build for react app

@@ -5,7 +5,7 @@ import {MeetupCard, CategoryAutocomplete} from "../components"
 import {Grid, Grow, Tooltip, IconButton, FormGroup, FormControlLabel, Checkbox, Avatar} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import moment from "moment"
-import { Lock as LockIcon, Public as PublicIcon, Add as AddIcon, Search as SearchIcon, Edit as EditIcon} from '@material-ui/icons'
+import { Lock as LockIcon, Public as PublicIcon, Add as AddIcon, Search as SearchIcon, Edit as EditIcon, Error as ErrorIcon, People as PeopleIcon} from '@material-ui/icons'
 import {getPreferences} from "../../actions/index"
 import PropTypes from "prop-types"
 import { userPropType, preferencePropType, meetupPropType} from '../../constants/prop-types';
@@ -158,6 +158,12 @@ class MeetupsComponent extends Component {
                             <span>{pref.category.label}</span>
                         </div>
                     )}
+                    {this.state.preferences.length === 0 && 
+                        <div className="no-entity"> 
+                            <ErrorIcon style={{color: "rgb(255, 212, 96)"}}/> 
+                        <span className="no-entity-text">No preferences! Add some by pressing the top right pencil.</span>
+                    </div>
+                    }
                 </div>
             )
         }
@@ -218,12 +224,12 @@ class MeetupsComponent extends Component {
                                         <PublicIcon/>
                                     </IconButton>
                             </Tooltip>
-                            <Tooltip title="Private Meetups">
+                            <Tooltip title="Your Meetups">
                                 <IconButton 
                                     onClick={() => this.handleMeetupsType("private")} 
                                     color={this.state.public ? "default" : "primary"}
                                 >
-                                    <LockIcon/>
+                                    <PeopleIcon/>
                                 </IconButton>
                             </Tooltip>
                         </div>   

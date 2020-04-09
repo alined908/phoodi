@@ -104,7 +104,7 @@ class MeetupForm extends Component {
                                     <FormControlLabel label="Public" control={<Radio color="primary" checked={this.state.public} onClick={() => this.handlePublicClick(true)}/>} />
                                     <FormControlLabel label="Private" control={<Radio color="primary" checked={!this.state.public} onClick={() => this.handlePublicClick(false)}/>}/>
                                 </Grid>
-                                <Grid style={{marginTop: "1rem"}} xs={12}>
+                                <Grid item style={{marginTop: "1rem"}} xs={12}>
                                     <Fab type="submit" variant="extended" color="primary" aria-label="add">{create ? "Add Meetup" : "Edit Meetup"}</Fab>
                                 </Grid>
                             </Grid>

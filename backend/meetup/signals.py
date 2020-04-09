@@ -54,6 +54,8 @@ def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
     if created:
         if instance.random:
             instance.generate_options()
+        else:
+            instance.convert_entries_to_string()
         #Handle Notif Update
         for member in meetup.members.all():
             if member != instance.creator:

@@ -4,6 +4,7 @@ import {reorderPreferences} from "../../actions/index"
 import {connect} from 'react-redux'
 import {Preference} from "../components"
 import PropTypes from "prop-types"
+import {Error as ErrorIcon} from "@material-ui/icons"
 import {preferencePropType, userPropType} from "../../constants/prop-types"
 
 const SortablePreference = SortableElement(({pref, sortIndex, locked, isUser, user}) => {
@@ -40,6 +41,12 @@ class Preferences extends Component {
                             return <Preference key={pref.id} pref={pref} isUser={this.props.isUser} locked={this.props.locked} sortIndex={index} user={this.props.user}></Preference>
                         })}
                     </>
+                }
+                {this.props.preferences.length === 0 && 
+                    <div className="no-entity"> 
+                        <ErrorIcon style={{color: "rgb(255, 212, 96)"}}/> 
+                        <span className="no-entity-text">No preferences! Add some by searching below.</span>
+                    </div>
                 }
             </div> 
         )}
