@@ -11,7 +11,7 @@ from rest_framework import permissions, status
 from django.db.models.expressions import RawSQL
 from django.db.models import Q
 from random import shuffle
-import collections
+import collections, geocoder
 from django.forms.models import model_to_dict
 from meetup.serializers import PreferenceSerializer, UserSettingsSerializer, CategorySerializer, CategoryVerboseSerializer, UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer, FriendInviteSerializer, MeetupEventSerializer
 from ipware import get_client_ip
@@ -222,16 +222,6 @@ class MeetupListView(APIView):
         return meetups_json
 
     def format_public_meetups(self, user, categories, coords, request, num_results=25):
-        client_ip, is_routable = get_client_ip(request)
-        if client_ip is None:
-            print("cannot get ip")
-        else:
-            print("got ip")
-            print(client_ip)
-            if is_routable:
-                pass
-            else:
-                pass
         if categories:
             try:
                 category_ids = [int(x) for x in categories.split(',')]
@@ -241,7 +231,21 @@ class MeetupListView(APIView):
         else:
             category_ids = []
 
-        latitude, longitude, radius = coords[0], coords[1], coords[2]
+        client_ip, is_routable = get_client_ip(request)
+        
+        if client_ip:
+            if is_routable:
+                geocode = geocoder.ip(client_ip)
+                location = geocode.latlng
+                lat, lng = location[0], location[1]
+            else:
+                lat, lng = None, None
+
+        latitude, longitude, radius = coords[0] or lat, coords[1] or lng, coords[2] or 25
+
+        if not latitude or not longitude:
+            return {}
+
         distance_query = RawSQL(
             ' SELECT id FROM \
                 (SELECT *, (3959 * acos(cos(radians(%s)) * cos(radians(latitude)) * \
