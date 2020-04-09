@@ -28,7 +28,7 @@ npm test
 ## Deployment (For AWS EC2, Amazon Linux 2)
 **1. SSH into EC2 instance (t2.medium is good, t2.micro stalls due to cpu/memory overusage)**
 ``` 
-ssh -i meetup.pem ec2-user@ec2-54-67-104-152.us-west-1.compute.amazonaws.com 
+ssh -i meetup.pem ec2-user@52.9.232.105
 ```
 **2. Install Docker & Grant Permissions**
 ```
