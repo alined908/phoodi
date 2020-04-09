@@ -91,6 +91,7 @@ class MeetupEventForm extends Component {
                     `/api/meetups/${uri}/events/`, data, {headers: {
                         "Authorization": `JWT ${localStorage.getItem('token')}`
                 }})
+                history.push(`/meetups/${uri}`)
             }  catch(e){
                 this.props.addGlobalMessage("error", "Something went wrong")
             }
@@ -101,12 +102,11 @@ class MeetupEventForm extends Component {
                     `/api/meetups/${uri}/events/${this.props.match.params.id}/`, data, {headers: {
                         "Authorization": `JWT ${localStorage.getItem('token')}`
                 }})
+                history.push(`/meetups/${uri}`)
             } catch(e){
                 this.props.addGlobalMessage("error", "Something went wrong")
             }
         }
-        
-        history.push(`/meetups/${uri}`)
     }
 
     handlePrice = (price) => {
