@@ -15,6 +15,7 @@ import AuthenticationService from "../../accounts/AuthenticationService"
 import {axiosClient} from '../../accounts/axiosClient'
 import PropTypes from 'prop-types'
 import {meetupPropType, userPropType, friendPropType} from '../../constants/prop-types'
+import {Helmet} from 'react-helmet'
 
 class Meetup extends Component {
     constructor(props){
@@ -233,6 +234,10 @@ class Meetup extends Component {
 
         return (
             <div className="inner-wrap">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>{`Meetups - ${meetup.name}`}</title>
+                </Helmet>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         {renderInformation(meetup.name, meetup.datetime, meetup.location)}

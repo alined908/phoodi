@@ -66,7 +66,7 @@ export const getMeetup = (uri) => async dispatch => {
         // console.log(response)
         dispatch({type: ADD_MEETUP, payload: response.data})
     } catch(e){
-        console.log(e)
+        history.push('/404')
     }
 }
 

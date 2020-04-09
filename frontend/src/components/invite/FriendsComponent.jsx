@@ -8,6 +8,7 @@ import {removeNotifs} from "../../actions/notifications"
 import {Friend, UserAutocomplete} from '../components'
 import PropTypes from 'prop-types'
 import { friendPropType, userPropType } from '../../constants/prop-types'
+import {Helmet} from 'react-helmet'
 
 class FriendsComponent extends Component{
     constructor(props){
@@ -52,7 +53,12 @@ class FriendsComponent extends Component{
 
     render(){
         return (
-            <div className="inner-wrap">   
+            <div className="inner-wrap">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Friends</title>
+                    <meta name="description" content="Phoodie Friends" />
+                </Helmet>   
                 {!this.props.isFriendsInitialized && <div>...Initializing Friends</div>}
                 {this.props.isFriendsInitialized && 
                     <div className="inner-header elevate">

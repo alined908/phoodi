@@ -5,6 +5,7 @@ import Geocode from "react-geocode";
 import {connect} from 'react-redux'
 import {addSettings} from '../../actions/index'
 import PropTypes from "prop-types"
+import {Helmet} from 'react-helmet'
 
 class SettingsComponent extends Component {
     constructor(props){
@@ -52,6 +53,11 @@ class SettingsComponent extends Component {
     render () {
         return (
             <div className="settings elevate">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Settings</title>
+                    <meta name="description" content="Phoodie user settings" />
+                </Helmet>
                 <div className="form-header">Settings</div>
                 <div className="">
                     <FormControl style={{width: "100%"}}>

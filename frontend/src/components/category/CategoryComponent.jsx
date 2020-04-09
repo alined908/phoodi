@@ -8,6 +8,8 @@ import {addPreference, deletePreference} from '../../actions/index'
 import {connect} from 'react-redux'
 import PropTypes from "prop-types"
 import {userPropType} from "../../constants/prop-types"
+import {Helmet} from 'react-helmet'
+import {history} from '../MeetupApp'
 
 class CategoryComponent extends Component {
     constructor(props){
@@ -65,7 +67,7 @@ class CategoryComponent extends Component {
                 numLiked: category.data.num_liked, friends: friends.data, meetups: Object.values(meetups.data.meetups)
             })
         } catch(e){
-            this.setState({loadingError: true})
+            history.push('/404')
         }
     }
 
@@ -82,6 +84,11 @@ class CategoryComponent extends Component {
         const category = this.state.category
         return (
             <div className="category">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <meta name="description" content="Discover new categories." />
+                    <title>{`Discover ${category.label === undefined ? "" : category.label}`}</title>
+                </Helmet>
                 <div className="category-header elevate">
                     <div className="category-header-avatar">
                         <span className="category-avatar">

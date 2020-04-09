@@ -9,6 +9,7 @@ import {Person as PersonIcon, Event as EventIcon} from "@material-ui/icons"
 import PropTypes from 'prop-types';
 // import throttle from 'lodash/throttle'
 import {chatMessagePropType} from "../../constants/prop-types"
+import {Helmet} from 'react-helmet'
 
 class ChatWindowComponent extends Component {
     constructor(props){
@@ -79,9 +80,15 @@ class ChatWindowComponent extends Component {
     }
  
     render () {
-    
         return (
             <div className="chat-window elevate" ref={this.chatsRef}>
+                {(this.props.activeRoom && this.props.room) && 
+                    <Helmet>
+                        <meta charSet="utf-8" />
+                        <title>{`Chat - ${this.props.room.name ? this.props.room.name : this.props.room.members[this.determineOtherUser()].first_name}`}</title>
+                        <meta name="description" content="Phoodie Chat" />
+                    </Helmet>
+                }
                 <div className="chat-header">
                     {this.props.room && this.props.room.meetup && 
                         <Link to={`/meetups/${this.props.room.uri}`}>

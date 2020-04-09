@@ -5,6 +5,7 @@ import {getMessages, setActiveRoom, addMessage, removeActiveRoom} from "../../ac
 import {getRooms} from '../../actions/chat';
 import WebSocketService from "../../accounts/WebSocket"
 import AuthenticationService from '../../accounts/AuthenticationService';
+import {Helmet} from "react-helmet"
 
 class ChatComponent extends Component {
     constructor(props){
@@ -60,6 +61,11 @@ class ChatComponent extends Component {
 
         return (
             <div className={"chat " + (this.state.nonMobile ? "" : "chat-mobile")}>
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Phoodie - Chat</title>
+                    <meta name="description" content="Phoodie Chat" />
+                </Helmet>
                 <ChatBarComponent rooms={this.props.rooms}/>
                 {renderChatWindow()}
             </div>

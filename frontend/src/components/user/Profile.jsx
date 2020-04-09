@@ -8,6 +8,8 @@ import {Lock as LockIcon, LockOpen as LockOpenIcon, Search as SearchIcon, Edit a
 import {Friend, CategoryAutocomplete, Preferences} from "../components"
 import PropTypes from "prop-types"
 import { userPropType } from '../../constants/prop-types'
+import {history} from '../MeetupApp'
+import {Helmet} from 'react-helmet'
 
 class Profile extends Component {
     constructor(props){
@@ -36,16 +38,21 @@ class Profile extends Component {
     }
 
     getInformation = async () => {
-        const [profile, friends] = await Promise.all(
-            [
-                axiosClient.get(`/api/users/${this.props.match.params.id}/`), 
-                axiosClient.get(
-                    `/api/users/${this.props.match.params.id}/friends/`, {headers: {
-                        "Authorization": `JWT ${localStorage.getItem('token')}`
-                }})
-            ]
-        )
-        this.setState({user: profile.data, friends: friends.data, filteredFriends: friends.data, userLoaded: true})
+        try {
+            const [profile, friends] = await Promise.all(
+                [
+                    axiosClient.get(`/api/users/${this.props.match.params.id}/`), 
+                    axiosClient.get(
+                        `/api/users/${this.props.match.params.id}/friends/`, {headers: {
+                            "Authorization": `JWT ${localStorage.getItem('token')}`
+                    }})
+                ]
+            )
+            this.setState({user: profile.data, friends: friends.data, filteredFriends: friends.data, userLoaded: true})
+        }
+        catch(e){
+            history.push("/404")
+        }
     }
 
     handleLock = () => {
@@ -186,6 +193,15 @@ class Profile extends Component {
 
         return (
             <div className="profile">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>
+                        {`Phoodie
+                        ${this.state.user.first_name !== undefined ? " - " + this.state.user.first_name : ""} 
+                        ${ this.state.user.last_name !== undefined ? " " + this.state.user.last_name : ""}`}
+                    </title>
+                    <meta name="description" content="Phoodie Profile" />
+                </Helmet>
                 {this.state.userLoaded && renderPreferences()}
                 {this.state.userLoaded && renderProfile()}
                 {this.state.userLoaded && renderFriends()}

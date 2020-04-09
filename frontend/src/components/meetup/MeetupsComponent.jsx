@@ -9,6 +9,7 @@ import { Lock as LockIcon, Public as PublicIcon, Add as AddIcon, Search as Searc
 import {getPreferences} from "../../actions/index"
 import PropTypes from "prop-types"
 import { userPropType, preferencePropType, meetupPropType} from '../../constants/prop-types';
+import {Helmet} from "react-helmet";
 
 class MeetupsComponent extends Component {
     constructor(props){
@@ -163,6 +164,11 @@ class MeetupsComponent extends Component {
 
         return (
             <div className="meetups-component">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <meta name="description" content="Meetups near you!" />
+                    <title>Meetups</title>
+                </Helmet>
                 <div className="meetups-categories">
                     <div className="meetups-categories-inner elevate">
                         <div className="meetups-categories-top">

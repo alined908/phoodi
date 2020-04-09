@@ -31,6 +31,7 @@ class Body extends Component {
                     <AuthenticatedRoute path="/settings" component={SettingsComponent}/>
                     <AuthenticatedRoute path="/profile/edit" component={(props) => <RegisterComponent {...props} type={"edit"}/>}/>
                     <AuthenticatedRoute path="/profile/:id" component={Profile}/>
+                    <Route path="/404" component={ErrorComponent}/>
                     <Route component={ErrorComponent}/>
                 </Switch>
                 <GlobalMessage/>

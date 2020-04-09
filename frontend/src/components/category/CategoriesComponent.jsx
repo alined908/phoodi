@@ -4,6 +4,7 @@ import {Avatar, IconButton, Tooltip, Grow} from '@material-ui/core'
 import Skeleton from '@material-ui/lab/Skeleton';
 import CachedIcon from '@material-ui/icons/Cached';
 import {Link} from 'react-router-dom'
+import {Helmet} from 'react-helmet'
 
 class CategoriesComponent extends Component {
     constructor(props){
@@ -51,6 +52,11 @@ class CategoriesComponent extends Component {
     render () {
         return (
             <div className="categories-section">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <meta name="description" content="Discover new categories." />
+                    <title>Categories</title>
+                </Helmet>
                 <div className="categories-horz">
                     <div className="categories-horz-description">
                         Most Popular Categories

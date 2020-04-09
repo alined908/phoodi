@@ -6,6 +6,7 @@ import {Invite} from "../components"
 import {Grid, Typography} from "@material-ui/core"
 import PropTypes from "prop-types"
 import {invitePropType} from '../../constants/prop-types'
+import {Helmet} from 'react-helmet'
 
 class Invites extends Component {
 
@@ -23,6 +24,11 @@ class Invites extends Component {
     render () {
         return (
             <div className="inner-wrap">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Invites</title>
+                    <meta name="description" content="Phoodie Invites" />
+                </Helmet>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6}>
                         {!this.props.isMeetupInvitesInitialized ? 

@@ -79,7 +79,6 @@ export const getPreferences = (user_id) => async dispatch => {
         dispatch({type: GET_PREFERENCES, payload: response.data})
     } catch(e) {
         console.log(e)
-        dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Unable to get preference."}})
     }
 }
 

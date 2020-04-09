@@ -17,6 +17,7 @@ import {ReactComponent as HamburgerIcon} from "../../assets/svgs/undraw_Hamburge
 import {ReactComponent as DonutLoveIcon} from "../../assets/svgs/undraw_donut_love_kau1.svg"
 import {ReactComponent as WheelIcon} from "../../assets/svgs/wheel.svg"
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import {Helmet} from 'react-helmet'
 
 class HomeComponent extends Component {
 
@@ -26,35 +27,9 @@ class HomeComponent extends Component {
     }
 
     render() {
-        // const tophand = () => {
-        //     return (
-        //         <div className="claw">
-        //             <div className="base">
-        //             </div>
-        //             <div className="claw-body">
-        //                 <div className="claw-left">
-        //                     <div className="left-top">
-        //                     </div> 
-        //                     <div className="left-bot">
-        //                     </div>  
-        //                 </div>
-        //                 <div className="claw-right">
-        //                     <div className="right-top">
-        //                     </div> 
-        //                     <div className="right-bot">
-        //                     </div>  
-        //                 </div>
-        //             </div>
-                    
-        //         </div>
-        //     )
-        // }
-
-
         const food = () => {
             return (
                 <div className="food-belt">
-                    {/* {tophand()} */}
                     <div className="food">
                         <IceCreamIcon className={"cupcake svg-1"} height={50} width={50}/>
                         <CandyAppleIcon className={"cupcake svg-2"} height={50} width={50}/>
@@ -71,6 +46,11 @@ class HomeComponent extends Component {
 
         return (
             <div className="home">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Phoodie</title>
+                    <meta name="description" content="Phoodie Home Page" />
+                </Helmet>
                 <div className="top">
                     {food()}
                     <div className="scrollbot" onClick={this.handleScroll}>

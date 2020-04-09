@@ -110,7 +110,7 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo User
 - [ ] Add google social auth 
 - [ ] Confirm email, Change password
-- [ ] Get user location before render
+- [x] Get user location before render
 - [ ] Settings doesnt populate after save and reload
 - [ ] Past activity
 - [ ] Change name of preference
