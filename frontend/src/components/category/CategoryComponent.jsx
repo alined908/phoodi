@@ -36,6 +36,8 @@ class CategoryComponent extends Component {
     }
 
     getInformation = async () => {
+        console.log(this.props.match.params.api_label)
+        console.log(this.props.user.settings)
         try {
             const [category, friends, meetups] = await Promise.all
                 ([
@@ -56,9 +58,9 @@ class CategoryComponent extends Component {
                         params: {
                             type: "public",
                             categories: this.props.match.params.api_label,
-                            latitude: this.props.user.settings.latitude,
-                            longitude: this.props.user.settings.longitude,
-                            radius: this.props.user.settings.radius
+                            latitude: this.props.user.settings ? this.props.user.settings.latitude: null,
+                            longitude: this.props.user.settings ? this.props.user.settings.longitude: null,
+                            radius: this.props.user.settings ? this.props.user.settings.radius : 25
                         }
                     })
                 ])

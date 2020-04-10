@@ -108,9 +108,13 @@ class MeetupEvent extends Component {
                         </Grid>:
                         <div className="explanation elevate">
                             <span style={{marginRight: "1rem"}}><ErrorIcon style={{color: "rgb(255, 212, 96)"}}/></span>
-                            <span>No options available. 
-                            This may be due to no options being available at this time or the categories specified don't have enough options.
-                            Press the edit button to add more categories or change time if inputted incorrectly.</span>
+                            {event.random ? <span>
+                                No options available. 
+                                This may be due to no options being available at this time or the categories specified don't have enough options.
+                                Press the edit button to add more categories or change time if inputted incorrectly.
+                            </span> : <span>
+                                    No options chosen.  Click the top right magnifying glass to search for restauraunts near you!
+                                </span>}
                         </div>
                     }
                 </div>

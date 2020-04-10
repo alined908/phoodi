@@ -242,7 +242,7 @@ class MeetupsComponent extends Component {
                         </div>
                         <div className="category-chip">
                             {this.state.public ? 
-                                <>{this.props.user.settings ? this.props.user.settings.radius : "X"} miles</> :
+                                <>{this.props.user.settings ? this.props.user.settings.radius : "25"} miles</> :
                                 <>X miles</>
                             }
                         </div>

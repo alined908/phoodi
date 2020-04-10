@@ -1,5 +1,8 @@
 # Meetup App
-Demo @ https://phoodie.me
+Prototype @ https://phoodie.me
+Demo-Part 1 @ https://www.loom.com/share/87ef4564bb8e47709831683366ddb782 
+Demo-Part 2 @ https://www.loom.com/share/91b96d0291bf42bf9d92cf86d4a7dad4
+Demo-Part 3 @ https://www.loom.com/share/9f4782220f1a4395bbbede33b046eb73
 
 The purpose of the application is to allow friend groups to schedule meetups and decide where to eat quickly.  We always run into the problem where no one knows what to eat, where to eat, and when to eat.  The hope is that this will simplify the process.  Eventually, the goal is to connect people with other nearby people that share common food interests and hobbies. Use cases of this includes college campuses, metropolitan cities, etc. The end goal is to recreate a more social Yelp.
 
@@ -89,12 +92,13 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Daniel Lee** 
 
 ## Todo General
-- [ ] Create demo video
+- [x] Create demo video
 - [x] Handle 404 page
 - [ ] Safari presentation
 - [ ] Have to click all fields/ Inconsistent meetup?
 - [ ] Search bar on top app nav bar
 - [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
+- [ ] Specify websocket protocol on link
 
 ## Todo Testing 
 - [ ] Write tests for frontend
@@ -120,6 +124,7 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo Friends
 - [ ] Friends delete
 - [ ] Give nickname
+- [ ] Add friend button on profile and maybe on the meetup member
 
 ## Todo Invite
 - [ ] Change meetup friend state if invite sent
@@ -131,6 +136,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Loading bar for restauraunt autocomplete
 - [x] Load categories for meetup event custom
 - [x] Custom event doesn't automatically render
+- [x] Fix Restauraunt autocomplete bug if no user settings
 - [ ] Block people, admin functionality for meetup member
 - [ ] MeetupEventOption Delete
 - [ ] Info dissapears on meetup edit form reload
@@ -142,6 +148,8 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Outline itinerary of meetup
 - [ ] Reload old events, no options return  
 - [ ] Notification Bell doesnt appear if public and member
+- [x] When clicked on category it 404s
+- [ ] Ban used again for some reason
 
 ## Todo Chat
 - [ ] Bundle chat messages together
@@ -168,9 +176,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Cache images
 - [x] Link Headers (react-helmet)
 
-## Todo New Features
-- [ ] Add calendar of meetups
-- [ ] Find people who have similar food taste near you?
-
 ## Todo Next Iteration
 - [ ] Possible convert forms to Backdrop Form Dialogs
+- [ ] Add calendar of meetups
+- [ ] Find people who have similar food taste near you?
