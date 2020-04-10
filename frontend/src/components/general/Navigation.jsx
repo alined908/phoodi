@@ -158,7 +158,7 @@ const Navigation = (props) => {
             <Badge color="secondary" variant="dot" invisible={!isNotifs(props.notifs)}><Menu /></Badge>
           </IconButton>}
           <Typography className={classes.title} variant="h6" noWrap>
-            <Link onClick={handleDrawerClose} to="/">Meetup</Link>
+            <Link onClick={handleDrawerClose} to="/">Phoodie</Link>
           </Typography>
           {!props.authenticated && 
             <Link to="/login">

@@ -1,10 +1,11 @@
 # Meetup App
-Prototype @ https://phoodie.me
-Demo-Part 1 @ https://www.loom.com/share/87ef4564bb8e47709831683366ddb782 
-Demo-Part 2 @ https://www.loom.com/share/91b96d0291bf42bf9d92cf86d4a7dad4
-Demo-Part 3 @ https://www.loom.com/share/9f4782220f1a4395bbbede33b046eb73
+**Prototype** @ https://phoodie.me
 
 The purpose of the application is to allow friend groups to schedule meetups and decide where to eat quickly.  We always run into the problem where no one knows what to eat, where to eat, and when to eat.  The hope is that this will simplify the process.  Eventually, the goal is to connect people with other nearby people that share common food interests and hobbies. Use cases of this includes college campuses, metropolitan cities, etc. The end goal is to recreate a more social Yelp.
+
+## Walkthrough Video
+**Click to watch**  
+[![Walkthrough](https://i9.ytimg.com/vi/cGb9SDsrlQ0/mq1.jpg?sqp=CIylwPQF&rs=AOn4CLDgwPiimk9CbHuMnSeYw30XZZ1TTA)](https://www.youtube.com/watch?v=cGb9SDsrlQ0)
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [Deployment](#deployment) for notes on how to deploy the project on a live system.
