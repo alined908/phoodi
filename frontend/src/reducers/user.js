@@ -1,17 +1,17 @@
 import {AUTH_USER, CLEAR_STORE, AUTH_ERROR, ADD_SETTINGS, EDIT_USER, GET_FRIENDS, ADD_FRIEND, DELETE_FRIEND,  GET_MEETUP_INVITES, GET_FRIEND_INVITES, GET_PREFERENCES, ADD_PREFERENCE, DELETE_PREFERENCE, REORDER_PREFERENCES, EDIT_PREFERENCE} from "../constants/action-types"
 import {userDefaultState} from "../constants/default-states"
+import {parseJWT} from "../constants/helpers"
 
 export default function(state = userDefaultState, action){
     switch(action.type){
         case AUTH_USER:
-            let user = Object.values(action.payload.user)[0]
-            return {...state, authenticated: action.payload.token, user: user};
+            const decoded = parseJWT(action.payload.access)
+            return {...state, authenticated: action.payload.access, user: decoded.user};
         case AUTH_ERROR:
             return {...state, errorMessage: action.payload};
         case EDIT_USER:
             return {...state, user: {...action.payload}}
         case ADD_SETTINGS:
-            console.log(action.payload)
             return {...state, user: {...state.user, settings: {...action.payload}}}
         case GET_FRIENDS:
             return {...state, isFriendsInitialized: true, friends: action.payload}

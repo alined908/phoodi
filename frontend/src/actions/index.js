@@ -3,15 +3,16 @@ import {AUTH_USER, AUTH_ERROR, CLEAR_STORE, ADD_SETTINGS, EDIT_USER, ADD_GLOBAL_
 import {axiosClient} from '../accounts/axiosClient'
 import AuthenticationService from "../accounts/AuthenticationService";
 import {history} from '../components/MeetupApp'
+import {parseJWT} from '../constants/helpers'
 
 export const signup = (formProps, redirectOnSuccess) => async dispatch => {
     try {
         const response = await axiosClient.post('/api/users/', 
             formProps, {headers: {"Content-Type": 'multipart/form-data'
         }})
-        AuthenticationService.registerSuccessfulLogin(response.data.token, response.data.expiration)
-        console.log(response)
-        localStorage.setItem("user", JSON.stringify(response.data.user[Object.keys(response.data.user)[0]]))
+        const decoded = parseJWT(response.data.access)
+        AuthenticationService.registerSuccessfulLogin(response.data.access)
+        localStorage.setItem("user", JSON.stringify(decoded.user))
         dispatch({type: AUTH_USER, payload: response.data});
         redirectOnSuccess();
     }
@@ -31,13 +32,10 @@ export const signout = () => async dispatch => {
 
 export const signin = (formProps, redirectOnSuccess) => async dispatch => {
     try {
-        const response = await axiosClient.post('/api/token-auth/', formProps)
-        console.log(response.data)
-        AuthenticationService.registerSuccessfulLogin(response.data.token)
-        localStorage.setItem("user", JSON.stringify(response.data.user[Object.keys(response.data.user)[0]]))
-        // const response2 = await axiosClient.post(`/api/token-refresh/`, {"token": AuthenticationService.retrieveToken()})
-        // localStorage.setItem("refresh", response2.data.token)
-        // console.log(response2.data)
+        const response = await axiosClient.post('/api/token/', formProps)
+        const decoded = parseJWT(response.data.access)
+        AuthenticationService.registerSuccessfulLogin(response.data.access)
+        localStorage.setItem("user", JSON.stringify(decoded.user))
         dispatch({type: AUTH_USER, payload: response.data});
         redirectOnSuccess();
     }
@@ -59,7 +57,7 @@ export const getProfile = (id) => {
 export const editUser = (formProps, user_id, redirectOnSuccess) => async dispatch => {
     try {
         const response = await axiosClient.patch(`/api/users/${user_id}/`, formProps, {headers: {
-            "Authorization": `JWT ${localStorage.getItem('token')}`, "Content-Type": 'multipart/form-data'
+            "Authorization": `Bearer ${localStorage.getItem('token')}`, "Content-Type": 'multipart/form-data'
         }})
         console.log(response.data)
         localStorage.setItem("user", JSON.stringify(response.data))
@@ -73,7 +71,7 @@ export const editUser = (formProps, user_id, redirectOnSuccess) => async dispatc
 export const getPreferences = (user_id) => async dispatch => {
     try {
         const response = await axiosClient.get(`/api/users/${user_id}/preferences/`, {headers: {
-            "Authorization": `JWT ${localStorage.getItem('token')}`
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
         dispatch({type: GET_PREFERENCES, payload: response.data})
@@ -85,7 +83,7 @@ export const getPreferences = (user_id) => async dispatch => {
 export const addPreference = (data, user_id) => async dispatch => {
     try {
         const response = await axiosClient.post(`/api/users/${user_id}/preferences/`, data, {headers: {
-            "Authorization": `JWT ${localStorage.getItem('token')}`
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
         console.log(response.data)
@@ -98,7 +96,7 @@ export const addPreference = (data, user_id) => async dispatch => {
 export const editPreference = (data, user_id, pref_id) => async dispatch => {
     try {
         const response = await axiosClient.patch(`/api/users/${user_id}/preferences/${pref_id}/`, data, {headers: {
-            "Authorization": `JWT ${localStorage.getItem('token')}`
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
         console.log(response.data)
@@ -111,7 +109,7 @@ export const editPreference = (data, user_id, pref_id) => async dispatch => {
 export const reorderPreferences = (data, user_id) => async dispatch => {
     try {
         const response = await axiosClient.patch(`/api/users/${user_id}/preferences/`, data, {headers: {
-            "Authorization": `JWT ${localStorage.getItem('token')}`
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
         console.log(response.data)
@@ -124,7 +122,7 @@ export const reorderPreferences = (data, user_id) => async dispatch => {
 export const deletePreference = (user_id, category_id) => async dispatch => {
     try {
         const response = await axiosClient.delete(`/api/users/${user_id}/preferences/${category_id}/`,  {headers: {
-            "Authorization": `JWT ${localStorage.getItem('token')}`
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
         console.log(response.data)
@@ -141,7 +139,7 @@ export const deletePreference = (user_id, category_id) => async dispatch => {
 export const addSettings = (data) => async dispatch => {
     try {
         const response = await axiosClient.post('/api/users/settings/', data, {headers: {
-            "Authorization": `JWT ${localStorage.getItem('token')}`
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         console.log(response.data)
         return Promise.all([

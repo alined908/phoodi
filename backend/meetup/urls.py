@@ -5,7 +5,6 @@ from . import views
 app_name='meetup'
 
 urlpatterns=[
-    path("current_user/", views.current_user),
     path('users/', views.UserListView.as_view()),
     path('users/settings/', views.UserSettingsView.as_view()),
     path('users/<id>/', views.UserView.as_view()),

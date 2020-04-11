@@ -11,7 +11,7 @@ export const removeNotifs = (data) => async dispatch => {
     try {
         const response = await axiosClient.delete(
             '/api/notifs/', {data: data, headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         console.log(response)
         dispatch({type: REMOVE_NOTIFS, payload: response.data})

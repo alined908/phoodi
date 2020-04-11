@@ -5,7 +5,7 @@ export const getRooms = () => async dispatch => {
     try {
         const response = await axiosClient.get(
             "/api/chats/", {headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
         console.log(response)
@@ -34,7 +34,7 @@ export const getMessages = (room) => async dispatch => {
     try {
         const response = await axiosClient.get(
             `/api/chats/${room}/messages/`, {headers: {
-            "Authorization": `JWT ${localStorage.getItem('token')}`
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         console.log(response)
         dispatch({type: GET_MESSAGES, payload: response.data})
@@ -48,7 +48,7 @@ export const getMoreMessages = (room, last_message_id) => async dispatch => {
     try {
         const response = await axiosClient.get(
             `/api/chats/${room}/messages/`, {params: {last: last_message_id}, headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         dispatch({type: GET_MORE_MESSAGES, payload: response.data})
     } catch(e){

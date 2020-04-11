@@ -43,17 +43,17 @@ class CategoryComponent extends Component {
                 ([
                     axiosClient.get(
                         `/api/categories/${this.props.match.params.api_label}/`, {headers: {
-                            "Authorization": `JWT ${localStorage.getItem('token')}`
+                            "Authorization": `Bearer ${localStorage.getItem('token')}`
                         }}),
                     axiosClient.get(
                          `/api/users/${this.props.user.id}/friends/`, {params: {category: this.props.match.params.api_label} ,headers: {
-                            "Authorization": `JWT ${localStorage.getItem('token')}`
+                            "Authorization": `Bearer ${localStorage.getItem('token')}`
                     }}),
                     axiosClient.request({
                         method: "GET",
                         url: "/api/meetups/", 
                         headers: {
-                            "Authorization": `JWT ${localStorage.getItem('token')}`
+                            "Authorization": `Bearer ${localStorage.getItem('token')}`
                         },
                         params: {
                             type: "public",

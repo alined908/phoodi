@@ -1,13 +1,13 @@
 from django.urls import path, include
 from django.contrib import admin
-from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
+from rest_framework_simplejwt.views import (TokenObtainPairView,TokenRefreshView)
+from meetup.views import MyTokenObtainPairView
 from .views import home
 
 urlpatterns = [
     path('', home, name='home'),
     path('admin/', admin.site.urls),
     path('api/', include('meetup.urls')),
-    path('api/token-auth/', obtain_jwt_token),  
-    path('api/token-refresh/', refresh_jwt_token),
-    path('api/token-verify/', verify_jwt_token)
+    path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

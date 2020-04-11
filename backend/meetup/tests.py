@@ -18,7 +18,7 @@ class AuthTest(TestCase):
         self.payload = {"email": "test@gmail.com", "password": "password"}
 
     def test_generate_token(self):
-        response = client.post("/api/token-auth/", self.payload)
+        response = client.post("/api/token/", self.payload)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         obj = json.loads(json.dumps(response.data))
         self.assertEqual(self.user.email, obj["user"]["1"]["email"])   

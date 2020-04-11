@@ -70,7 +70,7 @@ class Meetup extends Component {
         try {
             const response = await axiosClient.post(
                 `/api/meetups/${this.props.meetup.uri}/members/`, {email: this.props.user.email}, {headers: {
-                    "Authorization": `JWT ${localStorage.getItem('token')}`
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
             }})
             console.log(response.data)
             this.props.addGlobalMessage("success", "Successfully joined meetup")

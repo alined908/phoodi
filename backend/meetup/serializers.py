@@ -4,16 +4,15 @@ from meetup.models import User, Preference, UserSettings, MeetupCategory, Catego
 from django.forms.models import model_to_dict
 from channels.db import database_sync_to_async
 from django.core.exceptions import ObjectDoesNotExist
-# from rest_framework_jwt.serializers import VerifyJSONWebTokenSerializer
-# from django.contrib.auth import authenticate, get_user_model
-# from rest_framework_jwt.settings import api_settings
-# from django.utils.translation import ugettext as _
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-# User = get_user_model()
-# jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-# jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-# jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
-# jwt_get_username_from_payload = api_settings.JWT_PAYLOAD_GET_USERNAME_HANDLER
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+    def get_token(cls, user):
+        token = super(MyTokenObtainPairSerializer, cls).get_token(user)
+        serializer = UserSerializerWithToken(user, context={"plain": True})
+        token['user'] = serializer.data
+        return token
 
 class UserSerializer(serializers.ModelSerializer):
     settings = serializers.SerializerMethodField('_get_settings')
@@ -40,7 +39,10 @@ class UserSerializerWithToken(serializers.ModelSerializer):
 
     def to_representation(self, data):
         res = super(UserSerializerWithToken, self).to_representation(data)
-        return {res['id']: res}
+        if self.context.get("plain"):
+            return res
+        else:
+            return {res['id']: res}
 
     def create(self, validated_data):
         if "avatar" not in validated_data:

@@ -44,7 +44,7 @@ class Profile extends Component {
                     axiosClient.get(`/api/users/${this.props.match.params.id}/`), 
                     axiosClient.get(
                         `/api/users/${this.props.match.params.id}/friends/`, {headers: {
-                            "Authorization": `JWT ${localStorage.getItem('token')}`
+                            "Authorization": `Bearer ${localStorage.getItem('token')}`
                     }})
                 ]
             )

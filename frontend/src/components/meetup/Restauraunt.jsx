@@ -23,7 +23,7 @@ class Restauraunt extends Component {
     }
     
     determineStatus = () => {
-        const user = JSON.parse(localStorage.getItem("user")).id
+        const user = this.props.user.id
         if (user in this.props.option.votes){
             return this.props.option.votes[user].status
         } 

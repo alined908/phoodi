@@ -34,7 +34,7 @@ const CategoryAutocomplete = (props) => {
         if (!loaded){
             (async () => {
                 const response = await axiosClient.get("/api/categories/", {headers: {
-                        "Authorization": `JWT ${localStorage.getItem('token')}`
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
                     }});
                 // await sleep(1e3);
                 setOptions(response.data.categories);

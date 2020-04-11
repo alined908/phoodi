@@ -5,7 +5,7 @@ export const getUserFriendInvites = () => async dispatch => {
     try {
         const response = await axiosClient.get(
             "/api/friends/invite/", {headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
         // console.log(response)
@@ -19,7 +19,7 @@ export const getUserMeetupInvites = () => async dispatch => {
     try {
         const response = await axiosClient.get(
             "/api/meetups/invite/", {headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
         // console.log(response)
@@ -33,7 +33,7 @@ export const sendMeetupInvite = (roomURI, email) => async dispatch => {
     try {
         const response = await axiosClient.post(
             `/api/meetups/${roomURI}/invite/`, {"email": email}, {headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
         console.log(response)
@@ -47,7 +47,7 @@ export const sendFriendInvite = (formProps) => async dispatch => {
     try {
         const response = await axiosClient.post(
             `/api/friends/invite/`, {"email": formProps.email}, {headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
         dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "success", message: response.data.message}})
@@ -60,7 +60,7 @@ export const respondFriendInvite = (inviteURI, status) => async dispatch => {
     try {
         const response = await axiosClient.patch(
             `/api/friends/invite/${inviteURI}/`, {"status": status},{headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
         console.log(response)
@@ -74,7 +74,7 @@ export const respondMeetupInvite = (roomURI, inviteURI, status) => async dispatc
     try {
         const response = await axiosClient.patch(
             `/api/meetups/${roomURI}/invite/${inviteURI}/`, {"status": status},{headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
         console.log(response)

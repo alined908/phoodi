@@ -14,7 +14,7 @@ export const getMeetups = (data) => async dispatch => {
             method: "GET",
             url: "/api/meetups/", 
             headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
             },
             params: {
                 type: "private",
@@ -39,7 +39,7 @@ export const getPublicMeetups = (data) => async dispatch => {
             method: "GET",
             url: "/api/meetups/", 
             headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
             },
             params: {
                 type: "public",
@@ -60,7 +60,7 @@ export const getMeetup = (uri) => async dispatch => {
     try {
         const response = await axiosClient.get(
             `/api/meetups/${uri}/`, {headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
         // console.log(response)
@@ -77,7 +77,7 @@ export const addMeetup = (formProps, redirectOnSuccess) => async dispatch => {
     try {
         const response = await axiosClient.post(
             `/api/meetups/`, params, {headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         dispatch({type: ADD_MEETUP, payload: response.data.meetup})
         console.log(response.data)
@@ -96,7 +96,7 @@ export const editMeetup = (formProps, uri, redirectOnSuccess) => async dispatch 
     try {
         const response = await axiosClient.patch(
             `/api/meetups/${uri}/`, params, {headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         dispatch({type: EDIT_MEETUP, payload: response.data})
         console.log(response.data)
@@ -110,7 +110,7 @@ export const deleteMeetup = (uri) => async dispatch => {
     try {
         const response = await axiosClient.delete(
             `/api/meetups/${uri}/`, {headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         console.log(response)
         dispatch({type: DELETE_MEETUP, payload: uri})
@@ -124,7 +124,7 @@ export const getMeetupEvents = (uri) => async dispatch => {
     try {
         const response = await axiosClient.get(
             `/api/meetups/${uri}/events/`, {headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         console.log(response)
         dispatch({type: GET_MEETUP_EVENTS, payload: {uri: uri, data: response.data}})
@@ -166,7 +166,7 @@ export const sendMeetupEmails = (uri) => async dispatch => {
     try {
         await axiosClient.post(
             `/api/meetups/${uri}/email/`, {}, {headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "success", message: "Successfully sent emails"}})
     } catch(e) {

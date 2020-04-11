@@ -5,7 +5,7 @@ export const getFriends = (id) => async dispatch => {
     try {
         const response = await axiosClient.get(
             `/api/users/${id}/friends/`, {headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
         // console.log(response)
@@ -19,7 +19,7 @@ export const deleteFriend = (id) => async dispatch => {
     try {
         const response = await axiosClient.delete(
             "/api/friends/", {"id": id}, {headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
         console.log(response)

@@ -48,7 +48,7 @@ describe("LoginComponent integration", () => {
     });
 
     it('should log in user if login information correct and redirect to /meetups', () => {
-        httpMock.onPost('/api/token-auth/', {email: "daniel@gmail.com", password: "password"}).reply(200, {
+        httpMock.onPost('/api/token/', {email: "daniel@gmail.com", password: "password"}).reply(200, {
             status: "success",
             token: "ADWDAWDWADAWDAWDWD",
             user: {1: {id: 1, first_name: "Daniel", last_name: "Lee", email: "daniel@gmail.com"}}

@@ -109,6 +109,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Form validation + Validation for time and date
 
 ## Todo Authentication
+- [ ] Switch to simplejwt library
 - [ ] Authenticate JWT automatically after expiration
 - [ ] Authenticate Websocket
 

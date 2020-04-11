@@ -13,16 +13,13 @@ from django.db.models import Q
 from random import shuffle
 import collections, geocoder
 from django.forms.models import model_to_dict
-from meetup.serializers import PreferenceSerializer, UserSettingsSerializer, CategorySerializer, CategoryVerboseSerializer, UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer, FriendInviteSerializer, MeetupEventSerializer
+from meetup.serializers import PreferenceSerializer, MyTokenObtainPairSerializer, UserSettingsSerializer, CategorySerializer, CategoryVerboseSerializer, UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer, FriendInviteSerializer, MeetupEventSerializer
 from ipware import get_client_ip
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
 
-@api_view(['GET'])
-def current_user(request):
-    """
-    GET information of user with Authentication of JWT token
-    """
-    serializer = UserSerializer(request.user)
-    return Response(serializer.data)
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
 
 class UserListView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -34,20 +31,12 @@ class UserListView(APIView):
         return Response(serializer.data)
 
     def post(self,request):
-        """ Handles POST Request for User Signups
-
-        Params: 
-            request (JSON): Request object submitted by user
-
-        Returns: 
-            Response: JSON containing appropriate status code and message
-        """
         user = request.data
 
         if not user:
             return Response({"error": 'No data found'})
         
-        serializer = UserSerializerWithToken(data = user)
+        serializer = UserSerializerWithToken(data = user, context={'plain': True})
         if serializer.is_valid():
             try:
                 user = serializer.save()
@@ -56,7 +45,11 @@ class UserListView(APIView):
         else:
             return Response({"error" : serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
-        return Response({"token": user.get_token(), "user": serializer.data})
+        token = RefreshToken.for_user(user)
+        token['user'] = serializer.data
+        refresh, access = token, token.access_token
+        tokens = {"refresh": str(refresh),"access": str(access)}
+        return Response(tokens)
 
 class UserView(APIView):
     permission_classes = [permissions.AllowAny]

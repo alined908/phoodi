@@ -23,11 +23,11 @@ class CategoriesComponent extends Component {
             [
                 axiosClient.get(
                     `/api/categories/?popular=true`, {headers: {
-                        "Authorization": `JWT ${localStorage.getItem('token')}`
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
                 }}),
                 axiosClient.get(
                     `/api/categories/?random=true`, {headers: {
-                        "Authorization": `JWT ${localStorage.getItem('token')}`
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
                 }}),
             ]
         )
@@ -44,7 +44,7 @@ class CategoriesComponent extends Component {
 
         const response = await axiosClient.get(
             `/api/categories/?random=true`, {headers: {
-                "Authorization": `JWT ${localStorage.getItem('token')}`
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         this.setState({random: response.data.categories, randomCategoriesLoaded: true})
     }

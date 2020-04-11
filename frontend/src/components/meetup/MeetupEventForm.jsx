@@ -89,7 +89,7 @@ class MeetupEventForm extends Component {
             try {
                 const response = await axiosClient.post(
                     `/api/meetups/${uri}/events/`, data, {headers: {
-                        "Authorization": `JWT ${localStorage.getItem('token')}`
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
                 }})
                 history.push(`/meetups/${uri}`)
             }  catch(e){
@@ -100,7 +100,7 @@ class MeetupEventForm extends Component {
             try {
                 const response = axiosClient.patch(
                     `/api/meetups/${uri}/events/${this.props.match.params.id}/`, data, {headers: {
-                        "Authorization": `JWT ${localStorage.getItem('token')}`
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
                 }})
                 history.push(`/meetups/${uri}`)
             } catch(e){
