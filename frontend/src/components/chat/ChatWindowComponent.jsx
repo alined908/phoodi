@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import ReactDOM from 'react-dom'
 import {ChatMessageComponent} from "../components"
 import {connect} from 'react-redux'
 import {Button, Tooltip} from '@material-ui/core'
@@ -22,11 +23,12 @@ class ChatWindowComponent extends Component {
             showEmojis: false
         }
         this.emojiPicker = React.createRef();
+        this.messagesEndRef = React.createRef();
         this.showEmojis = this.showEmojis.bind(this)
     }
 
     componentDidMount(){
-        document.addEventListener('mousedown', this.showEmojis, false);
+        document.addEventListener('mousedown', this.handleOutsideClick, false);
     }
 
     componentDidUpdate() {
@@ -36,10 +38,8 @@ class ChatWindowComponent extends Component {
     }
 
     componentWillUnmount() {
-        document.removeEventListener('mousedown', this.showEmojis, false);
+        document.removeEventListener('mousedown', this.handleOutsideClick, false);
     }
-
-    messagesEndRef = React.createRef()
     
     handleChange = (e) => {
         this.setState({value: e.target.value})       
@@ -88,6 +88,17 @@ class ChatWindowComponent extends Component {
 
     showEmojis = (e) => {
         this.setState({showEmojis: !this.state.showEmojis})
+    }
+
+    handleOutsideClick = (e) => {
+        try {
+            let node = ReactDOM.findDOMNode(this.emojiPicker.current)
+            if (!node.contains(e.target)){
+                this.setState({showEmojis: false})
+            }   
+        } catch(error){
+            return null
+        }
     }
 
     scrollToBottom = () => {    
@@ -156,8 +167,8 @@ class ChatWindowComponent extends Component {
                                 <div className="emoji-picker-icon" onClick={this.showEmojis}>
                                 {String.fromCodePoint(0x1F62D)}
                                 </div>
-                                <div ref={this.emojiPicker} className="emoji-picker elevate">
-                                    <Picker title='Pick your emoji…' emoji='point_up' sheetSize={32} emojiSize={22} onSelect={this.addEmoji}/>
+                                <div className="emoji-picker elevate">
+                                    <Picker ref={this.emojiPicker} title='Pick your emoji…' emoji='point_up' sheetSize={32} emojiSize={22} onSelect={this.addEmoji}/>
                                 </div>
                             </>:
                             <div className="emoji-picker-icon" onClick={this.showEmojis}>
