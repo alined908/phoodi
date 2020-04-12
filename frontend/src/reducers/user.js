@@ -1,4 +1,4 @@
-import {AUTH_USER, CLEAR_STORE, AUTH_ERROR, ADD_SETTINGS, EDIT_USER, GET_FRIENDS, ADD_FRIEND, DELETE_FRIEND,  GET_MEETUP_INVITES, GET_FRIEND_INVITES, GET_PREFERENCES, ADD_PREFERENCE, DELETE_PREFERENCE, REORDER_PREFERENCES, EDIT_PREFERENCE} from "../constants/action-types"
+import {AUTH_USER, CLEAR_STORE, REFRESHING_TOKEN, DONE_REFRESHING_TOKEN, AUTH_ERROR, ADD_SETTINGS, EDIT_USER, GET_FRIENDS, ADD_FRIEND, DELETE_FRIEND,  GET_MEETUP_INVITES, GET_FRIEND_INVITES, GET_PREFERENCES, ADD_PREFERENCE, DELETE_PREFERENCE, REORDER_PREFERENCES, EDIT_PREFERENCE} from "../constants/action-types"
 import {userDefaultState} from "../constants/default-states"
 import {parseJWT} from "../constants/helpers"
 
@@ -9,6 +9,11 @@ export default function(state = userDefaultState, action){
             return {...state, authenticated: action.payload.access, user: decoded.user};
         case AUTH_ERROR:
             return {...state, errorMessage: action.payload};
+        case REFRESHING_TOKEN:
+            return {...state, freshTokenPromise: action.payload}
+        case DONE_REFRESHING_TOKEN:
+            console.log("Done refreshing token reducer")
+            return {...state, freshTokenPromise: null}
         case EDIT_USER:
             return {...state, user: {...action.payload}}
         case ADD_SETTINGS:

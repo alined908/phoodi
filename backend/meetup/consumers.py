@@ -5,13 +5,36 @@ from django.core.exceptions import ObjectDoesNotExist
 import json, random, time, requests, os
 from urllib.parse import parse_qs
 from asgiref.sync import sync_to_async, async_to_sync
-# from .serializers import CustomJWTSerializer
 from channels.db import database_sync_to_async
 from meetup.serializers import MessageSerializer, MeetupEventSerializer, MeetupMemberSerializer, MeetupEventOptionSerializer, MeetupEventOptionVoteSerializer
 url = "https://api.yelp.com/v3/businesses/search"
 headers = {'Authorization': "Bearer U46B4ff8l6NAdldViS7IeS8HJriDeE9Cd5YZXTUmrdzvtv57AUQiYJVVbEPFp30nhL9YAW2-LjAAQ1cBapJ4uqiOYES8tz9EjM85R8ki9l-54Z1d_1OOWLeY5tTuXXYx"}
 
 class ChatConsumer(AsyncWebsocketConsumer):
+
+    async def connect(self):
+        user = self.scope['user']
+      
+        if user.is_anonymous:
+            await self.accept()
+            await self.close(code=4000)
+        else:
+            self.room_name = self.scope['url_route']['kwargs']['room_name']
+            self.room_group_name = 'chat_%s' % self.room_name
+
+            await self.channel_layer.group_add(
+                self.room_group_name,
+                self.channel_name
+            )
+
+            await self.accept()
+    
+    async def disconnect(self, close_code):
+        if hasattr(self, 'room_name'):
+            await self.channel_layer.group_discard(
+                self.room_group_name,
+                self.channel_name
+            )
 
     # async def fetch_messages(self, data):
     #     print("fetch messages called")
@@ -29,7 +52,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
     #     await self.send(text_data = json.dumps(content))
 
     async def new_message(self, data):
-        # print("new message")
         sender, msg, room = data['from'], data['text'], data['room']
         room_obj = await database_sync_to_async(ChatRoom.objects.get)(uri=room)
         user_obj = await database_sync_to_async(User.objects.get)(pk=sender)
@@ -51,63 +73,34 @@ class ChatConsumer(AsyncWebsocketConsumer):
         'new_message' : new_message
     }
 
-    async def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = 'chat_%s' % self.room_name
-
-        # if self.scope['user'].id:
-        #     pass
-        # else:
-        #     try:
-        #         token = parse_qs(self.scope["query_string"].decode("utf8"))["token"][0]
-        #         print(token)
-        #         data = {'token': token}
-        #         valid_data = CustomJWTSerializer().validate(data)
-        #         print(valid_data)
-        #         user = valid_data['user']
-        #         print("hello")
-        #         print(user)
-        #     except:
-        #         print("errorrrr")
-        # Join room group
-        await self.channel_layer.group_add(
-            self.room_group_name,
-            self.channel_name
-        )
-
-        await self.accept()
-    
-    async def disconnect(self, close_code):
-        # Leave room group
-        await self.channel_layer.group_discard(
-            self.room_group_name,
-            self.channel_name
-        )
-
     async def receive(self, text_data):
-        # Receive message from WebSocket
-        # print("ChatConsumer received message from websocket")
         json_data = json.loads(text_data)
         await self.commands[json_data['command']](self, json_data)
 
     # Receive message from room group
     async def chat_message(self, event):
         message = event['message']
-        # print(message)
         await self.send(text_data=json.dumps(message))
 
 class UserNotificationConsumer(AsyncWebsocketConsumer):
 
-    #User sends invite to someone 
-    
     async def connect(self):
-        self.user = self.scope['url_route']['kwargs']['user_id']
-        self.user_room_name = "notif_room_for_user_%s" % self.user
-        await self.channel_layer.group_add(self.user_room_name, self.channel_name)
-        await self.accept()
+        user = self.scope['user']
+      
+        if user.is_anonymous:
+            await self.accept()
+            await self.close(code=4000)
+        else:
+            self.user = self.scope['url_route']['kwargs']['user_id']
+            self.user_room_name = "notif_room_for_user_%s" % self.user
+            await self.channel_layer.group_add(self.user_room_name, self.channel_name)
+            await self.accept()
 
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(self.user_room_name,self.channel_name)
+        if hasattr(self, 'user'):
+            await self.channel_layer.group_discard(
+                self.user_room_name,self.channel_name
+            )
 
     @sync_to_async 
     def fetch_chat_notifs(self, user):
@@ -164,7 +157,6 @@ class UserNotificationConsumer(AsyncWebsocketConsumer):
     }
 
     async def receive(self, text_data):
-        print("chat consumer receive")
         if not self.scope['user']:
             self.close()
         else:
@@ -173,30 +165,40 @@ class UserNotificationConsumer(AsyncWebsocketConsumer):
 
 
     async def notifications(self, event):
-        print("notification consumer")
         message = event['message']
-        print(event)
         await self.send(text_data=json.dumps(message))
 
 class MeetupConsumer(AsyncWebsocketConsumer):
-    #Events, Votes 
 
     async def connect(self):
-        self.meetup_name = self.scope['url_route']['kwargs']['room_name']
-        self.meetup_group_name = 'meetup_%s' % self.meetup_name
+        user = self.scope['user']
 
-        await self.channel_layer.group_add(
-            self.meetup_group_name,
-            self.channel_name
-        )
+        if user.is_anonymous:
+            await self.accept()
+            await self.close(code=4000)
+        else:
+            self.meetup_name = self.scope['url_route']['kwargs']['room_name']
+            self.meetup_group_name = 'meetup_%s' % self.meetup_name
 
-        try:
-            self.meetup =  await database_sync_to_async(Meetup.objects.get)(uri=self.meetup_name)
-        except ObjectDoesNotExist:
-            print("INVALID")
-            raise DenyConnection("Invalid Meetup URI")
+            await self.channel_layer.group_add(
+                self.meetup_group_name,
+                self.channel_name
+            )
 
-        await self.accept()
+            try:
+                self.meetup =  await database_sync_to_async(Meetup.objects.get)(uri=self.meetup_name)
+            except ObjectDoesNotExist:
+                print("INVALID")
+                raise DenyConnection("Invalid Meetup URI")
+
+            await self.accept()
+
+    async def disconnect(self, close_code):
+        if hasattr(self, 'meetup_group_name'):
+            await self.channel_layer.group_discard(
+                self.meetup_group_name,
+                self.channel_name
+            )
 
     @sync_to_async
     def get_event_serializer(self, event):
@@ -395,20 +397,13 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         'vote_event': vote_event, #check
         'decide_event': decide_event, #check
         'redecide_event': redecide_event, #check
-        'new_option': new_option
+        'new_option': new_option, #check
     }
 
     async def receive(self, text_data):
         json_data = json.loads(text_data)
         print("Meetup Consumer: " + json_data['command'])
         await self.commands[json_data['command']](self, json_data)
-
-    async def disconnect(self, close_code):
-        # Leave room group
-        await self.channel_layer.group_discard(
-            self.meetup_group_name,
-            self.channel_name
-        )
 
     async def meetup_event(self, event):
         print("Meetup Consumer: Meetup Event Object sent")

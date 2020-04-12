@@ -22,19 +22,22 @@ class NotificationWrapper extends Component {
     }
 
     componentDidUpdate(prevProps){
+        console.log(this.props.authenticated)
+        console.log(prevProps.authenticated)
         if(this.props.authenticated !== prevProps.authenticated){
+            console.log("token changed")
             if(this.state.socket.exists()) {
+                console.log('socket exists')
                 this.state.socket.disconnect()
-            } else {
-                this.connectSocket()
-            }
+            } 
+            this.connectSocket()
         }
     }
 
     connectSocket = () => {
         const token = AuthenticationService.retrieveToken()
-        const path = `/ws/user/${this.props.user.id}/?token=${token}`;
-        this.state.socket.connect(path);
+        const path = `/ws/user/${this.props.user.id}/`;
+        this.state.socket.connect(path, token);
         this.state.socket.waitForSocketConnection(()=>this.state.socket.fetchNotifications({user: this.props.user.id}))
     }
 

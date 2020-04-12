@@ -41,21 +41,27 @@ class ChatComponent extends Component {
     }
 
     getRelevantInfo(uri) {
+        this.setRoomInfo(uri)
         const socket = this.state.socket
-        console.log(socket)
+        const token = AuthenticationService.retrieveToken()
+        const path = `/ws/chat/${this.props.match.params.uri}/`;
+        socket.connect(path, token);
+    }
+
+    setRoomInfo(uri){
         this.props.setActiveRoom(uri);
         this.props.getMessages(uri);
-        const token = AuthenticationService.retrieveToken()
-        const path = `/ws/chat/${this.props.match.params.uri}/?token=${token}`;
-        socket.connect(path);
     }
 
     render(){
         const renderChatWindow = () => {
             if (this.props.isMessagesInitialized) {
-                return <ChatWindowComponent socket={this.state.socket} isMessagesInitialized={this.props.isMessagesInitialized} activeRoom={this.props.activeRoom} messages={this.props.messages}></ChatWindowComponent>
+                return <ChatWindowComponent 
+                            socket={this.state.socket} isMessagesInitialized={this.props.isMessagesInitialized} 
+                            activeRoom={this.props.activeRoom} messages={this.props.messages}
+                        />
             } else {
-                return <ChatWindowComponent socket={this.state.socket} activeRoom={null}></ChatWindowComponent>
+                return <ChatWindowComponent socket={this.state.socket} activeRoom={null}/>
             }
         }
 
@@ -83,6 +89,7 @@ const mapDispatchToProps = {
 
 function mapStateToProps(state){
     return {
+        authenticated: state.user.authenticated,
         isMessagesInitialized: state.chat.isMessagesInitialized,
         activeRoom: state.chat.activeRoom,
         messages: state.chat.messages,

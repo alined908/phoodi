@@ -2,29 +2,36 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import reducers from "../reducers"
 import reduxThunk from 'redux-thunk';
 import {userDefaultState} from "../constants/default-states"
-// import AuthenticationService from '../accounts/AuthenticationService'
+import {parseJWT} from '../constants/helpers'
+import {refreshToken} from "../actions/index"
 
-// const checkJWTExpiration = store => next => action => {
-//     const token = AuthenticationService.retrieveToken()
-//     const expiration = AuthenticationService.retrieveExpiration()
+function jwtMiddleware({dispatch, getState}) {
+    return (next) => (action) => {
+        if (typeof action === 'function') {
+            console.log(getState())
+            console.log(getState().user)
+            if(getState().user && getState().user.authenticated){
+                const access = getState().user.authenticated
+                const accessDecoded = parseJWT(access)
+                const unixSeconds =  Math.round(new Date().getTime() / 1000)
 
-//     //If token expired
-//     if(expiration && (new Date(expiration*1000) < new Date())) {
-        
-//         //Get refresh token
-
-//         //Use refresh token to get new token 
-
-
-//         //Login again
-//     }
-
-//     //Send action along path
-//     next(action)
-// }
+                if (accessDecoded.exp <= unixSeconds){
+                    if (!getState().user.freshTokenPromise){
+                        console.log("refresh token not taking place")
+                        return refreshToken(dispatch).then(() => next(action))
+                    } else {
+                        console.log("refresh token already taking place")
+                        return getState().user.freshTokenPromise.then(() => next(action))
+                    }
+                }
+            }
+        }
+        return next(action);
+    }
+}
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const middleware = [reduxThunk]
+const middleware = [jwtMiddleware, reduxThunk]
 
 export const store = createStore(
     reducers,

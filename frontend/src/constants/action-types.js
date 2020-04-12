@@ -4,6 +4,8 @@ export const AUTH_ERROR = 'auth_error';
 export const CLEAR_STORE= 'clear_store'
 export const EDIT_USER = "edit_user"
 export const ADD_SETTINGS = 'add_settings';
+export const REFRESHING_TOKEN = 'refreshing_token';
+export const DONE_REFRESHING_TOKEN = 'done_refreshing_token'
 
 //Chat
 export const GET_ROOMS = 'get_rooms';

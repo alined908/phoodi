@@ -1,4 +1,4 @@
-import {AUTH_USER, AUTH_ERROR, CLEAR_STORE, ADD_SETTINGS, EDIT_USER, ADD_GLOBAL_MESSAGE, GET_PREFERENCES, 
+import {AUTH_USER, AUTH_ERROR, REFRESHING_TOKEN, DONE_REFRESHING_TOKEN, CLEAR_STORE, ADD_SETTINGS, EDIT_USER, ADD_GLOBAL_MESSAGE, GET_PREFERENCES, 
     REORDER_PREFERENCES, ADD_PREFERENCE, DELETE_PREFERENCE, EDIT_PREFERENCE} from "../constants/action-types"
 import {axiosClient} from '../accounts/axiosClient'
 import AuthenticationService from "../accounts/AuthenticationService";
@@ -11,7 +11,7 @@ export const signup = (formProps, redirectOnSuccess) => async dispatch => {
             formProps, {headers: {"Content-Type": 'multipart/form-data'
         }})
         const decoded = parseJWT(response.data.access)
-        AuthenticationService.registerSuccessfulLogin(response.data.access)
+        AuthenticationService.registerSuccessfulLogin(response.data.access, response.data.refresh)
         localStorage.setItem("user", JSON.stringify(decoded.user))
         dispatch({type: AUTH_USER, payload: response.data});
         redirectOnSuccess();
@@ -22,19 +22,17 @@ export const signup = (formProps, redirectOnSuccess) => async dispatch => {
     }
 }
 
-export const signout = () => async dispatch => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    // localStorage.removeItem('expiration')
-    dispatch({type: CLEAR_STORE,payload: {}})
-    history.push('/')
+export const signout = (redirectOnSuccess) => async dispatch => {
+    AuthenticationService.logout()
+    dispatch({type: CLEAR_STORE, payload: {}})
+    redirectOnSuccess()
 }
 
 export const signin = (formProps, redirectOnSuccess) => async dispatch => {
     try {
         const response = await axiosClient.post('/api/token/', formProps)
         const decoded = parseJWT(response.data.access)
-        AuthenticationService.registerSuccessfulLogin(response.data.access)
+        AuthenticationService.registerSuccessfulLogin(response.data.access, response.data.refresh)
         localStorage.setItem("user", JSON.stringify(decoded.user))
         dispatch({type: AUTH_USER, payload: response.data});
         redirectOnSuccess();
@@ -43,6 +41,33 @@ export const signin = (formProps, redirectOnSuccess) => async dispatch => {
         console.log("error signin");
         dispatch({type: AUTH_ERROR, payload: "Invalid login credentials"})
     }
+}
+
+export const refreshToken = (dispatch) => {
+    console.log('refresh token function reached')
+    const refresh = AuthenticationService.retrieveRefresh()
+    var freshTokenPromise = axiosClient.post('/api/token/refresh/', {refresh})
+        .then(res => {
+            console.log(res.data)
+            //If successful refresh then update status, remove old token, and update user.authenticated
+            AuthenticationService.removeToken();
+            AuthenticationService.setToken(res.data.access);
+            dispatch({type: DONE_REFRESHING_TOKEN});
+            dispatch({type: AUTH_USER, payload: res.data});
+            //history.push('/logout')
+            return res.data.access ? 
+                Promise.resolve(res.data.access) : 
+                Promise.reject({message: 'could not refresh token'});
+        })
+        .catch(e => {
+            console.log('error refreshing token, lets sign out user', e);
+            dispatch({type: DONE_REFRESHING_TOKEN});
+            return Promise.reject(e);
+        });
+
+    dispatch({type: REFRESHING_TOKEN, payload: freshTokenPromise});
+
+    return freshTokenPromise;
 }
 
 export const getProfile = (id) => {

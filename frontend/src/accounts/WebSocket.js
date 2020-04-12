@@ -1,3 +1,5 @@
+import AuthenticationService from "./AuthenticationService"
+
 export default class WebSocketService {
     callbacks = {};
 
@@ -12,11 +14,12 @@ export default class WebSocketService {
         return this.callbacks;
     }
 
-    connect(path){
+    connect(path, token){
         const baseURL = (process.env.NODE_ENV === 'production') ? process.env.REACT_APP_PROD_BASE_URL: process.env.REACT_APP_DEV_BASE_URL
-        var url = new URL(path, baseURL)
+        const urlWithToken = baseURL 
+        var url = new URL(path, urlWithToken)
         url.protocol = url.protocol.replace('http', 'ws')
-        this.socketRef = new WebSocket(url.href);
+        this.socketRef = new WebSocket(url.href + `?token=${token}`);
         
         this.socketRef.onmessage = e => {
             console.log("Step 2 - Channel sends message from backend")
@@ -33,7 +36,14 @@ export default class WebSocketService {
 
         this.socketRef.onclose = (e) => {
             console.log(e)
-            setTimeout(() => this.connect(path), 5000);
+            console.log(e.code)
+            //Token not authenticated
+            if (e.code === 4000) {
+                const access = AuthenticationService.retrieveToken();
+                this.connect(path, access)
+            } else {
+                setTimeout(() => this.connect(path, token), 5000);
+            }
         };
     }
 
@@ -104,7 +114,7 @@ export default class WebSocketService {
                     return;
                 }
                 else{
-                    console.log("Wait for connection..");
+                    // console.log("Wait for connection..");
                     recursion(callback);
                 }
             }, 1000);

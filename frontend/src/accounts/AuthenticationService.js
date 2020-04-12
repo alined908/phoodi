@@ -1,29 +1,46 @@
 class AuthenticationService{
 
-    registerSuccessfulLogin(token){
+    registerSuccessfulLogin(access, refresh){
+        this.setToken(access)
+        this.setRefresh(refresh)
+    }
+
+    setToken(token){
         localStorage.setItem('token', token);
-        // localStorage.setItem('expiration', expiration.toString())
-        console.log("register successfull login");
+    }
+
+    setRefresh(refresh){
+        localStorage.setItem('refresh', refresh);
     }
 
     retrieveToken(){
         return localStorage.getItem('token');
     }
 
-    // retrieveExpiration(){
-    //     return localStorage.getItem('expiration')
-    // }
+    retrieveRefresh(){
+        return localStorage.getItem('refresh')
+    }
 
-    logout(){
+    removeToken(){
         localStorage.removeItem('token');
     }
 
-    getUser(){
-        return localStorage.getItem('token');
+    removeUser(){
+        localStorage.removeItem('user')
+    }
+
+    removeRefresh(){
+        localStorage.removeItem('refresh')
+    }
+
+    logout(){
+        this.removeToken()
+        this.removeUser()
+        this.removeRefresh()
     }
 
     isUserLoggedIn(){
-        let user = this.getUser();
+        let user = this.retrieveToken();
         if (user === null){
             return false
         }

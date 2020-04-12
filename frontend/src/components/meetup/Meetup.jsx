@@ -36,12 +36,12 @@ class Meetup extends Component {
             this.props.removeNotifs({type: "meetup", id: this.props.id})
         }
         const token = AuthenticationService.retrieveToken()
-        const path = `/ws/meetups/${uri}/?token=${token}`;
+        const path = `/ws/meetups/${uri}/`;
         const socket = this.state.socket
         socket.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, 
             this.props.voteMeetupEvent, this.props.decideMeetupEvent, this.props.deleteMeetupEvent, 
             this.props.addMeetupMember, this.props.addEventOption);
-        socket.connect(path);
+        socket.connect(path, token);
     }
 
     componentWillUnmount() {
