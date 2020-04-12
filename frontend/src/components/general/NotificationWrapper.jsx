@@ -22,9 +22,7 @@ class NotificationWrapper extends Component {
     }
 
     componentDidUpdate(prevProps){
-        console.log(this.props.authenticated)
-        console.log(prevProps.authenticated)
-        if(this.props.authenticated !== prevProps.authenticated){
+        if(this.props.authenticated && this.props.authenticated !== prevProps.authenticated){
             console.log("token changed")
             if(this.state.socket.exists()) {
                 console.log('socket exists')

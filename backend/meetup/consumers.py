@@ -157,6 +157,7 @@ class UserNotificationConsumer(AsyncWebsocketConsumer):
     }
 
     async def receive(self, text_data):
+        print(self.scope['user'])
         if not self.scope['user']:
             self.close()
         else:

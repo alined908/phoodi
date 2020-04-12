@@ -4,24 +4,30 @@ import reduxThunk from 'redux-thunk';
 import {userDefaultState} from "../constants/default-states"
 import {parseJWT} from '../constants/helpers'
 import {refreshToken} from "../actions/index"
+import AuthenticationService from "../accounts/AuthenticationService";
+import {history} from '../components/MeetupApp'
 
 function jwtMiddleware({dispatch, getState}) {
     return (next) => (action) => {
         if (typeof action === 'function') {
-            console.log(getState())
-            console.log(getState().user)
             if(getState().user && getState().user.authenticated){
                 const access = getState().user.authenticated
+                const refresh = AuthenticationService.retrieveRefresh()
                 const accessDecoded = parseJWT(access)
+                const refreshDecoded = parseJWT(refresh)
                 const unixSeconds =  Math.round(new Date().getTime() / 1000)
 
                 if (accessDecoded.exp <= unixSeconds){
-                    if (!getState().user.freshTokenPromise){
-                        console.log("refresh token not taking place")
-                        return refreshToken(dispatch).then(() => next(action))
+                    if(refreshDecoded.exp <= unixSeconds){
+                        history.push('/logout')
                     } else {
-                        console.log("refresh token already taking place")
-                        return getState().user.freshTokenPromise.then(() => next(action))
+                        if (!getState().user.freshTokenPromise){
+                            console.log("refresh token not taking place")
+                            return refreshToken(dispatch).then(() => next(action))
+                        } else {
+                            console.log("refresh token already taking place")
+                            return getState().user.freshTokenPromise.then(() => next(action))
+                        }
                     }
                 }
             }

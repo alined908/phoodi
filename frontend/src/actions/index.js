@@ -49,12 +49,11 @@ export const refreshToken = (dispatch) => {
     var freshTokenPromise = axiosClient.post('/api/token/refresh/', {refresh})
         .then(res => {
             console.log(res.data)
-            //If successful refresh then update status, remove old token, and update user.authenticated
             AuthenticationService.removeToken();
             AuthenticationService.setToken(res.data.access);
             dispatch({type: DONE_REFRESHING_TOKEN});
             dispatch({type: AUTH_USER, payload: res.data});
-            //history.push('/logout')
+            
             return res.data.access ? 
                 Promise.resolve(res.data.access) : 
                 Promise.reject({message: 'could not refresh token'});
@@ -62,6 +61,7 @@ export const refreshToken = (dispatch) => {
         .catch(e => {
             console.log('error refreshing token, lets sign out user', e);
             dispatch({type: DONE_REFRESHING_TOKEN});
+            history.push('/logout')
             return Promise.reject(e);
         });
 

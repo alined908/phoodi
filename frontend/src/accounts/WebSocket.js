@@ -19,8 +19,9 @@ export default class WebSocketService {
         const urlWithToken = baseURL 
         var url = new URL(path, urlWithToken)
         url.protocol = url.protocol.replace('http', 'ws')
+        if (token===null) {return}
         this.socketRef = new WebSocket(url.href + `?token=${token}`);
-        
+    
         this.socketRef.onmessage = e => {
             console.log("Step 2 - Channel sends message from backend")
             this.socketNewMessage(e.data);
@@ -36,7 +37,6 @@ export default class WebSocketService {
 
         this.socketRef.onclose = (e) => {
             console.log(e)
-            console.log(e.code)
             //Token not authenticated
             if (e.code === 4000) {
                 const access = AuthenticationService.retrieveToken();
@@ -117,7 +117,7 @@ export default class WebSocketService {
                     // console.log("Wait for connection..");
                     recursion(callback);
                 }
-            }, 1000);
+            }, 2000);
     }
     //Chat commands
     fetchMessages(uri){

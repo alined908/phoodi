@@ -95,10 +95,9 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo General
 - [x] Create demo video
 - [x] Handle 404 page
+- [ ] Change actions to async actions
 - [ ] Safari presentation
 - [ ] Have to click all fields/ Inconsistent meetup?
-- [ ] Search bar on top app nav bar
-- [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
 - [ ] Specify websocket protocol on link
 
 ## Todo Testing 
@@ -112,7 +111,9 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Switch to simplejwt library
 - [x] Authenticate JWT automatically after expiration
 - [x] Authenticate Websocket
-- [ ] Authenticate websocket authomatically after jwt expiration
+- [x] Authenticate websocket authomatically after jwt expiration
+- [x] Check for refresh token expiration and logout if expired
+- [ ] Don't allow websocket to send event even after refresh token expire
 - [ ] Use httpOnly cookies for tokens?
 
 ## Todo User
@@ -120,7 +121,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Confirm email, Change password
 - [x] Get user location before render
 - [ ] Settings doesnt populate after save and reload
-- [ ] Past activity
 - [ ] Change name of preference
 - [ ] Change presentation of upload avatar
 - [ ] User object, settings only show for myself.
@@ -173,6 +173,11 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Favicon
 - [x] Add preferences warning if no preferences
 
+## Todo UX
+- [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
+- [ ] Animation when logging out forced
+- [ ] Search bar on top app nav bar
+
 ## Todo Deploy
 - [x] Serve build for react app
 - [ ] Continuous integration
@@ -184,3 +189,4 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Possible convert forms to Backdrop Form Dialogs
 - [ ] Add calendar of meetups
 - [ ] Find people who have similar food taste near you?
+- [ ] Past activity
