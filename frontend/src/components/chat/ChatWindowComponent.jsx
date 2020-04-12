@@ -8,6 +8,8 @@ import {getMoreMessages} from "../../actions/chat"
 import {Person as PersonIcon, Event as EventIcon} from "@material-ui/icons"
 import PropTypes from 'prop-types';
 // import throttle from 'lodash/throttle'
+import 'emoji-mart/css/emoji-mart.css'
+import { Picker } from 'emoji-mart'
 import {chatMessagePropType} from "../../constants/prop-types"
 import {Helmet} from 'react-helmet'
 
@@ -16,13 +18,25 @@ class ChatWindowComponent extends Component {
         super(props);
         this.state = {
             value: "",
-            bound: true
+            bound: true,
+            showEmojis: false
         }
+        this.emojiPicker = React.createRef();
+        this.showEmojis = this.showEmojis.bind(this)
     }
+
+    componentDidMount(){
+        document.addEventListener('mousedown', this.showEmojis, false);
+    }
+
     componentDidUpdate() {
         if (this.state.bound){
             this.scrollToBottom();
         }
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.showEmojis, false);
     }
 
     messagesEndRef = React.createRef()
@@ -63,6 +77,17 @@ class ChatWindowComponent extends Component {
 
     handleClick = (e) => {
         this.sendMessage()
+    }
+
+    addEmoji = e => {
+        let emoji = e.native;
+        this.setState({
+            value: this.state.value + emoji
+        })
+    }
+
+    showEmojis = (e) => {
+        this.setState({showEmojis: !this.state.showEmojis})
     }
 
     scrollToBottom = () => {    
@@ -126,6 +151,19 @@ class ChatWindowComponent extends Component {
                                 placeholder="Type a message here...">
                             </input>
                         </form>
+                        {this.state.showEmojis ?
+                            <>
+                                <div className="emoji-picker-icon" onClick={this.showEmojis}>
+                                {String.fromCodePoint(0x1F62D)}
+                                </div>
+                                <div ref={this.emojiPicker} className="emoji-picker elevate">
+                                    <Picker title='Pick your emoji…' emoji='point_up' sheetSize={32} emojiSize={22} onSelect={this.addEmoji}/>
+                                </div>
+                            </>:
+                            <div className="emoji-picker-icon" onClick={this.showEmojis}>
+                                {String.fromCodePoint(0x1f60a)}
+                            </div>
+                        } 
                         <div>
                             <Button onClick={() => this.handleClick()} 
                                 style={{borderRadius: 15, fontSize: 10, fontFamily: "Lato", 

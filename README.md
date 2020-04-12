@@ -5,7 +5,7 @@ The purpose of the application is to allow friend groups to schedule meetups and
 
 ## Walkthrough Video
 **Click to watch**  
-[![Walkthrough](https://i9.ytimg.com/vi/cGb9SDsrlQ0/mq1.jpg?sqp=CIylwPQF&rs=AOn4CLDgwPiimk9CbHuMnSeYw30XZZ1TTA)](https://www.youtube.com/watch?v=cGb9SDsrlQ0)
+[![Walkthrough](https://lh3.googleusercontent.com/vA4tG0v4aasE7oIvRIvTkOYTwom07DfqHdUPr6k7jmrDwy_qA_SonqZkw6KX0OXKAdk)](https://www.youtube.com/watch?v=cGb9SDsrlQ0)
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [Deployment](#deployment) for notes on how to deploy the project on a live system.
@@ -156,8 +156,10 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Ban used again for some reason
 
 ## Todo Chat
+- [x] Add emojis
 - [ ] Bundle chat messages together
-- [ ] Edit chat messages and add emojis, upload picture
+- [ ] Edit chat messages
+- [ ] Upload picture
 - [ ] Reload animation on chat scroll up
 - [ ] Throttle scroll event
 - [ ] Send invite through chat

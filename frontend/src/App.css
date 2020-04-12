@@ -281,12 +281,68 @@ body {
   font-weight: 600;
 }
 
+.emoji-picker {
+  position: absolute;
+  bottom: 50px;
+  right: 100px;
+}
+
+.emoji-mart-category-label span, .emoji-mart-search input{
+  font-family: "Lato";
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.emoji-mart-preview{
+  height: 50px;
+  font-family: "Lato" !important;
+  font-weight: 600 !important;
+}
+.emoji-mart-preview-emoji{
+  left: 6px;
+}
+
+.emoji-mart-preview-data{
+  left: 50px;
+}
+
+.emoji-mart-preview .emoji-mart-emoji span{
+  width: 25px !important;
+  height: 25px !important;
+}
+
+.emoji-mart-preview-name, .emoji-mart-preview-shortnames{
+  font-size: 12px;
+}
+
+.emoji-mart-title-label{
+  color: black !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.emoji-mart-preview-emoticons{
+  display: none;
+}
+
+.emoji-picker-icon{
+  cursor: pointer;
+  margin-right: 15px;
+  font-size: 1rem;
+  transition: .1s ease-in-out;
+}
+
+.emoji-picker-icon:hover{
+  transform: scale(1.15,1.15);
+}
+
 .chat-input-wrapper{
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 1rem;
   background: var(--bg-color);
+  position: relative;
 }
 
 .chat-input-form{

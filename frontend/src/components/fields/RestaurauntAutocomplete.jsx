@@ -66,7 +66,7 @@ export default function RestaurauntAutocomplete(props) {
           console.log ('error')
         })
       }, 200),
-    [],
+    [props.coords.latitude, props.coords.longitude, props.radius],
   );
 
   React.useEffect(() => {
