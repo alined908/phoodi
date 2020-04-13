@@ -162,10 +162,10 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] More messages below
 - [x] Determine if more chat messages can be retrieved for room/render beginning
 - [ ] Bundle chat messages together
+- [ ] Handle timestamp logic
 - [ ] Edit chat messages
 - [ ] Upload picture
 - [ ] Send invite through chat
-- [ ] Handle timestamp logic
 - [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
 - [ ] Notification Bell doesnt appear on new messages
 

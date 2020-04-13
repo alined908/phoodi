@@ -24,12 +24,11 @@ class MeetupsComponent extends Component {
     }
     
     async componentDidMount(){
-        await Promise.all[
+        await Promise.all([
             //this.props.getMeetups(),
-            this.props.getPublicMeetups({categories: [], coords: {...this.props.user.settings}}),
+            this.props.getPublicMeetups({categories: [], coords: {...this.props.user.settings}}) ,
             this.props.getPreferences(this.props.user.id)
-        ]
-        
+        ])
     }
 
     componentDidUpdate(){
