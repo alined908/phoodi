@@ -56,7 +56,7 @@ class ChatComponent extends Component {
 
     render(){
         const renderChatWindow = () => {
-            if (this.props.isMessagesInitialized) {
+            if (this.props.isMessagesInitialized || this.props.isMessagesFetching) {
                 return <ChatWindowComponent 
                             socket={this.state.socket} isMessagesInitialized={this.props.isMessagesInitialized} 
                             activeRoom={this.props.activeRoom} messages={this.props.messages}
@@ -95,7 +95,8 @@ function mapStateToProps(state){
         activeRoom: state.chat.activeRoom,
         messages: state.chat.messages,
         isActiveRoomSet: state.chat.isActiveRoomSet,
-        rooms: Object.values(state.chat.rooms)
+        rooms: Object.values(state.chat.rooms),
+        isMessagesFetching: state.chat.isMessagesFetching
     }
 }
 

@@ -8,11 +8,17 @@ export const REFRESHING_TOKEN = 'refreshing_token';
 export const DONE_REFRESHING_TOKEN = 'done_refreshing_token'
 
 //Chat
-export const GET_ROOMS = 'get_rooms';
+export const GET_ROOMS_REQUEST = 'get_rooms_request';
+export const GET_ROOMS_SUCCESS = 'get_rooms_success';
+export const GET_ROOMS_ERROR = 'get_rooms_error'
 export const ADD_ROOM = 'add_room';
 export const SET_ACTIVE_ROOM = 'set_active_room';
-export const GET_MESSAGES = 'get_messages';
-export const GET_MORE_MESSAGES = 'get_more_messages';
+export const GET_MESSAGES_REQUEST = 'get_messages_request';
+export const GET_MESSAGES_SUCCESS = 'get_messages_success';
+export const GET_MESSAGES_ERROR = 'get_messages_success';
+export const GET_MORE_MESSAGES_REQUEST = 'get_more_messages_request';
+export const GET_MORE_MESSAGES_SUCCESS = 'get_more_messages_success';
+export const GET_MORE_MESSAGES_ERROR = 'get_more_messages_error';
 export const SET_TYPING_VALUE = 'set_typing_value';
 export const ADD_MESSAGE = 'add_message';
 export const REMOVE_ACTIVE_ROOM = 'remove_active_room';

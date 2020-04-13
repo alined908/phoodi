@@ -1,7 +1,11 @@
-import {GET_ROOMS, SET_ACTIVE_ROOM, GET_MESSAGES, GET_MORE_MESSAGES, SET_TYPING_VALUE, ADD_MESSAGE, REMOVE_ACTIVE_ROOM} from "../constants/action-types"
+import {GET_ROOMS_SUCCESS, GET_ROOMS_REQUEST, GET_ROOMS_ERROR, SET_ACTIVE_ROOM,
+    GET_MESSAGES_REQUEST, GET_MESSAGES_SUCCESS, GET_MESSAGES_ERROR, 
+    GET_MORE_MESSAGES_REQUEST, GET_MORE_MESSAGES_SUCCESS, GET_MORE_MESSAGES_ERROR, 
+    SET_TYPING_VALUE, ADD_MESSAGE, REMOVE_ACTIVE_ROOM} from "../constants/action-types"
 import {axiosClient} from '../accounts/axiosClient'
 
 export const getRooms = () => async dispatch => {
+    dispatch({type: GET_ROOMS_REQUEST})
     try {
         const response = await axiosClient.get(
             "/api/chats/", {headers: {
@@ -9,10 +13,41 @@ export const getRooms = () => async dispatch => {
             }}
         )
         console.log(response)
-        dispatch({type: GET_ROOMS, payload: response.data.rooms})
+        setTimeout(() => dispatch({type: GET_ROOMS_SUCCESS, payload: response.data.rooms}), 200)
     } catch(e){
         console.log(e);
+        dispatch({type: GET_ROOMS_ERROR, payload: e})
     }
+}
+
+export const getMessages = (room) => async dispatch => {
+    dispatch({type: GET_MESSAGES_REQUEST})
+    try {
+        const response = await axiosClient.get(
+            `/api/chats/${room}/messages/`, {headers: {
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }})
+        console.log(response)
+        setTimeout(() => dispatch({type: GET_MESSAGES_SUCCESS, payload: response.data}), 200)
+    } catch(e){
+        console.log(e)
+        dispatch({type: GET_MESSAGES_ERROR, payload: e})
+    }
+}
+
+export const getMoreMessages = (room, last_message_id) => async dispatch => {
+    dispatch({type: GET_MORE_MESSAGES_REQUEST})
+    try {
+        const response = await axiosClient.get(
+            `/api/chats/${room}/messages/`, {params: {last: last_message_id}, headers: {
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }})
+        setTimeout(() => dispatch({type: GET_MORE_MESSAGES_SUCCESS, payload: response.data}), 200)
+    } catch(e){
+        console.log(e)
+        dispatch({type: GET_MORE_MESSAGES_ERROR, payload: e})
+    }
+
 }
 
 export const setActiveRoom = (room) => {
@@ -27,34 +62,6 @@ export const removeActiveRoom = () => {
     return {
         type: REMOVE_ACTIVE_ROOM
     }
-}
-
-export const getMessages = (room) => async dispatch => {
-    console.log("get messages action")
-    try {
-        const response = await axiosClient.get(
-            `/api/chats/${room}/messages/`, {headers: {
-            "Authorization": `Bearer ${localStorage.getItem('token')}`
-        }})
-        console.log(response)
-        dispatch({type: GET_MESSAGES, payload: response.data})
-    } catch(e){
-        console.log(e);
-    }
-}
-
-export const getMoreMessages = (room, last_message_id) => async dispatch => {
-    console.log("get more messages")
-    try {
-        const response = await axiosClient.get(
-            `/api/chats/${room}/messages/`, {params: {last: last_message_id}, headers: {
-                "Authorization": `Bearer ${localStorage.getItem('token')}`
-        }})
-        dispatch({type: GET_MORE_MESSAGES, payload: response.data})
-    } catch(e){
-        console.log(e)
-    }
-
 }
 
 export const setTypingValue = (value) => {

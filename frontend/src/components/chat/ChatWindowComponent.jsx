@@ -2,11 +2,11 @@ import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import {ChatMessageComponent} from "../components"
 import {connect} from 'react-redux'
-import {Button, Tooltip} from '@material-ui/core'
+import {Button, Tooltip, CircularProgress} from '@material-ui/core'
 import {Link} from 'react-router-dom';
 import {removeNotifs} from "../../actions/notifications"
 import {getMoreMessages} from "../../actions/chat"
-import {Person as PersonIcon, Event as EventIcon} from "@material-ui/icons"
+import {Person as PersonIcon, Event as EventIcon, StarRateOutlined} from "@material-ui/icons"
 import PropTypes from 'prop-types';
 import throttle from 'lodash/throttle'
 import 'emoji-mart/css/emoji-mart.css'
@@ -20,33 +20,33 @@ class ChatWindowComponent extends Component {
         this.state = {
             value: "",
             bound: true,
-            showEmojis: false
+            showEmojis: false,
         }
         this.emojiPicker = React.createRef();
         this.messagesEndRef = React.createRef();
         this.showEmojis = this.showEmojis.bind(this)
         this.handleScrollWrapper = this.handleScrollWrapper.bind(this)
-        this.delayedCallback = throttle(this.handleScroll, 1000)
+        this.delayedCallback = throttle(this.handleScroll, 300)
     }
 
+    //Add Event listener for emoji picker outside click
     componentDidMount(){
         document.addEventListener('mousedown', this.handleOutsideClick, false);
     }
 
+    //If chat window state is bound, scroll to bottom on new chat messages
     componentDidUpdate() {
         if (this.state.bound){
             this.scrollToBottom();
         }
     }
 
+    //If Component unmounts remove outsideclick event listener
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleOutsideClick, false);
     }
     
-    handleChange = (e) => {
-        this.setState({value: e.target.value})       
-    }
-
+    //Send Message with websocket
     sendMessage = () => {
         if (this.state.value.length > 0 ){
             const messageObject = {from: this.props.user.id, text: this.state.value, room: this.props.room.uri}
@@ -54,6 +54,12 @@ class ChatWindowComponent extends Component {
         } 
     }
 
+    // Handle Change in text input
+    handleChange = (e) => {
+        this.setState({value: e.target.value})       
+    }
+
+    //If enter button is hit
     handleSubmit = (e) => {
         if (e.key === "Enter"){
             e.preventDefault();
@@ -61,15 +67,19 @@ class ChatWindowComponent extends Component {
         }
     }
 
-    //Throttle this later
+    //If Send button is clicked
+    handleClick = (e) => {
+        this.sendMessage()
+    }
+
+    //Scroll function to determine bound state and get more messages if necessary
     handleScroll = (e) => {
         let scrollTop = e.target.scrollTop;
         let scrollHeight = e.target.scrollHeight;
         let clientHeight = e.target.clientHeight;
-
-        console.log(scrollTop)
+        
+        //Check if first message sent
         if (scrollTop === 0 && this.props.messages && this.props.messages.length > 49) {
-            console.log('hello')
             this.props.getMoreMessages(this.props.room.uri, this.props.messages[0].id)
         }
 
@@ -80,16 +90,13 @@ class ChatWindowComponent extends Component {
         }
     }
 
+    //Scroll wrapper to throttle and persist synthetic event
     handleScrollWrapper = (event) => {
         event.persist()
         this.delayedCallback(event)
     }
 
-
-    handleClick = (e) => {
-        this.sendMessage()
-    }
-
+    //Add Emoji to Text Input
     addEmoji = e => {
         let emoji = e.native;
         this.setState({
@@ -97,10 +104,12 @@ class ChatWindowComponent extends Component {
         })
     }
 
+    //Show Emoji Picker
     showEmojis = (e) => {
         this.setState({showEmojis: !this.state.showEmojis})
     }
 
+    //Handle Emoji Picker Outside Click
     handleOutsideClick = (e) => {
         try {
             let node = ReactDOM.findDOMNode(this.emojiPicker.current)
@@ -112,10 +121,13 @@ class ChatWindowComponent extends Component {
         }
     }
 
-    scrollToBottom = () => {    
-        this.messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    //Scroller if bound
+    scrollToBottom = (behavior = "smooth") => {    
+        this.messagesEndRef.current.scrollIntoView({behavior});
     };
 
+
+    //Determine non self user if chat room is friendship
     determineOtherUser = () => {
         const user = this.props.user
 
@@ -155,15 +167,36 @@ class ChatWindowComponent extends Component {
                     }
                 </div>
                 <div className="chat-messages-wrapper" onScroll={this.handleScrollWrapper} ref={this.messagesRef}>
-                    <div className="chat-messages">
-                        {this.props.activeChatMembers && this.props.messages && this.props.messages.map((msg) => 
-                            <ChatMessageComponent key={msg.id} user={this.props.user} message={msg} members={this.props.activeChatMembers}/>
-                        )}
-                        <div ref={this.messagesEndRef} />
-                    </div>
+                    {this.props.isMessagesFetching ? 
+                        <div className="loading">
+                            <CircularProgress/>
+                            <div ref={this.messagesEndRef} />
+                        </div>
+                        :
+                        <div className="chat-messages">
+                            {this.props.isMoreMessagesFetching && 
+                                <div className="chat-loading">
+                                    <CircularProgress/>
+                                </div>
+                            }
+                            {this.props.activeChatMembers && this.props.messages && this.props.messages.map((msg) => 
+                                <ChatMessageComponent key={msg.id} user={this.props.user} message={msg} members={this.props.activeChatMembers}/>
+                            )}
+                            <div ref={this.messagesEndRef} />
+                        </div>
+                    }
                 </div>
                 {this.props.activeChatMembers ? 
                     <div ref={(el) => { this.messagesEnd = el; }} className="chat-input-wrapper">
+                        {!this.state.bound && 
+                            <div className="more-messages">
+                                <Button size="small" onClick={() => this.scrollToBottom("auto")} 
+                                    variant="contained" color="primary" style={{opacity: ".6", fontSize: ".7rem"}}
+                                >
+                                        More Messages Below
+                                </Button>
+                            </div>
+                            }
                         <form className="chat-input-form">
                             <input className="chat-input"
                                 type="text"
@@ -212,7 +245,9 @@ ChatWindowComponent.propTypes = {
         chatMessagePropType
     ),
     removeNotifs: PropTypes.func,
-    getMoreMessages: PropTypes.func
+    getMoreMessages: PropTypes.func,
+    isMessagesFetching: PropTypes.bool,
+    isMoreMessagesFetching: PropTypes.bool
 }
 
 function mapStateToProps(state){
@@ -220,12 +255,15 @@ function mapStateToProps(state){
         return {
             activeChatMembers: state.chat.rooms[state.chat.activeRoom].members,
             user: state.user.user,
-            room: state.chat.rooms[state.chat.activeRoom]
+            isMessagesFetching: state.chat.isMessagesFetching,
+            room: state.chat.rooms[state.chat.activeRoom],
+            isMoreMessagesFetching: state.chat.isMoreMessagesFetching
         }
     } else {
         return {
             activeChatMembers: null,
             user: state.user.user,
+            isMessagesFetching: state.chat.isMessagesFetching
         }
     }
     

@@ -1,30 +1,47 @@
-import {CLEAR_STORE, GET_ROOMS, REMOVE_ACTIVE_ROOM, ADD_ROOM, SET_ACTIVE_ROOM, SET_TYPING_VALUE, ADD_MESSAGE, GET_MESSAGES, GET_MORE_MESSAGES} from "../constants/action-types"
+import {GET_ROOMS_REQUEST, GET_ROOMS_SUCCESS, GET_ROOMS_ERROR, 
+    GET_MESSAGES_REQUEST, GET_MESSAGES_SUCCESS, GET_MESSAGES_ERROR, 
+    GET_MORE_MESSAGES_REQUEST, GET_MORE_MESSAGES_SUCCESS, GET_MORE_MESSAGES_ERROR,
+    CLEAR_STORE, REMOVE_ACTIVE_ROOM, ADD_ROOM, SET_ACTIVE_ROOM, SET_TYPING_VALUE, ADD_MESSAGE} from "../constants/action-types"
 
 const defaultState = {
     rooms: {},
-    isRoomsInitialized: false,
+    messages: [],
     activeRoom: null,
+    setTypingValue: "",
     isActiveRoomSet: false,
-    messages: {},
+    isRoomsInitialized: false,
+    isRoomsFetching: false,
     isMessagesInitialized: false,
-    setTypingValue: ""
+    isMessagesFetching: false,
+    isMoreMessagesFetching: false
 }
 
 export default function chatReducer(state = defaultState, action){
     switch(action.type){
-        case GET_ROOMS:
-            return {...state, rooms: action.payload, isRoomsInitialized: true}
+        case GET_ROOMS_REQUEST:
+            return {...state, isRoomsFetching: true}
+        case GET_ROOMS_SUCCESS:
+            return {...state, rooms: action.payload, isRoomsInitialized: true, isRoomsFetching: false}
+        case GET_ROOMS_ERROR:
+            return {...state, isRoomsFetching: false, errorMessage: action.payload.message}
+        case GET_MESSAGES_REQUEST:
+            return {...state, isMessagesFetching: true}
+        case GET_MESSAGES_SUCCESS:
+            return {...state, messages: action.payload, isMessagesInitialized: true, isMessagesFetching: false}
+        case GET_MESSAGES_ERROR:
+            return {...state, isMessagesFetching: false, errorMessage: action.payload.message}
+        case GET_MORE_MESSAGES_REQUEST:
+            return {...state, isMoreMessagesFetching: true}
+        case GET_MORE_MESSAGES_SUCCESS:
+            return {...state, messages: [...action.payload, ...state.messages], isMoreMessagesFetching: false}
+        case GET_MORE_MESSAGES_ERROR:
+            return {...state, errorMessage: action.payload.message, isMoreMessagesFetching: false}
         case ADD_ROOM:
-            let rooms = state.rooms.concat([action.payload])
-            return {...state, rooms: rooms}
+            return {...state, rooms: state.rooms.concat([action.payload])}
         case SET_ACTIVE_ROOM:
             return {...state, activeRoom: action.payload.uri, isActiveRoomSet: true, isMessagesInitialized: false}
         case REMOVE_ACTIVE_ROOM:
             return {...state, activeRoom: null, isActiveRoomSet:false, isMessagesInitialized:false}
-        case GET_MESSAGES:
-            return {...state, messages: action.payload, isMessagesInitialized: true}
-        case GET_MORE_MESSAGES:
-            return {...state, messages: [...action.payload, ...state.messages]}
         case SET_TYPING_VALUE:
             return {...state, setTypingValue: action.payload}
         case ADD_MESSAGE:

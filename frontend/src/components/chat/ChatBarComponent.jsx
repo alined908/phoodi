@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {ContactComponent} from "../components";
 import {connect} from 'react-redux';
-import {IconButton, Tooltip} from '@material-ui/core'
+import {IconButton, Tooltip, CircularProgress} from '@material-ui/core'
 import {Event as EventIcon, Person as PersonIcon, Search as SearchIcon, Error as ErrorIcon} from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import {chatRoomPropType, userPropType,} from "../../constants/prop-types"
@@ -96,7 +96,7 @@ class ChatBarComponent extends Component {
                     </div>
                 </div>
                 <div className="chat-bar-contacts">
-                    {!this.props.isRoomsInitialized && <div>Initializing Contacts...</div>}
+                    {!this.props.isRoomsInitialized && <div className="loading"><CircularProgress/></div>}
                     {(this.props.isRoomsInitialized && rooms.length === 0) && 
                         <div className="no-entity">
                             <ErrorIcon style={{color: "rgb(255, 212, 96)"}}/>
@@ -127,7 +127,8 @@ ChatBarComponent.propTypes = {
 const mapStateToProps = (state) => {
     return {
         user: state.user.user,
-        isRoomsInitialized: state.chat.isRoomsInitialized
+        isRoomsInitialized: state.chat.isRoomsInitialized,
+        isRoomsFetching: state.chat.isRoomsFetching
     }
 }
 

@@ -158,14 +158,14 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo Chat
 - [x] Add emojis
 - [x] Throttle scroll event
+- [x] Reload animation on chat scroll up
+- [x] More messages below 
 - [ ] Bundle chat messages together
 - [ ] Edit chat messages
 - [ ] Upload picture
-- [ ] Reload animation on chat scroll up
 - [ ] Send invite through chat
 - [ ] Handle timestamp logic
 - [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
-- [ ] More messages below 
 - [ ] Notification Bell doesnt appear on new messages
 
 ## Todo UI
