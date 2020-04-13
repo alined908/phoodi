@@ -87,7 +87,7 @@ class MeetupEventForm extends Component {
         
         if (this.props.type === "create"){
             try {
-                const response = await axiosClient.post(
+                await axiosClient.post(
                     `/api/meetups/${uri}/events/`, data, {headers: {
                         "Authorization": `Bearer ${localStorage.getItem('token')}`
                 }})
@@ -98,7 +98,7 @@ class MeetupEventForm extends Component {
         } 
         if (this.props.type === "edit") {
             try {
-                const response = axiosClient.patch(
+                await axiosClient.patch(
                     `/api/meetups/${uri}/events/${this.props.match.params.id}/`, data, {headers: {
                         "Authorization": `Bearer ${localStorage.getItem('token')}`
                 }})

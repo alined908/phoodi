@@ -159,7 +159,8 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Add emojis
 - [x] Throttle scroll event
 - [x] Reload animation on chat scroll up
-- [x] More messages below 
+- [x] More messages below
+- [x] Determine if more chat messages can be retrieved for room/render beginning
 - [ ] Bundle chat messages together
 - [ ] Edit chat messages
 - [ ] Upload picture

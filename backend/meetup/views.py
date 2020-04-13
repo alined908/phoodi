@@ -688,13 +688,20 @@ class ChatRoomMessageView(APIView):
     def get(self, request, *args, **kwargs):
         uri = kwargs['uri']
         chat_room = get_object_or_404(ChatRoom, uri=uri)
+        more = True
+        
         if request.GET.get('last', False):
             messages = ChatRoomMessage.objects.raw('SELECT * FROM meetup_chatroommessage AS c WHERE c.room_id=%s AND c.id<%s ORDER BY c.id DESC LIMIT 50', [chat_room.id, request.GET.get('last')])
         else:
             messages = ChatRoomMessage.objects.raw('SELECT * FROM meetup_chatroommessage AS c WHERE c.room_id=%s ORDER BY c.id DESC LIMIT 50', [chat_room.id])
+     
+        if messages:
+            first_message = ChatRoomMessage.objects.filter(room=chat_room).first() 
+            if len(messages) < 50 or first_message.id == messages[-1].id:
+                more = False
+
         serializer = MessageSerializer(reversed(messages), many=True)
-    
-        return Response(serializer.data)
+        return Response({"messages":serializer.data, "more": more})
 
     def post(self, request, *args, **kwargs):
         uri = kwargs['uri']

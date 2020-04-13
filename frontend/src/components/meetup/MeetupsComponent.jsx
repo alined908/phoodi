@@ -5,7 +5,7 @@ import {MeetupCard, CategoryAutocomplete} from "../components"
 import {Grid, Grow, Tooltip, IconButton, FormGroup, FormControlLabel, Checkbox, Avatar} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import moment from "moment"
-import { Lock as LockIcon, Public as PublicIcon, Add as AddIcon, Search as SearchIcon, Edit as EditIcon, Error as ErrorIcon, People as PeopleIcon} from '@material-ui/icons'
+import {Public as PublicIcon, Add as AddIcon, Search as SearchIcon, Edit as EditIcon, Error as ErrorIcon, People as PeopleIcon} from '@material-ui/icons'
 import {getPreferences} from "../../actions/index"
 import PropTypes from "prop-types"
 import { userPropType, preferencePropType, meetupPropType} from '../../constants/prop-types';
@@ -142,7 +142,6 @@ class MeetupsComponent extends Component {
 
     render(){
         const filteredMeetups = this.divideMeetups(this.props.meetups)
-        const numMeetups = filteredMeetups.length
 
         const renderPreset = () => {
             return (

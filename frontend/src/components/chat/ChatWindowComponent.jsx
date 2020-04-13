@@ -6,7 +6,7 @@ import {Button, Tooltip, CircularProgress} from '@material-ui/core'
 import {Link} from 'react-router-dom';
 import {removeNotifs} from "../../actions/notifications"
 import {getMoreMessages} from "../../actions/chat"
-import {Person as PersonIcon, Event as EventIcon, StarRateOutlined} from "@material-ui/icons"
+import {Person as PersonIcon, Event as EventIcon} from "@material-ui/icons"
 import PropTypes from 'prop-types';
 import throttle from 'lodash/throttle'
 import 'emoji-mart/css/emoji-mart.css'
@@ -78,8 +78,8 @@ class ChatWindowComponent extends Component {
         let scrollHeight = e.target.scrollHeight;
         let clientHeight = e.target.clientHeight;
         
-        //Check if first message sent
-        if (scrollTop === 0 && this.props.messages && this.props.messages.length > 49) {
+        //Check if more is retrievable
+        if (scrollTop === 0 && this.props.messages && this.props.isMoreRetrievable) {
             this.props.getMoreMessages(this.props.room.uri, this.props.messages[0].id)
         }
 
@@ -179,6 +179,24 @@ class ChatWindowComponent extends Component {
                                     <CircularProgress/>
                                 </div>
                             }
+                            {(this.props.room && !this.props.isMoreRetrievable) && 
+                                <div className="chat-messages-header">
+                                    {this.props.room.friendship ? 
+                                        <>
+                                            <span>This is the beginning of your direct message history with &nbsp;</span>
+                                            <span className="chat-messages-header-var">
+                                                {this.props.room.members[this.determineOtherUser()].first_name} {this.props.room.members[this.determineOtherUser()].last_name}
+                                            </span>
+                                            <span>.</span>
+                                        </> : 
+                                        <>
+                                            <span>Welcome to the beginning of the &nbsp;</span>
+                                            <span className="chat-messages-header-var">{this.props.room.name}</span>
+                                            <span>&nbsp; group.</span>
+                                        </>
+                                    }
+                                </div>
+                            }
                             {this.props.activeChatMembers && this.props.messages && this.props.messages.map((msg) => 
                                 <ChatMessageComponent key={msg.id} user={this.props.user} message={msg} members={this.props.activeChatMembers}/>
                             )}
@@ -257,7 +275,8 @@ function mapStateToProps(state){
             user: state.user.user,
             isMessagesFetching: state.chat.isMessagesFetching,
             room: state.chat.rooms[state.chat.activeRoom],
-            isMoreMessagesFetching: state.chat.isMoreMessagesFetching
+            isMoreMessagesFetching: state.chat.isMoreMessagesFetching,
+            isMoreRetrievable: state.chat.isMoreRetrievable
         }
     } else {
         return {

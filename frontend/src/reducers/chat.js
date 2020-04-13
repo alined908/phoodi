@@ -13,7 +13,8 @@ const defaultState = {
     isRoomsFetching: false,
     isMessagesInitialized: false,
     isMessagesFetching: false,
-    isMoreMessagesFetching: false
+    isMoreMessagesFetching: false,
+    isMoreRetrievable: false
 }
 
 export default function chatReducer(state = defaultState, action){
@@ -27,13 +28,13 @@ export default function chatReducer(state = defaultState, action){
         case GET_MESSAGES_REQUEST:
             return {...state, isMessagesFetching: true}
         case GET_MESSAGES_SUCCESS:
-            return {...state, messages: action.payload, isMessagesInitialized: true, isMessagesFetching: false}
+            return {...state, messages: action.payload.messages, isMoreRetrievable: action.payload.more, isMessagesInitialized: true, isMessagesFetching: false}
         case GET_MESSAGES_ERROR:
             return {...state, isMessagesFetching: false, errorMessage: action.payload.message}
         case GET_MORE_MESSAGES_REQUEST:
             return {...state, isMoreMessagesFetching: true}
         case GET_MORE_MESSAGES_SUCCESS:
-            return {...state, messages: [...action.payload, ...state.messages], isMoreMessagesFetching: false}
+            return {...state, messages: [...action.payload.messages, ...state.messages], isMoreRetrievable: action.payload.more, isMoreMessagesFetching: false}
         case GET_MORE_MESSAGES_ERROR:
             return {...state, errorMessage: action.payload.message, isMoreMessagesFetching: false}
         case ADD_ROOM:
