@@ -24,7 +24,9 @@ export const ADD_MESSAGE = 'add_message';
 export const REMOVE_ACTIVE_ROOM = 'remove_active_room';
 
 //Meetups
-export const GET_MEETUPS = 'get_meetups';
+export const GET_MEETUPS_REQUEST = 'get_meetups_request';
+export const GET_MEETUPS_SUCCESS = 'get_meetups_success';
+export const GET_MEETUPS_ERROR = 'get_meetups_error'
 export const ADD_MEETUP = 'add_meetup';
 export const DELETE_MEETUP = 'delete_meetup';
 export const EDIT_MEETUP = 'edit_meetup';

@@ -1,14 +1,22 @@
-import {GET_MEETUPS, ADD_MEETUP, ADD_MEETUP_MEMBER, DELETE_MEETUP, EDIT_MEETUP, CLEAR_STORE, VOTE_MEETUP_EVENT, ADD_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, EDIT_MEETUP_EVENT, ADD_EVENT_OPTION} from '../constants/action-types';
+import {GET_MEETUPS_REQUEST, GET_MEETUPS_SUCCESS, GET_MEETUPS_ERROR, 
+        ADD_MEETUP, ADD_MEETUP_MEMBER, DELETE_MEETUP, EDIT_MEETUP,
+     CLEAR_STORE, VOTE_MEETUP_EVENT, ADD_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, 
+     EDIT_MEETUP_EVENT, ADD_EVENT_OPTION} from '../constants/action-types';
 
 const defaultState = {
     meetups: {},
-    isMeetupsInitialized: false
+    isMeetupsInitialized: false,
+    isMeetupsFetching: false
 }
 
 export default function meetupReducer(state = defaultState, action){
     switch (action.type){
-        case GET_MEETUPS:
-            return {...state, meetups: action.payload, isMeetupsInitialized: true}
+        case GET_MEETUPS_REQUEST:
+            return {...state, isMeetupsFetching: true}
+        case GET_MEETUPS_SUCCESS:
+            return {...state, meetups: action.payload, isMeetupsInitialized: true, isMeetupsFetching: false}
+        case GET_MEETUPS_ERROR:
+            return {...state, isMeetupsFetching: false, errorMessage: action.payload.message}
         case ADD_MEETUP:
             return {...state, meetups: {...state.meetups, [action.payload.uri]: action.payload}}
         case EDIT_MEETUP:

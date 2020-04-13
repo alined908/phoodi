@@ -339,6 +339,7 @@ body {
 .loading{
   display: flex;
   height: 100%;
+  width: 100%;
   justify-content: center;
   align-items: center;
 }
@@ -616,6 +617,7 @@ body {
 
 .meetups-cardwrapper{
   padding: .5rem;
+  max-height: 300px;
 }
 
 .meetups-datespecific{
@@ -885,13 +887,14 @@ body {
 
 .meetups-container{
   margin: .5rem;
-  height: calc(100% - 60px);
+  max-height: calc(100% - 60px);
   padding: .5rem;
   display: flex;
   font-family: "Lato";
   font-weight: 600;
   position: relative;
   overflow-y: auto;
+  flex-wrap: wrap;
 }
 
 .meetups-container::-webkit-scrollbar{
@@ -946,9 +949,8 @@ body {
 }
 
 .meetup-card-events{
-  margin: 0.5rem 0 0 0;
+  margin: .5rem 0 0 0;
   position: relative;
-
 }
 .meetup-card-events:before{
   position: absolute; 

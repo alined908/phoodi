@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {getMeetups, getPublicMeetups} from "../../actions/meetup";
+import {getMeetups} from "../../actions/meetup";
 import {MeetupCard, CategoryAutocomplete} from "../components"
-import {Grid, Grow, Tooltip, IconButton, FormGroup, FormControlLabel, Checkbox, Avatar} from '@material-ui/core'
+import {Grid, Grow, Tooltip, IconButton, FormGroup, FormControlLabel, Checkbox, Avatar,  CircularProgress} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import moment from "moment"
 import {Public as PublicIcon, Add as AddIcon, Search as SearchIcon, Edit as EditIcon, Error as ErrorIcon, People as PeopleIcon} from '@material-ui/icons'
@@ -26,7 +26,7 @@ class MeetupsComponent extends Component {
     async componentDidMount(){
         await Promise.all([
             //this.props.getMeetups(),
-            this.props.getPublicMeetups({categories: [], coords: {...this.props.user.settings}}) ,
+            this.props.getMeetups({type: "public", categories: this.formatCategories([]), coords: {...this.props.user.settings}}) ,
             this.props.getPreferences(this.props.user.id)
         ])
     }
@@ -57,8 +57,8 @@ class MeetupsComponent extends Component {
             }
         }
         this.setState({public: publicBool}, () => publicBool ? 
-            this.props.getPublicMeetups({categories: this.state.entries, coords: {...this.props.user.settings}}) : 
-            this.props.getMeetups({categories: this.state.entries})
+            this.props.getMeetups({type: "public", categories: this.formatCategories(this.state.entries), coords: {...this.props.user.settings}}) : 
+            this.props.getMeetups({type: "private", categories: this.formatCategories(this.state.entries)})
         )
     }
 
@@ -75,9 +75,19 @@ class MeetupsComponent extends Component {
         this.setState({
             clickedPreferences: clickedPrefs,
             entries: entries
-        }, () => this.state.public ? this.props.getPublicMeetups({categories: entries, coords: {...this.props.user.settings}}) : this.props.getMeetups({categories: entries}))
+        }, () => this.state.public ? 
+            this.props.getMeetups({type: "public", categories: this.formatCategories(entries), coords: {...this.props.user.settings}}) : 
+            this.props.getMeetups({type: "private", categories: this.formatCategories(entries)}))
     }
 
+    formatCategories = entries => {
+        var ids = []
+        for (var category in entries){
+            ids.push(entries[category].id)
+        }
+        return ids.join(",")
+    }
+    
     divideMeetups = (meetups) => {
         var [past, today, week, later] = [[], [], [], []]
 
@@ -133,8 +143,8 @@ class MeetupsComponent extends Component {
                 clickedPreferences: clickedPrefs
             },
             () => this.state.public ? 
-                this.props.getPublicMeetups({categories: values, coords: {...this.props.user.settings}}) : 
-                this.props.getMeetups({categories: values})
+                this.props.getMeetups({type: "public", categories: this.formatCategories(values), coords: {...this.props.user.settings}}) : 
+                this.props.getMeetups({type: "private", categories: this.formatCategories(values)})
         )
 
     }
@@ -254,8 +264,11 @@ class MeetupsComponent extends Component {
                         </Link>
                     </div>
                     {/* {!this.props.isMeetupsInitialized && <div>Initializing Meetups ....</div>} */} 
-                    {this.props.isMeetupsInitialized && 
-                        <div className="meetups-container">
+                    
+                    
+                    <div className="meetups-container" style={{minHeight: this.props.isMeetupsFetching ? "calc(100% - 60px)" : "0"}}>
+                        {this.props.isMeetupsFetching && <div className="loading" style={{height: "auto"}}><CircularProgress/></div>}
+                        {(!this.props.isMeetupsFetching && this.props.isMeetupsInitialized) && 
                             <Grid container spacing={1}>
                                 {filteredMeetups.map((meetup, i) => 
                                     <Grid key={meetup.id} item xs={12} lg={6} xl={4}>
@@ -267,8 +280,8 @@ class MeetupsComponent extends Component {
                                     </Grid>
                                 )}
                             </Grid>
-                        </div>
-                    }
+                        }
+                    </div>
                 </div>
             </div>
         )
@@ -281,22 +294,23 @@ MeetupsComponent.propTypes = {
     user: userPropType,
     preferences: PropTypes.arrayOf(preferencePropType).isRequired,
     getMeetups: PropTypes.func.isRequired,
-    getPreferences: PropTypes.func.isRequired, getPublicMeetups: PropTypes.func.isRequired
+    getPreferences: PropTypes.func.isRequired, getPublicMeetups: PropTypes.func.isRequired,
+    isMeetupsFetching: PropTypes.bool.isRequired
 }
 
 function mapStateToProps(state){
     return {
-        isMeetupsInitialized: state.meetup.isMeetupsInitialized,
+        user: state.user.user,
         meetups: Object.values(state.meetup.meetups),
         preferences: state.user.preferences,
-        user: state.user.user
+        isMeetupsInitialized: state.meetup.isMeetupsInitialized,
+        isMeetupsFetching: state.meetup.isMeetupsFetching
     }
 }
 
 const mapDispatchToProps = {
     getMeetups,
-    getPreferences,
-    getPublicMeetups
+    getPreferences
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MeetupsComponent);

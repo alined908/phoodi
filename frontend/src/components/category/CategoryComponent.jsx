@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import {axiosClient} from '../../accounts/axiosClient'
 import {Avatar, Tooltip, IconButton, Grid, Grow} from '@material-ui/core'
-import {getPublicMeetups} from "../../actions/meetup";
+import {getMeetups} from "../../actions/meetup";
 import {Friend, MeetupCard} from '../components'
 import {FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon} from '@material-ui/icons';
 import {addPreference, deletePreference} from '../../actions/index'
@@ -38,9 +38,12 @@ class CategoryComponent extends Component {
     getInformation = async () => {
         console.log(this.props.match.params.api_label)
         console.log(this.props.user.settings)
+        console.log(this.props.user.settings ? this.props.user.settings.radius : 25)
+        console.log(this.props.user.settings ? this.props.user.settings.latitude: null,)
+
         try {
-            const [category, friends, meetups] = await Promise.all
-                ([
+            const [category, friends, meetups] = await Promise.all(
+                [
                     axiosClient.get(
                         `/api/categories/${this.props.match.params.api_label}/`, {headers: {
                             "Authorization": `Bearer ${localStorage.getItem('token')}`
@@ -63,7 +66,8 @@ class CategoryComponent extends Component {
                             radius: this.props.user.settings ? this.props.user.settings.radius : 25
                         }
                     })
-                ])
+                ]
+            )
             this.setState({
                 category: category.data, categoryLoaded: true, liked: category.data.preference !== null, 
                 numLiked: category.data.num_liked, friends: friends.data, meetups: Object.values(meetups.data.meetups)
@@ -127,7 +131,7 @@ class CategoryComponent extends Component {
                                 </div>
                                 <div className="column-middle">
                                     {this.state.friends.map((friend) => 
-                                        <Friend isUserFriend={true} friend={friend}/>
+                                        <Friend key={friend.id} isUserFriend={true} friend={friend}/>
                                     )}
                                 </div> 
                               
@@ -162,7 +166,6 @@ CategoryComponent.propTypes = {
     user: userPropType,
     addPreference: PropTypes.func.isRequired,
     deletePreference: PropTypes.func.isRequired,
-    getPublicMeetups: PropTypes.func.isRequired,
     match: PropTypes.shape({
         params: PropTypes.shape({
           api_label: PropTypes.string.isRequired
@@ -179,7 +182,7 @@ function mapStateToProps(state){
 const mapDispatchToProps = {
     addPreference,
     deletePreference,
-    getPublicMeetups
+    getMeetups
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryComponent)

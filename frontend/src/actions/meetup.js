@@ -1,14 +1,21 @@
-import {GET_MEETUPS, ADD_MEETUP, ADD_MEETUP_MEMBER, ADD_EVENT_OPTION, ADD_GLOBAL_MESSAGE, DELETE_MEETUP, EDIT_MEETUP, VOTE_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, ADD_MEETUP_EVENT, EDIT_MEETUP_EVENT} from "../constants/action-types";
+import {GET_MEETUPS_REQUEST, GET_MEETUPS_SUCCESS, GET_MEETUPS_ERROR, 
+    ADD_MEETUP, ADD_MEETUP_MEMBER, ADD_EVENT_OPTION, ADD_GLOBAL_MESSAGE, DELETE_MEETUP, EDIT_MEETUP,
+    VOTE_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, ADD_MEETUP_EVENT, EDIT_MEETUP_EVENT} from "../constants/action-types";
 import {axiosClient} from '../accounts/axiosClient';
 import {history} from '../components/MeetupApp'
 
 export const getMeetups = (data) => async dispatch => {
-    const ids = []
-    for (var category in data.categories){
-        ids.push(data.categories[category].id)
+    dispatch({type: GET_MEETUPS_REQUEST})
+    var params;
+    if (data.type === "private"){
+        params = {type: data.type, categories: data.categories}
+    } else {
+        params = {
+            type: data.type, categories: data.categories, latitude: data.coords.latitude,
+            longitude: data.coords.longitude, radius: data.coords.radius
+        }
     }
-    const categories = ids.join(",")
-
+    
     try {
         const response = await axiosClient.request({
             method: "GET",
@@ -16,43 +23,12 @@ export const getMeetups = (data) => async dispatch => {
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
             },
-            params: {
-                type: "private",
-                categories: categories
-            }
+            params: params
         })
-        dispatch({type: GET_MEETUPS, payload: response.data.meetups})
+        setTimeout(() => dispatch({type: GET_MEETUPS_SUCCESS, payload: response.data.meetups}), 500)
     } catch(e){
         console.log(e)
-    }
-}
-
-export const getPublicMeetups = (data) => async dispatch => {
-    var ids = []
-    for (var category in data.categories){
-        ids.push(data.categories[category].id)
-    }
-    const categories = ids.join(",")
-
-    try {
-        const response = await axiosClient.request({
-            method: "GET",
-            url: "/api/meetups/", 
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem('token')}`
-            },
-            params: {
-                type: "public",
-                categories: categories,
-                latitude: data.coords.latitude,
-                longitude: data.coords.longitude,
-                radius: data.coords.radius
-            }
-        })
-        console.log(response.data)
-        dispatch({type: GET_MEETUPS, payload: response.data.meetups})
-    } catch(e) {
-        console.log(e)
+        dispatch({type: GET_MEETUPS_ERROR, payload: e})
     }
 }
 

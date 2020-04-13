@@ -101,10 +101,10 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Specify websocket protocol on link
 
 ## Todo Testing 
+- [x] Fallback if no latitude/longitude provided.
 - [ ] Write tests for frontend
 - [ ] Write more tests for api
 - [ ] Write tests for consumers
-- [x] Fallback if no latitude/longitude provided.
 - [ ] Form validation + Validation for time and date
 
 ## Todo Authentication
@@ -117,9 +117,9 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Use httpOnly cookies for tokens?
 
 ## Todo User
+- [x] Get user location before render
 - [ ] Add google social auth 
 - [ ] Confirm email, Change password
-- [x] Get user location before render
 - [ ] Settings doesnt populate after save and reload
 - [ ] Change name of preference
 - [ ] Change presentation of upload avatar
@@ -133,6 +133,9 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo Invite
 - [ ] Change meetup friend state if invite sent
 
+## Todo Category
+- [ ] On reload, category doesn't display meetups
+
 ## Todo Meetup
 - [x] Meetup email message nice html
 - [x] Send email, loading bar
@@ -141,6 +144,8 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Load categories for meetup event custom
 - [x] Custom event doesn't automatically render
 - [x] Fix Restauraunt autocomplete bug if no user settings
+- [x] When clicked on category it 404s
+- [x] Combine getMeetups and getPublicMeetups actions
 - [ ] Block people, admin functionality for meetup member
 - [ ] MeetupEventOption Delete
 - [ ] Info dissapears on meetup edit form reload
@@ -152,7 +157,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Outline itinerary of meetup
 - [ ] Reload old events, no options return  
 - [ ] Notification Bell doesnt appear if public and member
-- [x] When clicked on category it 404s
 - [ ] Ban used again for some reason
 
 ## Todo Chat
@@ -181,13 +185,15 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
 - [ ] Animation when logging out forced
 - [ ] Search bar on top app nav bar
+- [ ] User Settings doesn't work again? for category meetups and regular meetups
+- [ ] Autocomplete click doesn't load automatically, anotehr click is needed
 
 ## Todo Deploy
 - [x] Serve build for react app
+- [x] Link Headers (react-helmet)
 - [ ] Continuous integration
 - [ ] Separate css files
 - [ ] Cache images
-- [x] Link Headers (react-helmet)
 - [ ] Django settings
 
 ## Todo Next Iteration
