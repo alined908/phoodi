@@ -8,7 +8,7 @@ import {removeNotifs} from "../../actions/notifications"
 import {getMoreMessages} from "../../actions/chat"
 import {Person as PersonIcon, Event as EventIcon} from "@material-ui/icons"
 import PropTypes from 'prop-types';
-// import throttle from 'lodash/throttle'
+import throttle from 'lodash/throttle'
 import 'emoji-mart/css/emoji-mart.css'
 import { Picker } from 'emoji-mart'
 import {chatMessagePropType} from "../../constants/prop-types"
@@ -25,6 +25,8 @@ class ChatWindowComponent extends Component {
         this.emojiPicker = React.createRef();
         this.messagesEndRef = React.createRef();
         this.showEmojis = this.showEmojis.bind(this)
+        this.handleScrollWrapper = this.handleScrollWrapper.bind(this)
+        this.delayedCallback = throttle(this.handleScroll, 1000)
     }
 
     componentDidMount(){
@@ -61,17 +63,26 @@ class ChatWindowComponent extends Component {
 
     //Throttle this later
     handleScroll = (e) => {
-        // console.log(e.target.scrollTop)
-        if (e.target.scrollTop === 0 && this.props.messages && this.props.messages.length > 49) {
+        let scrollTop = e.target.scrollTop;
+        let scrollHeight = e.target.scrollHeight;
+        let clientHeight = e.target.clientHeight;
+
+        console.log(scrollTop)
+        if (scrollTop === 0 && this.props.messages && this.props.messages.length > 49) {
             console.log('hello')
             this.props.getMoreMessages(this.props.room.uri, this.props.messages[0].id)
         }
 
-        if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight){
+        if (scrollHeight - scrollTop === clientHeight){
             this.setState({bound: true})
         } else{
             this.setState({bound: false})
         }
+    }
+
+    handleScrollWrapper = (event) => {
+        event.persist()
+        this.delayedCallback(event)
     }
 
 
@@ -143,7 +154,7 @@ class ChatWindowComponent extends Component {
                         </Link>
                     }
                 </div>
-                <div className="chat-messages-wrapper" onScroll={this.handleScroll} ref={this.messagesRef}>
+                <div className="chat-messages-wrapper" onScroll={this.handleScrollWrapper} ref={this.messagesRef}>
                     <div className="chat-messages">
                         {this.props.activeChatMembers && this.props.messages && this.props.messages.map((msg) => 
                             <ChatMessageComponent key={msg.id} user={this.props.user} message={msg} members={this.props.activeChatMembers}/>

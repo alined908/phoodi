@@ -157,11 +157,11 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Chat
 - [x] Add emojis
+- [x] Throttle scroll event
 - [ ] Bundle chat messages together
 - [ ] Edit chat messages
 - [ ] Upload picture
 - [ ] Reload animation on chat scroll up
-- [ ] Throttle scroll event
 - [ ] Send invite through chat
 - [ ] Handle timestamp logic
 - [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
@@ -174,6 +174,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Ellipsis on navbar avatar email
 - [x] Favicon
 - [x] Add preferences warning if no preferences
+- [ ] Redo responsive layout + actually learn material design
 
 ## Todo UX
 - [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
@@ -186,6 +187,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Separate css files
 - [ ] Cache images
 - [x] Link Headers (react-helmet)
+- [ ] Django settings
 
 ## Todo Next Iteration
 - [ ] Possible convert forms to Backdrop Form Dialogs
