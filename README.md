@@ -118,12 +118,13 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo User
 - [x] Get user location before render
+- [x] User object, settings only show for myself.
+- [x] Settings doesnt populate after save and reload
 - [ ] Add google social auth 
 - [ ] Confirm email, Change password
-- [ ] Settings doesnt populate after save and reload
 - [ ] Change name of preference
 - [ ] Change presentation of upload avatar
-- [ ] User object, settings only show for myself.
+- [ ] Change user model default radius to 25 and relationship to onetoone
 
 ## Todo Friends
 - [ ] Friends delete
@@ -134,7 +135,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Change meetup friend state if invite sent
 
 ## Todo Category
-- [ ] On reload, category doesn't display meetups
+- [x] On reload, category doesn't display meetups
 
 ## Todo Meetup
 - [x] Meetup email message nice html
@@ -182,10 +183,9 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Redo responsive layout + actually learn material design
 
 ## Todo UX
+- [x] User Settings doesn't work again? for category meetups and regular meetups
 - [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
 - [ ] Animation when logging out forced
-- [ ] Search bar on top app nav bar
-- [ ] User Settings doesn't work again? for category meetups and regular meetups
 - [ ] Autocomplete click doesn't load automatically, anotehr click is needed
 
 ## Todo Deploy
@@ -201,3 +201,4 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Add calendar of meetups
 - [ ] Find people who have similar food taste near you?
 - [ ] Past activity
+- [ ] Elasticsearch? - Search bar on top app nav bar

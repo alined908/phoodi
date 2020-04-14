@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
-from meetup.models import User, Preference, UserSettings, MeetupCategory, Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite
+from meetup.models import User, UserSettings, Preference, UserSettings, MeetupCategory, Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite
 from django.forms.models import model_to_dict
 from channels.db import database_sync_to_async
 from django.core.exceptions import ObjectDoesNotExist
@@ -15,7 +15,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 class UserSerializer(serializers.ModelSerializer):
-    settings = serializers.SerializerMethodField('_get_settings')
 
     def to_representation(self, data):
         res = super(UserSerializer, self).to_representation(data)
@@ -23,19 +22,16 @@ class UserSerializer(serializers.ModelSerializer):
             return res
         else:
             return {res['id']: res}
-
-    def _get_settings(self, obj):
-        serializer = UserSettingsSerializer(obj.settings.all().first())
-        return serializer.data
         
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'avatar', 'settings')
+        fields = ('id', 'email', 'first_name', 'last_name', 'avatar')
 
 class UserSerializerWithToken(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
     first_name = serializers.CharField(max_length=255)
     password = serializers.CharField(write_only=True)
+    settings = serializers.SerializerMethodField('_get_settings')
 
     def to_representation(self, data):
         res = super(UserSerializerWithToken, self).to_representation(data)
@@ -52,9 +48,14 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         user = User.objects.create_user(email=validated_data['email'], first_name=validated_data['first_name'], last_name=validated_data['last_name'], avatar=avatar, password=validated_data['password'])
         return user
 
+    def _get_settings(self, obj):
+        settings = UserSettings.objects.get(user=obj)
+        serializer = UserSettingsSerializer(settings)
+        return serializer.data
+
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'password', 'avatar')
+        fields = ('id', 'email', 'first_name', 'last_name', 'password', 'avatar', 'settings')
 
 class UserSettingsSerializer(serializers.ModelSerializer):
     class Meta:

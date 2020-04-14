@@ -70,6 +70,29 @@ export const refreshToken = (dispatch) => {
     return freshTokenPromise;
 }
 
+export const addSettings = (data) => async dispatch => {
+    try {
+        const response = await axiosClient.post('/api/users/settings/', data, {headers: {
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }})
+        console.log(response.data)
+        localStorage.setItem("user", JSON.stringify(response.data))
+        return Promise.all([
+            dispatch({type: ADD_SETTINGS, payload: response.data.settings}),
+            dispatch({type:ADD_GLOBAL_MESSAGE, payload: {type: "success", message: "Successfully saved settings."}})
+        ])
+    } catch(e){
+        dispatch({type:ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Unable to save settings."}})
+    }
+}
+
+export const setUserSettings = (data) => {
+    return {
+        type: ADD_SETTINGS,
+        payload: {...data, radius: 25}
+    }
+}
+
 export const getProfile = (id) => {
     try {
         const response = axiosClient.get(`/api/users/${id}/`)
@@ -158,27 +181,5 @@ export const deletePreference = (user_id, category_id) => async dispatch => {
         )
     } catch(e) {
         dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Unable to delete preference."}})
-    }
-}
-
-export const addSettings = (data) => async dispatch => {
-    try {
-        const response = await axiosClient.post('/api/users/settings/', data, {headers: {
-            "Authorization": `Bearer ${localStorage.getItem('token')}`
-        }})
-        console.log(response.data)
-        return Promise.all([
-            dispatch({type: ADD_SETTINGS, payload: response.data}),
-            dispatch({type:ADD_GLOBAL_MESSAGE, payload: {type: "success", message: "Successfully saved settings."}})
-        ])
-    } catch(e){
-        dispatch({type:ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Unable to save settings."}})
-    }
-}
-
-export const setUserSettings = (data) => {
-    return {
-        type: ADD_SETTINGS,
-        payload: {...data, radius: 25}
     }
 }

@@ -24,6 +24,8 @@ class MeetupsComponent extends Component {
     }
     
     async componentDidMount(){
+        console.log(this.props.user.settings)
+        console.log(this.props.user)
         await Promise.all([
             //this.props.getMeetups(),
             this.props.getMeetups({type: "public", categories: this.formatCategories([]), coords: {...this.props.user.settings}}) ,
@@ -265,7 +267,6 @@ class MeetupsComponent extends Component {
                     </div>
                     {/* {!this.props.isMeetupsInitialized && <div>Initializing Meetups ....</div>} */} 
                     
-                    
                     <div className="meetups-container" style={{minHeight: this.props.isMeetupsFetching ? "calc(100% - 60px)" : "0"}}>
                         {this.props.isMeetupsFetching && <div className="loading" style={{height: "auto"}}><CircularProgress/></div>}
                         {(!this.props.isMeetupsFetching && this.props.isMeetupsInitialized) && 
@@ -294,7 +295,7 @@ MeetupsComponent.propTypes = {
     user: userPropType,
     preferences: PropTypes.arrayOf(preferencePropType).isRequired,
     getMeetups: PropTypes.func.isRequired,
-    getPreferences: PropTypes.func.isRequired, getPublicMeetups: PropTypes.func.isRequired,
+    getPreferences: PropTypes.func.isRequired,
     isMeetupsFetching: PropTypes.bool.isRequired
 }
 

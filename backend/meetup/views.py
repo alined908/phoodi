@@ -87,7 +87,7 @@ class UserSettingsView(APIView):
         if UserSettings.objects.filter(user=user).exists():
             UserSettings.objects.filter(user=user).delete()
         settings = UserSettings.objects.create(user = user, radius = radius, location = location, latitude = latitude, longitude = longitude)
-        serializer = UserSettingsSerializer(settings)
+        serializer = UserSerializerWithToken(user, context={"plain": True})
         return Response(serializer.data) 
 
 class UserFriendsView(APIView):
