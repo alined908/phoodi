@@ -89,7 +89,7 @@ class ChatWindowComponent extends Component {
  
     render () {
         const messagesByDate = this.groupMessagesByDate(this.props.messages)
-
+        console.log("rerenders chat window")
         return (
             <div className="chat-window elevate" ref={this.chatsRef}>
                 {(this.props.activeRoom && this.props.room) && 

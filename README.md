@@ -137,6 +137,7 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Category
 - [x] On reload, category doesn't display meetups
+- [ ] Render local restuaraunts on category 
 
 ## Todo Meetup
 - [x] Meetup email message nice html
@@ -159,7 +160,9 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Outline itinerary of meetup
 - [ ] Reload old events, no options return  
 - [ ] Notification Bell doesnt appear if public and member
+- [ ] Add capacity if wanted and adjust circles to meetups
 - [ ] Ban used again for some reason
+- [ ] Disable actions if event is in the past
 
 ## Todo Chat
 - [x] Add emojis
@@ -206,3 +209,4 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Find people who have similar food taste near you?
 - [ ] Past activity
 - [ ] Elasticsearch? - Search bar on top app nav bar
+- [ ] Some sort of reputation system

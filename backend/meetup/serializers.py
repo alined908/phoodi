@@ -49,9 +49,13 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         return user
 
     def _get_settings(self, obj):
-        settings = UserSettings.objects.get(user=obj)
-        serializer = UserSettingsSerializer(settings)
-        return serializer.data
+        try:
+            settings = UserSettings.objects.get(user=obj)
+            serializer = UserSettingsSerializer(settings)
+            settings_json = serializer.data
+        except ObjectDoesNotExist:
+            settings_json = {"radius": 25, "location": None, "latitude": None, "longitude": None}
+        return settings_json
 
     class Meta:
         model = User
