@@ -130,9 +130,10 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Friends delete
 - [ ] Give nickname
 - [ ] Add friend button on profile and maybe on the meetup member
+- [ ] Wrap autocomplete text
 
 ## Todo Invite
-- [ ] Change meetup friend state if invite sent
+- [x] Change meetup friend state if invite sent
 
 ## Todo Category
 - [x] On reload, category doesn't display meetups
@@ -166,13 +167,16 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Reload animation on chat scroll up
 - [x] More messages below
 - [x] Determine if more chat messages can be retrieved for room/render beginning
-- [ ] Bundle chat messages together
-- [ ] Handle timestamp logic
+- [x] Bundle chat messages together
+- [x] Handle timestamp logic
+- [x] Scrolling causes rerender and expensive calculations
+- [x] Make chat input own component
 - [ ] Edit chat messages
 - [ ] Upload picture
 - [ ] Send invite through chat
 - [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
 - [ ] Notification Bell doesnt appear on new messages
+- [ ] Detect if user is typing
 
 ## Todo UI
 - [x] Change lock icon + default public/private
@@ -184,9 +188,9 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo UX
 - [x] User Settings doesn't work again? for category meetups and regular meetups
+- [x] Autocomplete click doesn't load automatically, anotehr click is needed
 - [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
 - [ ] Animation when logging out forced
-- [ ] Autocomplete click doesn't load automatically, anotehr click is needed
 
 ## Todo Deploy
 - [x] Serve build for react app

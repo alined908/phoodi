@@ -12,7 +12,7 @@ const appReducer = combineReducers({
     chat: chatReducer,
     meetup: meetupReducer,
     notifs: notifReducer,
-    messages: globalMessagesReducer
+    globalMessages: globalMessagesReducer
 });
 
 export default appReducer

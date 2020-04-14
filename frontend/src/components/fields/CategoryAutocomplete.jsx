@@ -50,6 +50,7 @@ const CategoryAutocomplete = (props) => {
       value={props.entries}
       autoHighlight
       freeSolo
+      openOnFocus
       open={open}
       onOpen={() => {
         setOpen(true);

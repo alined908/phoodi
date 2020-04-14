@@ -61,7 +61,7 @@ class ChatComponent extends Component {
                             activeRoom={this.props.activeRoom} messages={this.props.messages}
                         />
             } else {
-                return <ChatWindowComponent socket={this.state.socket} activeRoom={null}/>
+                return <ChatWindowComponent socket={this.state.socket} activeRoom={null} messages={[]}/>
             }
         }
 

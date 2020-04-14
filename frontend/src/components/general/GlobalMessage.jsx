@@ -48,7 +48,7 @@ const mapDispatchToProps = {
 
 function mapStateToProps(state) {
     return {
-        messages: state.messages
+        messages: state.globalMessages
     }
 }
 

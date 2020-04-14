@@ -4,6 +4,11 @@ import {Avatar} from "@material-ui/core"
 import {userPropType, chatMessagePropType, chatMemberPropType} from "../../constants/prop-types"
 
 class ChatMessageComponent extends Component {
+    
+    formatTimestamp = (timestamp) => {
+        return moment(timestamp).calendar()
+    }
+
     render (){
         const message = this.props.message
         let user_obj = this.props.user
@@ -21,7 +26,7 @@ class ChatMessageComponent extends Component {
                             {user.first_name}
                         </div>
                         <div className="chat-msg-time">
-                            {moment(message.timestamp).local().format("MMM DD hh:mm A")}
+                            {this.formatTimestamp(message.timestamp)}
                         </div>
                     </div>
                     <div className={`chat-msg elevate ${is_user_msg ? "is-user": ""}`}>{message.message}</div>

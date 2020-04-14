@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 const token = process.env.REACT_APP_MAPBOX_API_KEY;
 
 class Map extends Component {
-
+    _isMounted = false;
     constructor(props) {
         super(props);
         this.state = {
@@ -21,6 +21,10 @@ class Map extends Component {
         };
     }
 
+    componentDidMount(){
+      this._isMounted = true;
+    }
+
     onLoad = () => {
         const viewport = {
             ...this.state.viewport,
@@ -29,9 +33,14 @@ class Map extends Component {
             transitionInterpolator: new FlyToInterpolator(),
             transitionEasing: d3.easeSin
         }
-        this.setState({viewport})
+        if (this._isMounted){
+          this.setState({viewport})
+        }
     }
 
+    componentWillUnmount() {
+      this._isMounted = false;
+    }
 
     render() {
         return (

@@ -24,8 +24,6 @@ class MeetupsComponent extends Component {
     }
     
     async componentDidMount(){
-        console.log(this.props.user.settings)
-        console.log(this.props.user)
         await Promise.all([
             //this.props.getMeetups(),
             this.props.getMeetups({type: "public", categories: this.formatCategories([]), coords: {...this.props.user.settings}}) ,

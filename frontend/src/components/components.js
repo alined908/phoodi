@@ -10,6 +10,7 @@ import ChatComponent from "./chat/ChatComponent"
 import ChatMessageComponent from "./chat/ChatMessageComponent"
 import ChatWindowComponent from "./chat/ChatWindowComponent"
 import ContactComponent from "./chat/ContactComponent"
+import ChatInput from "./chat/ChatInput"
 
 //invite
 import Friend from './invite/Friend';
@@ -62,7 +63,7 @@ import Preference from "./category/Preference"
 
 export {
     ErrorComponent, LoginComponent, LogoutComponent, RegisterComponent, 
-    ChatBarComponent, ChatComponent, ChatMessageComponent, ChatWindowComponent, ContactComponent,
+    ChatBarComponent, ChatComponent, ChatMessageComponent, ChatWindowComponent, ContactComponent, ChatInput,
     Friend, FriendsComponent, Invite, Invites,
     Meetup, MeetupCard, MeetupEvent, MeetupEventForm, MeetupFriend, MeetupForm, MeetupPageComponent, MeetupsComponent, Restauraunt,
     RestaurauntAutocomplete, CategoryAutocomplete, UserAutocomplete, Location, renderTextField, renderDatePicker, renderDateSimplePicker, Map,
