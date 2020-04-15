@@ -144,13 +144,6 @@ class User(AbstractBaseUser):
         friendship = self.get_friend(friend)
         return friendship[0]
 
-    def get_token(self):
-        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-        payload = jwt_payload_handler(self)
-        token = jwt_encode_handler(payload)
-        return token
-
 class UserSettings(models.Model):
     user = models.ForeignKey(User, related_name="settings", on_delete=models.CASCADE)
     radius = models.IntegerField(default=10)
@@ -252,7 +245,10 @@ class MeetupEvent(models.Model):
             "open_at": int(format(self.start, 'U'))
         }
         response = requests.get(url=url, params=params, headers=headers)
-        options = response.json()['businesses']
+        options = []
+        if 'businesses' in response.json():
+            options = response.json()['businesses']
+            
         return options
 
     def generate_options(self):

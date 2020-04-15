@@ -147,7 +147,6 @@ def create_chat_room_for_friendship(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=ChatRoomMessage)
 def create_notif_chat_message(sender, instance, created, **kwargs):
-    print("create_notif_chat_message receiver")
     if created:
         for member in instance.room.members.all():
             if member.user != instance.sender:

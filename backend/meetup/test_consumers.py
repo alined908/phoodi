@@ -1,4 +1,3 @@
-import pytest
 from channels.testing import WebsocketCommunicator
 from meetup.consumers import ChatConsumer, UserNotificationConsumer, MeetupConsumer
 from backend.routing import application
@@ -9,7 +8,7 @@ from django.test import Client
 from django.contrib.auth.hashers import make_password
 from meetup.models import ChatRoom, User, ChatRoomMessage, Meetup, MeetupMember
 from django.utils.timezone import now
-import datetime, json
+import datetime, json, pytest
 
 TEST_CHANNEL_LAYERS = {
     'default': {

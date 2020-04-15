@@ -9,9 +9,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework import permissions, status
 from django.db.models.expressions import RawSQL
+from django.core.exceptions import ValidationError
 from django.db.models import Q
 from random import shuffle
-import collections, geocoder
+import collections, geocoder, datetime
 from django.forms.models import model_to_dict
 from meetup.serializers import PreferenceSerializer, MyTokenObtainPairSerializer, UserSettingsSerializer, CategorySerializer, CategoryVerboseSerializer, UserSerializer, UserSerializerWithToken, MessageSerializer, FriendshipSerializer, ChatRoomSerializer, MeetupSerializer, MeetupMemberSerializer, MeetupInviteSerializer, FriendInviteSerializer, MeetupEventSerializer
 from ipware import get_client_ip
@@ -40,7 +41,7 @@ class UserListView(APIView):
         if serializer.is_valid():
             try:
                 user = serializer.save()
-            except IntegrityError:
+            except ValidationError:
                 return Response({"error": 'Email already exists'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         else:
             return Response({"error" : serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
@@ -52,7 +53,7 @@ class UserListView(APIView):
         return Response(tokens)
 
 class UserView(APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self, pk):
         user = get_object_or_404(User, pk=pk)
@@ -86,9 +87,12 @@ class UserSettingsView(APIView):
         radius, location, latitude, longitude = request.data['radius'], request.data['location'], request.data['latitude'], request.data['longitude']
         if UserSettings.objects.filter(user=user).exists():
             UserSettings.objects.filter(user=user).delete()
-        settings = UserSettings.objects.create(user = user, radius = radius, location = location, latitude = latitude, longitude = longitude)
-        serializer = UserSerializerWithToken(user, context={"plain": True})
-        return Response(serializer.data) 
+        try:
+            settings = UserSettings.objects.create(user = user, radius = radius, location = location, latitude = latitude, longitude = longitude)
+            serializer = UserSerializerWithToken(user, context={"plain": True})
+            return Response(serializer.data)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST) 
 
 class UserFriendsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -157,31 +161,45 @@ class UserPreferenceListView(APIView):
         return Response(serializer.data)
 
     def patch(self, request, *args, **kwargs):
-        user = request.user
-        old_ranking, new_ranking = request.data['oldRanking'], request.data['newRanking']
-        moved_preference = Preference.objects.filter(user=user, ranking=old_ranking)[0]
-        moved_preference.reorder_preferences(new_ranking)
-        preferences = Preference.objects.filter(user=user).order_by('ranking')
-        serializer = PreferenceSerializer(preferences, many=True)
-        return Response(serializer.data)
+        user, old_ranking, new_ranking = request.user, request.data['oldRanking'], request.data['newRanking']
+        try:
+            moved_preference = Preference.objects.filter(user=user, ranking=old_ranking)[0]
+            moved_preference.reorder_preferences(new_ranking)
+            preferences = Preference.objects.filter(user=user).order_by('ranking')
+            serializer = PreferenceSerializer(preferences, many=True)
+            return Response(serializer.data)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class UserPreferenceView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_preference(self, user_id, category_id):
+        user = get_object_or_404(User, pk=user_id)
+        category = get_object_or_404(Category, pk=category_id)
+        preference = get_object_or_404(Preference, user=user, category=category)
+        return preference, user
+
     def patch(self, request, *args, **kwargs):
-        pass
+        name = request.data['name']
+        preference, user = self.get_preference(kwargs['id'], kwargs['category_id'])
+        try:
+            preference.name = name
+            preference.save()
+            serializer = PreferenceSerializer(preference)
+            return Response(serializer.data)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, *args, **kwargs):
-        pk = kwargs['id']
-        user = User.objects.get(pk=pk)
-        category_pk = kwargs['category_id']
-        category = Category.objects.get(pk=category_pk)
-        preference = Preference.objects.get(user=user, category=category)
-        preference.reorder_preferences_delete()
-        preference.delete()
-        preferences = user.preferences.all()
-        serializer = PreferenceSerializer(preferences, many=True)
-        return Response(serializer.data)
+        preference, user = self.get_preference(kwargs['id'], kwargs['category_id'])
+        try:
+            preference.reorder_preferences_delete()
+            preference.delete()
+            serializer = PreferenceSerializer(user.preferences, many=True)
+            return Response(serializer.data)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class MeetupListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -247,10 +265,10 @@ class MeetupListView(APIView):
                     AS distance \
                     FROM meetup_meetup) \
                 AS distances \
-                WHERE distance < %s \
+                WHERE distance < %s AND date >= %s \
                 ORDER BY distance \
                 OFFSET 0 \
-                LIMIT %s' , (latitude, longitude, latitude, radius, num_results,)
+                LIMIT %s' , (latitude, longitude, latitude, radius, datetime.datetime.now().date(), num_results)
         )
 
         if not category_ids:
@@ -342,12 +360,15 @@ class MeetupEventsListView(APIView):
         uri = kwargs['uri']
         meetup = get_object_or_404(Meetup, uri=uri)
         creator = get_object_or_404(MeetupMember, meetup=meetup, user=user)
+
         try:
             start, end, title, distance, price, entries, random = request.data['start'], request.data['end'], request.data['title'], request.data['distance'], request.data['price'], request.data['entries'], request.data['random']
             event = MeetupEvent.objects.create(creator=creator, meetup=meetup, start=start, end=end, title=title, entries=entries, distance=distance, price=price, random=random)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
         serializer = MeetupEventSerializer(event)
+
         return Response({'meetup': uri, 'event': {event.id: serializer.data}})
 
 class MeetupEventsView(APIView):
