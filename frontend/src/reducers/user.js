@@ -1,4 +1,4 @@
-import {AUTH_USER, CLEAR_STORE, REFRESHING_TOKEN, DONE_REFRESHING_TOKEN, AUTH_ERROR, ADD_SETTINGS, EDIT_USER, GET_FRIENDS, ADD_FRIEND, DELETE_FRIEND,  GET_MEETUP_INVITES, GET_FRIEND_INVITES, GET_PREFERENCES, ADD_PREFERENCE, DELETE_PREFERENCE, REORDER_PREFERENCES, EDIT_PREFERENCE} from "../constants/action-types"
+import {AUTH_USER, CLEAR_STORE, REFRESHING_TOKEN, DONE_REFRESHING_TOKEN, SIGNUP_ERROR, LOGIN_ERROR, ADD_SETTINGS, EDIT_USER, GET_FRIENDS, ADD_FRIEND, DELETE_FRIEND,  GET_MEETUP_INVITES, GET_FRIEND_INVITES, GET_PREFERENCES, ADD_PREFERENCE, DELETE_PREFERENCE, REORDER_PREFERENCES, EDIT_PREFERENCE} from "../constants/action-types"
 import {userDefaultState} from "../constants/default-states"
 import {parseJWT} from "../constants/helpers"
 
@@ -7,8 +7,10 @@ export default function(state = userDefaultState, action){
         case AUTH_USER:
             const decoded = parseJWT(action.payload.access)
             return {...state, authenticated: action.payload.access, user: decoded.user};
-        case AUTH_ERROR:
-            return {...state, errorMessage: action.payload};
+        case SIGNUP_ERROR:
+            return {...state, signupErrorMessage: action.payload}
+        case LOGIN_ERROR:
+            return {...state, loginErrorMessage: action.payload};
         case REFRESHING_TOKEN:
             return {...state, freshTokenPromise: action.payload}
         case DONE_REFRESHING_TOKEN:

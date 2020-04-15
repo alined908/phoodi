@@ -108,12 +108,12 @@ function mapStatetoProps(state, ownProps) {
         const user = state.user.user
         return {
             initialValues: {first_name: user.first_name, last_name: user.last_name, email: user.email}, 
-            errorMessage: state.user.errorMessage, 
+            errorMessage: state.user.signupErrorMessage, 
             user: user
         }
     } else {
         return {
-            errorMessage: state.user.errorMessage
+            errorMessage: state.user.signupErrorMessage
         }
     }
 }

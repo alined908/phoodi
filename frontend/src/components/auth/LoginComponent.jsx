@@ -57,7 +57,7 @@ LoginComponent.propTypes = {
 
 function mapStatetoProps(state) {
     return {
-        errorMessage: state.user.errorMessage
+        errorMessage: state.user.loginErrorMessage
     }
 }
 

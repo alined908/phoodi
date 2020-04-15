@@ -1,5 +1,6 @@
 export const userDefaultState = {
-    errorMessage: '',
+    loginErrorMessage: '',
+    signUpErrorMessage: '',
     friends: [],
     isFriendsInitialized: false,
     invites: {meetups: [], friends: []},

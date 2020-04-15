@@ -199,11 +199,13 @@ class MeetupsComponent extends Component {
                         </div>
                         {renderPreset()}
                         <div className="search">
-                            <FormGroup row>
-                                <FormControlLabel 
-                                    label="Past" control={<Checkbox color="primary" size="small" 
-                                    checked={this.state.chosen[0]} onChange={() => this.handleFilter(0)}/>}
-                                />
+                            <FormGroup row style={{width: "100%", display: "flex", justifyContent: "space-around", }}>
+                                {!this.state.public &&
+                                    <FormControlLabel 
+                                        label="Past" control={<Checkbox color="primary" size="small" 
+                                        checked={this.state.chosen[0]} onChange={() => this.handleFilter(0)}/>}
+                                    />
+                                }
                                 <FormControlLabel 
                                     label="Today" control={<Checkbox color="primary" size="small" 
                                     checked={this.state.chosen[1]} onChange={() => this.handleFilter(1)}/>}

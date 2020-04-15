@@ -1071,9 +1071,9 @@ body {
 }
 
 .meetups-component{
-  height: 85%;
+  height: 90%;
   display: flex;
-  width: 85%;
+  width: 90%;
   margin: auto;
 }
 
@@ -1128,6 +1128,7 @@ body {
   width: 100%;
   min-width: 300px;
   background-color: white;
+  justify-content: center;
 }
 
 .search .MuiFormGroup-root{
@@ -1138,6 +1139,10 @@ body {
   font-size: .75rem !important;
   font-family: "Lato" !important;
   font-weight: 600 !important;
+}
+
+.search .MuiFormControlLabel-root{
+  margin-right: 0;
 }
 
 .meetups-inner-header{

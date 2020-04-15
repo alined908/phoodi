@@ -29,7 +29,7 @@ const MeetupCard = ({meetup}) => {
         <>
         {meetup ? 
             <Link to={`/meetups/${meetup.uri}`}>
-                <Paper square={true} className={classes.paper + " elevate"}>
+                <Paper elevation={4} square={true} className={classes.paper}>
                     <div className="meetup-card-inner">
                         <div className="meetup-card-top"> 
                             <div className="meetup-card-icon flex-clip-2">

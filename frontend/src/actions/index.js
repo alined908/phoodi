@@ -1,4 +1,4 @@
-import {AUTH_USER, AUTH_ERROR, REFRESHING_TOKEN, DONE_REFRESHING_TOKEN, CLEAR_STORE, ADD_SETTINGS, EDIT_USER, ADD_GLOBAL_MESSAGE, GET_PREFERENCES, 
+import {AUTH_USER, SIGNUP_ERROR, LOGIN_ERROR, REFRESHING_TOKEN, DONE_REFRESHING_TOKEN, CLEAR_STORE, ADD_SETTINGS, EDIT_USER, ADD_GLOBAL_MESSAGE, GET_PREFERENCES, 
     REORDER_PREFERENCES, ADD_PREFERENCE, DELETE_PREFERENCE, EDIT_PREFERENCE} from "../constants/action-types"
 import {axiosClient} from '../accounts/axiosClient'
 import AuthenticationService from "../accounts/AuthenticationService";
@@ -18,7 +18,8 @@ export const signup = (formProps, redirectOnSuccess) => async dispatch => {
     }
     catch (e){
         console.log(e);
-        dispatch({type: AUTH_ERROR, payload: "Email in use"})
+        console.log(e.response.data)
+        dispatch({type: SIGNUP_ERROR, payload: e.response.data.error})
     }
 }
 
@@ -39,7 +40,7 @@ export const signin = (formProps, redirectOnSuccess) => async dispatch => {
     }
     catch (e){
         console.log("error signin");
-        dispatch({type: AUTH_ERROR, payload: "Invalid login credentials"})
+        dispatch({type: LOGIN_ERROR, payload: "Email or password is incorrect"})
     }
 }
 

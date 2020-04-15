@@ -1,6 +1,7 @@
 //User
 export const AUTH_USER = 'auth_user';
-export const AUTH_ERROR = 'auth_error';
+export const SIGNUP_ERROR = 'signup_error';
+export const LOGIN_ERROR = 'login_error'
 export const CLEAR_STORE= 'clear_store'
 export const EDIT_USER = "edit_user"
 export const ADD_SETTINGS = 'add_settings';
