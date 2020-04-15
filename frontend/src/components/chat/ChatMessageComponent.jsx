@@ -16,7 +16,7 @@ class ChatMessageComponent extends Component {
         const user = this.props.members[message.sender_id]
 
         return (
-            <div className={`chat-msg-wrapper ${is_user_msg ? "is-user": ""}`}>
+            <div id={`${message.id}`} className={`chat-msg-wrapper ${is_user_msg ? "is-user": ""}`}>
                 {!is_user_msg && <div className="chat-msg-avatar">
                     <Avatar src={user.avatar}>{user.first_name.charAt(0)}{user.last_name.charAt(0)}</Avatar>
                 </div>}

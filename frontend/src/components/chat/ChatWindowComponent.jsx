@@ -16,8 +16,10 @@ class ChatWindowComponent extends Component {
     constructor(props){
         super(props);
         this.state = {
-            bound: true
+            bound: true,
+            offset: 0
         }
+        this.firstMessageRef = React.createRef();
         this.messagesEndRef = React.createRef();
         this.handleScrollWrapper = this.handleScrollWrapper.bind(this)
         this.delayedCallback = throttle(this.handleScroll, 300)
@@ -25,10 +27,18 @@ class ChatWindowComponent extends Component {
     }
 
     //If chat window state is bound, scroll to bottom on new chat messages
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         if (this.state.bound){
             this.scrollToBottom();
         }
+        if (prevProps.isMoreMessagesFetching && !this.props.isMoreMessagesFetching){
+            this.scrollToOldFirst(this.state.offset)
+        }
+    }
+
+    scrollToOldFirst = () => {
+        const first = document.getElementById(this.state.offset.toString())
+        first.scrollIntoView()
     }
 
     //Scroll function to determine bound state and get more messages if necessary
@@ -39,6 +49,7 @@ class ChatWindowComponent extends Component {
         
         //Check if more is retrievable
         if (scrollTop === 0 && this.props.messages && this.props.isMoreRetrievable) {
+            this.setState({offset: this.props.messages[0].id})
             this.props.getMoreMessages(this.props.room.uri, this.props.messages[0].id)
         }
 
@@ -88,8 +99,8 @@ class ChatWindowComponent extends Component {
     }
  
     render () {
-        const messagesByDate = this.groupMessagesByDate(this.props.messages)
-        console.log("rerenders chat window")
+        const messagesByDate = (this.props.messages) ? this.groupMessagesByDate(this.props.messages) : {}
+
         return (
             <div className="chat-window elevate" ref={this.chatsRef}>
                 {(this.props.activeRoom && this.props.room) && 
@@ -153,7 +164,7 @@ class ChatWindowComponent extends Component {
                                     <div className="chat-messages-date">
                                         {date}
                                     </div>
-                                    {messagesByDate[date].map((msg) => 
+                                    {messagesByDate[date].map((msg, i) => 
                                         <ChatMessageComponent key={msg.id} user={this.props.user} message={msg} members={this.props.activeChatMembers}/>
                                     )}
                                 </React.Fragment>

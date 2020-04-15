@@ -15,7 +15,7 @@ class MeetupsComponent extends Component {
     constructor(props){
         super(props)
         this.state = {
-            chosen: [false, true, true, true],
+            chosen: [true, true, true, true],
             entries: [],
             public: true,
             preferences: [],

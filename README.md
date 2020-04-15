@@ -120,6 +120,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Get user location before render
 - [x] User object, settings only show for myself.
 - [x] Settings doesnt populate after save and reload
+- [ ] Make sure user settings are good on signup/signin if no settings before
 - [ ] Add google social auth 
 - [ ] Confirm email, Change password
 - [ ] Change name of preference
@@ -198,6 +199,7 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo Deploy
 - [x] Serve build for react app
 - [x] Link Headers (react-helmet)
+- [ ] Separate dev and prod settings
 - [ ] Continuous integration
 - [ ] Separate css files
 - [ ] Cache images
@@ -210,3 +212,4 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Past activity
 - [ ] Elasticsearch? - Search bar on top app nav bar
 - [ ] Some sort of reputation system
+- [ ] Notification Bar on Top right of navbar
