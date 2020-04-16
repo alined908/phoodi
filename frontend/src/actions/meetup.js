@@ -8,11 +8,12 @@ export const getMeetups = (data) => async dispatch => {
     dispatch({type: GET_MEETUPS_REQUEST})
     var params;
     if (data.type === "private"){
-        params = {type: data.type, categories: data.categories}
+        params = {type: data.type, ...data.categories && {categories: data.categories}}
     } else {
         params = {
-            type: data.type, categories: data.categories, latitude: data.coords.latitude,
-            longitude: data.coords.longitude, radius: data.coords.radius
+            type: data.type, ...data.categories && {categories: data.categories}, 
+            latitude: data.coords.latitude, longitude: data.coords.longitude, 
+            radius: data.coords.radius
         }
     }
     
@@ -25,7 +26,7 @@ export const getMeetups = (data) => async dispatch => {
             },
             params: params
         })
-        setTimeout(() => dispatch({type: GET_MEETUPS_SUCCESS, payload: response.data.meetups}), 500)
+        setTimeout(() => dispatch({type: GET_MEETUPS_SUCCESS, payload: response.data.meetups}), 200)
     } catch(e){
         console.log(e)
         dispatch({type: GET_MEETUPS_ERROR, payload: e})

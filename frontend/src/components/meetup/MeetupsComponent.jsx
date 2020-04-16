@@ -85,7 +85,9 @@ class MeetupsComponent extends Component {
         for (var category in entries){
             ids.push(entries[category].id)
         }
-        return ids.join(",")
+        let categoriesString = ids.join(",")
+
+        return categoriesString.length > 0 ? categoriesString : null
     }
     
     divideMeetups = (meetups) => {

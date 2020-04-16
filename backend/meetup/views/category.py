@@ -8,22 +8,15 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db.models.expressions import RawSQL
 
 class CategoryListView(APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        if request.GET.get('popular', False):
-            categories = Category.objects.filter(id__in=RawSQL(
-                'SELECT p.id FROM (SELECT pref.category_id as id, COUNT(*) as num\
-                FROM meetup_preference as pref \
-                GROUP BY pref.category_id \
-                ORDER BY COUNT(*) DESC) as p\
-                LIMIT 16', params=()))
-        elif request.GET.get('random', False):
-            categories = Category.objects.filter(id__in=RawSQL(
-                'SELECT id \
-                FROM meetup_category \
-                ORDER BY random() \
-                LIMIT 26', params=()))
+        specified = request.GET.get('type')
+
+        if specified == "popular":
+            categories = Category.get_popular()
+        elif specified == "random":
+            categories = Category.get_random_many()
         else:
             categories = Category.objects.all()
         serializer = CategorySerializer(categories, many=True)
@@ -33,7 +26,11 @@ class CategoryView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        api_label = kwargs['api_label']
-        category = Category.objects.get(api_label=api_label)
-        serializer = CategoryVerboseSerializer(category, context={"user": request.user})
-        return Response(serializer.data)
+    
+        try:
+            api_label = kwargs['api_label']
+            category = Category.objects.get(api_label=api_label)
+            serializer = CategoryVerboseSerializer(category, context={"user": request.user})
+            return Response(serializer.data)
+        except:
+            return Response({"error": "Category does not exist"}, status=status.HTTP_400_BAD_REQUEST)

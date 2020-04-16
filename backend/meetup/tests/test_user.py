@@ -250,10 +250,27 @@ class UserPreferencesTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_reorder_preferences(self):
-        pass
+        preference3 = Preference.objects.create(user=self.user, category=self.italian, name="italian", ranking=3)
+        self.preference1.reorder_preferences(3)
+        self.preference1.refresh_from_db()
+        self.preference2.refresh_from_db()
+        preference3.refresh_from_db()
+        self.assertEqual(self.preference1.ranking, 3)
+        self.assertEqual(self.preference2.ranking, 1)
+        self.assertEqual(preference3.ranking, 2)
+        self.preference2.reorder_preferences(2)
+        self.preference2.refresh_from_db()
+        preference3.refresh_from_db()
+        self.assertEqual(self.preference2.ranking, 2)
+        self.assertEqual(preference3.ranking, 1)
 
     def test_reorder_preferences_delete(self):
-        pass
+        preference3 = Preference.objects.create(user=self.user, category=self.italian, name="italian", ranking=3)
+        self.preference1.reorder_preferences_delete()
+        preference3.refresh_from_db()
+        self.preference2.refresh_from_db()
+        self.assertEqual(preference3.ranking, 2)
+        self.assertEqual(self.preference2.ranking, 1)
 
 class NotificationViewTest(TestCase):
     def setUp(self):

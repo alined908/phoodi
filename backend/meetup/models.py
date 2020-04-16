@@ -8,15 +8,16 @@ from backend.settings import YELP_API_KEY, BASE_URL, BASE_DEV_URL
 from django.utils.dateformat import format
 from uuid import uuid4
 from django.core.exceptions import ObjectDoesNotExist
-import requests, random, json, sys, time, os
+import requests, random, json, sys, time, os, geocoder, datetime
 from django.contrib.postgres.fields import JSONField, ArrayField
 from rest_framework_jwt.settings import api_settings
 from django.db import transaction
-from django.db.models import F
+from django.db.models import F, Q
 from django.db.models.expressions import RawSQL
 from .helpers import path_and_rename_avatar, path_and_rename_category, send_mass_html_mail
 from PIL import Image
 from io import BytesIO
+from ipware import get_client_ip
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.template.loader import render_to_string
 
@@ -48,7 +49,6 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, first_name, last_name, avatar, password=None, **kwargs):
         return self.create_user(email, first_name, last_name, avatar, True, True, password)
 
-# Create your models here.
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True, max_length=255)
     first_name = models.CharField(max_length=255)
@@ -174,6 +174,81 @@ class Meetup(models.Model):
     def save(self, *args, **kwargs):
         self.full_clean(["uri"])
         return super(Meetup, self).save(*args, **kwargs)
+
+    @staticmethod
+    def get_private(user, categories):
+        category_ids = [int(x) for x in categories.split(',')] if categories else []
+
+        if not category_ids:
+            meetups = Meetup.objects.filter(id__in=RawSQL(
+                'SELECT member.meetup_id as id FROM meetup_meetupmember as member WHERE user_id = %s' , (user.id,)
+            )).order_by("date")
+        else:
+            meetups = Meetup.objects.filter(Q(id__in=RawSQL(
+                'SELECT DISTINCT category.meetup_id \
+                FROM meetup_meetupcategory as category \
+                WHERE category_id = ANY(%s)' , (category_ids,))) 
+                & 
+                Q(id__in=RawSQL(
+                    'SELECT member.meetup_id as id \
+                    FROM meetup_meetupmember as member \
+                    WHERE user_id = %s' , (user.id,)
+                ))).order_by("date")
+
+        return meetups
+
+    @staticmethod
+    def get_public(categories, coords, request, num_results=25):
+        if categories:
+            try:
+                category_ids = [int(x) for x in categories.split(',')]
+            except:
+                category = Category.objects.get(api_label=categories)
+                category_ids = [category.id]
+        else:
+            category_ids = []
+
+        if request:
+            client_ip, is_routable = get_client_ip(request)
+
+            if client_ip:
+                if is_routable:
+                    geocode = geocoder.ip(client_ip)
+                    location = geocode.latlng
+                    lat, lng = location[0], location[1]
+                else:
+                    lat, lng = None, None
+
+        latitude, longitude, radius = coords[0] or lat, coords[1] or lng, coords[2] or 25
+
+        if not latitude or not longitude:
+            return {}
+
+        distance_query = RawSQL(
+            ' SELECT id FROM \
+                (SELECT *, (3959 * acos(cos(radians(%s)) * cos(radians(latitude)) * \
+                                        cos(radians(longitude) - radians(%s)) + \
+                                        sin(radians(%s)) * sin(radians(latitude)))) \
+                    AS distance \
+                    FROM meetup_meetup) \
+                AS distances \
+                WHERE distance < %s AND date >= %s \
+                ORDER BY distance \
+                OFFSET 0 \
+                LIMIT %s' , (latitude, longitude, latitude, radius, datetime.datetime.now().date(), num_results)
+        )
+
+        if not category_ids:
+            meetups = Meetup.objects.filter(public=True, id__in=distance_query).order_by("date")
+        else:
+            meetups = Meetup.objects.filter(Q(public=True) & Q(id__in=RawSQL(
+                'SELECT DISTINCT category.meetup_id \
+                FROM meetup_meetupcategory as category \
+                WHERE category_id = ANY(%s)' , (category_ids,)))
+                &
+                Q(id__in=distance_query)).order_by("date")
+
+        return meetups
 
     def send_email(self):
         subject = self.name + " has been finalized."
@@ -414,6 +489,25 @@ class Category(models.Model):
             self.image = InMemoryUploadedFile(output, 'ImageField', "%s.png" %self.image.name, 'image/png', sys.getsizeof(output), None)
         self.full_clean()
         super(Category, self).save(*args, **kwargs)
+
+    @staticmethod
+    def get_popular():
+        categories = Category.objects.filter(id__in=RawSQL(
+                'SELECT p.id FROM (SELECT pref.category_id as id, COUNT(*) as num\
+                FROM meetup_preference as pref \
+                GROUP BY pref.category_id \
+                ORDER BY COUNT(*) DESC) as p\
+                LIMIT 11', params=()))
+        return categories
+
+    @staticmethod
+    def get_random_many():
+        categories = Category.objects.filter(id__in=RawSQL(
+                'SELECT id \
+                FROM meetup_category \
+                ORDER BY random() \
+                LIMIT 26', params=()))
+        return categories
 
 class Preference(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="preferences")
