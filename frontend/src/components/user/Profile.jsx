@@ -41,7 +41,10 @@ class Profile extends Component {
         try {
             const [profile, friends] = await Promise.all(
                 [
-                    axiosClient.get(`/api/users/${this.props.match.params.id}/`), 
+                    axiosClient.get(`/api/users/${this.props.match.params.id}/`,  {headers: {
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
+                    }}
+                ), 
                     axiosClient.get(
                         `/api/users/${this.props.match.params.id}/friends/`, {headers: {
                             "Authorization": `Bearer ${localStorage.getItem('token')}`

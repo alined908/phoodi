@@ -1,6 +1,6 @@
 from django.urls import path, include
 from django.contrib import admin
-from rest_framework_simplejwt.views import (TokenObtainPairView,TokenRefreshView)
+from rest_framework_simplejwt.views import TokenRefreshView
 from meetup.views import MyTokenObtainPairView
 from .views import home
 

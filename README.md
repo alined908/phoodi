@@ -99,13 +99,15 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Safari presentation
 - [ ] Have to click all fields/ Inconsistent meetup?
 - [ ] Specify websocket protocol on link
+- [ ] Get context when redirect to register/login (proceed as guest?)
+- [ ] Split up large backend files
 
 ## Todo Testing 
 - [x] Fallback if no latitude/longitude provided.
-- [ ] Write tests for frontend
-- [ ] Write more tests for api
+- [ ] Write remaining tests for api
 - [ ] Write tests for consumers
-- [ ] Form validation + Validation for time and date
+- [ ] Form validation + Validation for time and date + Validation for models
+- [ ] Write tests for frontend
 
 ## Todo Authentication
 - [x] Switch to simplejwt library
@@ -120,8 +122,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Get user location before render
 - [x] User object, settings only show for myself.
 - [x] Settings doesnt populate after save and reload
-- [ ] Make sure user settings are good on signup/signin if no settings before
-- [ ] Add google social auth 
+- [ ] Make sure user settings are good on signup/signin if no settings before 
 - [ ] Confirm email, Change password
 - [ ] Change name of preference
 - [ ] Change presentation of upload avatar
@@ -138,7 +139,7 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Category
 - [x] On reload, category doesn't display meetups
-- [ ] Render local restuaraunts on category 
+- [ ] Render local restaurraunts on category 
 
 ## Todo Meetup
 - [x] Meetup email message nice html
@@ -150,6 +151,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Fix Restauraunt autocomplete bug if no user settings
 - [x] When clicked on category it 404s
 - [x] Combine getMeetups and getPublicMeetups actions
+- [x] Public meetups dont get past ones
 - [ ] Block people, admin functionality for meetup member
 - [ ] MeetupEventOption Delete
 - [ ] Info dissapears on meetup edit form reload
@@ -206,6 +208,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Django settings
 
 ## Todo Next Iteration
+- [ ] Add google social auth
 - [ ] Possible convert forms to Backdrop Form Dialogs
 - [ ] Add calendar of meetups
 - [ ] Find people who have similar food taste near you?
@@ -213,3 +216,5 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Elasticsearch? - Search bar on top app nav bar
 - [ ] Some sort of reputation system
 - [ ] Notification Bar on Top right of navbar
+- [ ] Guest accounts
+- [ ] Change meetups date filter to date range or exact date with calendar

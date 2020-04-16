@@ -17,8 +17,6 @@ export const signup = (formProps, redirectOnSuccess) => async dispatch => {
         redirectOnSuccess();
     }
     catch (e){
-        console.log(e);
-        console.log(e.response.data)
         dispatch({type: SIGNUP_ERROR, payload: e.response.data.error})
     }
 }
@@ -96,7 +94,10 @@ export const setUserSettings = (data) => {
 
 export const getProfile = (id) => {
     try {
-        const response = axiosClient.get(`/api/users/${id}/`)
+        const response = axiosClient.get(`/api/users/${id}/`, {headers: {
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }}
+    )
         return response.data
     } catch(e){
         console.log(e)

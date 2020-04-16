@@ -22,10 +22,10 @@ urlpatterns=[
     path("meetups/<uri>/members/", views.MeetupMembersView.as_view()),
     path("meetups/<uri>/invite/", views.MeetupInviteListView.as_view()),
     path("meetups/<uri>/invite/<invite_code>/", views.MeetupInviteView.as_view()),
+    path("friends/invite/", views.FriendInviteListView.as_view()),
+    path("friends/invite/<invite_code>/", views.FriendInviteView.as_view()),
     path("chats/", views.ChatRoomListView.as_view()),
     path("chats/<uri>/", views.ChatRoomView.as_view()),
     path("chats/<uri>/messages/", views.ChatRoomMessageView.as_view()),
-    path("friends/invite/", views.FriendInviteListView.as_view()),
-    path("friends/invite/<invite_code>/", views.FriendInviteView.as_view()),
-    path("notifs/", views.NotificationView.as_view())
+    path("notifs/", views.UserNotificationView.as_view())
 ]

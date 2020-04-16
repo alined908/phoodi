@@ -6,3 +6,6 @@
     meetup/__init__.py
     meetup/admin.py
     meetup/apps.py
+    meetup/urls.py
+    meetup/views/__init__.py
+    meetup/tests/*

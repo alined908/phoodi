@@ -1,8 +1,6 @@
 from rest_framework import serializers
-from rest_framework.fields import CurrentUserDefault
 from meetup.models import User, UserSettings, Preference, UserSettings, MeetupCategory, Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite
 from django.forms.models import model_to_dict
-from channels.db import database_sync_to_async
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
@@ -299,33 +297,3 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatRoomMessage
         fields = ('id', 'message', 'timestamp', 'is_read', 'room_id', 'sender_id')
-
-# class CustomJWTSerializer(VerifyJSONWebTokenSerializer):
-#     username_field = 'email'
-
-#     def _check_user(self, payload):
-#         username = jwt_get_username_from_payload(payload)
-#         print("Username: " + username)
-#         if not username:
-#             msg = _('Invalid payload.')
-#             raise serializers.ValidationError
-        
-#         try:
-#             user = User.objects.get_by_natural_key(username)
-#             print(user)
-#         except User.DoesNotExist:
-#             print("Object does not exist")
-#             msg = _("User does not exist")
-#             raise serializers.ValidationError(msg)
-#         print(user)
-#         return user
-
-#     def validate(self, attrs):
-#         print("validate")
-#         token = attrs['token']
-#         payload = self._check_payload(token=token)
-#         print(payload)
-#         user = self._check_user(payload=payload)
-#         print('hello')
-#         print("User: ", user)
-#         return {'token': token, 'user': user}

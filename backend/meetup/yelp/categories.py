@@ -1,5 +1,5 @@
 import json 
-with open('meetup/categories.json') as json_file:
+with open('meetup/yelp/categories.json') as json_file:
     data = json.loads(json_file.read())
 new_categories = []
 pk = 1
