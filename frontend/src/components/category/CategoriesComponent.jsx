@@ -22,11 +22,11 @@ class CategoriesComponent extends Component {
         const [popular, random] = await Promise.all(
             [
                 axiosClient.get(
-                    `/api/categories/?popular=true`, {headers: {
+                    `/api/categories/?type=popular`, {headers: {
                         "Authorization": `Bearer ${localStorage.getItem('token')}`
                 }}),
                 axiosClient.get(
-                    `/api/categories/?random=true`, {headers: {
+                    `/api/categories/?type=random`, {headers: {
                         "Authorization": `Bearer ${localStorage.getItem('token')}`
                 }}),
             ]

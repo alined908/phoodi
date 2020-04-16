@@ -40,7 +40,7 @@ export default class WebSocketService {
             //Token not authenticated
             if (e.code === 4000) {
                 const access = AuthenticationService.retrieveToken();
-                setTimeout(() => this.connect(path, access), 3000);
+                setTimeout(() => this.connect(path, access), 5000);
             } else {
                 setTimeout(() => this.connect(path, token), 5000);
             }

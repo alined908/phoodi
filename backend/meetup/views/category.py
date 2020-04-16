@@ -12,13 +12,14 @@ class CategoryListView(APIView):
 
     def get(self, request, *args, **kwargs):
         specified = request.GET.get('type')
-
+        
         if specified == "popular":
             categories = Category.get_popular()
         elif specified == "random":
             categories = Category.get_random_many()
         else:
             categories = Category.objects.all()
+
         serializer = CategorySerializer(categories, many=True)
         return Response({"categories": serializer.data})
 
