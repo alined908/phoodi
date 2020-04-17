@@ -108,7 +108,8 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Fallback if no latitude/longitude provided.
 - [x] Write remaining tests for api
 - [x] Write tests for consumers
-- [ ] Form validation + Validation for time and date + Validation for models
+- [ ] Form validation
+- [ ] Validation for models
 - [ ] Write tests for frontend
 
 ## Todo Authentication

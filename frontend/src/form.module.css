@@ -1,0 +1,100 @@
+.container {
+    display: flex;
+    width: 80%;
+    height: 80%;
+    margin: auto;
+    font-family: "Lato";
+    font-weight: 600;
+    max-width: 1300px;
+}
+
+.left {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 65%;
+    padding: 1rem;
+    background: #006600;
+}
+
+.right {
+    display:flex;
+    flex-direction: column;
+    width: 35%;
+    padding: 1rem;
+}
+
+.form {
+    flex-basis: 35%;
+    width: 100%;
+    padding: 1rem 2rem;
+}
+
+.formhead{
+    flex-basis: 20%;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    font-size: 3rem;
+}
+
+.header{
+    margin: 0 1.5rem;
+}
+
+.icon{
+    width: 50px;
+    height: auto;
+}
+
+.fab{
+    margin-top: 2.5rem;
+}
+
+.bottom{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    flex-basis: 30%;
+}
+
+.link{
+    color: #006600;
+    margin-left: 5px;
+}
+
+.link:hover{
+    text-decoration: underline;
+}
+
+.socials{
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.social{
+    display:flex;
+    align-items: center;
+    cursor:pointer;
+    margin: 0 .3rem;
+}
+
+.social:hover{
+    transform: scale(1.1, 1.1);
+}
+
+.action{
+    margin: .5rem 0;
+}
+
+.button{
+    background-color: #006600 !important;
+    color: white !important;
+}
+
+.indent{
+    padding-right: 10px !important; 
+}

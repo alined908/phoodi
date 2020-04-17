@@ -3,12 +3,17 @@ import {reduxForm, Field} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {signup, editUser} from "../../actions/index"
-import {Typography, Paper, Grid, Fab, Button, TextField, Avatar} from '@material-ui/core';
-import {Lock as LockIcon, Email as EmailIcon, Face as FaceIcon} from '@material-ui/icons'
+import {Paper, Grid, Fab, Button, TextField, Avatar} from '@material-ui/core';
+import {ReactComponent as Breakfast} from "../../assets/svgs/breakfast-colour.svg"
+import {ReactComponent as Bamboo} from "../../assets/svgs/bamboo-dark.svg"
+import {ReactComponent as Google} from "../../assets/svgs/google.svg"
+import {ReactComponent as Facebook} from "../../assets/svgs/facebook.svg"
+import {ReactComponent as Twitter} from "../../assets/svgs/twitter.svg"
 import {renderTextField} from '../components'
 import {Link} from "react-router-dom"
 import PropTypes from "prop-types"
 import {userPropType} from "../../constants/prop-types"
+import styles from "../../form.module.css"
 
 const validate = values => {
     const errors = {}
@@ -77,50 +82,84 @@ class RegisterComponent extends Component {
         const create = this.props.type === "create"
 
         return (
-            <div className="inner-wrap small">
-                <div className="inner-header elevate">
-                    <Typography variant="h5">{create ? "Register" : "Edit User"}</Typography>
-                    {!create && <Link to={`/profile/${this.props.user.id}`}><Button variant="contained" color="primary">Profile</Button></Link>}
+            <Paper className={styles.container} elevation={8}>
+                <div className={styles.left}>
+                    <Breakfast height="70%" width="70%"/>
                 </div>
-                <div className="form">
-                    <Paper elevation={3}>
-                        <form onSubmit={handleSubmit(this.onSubmit)}>
-                            <Grid container style={{padding: "1.5rem 2rem"}} spacing={2}>
-                                <Grid item xs={12} sm={6}>
-                                    <Field name="first_name" component={renderTextField} label="First Name" icon={<FaceIcon/>}/>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <Field name="last_name" component={renderTextField} label="Last Name"/>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Field name="email" component={renderTextField} label="Email" icon={<EmailIcon/>}/>
-                                </Grid>
-                                {create && 
-                                    <Grid item xs={12}>
-                                        <Field name="password" type="password" component={renderTextField} label="Password" icon={<LockIcon/>}/>
-                                    </Grid> 
-                                }
-                                {!create && 
-                                    <Grid item xs={12}>
-                                        <Avatar style={{width: "70px", height: "70px"}} src={this.props.user.avatar}>
-                                            {this.props.user.first_name.charAt(0)}{this.props.user.last_name.charAt(0)}
-                                        </Avatar>
-                                        <TextField onChange={this.handleImageChange} inputProps={{ style: {fontSize: 14}}}  type="file"/>    
-                                    </Grid>
-                                }
-                                {this.props.errorMessage && 
-                                    <Grid item xs={12}>
-                                        <div className="error-message">{this.props.errorMessage}</div>
-                                    </Grid>
-                                }
-                                <Grid item xs={12}>
-                                    <Fab type="submit" variant="extended" color="primary" aria-label="login">{create ? "Register" : "Edit User"}</Fab>
-                                </Grid>
+                <div className={styles.right}>
+                    <div className={styles.formhead}>
+                        <div className={styles.icon}>
+                            <Bamboo height="100%" width="100%"/>
+                        </div>
+                        <span className={styles.header}>
+                            {create ? "Register" : "Edit User"}
+                        </span>
+                        <div className={styles.icon}>
+                            <Bamboo height="100%" width="100%"/>
+                        </div>
+                        {!create && 
+                            <Link to={`/profile/${this.props.user.id}`}>
+                                <Button variant="contained" color="primary">
+                                    Profile
+                                </Button>
+                            </Link>
+                        }
+                    </div>
+                    <form className={styles.form} onSubmit={handleSubmit(this.onSubmit)}>
+                        <Grid container spacing={0}>
+                            <Grid item xs={12} sm={6} className={styles.indent}>
+                                <Field name="first_name" component={renderTextField} label="First Name"/>
                             </Grid>
-                        </form>
-                    </Paper>
+                            <Grid item xs={12} sm={6}>
+                                <Field name="last_name" component={renderTextField} label="Last Name"/>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Field name="email" component={renderTextField} label="Email" />
+                            </Grid>
+                            {create && 
+                                <Grid item xs={12}>
+                                    <Field name="password" type="password" component={renderTextField} label="Password"/>
+                                </Grid> 
+                            }
+                            {!create && 
+                                <Grid item xs={12}>
+                                    <Avatar style={{width: "70px", height: "70px"}} src={this.props.user.avatar}>
+                                        {this.props.user.first_name.charAt(0)}{this.props.user.last_name.charAt(0)}
+                                    </Avatar>
+                                    <TextField onChange={this.handleImageChange} inputProps={{ style: {fontSize: 14}}}  type="file"/>    
+                                </Grid>
+                            }
+                            {this.props.errorMessage && 
+                                <Grid item xs={12}>
+                                    <div className="error-message">{this.props.errorMessage}</div>
+                                </Grid>
+                            }
+                        </Grid>
+                        <div className={styles.fab}>
+                            <Fab className={styles.button} type="submit" variant="extended" color="primary" aria-label="login">{create ? "Register" : "Edit User"}</Fab>
+                        </div>
+                    </form>
+                    <div className={styles.bottom}>
+                    <div className={styles.socials}>
+                            <div className={styles.social}>
+                                <Google width={40} height={40}/>
+                            </div>
+                            <div className={styles.social}>
+                                <Facebook width={40} height={40}/>
+                            </div>
+                            <div className={styles.social}>
+                                <Twitter  width={40} height={40}/>
+                            </div>
+                        </div>
+                        <div className={styles.action}>
+                            Already Have An Account? 
+                            <span className={styles.link}>
+                                <Link to="/login">Login</Link>
+                            </span>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </Paper> 
         )
     }
 }
