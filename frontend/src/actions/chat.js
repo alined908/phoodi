@@ -13,7 +13,7 @@ export const getRooms = () => async dispatch => {
             }}
         )
         console.log(response.data)
-        setTimeout(() => dispatch({type: GET_ROOMS_SUCCESS, payload: response.data.rooms}), 200)
+        setTimeout(() => dispatch({type: GET_ROOMS_SUCCESS, payload: response.data.rooms}), 100)
     } catch(e){
         console.log(e);
         dispatch({type: GET_ROOMS_ERROR, payload: e})
@@ -28,7 +28,7 @@ export const getMessages = (room) => async dispatch => {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         console.log(response.data)
-        setTimeout(() => dispatch({type: GET_MESSAGES_SUCCESS, payload: response.data}), 200)
+        setTimeout(() => dispatch({type: GET_MESSAGES_SUCCESS, payload: response.data}), 100)
     } catch(e){
         console.log(e)
         dispatch({type: GET_MESSAGES_ERROR, payload: e})

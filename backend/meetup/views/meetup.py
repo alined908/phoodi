@@ -21,9 +21,11 @@ class MeetupListView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
         meetups_json = {}
-        for meetup in meetups.all():
-            serializer = MeetupSerializer(meetup, context={'user': user})
-            meetups_json[meetup.uri] = serializer.data
+
+        if meetups:
+            for meetup in meetups.all():
+                serializer = MeetupSerializer(meetup, context={'user': user})
+                meetups_json[meetup.uri] = serializer.data
 
         return Response({"meetups": meetups_json})
 

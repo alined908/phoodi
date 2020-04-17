@@ -38,6 +38,10 @@ body {
   overflow-x: hidden;
 }
 
+.error-message{
+  color: #9a0036;
+}
+
 .horizontal-form{
   display: flex;
   width : 100%;
@@ -563,6 +567,14 @@ body {
   height: 100%;
   padding: 3rem 4rem;
   max-width: 1400px;
+}
+
+.inner-wrap.small {
+  width: 50%;
+}
+
+.inner-wrap.small .form {
+  width: 100%;
 }
 
 .form {

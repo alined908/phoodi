@@ -222,7 +222,7 @@ class Meetup(models.Model):
         latitude, longitude, radius = coords[0] or lat, coords[1] or lng, coords[2] or 25
 
         if not latitude or not longitude:
-            return {}
+            return []
 
         distance_query = RawSQL(
             ' SELECT id FROM \

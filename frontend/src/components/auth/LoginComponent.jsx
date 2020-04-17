@@ -19,7 +19,7 @@ class LoginComponent extends Component {
         const {handleSubmit} = this.props;
 
         return (
-            <div className="inner-wrap">
+            <div className="inner-wrap small">
                 <div className="inner-header elevate">
                 <Typography variant="h5">Login</Typography>
                 </div>
@@ -67,7 +67,9 @@ const mapDispatchToProps = {
 
 export default compose (
     connect(mapStatetoProps, mapDispatchToProps),
-    reduxForm({form: 'signin'})
+    reduxForm({
+        form: 'signin'
+    })
 )(LoginComponent);
 
 export {LoginComponent as UnderlyingLoginComponent}

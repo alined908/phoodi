@@ -26,7 +26,7 @@ export const getMeetups = (data) => async dispatch => {
             },
             params: params
         })
-        setTimeout(() => dispatch({type: GET_MEETUPS_SUCCESS, payload: response.data.meetups}), 200)
+        setTimeout(() => dispatch({type: GET_MEETUPS_SUCCESS, payload: response.data.meetups}), 100)
     } catch(e){
         console.log(e)
         dispatch({type: GET_MEETUPS_ERROR, payload: e})
