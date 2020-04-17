@@ -20,7 +20,9 @@ docker-compose up
 **1. Run tests for backend**
 ```
 cd backend
-coverage run --source="." manage.py test meetup
+coverage run --parallel-test --source="." manage.py test meetup
+coverage run --parallel-mode -m pytest
+coverage combine
 coverage report
 ```
 **2. Run tests for frontend**
@@ -95,12 +97,12 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo General
 - [x] Create demo video
 - [x] Handle 404 page
+- [x] Split up large backend files
 - [ ] Change actions to async actions
 - [ ] Safari presentation
 - [ ] Have to click all fields/ Inconsistent meetup?
 - [ ] Specify websocket protocol on link
 - [ ] Get context when redirect to register/login (proceed as guest?)
-- [ ] Split up large backend files
 
 ## Todo Testing 
 - [x] Fallback if no latitude/longitude provided.

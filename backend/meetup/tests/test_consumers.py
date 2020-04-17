@@ -315,7 +315,5 @@ class TestWebsockets:
         assert response['command'] == 'new_option'
         assert response['message']['uri'] == meetup.uri
         assert response['message']['event_id'] == event.id
-        print(response['message']['option'])
-        print(json.loads(json.dumps(option_json)))
         assert response['message']['option'] == json.loads(json.dumps(option_json))
         await communicator.disconnect()
