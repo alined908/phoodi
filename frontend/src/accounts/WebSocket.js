@@ -40,9 +40,9 @@ export default class WebSocketService {
             //Token not authenticated
             if (e.code === 4000) {
                 const access = AuthenticationService.retrieveToken();
-                setTimeout(() => this.connect(path, access), 5000);
+                setTimeout(() => this.connect(path, access), 3000);
             } else {
-                setTimeout(() => this.connect(path, token), 5000);
+                setTimeout(() => this.connect(path, token), 3000);
             }
         };
     }
@@ -128,12 +128,6 @@ export default class WebSocketService {
     newChatMessage(message){
         console.log("Websocket - newChatMessage")
         this.sendMessage({command : 'new_message', from : message.from, text : message.text, room: message.room});
-    }
-
-    //Event commands
-    fetchMeetupEvents(meetup){
-        console.log("Websocket - fetchEvents")
-        this.sendMessage({command: 'fetch_events', meetup:meetup})
     }
 
     newMeetupEvent(data){

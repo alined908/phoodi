@@ -105,7 +105,7 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo Testing 
 - [x] Fallback if no latitude/longitude provided.
 - [x] Write remaining tests for api
-- [ ] Write tests for consumers
+- [x] Write tests for consumers
 - [ ] Form validation + Validation for time and date + Validation for models
 - [ ] Write tests for frontend
 
@@ -152,6 +152,8 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] When clicked on category it 404s
 - [x] Combine getMeetups and getPublicMeetups actions
 - [x] Public meetups dont get past ones
+- [ ] Assign creator to meetup, automatically make meetupmember and give admin privilige
+- [ ] List who created the meetupevent
 - [ ] Block people, admin functionality for meetup member
 - [ ] MeetupEventOption Delete
 - [ ] Info dissapears on meetup edit form reload

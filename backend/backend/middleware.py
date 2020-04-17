@@ -41,7 +41,7 @@ class TokenAuthMiddlewareInstance:
         query_string = parse_qs(self.scope['query_string'].decode())
         token = query_string.get('token')
         if not token:
-            scope['user'] = AnonymousUser()
+            self.scope['user'] = AnonymousUser()
             return self.inner(self.scope)
         user = await get_user(token)
         self.scope['user'] = user
