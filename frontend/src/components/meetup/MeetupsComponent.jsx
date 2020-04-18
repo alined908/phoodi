@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {getMeetups} from "../../actions/meetup";
-import {MeetupCard, CategoryAutocomplete} from "../components"
+import {MeetupCard, CategoryAutocomplete, MeetupForm} from "../components"
 import {Grid, Grow, Tooltip, IconButton, FormGroup, FormControlLabel, Checkbox, Avatar,  CircularProgress} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import moment from "moment"
@@ -20,6 +20,7 @@ class MeetupsComponent extends Component {
             public: true,
             preferences: [],
             clickedPreferences: [],
+            newMeetupForm: false
         }
     }
     
@@ -78,6 +79,10 @@ class MeetupsComponent extends Component {
         }, () => this.state.public ? 
             this.props.getMeetups({type: "public", categories: this.formatCategories(entries), coords: {...this.props.user.settings}}) : 
             this.props.getMeetups({type: "private", categories: this.formatCategories(entries)}))
+    }
+
+    openFormModal = () => {
+        this.setState({newMeetupForm: !this.state.newMeetupForm})
     }
 
     formatCategories = entries => {
@@ -258,16 +263,14 @@ class MeetupsComponent extends Component {
                                 <>X miles</>
                             }
                         </div>
-                        
-                        <Link to="/meetups/new">
-                            <Tooltip title="Add Meetup">
-                                <IconButton style={{color: "black"}}>
-                                    <AddIcon/>
-                                </IconButton>
-                            </Tooltip>
-                        </Link>
+                    
+                        <Tooltip title="Add Meetup">
+                            <IconButton onClick={this.openFormModal} style={{color: "black"}}>
+                                <AddIcon/>
+                            </IconButton>
+                        </Tooltip>
+                        <MeetupForm type="create" handleClose={this.openFormModal} open={this.state.newMeetupForm}/>
                     </div>
-                    {/* {!this.props.isMeetupsInitialized && <div>Initializing Meetups ....</div>} */} 
                     
                     <div className="meetups-container" style={{minHeight: this.props.isMeetupsFetching ? "calc(100% - 60px)" : "0"}}>
                         {this.props.isMeetupsFetching && <div className="loading" style={{height: "auto"}}><CircularProgress/></div>}

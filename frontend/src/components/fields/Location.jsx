@@ -6,6 +6,9 @@ import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
 import PropTypes from 'prop-types'
 
+const customFont = {fontSize: 14, fontFamily: "Lato", fontWeight: "600"}
+const customFontSmall = {fontSize: 11, fontFamily: "Lato", fontWeight: "600", height: 15}
+
 function loadScript(src, position, id) {
   if (!position) {
     return;
@@ -93,15 +96,20 @@ export default function Location(props) {
       autoHighlight
       onChange={props.handleClick}
       includeInputInList  
-      renderInput={params => (
-        <TextField
-          {...params}
-          label={props.label}
-          variant="outlined"
-          fullWidth
-          onChange={handleChange}
-        />
-      )}
+      renderInput={params => {
+        return (
+          <TextField
+            {...params}
+            error={props.textValue.length === 0}
+            label={props.label}
+            fullWidth
+            inputProps={{...params.inputProps, style: customFont}}
+            InputLabelProps={{style: customFont}}
+            FormHelperTextProps={{style: customFontSmall}}
+            onChange={handleChange}
+            helperText={props.textValue.length === 0 ? "Location is required." : ""}
+          />
+      )}}
       renderOption={option => {
         const matches = option.structured_formatting.main_text_matched_substrings;
         const parts = parse(

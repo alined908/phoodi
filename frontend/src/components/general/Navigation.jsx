@@ -78,8 +78,9 @@ const useStyles = makeStyles(theme => ({
     marginRight: '1rem'
   },
   drawerText: {
-    fontSize: '.9em',
-    fontWeight: '600'
+    fontSize: '.8rem',
+    fontWeight: '700',
+    fontFamily: "Roboto"
   },
   drawerPaper: {
     width: drawerWidth,

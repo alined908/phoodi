@@ -4,7 +4,7 @@ import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {signup, editUser} from "../../actions/index"
 import {Paper, Grid, Fab, Button, TextField, Avatar} from '@material-ui/core';
-import {ReactComponent as Breakfast} from "../../assets/svgs/breakfast-colour.svg"
+import {ReactComponent as Together} from "../../assets/svgs/undraw_eating_together.svg"
 import {ReactComponent as Bamboo} from "../../assets/svgs/bamboo-dark.svg"
 import {ReactComponent as Google} from "../../assets/svgs/google.svg"
 import {ReactComponent as Facebook} from "../../assets/svgs/facebook.svg"
@@ -84,7 +84,7 @@ class RegisterComponent extends Component {
         return (
             <Paper className={styles.container} elevation={8}>
                 <div className={styles.left}>
-                    <Breakfast height="70%" width="70%"/>
+                    <Together height="70%" width="70%"/>
                 </div>
                 <div className={styles.right}>
                     <div className={styles.formhead}>
@@ -106,7 +106,7 @@ class RegisterComponent extends Component {
                         }
                     </div>
                     <form className={styles.form} onSubmit={handleSubmit(this.onSubmit)}>
-                        <Grid container spacing={0}>
+                        <Grid container spacing={1}>
                             <Grid item xs={12} sm={6} className={styles.indent}>
                                 <Field name="first_name" component={renderTextField} label="First Name"/>
                             </Grid>

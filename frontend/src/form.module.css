@@ -3,7 +3,6 @@
     width: 80%;
     height: 80%;
     margin: auto;
-    font-family: "Lato";
     font-weight: 600;
     max-width: 1300px;
 }
@@ -14,7 +13,7 @@
     align-items: center;
     width: 65%;
     padding: 1rem;
-    background: #006600;
+    background: rgb(250,250,250);
 }
 
 .right {
@@ -72,6 +71,7 @@
     display: flex;
     justify-content: center;
     height: 100%;
+    align-items: center;
     width: 100%;
 }
 
@@ -80,6 +80,8 @@
     align-items: center;
     cursor:pointer;
     margin: 0 .3rem;
+    width: 40px;
+    height: 40px;
 }
 
 .social:hover{
@@ -90,11 +92,17 @@
     margin: .5rem 0;
 }
 
-.button{
-    background-color: #006600 !important;
-    color: white !important;
-}
-
 .indent{
     padding-right: 10px !important; 
+}
+
+.control{
+    margin-top: 1rem !important;
+}
+
+.label {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    color: grey;
 }

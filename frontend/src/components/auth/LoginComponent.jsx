@@ -6,7 +6,7 @@ import {signin} from "../../actions/index"
 import {Paper, Grid, Fab} from '@material-ui/core';
 import {Link} from "react-router-dom"
 import {renderTextField} from '../components'
-import {ReactComponent as Breakfast} from "../../assets/svgs/breakfast-colour.svg"
+import {ReactComponent as Fan} from "../../assets/svgs/fans.svg"
 import {ReactComponent as Bamboo} from "../../assets/svgs/bamboo-dark.svg"
 import {ReactComponent as Google} from "../../assets/svgs/google.svg"
 import {ReactComponent as Facebook} from "../../assets/svgs/facebook.svg"
@@ -28,7 +28,7 @@ class LoginComponent extends Component {
         return (
             <Paper className={styles.container} elevation={8}>
                 <div className={styles.left}>
-                    <Breakfast height="70%" width="70%"/>
+                    <Fan height="70%" width="70%"/>
                 </div>
                 <div className={styles.right}>
                     <div className={styles.formhead}>
@@ -57,7 +57,7 @@ class LoginComponent extends Component {
                             }
                         </Grid>
                         <div className={styles.fab}>
-                            <Fab className={styles.button} type="submit" variant="extended" aria-label="login">Login</Fab>
+                            <Fab type="submit" variant="extended" aria-label="login">Login</Fab>
                         </div>
                     </form>
                     <div className={styles.bottom}>

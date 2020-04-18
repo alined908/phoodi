@@ -102,6 +102,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Safari presentation
 - [ ] Have to click all fields/ Inconsistent meetup?
 - [ ] Specify websocket protocol on link
+- [ ] Limit location to cities
 - [ ] Get context when redirect to register/login (proceed as guest?)
 
 ## Todo Testing 
@@ -182,6 +183,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Handle timestamp logic
 - [x] Scrolling causes rerender and expensive calculations
 - [x] Make chat input own component
+- [ ] Who's online
 - [ ] Edit chat messages
 - [ ] Upload picture
 - [ ] Send invite through chat
@@ -195,6 +197,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Ellipsis on navbar avatar email
 - [x] Favicon
 - [x] Add preferences warning if no preferences
+- [ ] Change color of home page svgs
 - [ ] Redo responsive layout + actually learn material design
 
 ## Todo UX
@@ -213,7 +216,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Django settings
 
 ## Todo Next Iteration
-- [ ] Add google social auth
+- [ ] Add google, facebook, twitter social auth
 - [ ] Possible convert forms to Backdrop Form Dialogs
 - [ ] Add calendar of meetups
 - [ ] Find people who have similar food taste near you?
