@@ -105,10 +105,10 @@ class MeetupForm extends Component {
                     <DialogContent dividers>
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
-                                <Field name="name" component={renderTextField} label="Name"/>
+                                <Field required name="name" component={renderTextField} label="Name"/>
                             </Grid>
                             <Grid item xs={12}>
-                                <Field name="date" 
+                                <Field required name="date" 
                                     component={renderDateSimplePicker} label="Date"
                                     disabled={this.props.isMeetupInitialized && moment(this.props.meetup.date).add(1, "d").isBefore(moment().toDate())}
                                 />

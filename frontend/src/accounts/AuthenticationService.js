@@ -4,6 +4,9 @@ class AuthenticationService{
         this.setToken(access)
         this.setRefresh(refresh)
     }
+    retrieveUser(){
+        return localStorage.getItem('user')
+    }
 
     setToken(token){
         localStorage.setItem('token', token);

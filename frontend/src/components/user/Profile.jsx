@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 import {axiosClient} from "../../accounts/axiosClient"
 import {getPreferences, addPreference, editPreference} from "../../actions/index"
 import {Lock as LockIcon, LockOpen as LockOpenIcon, Search as SearchIcon, Edit as EditIcon} from '@material-ui/icons';
-import {Friend, CategoryAutocomplete, Preferences} from "../components"
+import {Friend, CategoryAutocomplete, Preferences, RegisterComponent} from "../components"
 import PropTypes from "prop-types"
 import { userPropType } from '../../constants/prop-types'
 import {history} from '../MeetupApp'
@@ -21,7 +21,8 @@ class Profile extends Component {
             filteredFriends: [],
             searchInput: "",
             entries: [],
-            locked: this.props.location.state ?  this.props.location.state.locked :true
+            locked: this.props.location.state ?  this.props.location.state.locked :true,
+            editProfileForm: false
         }
     }
 
@@ -68,6 +69,10 @@ class Profile extends Component {
         this.props.addPreference(data, this.props.user.id)
     }
 
+    openFormModal = () => {
+        this.setState({editProfileForm: !this.state.editProfileForm})
+    }
+
     handleSearchInputChange = (e) => {
         var filter = e.target.value;
         var friends = this.state.friends
@@ -97,15 +102,13 @@ class Profile extends Component {
                                 {isUser && (this.state.locked ?
                                     <Tooltip title="Click to Reorder">
                                         <IconButton color="primary" onClick={this.handleLock}>
-                                            <LockIcon>
-                                            </LockIcon>
+                                            <LockIcon/>
                                         </IconButton>
                                     </Tooltip> 
                                     : 
                                     <Tooltip title="Click to Lock">
                                         <IconButton onClick={this.handleLock}>
-                                            <LockOpenIcon>
-                                            </LockOpenIcon>
+                                            <LockOpenIcon/>
                                         </IconButton>
                                     </Tooltip>
                                 )}
@@ -132,13 +135,14 @@ class Profile extends Component {
                             <div>Profile</div>
                             <div>
                                 {isUser && 
-                                    <Link to="/profile/edit">
-                                        <Tooltip title="Edit Profile">
-                                            <IconButton color="primary">
-                                                <EditIcon></EditIcon>
-                                            </IconButton>
-                                        </Tooltip>
-                                    </Link>
+                                    <Tooltip title="Edit Profile">
+                                        <IconButton color="primary" onClick={this.openFormModal}>
+                                            <EditIcon/>
+                                        </IconButton>
+                                    </Tooltip>
+                                }
+                                {this.state.editProfileForm && 
+                                    <RegisterComponent type="edit" handleClose={this.openFormModal} open={this.state.editProfileForm}/>
                                 }
                             </div>
                         </div>
@@ -199,9 +203,8 @@ class Profile extends Component {
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>
-                        {`Phoodie
-                        ${this.state.user.first_name !== undefined ? " - " + this.state.user.first_name : ""} 
-                        ${ this.state.user.last_name !== undefined ? " " + this.state.user.last_name : ""}`}
+                        {`${this.state.user.first_name !== undefined ? this.state.user.first_name : ""} 
+                        ${ this.state.user.last_name !== undefined ? this.state.user.last_name : ""}`}
                     </title>
                     <meta name="description" content="Phoodie Profile" />
                 </Helmet>

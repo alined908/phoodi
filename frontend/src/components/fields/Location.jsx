@@ -100,14 +100,14 @@ export default function Location(props) {
         return (
           <TextField
             {...params}
-            error={props.textValue.length === 0}
+            error={props.textValue && props.textValue.length === 0}
             label={props.label}
             fullWidth
             inputProps={{...params.inputProps, style: customFont}}
             InputLabelProps={{style: customFont}}
             FormHelperTextProps={{style: customFontSmall}}
             onChange={handleChange}
-            helperText={props.textValue.length === 0 ? "Location is required." : ""}
+            helperText={(props.textValue && props.textValue.length === 0) ? "Location is required." : ""}
           />
       )}}
       renderOption={option => {

@@ -98,9 +98,9 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Create demo video
 - [x] Handle 404 page
 - [x] Split up large backend files
+- [x] Have to click all fields/ Inconsistent meetup?
 - [ ] Change actions to async actions
 - [ ] Safari presentation
-- [ ] Have to click all fields/ Inconsistent meetup?
 - [ ] Specify websocket protocol on link
 - [ ] Limit location to cities
 - [ ] Get context when redirect to register/login (proceed as guest?)
@@ -109,7 +109,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Fallback if no latitude/longitude provided.
 - [x] Write remaining tests for api
 - [x] Write tests for consumers
-- [ ] Form validation
+- [x] Form validation
 - [ ] Validation for models
 - [ ] Write tests for frontend
 
@@ -126,10 +126,10 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Get user location before render
 - [x] User object, settings only show for myself.
 - [x] Settings doesnt populate after save and reload
+- [x] Change presentation of upload avatar
 - [ ] Make sure user settings are good on signup/signin if no settings before 
 - [ ] Confirm email, Change password
 - [ ] Change name of preference
-- [ ] Change presentation of upload avatar
 - [ ] Change user model default radius to 25 and relationship to onetoone
 
 ## Todo Friends
@@ -203,6 +203,7 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo UX
 - [x] User Settings doesn't work again? for category meetups and regular meetups
 - [x] Autocomplete click doesn't load automatically, anotehr click is needed
+- [x] Possible convert forms to Backdrop Form Dialogs
 - [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
 - [ ] Animation when logging out forced
 
@@ -217,7 +218,6 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Next Iteration
 - [ ] Add google, facebook, twitter social auth
-- [ ] Possible convert forms to Backdrop Form Dialogs
 - [ ] Add calendar of meetups
 - [ ] Find people who have similar food taste near you?
 - [ ] Past activity

@@ -45,7 +45,6 @@ def handle_generate_options_on_meetup_event_field_change(sender, instance, **kwa
             instance.delete_options()
             instance.generate_options()
         
-
 @receiver(post_save, sender = MeetupEvent)
 def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
     from .serializers import MeetupEventSerializer

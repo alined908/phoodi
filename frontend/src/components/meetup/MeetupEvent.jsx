@@ -8,7 +8,7 @@ import {Cached as CachedIcon, Edit as EditIcon, Close as CloseIcon, Search as Se
     Schedule as ScheduleIcon, Delete as DeleteIcon, Error as ErrorIcon} from '@material-ui/icons'
 import {IconButton, Typography, Grid, Grow, Tooltip, Avatar, Divider} from '@material-ui/core'
 import {compose} from 'redux';
-import {Restauraunt, Map, RestaurauntAutocomplete, ProgressIcon} from '../components'
+import {Restauraunt, Map, RestaurauntAutocomplete, ProgressIcon, MeetupEventForm} from '../components'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types';
 import {meetupEventPropType} from "../../constants/prop-types"
@@ -18,7 +18,8 @@ class MeetupEvent extends Component {
         super(props)
         this.state = {
             searchOpen: false,
-            searchInput: ""
+            searchInput: "",
+            editMeetupEventForm: false
         }
     }
 
@@ -68,6 +69,10 @@ class MeetupEvent extends Component {
         this.setState({searchInput: ""})
     }
 
+    openEventModal = () => {
+        this.setState({editMeetupEventForm: !this.state.editMeetupEventForm})
+    }
+
     render () {
         const event = this.props.event
 
@@ -77,7 +82,10 @@ class MeetupEvent extends Component {
                     <div className="inner-header smaller-header">
                         <Typography variant="h5">#{number+1} - {event.title}</Typography>
                         <div className="inner-header-middle">
-                            <div className="inner-header-icons"><ScheduleIcon/> {moment(event.start).local().format("h:mm A")} - {moment(event.end).local().format("h:mm A")}</div>
+                            <div className="inner-header-icons">
+                                <ScheduleIcon/> 
+                                {moment(event.start).local().format("h:mm A")} - {moment(event.end).local().format("h:mm A")}
+                            </div>
                         </div>
                         <div>
                             {this.props.isUserMember && renderActions()}
@@ -143,13 +151,18 @@ class MeetupEvent extends Component {
                             </Tooltip>
                         )
                     }
-                    <Link to={`/meetups/${this.props.uri}/events/${this.props.event.id}/edit`}>
-                        <Tooltip title="Edit">
-                            <IconButton color="inherit" aria-label="edit">
-                                <EditIcon></EditIcon>
-                            </IconButton>
-                        </Tooltip>
-                    </Link>
+                    
+                    <Tooltip title="Edit">
+                        <IconButton onClick={this.openEventModal} color="inherit" aria-label="edit">
+                            <EditIcon/>
+                        </IconButton>
+                    </Tooltip>
+                    {this.state.editMeetupEventForm && 
+                        <MeetupEventForm 
+                            type="edit" event={event.id} uri={this.props.uri} handleClose={this.openEventModal}
+                            open={this.state.editMeetupEventForm}
+                        />
+                    }
                     <Tooltip title="Delete">
                         <IconButton onClick={() => this.handleDelete()} color="secondary" aria-label="delete">
                             <DeleteIcon />

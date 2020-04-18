@@ -3,7 +3,7 @@ import {reduxForm, Field} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {signup, editUser} from "../../actions/index"
-import {Paper, Grid, Fab, Button, TextField, Avatar} from '@material-ui/core';
+import {Paper, Grid, Fab, Button, Avatar, Dialog, DialogActions, DialogTitle, DialogContent} from '@material-ui/core';
 import {ReactComponent as Together} from "../../assets/svgs/undraw_eating_together.svg"
 import {ReactComponent as Bamboo} from "../../assets/svgs/bamboo-dark.svg"
 import {ReactComponent as Google} from "../../assets/svgs/google.svg"
@@ -44,8 +44,10 @@ class RegisterComponent extends Component {
     constructor(props){
         super(props)
         this.state = {
-            image: null
+            image: null,
+            imageURL: ""
         }
+        this.handleImageChange = this.handleImageChange.bind(this)
     }
 
     onSubmit = formProps => {
@@ -57,109 +59,155 @@ class RegisterComponent extends Component {
             data.append('avatar', this.state.image, this.state.image.name)
         }   
         if (this.props.type === "create") {
-            console.log("this one")
             this.props.signup(data, () => {
                 this.props.history.push("/meetups")
             });
         }
 
         if (this.props.type === "edit") {
-            this.props.editUser(data, this.props.user.id, () => {
-                this.props.history.push(`/profile/${this.props.user.id}`)
-            })
+            this.props.editUser(data, this.props.user.id, () => this.props.handleClose())
         }
        
     }
 
     handleImageChange = (e) => {
-        this.setState({
-            image: e.target.files[0]
-        })
+        var reader = new FileReader()
+        let file = e.target.files[0]
+
+        reader.onloadend = () => {
+            this.setState({
+                image: file,
+                imageURL: reader.result
+            })
+        }
+
+        reader.readAsDataURL(file)
     }
 
     render() {
-        const {handleSubmit} = this.props;
+        const {handleSubmit, submitting, invalid} = this.props;
         const create = this.props.type === "create"
+        console.log(this.state.image)
 
         return (
-            <Paper className={styles.container} elevation={8}>
-                <div className={styles.left}>
-                    <Together height="70%" width="70%"/>
-                </div>
-                <div className={styles.right}>
-                    <div className={styles.formhead}>
-                        <div className={styles.icon}>
-                            <Bamboo height="100%" width="100%"/>
+            <>
+                {create ? 
+                    <Paper className={styles.container} elevation={8}>
+                        <div className={styles.left}>
+                            <Together height="70%" width="70%"/>
                         </div>
-                        <span className={styles.header}>
-                            {create ? "Register" : "Edit User"}
-                        </span>
-                        <div className={styles.icon}>
-                            <Bamboo height="100%" width="100%"/>
+                        <div className={styles.right}>
+                            <div className={styles.formhead}>
+                                <div className={styles.icon}>
+                                    <Bamboo height="100%" width="100%"/>
+                                </div>
+                                <span className={styles.header}>
+                                    Register
+                                </span>
+                                <div className={styles.icon}>
+                                    <Bamboo height="100%" width="100%"/>
+                                </div>
+                            </div>
+                            <form className={styles.form} onSubmit={handleSubmit(this.onSubmit)}>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12} sm={6} className={styles.indent}>
+                                        <Field required name="first_name" component={renderTextField} label="First Name"/>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <Field required name="last_name" component={renderTextField} label="Last Name"/>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Field required name="email" component={renderTextField} label="Email" />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Field required name="password" type="password" component={renderTextField} label="Password"/>
+                                    </Grid> 
+                                    {this.props.errorMessage && 
+                                        <Grid item xs={12}>
+                                            <div className="error-message">{this.props.errorMessage}</div>
+                                        </Grid>
+                                    }
+                                </Grid>
+                                <div className={styles.fab}>
+                                    <Fab type="submit" variant="extended" color="primary" aria-label="login">
+                                        Register
+                                    </Fab>
+                                </div>
+                            </form>
+                            <div className={styles.bottom}>
+                            <div className={styles.socials}>
+                                    <div className={styles.social}>
+                                        <Google width={40} height={40}/>
+                                    </div>
+                                    <div className={styles.social}>
+                                        <Facebook width={40} height={40}/>
+                                    </div>
+                                    <div className={styles.social}>
+                                        <Twitter  width={40} height={40}/>
+                                    </div>
+                                </div>
+                                <div className={styles.action}>
+                                    Already Have An Account? 
+                                    <span className={styles.link}>
+                                        <Link to="/login">Login</Link>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                        {!create && 
-                            <Link to={`/profile/${this.props.user.id}`}>
-                                <Button variant="contained" color="primary">
-                                    Profile
+                    </Paper> :
+                    <Dialog open={this.props.open} onClose={this.props.handleClose}>
+                        <DialogTitle>
+                            Edit Profile
+                        </DialogTitle>
+                        <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                            <DialogContent dividers>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12} sm={6} className={styles.indent}>
+                                        <Field required name="first_name" component={renderTextField} label="First Name"/>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <Field required name="last_name" component={renderTextField} label="Last Name"/>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Field required name="email" component={renderTextField} label="Email" />
+                                    </Grid>
+                                    {/* <Grid item xs={12}>
+                                        <Field required name="password" type="password" component={renderTextField} label="Password"/>
+                                    </Grid>  */}
+                                    <Grid item xs={12}>
+                                        <div className={styles.avatarlabel}>Avatar</div>
+                                        <div className={styles.avatar}>
+                                            <Avatar className={styles.avatarBig} src={this.props.user.avatar}>
+                                                {this.props.user.first_name.charAt(0)}{this.props.user.last_name.charAt(0)}
+                                            </Avatar>
+                                            <input onChange={this.handleImageChange} id="icon-button-file" type="file" className={styles.none}/> 
+                                            <label htmlFor="icon-button-file">
+                                                <Button aria-label="upload" color="primary" component="span">
+                                                    Upload
+                                                </Button>
+                                            </label>
+                                            <span>
+                                                {this.state.image && `New Profile Picture --> ${this.state.image.name}`}
+                                            </span>  
+                                            {this.state.image && 
+                                                <Avatar className={styles.avatarBig} src={this.state.imageURL}></Avatar>
+                                            }
+                                        </div> 
+                                    </Grid>
+                                </Grid>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={this.props.handleClose} color="secondary" disabled={submitting}>
+                                    Close
                                 </Button>
-                            </Link>
-                        }
-                    </div>
-                    <form className={styles.form} onSubmit={handleSubmit(this.onSubmit)}>
-                        <Grid container spacing={1}>
-                            <Grid item xs={12} sm={6} className={styles.indent}>
-                                <Field name="first_name" component={renderTextField} label="First Name"/>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <Field name="last_name" component={renderTextField} label="Last Name"/>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Field name="email" component={renderTextField} label="Email" />
-                            </Grid>
-                            {create && 
-                                <Grid item xs={12}>
-                                    <Field name="password" type="password" component={renderTextField} label="Password"/>
-                                </Grid> 
-                            }
-                            {!create && 
-                                <Grid item xs={12}>
-                                    <Avatar style={{width: "70px", height: "70px"}} src={this.props.user.avatar}>
-                                        {this.props.user.first_name.charAt(0)}{this.props.user.last_name.charAt(0)}
-                                    </Avatar>
-                                    <TextField onChange={this.handleImageChange} inputProps={{ style: {fontSize: 14}}}  type="file"/>    
-                                </Grid>
-                            }
-                            {this.props.errorMessage && 
-                                <Grid item xs={12}>
-                                    <div className="error-message">{this.props.errorMessage}</div>
-                                </Grid>
-                            }
-                        </Grid>
-                        <div className={styles.fab}>
-                            <Fab className={styles.button} type="submit" variant="extended" color="primary" aria-label="login">{create ? "Register" : "Edit User"}</Fab>
-                        </div>
-                    </form>
-                    <div className={styles.bottom}>
-                    <div className={styles.socials}>
-                            <div className={styles.social}>
-                                <Google width={40} height={40}/>
-                            </div>
-                            <div className={styles.social}>
-                                <Facebook width={40} height={40}/>
-                            </div>
-                            <div className={styles.social}>
-                                <Twitter  width={40} height={40}/>
-                            </div>
-                        </div>
-                        <div className={styles.action}>
-                            Already Have An Account? 
-                            <span className={styles.link}>
-                                <Link to="/login">Login</Link>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </Paper> 
+                                <Button type="submit" color="primary" aria-label="add" disabled={invalid || submitting}>
+                                    Edit Profile
+                                </Button>
+                            </DialogActions>
+                        </form>
+                    </Dialog>
+                }
+            </>
         )
     }
 }

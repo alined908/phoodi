@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {MeetupFriend, MeetupEvent, ProgressIcon, MeetupForm} from '../components'
+import {MeetupFriend, MeetupEvent, ProgressIcon, MeetupForm, MeetupEventForm} from '../components'
 import {connect} from 'react-redux';
 import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, addMeetupMember, addEventOption, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent} from '../../actions/meetup';
 import {removeNotifs} from '../../actions/notifications'
@@ -22,7 +22,8 @@ class Meetup extends Component {
         super(props)
         this.state = {
             socket: new WebSocketService(),
-            newMeetupForm: false
+            newMeetupForm: false,
+            newMeetupEventForm: false
         }
     }
 
@@ -85,6 +86,9 @@ class Meetup extends Component {
         this.setState({newMeetupForm: !this.state.newMeetupForm})
     }
 
+    openEventModal = () => {
+        this.setState({newMeetupEventForm: !this.state.newMeetupEventForm})
+    }
 
     determineEmailDisable = (events) => {
         if (events === undefined || (Object.keys(events).length === 0 && events.constructor === Object)){
@@ -161,7 +165,9 @@ class Meetup extends Component {
                                 <EditIcon />
                             </IconButton>
                         </Tooltip>
-                        {this.state.newMeetupForm && <MeetupForm type="edit" uri={this.props.meetup.uri} handleClose={this.openFormModal} open={this.state.newMeetupForm}/>}
+                        {this.state.newMeetupForm && 
+                            <MeetupForm type="edit" uri={this.props.meetup.uri} handleClose={this.openFormModal} open={this.state.newMeetupForm}/>
+                        }
                         <Tooltip title="Delete">
                             <IconButton onClick={() => this.handleDelete()} color="secondary" aria-label='delete'>
                                 <DeleteIcon />
@@ -191,7 +197,6 @@ class Meetup extends Component {
 
         const renderMembers = (members) => {
             return (
-
                 <div className="outer-shell elevate">
                     <List style={{width: "100%", padding: "0"}}>
                         {Object.keys(members).map((key) => 
@@ -242,7 +247,7 @@ class Meetup extends Component {
             <div className="inner-wrap">
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>{`Meetups - ${meetup.name}`}</title>
+                    <title>{`${meetup.name}`}</title>
                 </Helmet>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
@@ -268,11 +273,15 @@ class Meetup extends Component {
                         <div className="inner-header elevate">
                             <Typography variant="h5">Events</Typography>
                             {isUserMember && 
-                                <Link socket={this.state.socket} to={`/meetups/${meetup.uri}/new`}>
-                                    <Button startIcon={<AddIcon />} className="button rainbow" variant="contained" color="primary">
-                                        Event
-                                    </Button>
-                                </Link>
+                                <Button onClick={this.openEventModal} startIcon={<AddIcon />} className="button rainbow" variant="contained" color="primary">
+                                    Event
+                                </Button>
+                            }
+                            {this.state.newMeetupEventForm && 
+                                <MeetupEventForm 
+                                    type="create" uri={meetup.uri} handleClose={this.openEventModal}
+                                    open={this.state.newMeetupEventForm}
+                                />
                             }
                         </div>
                     </Grid>

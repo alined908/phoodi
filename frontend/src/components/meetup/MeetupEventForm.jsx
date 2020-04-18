@@ -1,25 +1,42 @@
 import React, { Component } from 'react'
 import {reduxForm, Field} from 'redux-form';
-import {Button, Typography, Paper, Grid, ButtonGroup, Slider, Fab, Radio, FormControlLabel} from '@material-ui/core';
+import {Button, Typography, Grid, ButtonGroup, Slider, Radio, FormControlLabel, Dialog, DialogTitle, DialogContent, DialogActions} from '@material-ui/core';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
+import {Error as ErrorIcon} from '@material-ui/icons'
 import {addMeetupEvent, getMeetup, getMeetupEvents} from "../../actions/meetup"
 import {renderDatePicker, renderTextField, CategoryAutocomplete} from '../components'
-import {Link} from 'react-router-dom'
 import {axiosClient} from "../../accounts/axiosClient"
-import {history} from '../MeetupApp'
 import {addGlobalMessage} from '../../actions/globalMessages'
+import styles from "../../form.module.css"
+import moment from "moment"
 
 const marks = [{value: 0.25},{value: 0.50},{value: 1},{value: 2},{value: 3},{value: 5},{value: 10},{value: 25}]
 const convert = {0.25: 400, 0.50: 800, 1: 1600, 2: 3200, 3: 4800, 5: 8000, 10: 16000, 25: 40000}
 const reconvert = {400: 0.25, 800: 0.50, 1600: 1, 3200: 2, 4800: 3, 8000:5, 16000: 10, 40000: 25}
+const priceLabel = ["< $10", "$11 - $30", "$31 - $60", "> $60"]
 
 const validate = values => {
     const errors = {}
-    if (values.start >= values.end){
+  
+    if (!values.title){
+        errors.title = "Meetup title is required."
+    }
+    if (!values.start){  
+        errors.start = "Start time is required."
+    } else if (isNaN(values.start.getTime())){
+        errors.start = "Start time is not valid."
+    } else if (values.start >= values.end){
         errors.start = "Start time must be before end time "
     }
 
+    if (!values.end) {
+        errors.end = "End time is required."
+    } else if (isNaN(values.end.getTime())){
+        errors.end = "End time is not valid"
+    } else if (values.start >= values.end) {
+        errors.end = "End time must be after start time."
+    }
     return errors
 }
 
@@ -40,34 +57,9 @@ class MeetupEventForm extends Component {
             entries: props.entries ? props.entries : [],
             prices: props.prices ? convertPricesToState(props.prices) : [true, true , false, false],
             distance: props.distance ? reconvert[props.distance] : 10,
-            random: props.random ? props.random : true,
-            initialized: props.isMeetupInitialized && props.isMeetupEventsInitialized
+            random: props.random ? props.random : true
         }
         this.onTagsChange = this.onTagsChange.bind(this)
-    }
-
-    async componentDidMount(){
-        if (!this.props.isMeetupInitialized || !this.props.isMeetupEventsInitialized){
-            await Promise.all(
-                [   
-                    this.props.getMeetup(this.props.match.params.uri), 
-                    this.props.getMeetupEvents(this.props.match.params.uri)
-                ]
-            )
-        }
-    }
-
-    static getDerivedStateFromProps(props, state){
-        if (props.type === "edit" && !state.initialized && props.isMeetupEventsInitialized && props.isMeetupInitialized){
-            return {
-                title: props.title,
-                entries: props.entries,
-                prices: convertPricesToState(props.prices),
-                distance: reconvert[props.distance],
-                initialized: true
-            }
-        }
-        return null;
     }
 
     handleEntries = () => {
@@ -82,31 +74,43 @@ class MeetupEventForm extends Component {
     onSubmit = async (formProps) => {
         const indices = this.state.prices.reduce((out, bool, index) => bool ? out.concat(index+1) : out, [])
         const prices = indices.join(", ")
-        const uri = this.props.match.params.uri
-        const data = {entries: this.handleEntries(), distance: convert[this.state.distance], price: prices, random: this.state.random,...formProps}
+        const meetup = this.props.meetup
+        const date = moment(meetup.date)
+        const start = moment(formProps.start).set({date: date.date(), month: date.month(), year: date.year()})
+        const end = moment(formProps.end).set({date: date.date(), month: date.month(), year: date.year()})
+        const data = {
+            entries: this.handleEntries(), 
+            distance: convert[this.state.distance], 
+            price: prices, 
+            random: this.state.random,
+            start: start.toDate(),
+            end: end.toDate(),
+            title: formProps.title
+        }
         
         if (this.props.type === "create"){
             try {
                 await axiosClient.post(
-                    `/api/meetups/${uri}/events/`, data, {headers: {
+                    `/api/meetups/${meetup.uri}/events/`, data, {headers: {
                         "Authorization": `Bearer ${localStorage.getItem('token')}`
                 }})
-                history.push(`/meetups/${uri}`)
             }  catch(e){
                 this.props.addGlobalMessage("error", "Something went wrong")
             }
         } 
+
         if (this.props.type === "edit") {
             try {
                 await axiosClient.patch(
-                    `/api/meetups/${uri}/events/${this.props.match.params.id}/`, data, {headers: {
+                    `/api/meetups/${meetup.uri}/events/${this.props.event}/`, data, {headers: {
                         "Authorization": `Bearer ${localStorage.getItem('token')}`
                 }})
-                history.push(`/meetups/${uri}`)
             } catch(e){
                 this.props.addGlobalMessage("error", "Something went wrong")
             }
         }
+
+        this.props.handleClose()
     }
 
     handlePrice = (price) => {
@@ -127,103 +131,165 @@ class MeetupEventForm extends Component {
         this.setState({entries: values})
     }
 
+    generatePriceLabel = () => {
+        var labels = []
+        var prices = this.state.prices
+
+        for (var i = 0; i < prices.length; i++){
+            if(prices[i]){
+                labels.push(priceLabel[i])
+            }
+        }
+        
+        return labels.join('\xa0' + ', ' + '\xa0\xa0')
+    }
+
+    determineDisable = (submitting, invalid) => {
+        var disable = false
+
+        // No prices selected
+        if (!this.state.prices.includes(true)){
+            disable = true
+        }
+
+        return disable || submitting || invalid
+    }
+
     render () {
+        const {handleSubmit, submitting, invalid} = this.props;
         const create = this.props.type === "create"
 
         return (
-            <div className="inner-wrap">
-                <div className="inner-header elevate">
-                    <Typography variant="h5">{create ? "Create New Event" : "Edit Event"}</Typography>
-                    <Link to={`/meetups/${this.props.match.params.uri}`}><Button variant="contained" color="primary">Meetup</Button></Link>
-                </div> 
-                <div className="form">
-                    <Paper className="form-paper elevate">
-                        <form onSubmit={this.props.handleSubmit(this.onSubmit.bind(this))}>
-                            <Grid container style={{padding: "1rem"}} spacing={3}>
-                                <Grid item xs={12}>
-                                    <Typography variant="h6">Meetup Event Information</Typography>
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <Field required name="title" component={renderTextField} label="Event Name"></Field>
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <CategoryAutocomplete form={true} label="Search Categories..." size="medium" entries={this.state.entries} handleClick={this.onTagsChange}/>
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <Field required name="start" component={renderDatePicker} label="Start Time"></Field>
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <Field name="end" component={renderDatePicker} label="End Time"></Field>
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <div className="price">
-                                        <Typography variant="h6">Price</Typography>
-                                        <div className="price-options">
-                                            <ButtonGroup color="primary">
-                                                <Button variant={this.state.prices[0] ? "contained" : "outlined"} onClick={() => this.handlePrice(1)}>$</Button>
-                                                <Button variant={this.state.prices[1] ? "contained" : "outlined"} onClick={() => this.handlePrice(2)}>$$</Button>
-                                                <Button variant={this.state.prices[2] ? "contained" : "outlined"} onClick={() => this.handlePrice(3)}>$$$</Button>
-                                                <Button variant={this.state.prices[3] ? "contained" : "outlined"} onClick={() => this.handlePrice(4)}>$$$$</Button>
-                                            </ButtonGroup>
+           <Dialog open={this.props.open} onClose={this.props.handleClose}>
+               <DialogTitle>
+                    {create ? "Create New Event" : "Edit Event"}
+               </DialogTitle>
+                <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                    <DialogContent dividers>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12}>
+                                <Field required name="title" component={renderTextField} label="Event Name"/>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <Field required name="start" component={renderDatePicker} label="Start Time"/>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <Field required name="end" component={renderDatePicker} label="End Time"/>
+                            </Grid>
+                            <Grid container item xs={12}>
+                                <div className={`${styles.catlabel} ${styles.warning}`}>
+                                    {this.state.entries.length === 0 && 
+                                        <>
+                                            <ErrorIcon style={{color: "rgb(255, 212, 96)"}}/> &nbsp;
+                                            No categories entered. All categories will be considered.
+                                        </>
+                                    }
+                                </div>
+                                <CategoryAutocomplete 
+                                    form={true} label="Search Categories..." size="medium" 
+                                    entries={this.state.entries} handleClick={this.onTagsChange}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <div className="price">
+                                    <Typography variant="body1">Price</Typography>
+                                    <div className={styles.priceoptions}>
+                                        <ButtonGroup color="primary">
+                                            <Button 
+                                                variant={this.state.prices[0] ? "contained" : "outlined"} 
+                                                onClick={() => this.handlePrice(1)}
+                                            >
+                                                $
+                                            </Button>
+                                            <Button 
+                                                variant={this.state.prices[1] ? "contained" : "outlined"} 
+                                                onClick={() => this.handlePrice(2)}
+                                            >
+                                                $$
+                                            </Button>
+                                            <Button 
+                                                variant={this.state.prices[2] ? "contained" : "outlined"} 
+                                                onClick={() => this.handlePrice(3)}
+                                            >
+                                                $$$
+                                            </Button>
+                                            <Button 
+                                                variant={this.state.prices[3] ? "contained" : "outlined"} 
+                                                onClick={() => this.handlePrice(4)}
+                                            >
+                                                $$$$
+                                            </Button>
+                                        </ButtonGroup>
+                                        <div className={styles.indentlabel}>
+                                            {this.generatePriceLabel()}
+                                            {!this.state.prices.includes(true) && <span className={styles.error}>Price filter is required.</span>}
                                         </div>
                                     </div>
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <FormControlLabel label="Random" control={<Radio color="primary" checked={this.state.random} onClick={() => this.handleRandomClick(true)}/>} />
-                                    <FormControlLabel label="Custom" control={<Radio color="primary" checked={!this.state.random} onClick={() => this.handleRandomClick(false)}/>}/>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <div className="distance">
-                                        <Typography variant="h6">Distance (mi)</Typography>
-                                        <div className="distance-options">
-                                        <Slider valueLabelDisplay="on" 
-                                            step={null} marks={marks} 
-                                            value={this.state.distance} min={0.25} max={25}
-                                            onChange={(event, val) => this.handleDistance(event, val)}/>
-                                        </div>  
-                                    </div>
-                                </Grid>
-                                
-                                <Grid item xs={12}>
-                                    <Fab color="primary" variant="extended" type="submit" aria-label="add"> 
-                                        {create ? "Add Event" : "Edit Event"}
-                                    </Fab>
-                                </Grid>
+                                </div>
                             </Grid>
-                        </form>
-                    </Paper>
-                </div>
-            </div>
+                            <Grid item xs={12}>
+                                <div className="distance">
+                                    <Typography variant="body1">Distance (mi)</Typography>
+                                    <div className={styles.distanceoptions}>
+                                    <Slider valueLabelDisplay="on" 
+                                        step={null} marks={marks} 
+                                        value={this.state.distance} min={0.25} max={25}
+                                        onChange={(event, val) => this.handleDistance(event, val)}/>
+                                    </div>  
+                                </div>
+                            </Grid>
+                            <Grid container item xs={12}>
+                                <FormControlLabel label="Random" control={<Radio color="primary" checked={this.state.random} onClick={() => this.handleRandomClick(true)}/>} />
+                                <FormControlLabel label="Custom" control={<Radio color="primary" checked={!this.state.random} onClick={() => this.handleRandomClick(false)}/>}/>
+                                <div className={styles.label}>
+                                    {this.state.random ? "Randomly generates options" : "Members add options"}
+                                </div>
+                            </Grid>
+                        </Grid>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.props.handleClose} color="secondary" disabled={submitting}>
+                            Close
+                        </Button>
+                        <Button color="primary" type="submit" aria-label="add" disabled={this.determineDisable(submitting, invalid)}> 
+                            {create ? "Add Event" : "Edit Event"}
+                        </Button>
+                    </DialogActions>
+                </form>
+            </Dialog>
         )
     }
 }
 
 function mapStateToProps(state, ownProps){
-    const meetup = state.meetup.meetups[ownProps.match.params.uri]
-    const uri = ownProps.match.params.uri
-    const id = ownProps.match.params.id
+    const meetup = state.meetup.meetups[ownProps.uri]
 
-    if (ownProps.type === "edit" && (uri in state.meetup.meetups) && ("events" in meetup)){
-        const event = meetup.events[id]
+    if (ownProps.type === "edit"){
+        const event = meetup.events[ownProps.event]
+        const today = moment()
+        const convertedStart = moment(event.start).set({date: today.date(), month: today.month(), year: today.year()})
+        const convertedEnd = moment(event.end).set({date: today.date(), month: today.month(), year: today.year()})
+
         return {
-            initialValues: {title: event.title, start: event.start, end: event.end},
+            initialValues: {
+                title: event.title, 
+                start: convertedStart.toDate(),
+                end: convertedEnd.toDate()
+            },
             distance: event.distance,
             prices: event.price,
             entries: event.categories,
             random: event.random,
-            isMeetupInitialized: true,
-            isMeetupEventsInitialized: true
+            meetup: meetup
         }
     }
     else {
+        const closest = new Date(Math.ceil(new Date().getTime()/300000)*300000)
         return {
-            meetup: meetup,
             initialValues: {
-                start: new Date(Math.ceil(new Date().getTime()/300000)*300000),
-                end: new Date(Math.ceil(new Date().getTime()/2100000) * 2100000)
+                start: closest,
+                end: new Date(closest.getTime() + 30 * 60000)
             },
-            isMeetupInitialized: false,
-            isMeetupEventsInitialized: false,
             entries: [],
         }
     }
@@ -238,5 +304,5 @@ const mapDispatchToProps = {
 
 export default compose (
     connect(mapStateToProps, mapDispatchToProps),
-    reduxForm({form: 'event', validate, enableReinitialize : true })
+    reduxForm({form: 'event', validate})
 )(MeetupEventForm);

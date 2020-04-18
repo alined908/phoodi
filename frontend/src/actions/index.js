@@ -104,15 +104,16 @@ export const getProfile = (id) => {
     }
 }
 
-export const editUser = (formProps, user_id, redirectOnSuccess) => async dispatch => {
+export const editUser = (formProps, user_id, onSuccess) => async dispatch => {
     try {
         const response = await axiosClient.patch(`/api/users/${user_id}/`, formProps, {headers: {
             "Authorization": `Bearer ${localStorage.getItem('token')}`, "Content-Type": 'multipart/form-data'
         }})
-        console.log(response.data)
-        localStorage.setItem("user", JSON.stringify(response.data))
+        const settings = JSON.parse(AuthenticationService.retrieveUser()).settings
+        let newUser = {...response.data, settings: settings}
+        localStorage.setItem("user", JSON.stringify(newUser))
         dispatch({type: EDIT_USER, payload: response.data})
-        redirectOnSuccess()
+        onSuccess()
     } catch (e) {
         console.log(e)
     }

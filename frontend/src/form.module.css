@@ -58,6 +58,25 @@
     flex-basis: 30%;
 }
 
+.avatarlabel{
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.avatarBig{
+    width: 60px !important;
+    height: 60px !important;
+}
+
+.avatar{
+    display:flex;
+    align-items: center;
+}
+
+.none{
+    display:none;
+}
+
 .link{
     color: #006600;
     margin-left: 5px;
@@ -105,4 +124,30 @@
     display: flex;
     align-items: center;
     color: grey;
+}
+
+.priceoptions{
+    display: flex;
+    margin-top: 1rem;
+}
+
+.indentlabel{
+    color: grey;
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+.catlabel{
+    display: flex;
+    align-items: center;
+    margin-bottom: .5rem;
+}
+
+.distanceoptions {
+    margin-top: 2rem;
+}
+
+.error {
+    color: #f44336;
 }

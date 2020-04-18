@@ -573,29 +573,6 @@ body {
   width: 50%;
 }
 
-.inner-wrap.small .form {
-  width: 100%;
-}
-
-.form {
-  display:flex;
-  font-family: "Lato";
-  justify-content: center;
-  margin: 3rem auto;
-  width: 90%;
-}
-
-.form-paper{
-  padding: 2rem 3rem;
-}
-
-.price-options{
-  margin-top: 1rem;
-}
- .distance-options {
-  margin-top: 2rem;
-}
-
 .meetup-event {
   padding: 0 1.75rem;
   width: 90%;
@@ -817,11 +794,6 @@ body {
 .second-header-left{
   display:flex;
   align-items: center;
-}
-
-.second-header-left .MuiTypography-h6{
-  font-family: "Lato" !important;
-  font-weight: 600 !important;
 }
 
 .smaller-header{
@@ -1050,11 +1022,6 @@ body {
   text-overflow: ellipsis;
 }
 
-.MuiTypography-h5 {
-  font-weight: 600 !important;
-  font-family: "Lato" !important;
-}
-
 .MuiChip-label{
   font-weight: 600 !important;
   font-family: "Lato" !important;
@@ -1183,13 +1150,6 @@ body {
 
 .category-autocomplete{
   width: 100%;
-  margin-left: 5px;
-}
-
-.category-autocomplete .MuiInputBase-input, .restauraunt-autocomplete .MuiInputBase-input, .restauraunt-autocomplete .MuiFormLabel-root, .category-autocomplete .MuiFormLabel-root {
-  font-size: .8rem;
-  font-weight: 600;
-  font-family: "Lato";
 }
 
 

@@ -4,10 +4,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import {renderTextField} from "../components"
 
 export default ({ input, label, meta: { touched, invalid, error}, ...custom }) => {
-    console.log(custom)
-    console.log(touched)
-    console.log(invalid)
-    console.log(error)
+    var customProps = {...custom, datePicker: true}
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardTimePicker
@@ -16,7 +13,7 @@ export default ({ input, label, meta: { touched, invalid, error}, ...custom }) =
                 onChange={(val) => input.onChange(val)}
                 value={input.value !== '' ? input.value : null}
                 showTodayButton
-                {...custom}
+                {...customProps}
                 style={{width: "100%"}} 
                 meta={{touched, invalid, error}}
                 minutesStep={5}

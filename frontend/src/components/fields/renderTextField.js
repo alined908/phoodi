@@ -22,7 +22,7 @@ export default ({ input, label, icon = null, meta: { touched, error, invalid, wa
             FormHelperTextProps={{style: customFontSmall}}
             label={label} error={displayError}
             {...input} {...custom}
-            helperText={<span>{displayText}</span>}   
+            helperText={<span style={{color: "#f44336"}}>{displayText}</span>}   
         />
     )
 }
