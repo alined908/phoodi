@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {MeetupFriend, MeetupEvent, ProgressIcon} from '../components'
+import {MeetupFriend, MeetupEvent, ProgressIcon, MeetupForm} from '../components'
 import {connect} from 'react-redux';
 import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, addMeetupMember, addEventOption, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent} from '../../actions/meetup';
 import {removeNotifs} from '../../actions/notifications'
@@ -21,7 +21,8 @@ class Meetup extends Component {
     constructor(props){
         super(props)
         this.state = {
-            socket: new WebSocketService()
+            socket: new WebSocketService(),
+            newMeetupForm: false
         }
     }
 
@@ -80,6 +81,11 @@ class Meetup extends Component {
         }
     }
 
+    openFormModal = () => {
+        this.setState({newMeetupForm: !this.state.newMeetupForm})
+    }
+
+
     determineEmailDisable = (events) => {
         if (events === undefined || (Object.keys(events).length === 0 && events.constructor === Object)){
             return true
@@ -119,7 +125,7 @@ class Meetup extends Component {
         const isUserMember = this.determineIsUserMember(meetup.members)
         const emailDisable = this.determineEmailDisable(meetup.events)
         
-        const renderInformation = (name, datetime, location) => {
+        const renderInformation = (name, date, location) => {
             return (
                 <div className="inner-header elevate">
                     <Typography variant="h5">{name}</Typography>
@@ -130,7 +136,7 @@ class Meetup extends Component {
                                 <><LockIcon/> Private</>
                             }
                         </div>
-                        <div className="inner-header-icons"><TodayIcon/> {moment(datetime).local().format("dddd, MMMM D")}</div>
+                        <div className="inner-header-icons"><TodayIcon/> {moment(date).format("dddd, MMMM D")}</div>
                         <div className="inner-header-icons"><RoomIcon/> {location}</div>
                     </div>
                     {isUserMember && <div className="meetup-actions">
@@ -149,13 +155,13 @@ class Meetup extends Component {
                                 />
                             </div>
                         </Tooltip>
-                        <Link to={`/meetups/${meetup.uri}/edit`}>
-                            <Tooltip title="Edit">
-                                <IconButton style={{color: "black"}} aria-label='edit' >
-                                    <EditIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </Link>
+                        
+                        <Tooltip title="Edit">
+                            <IconButton onClick={this.openFormModal} style={{color: "black"}} aria-label='edit' >
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
+                        {this.state.newMeetupForm && <MeetupForm type="edit" uri={this.props.meetup.uri} handleClose={this.openFormModal} open={this.state.newMeetupForm}/>}
                         <Tooltip title="Delete">
                             <IconButton onClick={() => this.handleDelete()} color="secondary" aria-label='delete'>
                                 <DeleteIcon />
@@ -240,7 +246,7 @@ class Meetup extends Component {
                 </Helmet>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        {renderInformation(meetup.name, meetup.datetime, meetup.location)}
+                        {renderInformation(meetup.name, meetup.date, meetup.location)}
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <div className="inner-header elevate">

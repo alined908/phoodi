@@ -156,6 +156,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] When clicked on category it 404s
 - [x] Combine getMeetups and getPublicMeetups actions
 - [x] Public meetups dont get past ones
+- [x] Reload old events, no options return  
 - [ ] Assign creator to meetup, automatically make meetupmember and give admin privilige
 - [ ] List who created the meetupevent
 - [ ] Block people, admin functionality for meetup member
@@ -167,7 +168,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Add friends, redux action/websockets
 - [ ] Create Restauraunt Entity (primary key = yelp_id)
 - [ ] Outline itinerary of meetup
-- [ ] Reload old events, no options return  
 - [ ] Notification Bell doesnt appear if public and member
 - [ ] Add capacity if wanted and adjust circles to meetups
 - [ ] Ban used again for some reason

@@ -16,8 +16,7 @@ const validate = values => {
     if (!values.name){
         errors.name = "Meetup name is required."
     }
-
-    if (!values.date){
+    if (!values.date){  
         errors.date = "Date is required."
     } else if (isNaN(values.date.getTime())){
         errors.date = "Date is not valid."
@@ -64,10 +63,9 @@ class MeetupForm extends Component {
         }
         
         if (this.props.type === "edit"){
-            this.props.editMeetup(data, this.props.meetup.uri, (uri) => [
-                history.push(`/meetups/${uri}`)
-            ])
+            this.props.editMeetup(data, this.props.meetup.uri)
         }
+        this.props.handleClose()
     }
 
     handleClick = (e, value) => {
@@ -95,8 +93,8 @@ class MeetupForm extends Component {
     }
 
     render (){
-        const {handleSubmit, pristine, submitting, invalid} = this.props;
-        const create = this.props.type === "create"
+        const {handleSubmit, submitting, invalid} = this.props;
+        const create = this.props.type === "create" 
 
         return (
             <Dialog open={this.props.open} onClose={this.props.handleClose}>
@@ -147,10 +145,9 @@ class MeetupForm extends Component {
                         <Button onClick={this.props.handleClose} color="secondary" disabled={submitting}>
                             Close
                         </Button>
-                        <Button type="submit" color="primary" aria-label="add"  disabled={invalid || submitting || pristine || (this.state.location.length === 0 || !this.state.latitude)}>
+                        <Button type="submit" color="primary" aria-label="add" disabled={invalid || submitting || (this.state.location.length === 0 || !this.state.latitude)}>
                             {create ? "Add Meetup" : "Edit Meetup"}
                         </Button>
-                        
                     </DialogActions>
                 </form>
             </Dialog>
@@ -159,12 +156,12 @@ class MeetupForm extends Component {
 }
 
 function mapStateToProps(state, ownProps){
-    if (ownProps.type === "edit" && (ownProps.match.params.uri in state.meetup.meetups)){
-        const meetup = state.meetup.meetups[ownProps.match.params.uri]
+    if (ownProps.type === "edit" && (ownProps.uri in state.meetup.meetups)){
+        const meetup = state.meetup.meetups[ownProps.uri]
         return {
             initialValues: {
                 name: meetup.name, 
-                date: moment(meetup.date).add(1, 'days').format('YYYY-MM-DD')
+                date: moment(meetup.date).toDate()
             },
             meetup: meetup,
             isMeetupInitialized: true

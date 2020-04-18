@@ -20,7 +20,14 @@ export default function meetupReducer(state = defaultState, action){
         case ADD_MEETUP:
             return {...state, meetups: {...state.meetups, [action.payload.uri]: action.payload}}
         case EDIT_MEETUP:
-            return {...state, meetups: {...state.meetups, [action.payload.uri]: {...action.payload}}}
+            return {...state, 
+                meetups: {...state.meetups, 
+                    [action.payload.uri]: {...action.payload, 
+                        events: {...state.meetups[action.payload.uri].events},
+                        isMeetupEventsInitialized: true
+                    }
+                }
+            }
         case DELETE_MEETUP:
             var meetups = {}
             Object.keys(state.meetups).forEach((key) => {

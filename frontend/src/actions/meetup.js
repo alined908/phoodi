@@ -64,7 +64,7 @@ export const addMeetup = (formProps, redirectOnSuccess) => async dispatch => {
     }
 } 
 
-export const editMeetup = (formProps, uri, redirectOnSuccess) => async dispatch => {
+export const editMeetup = (formProps, uri) => async dispatch => {
     console.log('edit meetup')
     var date = new Date(formProps.date)
     var params = {...formProps, 
@@ -76,8 +76,6 @@ export const editMeetup = (formProps, uri, redirectOnSuccess) => async dispatch 
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         dispatch({type: EDIT_MEETUP, payload: response.data})
-        console.log(response.data)
-        redirectOnSuccess(uri)
     } catch(e){
         console.log(e)
     }
