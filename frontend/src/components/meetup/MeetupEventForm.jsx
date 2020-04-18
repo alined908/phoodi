@@ -20,7 +20,7 @@ const validate = values => {
     const errors = {}
   
     if (!values.title){
-        errors.title = "Meetup title is required."
+        errors.title = "Event title is required."
     }
     if (!values.start){  
         errors.start = "Start time is required."
@@ -75,36 +75,45 @@ class MeetupEventForm extends Component {
         const indices = this.state.prices.reduce((out, bool, index) => bool ? out.concat(index+1) : out, [])
         const prices = indices.join(", ")
         const meetup = this.props.meetup
-        const date = moment(meetup.date)
-        const start = moment(formProps.start).set({date: date.date(), month: date.month(), year: date.year()})
-        const end = moment(formProps.end).set({date: date.date(), month: date.month(), year: date.year()})
-        const data = {
-            entries: this.handleEntries(), 
-            distance: convert[this.state.distance], 
-            price: prices, 
-            random: this.state.random,
-            start: start.toDate(),
-            end: end.toDate(),
-            title: formProps.title
-        }
         
         if (this.props.type === "create"){
+            const data = {
+                entries: this.handleEntries(), 
+                distance: convert[this.state.distance], 
+                price: prices, 
+                random: this.state.random,
+                ...formProps
+            }
             try {
                 await axiosClient.post(
-                    `/api/meetups/${meetup.uri}/events/`, data, {headers: {
+                    `/api/meetups/${this.props.uri}/events/`, data, {headers: {
                         "Authorization": `Bearer ${localStorage.getItem('token')}`
                 }})
+                this.props.addGlobalMessage("success", "New Meetup Event Added")
             }  catch(e){
                 this.props.addGlobalMessage("error", "Something went wrong")
             }
         } 
 
         if (this.props.type === "edit") {
+            const date = moment(meetup.date)
+            const start = moment(formProps.start).set({date: date.date(), month: date.month(), year: date.year()})
+            const end = moment(formProps.end).set({date: date.date(), month: date.month(), year: date.year()})
+            const data = {
+                entries: this.handleEntries(), 
+                distance: convert[this.state.distance], 
+                price: prices, 
+                random: this.state.random,
+                start: start.toDate(),
+                end: end.toDate(),
+                title: formProps.title
+            }
             try {
                 await axiosClient.patch(
                     `/api/meetups/${meetup.uri}/events/${this.props.event}/`, data, {headers: {
                         "Authorization": `Bearer ${localStorage.getItem('token')}`
                 }})
+                this.props.addGlobalMessage("success", "Meetup Event Changed")
             } catch(e){
                 this.props.addGlobalMessage("error", "Something went wrong")
             }

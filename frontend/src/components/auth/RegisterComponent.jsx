@@ -87,7 +87,6 @@ class RegisterComponent extends Component {
     render() {
         const {handleSubmit, submitting, invalid} = this.props;
         const create = this.props.type === "create"
-        console.log(this.state.image)
 
         return (
             <>

@@ -57,7 +57,7 @@ class LoginComponent extends Component {
                             }
                         </Grid>
                         <div className={styles.fab}>
-                            <Fab type="submit" variant="extended" aria-label="login">Login</Fab>
+                            <Fab color="primary" type="submit" variant="extended" aria-label="login">Login</Fab>
                         </div>
                     </form>
                     <div className={styles.bottom}>
