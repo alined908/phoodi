@@ -162,8 +162,8 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Reload old events, no options return  
 - [x] Info dissapears on meetup edit form reload
 - [x] Notification Bell doesnt appear if public and member
+- [x] List who created the meetupevent
 - [ ] Assign creator to meetup, automatically make meetupmember and give admin privilige
-- [ ] List who created the meetupevent
 - [ ] Block people, admin functionality for meetup member
 - [ ] MeetupEventOption Delete
 - [ ] Add scrollable notifications box for meetup

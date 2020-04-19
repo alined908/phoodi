@@ -1,4 +1,4 @@
-import {GET_MEETUP_INVITES, GET_FRIEND_INVITES, RESPOND_MEETUP_INVITE, RESPOND_FRIEND_INVITE, ADD_GLOBAL_MESSAGE} from '../constants/action-types'
+import {GET_MEETUP_INVITES, GET_FRIEND_INVITES, ADD_GLOBAL_MESSAGE} from '../constants/action-types'
 import {axiosClient} from '../accounts/axiosClient'
 
 export const getUserFriendInvites = () => async dispatch => {

@@ -86,6 +86,14 @@ class MeetupEvent extends Component {
                                 <ScheduleIcon/> 
                                 {moment(event.start).local().format("h:mm A")} - {moment(event.end).local().format("h:mm A")}
                             </div>
+                            <div className="inner-header-icons">
+                                <img style={{width: 20, height: 20, marginLeft: 10}} alt={"&#9787;"}
+                                src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}/>
+                                {/* <Avatar style={{transform: "scale(0.5)"}} src={event.creator.avatar}>
+                                    {event.creator.first_name.charAt(0)} {event.creator.last_name.charAt(0)}
+                                </Avatar> */}
+                                 - {event.creator.first_name} {event.creator.last_name}
+                            </div>
                         </div>
                         <div>
                             {this.props.isUserMember && renderActions()}

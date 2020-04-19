@@ -171,6 +171,7 @@ class MeetupEventOptionSerializer(serializers.ModelSerializer):
 class MeetupEventSerializer(serializers.ModelSerializer):
     options = serializers.SerializerMethodField('_get_options')
     categories = serializers.SerializerMethodField('_get_categories')
+    creator = serializers.SerializerMethodField('_get_creator')
 
     def _get_categories(self, obj):
         ids = obj.entries.values()
@@ -184,9 +185,15 @@ class MeetupEventSerializer(serializers.ModelSerializer):
             mapping.update(MeetupEventOptionSerializer(option).data)
         return mapping
 
+    def _get_creator(self, obj):
+        creator = obj.creator
+        user = creator.user
+        serializer = UserSerializer(user, context={"plain": True})
+        return serializer.data
+
     class Meta:
         model = MeetupEvent
-        fields = ('id', 'meetup', 'title', 'start', 'end', 'chosen', 'categories', 'options', 'price', 'distance', 'entries', 'random')
+        fields = ('id', 'meetup', 'creator', 'title', 'start', 'end', 'chosen', 'categories', 'options', 'price', 'distance', 'entries', 'random')
 
 class MeetupMemberSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('_get_user')
