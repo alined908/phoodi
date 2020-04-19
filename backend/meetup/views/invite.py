@@ -55,13 +55,13 @@ class MeetupInviteListView(APIView):
             invite = User.objects.get(email=recepient)
         except ObjectDoesNotExist:
             return Response({"error": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
-
-        invite, created = MeetupInvite.objects.get_or_create(meetup=meetup, sender=user, receiver=invite)
-
-        if created:
-            return Response({"message": "Invite for meetup sent to " + recepient})
-        else:
+        
+        try:
+            invite = MeetupInvite.objects.get(meetup=meetup, sender=user, receiver=invite, status = 1)
             return Response({"message": "Invite already sent out to " + recepient})
+        except:
+            invite = MeetupInvite.objects.create(meetup=meetup, sender=user, receiver=invite)
+            return Response({"message": "Invite for meetup sent to " + recepient})            
 
 class MeetupInviteView(APIView):
 
@@ -72,7 +72,7 @@ class MeetupInviteView(APIView):
         user = request.user
         room_uri = kwargs['uri']
         invite_uri = kwargs['invite_code']
-        num = request.data['status']
+        status = int(request.data['status'])
         
         try: 
             meetup = Meetup.objects.get(uri=room_uri)
@@ -87,15 +87,16 @@ class MeetupInviteView(APIView):
         if user != invite.receiver:
             return Response({"error": "Not your invite"}, status=status.HTTP_400_BAD_REQUEST)
 
-        invite.status = int(num)
+        invite.status = status
         invite.save()
-
         message = ""
-        if invite.status == 2:
+
+        if status == 2:
             message = "Successfully accepted meetup invite."
-        elif invite.status == 3:
+        elif status == 3:
             message = "Rejected meetup invite."
-        return Response({"message": message, "invite": MeetupInviteSerializer(invite).data})
+        
+        return Response({"message": message})
 
 class FriendInviteListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -128,14 +129,12 @@ class FriendInviteListView(APIView):
         if friendship:
             return Response({"message": "You are already friends with %s" % recepient})
 
-        invite, created = FriendInvite.objects.get_or_create(sender=user, receiver=invitee)
-        serializer = FriendInviteSerializer(invite)
-
-        #Check status of invite
-        if created:
-            return Response({"message": "Invite sent to " + recepient, "invite": serializer.data})
-        else:
-            return Response({"message": "Invite to " + recepient + " has been sent.", "invite": serializer.data})
+        try:
+            invite = FriendInvite.objects.get(sender=user, receiver=invitee, status=1)
+            return Response({"message": "Invite to " + recepient + " has already been sent."})
+        except ObjectDoesNotExist:
+            invite = FriendInvite.objects.create(sender=user, receiver=invitee)
+            return Response({"message": "Invite sent to " + recepient})           
         
 
 class FriendInviteView(APIView):
@@ -143,7 +142,7 @@ class FriendInviteView(APIView):
     def patch(self, request, *args, **kwargs):
         user = request.user
         uri = kwargs['invite_code']
-        num = request.data['status']
+        status = int(request.data['status'])
 
         try:
             invite = FriendInvite.objects.get(uri=uri)
@@ -153,14 +152,13 @@ class FriendInviteView(APIView):
         if user != invite.receiver:
             return Response({"error": "Not your invite"}, status=status.HTTP_400_BAD_REQUEST)
         
-        invite.status = int(num)
+        invite.status = status
         invite.save()
-        serializer = FriendInviteSerializer(invite)
-
         message = ""
-        if invite.status == 2:
+
+        if status == 2:
             message = "Successfully accepted friend invite."
-        elif invite.status == 3:
+        elif status == 3:
             message = "Rejected friend invite."
 
-        return Response({"message": message, "invite": serializer.data})
+        return Response({"message": message})

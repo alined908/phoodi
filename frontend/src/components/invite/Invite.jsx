@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import {Button} from "@material-ui/core"
+import {Button, Avatar} from "@material-ui/core"
 import {connect} from 'react-redux'
 import {respondFriendInvite, respondMeetupInvite} from '../../actions/invite'
 import {inviteType, inviteStatus} from '../../constants/default-states'
@@ -18,49 +18,77 @@ class Invite extends Component {
         }
     }
 
-    handleClick = (inv, newStatus, type) => {
-        type === inviteType.meetup ? this.props.respondMeetupInvite(inv.meetup.uri, inv.uri, newStatus) : this.props.respondFriendInvite(inv.uri, newStatus)
-        type === inviteType.meetup ? this.props.removeNotifs({type: "meetup_invite", id: inv.id}) :this.props.removeNotifs({type: "friend_invite", id: inv.id})
+    handleClick = async (inv, newStatus, type) => {
+        (type === inviteType.meetup) ? 
+            this.props.respondMeetupInvite(inv.meetup.uri, inv.uri, newStatus, this.props.pos): 
+            this.props.respondFriendInvite(inv.uri, newStatus, this.props.pos)
         this.setState({responded: true, status: newStatus})
     }
     
     render () {
         const inv = this.props.inv
-        const invite = !this.state.responded ? (
+
+        return (
             <Paper className="paper invite elevate" variant="outlined">
-                <div>
-                    <Link to={`/profile/${inv.sender.id}`}>{inv.sender.first_name}</Link> {this.props.type === inviteType.meetup ? "- " + inv.meetup.name : ""}
+                <div style={{display: "flex", alignItems: "center"}}>
+                    <Avatar src={inv.sender.avatar}>
+                        {inv.sender.first_name.charAt(0)} {inv.sender.last_name.charAt(0)}
+                    </Avatar>
+                    <Link to={`/profile/${inv.sender.id}`}>
+                        {inv.sender.first_name} {inv.sender.last_name}
+                    </Link> 
+                    {this.props.type === inviteType.meetup ? "- " + inv.meetup.name : ""}
                 </div>
                 {!this.state.responded && inv.status === 1 && 
                     <div>
-                        <Button className="button" onClick={() => this.handleClick(this.props.inv, 2, this.props.type)} size="small" variant="outlined" color="primary">Confirm</Button>
-                        <Button className="button" onClick={() => this.handleClick(this.props.inv, 3, this.props.type)} size="small" variant="outlined" color="secondary">Delete</Button>
+                        <Button 
+                            className="button" size="small" 
+                            variant="outlined"  color="primary"
+                            onClick={() => this.handleClick(this.props.inv, 2, this.props.type)}
+                        >
+                            Confirm
+                        </Button>
+                        <Button 
+                            className="button" size="small"
+                            variant="outlined" color="secondary"
+                            onClick={() => this.handleClick(this.props.inv, 3, this.props.type)} 
+                        >
+                            Delete
+                        </Button>
                     </div>
                 }
-                {inv.status !== 1 && <span>{inviteStatus[inv.status]}</span>}
-                {(this.state.responded && this.props.type === inviteType.friend && this.state.status === 2) && <span>Accepted</span>}
-                {(this.state.responded && this.props.type === inviteType.friend && this.state.status === 3) && <span>Rejected</span>}
-                {(this.state.responded && this.props.type === inviteType.meetup && this.state.status === 2) && <span>
-                    <Link to={`/meetups/${inv.meetup.uri}`}>
-                        <Button color="primary" variant="contained">Meetup</Button>
-                    </Link>
-                </span>
+                {inv.status !== 1 && 
+                    <span>
+                        {inviteStatus[inv.status]}
+                    </span>
                 }
-                {(this.state.responded && this.props.type === inviteType.meetup && this.state.status === 3) && <span>Rejected</span>}
+                {(this.state.responded && this.state.status === 2 && this.props.type === inviteType.friend) && 
+                    <span>
+                        <Link to={`/profile/${inv.sender.id}`}>
+                            <Button color="primary" variant="contained">Profile</Button>
+                        </Link>
+                    </span> 
+                }  
+                {(this.state.responded && this.state.status === 2 && this.props.type === inviteType.meetup) && 
+                    <span>
+                        <Link to={`/meetups/${inv.meetup.uri}`}>
+                            <Button color="primary" variant="contained">Meetup</Button>
+                        </Link>
+                    </span>
+                }  
+                {(this.state.responded && this.state.status === 3) && 
+                    <span>
+                        Rejected
+                    </span>
+                }
             </Paper>
-        ) : <div></div>
-
-        return (
-            <>
-                {invite}
-            </>
         )
     }
 }
 
 Invite.propTypes = {
     inv: invitePropType,
-    type: PropTypes.string.isRequired,
+    type: PropTypes.number.isRequired,
     respondFriendInvite: PropTypes.func.isRequired,
     respondMeetupInvite: PropTypes.func.isRequired,
     removeNotifs: PropTypes.func.isRequired

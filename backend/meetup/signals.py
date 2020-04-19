@@ -59,7 +59,11 @@ def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
         for member in meetup.members.all():
             if member != instance.creator:
                 user = member.user
-                notify.send(sender=meetup, recipient=user, description="meetup", actor_object_id=instance.id, verb="%s created new event for %s" % (instance.creator, meetup.name))
+                notify.send(
+                    sender=meetup, recipient=user, 
+                    description="meetup", action_object=instance, 
+                    verb="%s created new event for %s" % (instance.creator, meetup.name)
+                )
                 unread_meetup_notifs =  user.notifications.filter(description="meetup").unread()  
                 count = unread_meetup_notifs.count()  
                 content = {
@@ -81,16 +85,24 @@ def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
 @receiver(post_save, sender = MeetupInvite)
 def create_notif_meetup_inv(sender, instance, created, **kwargs):
     if created:
-        notify.send(sender=instance.sender, recipient=instance.receiver, description="meetup_inv", actor_object_id = instance.id, verb="%s sent meetup invite to %s" % (instance.sender.email,  instance.receiver.email))
+        notify.send(
+            sender=instance.sender, recipient=instance.receiver, 
+            description="meetup_inv", action_object = instance, 
+            verb="%s sent meetup invite to %s" % (instance.sender.email,  instance.receiver.email)
+        )
     else: 
-        notif = instance.receiver.notifications.filter(actor_object_id = instance.id, description="meetup_inv", verb="%s sent meetup invite to %s" % (instance.sender.email,  instance.receiver.email))
+        notif = instance.receiver.notifications.filter(
+            action_object_object_id = instance.id, description="meetup_inv"
+        )
         notif.mark_all_as_read()
     
     unread_inv_notifs =  instance.receiver.notifications.filter(description="meetup_inv").unread()  
     count = unread_inv_notifs.count()  
     content = {
         'command': 'fetch_notifs',
-        'message': {"meetup_inv": count}
+        'message': {
+            "meetup_inv": count
+        }
     }
     async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % instance.receiver.id, {
         'type': 'notifications',
@@ -100,16 +112,24 @@ def create_notif_meetup_inv(sender, instance, created, **kwargs):
 @receiver(post_save, sender=FriendInvite)
 def create_notif_friend_inv(sender, instance, created, **kwargs):
     if created:
-        notify.send(sender=instance.sender, recipient=instance.receiver, description="friend_inv", actor_object_id = instance.id, verb="%s sent friend invite to %s" % (instance.sender.email,  instance.receiver.email))
+        notify.send(
+            sender=instance.sender, recipient=instance.receiver, 
+            description="friend_inv", action_object = instance, 
+            verb="%s sent friend invite to %s" % (instance.sender.email,  instance.receiver.email)
+        )
     else: 
-        notif = instance.receiver.notifications.filter(actor_object_id=instance.sender.id, description="friend_inv",  verb="%s sent friend invite to %s" % (instance.sender.email,  instance.receiver.email))
+        notif = instance.receiver.notifications.filter(
+            action_object_object_id=instance.id, description="friend_inv"
+        )
         notif.mark_all_as_read()
 
     unread_inv_notifs =  instance.receiver.notifications.filter(description="friend_inv").unread() 
     count = unread_inv_notifs.count()
     content = {
         'command': 'fetch_notifs',
-        'message': {"friend_inv": count}
+        'message': {
+            "friend_inv": count
+        }
     }
     async_to_sync(channel_layer.group_send)("notif_room_for_user_%d" % instance.receiver.id, {
         'type': 'notifications',
@@ -123,8 +143,16 @@ def create_chat_room_for_friendship(sender, instance, created, **kwargs):
         ChatRoomMember.objects.create(room = room, user = instance.creator)
         ChatRoomMember.objects.create(room = room, user = instance.friend)
 
-        notify.send(sender=instance.creator, recipient=instance.friend, description="friend", actor_object_id = instance.id, verb="You are now friends with %s" % instance.creator)
-        notify.send(sender=instance.friend, recipient=instance.creator, description="friend", actor_object_id = instance.id, verb="You are now friends with %s" % instance.friend)
+        notify.send(
+            sender=instance.creator, recipient=instance.friend, 
+            description="friend", action_object = instance, 
+            verb="You are now friends with %s" % instance.creator
+        )
+        notify.send(
+            sender=instance.friend, recipient=instance.creator, 
+            description="friend", action_object = instance, 
+            verb="You are now friends with %s" % instance.friend
+        )
         unread_friend_notifs_for_creator =  instance.creator.notifications.filter(description="friend").unread().count()
         unread_friend_notifs_for_friend = instance.friend.notifications.filter(description="friend").unread().count()
         content = {
@@ -149,7 +177,11 @@ def create_notif_chat_message(sender, instance, created, **kwargs):
     if created:
         for member in instance.room.members.all():
             if member.user != instance.sender:
-                notify.send(sender=instance.room, recipient=member.user, description="chat_message", actor_object_id=instance.room.id, verb="%s sent chat notif to %s" % (instance.sender.email,  member.user.email))
+                notify.send(
+                    sender=instance.room, recipient=member.user, 
+                    description="chat_message", action_object=instance, 
+                    verb="%s sent chat message to %s" % (instance.sender.email,  member.user.email)
+                )
                 unread_chat_notifs =  member.user.notifications.filter(description="chat_message").unread()  
                 count = unread_chat_notifs.count()  
                 content = {

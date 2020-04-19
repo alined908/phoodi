@@ -49,9 +49,11 @@ export const DELETE_FRIEND = 'delete_friend';
 
 //Meetup Invites
 export const GET_MEETUP_INVITES = 'get_meetup_invites';
+export const RESPOND_MEETUP_INVITE = 'respond_meetup_invite';
 
 //Friend Invites
 export const GET_FRIEND_INVITES = 'get_friend_invites';
+export const RESPOND_FRIEND_INVITE = 'respond_friend_invite';
 
 //Notifications
 export const GET_NOTIFS = 'get_notifs';

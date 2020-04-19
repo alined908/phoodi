@@ -1,24 +1,39 @@
 import React, {Component} from "react"
 import {getUserMeetupInvites, respondMeetupInvite, getUserFriendInvites, respondFriendInvite} from "../../actions/invite"
+import {removeNotifs} from "../../actions/notifications"
 import {inviteType} from '../../constants/default-states'
 import {connect} from 'react-redux'
 import {Invite} from "../components"
-import {Grid, Typography} from "@material-ui/core"
+import {Grid, Typography, IconButton, Tooltip} from "@material-ui/core"
+import RefreshIcon from '@material-ui/icons/Refresh';
 import PropTypes from "prop-types"
 import {invitePropType} from '../../constants/prop-types'
 import {Helmet} from 'react-helmet'
 
 class Invites extends Component {
 
-    componentDidMount(){
-        this.props.getUserMeetupInvites();
-        this.props.getUserFriendInvites();
-        if (this.props.meetupInvites !== null && this.props.meetupInvites > 0){
-            this.props.removeNotifs({type: "meetup_invite"})
-        }
-        if (this.props.meetupInvites !== null && this.props.meetupInvites > 0){
-            this.props.removeNotifs({type: "friend_invite"})
-        }
+    async componentDidMount(){
+        await Promise.all([
+            this.props.getUserMeetupInvites(),
+            this.props.getUserFriendInvites()
+        ])
+        
+        // if (this.props.meetupInvites && this.props.meetupInvites.length === 0){
+        //     this.props.removeNotifs({type: "meetup_inv"})
+        // }
+        // if (this.props.friendInvites && this.props.friendInvites.length > 0){
+        //     this.props.removeNotifs({type: "friend_inv"})
+        // }
+    }
+
+    refreshMeetupInvites = () => {
+        console.log('this')
+        this.props.getUserMeetupInvites()
+    }
+
+    refreshFriendInvites = () => {
+        console.log('that')
+        this.props.getUserFriendInvites()
     }
     
     render () {
@@ -36,10 +51,15 @@ class Invites extends Component {
                             <>
                                 <div className="inner-header elevate">
                                     <Typography variant="h5">Meetup Invites</Typography>
+                                    <Tooltip title="Refresh">
+                                        <IconButton color="primary" onClick={this.refreshMeetupInvites}>
+                                            <RefreshIcon/>
+                                        </IconButton>
+                                    </Tooltip>
                                 </div>
                                 <div className="invites">
-                                    {this.props.meetupInvites.map((inv) => 
-                                        <Invite inv={inv} type={inviteType.meetup}></Invite>
+                                    {this.props.meetupInvites.map((inv, index) => 
+                                        <Invite key={inv.id} inv={inv} type={inviteType.meetup}></Invite>
                                     )}
                                 </div>
                             </>
@@ -51,10 +71,15 @@ class Invites extends Component {
                             <>
                                 <div className="inner-header elevate">
                                     <Typography variant="h5">Friend Invites</Typography>
+                                    <Tooltip title="Refresh">
+                                        <IconButton color="primary" onClick={this.refreshFriendInvites}>
+                                            <RefreshIcon/>
+                                        </IconButton>
+                                    </Tooltip>
                                 </div>
                                 <div className="invites">
-                                {this.props.friendInvites.map((inv) => 
-                                    <Invite inv={inv} type={inviteType.friend}></Invite>
+                                {this.props.friendInvites.map((inv, index) => 
+                                    <Invite key={inv.id} inv={inv} type={inviteType.friend}></Invite>
                                 )}
                                 </div>
                             </>
@@ -87,6 +112,7 @@ const mapDispatchToProps = {
     respondMeetupInvite,
     getUserMeetupInvites,
     getUserFriendInvites,
+    removeNotifs
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Invites)

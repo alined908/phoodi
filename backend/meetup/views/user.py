@@ -201,9 +201,15 @@ class UserNotificationView(APIView):
         user = request.user
         description = request.data['type']
         if 'id' in request.data:
-            id = request.data['id']
-            user.notifications.filter(actor_object_id = id, description=description).mark_all_as_read()
+            object_id = request.data['id']
+            user.notifications.filter(
+                action_object_object_id = object_id, 
+                description=description
+            ).mark_all_as_read()
         else:
             user.notifications.filter(description=description).mark_all_as_read()
         count = user.notifications.filter(description=description).unread().count()
-        return Response({description: count})
+
+        return Response({
+            description: count
+        })

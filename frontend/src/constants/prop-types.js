@@ -21,9 +21,9 @@ export let invitePropType = PropTypes.shape({
     timestamp: PropTypes.string.isRequired,
     status: PropTypes.number.isRequired,
     uri: PropTypes.string.isRequired,
-    sender: PropTypes.number,
-    receiver: PropTypes.number,
-    meetup: PropTypes.number
+    sender: userPropType,
+    receiver: userPropType,
+    meetup: PropTypes.meetupPropType
 })
 
 export let categoryPropType = PropTypes.shape({

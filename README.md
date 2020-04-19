@@ -104,6 +104,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Specify websocket protocol on link
 - [ ] Limit location to cities
 - [ ] Get context when redirect to register/login (proceed as guest?)
+- [ ] Properly document stuff
 
 ## Todo Testing 
 - [x] Fallback if no latitude/longitude provided.
@@ -134,13 +135,14 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Friends
 - [x] Wrap autocomplete text
+- [x] Add friend button on profile
+- [x] Add Friend button on the meetup member
 - [ ] Friends delete
 - [ ] Give nickname
-- [ ] Add Friend button on the meetup member
-- [x] Add friend button on profile
 
 ## Todo Invite
 - [x] Change meetup friend state if invite sent
+- [x] Notification doesn't appear   
 
 ## Todo Category
 - [x] On reload, category doesn't display meetups
@@ -200,6 +202,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Add preferences warning if no preferences
 - [ ] Change color of home page svgs
 - [ ] Redo responsive layout + actually learn material design
+- [ ] Change Avatar text back to normal
 
 ## Todo UX
 - [x] User Settings doesn't work again? for category meetups and regular meetups

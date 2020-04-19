@@ -300,7 +300,7 @@ const Navigation = (props) => {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.drawerHeader} />
-        <Body></Body>
+        <Body/>
       </main>
     </div>
   );
