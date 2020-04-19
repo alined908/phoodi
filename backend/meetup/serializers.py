@@ -119,7 +119,10 @@ class MeetupSerializer(serializers.ModelSerializer):
         if 'user' not in self.context:
             return 0
         user =  self.context['user']
-        notifs = user.notifications.filter(action_object_object_id=obj.id, description="meetup").unread()
+        notifs = user.notifications.filter(
+            target_object_id=obj.id, 
+            description="meetup"
+        ).unread()
         return notifs.count()
 
     def _get_categories(self, obj):

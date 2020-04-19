@@ -161,6 +161,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Public meetups dont get past ones
 - [x] Reload old events, no options return  
 - [x] Info dissapears on meetup edit form reload
+- [x] Notification Bell doesnt appear if public and member
 - [ ] Assign creator to meetup, automatically make meetupmember and give admin privilige
 - [ ] List who created the meetupevent
 - [ ] Block people, admin functionality for meetup member
@@ -171,7 +172,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Add friends, redux action/websockets
 - [ ] Create Restauraunt Entity (primary key = yelp_id)
 - [ ] Outline itinerary of meetup
-- [ ] Notification Bell doesnt appear if public and member
 - [ ] Add capacity if wanted and adjust circles to meetups
 - [ ] Ban used again for some reason
 - [ ] Disable actions if event is in the past
@@ -186,12 +186,12 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Handle timestamp logic
 - [x] Scrolling causes rerender and expensive calculations
 - [x] Make chat input own component
+- [x] Notification Bell doesnt appear on new messages
 - [ ] Who's online
 - [ ] Edit chat messages
 - [ ] Upload picture
 - [ ] Send invite through chat
 - [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
-- [ ] Notification Bell doesnt appear on new messages
 - [ ] Detect if user is typing
 
 ## Todo UI

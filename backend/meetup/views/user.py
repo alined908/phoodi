@@ -202,10 +202,16 @@ class UserNotificationView(APIView):
         description = request.data['type']
         if 'id' in request.data:
             object_id = request.data['id']
-            user.notifications.filter(
-                action_object_object_id = object_id, 
-                description=description
-            ).mark_all_as_read()
+            if description == "meetup":
+                user.notifications.filter(
+                    target_object_id = object_id,
+                    description=description
+                ).mark_all_as_read()
+            else:
+                user.notifications.filter(
+                    action_object_object_id = object_id, 
+                    description=description
+                ).mark_all_as_read()
         else:
             user.notifications.filter(description=description).mark_all_as_read()
         count = user.notifications.filter(description=description).unread().count()

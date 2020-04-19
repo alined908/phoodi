@@ -36,7 +36,7 @@ class Meetup extends Component {
         } 
        
         if (this.props.meetup.notifs > 0){
-            this.props.removeNotifs({type: "meetup", id: this.props.id})
+            this.props.removeNotifs({type: "meetup", id: this.props.meetup.id})
         }
         const token = AuthenticationService.retrieveToken()
         const path = `/ws/meetups/${uri}/`;

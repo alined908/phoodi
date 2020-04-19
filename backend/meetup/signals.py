@@ -60,11 +60,12 @@ def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
             if member != instance.creator:
                 user = member.user
                 notify.send(
-                    sender=meetup, recipient=user, 
+                    sender=instance.creator, recipient=user, 
                     description="meetup", action_object=instance, 
-                    verb="%s created new event for %s" % (instance.creator, meetup.name)
+                    target = meetup,
+                    verb="%s created new event for %s" % (instance.creator.user.email, meetup.name)
                 )
-                unread_meetup_notifs =  user.notifications.filter(description="meetup").unread()  
+                unread_meetup_notifs = user.notifications.filter(description="meetup").unread()  
                 count = unread_meetup_notifs.count()  
                 content = {
                     'command': 'fetch_notifs',
