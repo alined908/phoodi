@@ -275,7 +275,10 @@ class ChatRoomSerializer(serializers.ModelSerializer):
 
     def _get_notifs(self, obj):
         user =  self.context['user']
-        notifs = user.notifications.filter(action_object_object_id=obj.id, description="chat_message").unread()
+        notifs = user.notifications.filter(
+            action_object_object_id=obj.id, 
+            description="chat_message"
+        ).unread()
         return notifs.count()
 
     class Meta:

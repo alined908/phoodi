@@ -178,8 +178,8 @@ def create_notif_chat_message(sender, instance, created, **kwargs):
         for member in instance.room.members.all():
             if member.user != instance.sender:
                 notify.send(
-                    sender=instance.room, recipient=member.user, 
-                    description="chat_message", action_object=instance, 
+                    sender=instance.sender, recipient=member.user, 
+                    description="chat_message", action_object=instance.room, 
                     verb="%s sent chat message to %s" % (instance.sender.email,  member.user.email)
                 )
                 unread_chat_notifs =  member.user.notifications.filter(description="chat_message").unread()  
