@@ -100,6 +100,7 @@ export default function Location(props) {
         return (
           <TextField
             {...params}
+            required={props.required || false}
             error={props.textValue && props.textValue.length === 0}
             label={props.label}
             fullWidth

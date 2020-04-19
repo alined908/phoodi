@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Avatar, IconButton, Tooltip} from '@material-ui/core'
-import {Link} from 'react-router-dom'
 import {axiosClient} from "../../accounts/axiosClient"
 import {getPreferences, addPreference, editPreference} from "../../actions/index"
-import {Lock as LockIcon, LockOpen as LockOpenIcon, Search as SearchIcon, Edit as EditIcon} from '@material-ui/icons';
+import {sendFriendInvite} from '../../actions/invite'
+import {Lock as LockIcon, LockOpen as LockOpenIcon, Search as SearchIcon, Edit as EditIcon, PersonAdd as PersonAddIcon} from '@material-ui/icons';
 import {Friend, CategoryAutocomplete, Preferences, RegisterComponent} from "../components"
 import PropTypes from "prop-types"
 import { userPropType } from '../../constants/prop-types'
@@ -52,7 +52,12 @@ class Profile extends Component {
                     }})
                 ]
             )
-            this.setState({user: profile.data, friends: friends.data, filteredFriends: friends.data, userLoaded: true})
+            this.setState(
+                {
+                    user: profile.data, friends: friends.data, 
+                    filteredFriends: friends.data, userLoaded: true
+                }
+            )
         }
         catch(e){
             history.push("/404")
@@ -89,8 +94,24 @@ class Profile extends Component {
         this.setState({searchInput: filter, filteredFriends: newFriends})
     }
 
+    isUserFriend = () => {
+        for(var i = 0; i < this.state.friends.length; i++){
+            let user = this.state.friends[i].user
+            if (user.id === this.props.user.id){
+                return true
+            }
+        }
+
+        return false
+    }
+
+    addFriend = () => {
+        this.props.sendFriendInvite(this.state.user.email)
+    }
+
     render () {
         const isUser = this.props.user.id.toString() === this.props.match.params.id;
+        const isUserFriend = !isUser && !this.isUserFriend()
 
         const renderPreferences = () => {
             return (
@@ -116,11 +137,11 @@ class Profile extends Component {
                         </div>  
                         <Preferences locked={this.state.locked} isUser={isUser}/>
                         <div className="column-bottom">
-                            <SearchIcon/>
-                            <CategoryAutocomplete 
+                            {isUser && <SearchIcon/>}
+                            {isUser && <CategoryAutocomplete 
                                 fullWidth={true} size="small" entries={this.state.entries} 
                                 handleClick={this.onTagsChange} label="Search to add categories.."
-                            />
+                            />}
                         </div> 
                     </div>
                 </div>
@@ -134,6 +155,13 @@ class Profile extends Component {
                         <div className="column-top">
                             <div>Profile</div>
                             <div>
+                                {isUserFriend && 
+                                    <Tooltip title="Add Friend">
+                                        <IconButton color="primary" onClick={this.addFriend}>
+                                            <PersonAddIcon/>
+                                        </IconButton>
+                                    </Tooltip>
+                                }
                                 {isUser && 
                                     <Tooltip title="Edit Profile">
                                         <IconButton color="primary" onClick={this.openFormModal}>
@@ -232,7 +260,8 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
     getPreferences,
     addPreference,
-    editPreference
+    editPreference,
+    sendFriendInvite
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile)

@@ -11,7 +11,7 @@ import {ReactComponent as Bamboo} from "../../assets/svgs/bamboo-dark.svg"
 import {ReactComponent as Google} from "../../assets/svgs/google.svg"
 import {ReactComponent as Facebook} from "../../assets/svgs/facebook.svg"
 import {ReactComponent as Twitter} from "../../assets/svgs/twitter.svg"
-import styles from "../../form.module.css"
+import styles from "../../styles/form.module.css"
 import PropTypes from "prop-types"
 
 class LoginComponent extends Component {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MeetupApp from "./components/MeetupApp";
-import './App.css';
+import "../src/styles/App.css";
 
 class App extends Component {
 	

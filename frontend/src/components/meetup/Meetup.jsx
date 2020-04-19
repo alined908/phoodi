@@ -4,13 +4,14 @@ import {connect} from 'react-redux';
 import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, addMeetupMember, addEventOption, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent} from '../../actions/meetup';
 import {removeNotifs} from '../../actions/notifications'
 import {getFriends} from "../../actions/friend"
+import {addGlobalMessage} from '../../actions/globalMessages'
+import {sendFriendInvite} from "../../actions/invite"
 import {Link} from 'react-router-dom'
 import moment from 'moment';
-import {addGlobalMessage} from '../../actions/globalMessages'
 import {Grid, Button, Typography, Avatar, List, ListItem, ListItemText, ListItemAvatar, IconButton, Tooltip} from "@material-ui/core"
 import WebSocketService from "../../accounts/WebSocket";
 import {Delete as DeleteIcon, Edit as EditIcon, Room as RoomIcon, Chat as ChatIcon, VerifiedUser as VerifiedUserIcon, 
-    Lock as LockIcon, Public as PublicIcon, Email as EmailIcon, Add as AddIcon, Today as TodayIcon} from '@material-ui/icons'
+    Lock as LockIcon, Public as PublicIcon, Email as EmailIcon, Add as AddIcon, Today as TodayIcon, PersonAdd as PersonAddIcon} from '@material-ui/icons'
 import AuthenticationService from "../../accounts/AuthenticationService"
 import {axiosClient} from '../../accounts/axiosClient'
 import PropTypes from 'prop-types'
@@ -124,6 +125,26 @@ class Meetup extends Component {
         return isUserMember
     }
 
+    determineisMemberNotFriend = (user) => {
+        if(this.props.friends.length === 0 || this.props.user.id === user.id){
+            return false
+        }
+
+        for (var i = 0; i < this.props.friends.length; i++){
+            let friend = this.props.friends[i]
+            if (friend.user.id === user.id){
+                return false
+            }
+        }
+       
+        return true
+    }
+
+    addFriend = (e, email) => {
+        e.preventDefault()
+        this.props.sendFriendInvite(email)
+    }
+
     render () {
         const meetup =  this.props.meetup
         const isUserMember = this.determineIsUserMember(meetup.members)
@@ -196,6 +217,7 @@ class Meetup extends Component {
         }
 
         const renderMembers = (members) => {
+    
             return (
                 <div className="outer-shell elevate">
                     <List style={{width: "100%", padding: "0"}}>
@@ -216,9 +238,16 @@ class Meetup extends Component {
                                             </>
                                         }>
                                     </ListItemText>
-                                    {JSON.stringify(members[key].user) === JSON.stringify(this.props.user) && 
+                                    {members[key].user.id === this.props.user.id && 
                                         <Tooltip title="You">
                                             <VerifiedUserIcon style={{color: "#3f51b5"}}/>
+                                        </Tooltip>
+                                    }
+                                    {this.determineisMemberNotFriend(members[key].user) && 
+                                        <Tooltip title="Add Friend">
+                                            <IconButton color="primary" onClick={e => this.addFriend(e, members[key].user.email)}>
+                                                <PersonAddIcon/>
+                                            </IconButton>
                                         </Tooltip>
                                     }
                                 </ListItem>
@@ -302,7 +331,7 @@ Meetup.propTypes = {
     decideMeetupEvent: PropTypes.func.isRequired, deleteMeetupEvent: PropTypes.func.isRequired,
     sendMeetupEmails: PropTypes.func.isRequired, removeNotifs: PropTypes.func.isRequired,
     addMeetupMember: PropTypes.func.isRequired, addGlobalMessage: PropTypes.func.isRequired,
-    addEventOption: PropTypes.func.isRequired
+    addEventOption: PropTypes.func.isRequired, sendFriendInvite: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state, ownProps){
@@ -327,7 +356,8 @@ const mapDispatchToProps = {
         removeNotifs,
         addMeetupMember,
         addGlobalMessage,
-        addEventOption
+        addEventOption,
+        sendFriendInvite
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Meetup)

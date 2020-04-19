@@ -6,7 +6,7 @@ import {Button, Grid, Radio, DialogContent,
     FormControlLabel, Dialog, DialogActions, DialogTitle} from '@material-ui/core';
 import {addMeetup, editMeetup, getMeetup} from "../../actions/meetup";
 import {renderTextField, renderDateSimplePicker, Location} from '../components'
-import styles from "../../form.module.css"
+import styles from "../../styles/form.module.css"
 import moment from "moment"
 import Geocode from "react-geocode";
 import {history} from '../MeetupApp'
@@ -114,13 +114,13 @@ class MeetupForm extends Component {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <Location label="Location" handleClick={this.handleClick} textValue={this.state.location}/>
+                                <Location required={true} label="Location" handleClick={this.handleClick} textValue={this.state.location}/>
                             </Grid>
                             <Grid container item xs={12} className={styles.control}>
                                 <FormControlLabel label="Public" control={
                                         <Radio 
                                             size="small"
-                                        inputProps={{...styles.fonts}}
+                                            inputProps={{...styles.fonts}}
                                             color="primary" checked={this.state.public} 
                                             onClick={() => this.handlePublicClick(true)}
                                         />

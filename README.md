@@ -127,16 +127,17 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] User object, settings only show for myself.
 - [x] Settings doesnt populate after save and reload
 - [x] Change presentation of upload avatar
-- [ ] Make sure user settings are good on signup/signin if no settings before 
+- [x] Make sure user settings are good on signup/signin if no settings before 
 - [ ] Confirm email, Change password
 - [ ] Change name of preference
 - [ ] Change user model default radius to 25 and relationship to onetoone
 
 ## Todo Friends
+- [x] Wrap autocomplete text
 - [ ] Friends delete
 - [ ] Give nickname
-- [ ] Add friend button on profile and maybe on the meetup member
-- [ ] Wrap autocomplete text
+- [ ] Add Friend button on the meetup member
+- [x] Add friend button on profile
 
 ## Todo Invite
 - [x] Change meetup friend state if invite sent
@@ -157,11 +158,11 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Combine getMeetups and getPublicMeetups actions
 - [x] Public meetups dont get past ones
 - [x] Reload old events, no options return  
+- [x] Info dissapears on meetup edit form reload
 - [ ] Assign creator to meetup, automatically make meetupmember and give admin privilige
 - [ ] List who created the meetupevent
 - [ ] Block people, admin functionality for meetup member
 - [ ] MeetupEventOption Delete
-- [ ] Info dissapears on meetup edit form reload
 - [ ] Add scrollable notifications box for meetup
 - [ ] Create meetup with member
 - [ ] Refactor onTagsChange of MeetupsComponent

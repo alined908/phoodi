@@ -43,10 +43,10 @@ export const sendMeetupInvite = (roomURI, email) => async dispatch => {
     }
 }
 
-export const sendFriendInvite = (formProps) => async dispatch => {
+export const sendFriendInvite = (email) => async dispatch => {
     try {
         const response = await axiosClient.post(
-            `/api/friends/invite/`, {"email": formProps.email}, {headers: {
+            `/api/friends/invite/`, {"email": email}, {headers: {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )

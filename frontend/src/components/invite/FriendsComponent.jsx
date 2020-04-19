@@ -32,7 +32,7 @@ class FriendsComponent extends Component{
         if (this.props.user.email === this.state.email){
             this.props.addGlobalMessage("error", "Cannot invite yourself.")
         } else {
-            this.props.sendFriendInvite({email: this.state.email})
+            this.props.sendFriendInvite(this.state.email)
         }
         
     }

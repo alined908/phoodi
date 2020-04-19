@@ -8,7 +8,7 @@ import {addMeetupEvent, getMeetup, getMeetupEvents} from "../../actions/meetup"
 import {renderDatePicker, renderTextField, CategoryAutocomplete} from '../components'
 import {axiosClient} from "../../accounts/axiosClient"
 import {addGlobalMessage} from '../../actions/globalMessages'
-import styles from "../../form.module.css"
+import styles from "../../styles/form.module.css"
 import moment from "moment"
 
 const marks = [{value: 0.25},{value: 0.50},{value: 1},{value: 2},{value: 3},{value: 5},{value: 10},{value: 25}]
@@ -150,7 +150,7 @@ class MeetupEventForm extends Component {
             }
         }
         
-        return labels.join('\xa0' + ', ' + '\xa0\xa0')
+        return labels.join('\xa0 , \xa0\xa0')
     }
 
     determineDisable = (submitting, invalid) => {

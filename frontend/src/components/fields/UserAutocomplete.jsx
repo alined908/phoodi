@@ -60,7 +60,7 @@ const UserAutocomplete = (props) => {
         const partsName = parse(option.first_name + " " + option.last_name, matchesName)
         
         return(
-            <>
+            <div style={{display: "flex", alignItems: "center", overflow: "hidden"}}>
                 <ListItemAvatar>
                     <Avatar src={option.avatar}>{option.first_name.charAt(0)}{option.last_name.charAt(0)}</Avatar>
                 </ListItemAvatar>
@@ -86,7 +86,7 @@ const UserAutocomplete = (props) => {
                         </>
                 }>
                 </ListItemText>
-            </>
+            </div>
       )}}
       renderInput={params => (
         <TextField

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import '../../home.css'
+import './home.css'
 import {Typography, Button, IconButton} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import {ReactComponent as IceCreamIcon} from '../../assets/svgs/ice-cream.svg'

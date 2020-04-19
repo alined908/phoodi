@@ -13,7 +13,7 @@ import {renderTextField} from '../components'
 import {Link} from "react-router-dom"
 import PropTypes from "prop-types"
 import {userPropType} from "../../constants/prop-types"
-import styles from "../../form.module.css"
+import styles from "../../styles/form.module.css"
 
 const validate = values => {
     const errors = {}
