@@ -1,14 +1,15 @@
 import React, {Component} from 'react'
 import {MeetupFriend, MeetupEvent, ProgressIcon, MeetupForm, MeetupEventForm} from '../components'
 import {connect} from 'react-redux';
-import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, addMeetupMember, addEventOption, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent} from '../../actions/meetup';
+import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, 
+    addMeetupMember, addEventOption, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent, addMeetupActivity} from '../../actions/meetup';
 import {removeNotifs} from '../../actions/notifications'
 import {getFriends} from "../../actions/friend"
 import {addGlobalMessage} from '../../actions/globalMessages'
 import {sendFriendInvite} from "../../actions/invite"
 import {Link} from 'react-router-dom'
 import moment from 'moment';
-import {Grid, Button, Typography, Avatar, List, ListItem, ListItemText, ListItemAvatar, IconButton, Tooltip} from "@material-ui/core"
+import {Grid, Button, Typography, Avatar, List, ListItem, Paper, ListItemText, ListItemAvatar, IconButton, Tooltip} from "@material-ui/core"
 import WebSocketService from "../../accounts/WebSocket";
 import {Delete as DeleteIcon, Edit as EditIcon, Room as RoomIcon, Chat as ChatIcon, VerifiedUser as VerifiedUserIcon, 
     Lock as LockIcon, Public as PublicIcon, Email as EmailIcon, Add as AddIcon, Today as TodayIcon, PersonAdd as PersonAddIcon} from '@material-ui/icons'
@@ -17,6 +18,7 @@ import {axiosClient} from '../../accounts/axiosClient'
 import PropTypes from 'prop-types'
 import {meetupPropType, userPropType, friendPropType} from '../../constants/prop-types'
 import {Helmet} from 'react-helmet'
+import styles from '../../styles/meetup.module.css'
 
 class Meetup extends Component {
     constructor(props){
@@ -43,7 +45,7 @@ class Meetup extends Component {
         const socket = this.state.socket
         socket.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, 
             this.props.voteMeetupEvent, this.props.decideMeetupEvent, this.props.deleteMeetupEvent, 
-            this.props.addMeetupMember, this.props.addEventOption);
+            this.props.addMeetupMember, this.props.addEventOption, this.props.addMeetupActivity);
         socket.connect(path, token);
     }
 
@@ -272,6 +274,23 @@ class Meetup extends Component {
             )
         }
 
+        const renderNotificationLog = () => {
+            return (
+                <Paper className={styles.notifications} elevation={6}>
+                    {this.props.meetup.notifications.map((notif) => 
+                        <div className={styles.notification}>
+                            <span>
+                                {notif.verb}
+                            </span>
+                            <span className={styles.notifdate}>
+                                {moment(notif.timestamp).format('MMMM DD - h:mm A')}
+                            </span>
+                        </div>
+                    )}
+                </Paper>
+            )
+        }
+
         return (
             <div className="inner-wrap">
                 <Helmet>
@@ -281,6 +300,9 @@ class Meetup extends Component {
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         {renderInformation(meetup.name, meetup.date, meetup.location)}
+                    </Grid>
+                    <Grid item xs={12}>
+                        {renderNotificationLog()}
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <div className="inner-header elevate">
@@ -357,7 +379,8 @@ const mapDispatchToProps = {
         addMeetupMember,
         addGlobalMessage,
         addEventOption,
-        sendFriendInvite
+        sendFriendInvite,
+        addMeetupActivity
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Meetup)

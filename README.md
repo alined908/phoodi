@@ -129,9 +129,11 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Settings doesnt populate after save and reload
 - [x] Change presentation of upload avatar
 - [x] Make sure user settings are good on signup/signin if no settings before 
+- [x] Change user model default radius to 25 and relationship to onetoone
+- [ ] Fix settings retrieval
+- [ ] Past activity
 - [ ] Confirm email, Change password
 - [ ] Change name of preference
-- [ ] Change user model default radius to 25 and relationship to onetoone
 
 ## Todo Friends
 - [x] Wrap autocomplete text
@@ -163,12 +165,11 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Info dissapears on meetup edit form reload
 - [x] Notification Bell doesnt appear if public and member
 - [x] List who created the meetupevent
-- [ ] Assign creator to meetup, automatically make meetupmember and give admin privilige
+- [x] Add scrollable notifications box for meetup
+- [x] Assign creator to meetup automatically make meetupmember and give admin privilige
 - [ ] Block people, admin functionality for meetup member
 - [ ] MeetupEventOption Delete
-- [ ] Add scrollable notifications box for meetup
 - [ ] Create meetup with member
-- [ ] Refactor onTagsChange of MeetupsComponent
 - [ ] Add friends, redux action/websockets
 - [ ] Create Restauraunt Entity (primary key = yelp_id)
 - [ ] Outline itinerary of meetup
@@ -208,6 +209,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] User Settings doesn't work again? for category meetups and regular meetups
 - [x] Autocomplete click doesn't load automatically, anotehr click is needed
 - [x] Possible convert forms to Backdrop Form Dialogs
+- [ ] Notification Bar on Top right of navbar
 - [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
 - [ ] Animation when logging out forced
 
@@ -221,12 +223,11 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Django settings
 
 ## Todo Next Iteration
+- [ ] Refactor (onTagsChange of MeetupsComponent)
 - [ ] Add google, facebook, twitter social auth
 - [ ] Add calendar of meetups
 - [ ] Find people who have similar food taste near you?
-- [ ] Past activity
 - [ ] Elasticsearch? - Search bar on top app nav bar
 - [ ] Some sort of reputation system
-- [ ] Notification Bar on Top right of navbar
 - [ ] Guest accounts
 - [ ] Change meetups date filter to date range or exact date with calendar

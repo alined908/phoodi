@@ -13,14 +13,27 @@ export const history = createBrowserHistory()
 const theme = createMuiTheme({
     typography: {
       fontFamily: ['Lato','Roboto','"Helvetica Neue"','Arial','sans-serif'].join(','),
-      h1: bold, h2: bold, h3: bold, h4: bold, h5: bold,h6: bold,
-      body1:{...bold, fontSize: ".85rem"},
-      body2: {...bold, fontSize: ".8rem"},
+      h1: bold, h2: bold, h3: bold, h4: bold, 
+      h5: {...bold, fontSize: "1.15rem"}, h6: {...bold, fontSize: "1rem"},
+      body1:{...bold, fontSize: ".85rem"}, body2: {...bold, fontSize: ".8rem"},
       button:{...bold, fontSize: ".75rem"}
     }, 
     palette: {
-        primary:{
+        primary: {
             main: "#006600"
+        }
+    },
+    overrides: {
+        MuiButton:{
+            sizeSmall:{
+                fontSize: ".7rem"
+            }
+        },
+        MuiAvatar: {
+            root:{
+                fontFamily: "Arial",
+                fontSize: "1.15rem"
+            } 
         }
     }
   });

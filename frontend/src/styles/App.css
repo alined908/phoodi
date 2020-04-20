@@ -1,6 +1,6 @@
 /* Scrollbar*/
 :root{
-  --bg-color: #f5f7fa  11.2%;
+  --bg-color: rgb(248, 249, 250);
 }
 
 ::-webkit-scrollbar{
@@ -18,18 +18,13 @@
 	background: #3b444b;
 }
 
-.rainbow {
-  background: linear-gradient(to right,#0f0c29, #302b63, #24243e);
-  color: white !important;
-}
-
 a, a:hover {
   text-decoration: none;
   color: inherit;
 }
 
 html, body, #root, .MeetupApp{
-  background-color: white;
+  background-color:#f1f3f5;
   height: 100%;
 }
 
@@ -151,9 +146,7 @@ body {
 }
 
 .light-text{
-  font-weight: 400;
   color: grey;
-  font-size: 12.5px;
   letter-spacing: 0.4px;
 }
 .chat-contact:hover{
@@ -430,11 +423,10 @@ body {
   display:flex;
   flex-direction: column;
   width: 85%;
-  min-width: 350px;
+  min-width: 330px;
   margin: 0 auto;
   border: 1px solid #eeeeef;
-  padding: 1rem 1.5rem 1.5rem 1.5rem;
-  border-radius: 10px;
+  padding: 1rem;
   align-items: center;
   background-color: white;
   height: 100%;
@@ -470,14 +462,11 @@ body {
 }
 
 .rst{
-  margin: 6px;
-  font-family: 'Roboto', sans-serif;
-  font-size: .9rem;
-  width: 280px;
-  height: 210px;
+  width: 260px;
+  height: 195px;
   overflow: hidden; 
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .rst-img{
@@ -485,7 +474,7 @@ body {
   height: 200px;
   background-position: center center;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 4px;
 }
 
 .rst-info {
@@ -495,10 +484,9 @@ body {
 }
 
 .rst-name{
-  font-size: 1rem;
-  font-weight: bold;
   display:flex;
   align-items: center;
+  font-size: .85rem;
 }
 
 .rst-name svg{
@@ -538,21 +526,18 @@ body {
   height: calc(100% - 64px);
   min-height: 800px;
   width: 100%;
-  background-color: white;
+  background-color: #f1f3f5;
 }
 .outer-shell{
   display: flex;
   width: 70%;
   margin: 1rem auto 0 auto;
-  padding: 0 .05rem 0 0;
+  padding-right: .05rem;
   border: 1px solid #eeeeef;
-  border-radius: 7px;
-  height: calc(100% - 3rem - 1rem - 18px - 1rem);
+  min-height: 20px;
   max-height: 218px;
   background-color: white;
   overflow-y: auto;
-  font-weight: 600 !important;
-  font-family: "Lato" !important;
 }
 
 .MuiListItem-root:hover{
@@ -566,7 +551,7 @@ body {
   width: 100%;
   height: 100%;
   padding: 3rem 4rem;
-  max-width: 1400px;
+  max-width: 1300px;
 }
 
 .inner-wrap.small {
@@ -677,7 +662,6 @@ body {
 
 .rst-action-score{
   margin-left: .25rem;
-  font-size: .85rem;
 }
 
 .chosen {
@@ -698,7 +682,7 @@ body {
   border: 1px solid #eeeeef;
   border-radius: 10px;
   margin: 1.5rem;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   background-color: white;
 }
 
@@ -773,7 +757,7 @@ body {
   display: flex;
   justify-content: space-between;
   border: 1px solid #eeeeef;
-  padding: 1.5rem 2rem;
+  padding: 1.25rem 2rem;
   border-radius: 4px;
   background-color: white;
   align-items: center;
@@ -863,20 +847,14 @@ body {
 
 .category-chip{
   display:flex;
-    padding: 3px 8px;
-    font-size: 0.75rem;
-    box-sizing: border-box;
-    line-height: 1.55;
-    border-radius: 4px;
-    letter-spacing: 0.02857em;
-    text-transform: capitalize;  
-    color: black;
-    font-family: "Lato";
-    font-weight: 600;
-    margin: .25rem .25rem;
-    align-items: center;
-    background-color: #FFDFD3;
-    border: 1px solid #eeeeef;
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  border-radius: 4px;
+  text-transform: capitalize;  
+  margin: .25rem .25rem;
+  align-items: center;
+  background-color: #FFDFD3;
+  border: 1px solid #eeeeef;
 }
 
 .category-chip-hover:hover{
@@ -1074,7 +1052,7 @@ body {
   height: calc(100% - 60px - 60px);
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: rgb(250,250,250);
+  background-color: white;
   padding: 0 1rem;
 }
 
@@ -1106,7 +1084,7 @@ body {
   height: 60px;
   width: 100%;
   min-width: 300px;
-  background-color: white;
+  background-color: var(--bg-color);
   justify-content: center;
 }
 
@@ -1122,10 +1100,6 @@ body {
 
 .search .MuiFormControlLabel-root{
   margin-right: 0;
-}
-
-.meetups-inner-header{
-  background-color: white !important;
 }
 
 .meetups-search-bar{
@@ -1145,7 +1119,7 @@ body {
   font-size: 18px;
   font-family: "Lato";
   font-weight: 600;
-  background: white;
+  background: var(--bg-color);
 }
 
 .category-autocomplete{
@@ -1232,7 +1206,7 @@ body {
   font-size: 18px;
   font-family: "Lato";
   font-weight: 600;
-  background: #F7F9FD;
+  background: var(--bg-color);
 }
 
 .column-middle{
@@ -1250,7 +1224,7 @@ body {
   height: 62px;
   width: 100%;
   min-width: 300px;
-  background-color: #F7F9FD;
+  background-color: var(--bg-color);
 }
 
 .preference {

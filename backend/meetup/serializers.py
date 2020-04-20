@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from meetup.models import User, UserSettings, Preference, UserSettings, MeetupCategory, Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite
 from django.forms.models import model_to_dict
+from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from notifications.models import Notification
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
@@ -105,9 +107,16 @@ class FriendshipSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'created_at', 'chat_room')
 
 class MeetupSerializer(serializers.ModelSerializer):
+    creator = serializers.SerializerMethodField('_get_creator')
     members = serializers.SerializerMethodField('_get_members')
     notifs = serializers.SerializerMethodField('_get_notifs')
+    notifications = serializers.SerializerMethodField('_get_notifications')
     categories = serializers.SerializerMethodField('_get_categories')
+
+    def _get_creator(self, obj):
+        user = obj.creator
+        serializer = UserSerializer(user, context={"plain": True})
+        return serializer.data
 
     def _get_members(self, obj):
         mapping = {}
@@ -125,6 +134,14 @@ class MeetupSerializer(serializers.ModelSerializer):
         ).unread()
         return notifs.count()
 
+    def _get_notifications(self, obj):
+        notifications = Notification.objects.filter(
+            Q(target_object_id = obj.id) | Q(action_object_object_id = obj.id), 
+            description="meetup_activity"
+        )
+        serializer = NotificationSerializer(notifications, many=True)
+        return serializer.data
+
     def _get_categories(self, obj):
         meetup_categories = obj.meetup_categories.all()
         categories = list(set([meetup_category.category for meetup_category in meetup_categories]))
@@ -133,7 +150,12 @@ class MeetupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Meetup
-        fields = ('id', 'name', 'uri', 'location', 'date', 'members', 'notifs', 'public', 'categories', 'latitude', 'longitude')
+        fields = ('id', 'name', 'uri', 'creator', 'location', 'date', 'members', 'notifs', 'public', 'categories', 'latitude', 'longitude', 'notifications')
+
+class MeetupSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Meetup
+        fields = ('id', 'name', 'uri', 'public')
 
 class MeetupEventOptionVoteSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('_get_user')
@@ -310,3 +332,33 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatRoomMessage
         fields = ('id', 'message', 'timestamp', 'is_read', 'room_id', 'sender_id')
+
+class GenericNotificationRelatedField(serializers.RelatedField):
+    def to_representation(self, value):
+        print("this shit")
+        print(value)
+        if isinstance(value, User):
+            serializer = UserSerializer(value, context={"plain": True})
+        elif isinstance(value, Meetup):
+            serializer = MeetupSimpleSerializer(value)
+        elif isinstance(value, MeetupEvent):
+            serializer = MeetupEventSerializer(value)
+        elif isinstance(value, MeetupMember):
+            serializer = MeetupMemberSerializer(value)
+        elif isinstance(value, Friendship):
+            serializer = FriendshipSerializer(value)
+        elif isinstance(value, Preference):
+            serializer = PreferenceSerializer(value)
+        else:
+            return None
+
+        return serializer.data
+
+class NotificationSerializer(serializers.ModelSerializer):
+    actor = GenericNotificationRelatedField(read_only=True)
+    target = GenericNotificationRelatedField(read_only=True)
+    action_object = GenericNotificationRelatedField(read_only=True)
+
+    class Meta:
+        model = Notification
+        fields = ('id', 'actor', 'verb', 'action_object', 'target', 'description', 'timestamp')

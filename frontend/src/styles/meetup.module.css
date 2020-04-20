@@ -1,0 +1,29 @@
+.notifications{
+    display: flex;
+    width: 500px;
+    margin: auto;
+    max-height: 300px;
+    overflow-y: auto;
+    flex-direction: column;
+    height: 100%;
+}
+
+.notification{
+    display: flex;
+    justify-content: space-between;
+    padding: .5rem 1rem;
+    border-bottom: 1px solid black;
+}
+
+.notification:last-child{
+    border-bottom: 0;
+}
+
+.notifdate{
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    font-size: .7rem;
+    color: grey;
+    white-space:nowrap;
+}

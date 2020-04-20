@@ -145,8 +145,8 @@ class User(AbstractBaseUser):
         return friendship[0]
 
 class UserSettings(models.Model):
-    user = models.ForeignKey(User, related_name="settings", on_delete=models.CASCADE)
-    radius = models.IntegerField(default=10)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    radius = models.IntegerField(default=25)
     location = models.TextField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
@@ -154,6 +154,7 @@ class UserSettings(models.Model):
 
 class Meetup(models.Model):
     uri = models.URLField(default=generate_unique_uri)
+    creator = models.ForeignKey(User, null=True, related_name="created_meetups", on_delete=models.SET_NULL)
     location = models.TextField()
     longitude = models.FloatField()
     latitude = models.FloatField()
@@ -312,7 +313,8 @@ class MeetupEvent(models.Model):
     def request_yelp_api(self):
         categories = self.convert_entries_to_string()
         params = {
-            "location": self.meetup.location, 
+            "latitude": self.meetup.latitude,
+            "longitude": self.meetup.longitude, 
             "limit": 30, 
             "categories": categories, 
             "radius": self.distance, 
@@ -323,7 +325,7 @@ class MeetupEvent(models.Model):
         options = []
         if 'businesses' in response.json():
             options = response.json()['businesses']
-            
+       
         return options
 
     def generate_options(self):

@@ -6,7 +6,12 @@ import json, random, time, requests, os
 from urllib.parse import parse_qs
 from asgiref.sync import sync_to_async, async_to_sync
 from channels.db import database_sync_to_async
-from meetup.serializers import MessageSerializer, MeetupEventSerializer, MeetupMemberSerializer, MeetupEventOptionSerializer, MeetupEventOptionVoteSerializer
+from meetup.serializers import (
+    MessageSerializer, MeetupEventSerializer, MeetupMemberSerializer, 
+    MeetupEventOptionSerializer, MeetupEventOptionVoteSerializer, NotificationSerializer
+)
+from notifications.models import Notification
+from notifications.signals import notify
 
 class ChatConsumer(AsyncWebsocketConsumer):
 
@@ -150,9 +155,9 @@ class UserNotificationConsumer(AsyncWebsocketConsumer):
 class MeetupConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        user = self.scope['user']
+        self.user = self.scope['user']
 
-        if user.is_anonymous:
+        if self.user.is_anonymous:
             await self.accept()
             await self.close(code=4000)
         else:
@@ -178,11 +183,6 @@ class MeetupConsumer(AsyncWebsocketConsumer):
                 self.meetup_group_name,
                 self.channel_name
             )
-
-    @database_sync_to_async
-    def get_event_serializer(self, event):
-        event_json = MeetupEventSerializer(event)
-        return event_json.data
 
     @sync_to_async
     def generate_options(self, event):
@@ -234,16 +234,35 @@ class MeetupConsumer(AsyncWebsocketConsumer):
                     vote.member.save()
         event.delete()
 
-    @database_sync_to_async
-    def get_option_serializer(self, option):
-        serializer = MeetupEventOptionSerializer(option)
-        return serializer.data
-
     @sync_to_async
     def new_option_helper(self, event_id, option):
         event = MeetupEvent.objects.get(pk=event_id)
         meetup_option = MeetupEventOption.objects.create(event=event, option=option)
         return meetup_option
+
+    @database_sync_to_async
+    def get_event_serializer(self, event):
+        event_json = MeetupEventSerializer(event)
+        return event_json.data
+
+    @database_sync_to_async
+    def get_option_serializer(self, option):
+        serializer = MeetupEventOptionSerializer(option)
+        return serializer.data
+
+    @database_sync_to_async
+    def get_notification_serializer(self, notif):
+        serializer = NotificationSerializer(notif)
+        return serializer.data
+
+    @sync_to_async
+    def generate_notification(self, event, meetup, member, verb):
+        notify.send(
+            sender = member, recipient = member.user, action_object = event,
+            target=meetup, description = "meetup_activity", verb = verb
+        )
+        notif = Notification.objects.filter(description="meetup_activity", action_object_object_id= event.id).first()
+        return notif
 
     async def new_event(self, command):
         data = command['data']
@@ -274,22 +293,27 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         )
 
     async def reload_event(self, command):
-        data = command['data']
+        data, user = command['data'], self.user
         event_id, meetup = data['event'], data['meetup']
         event = await database_sync_to_async(MeetupEvent.objects.get)(pk=event_id)
+        meetup_obj = await database_sync_to_async(Meetup.objects.get)(uri=meetup)
+        member = await database_sync_to_async(MeetupMember.objects.get)(meetup=meetup_obj, user=user)
         await self.handle_event_reload(event)
         await self.generate_options(event)
-        serializer = await self.get_event_serializer(event)
+        notif = await self.generate_notification(event, meetup_obj, member, "reloaded")
+        event_serializer = await self.get_event_serializer(event)
+        notification_serializer = await self.get_notification_serializer(notif)
 
+        # Send New Event to Meetup Channel
         content = {
             'command': 'reload_event',
             'message': {
                 'meetup': meetup, 
                 'event_id': event_id, 
-                'event': serializer
+                'event': event_serializer
             }
         }
-      
+
         await self.channel_layer.group_send(
             self.meetup_group_name, {
                 'type': 'meetup_event',
@@ -297,6 +321,22 @@ class MeetupConsumer(AsyncWebsocketConsumer):
             }
         )
 
+        # Send Meetup Activity to Meetup Channel -> Member reloaded Event
+        content = {
+            'command': 'new_meetup_activity',
+            'message': {
+                'meetup': meetup,
+                'notification': notification_serializer
+            }
+        }
+
+        await self.channel_layer.group_send(
+            self.meetup_group_name, {
+                'type': 'meetup_event',
+                'meetup_event': content
+            }
+        )
+        
     async def vote_event(self, command):
         data = command['data']
         user, option, status, meetup = data['user'], data['option'], data['status'], data['meetup']
@@ -319,11 +359,16 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         )        
 
     async def decide_event(self, command):
-        data = command['data']
+        data, user = command['data'], self.user
         meetup, event, random = data['meetup'] , data['event'], data['random']
+        meetup_obj = await database_sync_to_async(Meetup.objects.get)(uri=meetup)
+        member = await database_sync_to_async(MeetupMember.objects.get)(meetup=meetup_obj, user=user)
         event = await self.decide_event_helper(event, random)
+        notif = await self.generate_notification(event, meetup_obj, member, "decided")
+        notification_serializer = await self.get_notification_serializer(notif)
         serializer = await self.get_event_serializer(event)
 
+        # Send Meetup Event To Meetup Channel
         content = {
             'command': 'decide_event',
             'message': {
@@ -340,20 +385,57 @@ class MeetupConsumer(AsyncWebsocketConsumer):
             }
         )
 
+        # Send Meetup Activity to Meetup Channel -> Member decided Event
+        content = {
+            'command': 'new_meetup_activity',
+            'message': {
+                'meetup': meetup,
+                'notification': notification_serializer
+            }
+        }
+
+        await self.channel_layer.group_send(
+            self.meetup_group_name, {
+                'type': 'meetup_event',
+                'meetup_event': content
+            }
+        )
+
     async def redecide_event(self, command):
-        data = command['data']
+        data, user = command['data'], self.user
         meetup, event = data['meetup'], data['event']
+        meetup_obj = await database_sync_to_async(Meetup.objects.get)(uri=meetup)
+        member = await database_sync_to_async(MeetupMember.objects.get)(meetup=meetup_obj, user=user)
         event = await self.redecide_helper(event)
+        notif = await self.generate_notification(event, meetup_obj, member, "undecided")
+        notification_serializer = await self.get_notification_serializer(notif)
         serializer = await self.get_event_serializer(event)
 
+        # Send Meetup Event to Meetup Channel
         content = {
-                'command': 'redecide_event',
-                'message': {
-                    "meetup": meetup, 
-                    "event_id": event.id , 
-                    "event": serializer
-                }
+            'command': 'redecide_event',
+            'message': {
+                "meetup": meetup, 
+                "event_id": event.id , 
+                "event": serializer
             }
+        }
+
+        await self.channel_layer.group_send(
+            self.meetup_group_name, {
+                'type': 'meetup_event',
+                'meetup_event': content
+            }
+        )
+
+        # Send Meetup Activity to Meetup Channel -> Member undecided Event
+        content = {
+            'command': 'new_meetup_activity',
+            'message': {
+                'meetup': meetup,
+                'notification': notification_serializer
+            }
+        }
 
         await self.channel_layer.group_send(
             self.meetup_group_name, {
@@ -363,17 +445,39 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         )
 
     async def delete_event(self, command):
-        data = command['data']
+        data, user = command['data'], self.user
         meetup, event_id = data['uri'], data['event']
+        meetup_obj = await database_sync_to_async(Meetup.objects.get)(uri=meetup)
+        member = await database_sync_to_async(MeetupMember.objects.get)(meetup=meetup_obj, user=user)
+        event = await database_sync_to_async(MeetupEvent.objects.get)(pk=event_id)
+        notif = await self.generate_notification(event, meetup_obj, member, "deleted event named %s" % (event.title))
+        notification_serializer = await self.get_notification_serializer(notif)
         await self.delete_helper(event_id)
 
+        #Send that Meetup was Deleted to Meetup Channel
         content = {
-                'command': 'delete_event',
-                'message': {
-                    "uri": meetup, 
-                    "event": event_id
-                }
+            'command': 'delete_event',
+            'message': {
+                "uri": meetup, 
+                "event": event_id
             }
+        }
+
+        await self.channel_layer.group_send(
+            self.meetup_group_name, {
+                'type': 'meetup_event',
+                'meetup_event': content
+            }
+        )
+
+        # Send Meetup Activity to Meetup Channel --> Member deleted Event
+        content = {
+            'command': 'new_meetup_activity',
+            'message': {
+                'meetup': meetup,
+                'notification': notification_serializer
+            }
+        }
 
         await self.channel_layer.group_send(
             self.meetup_group_name, {
@@ -385,7 +489,11 @@ class MeetupConsumer(AsyncWebsocketConsumer):
     async def new_option(self, command):
         data = command['data']
         meetup, event_id, option_json = data['meetup'], data['event'], data['option']
+        meetup_obj = await database_sync_to_async(Meetup.objects.get)(uri=meetup)
+        event = await database_sync_to_async(MeetupEvent.objects.get)(pk=event_id)
         option = await self.new_option_helper(event_id, option_json)
+        notif = await self.generate_notification(event, meetup_obj, "%s has added an option." % (self.user.first_name))
+        notification_serializer = await self.get_notification_serializer(notif)
         serializer = await self.get_option_serializer(option)
 
         content = {
@@ -394,6 +502,21 @@ class MeetupConsumer(AsyncWebsocketConsumer):
                 "uri": meetup, 
                 "event_id": event_id, 
                 "option": serializer
+            }
+        }
+
+        await self.channel_layer.group_send(
+            self.meetup_group_name, {
+                'type': 'meetup_event',
+                'meetup_event': content
+            }
+        )
+
+        content = {
+            'command': 'new_meetup_notif',
+            'message': {
+                'meetup': meetup,
+                'notification': notification_serializer
             }
         }
 
