@@ -27,6 +27,21 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'email', 'first_name', 'last_name', 'avatar')
 
+class UserSerializerWithActivity(serializers.ModelSerializer):
+    activity = serializers.SerializerMethodField('_get_activity')
+    
+    def _get_activity(self, obj):
+        notifications = Notification.objects.filter( 
+            actor_object_id = obj.id,
+            description="user_activity"
+        )
+        serializer = NotificationSerializer(notifications, many=True)
+        return serializer.data
+
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'first_name', 'last_name', 'avatar', 'activity')
+
 class UserSerializerWithToken(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
     first_name = serializers.CharField(max_length=255)
@@ -335,8 +350,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
 class GenericNotificationRelatedField(serializers.RelatedField):
     def to_representation(self, value):
-        print("this shit")
-        print(value)
+    
         if isinstance(value, User):
             serializer = UserSerializer(value, context={"plain": True})
         elif isinstance(value, Meetup):

@@ -130,8 +130,8 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Change presentation of upload avatar
 - [x] Make sure user settings are good on signup/signin if no settings before 
 - [x] Change user model default radius to 25 and relationship to onetoone
+- [x] Past activity
 - [ ] Fix settings retrieval
-- [ ] Past activity
 - [ ] Confirm email, Change password
 - [ ] Change name of preference
 
@@ -209,7 +209,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] User Settings doesn't work again? for category meetups and regular meetups
 - [x] Autocomplete click doesn't load automatically, anotehr click is needed
 - [x] Possible convert forms to Backdrop Form Dialogs
-- [ ] Notification Bar on Top right of navbar
 - [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
 - [ ] Animation when logging out forced
 
@@ -223,6 +222,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Django settings
 
 ## Todo Next Iteration
+- [ ] Notification Bar on Top right of navbar
 - [ ] Refactor (onTagsChange of MeetupsComponent)
 - [ ] Add google, facebook, twitter social auth
 - [ ] Add calendar of meetups

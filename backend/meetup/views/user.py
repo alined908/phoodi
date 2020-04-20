@@ -1,6 +1,6 @@
 from meetup.models import Preference, UserSettings, Category, User, Meetup, Friendship
 from meetup.serializers import (PreferenceSerializer, MyTokenObtainPairSerializer, UserSettingsSerializer, 
-UserSerializer, UserSerializerWithToken, FriendshipSerializer)
+UserSerializer, UserSerializerWithToken, FriendshipSerializer, UserSerializerWithActivity)
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import permissions, status
@@ -54,7 +54,7 @@ class UserView(APIView):
 
     def get(self, request, *args, **kwargs):
         user = self.get_object(kwargs['id'])
-        serializer = UserSerializer(user, context={'plain': True})
+        serializer = UserSerializerWithActivity(user)
         return Response(serializer.data)
 
     def patch(self, request, *args, **kwargs):
