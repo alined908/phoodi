@@ -19,6 +19,7 @@ import PropTypes from 'prop-types'
 import {meetupPropType, userPropType, friendPropType} from '../../constants/prop-types'
 import {Helmet} from 'react-helmet'
 import styles from '../../styles/meetup.module.css'
+import { HashLink} from 'react-router-hash-link';
 
 class Meetup extends Component {
     constructor(props){
@@ -291,54 +292,74 @@ class Meetup extends Component {
             )
         }
 
+        const renderTreeView = (meetup) => {
+        
+            return (
+                <div className={styles.tree}>
+                    <div>{meetup.name}</div>
+                    {this.props.isMeetupEventsInitialized && meetup.events && this.sortEvents(meetup.events).map((event) => 
+                        <div className={styles.treeEntry}>
+                            <HashLink to={`/meetups/${meetup.uri}#${meetup.events[event].id}`} smooth={true}>
+                                {meetup.events[event].title}
+                            </HashLink>
+                        </div>
+                    )}
+                </div>
+            )
+        }
+
         return (
-            <div className="inner-wrap">
-                <Helmet>
-                    <meta charSet="utf-8" />
-                    <title>{`${meetup.name}`}</title>
-                </Helmet>
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        {renderInformation(meetup.name, meetup.date, meetup.location)}
+            <>
+                
+                <div className="inner-wrap">
+                    <Helmet>
+                        <meta charSet="utf-8" />
+                        <title>{`${meetup.name}`}</title>
+                    </Helmet>
+                    {renderTreeView(meetup)}
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            {renderInformation(meetup.name, meetup.date, meetup.location)}
+                        </Grid>
+                        <Grid item xs={12}>
+                            {renderNotificationLog()}
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <div className="inner-header elevate">
+                                <Typography variant="h5">Members</Typography>
+                                {!isUserMember && 
+                                    <Button onClick={this.handlePublicMeetupJoin} style={{background: "#45B649", color: "white"}} variant="contained">
+                                        Join Meetup
+                                    </Button>}
+                            </div>
+                            {renderMembers(meetup.members)}
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <div className="inner-header elevate">
+                                <Typography variant="h5">Friends</Typography>
+                            </div>
+                            {renderFriends()}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <div className="inner-header elevate">
+                                <Typography variant="h5">Events</Typography>
+                                {isUserMember && 
+                                    <Button onClick={this.openEventModal} startIcon={<AddIcon />} className="button rainbow" variant="contained" color="primary">
+                                        Event
+                                    </Button>
+                                }
+                                {this.state.newMeetupEventForm && 
+                                    <MeetupEventForm 
+                                        type="create" uri={meetup.uri} handleClose={this.openEventModal}
+                                        open={this.state.newMeetupEventForm}
+                                    />
+                                }
+                            </div>
+                        </Grid>
+                        <Grid item xs={12}>{renderEvents(meetup.events)}</Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                        {renderNotificationLog()}
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <div className="inner-header elevate">
-                            <Typography variant="h5">Members</Typography>
-                            {!isUserMember && 
-                                <Button onClick={this.handlePublicMeetupJoin} style={{background: "#45B649", color: "white"}} variant="contained">
-                                    Join Meetup
-                                </Button>}
-                        </div>
-                        {renderMembers(meetup.members)}
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <div className="inner-header elevate">
-                            <Typography variant="h5">Friends</Typography>
-                        </div>
-                        {renderFriends()}
-                    </Grid>
-                    <Grid item xs={12}>
-                        <div className="inner-header elevate">
-                            <Typography variant="h5">Events</Typography>
-                            {isUserMember && 
-                                <Button onClick={this.openEventModal} startIcon={<AddIcon />} className="button rainbow" variant="contained" color="primary">
-                                    Event
-                                </Button>
-                            }
-                            {this.state.newMeetupEventForm && 
-                                <MeetupEventForm 
-                                    type="create" uri={meetup.uri} handleClose={this.openEventModal}
-                                    open={this.state.newMeetupEventForm}
-                                />
-                            }
-                        </div>
-                    </Grid>
-                    <Grid item xs={12}>{renderEvents(meetup.events)}</Grid>
-                </Grid>
-            </div>
+                </div>
+            </>
         )
     }
 }

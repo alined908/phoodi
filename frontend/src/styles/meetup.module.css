@@ -27,3 +27,13 @@
     color: grey;
     white-space:nowrap;
 }
+
+.tree{
+    position: fixed;
+    left: 120px;
+    top: 50%;
+}
+
+.treeEntry{
+    
+}

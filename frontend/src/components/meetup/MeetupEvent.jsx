@@ -233,7 +233,7 @@ class MeetupEvent extends Component {
         }
 
         return (
-            <div className="meetup-event">
+            <div id={event.id} className="meetup-event">
                 {renderHeader(this.props.number)}
                 <div className="second-header smaller-header elevate">
                     <div className="second-header-left">

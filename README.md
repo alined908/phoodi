@@ -167,12 +167,13 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] List who created the meetupevent
 - [x] Add scrollable notifications box for meetup
 - [x] Assign creator to meetup automatically make meetupmember and give admin privilige
+- [x] Outline itinerary of meetup
+- [ ] Loading state after meetup event create/edit
 - [ ] Block people, admin functionality for meetup member
 - [ ] MeetupEventOption Delete
 - [ ] Create meetup with member
 - [ ] Add friends, redux action/websockets
 - [ ] Create Restauraunt Entity (primary key = yelp_id)
-- [ ] Outline itinerary of meetup
 - [ ] Add capacity if wanted and adjust circles to meetups
 - [ ] Ban used again for some reason
 - [ ] Disable actions if event is in the past
