@@ -22,7 +22,8 @@ def meetup_post_save(sender, instance, created, **kwargs):
 
         uri, name, creator = instance.uri, instance.name, instance.creator
         #Create Chat Room For Meetup
-        ChatRoom.objects.create(uri=uri, name=name, meetup=instance)
+        room = ChatRoom.objects.create(uri=uri, name=name, meetup=instance)
+        ChatRoomMember.objects.create(room = room, user = creator)
 
         #Create Meetup Activity --> Ex. User created Meetup x days ago
         notify.send(

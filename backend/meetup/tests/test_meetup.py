@@ -14,8 +14,8 @@ class MeetupTest(TestCase):
     fixtures=('2_categories.json',)
 
     def setUp(self):
-        meetup_info = {"name": "meetup-1", "date": datetime.date.today(), "location": "La Crescenta", "longitude": -118.2351192, "latitude": 34.228754}
         self.user = User.objects.create(email="test@gmail.com", password=make_password("password"), first_name="Daniel", last_name="Lee")
+        meetup_info = {"name": "meetup-1", "date": datetime.date.today(), "location": "La Crescenta", "longitude": -118.2351192, "latitude": 34.228754, "creator": self.user}
         self.private = Meetup.objects.create(public=False, **meetup_info)
         self.public = Meetup.objects.create(public=True, **meetup_info)
         self.valid_payload = {"public": False, **meetup_info}
