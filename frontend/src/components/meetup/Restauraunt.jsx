@@ -195,17 +195,6 @@ class Restauraunt extends Component {
         )
     }
 
-    formatPhoneNumber = (str) => {
-        let cleaned = ('' + str).replace(/\D/g, '');
-        let match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
-        
-        if (match) {
-          return ['(', match[2], ') ', match[3], '-', match[4]].join('')
-        }
-        
-        return null;
-      }
-
     render (){
         const data = this.props.option.restaurant
         const banned = this.props.option.banned
@@ -232,10 +221,10 @@ class Restauraunt extends Component {
                     {this.renderRestauraunt(data)}
                     <div className="rst-horz-info">
                         <div className="rst-horz-info-entry">
-                            <RoomIcon/> {data.location.address1}, {data.location.city} {data.location.state} {data.location.zip_code}
+                            <RoomIcon/> {data.location}
                         </div>
                         <div className="rst-horz-info-entry">
-                            <PhoneIcon/> {this.formatPhoneNumber(data.phone)}
+                            <PhoneIcon/> {data.phone}
                         </div>
                     </div>
                 </div>

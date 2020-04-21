@@ -50,7 +50,6 @@ export let preferencePropType = PropTypes.shape({
 
 export let meetupEventOptionPropType = PropTypes.shape({
     id: PropTypes.number.isRequired,
-    event: PropTypes.number.isRequired,
     score: PropTypes.number.isRequired,
     option: PropTypes.string.isRequired,
     votes: PropTypes.object.isRequired,

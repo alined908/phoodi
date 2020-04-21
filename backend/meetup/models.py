@@ -337,7 +337,7 @@ class MeetupEvent(models.Model):
             info = {
                 "identifier": identifier, "name": option["name"], "image": option["image_url"],
                 "url": option["url"], "rating": option["rating"], "latitude": option['coordinates']['latitude'],
-                "longitude": option['coordinates']['longitude'], "price": option['price'],
+                "longitude": option['coordinates']['longitude'], "price": option.get('price', '$$'),
                 "phone": option['display_phone'], 'location': " ".join(option['location']['display_address']),
                 "categories": json.dumps(option['categories'])
             }
@@ -351,7 +351,7 @@ class MeetupEvent(models.Model):
                     category = Category.objects.create(api_label=category['alias'], label=category['title'])
                 RestaurantCategory.objects.create(category = category, restaurant = restaurant)
                 
-        option = MeetupEventOption.objects.create(event=self, restaurant=restaurant)
+        option, created = MeetupEventOption.objects.get_or_create(event=self, restaurant=restaurant)
         return option
 
     def generate_options(self):
@@ -374,8 +374,9 @@ class MeetupEvent(models.Model):
         2. Lower number of dislikes
         3. Random selection)
         """
+  
         options = self.options.all()
-        
+    
         if randomBool:
             options = options.exclude(banned=True)
             chosen = random.choice(options)
@@ -393,7 +394,7 @@ class MeetupEvent(models.Model):
                     highest.append(option)
 
             chosen = random.choice(highest)
-
+        
         self.chosen = chosen.id
         self.save()
 

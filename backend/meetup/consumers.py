@@ -246,9 +246,7 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         option.delete()
 
     @sync_to_async
-    def new_option_helper(self, event_id, option):
-
-        event = MeetupEvent.objects.get(pk=event_id)
+    def new_option_helper(self, event, option):
         meetup_option = event.create_option_with_restaurant(option)
         return meetup_option
 
@@ -504,7 +502,7 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         meetup_obj = await database_sync_to_async(Meetup.objects.get)(uri=meetup)
         event = await database_sync_to_async(MeetupEvent.objects.get)(pk=event_id)
         member = await database_sync_to_async(MeetupMember.objects.get)(meetup=meetup_obj, user=user)
-        option = await self.new_option_helper(event_id, option_json)
+        option = await self.new_option_helper(event, option_json)
         notif = await self.generate_notification(event, meetup_obj, member, "added option")
         notification_serializer = await self.get_notification_serializer(notif)
         serializer = await self.get_option_serializer(option)

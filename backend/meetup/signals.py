@@ -234,10 +234,12 @@ def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
                     'message': content
                 })
 
-    user = get_user()
-    member = MeetupMember.objects.get(meetup=meetup, user=user)
+    
     # Create Meetup Activity --> Member did something to Something on Meetup
     if instance._meetup_notification != "chosen changed":
+        print(instance._meetup_notification)
+        user = get_user()
+        member = MeetupMember.objects.get(meetup=meetup, user=user)
         notify.send(
             sender = member, recipient=member.user, description="meetup_activity", 
             action_object = instance, target = meetup, verb=instance._meetup_notification

@@ -63,14 +63,34 @@ class MeetupEvent extends Component {
 
     handleSearchValueClick = (e, value) => {
         if (value !== null){
-            this.props.socket.addEventOption({meetup: this.props.uri, event: this.props.event.id, option: value})
-            this.props.addGlobalMessage("success", "Successfully added option")
+            if (this.isRestaurantOptionAlready(value)){
+                this.props.addGlobalMessage("error", "Already an option.")
+            } else {
+                this.props.socket.addEventOption({meetup: this.props.uri, event: this.props.event.id, option: value})
+                this.props.addGlobalMessage("success", "Successfully added option")
+            }
+            
         }
         this.setState({searchInput: ""})
     }
 
     openEventModal = () => {
         this.setState({editMeetupEventForm: !this.state.editMeetupEventForm})
+    }
+
+    isRestaurantOptionAlready = (restaurant) => {
+        const identifier = restaurant.id
+        const options_keys = this.props.event.options
+
+        for (let key in options_keys){
+            let rst = options_keys[key].restaurant
+            console.log(rst.identifier)
+            if(rst.identifier === identifier){
+                return true
+            }
+        }
+        
+        return false
     }
 
     render () {
@@ -211,8 +231,8 @@ class MeetupEvent extends Component {
         }
 
         const renderChosen = (chosen) => {
-            const option = JSON.parse(chosen.option)
-            const position = {latitude: option.coordinates.latitude, longitude: option.coordinates.longitude}
+            const option = chosen.restaurant
+            const position = {latitude: option.latitude, longitude: option.longitude}
 
             return (
                 <div className="chosen">

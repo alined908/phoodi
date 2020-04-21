@@ -232,7 +232,7 @@ class MeetupEventOptionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MeetupEventOption
-        fields = ('id', 'event', 'score', 'option', 'restaurant','votes', 'banned')
+        fields = ('id', 'score', 'option', 'restaurant', 'votes', 'banned')
 
 class MeetupEventSerializer(serializers.ModelSerializer):
     options = serializers.SerializerMethodField('_get_options')
