@@ -35,7 +35,7 @@ const determineHashLink = (type, meetup, element) => {
         anchor = element
         name = element
     } else if (type === "option"){
-        const option = JSON.parse(element.option)
+        const option = element.restaurant
         anchor = `option-${element.id}`
         name = option.name
     }

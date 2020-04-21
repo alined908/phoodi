@@ -118,7 +118,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Render local restaurraunts on category 
 
 ## Todo Meetup
-- [ ] Create Restauraunt Entity (primary key = yelp_id)
 - [ ] Give restauraunt preview
 - [ ] Remove people, admin functionality for meetup member
 - [ ] Disable actions if event is in the past
@@ -160,6 +159,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Position aware scrolling (meetup tree) (Panda is anchor, dashes are bamboo)
 - [ ] Create meetup with member
 - [ ] Add capacity if wanted and adjust circles to meetups
+- [ ] Use inheritance for RestaurauntPreference and CategoryPreference
 
 ## Todo Later
 - [ ] Find people who have similar food taste near you?

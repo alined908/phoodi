@@ -328,34 +328,39 @@ class MeetupEvent(models.Model):
        
         return options
 
+    #Put restaurant in database along with categories
+    def create_option_with_restaurant(self, option):
+        identifier = option["id"]
+        try:
+            restaurant = Restaurant.objects.get(identifier=identifier)
+        except ObjectDoesNotExist:
+            info = {
+                "identifier": identifier, "name": option["name"], "image": option["image_url"],
+                "url": option["url"], "rating": option["rating"], "latitude": option['coordinates']['latitude'],
+                "longitude": option['coordinates']['longitude'], "price": option['price'],
+                "phone": option['display_phone'], 'location': " ".join(option['location']['display_address']),
+                "categories": json.dumps(option['categories'])
+            }
+            
+            restaurant = Restaurant.objects.create(**info)
+
+            for category in option['categories']:
+                try:
+                    category = Category.objects.get(api_label=category['alias'])
+                except ObjectDoesNotExist:
+                    category = Category.objects.create(api_label=category['alias'], label=category['title'])
+                RestaurantCategory.objects.create(category = category, restaurant = restaurant)
+                
+        option = MeetupEventOption.objects.create(event=self, restaurant=restaurant)
+        return option
+
     def generate_options(self):
         # Get Options 
         options = self.request_yelp_api()
         random.shuffle(options)
         
-        #Put restaurant in database along with categories
         for option in options[:4]:
-            identifier = option["id"]
-            try:
-                restaurant = Restaurant.objects.get(identifier=identifier)
-            except ObjectDoesNotExist:
-                info = {
-                    "identifier": identifier, "name": option["name"], "image": option["image_url"],
-                    "url": option["url"], "rating": option["rating"], "latitude": option['coordinates']['latitude'],
-                    "longitude": option['coordinates']['longitude'], "price": option['price'],
-                    "phone": option['display_phone'], 'location': " ".join(option['location']['display_address']),
-                    "categories": json.dumps(option['categories'])
-                }
-                
-                restaurant = Restaurant.objects.create(**info)
-
-                for category in option['categories']:
-                    try:
-                        category = Category.objects.get(api_label=category['alias'])
-                    except ObjectDoesNotExist:
-                        category = Category.objects.create(api_label=category['alias'], label=category['title'])
-                    RestaurantCategory.objects.create(category = category, restaurant = restaurant)
-            MeetupEventOption.objects.create(event=self, restaurant=restaurant)
+            self.create_option_with_restaurant(option)
 
     def delete_options(self):
         options = self.options.all()

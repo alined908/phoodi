@@ -63,7 +63,7 @@ class MeetupEvent extends Component {
 
     handleSearchValueClick = (e, value) => {
         if (value !== null){
-            this.props.socket.addEventOption({meetup: this.props.uri, event: this.props.event.id, option: JSON.stringify(value)})
+            this.props.socket.addEventOption({meetup: this.props.uri, event: this.props.event.id, option: value})
             this.props.addGlobalMessage("success", "Successfully added option")
         }
         this.setState({searchInput: ""})

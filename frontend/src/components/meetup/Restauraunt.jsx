@@ -159,7 +159,7 @@ class Restauraunt extends Component {
         )
     }
 
-    renderRestauraunt = (data, option) => {
+    renderRestauraunt = (data) => {
         return (   
             <>
                 <div className="rst">
@@ -173,21 +173,21 @@ class Restauraunt extends Component {
                         </span>
                         <span className="rst-rating">{this.determineRating(data.rating)}</span>
                     </div>
-                    <div className="rst-img" style={{backgroundImage: `url(${data.image_url})`}}>
+                    <div className="rst-img" style={{backgroundImage: `url(${data.image})`}}>
                     </div>
                 </div>
                 <div className="rst-categories">
                     {data.price} &#8226; 
-                    {data.categories.map((category) =>
-                        <div key={category.id} className="category-chip">
+                    {data.categories.map((rc) =>
+                        <div key={rc.category.id} className="category-chip">
                             <Avatar 
                                 style={{width: 20, height: 20}} variant="square"
-                                src={`${process.env.REACT_APP_S3_STATIC_URL}${category.alias}.png`}
+                                src={`${process.env.REACT_APP_S3_STATIC_URL}${rc.category.api_label}.png`}
                             >
                                 <img style={{width: 20, height: 20}} alt={"&#9787;"}
                                     src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}/>
                             </Avatar>
-                            {category.title}
+                            {rc.category.label}
                         </div>
                     )}
                 </div>
@@ -207,7 +207,7 @@ class Restauraunt extends Component {
       }
 
     render (){
-        const data = JSON.parse(this.props.option.option)
+        const data = this.props.option.restaurant
         const banned = this.props.option.banned
         const scores = this.determineNumVotes()
         const status = this.determineStatus()

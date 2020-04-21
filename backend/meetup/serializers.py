@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from meetup.models import User, UserSettings, Preference, UserSettings, MeetupCategory, Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, ChatRoomMessage, Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite
+from meetup.models import (User, UserSettings, Preference, UserSettings, MeetupCategory, 
+Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, Restaurant, RestaurantCategory, ChatRoomMessage, 
+Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite)
 from django.forms.models import model_to_dict
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
@@ -172,6 +174,28 @@ class MeetupSimpleSerializer(serializers.ModelSerializer):
         model = Meetup
         fields = ('id', 'name', 'uri', 'public')
 
+class RestaurantCategorySerializer(serializers.ModelSerializer):
+    category = serializers.SerializerMethodField("_get_category")
+    
+    def _get_category(self, obj):
+        serializer = CategorySerializer(obj.category)
+        return serializer.data
+
+    class Meta:
+        model = RestaurantCategory
+        fields = ('category',)
+
+class RestaurantSerializer(serializers.ModelSerializer):
+    categories = serializers.SerializerMethodField("_get_categories")
+
+    def _get_categories(self, obj):
+        serializer = RestaurantCategorySerializer(obj.r_categories, many=True)
+        return serializer.data
+
+    class Meta:
+        model = Restaurant
+        fields = ('id', 'identifier', 'name', 'image', 'url', 'rating', 'latitude', 'longitude', 'price', 'location', 'phone', 'categories')
+
 class MeetupEventOptionVoteSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('_get_user')
 
@@ -190,6 +214,7 @@ class MeetupEventOptionVoteSerializer(serializers.ModelSerializer):
 
 class MeetupEventOptionSerializer(serializers.ModelSerializer):
     votes = serializers.SerializerMethodField("_get_votes")
+    restaurant = serializers.SerializerMethodField('_get_restaurant')
 
     def to_representation(self, data):
         res = super(MeetupEventOptionSerializer, self).to_representation(data)
@@ -201,9 +226,13 @@ class MeetupEventOptionSerializer(serializers.ModelSerializer):
             mapping.update(MeetupEventOptionVoteSerializer(vote).data)
         return mapping
 
+    def _get_restaurant(self, obj):
+        serializer = RestaurantSerializer(obj.restaurant)
+        return serializer.data
+
     class Meta:
         model = MeetupEventOption
-        fields = ('id', 'event', 'score', 'option', 'votes', 'banned')
+        fields = ('id', 'event', 'score', 'option', 'restaurant','votes', 'banned')
 
 class MeetupEventSerializer(serializers.ModelSerializer):
     options = serializers.SerializerMethodField('_get_options')

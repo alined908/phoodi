@@ -247,8 +247,9 @@ class MeetupConsumer(AsyncWebsocketConsumer):
 
     @sync_to_async
     def new_option_helper(self, event_id, option):
+
         event = MeetupEvent.objects.get(pk=event_id)
-        meetup_option = MeetupEventOption.objects.create(event=event, option=option)
+        meetup_option = event.create_option_with_restaurant(option)
         return meetup_option
 
     @database_sync_to_async
