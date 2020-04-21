@@ -112,7 +112,7 @@ class MeetupEvent extends Component {
                         <Grid justify="center" container spacing={3}>
                             {keys.map((key, index) => 
                                 <Grow key={key} in={true} timeout={300 * (index + 1)}>
-                                    <Grid item justify={index % 2 === 0 ? "flex-end" : "flex-start"} container xs={12} md={6} sm={12}>
+                                    <Grid item id={`option-${key}`} justify={index % 2 === 0 ? "flex-end" : "flex-start"} container xs={12} md={6} sm={12}>
                                         <Restauraunt 
                                             socket={this.props.socket} full={true} 
                                             isUserMember={this.props.isUserMember} event={this.props.event.id} 
@@ -233,7 +233,7 @@ class MeetupEvent extends Component {
         }
 
         return (
-            <div id={event.id} className="meetup-event">
+            <div id={`event-${event.id}`} className="meetup-event">
                 {renderHeader(this.props.number)}
                 <div className="second-header smaller-header elevate">
                     <div className="second-header-left">

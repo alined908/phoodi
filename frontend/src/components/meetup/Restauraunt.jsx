@@ -141,7 +141,7 @@ class Restauraunt extends Component {
         )
     }
 
-    renderRestauraunt = (data) => {
+    renderRestauraunt = (data, option) => {
         return (   
             <>
                 <div className="rst">

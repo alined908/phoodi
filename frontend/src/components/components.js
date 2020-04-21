@@ -28,6 +28,7 @@ import MeetupFriend from "./meetup/MeetupFriend";
 import MeetupPageComponent from "./meetup/MeetupPageComponent"
 import MeetupsComponent from "./meetup/MeetupsComponent";
 import Restauraunt from "./meetup/Restauraunt";
+import MeetupTree from "./meetup/MeetupTree"
 
 //fields
 import CategoryAutocomplete from "./fields/CategoryAutocomplete"
@@ -65,7 +66,7 @@ export {
     ErrorComponent, LoginComponent, LogoutComponent, RegisterComponent, 
     ChatBarComponent, ChatComponent, ChatMessageComponent, ChatWindowComponent, ContactComponent, ChatInput,
     Friend, FriendsComponent, Invite, Invites,
-    Meetup, MeetupCard, MeetupEvent, MeetupEventForm, MeetupFriend, MeetupForm, MeetupPageComponent, MeetupsComponent, Restauraunt,
+    Meetup, MeetupCard, MeetupEvent, MeetupEventForm, MeetupFriend, MeetupForm, MeetupPageComponent, MeetupsComponent, MeetupTree, Restauraunt,
     RestaurauntAutocomplete, CategoryAutocomplete, UserAutocomplete, Location, renderTextField, renderDatePicker, renderDateSimplePicker, Map,
     CategoriesComponent, CategoryComponent, Preferences, Preference,
     Profile, SettingsComponent, LocationService,

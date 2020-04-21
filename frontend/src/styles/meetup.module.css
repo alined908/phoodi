@@ -30,10 +30,31 @@
 
 .tree{
     position: fixed;
-    left: 120px;
-    top: 50%;
+    left: 5%;
+    top: 30%;  
+    max-width: 200px;
 }
 
-.treeEntry{
-    
+.treeNode{
+    font-size: .8rem;
+    position: relative;
+    padding: 4px 0px 0px 0px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-x: hidden;
+    vertical-align: middle;
+    color: black;
+    fill: black;
+}
+
+.treeTitle{
+    vertical-align: middle;
+}
+
+.content{
+    will-change: transform, opacity, height;
+    margin-left: 6px;
+    padding: 0px 0px 0px 14px;
+    border-left: 1px dashed rgba(0, 0, 0, 0.4);
+    overflow: hidden;
 }

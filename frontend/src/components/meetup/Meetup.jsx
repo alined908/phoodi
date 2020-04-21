@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {MeetupFriend, MeetupEvent, ProgressIcon, MeetupForm, MeetupEventForm} from '../components'
+import {MeetupFriend, MeetupEvent, ProgressIcon, MeetupForm, MeetupEventForm, MeetupTree} from '../components'
 import {connect} from 'react-redux';
 import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, 
     addMeetupMember, addEventOption, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent, addMeetupActivity} from '../../actions/meetup';
@@ -19,7 +19,6 @@ import PropTypes from 'prop-types'
 import {meetupPropType, userPropType, friendPropType} from '../../constants/prop-types'
 import {Helmet} from 'react-helmet'
 import styles from '../../styles/meetup.module.css'
-import { HashLink} from 'react-router-hash-link';
 
 class Meetup extends Component {
     constructor(props){
@@ -266,7 +265,7 @@ class Meetup extends Component {
                 <>
                     {!this.props.isMeetupEventsInitialized && <div>Initializing Events</div>}
                     {this.props.isMeetupEventsInitialized && events && this.sortEvents(events).map((event, index) => 
-                        <MeetupEvent key={event.id} number={index} socket={this.state.socket}  
+                        <MeetupEvent key={event} number={index} socket={this.state.socket}  
                             uri={meetup.uri} event={events[event]} isUserMember={isUserMember} 
                             coords={{latitude: meetup.latitude, longitude: meetup.longitude}}
                         />
@@ -292,31 +291,14 @@ class Meetup extends Component {
             )
         }
 
-        const renderTreeView = (meetup) => {
-        
-            return (
-                <div className={styles.tree}>
-                    <div>{meetup.name}</div>
-                    {this.props.isMeetupEventsInitialized && meetup.events && this.sortEvents(meetup.events).map((event) => 
-                        <div className={styles.treeEntry}>
-                            <HashLink to={`/meetups/${meetup.uri}#${meetup.events[event].id}`} smooth={true}>
-                                {meetup.events[event].title}
-                            </HashLink>
-                        </div>
-                    )}
-                </div>
-            )
-        }
-
         return (
             <>
-                
-                <div className="inner-wrap">
+                <MeetupTree meetup={meetup} sortEvents={(events) => this.sortEvents(events)} initialized={this.props.isMeetupEventsInitialized}/>
+                <div className="inner-wrap" id='head'>
                     <Helmet>
                         <meta charSet="utf-8" />
                         <title>{`${meetup.name}`}</title>
                     </Helmet>
-                    {renderTreeView(meetup)}
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
                             {renderInformation(meetup.name, meetup.date, meetup.location)}
@@ -324,8 +306,8 @@ class Meetup extends Component {
                         <Grid item xs={12}>
                             {renderNotificationLog()}
                         </Grid>
-                        <Grid item xs={12} md={6}>
-                            <div className="inner-header elevate">
+                        <Grid item xs={12} md={6} id="Members">
+                            <div className="inner-header elevate" >
                                 <Typography variant="h5">Members</Typography>
                                 {!isUserMember && 
                                     <Button onClick={this.handlePublicMeetupJoin} style={{background: "#45B649", color: "white"}} variant="contained">
@@ -341,7 +323,7 @@ class Meetup extends Component {
                             {renderFriends()}
                         </Grid>
                         <Grid item xs={12}>
-                            <div className="inner-header elevate">
+                            <div className="inner-header elevate" id="Events">
                                 <Typography variant="h5">Events</Typography>
                                 {isUserMember && 
                                     <Button onClick={this.openEventModal} startIcon={<AddIcon />} className="button rainbow" variant="contained" color="primary">
