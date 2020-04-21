@@ -487,12 +487,13 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         )
 
     async def new_option(self, command):
-        data = command['data']
+        data, user = command['data'], self.user
         meetup, event_id, option_json = data['meetup'], data['event'], data['option']
         meetup_obj = await database_sync_to_async(Meetup.objects.get)(uri=meetup)
         event = await database_sync_to_async(MeetupEvent.objects.get)(pk=event_id)
+        member = await database_sync_to_async(MeetupMember.objects.get)(meetup=meetup_obj, user=user)
         option = await self.new_option_helper(event_id, option_json)
-        notif = await self.generate_notification(event, meetup_obj, "%s has added an option." % (self.user.first_name))
+        notif = await self.generate_notification(event, meetup_obj, member, "added option")
         notification_serializer = await self.get_notification_serializer(notif)
         serializer = await self.get_option_serializer(option)
 
@@ -513,7 +514,7 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         )
 
         content = {
-            'command': 'new_meetup_notif',
+            'command': 'new_meetup_activity',
             'message': {
                 'meetup': meetup,
                 'notification': notification_serializer

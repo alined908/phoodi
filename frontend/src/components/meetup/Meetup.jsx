@@ -19,6 +19,7 @@ import PropTypes from 'prop-types'
 import {meetupPropType, userPropType, friendPropType} from '../../constants/prop-types'
 import {Helmet} from 'react-helmet'
 import styles from '../../styles/meetup.module.css'
+import {HashLink} from 'react-router-hash-link'
 
 class Meetup extends Component {
     constructor(props){
@@ -145,6 +146,45 @@ class Meetup extends Component {
     addFriend = (e, email) => {
         e.preventDefault()
         this.props.sendFriendInvite(email)
+    }
+
+    determineNotification = notif => {
+        const verb = notif.verb
+        let activityHTML;
+        if (verb === "joined" || verb === "created"){
+            activityHTML = (
+                <>
+                    <span>
+                        {verb}
+                    </span>
+                    &nbsp;
+                    <span>
+                        {notif.action_object.name}
+                    </span>
+                </>
+            )
+        } else{
+            console.log(notif)
+            activityHTML = (
+                <>
+                    <span>{verb}</span>
+                    &nbsp;
+                    <span>
+                        {notif.action_object ? 
+                            <HashLink to={`/meetups/${this.props.meetup.uri}#event-${notif.action_object.id}`} smooth={true}>
+                                {notif.action_object.title}
+                            </HashLink> :
+                            <span>
+                                DELETED
+                            </span>
+                        }
+                    </span>
+                </>
+            )
+        }
+
+        return activityHTML
+
     }
 
     render () {
@@ -279,11 +319,17 @@ class Meetup extends Component {
                 <Paper className={styles.notifications} elevation={6}>
                     {this.props.meetup.notifications.map((notif) => 
                         <div className={styles.notification}>
-                            <span>
-                                {notif.verb}
-                            </span>
-                            <span className={styles.notifdate}>
-                                {moment(notif.timestamp).format('MMMM DD - h:mm A')}
+                            <div className={styles.notifInfo}>
+                                <Avatar src={notif.actor.user ? notif.actor.user.avatar : notif.actor.avatar}>
+                                    {notif.actor.user ? notif.actor.user.first_name.charAt(0) : notif.actor.first_name.charAt(0)}
+                                    {notif.actor.user ? notif.actor.user.last_name.charAt(0) : notif.actor.last_name.charAt(0)}
+                                </Avatar>
+                                {notif.actor.user ? notif.actor.user.first_name : notif.actor.first_name} &nbsp;
+                                {notif.actor.user ? notif.actor.user.last_name : notif.actor.last_name} &nbsp;
+                                {this.determineNotification(notif)}
+                            </div>
+                            <span className={styles.notifDate}>
+                                {moment(notif.timestamp).calendar()}
                             </span>
                         </div>
                     )}
@@ -338,7 +384,9 @@ class Meetup extends Component {
                                 }
                             </div>
                         </Grid>
-                        <Grid item xs={12}>{renderEvents(meetup.events)}</Grid>
+                        <Grid item xs={12}>
+                            {renderEvents(meetup.events)}
+                        </Grid>
                     </Grid>
                 </div>
             </>

@@ -224,11 +224,14 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Next Iteration
 - [ ] Notification Bar on Top right of navbar
-- [ ] Refactor (onTagsChange of MeetupsComponent)
+- [ ] Change meetups date filter to date range or exact date with calendar
 - [ ] Add google, facebook, twitter social auth
 - [ ] Add calendar of meetups
-- [ ] Find people who have similar food taste near you?
 - [ ] Elasticsearch? - Search bar on top app nav bar
+- [ ] Refactor (ex. onTagsChange of MeetupsComponent)
+- [ ] Position aware scrolling (meetup tree)
+
+## Todo Later
+- [ ] Find people who have similar food taste near you?
 - [ ] Some sort of reputation system
 - [ ] Guest accounts
-- [ ] Change meetups date filter to date range or exact date with calendar

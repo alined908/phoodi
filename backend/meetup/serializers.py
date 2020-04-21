@@ -237,7 +237,10 @@ class MeetupMemberSerializer(serializers.ModelSerializer):
 
     def to_representation(self, data):
         res = super(MeetupMemberSerializer, self).to_representation(data)
-        return {res['user']['id']: res}
+        if self.context.get("plain"):
+            return res
+        else:
+            return {res['user']['id']: res}
 
     def _get_user(self, obj):
         serializer = UserSerializer(obj.user, context={"plain": True})
@@ -245,7 +248,7 @@ class MeetupMemberSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MeetupMember
-        fields = ['user', 'ban', 'admin']
+        fields = ['id', 'user', 'ban', 'admin']
 
 class MeetupInviteSerializer(serializers.ModelSerializer):
     sender = serializers.SerializerMethodField('_get_sender')
@@ -358,7 +361,7 @@ class GenericNotificationRelatedField(serializers.RelatedField):
         elif isinstance(value, MeetupEvent):
             serializer = MeetupEventSerializer(value)
         elif isinstance(value, MeetupMember):
-            serializer = MeetupMemberSerializer(value)
+            serializer = MeetupMemberSerializer(value, context={"plain": True})
         elif isinstance(value, Friendship):
             serializer = FriendshipSerializer(value)
         elif isinstance(value, Preference):
