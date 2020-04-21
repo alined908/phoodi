@@ -151,7 +151,7 @@ class MeetupSerializer(serializers.ModelSerializer):
 
     def _get_notifications(self, obj):
         notifications = Notification.objects.filter(
-            Q(target_object_id = obj.id) | Q(action_object_object_id = obj.id), 
+            Q(target_object_id = obj.id) | (Q(action_object_object_id = obj.id) & Q(target_object_id=None)), 
             description="meetup_activity"
         )
         serializer = NotificationSerializer(notifications, many=True)

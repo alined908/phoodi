@@ -175,7 +175,11 @@ class ChatWindowComponent extends Component {
                 </div>
                 {this.props.activeRoom ? 
                     <div ref={(el) => { this.messagesEnd = el; }} className="chat-input-wrapper">
-                        <ChatInput user={this.props.user} room={this.props.room} socket={this.props.socket} bound={this.state.bound} scrollToBottom={() => this.scrollToBottom("auto")}/>
+                        <ChatInput 
+                            user={this.props.user} room={this.props.room} 
+                            socket={this.props.socket} bound={this.state.bound} 
+                            scrollToBottom={() => this.scrollToBottom("auto")}
+                        />
                     </div> :
                     <div className="chat-input"> 
 

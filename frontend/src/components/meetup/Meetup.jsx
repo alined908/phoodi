@@ -12,7 +12,8 @@ import moment from 'moment';
 import {Grid, Button, Typography, Avatar, List, ListItem, Paper, ListItemText, ListItemAvatar, IconButton, Tooltip} from "@material-ui/core"
 import WebSocketService from "../../accounts/WebSocket";
 import {Delete as DeleteIcon, Edit as EditIcon, Room as RoomIcon, Chat as ChatIcon, VerifiedUser as VerifiedUserIcon, 
-    Lock as LockIcon, Public as PublicIcon, Email as EmailIcon, Add as AddIcon, Today as TodayIcon, PersonAdd as PersonAddIcon} from '@material-ui/icons'
+    Lock as LockIcon, Public as PublicIcon, Email as EmailIcon, Add as AddIcon, Today as TodayIcon, PersonAdd as PersonAddIcon,
+    Refresh as RefreshIcon} from '@material-ui/icons'
 import AuthenticationService from "../../accounts/AuthenticationService"
 import {axiosClient} from '../../accounts/axiosClient'
 import PropTypes from 'prop-types'
@@ -84,6 +85,10 @@ class Meetup extends Component {
         catch(e){
             this.props.addGlobalMessage("error", "Not able to join this meetup")
         }
+    }
+
+    refreshFriendsList = () => {
+        this.props.getFriends(this.props.user.id)
     }
 
     openFormModal = () => {
@@ -164,7 +169,7 @@ class Meetup extends Component {
                 </>
             )
         } else{
-            console.log(notif)
+          
             activityHTML = (
                 <>
                     <span>{verb}</span>
@@ -365,6 +370,11 @@ class Meetup extends Component {
                         <Grid item xs={12} md={6}>
                             <div className="inner-header elevate">
                                 <Typography variant="h5">Friends</Typography>
+                                <Tooltip title="Refresh">
+                                    <IconButton color="primary" onClick={this.refreshFriendsList}>
+                                        <RefreshIcon/>
+                                    </IconButton>
+                                </Tooltip>
                             </div>
                             {renderFriends()}
                         </Grid>
