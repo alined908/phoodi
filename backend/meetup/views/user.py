@@ -78,8 +78,8 @@ class UserSettingsView(APIView):
     def post(self, request, *args, **kwargs):
         user = request.user
         radius, location, latitude, longitude = request.data['radius'], request.data['location'], request.data['latitude'], request.data['longitude']
-        if UserSettings.objects.filter(user=user).exists():
-            UserSettings.objects.filter(user=user).delete()
+        if hasattr(user, 'usersettings'):
+            user.usersettings.delete()
         try:
             settings = UserSettings.objects.create(user = user, radius = radius, location = location, latitude = latitude, longitude = longitude)
             serializer = UserSerializerWithToken(user, context={"plain": True})

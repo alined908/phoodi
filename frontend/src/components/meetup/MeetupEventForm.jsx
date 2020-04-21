@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {reduxForm, Field} from 'redux-form';
-import {Button, Typography, Grid, ButtonGroup, Slider, Radio, FormControlLabel, Dialog, DialogTitle, DialogContent, DialogActions} from '@material-ui/core';
+import {Button, Typography, Grid, ButtonGroup, Slider, Radio, FormControlLabel, Dialog, DialogTitle, DialogContent, DialogActions, CircularProgress} from '@material-ui/core';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {Error as ErrorIcon} from '@material-ui/icons'
@@ -57,7 +57,8 @@ class MeetupEventForm extends Component {
             entries: props.entries ? props.entries : [],
             prices: props.prices ? convertPricesToState(props.prices) : [true, true , false, false],
             distance: props.distance ? reconvert[props.distance] : 10,
-            random: props.random ? props.random : true
+            random: props.random ? props.random : true,
+            isSubmitting: false
         }
         this.onTagsChange = this.onTagsChange.bind(this)
     }
@@ -72,6 +73,7 @@ class MeetupEventForm extends Component {
     }
 
     onSubmit = async (formProps) => {
+        this.setState({isSubmitting: true})
         const indices = this.state.prices.reduce((out, bool, index) => bool ? out.concat(index+1) : out, [])
         const prices = indices.join(", ")
         const meetup = this.props.meetup
@@ -84,6 +86,7 @@ class MeetupEventForm extends Component {
                 random: this.state.random,
                 ...formProps
             }
+            
             try {
                 await axiosClient.post(
                     `/api/meetups/${this.props.uri}/events/`, data, {headers: {
@@ -118,7 +121,7 @@ class MeetupEventForm extends Component {
                 this.props.addGlobalMessage("error", "Something went wrong")
             }
         }
-
+        this.setState({isSubmitting: false})
         this.props.handleClose()
     }
 
@@ -260,9 +263,12 @@ class MeetupEventForm extends Component {
                         <Button onClick={this.props.handleClose} color="secondary" disabled={submitting}>
                             Close
                         </Button>
-                        <Button color="primary" type="submit" aria-label="add" disabled={this.determineDisable(submitting, invalid)}> 
-                            {create ? "Add Event" : "Edit Event"}
-                        </Button>
+                        <div className={styles.loading}>
+                            <Button color="primary" type="submit" aria-label="add" disabled={this.determineDisable(submitting, invalid)}> 
+                                {create ? "Add Event" : "Edit Event"}
+                            </Button>
+                            {this.state.isSubmitting && <CircularProgress size={20} className={styles.progress}/>}
+                        </div>
                     </DialogActions>
                 </form>
             </Dialog>

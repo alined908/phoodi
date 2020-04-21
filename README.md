@@ -131,7 +131,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Make sure user settings are good on signup/signin if no settings before 
 - [x] Change user model default radius to 25 and relationship to onetoone
 - [x] Past activity
-- [ ] Fix settings retrieval
+- [x] Fix settings retrieval
 - [ ] Confirm email, Change password
 - [ ] Change name of preference
 
@@ -168,10 +168,9 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Add scrollable notifications box for meetup
 - [x] Assign creator to meetup automatically make meetupmember and give admin privilige
 - [x] Outline itinerary of meetup
-- [ ] Loading state after meetup event create/edit
+- [x] Loading state after meetup event create/edit
 - [ ] Block people, admin functionality for meetup member
 - [ ] MeetupEventOption Delete
-- [ ] Create meetup with member
 - [ ] Add friends, redux action/websockets
 - [ ] Create Restauraunt Entity (primary key = yelp_id)
 - [ ] Add capacity if wanted and adjust circles to meetups
@@ -230,6 +229,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Elasticsearch? - Search bar on top app nav bar
 - [ ] Refactor (ex. onTagsChange of MeetupsComponent)
 - [ ] Position aware scrolling (meetup tree)
+- [ ] Create meetup with member
 
 ## Todo Later
 - [ ] Find people who have similar food taste near you?
