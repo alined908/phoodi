@@ -17,14 +17,22 @@ import PropTypes from "prop-types"
 class LoginComponent extends Component {
 
     onSubmit = formProps => {
-        this.props.signin(formProps, () => {
-            this.props.history.push("/meetups")
-        });
+        let redirect;
+        if (this.props.location.state && this.props.location.state.from) {
+            redirect = () => {
+                this.props.history.push(this.props.location.state.from)
+            }
+        } else {
+            redirect = () => {
+                this.props.history.push("/meetups")
+            }
+        }
+        this.props.signin(formProps, redirect);
     }
 
     render(){
         const {handleSubmit} = this.props;
-
+        
         return (
             <Paper className={styles.container} elevation={8}>
                 <div className={styles.left}>

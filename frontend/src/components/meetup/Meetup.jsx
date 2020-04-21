@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {MeetupFriend, MeetupEvent, ProgressIcon, MeetupForm, MeetupEventForm, MeetupTree} from '../components'
 import {connect} from 'react-redux';
-import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, 
+import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, deleteEventOption,
     addMeetupMember, addEventOption, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent, addMeetupActivity} from '../../actions/meetup';
 import {removeNotifs} from '../../actions/notifications'
 import {getFriends} from "../../actions/friend"
@@ -47,7 +47,7 @@ class Meetup extends Component {
         const socket = this.state.socket
         socket.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, 
             this.props.voteMeetupEvent, this.props.decideMeetupEvent, this.props.deleteMeetupEvent, 
-            this.props.addMeetupMember, this.props.addEventOption, this.props.addMeetupActivity);
+            this.props.addMeetupMember, this.props.addEventOption, this.props.deleteEventOption, this.props.addMeetupActivity);
         socket.connect(path, token);
     }
 
@@ -427,21 +427,22 @@ function mapStateToProps(state, ownProps){
 }
 
 const mapDispatchToProps = {
-        deleteMeetup,
-        getFriends, 
-        getMeetupEvents,
-        addMeetupEvent,
-        reloadMeetupEvent,
-        voteMeetupEvent,
-        decideMeetupEvent,
-        deleteMeetupEvent,
-        sendMeetupEmails,
-        removeNotifs,
-        addMeetupMember,
-        addGlobalMessage,
-        addEventOption,
-        sendFriendInvite,
-        addMeetupActivity
+    deleteMeetup,
+    getFriends, 
+    getMeetupEvents,
+    addMeetupEvent,
+    reloadMeetupEvent,
+    voteMeetupEvent,
+    decideMeetupEvent,
+    deleteMeetupEvent,
+    sendMeetupEmails,
+    removeNotifs,
+    addMeetupMember,
+    addGlobalMessage,
+    addEventOption,
+    sendFriendInvite,
+    addMeetupActivity,
+    deleteEventOption
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Meetup)

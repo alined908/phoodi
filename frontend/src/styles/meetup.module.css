@@ -1,3 +1,14 @@
+.deleteOption{
+    position: absolute;
+    top:8px;
+    right:8px;
+    cursor: pointer;
+}
+
+.deleteOption:hover{
+    transform: scale(1.1);
+}
+
 .notifications{
     display: flex;
     width: 500px;

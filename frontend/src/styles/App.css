@@ -431,6 +431,7 @@ body {
   background-color: white;
   height: 100%;
   justify-content: space-around;
+  position: relative;
 }
 
 .banned{
@@ -762,6 +763,7 @@ body {
   border-radius: 4px;
   background-color: white;
   align-items: center;
+  max-height: 66px;
 }
 
 

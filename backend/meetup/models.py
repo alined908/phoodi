@@ -329,10 +329,33 @@ class MeetupEvent(models.Model):
         return options
 
     def generate_options(self):
+        # Get Options 
         options = self.request_yelp_api()
         random.shuffle(options)
+        
+        #Put restaurant in database along with categories
         for option in options[:4]:
-            MeetupEventOption.objects.create(event=self, option=json.dumps(option))
+            identifier = option["id"]
+            try:
+                restaurant = Restaurant.objects.get(identifier=identifier)
+            except ObjectDoesNotExist:
+                info = {
+                    "identifier": identifier, "name": option["name"], "image": option["image_url"],
+                    "url": option["url"], "rating": option["rating"], "latitude": option['coordinates']['latitude'],
+                    "longitude": option['coordinates']['longitude'], "price": option['price'],
+                    "phone": option['display_phone'], 'location': " ".join(option['location']['display_address']),
+                    "categories": json.dumps(option['categories'])
+                }
+                
+                restaurant = Restaurant.objects.create(**info)
+
+                for category in option['categories']:
+                    try:
+                        category = Category.objects.get(api_label=category['alias'])
+                    except ObjectDoesNotExist:
+                        category = Category.objects.create(api_label=category['alias'], label=category['title'])
+                    RestaurantCategory.objects.create(category = category, restaurant = restaurant)
+            MeetupEventOption.objects.create(event=self, restaurant=restaurant)
 
     def delete_options(self):
         options = self.options.all()
@@ -369,11 +392,26 @@ class MeetupEvent(models.Model):
         self.chosen = chosen.id
         self.save()
 
+class Restaurant(models.Model):
+    identifier = models.CharField(max_length=100)
+    name = models.TextField()
+    image = models.TextField()
+    url = models.TextField()
+    rating = models.IntegerField()
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    price = models.CharField(max_length=10)
+    location = models.TextField()
+    phone = models.CharField(max_length=20)
+    categories = models.TextField()
+    objects = models.Manager()
+
 class MeetupEventOption(models.Model):
     event = models.ForeignKey(MeetupEvent, related_name="options", on_delete=models.CASCADE)
-    option = models.TextField()
+    option = models.TextField(null=True, blank=True)
     banned = models.BooleanField(default=False)
     score = models.IntegerField(default=0)
+    restaurant = models.ForeignKey(Restaurant, related_name="meetup_options", null=True, on_delete=models.CASCADE)
     objects = models.Manager()
 
     conversion = {1: 1, 2: -1, 3: 0}
@@ -434,6 +472,28 @@ class MeetupEventOptionVote(models.Model):
     member = models.ForeignKey(MeetupMember, related_name="member_votes", on_delete=models.CASCADE)
     status = models.IntegerField(choices=Vote.choices)
     objects = models.Manager()
+
+class RestaurantPreference(models.Model):
+    user = models.ForeignKey(User, related_name="preferred_restaurants", on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, related_name="likes", on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    ranking = models.PositiveSmallIntegerField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    objects = models.Manager()
+
+    def reorder_preferences(self, new_rank):
+        old_rank = self.ranking
+        if old_rank == new_rank:
+            pass
+        elif old_rank < new_rank:
+            RestaurantPreference.objects.filter(user=self.user, ranking__lte=new_rank, ranking__gte=old_rank).update(ranking=F('ranking') - 1)
+        else:
+            RestaurantPreference.objects.filter(user=self.user, ranking__lte=old_rank, ranking__gte=new_rank).update(ranking=F('ranking') + 1)
+        self.ranking = new_rank
+        self.save()
+
+    def reorder_preferences_delete(self):
+        RestaurantPreference.objects.filter(user=self.user, ranking__gt=self.ranking).update(ranking=F('ranking') - 1)
 
 class Invite(models.Model):
     class InviteStatus(models.IntegerChoices):
@@ -510,6 +570,11 @@ class Category(models.Model):
                 ORDER BY random() \
                 LIMIT 26', params=()))
         return categories
+
+class RestaurantCategory(models.Model):
+    restaurant = models.ForeignKey(Restaurant, related_name="r_categories", on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, related_name="c_restaurants", on_delete=models.CASCADE)
+    objects = models.Manager()
 
 class Preference(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="preferences")

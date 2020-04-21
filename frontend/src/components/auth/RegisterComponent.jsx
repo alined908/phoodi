@@ -58,10 +58,19 @@ class RegisterComponent extends Component {
         if (this.state.image !== null) {
             data.append('avatar', this.state.image, this.state.image.name)
         }   
-        if (this.props.type === "create") {
-            this.props.signup(data, () => {
+
+        let redirect;
+        if (this.props.location.state && this.props.location.state.from) {
+            redirect = () => {
+                this.props.history.push(this.props.location.state.from)
+            }
+        } else {
+            redirect = () => {
                 this.props.history.push("/meetups")
-            });
+            }
+        }
+        if (this.props.type === "create") {
+            this.props.signup(data, redirect);
         }
 
         if (this.props.type === "edit") {
@@ -87,7 +96,7 @@ class RegisterComponent extends Component {
     render() {
         const {handleSubmit, submitting, invalid} = this.props;
         const create = this.props.type === "create"
-
+        
         return (
             <>
                 {create ? 

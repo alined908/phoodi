@@ -96,12 +96,12 @@ def meetup_post_save(sender, instance, created, **kwargs):
 def meetup_member_post_save(sender, instance, created, **kwargs):
     from .serializers import MeetupMemberSerializer, NotificationSerializer
     meetup, user = instance.meetup, instance.user
+    serializer = MeetupMemberSerializer(instance)
     
     if created and user != meetup.creator:
         room = ChatRoom.objects.get(uri=meetup.uri) 
         ChatRoomMember.objects.create(room = room, user = user)
-        serializer = MeetupMemberSerializer(instance)
-    
+        
         #Create Meetup Activity --> Ex. Member joined Meetup
         notify.send(
             sender=instance, recipient = user, action_object = meetup,
@@ -133,20 +133,20 @@ def meetup_member_post_save(sender, instance, created, **kwargs):
             'type': 'meetup_event',
             'meetup_event': content
         })
-     
-        #Send New Meetup Member Object to Meetup Channel
-        content = {
-            'command': 'new_member',
-            'message': {
-                'meetup': meetup.uri, 
-                'member': serializer.data
-            }
+    
+    #Send New/Updated Meetup Member Object to Meetup Channel
+    content = {
+        'command': 'new_member',
+        'message': {
+            'meetup': meetup.uri, 
+            'member': serializer.data
         }
+    }
 
-        async_to_sync(channel_layer.group_send)('meetup_%s' % meetup.uri, {
-             'type': 'meetup_event',
-             'meetup_event': content
-        })
+    async_to_sync(channel_layer.group_send)('meetup_%s' % meetup.uri, {
+            'type': 'meetup_event',
+            'meetup_event': content
+    })
      
 @receiver(pre_save, sender = MeetupEvent)
 def handle_generate_options_on_meetup_event_field_change(sender, instance, **kwargs):

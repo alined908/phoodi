@@ -97,7 +97,6 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo General
 - [ ] Change actions to async actions
 - [ ] Specify websocket protocol on link
-- [ ] Get context when redirect to register/login (proceed as guest?)
 - [ ] Redo responsive layout + design + Safari presentation
 
 ## Todo Testing 
@@ -119,13 +118,11 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Render local restaurraunts on category 
 
 ## Todo Meetup
-- [ ] Give restauraunt preview
-- [ ] Integrate the meetup notificatiosn with the chat 
-- [ ] Block people, admin functionality for meetup member
-- [ ] MeetupEventOption Delete
 - [ ] Create Restauraunt Entity (primary key = yelp_id)
-- [ ] Ban used again for some reason
+- [ ] Give restauraunt preview
+- [ ] Remove people, admin functionality for meetup member
 - [ ] Disable actions if event is in the past
+- [ ] Integrate the meetup notifications with the chat 
 
 ## Todo Chat
 - [ ] Who's online
@@ -160,7 +157,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Elasticsearch? - Search bar on top app nav bar
 - [ ] Properly document stuff
 - [ ] Refactor (ex. onTagsChange of MeetupsComponent)
-- [ ] Position aware scrolling (meetup tree)
+- [ ] Position aware scrolling (meetup tree) (Panda is anchor, dashes are bamboo)
 - [ ] Create meetup with member
 - [ ] Add capacity if wanted and adjust circles to meetups
 

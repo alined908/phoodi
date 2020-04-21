@@ -166,6 +166,11 @@ export default class WebSocketService {
         this.sendMessage({command: 'new_option', data: data})
     }
 
+    deleteEventOption(data){
+        console.log("Websocket - deleteMeetupEventOption")
+        this.sendMessage({command: 'delete_option', data:data})
+    }
+
     //Invite Commands
     fetchInvites(user){
         console.log("Websocket - fetchInvites")
@@ -193,7 +198,7 @@ export default class WebSocketService {
     }
 
     addEventCallbacks(eventsCallback, newEventCallback, reloadEventCallback, voteEventCallback, 
-        decideEventCallback, deleteEventCallback, addMemberCallback, newOptionCallback, addActivityCallback){
+        decideEventCallback, deleteEventCallback, addMemberCallback, newOptionCallback, deleteOptionCallback, addActivityCallback){
         this.callbacks['fetch_events'] = eventsCallback
         this.callbacks['new_event'] = newEventCallback
         this.callbacks['reload_event'] = reloadEventCallback
@@ -203,12 +208,8 @@ export default class WebSocketService {
         this.callbacks['delete_event'] = deleteEventCallback
         this.callbacks['new_member'] = addMemberCallback
         this.callbacks['new_option'] = newOptionCallback
+        this.callbacks['delete_option'] = deleteOptionCallback
         this.callbacks['new_meetup_activity'] = addActivityCallback
-    }
-
-    addInviteCallbacks(invitesCallback, newInviteCallback){
-        this.callbacks['fetch_invites'] = invitesCallback
-        this.callbacks['new_invite'] = newInviteCallback
     }
 
     addNotifCallbacks(notifsCallback){

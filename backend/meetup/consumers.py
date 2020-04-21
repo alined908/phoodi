@@ -235,6 +235,17 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         event.delete()
 
     @sync_to_async
+    def delete_option_helper(self, option):
+        option = MeetupEventOption.objects.get(pk=option)
+        votes = option.event_votes
+        for vote in votes.all():
+            if vote.status == 3:
+                vote.member.ban = False
+                vote.member.save()
+
+        option.delete()
+
+    @sync_to_async
     def new_option_helper(self, event_id, option):
         event = MeetupEvent.objects.get(pk=event_id)
         meetup_option = MeetupEventOption.objects.create(event=event, option=option)
@@ -528,14 +539,57 @@ class MeetupConsumer(AsyncWebsocketConsumer):
             }
         )
 
+    async def delete_option(self, command):
+        data, user = command['data'], self.user
+        meetup_uri, option_id, event_id = data['meetup'], data['option'], data['event']
+        meetup_obj = await database_sync_to_async(Meetup.objects.get)(uri=meetup_uri)
+        member = await database_sync_to_async(MeetupMember.objects.get)(meetup=meetup_obj, user=user)
+        event = await database_sync_to_async(MeetupEvent.objects.get)(pk=event_id)
+        notif = await self.generate_notification(event, meetup_obj, member, "deleted option")
+        notification_serializer = await self.get_notification_serializer(notif)
+        await self.delete_option_helper(option_id)
+        serializer = await self.get_event_serializer(event)
+
+        content = {
+            'command': 'delete_option',
+            'message': {
+                "uri": meetup_uri, 
+                "event_id": event_id, 
+                "event": serializer
+            }
+        }
+
+        await self.channel_layer.group_send(
+            self.meetup_group_name, {
+                'type': 'meetup_event',
+                'meetup_event': content
+            }
+        )
+
+        content = {
+            'command': 'new_meetup_activity',
+            'message': {
+                'meetup': meetup_uri,
+                'notification': notification_serializer
+            }
+        }
+
+        await self.channel_layer.group_send(
+            self.meetup_group_name, {
+                'type': 'meetup_event',
+                'meetup_event': content
+            }
+        )
+
     commands = {
-        'new_event': new_event, #check
-        'reload_event': reload_event, #check
-        'delete_event': delete_event, #check
-        'vote_event': vote_event, #check
-        'decide_event': decide_event, #check
-        'redecide_event': redecide_event, #check
-        'new_option': new_option, #check
+        'new_event': new_event, 
+        'reload_event': reload_event, 
+        'delete_event': delete_event, 
+        'vote_event': vote_event, 
+        'decide_event': decide_event, 
+        'redecide_event': redecide_event,
+        'new_option': new_option,
+        'delete_option': delete_option
     }
 
     async def receive(self, text_data):

@@ -4,12 +4,13 @@ import {voteStatus} from "../../constants/default-states"
 import {
     ThumbUpOutlined as ThumbUpOutlinedIcon, ThumbDownOutlined as ThumbDownOutlinedIcon, ThumbUp as ThumbUpIcon, ThumbDown as ThumbDownIcon, 
     Cancel as CancelIcon, CancelOutlined as CancelOutlinedIcon, Star as StarIcon, StarBorder as StarBorderIcon, StarHalf as StarHalfIcon, 
-    Room as RoomIcon, Phone as PhoneIcon, Launch as LaunchIcon
+    Room as RoomIcon, Phone as PhoneIcon, Launch as LaunchIcon, Close as CloseIcon
 } from '@material-ui/icons'
 import {ADD_GLOBAL_MESSAGE} from '../../constants/action-types'
 import {Avatar, Tooltip} from '@material-ui/core'
 import PropTypes from 'prop-types';
 import {meetupEventOptionPropType, meetupMemberPropType, userPropType} from '../../constants/prop-types'
+import styles from '../../styles/meetup.module.css'
 
 class Restauraunt extends Component {
 
@@ -60,18 +61,35 @@ class Restauraunt extends Component {
         if (!this.props.isUserMember){
             return;
         }
-        this.props.socket.voteMeetupEvent({
-            user: this.props.user.id,
-            option: this.props.option.id, 
-            status: status, 
-            meetup: this.props.meetup
-        })
+        var check = true;
+
         if (status === voteStatus.ban && !this.props.option.banned && this.props.members[this.props.user.id].ban){
             this.props.dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Already used ban"}})
+            check = false
         }
         if (this.props.option.banned && ((this.props.user.id in this.props.option.votes) ? (this.props.option.votes[this.props.user.id].status !== voteStatus.ban) : true)){
             this.props.dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Cant vote on banned option"}})
+            check = false
         }
+
+        if (check) {
+            this.props.socket.voteMeetupEvent({
+                user: this.props.user.id,
+                option: this.props.option.id, 
+                status: status, 
+                meetup: this.props.meetup
+            })
+        }
+    }
+
+    handleDeleteOption = () => {
+        const option = this.props.option.id
+        this.props.socket.deleteEventOption({
+            user: this.props.user.id,
+            option: option,
+            meetup: this.props.meetup,
+            event: this.props.event
+        })
     }
 
     renderActions = (status, scores, banned) => {
@@ -198,6 +216,11 @@ class Restauraunt extends Component {
             return (
                 <div className="center">
                     <div className={"rst-inner-wrapper elevate " + (banned ? "banned": "")}>
+                        <div className={styles.deleteOption} onClick={this.handleDeleteOption}>
+                            <Tooltip title="Delete Option">
+                                <CloseIcon color="secondary" fontSize="small"/>   
+                            </Tooltip>
+                        </div>
                         {this.renderRestauraunt(data)}
                         {this.renderActions(status, scores, banned)}
                     </div>
