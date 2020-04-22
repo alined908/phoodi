@@ -97,7 +97,6 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo General
 - [ ] Change actions to async actions
 - [ ] Specify websocket protocol on link
-- [ ] Redo responsive layout + design + Safari presentation
 
 ## Todo Testing 
 - [ ] Validation for models
@@ -118,8 +117,9 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Render local restaurraunts on category 
 
 ## Todo Meetup
-- [ ] Give restauraunt preview
-- [ ] Remove people, admin functionality for meetup member
+- [ ] Remove people from meetup
+- [ ] Admin functionality for meetup member
+- [ ] Show icon if used ban/is user/admin
 - [ ] Disable actions if event is in the past
 - [ ] Integrate the meetup notifications with the chat 
 
@@ -131,13 +131,12 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
 - [ ] Detect if user is typing
 
-## Todo UI
-- [ ] Change color of home page svgs
-- [ ] Change Avatar text back to normal
-
-## Todo UX
+## Todo UI/UX
 - [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
 - [ ] Animation when logging out forced
+- [ ] Change color of home page svgs
+- [ ] Change Avatar text back to normal
+- [ ] Redo responsive layout + design + Safari presentation
 
 ## Todo Deploy
 - [ ] Separate dev and prod settings

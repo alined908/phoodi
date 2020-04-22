@@ -4,8 +4,9 @@ import {voteStatus} from "../../constants/default-states"
 import {
     ThumbUpOutlined as ThumbUpOutlinedIcon, ThumbDownOutlined as ThumbDownOutlinedIcon, ThumbUp as ThumbUpIcon, ThumbDown as ThumbDownIcon, 
     Cancel as CancelIcon, CancelOutlined as CancelOutlinedIcon, Star as StarIcon, StarBorder as StarBorderIcon, StarHalf as StarHalfIcon, 
-    Room as RoomIcon, Phone as PhoneIcon, Launch as LaunchIcon, Close as CloseIcon
+    Room as RoomIcon, Phone as PhoneIcon, Launch as LaunchIcon, Close as CloseIcon, ZoomIn as ZoomInIcon
 } from '@material-ui/icons'
+import RestaurantPreview from "../meetup/RestaurantPreview"
 import {ADD_GLOBAL_MESSAGE} from '../../constants/action-types'
 import {Avatar, Tooltip} from '@material-ui/core'
 import PropTypes from 'prop-types';
@@ -13,6 +14,12 @@ import {meetupEventOptionPropType, meetupMemberPropType, userPropType} from '../
 import styles from '../../styles/meetup.module.css'
 
 class Restauraunt extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            preview: false
+        }
+    }
 
     determineNumVotes = () => {
         let scores = {1: 0, 2:0, 3:0}
@@ -83,13 +90,15 @@ class Restauraunt extends Component {
     }
 
     handleDeleteOption = () => {
-        const option = this.props.option.id
-        this.props.socket.deleteEventOption({
-            user: this.props.user.id,
-            option: option,
-            meetup: this.props.meetup,
-            event: this.props.event
-        })
+        if (window.confirm("Are you sure you want to delete")){
+            const option = this.props.option.id
+            this.props.socket.deleteEventOption({
+                user: this.props.user.id,
+                option: option,
+                meetup: this.props.meetup,
+                event: this.props.event
+            })
+        }
     }
 
     renderActions = (status, scores, banned) => {
@@ -195,6 +204,10 @@ class Restauraunt extends Component {
         )
     }
 
+    handlePreview = () => {
+        this.setState({preview: !this.state.preview})
+    }
+
     render (){
         const data = this.props.option.restaurant
         const banned = this.props.option.banned
@@ -210,6 +223,12 @@ class Restauraunt extends Component {
                                 <CloseIcon color="secondary" fontSize="small"/>   
                             </Tooltip>
                         </div>
+                        <div className={styles.previewOption} onClick={this.handlePreview}>
+                            <Tooltip title="Preview Option">
+                                <ZoomInIcon color="primary" fontSize="small"/>
+                            </Tooltip>
+                        </div>
+                        {this.state.preview && <RestaurantPreview handleClose={this.handlePreview} identifier={data.identifier}/>}
                         {this.renderRestauraunt(data)}
                         {this.renderActions(status, scores, banned)}
                     </div>

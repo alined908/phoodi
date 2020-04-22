@@ -403,7 +403,7 @@ class Restaurant(models.Model):
     name = models.TextField()
     image = models.TextField()
     url = models.TextField()
-    rating = models.IntegerField()
+    rating = models.FloatField()
     latitude = models.FloatField()
     longitude = models.FloatField()
     price = models.CharField(max_length=10)
