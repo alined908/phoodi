@@ -13,7 +13,7 @@ import {Grid, Button, Typography, Avatar, List, ListItem, Paper, ListItemText, L
 import WebSocketService from "../../accounts/WebSocket";
 import {Delete as DeleteIcon, Edit as EditIcon, Room as RoomIcon, Chat as ChatIcon, VerifiedUser as VerifiedUserIcon, 
     Lock as LockIcon, Public as PublicIcon, Email as EmailIcon, Add as AddIcon, Today as TodayIcon, PersonAdd as PersonAddIcon,
-    Refresh as RefreshIcon} from '@material-ui/icons'
+    Refresh as RefreshIcon, Block as BlockIcon} from '@material-ui/icons'
 import AuthenticationService from "../../accounts/AuthenticationService"
 import {axiosClient} from '../../accounts/axiosClient'
 import PropTypes from 'prop-types'
@@ -285,9 +285,21 @@ class Meetup extends Component {
                                             </>
                                         }>
                                     </ListItemText>
+                                    {members[key].ban && 
+                                        <Tooltip title="Used Ban">
+                                            <BlockIcon color="secondary"/>
+                                        </Tooltip>
+                                    }
+                                    {members[key].admin && 
+                                        <Tooltip title="Admin">
+                                            <VerifiedUserIcon style={{color: "#3f51b5"}}/>
+                                        </Tooltip>
+                                    }
                                     {members[key].user.id === this.props.user.id && 
                                         <Tooltip title="You">
-                                            <VerifiedUserIcon style={{color: "#3f51b5"}}/>
+                                            <img style={{width: 20, height: 20, marginLeft: 10}} alt={"&#9787;"}
+                                                src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}
+                                            />
                                         </Tooltip>
                                     }
                                     {this.determineisMemberNotFriend(members[key].user) && 

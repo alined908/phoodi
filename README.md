@@ -114,12 +114,19 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Friends delete
 
 ## Todo Category
-- [ ] Render local restaurraunts on category 
+- [ ] Render local restauraunts on category 
+
+## Todo Restaurant
+- [ ] Restaurant page
+- [ ] comment thread 
+- [ ] Leave a rating 
+- [ ] Upvote/Downvote a review
+- [ ] Comment a review
+- [ ] Comment a comment
 
 ## Todo Meetup
 - [ ] Remove people from meetup
 - [ ] Admin functionality for meetup member
-- [ ] Show icon if used ban/is user/admin
 - [ ] Disable actions if event is in the past
 - [ ] Integrate the meetup notifications with the chat 
 
@@ -156,7 +163,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Properly document stuff
 - [ ] Refactor (ex. onTagsChange of MeetupsComponent)
 - [ ] Position aware scrolling (meetup tree) (Panda is anchor, dashes are bamboo)
-- [ ] Create meetup with member
 - [ ] Add capacity if wanted and adjust circles to meetups
 - [ ] Use inheritance for RestaurauntPreference and CategoryPreference
 
