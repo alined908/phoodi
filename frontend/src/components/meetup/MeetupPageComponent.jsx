@@ -27,7 +27,6 @@ class MeetupPageComponent extends Component {
 
     render () {
         const meetup = this.props.meetups[this.props.match.params.uri]
-        console.log(meetup)
         const isUserMember = meetup ? this.determineIsUserMember(meetup.members) : false
 
         return (

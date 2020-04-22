@@ -104,11 +104,9 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Authentication
 - [ ] Don't allow websocket to send event even after refresh token expire
-- [ ] Use httpOnly cookies for tokens?
 
 ## Todo User
 - [ ] Confirm email, Change password
-- [ ] Change name of preference
 
 ## Todo Friends
 - [ ] Friends delete
@@ -116,17 +114,10 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo Category
 - [ ] Render local restauraunts on category 
 
-## Todo Restaurant
-- [ ] Restaurant page
-- [ ] comment thread 
-- [ ] Leave a rating 
-- [ ] Upvote/Downvote a review
-- [ ] Comment a review
-- [ ] Comment a comment
-
 ## Todo Meetup
 - [ ] Disable actions if event is in the past
 - [ ] Integrate the meetup notifications with the chat 
+- [ ] Change meetups date filter to date range or exact date with calendar
 
 ## Todo Chat
 - [ ] Who's online
@@ -136,17 +127,19 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
 - [ ] Detect if user is typing
 
-## Todo UI/UX
+## Todo UI/UX/CleanUp
 - [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
 - [ ] Animation when logging out forced
 - [ ] Change color of home page svgs
 - [ ] Change Avatar text back to normal
 - [ ] Redo responsive layout + design + Safari presentation
+- [ ] Refactor (ex. onTagsChange of MeetupsComponent)
+- [ ] Optimize performance
+- [ ] Separate css files
 
 ## Todo Deploy
 - [ ] Separate dev and prod settings
 - [ ] Continuous integration
-- [ ] Separate css files
 - [ ] Cache images
 - [ ] Django settings
 
@@ -154,18 +147,26 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Next Iteration
 - [ ] Notification Bar on Top right of navbar
-- [ ] Change meetups date filter to date range or exact date with calendar
 - [ ] Add google, facebook, twitter social auth
 - [ ] Add calendar of meetups
 - [ ] Elasticsearch? - Search bar on top app nav bar
 - [ ] Properly document stuff
-- [ ] Refactor (ex. onTagsChange of MeetupsComponent)
 - [ ] Position aware scrolling (meetup tree) (Panda is anchor, dashes are bamboo)
-- [ ] Add capacity if wanted and adjust circles to meetups
 - [ ] Use inheritance for RestaurauntPreference and CategoryPreference
 
-## Todo Later
+## Todo Restaurant
+- [ ] Restaurant page
+- [ ] comment thread 
+- [ ] Leave a rating 
+- [ ] Upvote/Downvote a review
+- [ ] Comment a review
+- [ ] Comment a comment
+
+## Todo Later/Nice Stuff
+- [ ] Use httpOnly cookies for tokens?
 - [ ] Find people who have similar food taste near you?
 - [ ] Some sort of reputation system
 - [ ] Guest accounts
 - [ ] Admin functionality for meetup member
+- [ ] Change name of preference
+- [ ] Add capacity if wanted and adjust circles to meetups
