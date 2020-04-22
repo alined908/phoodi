@@ -1,5 +1,5 @@
 import {GET_MEETUPS_REQUEST, GET_MEETUPS_SUCCESS, GET_MEETUPS_ERROR, 
-        ADD_MEETUP, ADD_MEETUP_MEMBER, DELETE_MEETUP, EDIT_MEETUP,
+        ADD_MEETUP, ADD_MEETUP_MEMBER, DELETE_MEETUP_MEMBER, DELETE_MEETUP, EDIT_MEETUP,
      CLEAR_STORE, VOTE_MEETUP_EVENT, ADD_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, 
      EDIT_MEETUP_EVENT, ADD_EVENT_OPTION, ADD_MEETUP_ACTIVITY, DELETE_EVENT_OPTION} from '../constants/action-types';
 
@@ -40,6 +40,16 @@ export default function meetupReducer(state = defaultState, action){
             return {...state, meetups: {...state.meetups, 
                         [action.payload.meetup]: {...state.meetups[action.payload.meetup], 
                             members: {...state.meetups[action.payload.meetup].members, ...action.payload.member}}}}
+        case DELETE_MEETUP_MEMBER:
+            console.log(action.payload.members)
+            return {...state, meetups: {
+                        ...state.meetups, 
+                        [action.payload.meetup]: {
+                            ...state.meetups[action.payload.meetup],
+                            members: action.payload.members
+                        }
+                    }
+                }
         case GET_MEETUP_EVENTS:
             return {...state, meetups: {...state.meetups, 
                     [action.payload.uri]: {...state.meetups[action.payload.uri], 

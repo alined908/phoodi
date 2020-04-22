@@ -125,8 +125,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Comment a comment
 
 ## Todo Meetup
-- [ ] Remove people from meetup
-- [ ] Admin functionality for meetup member
 - [ ] Disable actions if event is in the past
 - [ ] Integrate the meetup notifications with the chat 
 
@@ -170,3 +168,4 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Find people who have similar food taste near you?
 - [ ] Some sort of reputation system
 - [ ] Guest accounts
+- [ ] Admin functionality for meetup member

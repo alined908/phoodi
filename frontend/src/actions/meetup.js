@@ -1,5 +1,5 @@
 import {GET_MEETUPS_REQUEST, GET_MEETUPS_SUCCESS, GET_MEETUPS_ERROR, ADD_MEETUP_ACTIVITY,
-    ADD_MEETUP, ADD_MEETUP_MEMBER, ADD_EVENT_OPTION, DELETE_EVENT_OPTION, ADD_GLOBAL_MESSAGE, DELETE_MEETUP, EDIT_MEETUP,
+    ADD_MEETUP, ADD_MEETUP_MEMBER, DELETE_MEETUP_MEMBER, ADD_EVENT_OPTION, DELETE_EVENT_OPTION, ADD_GLOBAL_MESSAGE, DELETE_MEETUP, EDIT_MEETUP,
     VOTE_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, ADD_MEETUP_EVENT, EDIT_MEETUP_EVENT} from "../constants/action-types";
 import {axiosClient} from '../accounts/axiosClient';
 import {history} from '../components/MeetupApp'
@@ -26,7 +26,7 @@ export const getMeetups = (data) => async dispatch => {
             },
             params: params
         })
-        setTimeout(() => dispatch({type: GET_MEETUPS_SUCCESS, payload: response.data.meetups}), 100)
+        dispatch({type: GET_MEETUPS_SUCCESS, payload: response.data.meetups})
     } catch(e){
         console.log(e)
         dispatch({type: GET_MEETUPS_ERROR, payload: e})
@@ -130,6 +130,10 @@ export const decideMeetupEvent = (event) => async dispatch => {
 
 export const addMeetupMember = (event) => async dispatch => {
     dispatch({type: ADD_MEETUP_MEMBER, payload: event.message})
+}
+
+export const deleteMeetupMember = (event) => async dispatch => {
+    dispatch({type: DELETE_MEETUP_MEMBER, payload: event.message})
 }
 
 export const addEventOption = (event) => async dispatch => {

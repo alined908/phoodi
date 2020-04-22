@@ -196,6 +196,9 @@ class MeetupMembersView(APIView):
         except ObjectDoesNotExist:
             return Response({"error": "Member does not exist"}, status=status.HTTP_400_BAD_REQUEST)
 
+        if member.user == meetup.creator:
+            return Response({"error": "Creator cannot leave meetup"}, status=status.HTTP_400_BAD_REQUEST)
+
         member.delete()
         serializer = MeetupMemberSerializer(meetup.members.all(), many=True)
         return Response(serializer.data)

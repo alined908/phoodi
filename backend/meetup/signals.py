@@ -1,10 +1,12 @@
-from .models import User, ChatRoom, MeetupCategory, ChatRoomMessage, ChatRoomMember, MeetupMember, MeetupEventOptionVote, Meetup, MeetupEvent, MeetupEventOption, MeetupInvite, FriendInvite, Friendship
+from .models import (User, ChatRoom, MeetupCategory, ChatRoomMessage, ChatRoomMember, MeetupMember, 
+MeetupEventOptionVote, Meetup, MeetupEvent, MeetupEventOption, MeetupInvite, FriendInvite, Friendship)
 from notifications.models import Notification
 from channels.layers import get_channel_layer
-from django.db.models.signals import post_save, pre_save, post_delete
+from django.db.models.signals import post_save, pre_save, pre_delete
 from django.dispatch import receiver
 from asgiref.sync import async_to_sync
 from notifications.signals import notify
+from django.core.exceptions import ObjectDoesNotExist
 import inspect
 
 channel_layer = get_channel_layer()
@@ -104,7 +106,7 @@ def meetup_member_post_save(sender, instance, created, **kwargs):
         
         #Create Meetup Activity --> Ex. Member joined Meetup
         notify.send(
-            sender=instance, recipient = user, action_object = meetup,
+            sender=user, recipient = user, action_object = meetup,
             description="meetup_activity", verb="joined"
         )
 
@@ -147,6 +149,81 @@ def meetup_member_post_save(sender, instance, created, **kwargs):
             'type': 'meetup_event',
             'meetup_event': content
     })
+
+@receiver(pre_delete, sender = MeetupMember)
+def handle_delete_member(sender, instance, **kwargs):
+    from .serializers import MeetupMemberSerializer, NotificationSerializer
+    meetup = instance.meetup
+    user = get_user()
+    print(user)
+
+    #Delete existing MeetupInvite
+    try:
+        invite = MeetupInvite.objects.get(meetup = meetup, receiver=instance.user)
+        invite.delete()
+    except ObjectDoesNotExist:
+        pass
+
+    #Send New Members List to Meetup Channel
+    members = MeetupMember.objects.filter(meetup = meetup).exclude(pk=instance.id)
+    mapping = {}
+    for member in members.all():
+        mapping.update(MeetupMemberSerializer(member).data)
+
+    content = {
+        'command': 'delete_member',
+        'message': {
+            'meetup': meetup.uri,
+            'members': mapping
+        }
+    }
+
+    async_to_sync(channel_layer.group_send)('meetup_%s' % meetup.uri, {
+            'type': 'meetup_event',
+            'meetup_event': content
+    })
+
+    #Create User Activity --> Ex. User Left Meetuo
+    #Create Meetup Activity --> Ex.User Left Meetup or Member Kicked Member
+    if user == instance.user:
+        notify.send(
+            sender = user, recipient = user, action_object = meetup, 
+            description = "meetup_activity", verb = "left"
+        )
+        notify.send(
+            sender = user, recipient = user, action_object = meetup, 
+            description = "user_activity", verb = "left"
+        )
+        notification = Notification.objects.filter(
+            action_object_object_id=meetup.id, 
+            description="meetup_activity"
+        ).first()
+    else:
+        member = MeetupMember.objects.get(user=user, meetup=meetup)
+        notify.send(
+            sender = member, recipient = member.user, action_object = instance.user,
+            target = meetup, description = "meetup_activity", verb = "removed"
+        )
+        
+        notification = Notification.objects.filter(
+            target_object_id=meetup.id, 
+            description="meetup_activity"
+        ).first()
+
+    #Send Meetup Activity To Meetup Channel
+    content = {
+        'command': 'new_meetup_activity',
+        'message': {
+            'meetup': meetup.uri,
+            'notification': NotificationSerializer(notification).data
+        }
+    }
+
+    async_to_sync(channel_layer.group_send)('meetup_%s' % meetup.uri, {
+        'type': 'meetup_event',
+        'meetup_event': content
+    })
+
      
 @receiver(pre_save, sender = MeetupEvent)
 def handle_generate_options_on_meetup_event_field_change(sender, instance, **kwargs):
@@ -237,7 +314,6 @@ def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
     
     # Create Meetup Activity --> Member did something to Something on Meetup
     if instance._meetup_notification != "chosen changed":
-        print(instance._meetup_notification)
         user = get_user()
         member = MeetupMember.objects.get(meetup=meetup, user=user)
         notify.send(

@@ -2,6 +2,8 @@ import React, {Component} from "react"
 import {connect} from "react-redux";
 import {getMeetup} from "../../actions/meetup"
 import {Meetup} from '../components';
+import {Redirect} from 'react-router-dom'
+import {CircularProgress} from '@material-ui/core'
 
 class MeetupPageComponent extends Component {
     constructor(props){
@@ -12,11 +14,31 @@ class MeetupPageComponent extends Component {
         }
     }
 
+    determineIsUserMember = (members) => {
+        var isUserMember = false;
+        for (var key of Object.keys(members)){
+            const member = members[key]
+            if (member.user.id === this.props.user.id){
+                return true
+            }
+        }
+        return isUserMember
+    }
+
     render () {
         const meetup = this.props.meetups[this.props.match.params.uri]
+        console.log(meetup)
+        const isUserMember = meetup ? this.determineIsUserMember(meetup.members) : false
+
         return (
             <>
-                {meetup && <Meetup key={meetup.id} meetup={meetup}/>}
+                {meetup ?
+                    (isUserMember ? 
+                        <Meetup key={meetup.id} meetup={meetup} isUserMember={isUserMember}/> : 
+                        <Redirect to="/meetups"/>
+                    ) :
+                    <div><CircularProgress/></div>
+                }
             </>
         )
     }
@@ -24,7 +46,8 @@ class MeetupPageComponent extends Component {
 
 function mapStateToProps(state) {
     return {
-        meetups: state.meetup.meetups
+        meetups: state.meetup.meetups,
+        user: state.user.user
     }
 }
 

@@ -93,8 +93,14 @@ class MeetupEvent extends Component {
         return false
     }
 
+    isUserEventCreator = () => {
+        return this.props.event.creator.id === this.props.user.id
+    }
+
     render () {
         const event = this.props.event
+        const isUserEventCreator = this.isUserEventCreator()
+        const permission = isUserEventCreator || this.props.isUserCreator
 
         const renderHeader = (number) => {
             return (
@@ -191,11 +197,11 @@ class MeetupEvent extends Component {
                             open={this.state.editMeetupEventForm}
                         />
                     }
-                    <Tooltip title="Delete">
+                    {permission && <Tooltip title="Delete">
                         <IconButton onClick={() => this.handleDelete()} color="secondary" aria-label="delete">
                             <DeleteIcon />
                         </IconButton>
-                    </Tooltip>
+                    </Tooltip>}
                 </div>
             )
         }
