@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'djoser',
     'corsheaders',
     'channels',
     'meetup',
@@ -60,8 +61,14 @@ CORS_ORIGIN_WHITELIST = (
 CORS_ALLOW_CREDENTIALS = True
 
 SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT', 'Bearer'),
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=4),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7)
+}
+
+DJOSER = {
+    'SET_PASSWORD_RETYPE': True,
+    'SET_USERNAME_RETYPE': True
 }
 
 AUTH_USER_MODEL = 'meetup.User'

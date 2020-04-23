@@ -55,6 +55,8 @@ import CalendarComponent from "./general/CalendarComponent"
 import SettingsComponent from "./user/SettingsComponent"
 import LocationService from "./user/LocationService"
 import Profile from "./user/Profile"
+import PasswordChange from "./user/PasswordChange"
+import EmailChange from "./user/EmailChange"
 
 //Category
 import CategoriesComponent from "./category/CategoriesComponent"
@@ -69,6 +71,6 @@ export {
     Meetup, MeetupCard, MeetupEvent, MeetupEventForm, MeetupFriend, MeetupForm, MeetupPageComponent, MeetupsComponent, MeetupTree, Restauraunt,
     RestaurauntAutocomplete, CategoryAutocomplete, UserAutocomplete, Location, renderTextField, renderDatePicker, renderDateSimplePicker, Map,
     CategoriesComponent, CategoryComponent, Preferences, Preference,
-    Profile, SettingsComponent, LocationService,
+    Profile, SettingsComponent, LocationService, PasswordChange, EmailChange,
     Body, GlobalMessage, GroupAvatars, HomeComponent, LiveUpdatingBadge, Navigation, NotificationWrapper, CalendarComponent, ProgressIcon
 }

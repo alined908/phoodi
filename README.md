@@ -105,12 +105,15 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Don't allow websocket to send event even after refresh token expire
 
 ## Todo User
-- [ ] Confirm email, Change password
+- [ ] Confirm email
+- [ ] Forgot/Reset password
+- [ ] Add google, facebook, twitter social auth
 
 ## Todo Category
 - [ ] Render local restauraunts on category 
 
 ## Todo Meetup
+- [ ] cant join public meetup for some reason
 - [ ] Disable actions if event is in the past
 - [ ] Integrate the meetup notifications with the chat 
 - [ ] Change meetups date filter to date range or exact date with calendar
@@ -145,7 +148,6 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Next Iteration
 - [ ] Notification Bar on Top right of navbar
-- [ ] Add google, facebook, twitter social auth
 - [ ] Add calendar of meetups
 - [ ] Elasticsearch? - Search bar on top app nav bar
 - [ ] Properly document stuff
@@ -161,6 +163,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Comment a comment
 
 ## Todo Later/Nice Stuff
+- [ ] Update user when email changes
 - [ ] Use httpOnly cookies for tokens?
 - [ ] Find people who have similar food taste near you?
 - [ ] Some sort of reputation system

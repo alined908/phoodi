@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
 import {Select, MenuItem, FormControl, InputLabel, Button} from '@material-ui/core'
-import {Location} from '../components'
+import {Location, PasswordChange, EmailChange} from '../components'
 import Geocode from "react-geocode";
 import {connect} from 'react-redux'
 import {addSettings} from '../../actions/index'
 import PropTypes from "prop-types"
 import {Helmet} from 'react-helmet'
+
+const labels = {1: "1 Mile", 5: "5 Miles", 10: "10 Miles", 15: "15 Miles", 20: "20 Miles", 25: "25 Miles"}
 
 class SettingsComponent extends Component {
     constructor(props){
@@ -14,7 +16,7 @@ class SettingsComponent extends Component {
             radius: props.settings ? props.settings.radius : null,
             location: props.settings ? props.settings.location: "",
             longitude: props.settings ? props.settings.longitude : null,
-            latitude: props.settings ? props.settings.latitude: null
+            latitude: props.settings ? props.settings.latitude: null,
         }
         this.handleClick = this.handleClick.bind(this)
         Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_API_KEY}`)
@@ -52,46 +54,40 @@ class SettingsComponent extends Component {
 
     render () {
         return (
-            <div className="settings elevate">
-                <Helmet>
-                    <meta charSet="utf-8" />
-                    <title>Settings</title>
-                    <meta name="description" content="Phoodie user settings" />
-                </Helmet>
-                <div className="form-header">Settings</div>
-                <div className="">
-                    <FormControl style={{width: "100%"}}>
-                        <InputLabel>Max Radius</InputLabel>
-                        <Select style={{maxHeight: 200}} value={this.state.radius} onChange={this.handleRadius}>
-                            <MenuItem value={1}>
-                                1 mile
-                            </MenuItem>
-                            <MenuItem value={5}>
-                                5 miles
-                            </MenuItem>
-                            <MenuItem value={10}>
-                                10 miles
-                            </MenuItem>
-                            <MenuItem value={15}>
-                                15 miles
-                            </MenuItem>
-                            <MenuItem value={20}>
-                                20 miles
-                            </MenuItem>
-                            <MenuItem value={25}>
-                                25 miles
-                            </MenuItem>
-                        </Select>
-                    </FormControl>
+            <>
+                <div className="settings elevate">
+                    <Helmet>
+                        <meta charSet="utf-8" />
+                        <title>Settings</title>
+                        <meta name="description" content="Phoodie user settings" />
+                    </Helmet>
+                    <div className="form-header">
+                        Settings
+                    </div>
                     
-                    <div style={{marginTop: 20}}>
-                        <Location label="Location" handleClick={this.handleClick} textValue={this.state.location}/>
+                    <div className="">
+                        <FormControl style={{width: "100%"}}>
+                            <InputLabel>Max Radius</InputLabel>
+                            <Select style={{maxHeight: 200}} value={this.state.radius} onChange={this.handleRadius}>
+                                {Object.keys(labels).map((num) => 
+                                    <MenuItem value={num}>
+                                        {labels[num]}
+                                    </MenuItem>
+                                )}
+                            </Select>
+                        </FormControl>
+                        
+                        <div style={{marginTop: 20}}>
+                            <Location label="Location" handleClick={this.handleClick} textValue={this.state.location}/>
+                        </div>
+                    </div>
+                    <div className="settings-save">
+                        <Button variant="contained" color="primary" onClick={this.handleSubmit}>Save</Button>
                     </div>
                 </div>
-                <div className="settings-save">
-                    <Button variant="contained" color="primary" onClick={this.handleSubmit}>Save</Button>
-                </div>
-            </div>
+                <PasswordChange/>
+                {/* <EmailChange/> */}
+            </>
         )
     }
 }

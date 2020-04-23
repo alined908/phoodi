@@ -6,15 +6,7 @@ import {friendPropType} from '../../constants/prop-types'
 import PropTypes from 'prop-types'
 import { useHistory } from "react-router-dom";
 
-const useStyles = makeStyles({
-    primary: {
-        fontWeight: 600,
-        fontFamily: "Lato"
-    }
-  });
-
 const Friend = (props) => {
-    const classes = useStyles()
     const history = useHistory();
 
     const handleClick = (e) => {
@@ -38,7 +30,6 @@ const Friend = (props) => {
                         </Avatar>
                     </ListItemAvatar>
                     <ListItemText 
-                        primaryTypographyProps={{className: classes.primary}}
                         primary={props.friend.user.first_name} 
                         secondary={
                             <>
