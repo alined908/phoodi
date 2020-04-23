@@ -6,6 +6,7 @@ from .views import home
 
 urlpatterns = [
     path('', home, name='home'),
+    path('', include('social_django.urls', namespace='social')),
     path('admin/', admin.site.urls),
     path('api/', include('meetup.urls')),
     path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),

@@ -177,13 +177,13 @@ class Meetup(models.Model):
         return super(Meetup, self).save(*args, **kwargs)
 
     @staticmethod
-    def get_private(user, categories):
+    def get_private(user, categories, start, end):
         category_ids = [int(x) for x in categories.split(',')] if categories else []
 
         if not category_ids:
             meetups = Meetup.objects.filter(id__in=RawSQL(
                 'SELECT member.meetup_id as id FROM meetup_meetupmember as member WHERE user_id = %s' , (user.id,)
-            )).order_by("date")
+            ), date__range=(start,end)).order_by("date")
         else:
             meetups = Meetup.objects.filter(Q(id__in=RawSQL(
                 'SELECT DISTINCT category.meetup_id \
@@ -194,12 +194,15 @@ class Meetup(models.Model):
                     'SELECT member.meetup_id as id \
                     FROM meetup_meetupmember as member \
                     WHERE user_id = %s' , (user.id,)
-                ))).order_by("date")
+                ))
+                &
+                Q(date__range=(start, end))
+                ).order_by("date")
 
         return meetups
 
     @staticmethod
-    def get_public(categories, coords, request, num_results=25):
+    def get_public(categories, coords, request, start, end, num_results=25):
         if categories:
             try:
                 category_ids = [int(x) for x in categories.split(',')]
@@ -240,14 +243,18 @@ class Meetup(models.Model):
         )
 
         if not category_ids:
-            meetups = Meetup.objects.filter(public=True, id__in=distance_query).order_by("date")
+            meetups = Meetup.objects.filter(public=True, id__in=distance_query, date__range=(start,end)).order_by("date")
         else:
-            meetups = Meetup.objects.filter(Q(public=True) & Q(id__in=RawSQL(
+            meetups = Meetup.objects.filter(Q(public=True) 
+                & 
+                Q(id__in=RawSQL(
                 'SELECT DISTINCT category.meetup_id \
                 FROM meetup_meetupcategory as category \
                 WHERE category_id = ANY(%s)' , (category_ids,)))
                 &
-                Q(id__in=distance_query)).order_by("date")
+                Q(id__in=distance_query)
+                &
+                Q(date__range=(start, end))).order_by("date")
 
         return meetups
 

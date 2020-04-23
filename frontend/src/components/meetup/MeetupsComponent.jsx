@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {getMeetups} from "../../actions/meetup";
 import {MeetupCard, CategoryAutocomplete, MeetupForm} from "../components"
-import {Grid, Grow, Tooltip, IconButton, FormGroup, FormControlLabel, Checkbox, Avatar,  CircularProgress} from '@material-ui/core'
+import {Grid, Grow, Tooltip, IconButton, Avatar,  CircularProgress} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import moment from "moment"
 import {Public as PublicIcon, Add as AddIcon, Search as SearchIcon, Edit as EditIcon, Error as ErrorIcon, People as PeopleIcon} from '@material-ui/icons'
@@ -10,24 +10,39 @@ import {getPreferences} from "../../actions/index"
 import PropTypes from "prop-types"
 import { userPropType, preferencePropType, meetupPropType} from '../../constants/prop-types';
 import {Helmet} from "react-helmet";
+import 'react-dates/lib/css/_datepicker.css';
+import 'react-dates/initialize';
+import { DateRangePicker, isInclusivelyAfterDay } from "react-dates";
 
 class MeetupsComponent extends Component {
     constructor(props){
         super(props)
         this.state = {
-            chosen: [true, true, true, true],
-            entries: [],
+            datePicker : {
+                focusedInput: null,
+                startDate: moment(),
+                endDate: moment().add('7', 'd'),
+            },
             public: true,
+            newMeetupForm: false,
+            entries: [],
             preferences: [],
-            clickedPreferences: [],
-            newMeetupForm: false
+            clickedPreferences: []
         }
     }
     
     async componentDidMount(){
         await Promise.all([
             //this.props.getMeetups(),
-            this.props.getMeetups({type: "public", categories: this.formatCategories([]), coords: {...this.props.user.settings}}) ,
+            this.props.getMeetups({
+                type: "public",
+                startDate: this.state.datePicker.startDate.format("YYYY-MM-DD"),
+                endDate: this.state.datePicker.endDate.format("YYYY-MM-DD"),
+                categories: this.formatCategories([]), 
+                coords: {
+                    ...this.props.user.settings
+                }
+            }),
             this.props.getPreferences(this.props.user.id)
         ])
     }
@@ -47,7 +62,7 @@ class MeetupsComponent extends Component {
     }
 
     handleMeetupsType = (type) => {
-        var publicBool = this.state.public;
+        let publicBool = this.state.public;
         if (type === "public") {
             if (!publicBool){
                 publicBool = true
@@ -58,8 +73,21 @@ class MeetupsComponent extends Component {
             }
         }
         this.setState({public: publicBool}, () => publicBool ? 
-            this.props.getMeetups({type: "public", categories: this.formatCategories(this.state.entries), coords: {...this.props.user.settings}}) : 
-            this.props.getMeetups({type: "private", categories: this.formatCategories(this.state.entries)})
+            this.props.getMeetups({
+                type: "public", 
+                startDate: this.state.datePicker.startDate.format("YYYY-MM-DD"),
+                endDate: this.state.datePicker.endDate.format("YYYY-MM-DD"),
+                categories: this.formatCategories(this.state.entries),
+                coords: {
+                    ...this.props.user.settings
+                }
+            }) : 
+            this.props.getMeetups({
+                type: "private",
+                startDate: this.state.datePicker.startDate.format("YYYY-MM-DD"),
+                endDate: this.state.datePicker.endDate.format("YYYY-MM-DD"),
+                categories: this.formatCategories(this.state.entries)
+            })
         )
     }
 
@@ -73,12 +101,27 @@ class MeetupsComponent extends Component {
             entries = this.state.entries.filter(entry => JSON.stringify(entry) !== JSON.stringify(category))
         }
         clickedPrefs[index] = !clickedPrefs[index]
-        this.setState({
-            clickedPreferences: clickedPrefs,
-            entries: entries
-        }, () => this.state.public ? 
-            this.props.getMeetups({type: "public", categories: this.formatCategories(entries), coords: {...this.props.user.settings}}) : 
-            this.props.getMeetups({type: "private", categories: this.formatCategories(entries)}))
+        this.setState(
+            {
+                clickedPreferences: clickedPrefs,
+                entries: entries
+            }, () => this.state.public ? 
+                this.props.getMeetups({
+                    type: "public", 
+                    startDate: this.state.datePicker.startDate.format("YYYY-MM-DD"),
+                    endDate: this.state.datePicker.endDate.format("YYYY-MM-DD"),
+                    categories: this.formatCategories(entries), 
+                    coords: {
+                        ...this.props.user.settings
+                    }
+                }) : 
+                this.props.getMeetups({
+                    type: "private", 
+                    startDate: this.state.datePicker.startDate.format("YYYY-MM-DD"),
+                    endDate: this.state.datePicker.endDate.format("YYYY-MM-DD"),
+                    categories: this.formatCategories(entries)
+                })
+        )
     }
 
     openFormModal = () => {
@@ -95,29 +138,38 @@ class MeetupsComponent extends Component {
         return categoriesString.length > 0 ? categoriesString : null
     }
     
-    divideMeetups = (meetups) => {
-        var [past, today, week, later] = [[], [], [], []]
+    onDatesChange = ({startDate, endDate}) => {
+        this.setState({
+            datePicker: {
+                ...this.state.datePicker,
+                startDate, 
+                endDate
+            }
+        }, () => this.state.public ? 
+            this.props.getMeetups({
+                type: "public", 
+                startDate: this.state.datePicker.startDate.format("YYYY-MM-DD"),
+                endDate: this.state.datePicker.endDate.format("YYYY-MM-DD"),
+                categories: this.formatCategories(this.state.entries), 
+                coords: {
+                    ...this.props.user.settings
+                }
+            }) : 
+            this.props.getMeetups({
+                type: "private", 
+                startDate: this.state.datePicker.startDate.format("YYYY-MM-DD"),
+                endDate: this.state.datePicker.endDate.format("YYYY-MM-DD"),
+                categories: this.formatCategories(this.state.entries)
+            })
+        )
+    }
 
-        for (var i = 0; i < meetups.length; i++){
-            let meetup = meetups[i];
-            if (moment(meetup.date, 'YYYY-MM-DD').isSame(moment(), 'day')){
-                today.push(meetup)
-            } else if (moment(meetup.date, 'YYYY-MM-DD').isBetween(moment().add(1, 'days'), moment().add(7, 'days'), 'days', '[]')) {
-                week.push(meetup)
-            } else if (moment(meetup.date, 'YYYY-MM-DD').isBetween(moment().add(7, 'days'), moment().add(30, 'days'), 'days', '[]')) {
-                later.push(meetup)
-            } else if (moment(meetup.date, 'YYYY-MM-DD').isBefore(moment())){
-                past.push(meetup)
-            }
-        }
-        const dividedMeetups = [past, today, week, later]
-        var filteredMeetups = []
-        dividedMeetups.forEach((range, i) => {
-            if (this.state.chosen[i]){
-                filteredMeetups = filteredMeetups.concat(range)
-            }
-        })
-        return filteredMeetups
+    onFocusChange = (focusedInput) => {
+        this.setState({datePicker: {...this.state.datePicker, focusedInput}})
+    }
+
+    isOutsideRange = day => {
+        return !isInclusivelyAfterDay(day, moment()) || day.isAfter(moment().add('30', 'd'))
     }
 
     onTagsChange = (event, values) => {
@@ -157,7 +209,7 @@ class MeetupsComponent extends Component {
     }
 
     render(){
-        const filteredMeetups = this.divideMeetups(this.props.meetups)
+        const meetups = this.props.meetups
 
         const renderPreset = () => {
             return (
@@ -206,26 +258,22 @@ class MeetupsComponent extends Component {
                         </div>
                         {renderPreset()}
                         <div className="search">
-                            <FormGroup row style={{width: "100%", display: "flex", justifyContent: "space-around", }}>
-                                {!this.state.public &&
-                                    <FormControlLabel 
-                                        label="Past" control={<Checkbox color="primary" size="small" 
-                                        checked={this.state.chosen[0]} onChange={() => this.handleFilter(0)}/>}
-                                    />
-                                }
-                                <FormControlLabel 
-                                    label="Today" control={<Checkbox color="primary" size="small" 
-                                    checked={this.state.chosen[1]} onChange={() => this.handleFilter(1)}/>}
-                                />
-                                <FormControlLabel 
-                                    label="Week" control={<Checkbox color="primary" size="small" 
-                                    checked={this.state.chosen[2]} onChange={() => this.handleFilter(2)}/>}
-                                />
-                                <FormControlLabel 
-                                    label="Later" control={<Checkbox color="primary" size="small" 
-                                    checked={this.state.chosen[3]} onChange={() => this.handleFilter(3)}/>}
-                                />
-                            </FormGroup>
+                            <DateRangePicker 
+                                onDatesChange={this.onDatesChange}
+                                onFocusChange={this.onFocusChange}
+                                focusedInput={this.state.datePicker.focusedInput}
+                                startDate={this.state.datePicker.startDate}
+                                endDate={this.state.datePicker.endDate}
+                                keepOpenOnDateSelect
+                                minimumNights={0}
+                                daySize={50}
+                                isOutsideRange={this.isOutsideRange}
+                                openDirection="up"
+                                noBorder
+                                showDefaultInputIcon
+                                displayFormat="MMM DD"
+                                small
+                            />
                         </div>
                     </div>
                 </div>
@@ -276,7 +324,7 @@ class MeetupsComponent extends Component {
                         {this.props.isMeetupsFetching && <div className="loading" style={{height: "auto"}}><CircularProgress/></div>}
                         {(!this.props.isMeetupsFetching && this.props.isMeetupsInitialized) && 
                             <Grid container spacing={1}>
-                                {filteredMeetups.map((meetup, i) => 
+                                {meetups.map((meetup, i) => 
                                     <Grid key={meetup.id} item xs={12} lg={6} xl={4}>
                                         <Grow in={true} timeout={Math.max((i + 1) * 50, 500)}>
                                             <div className="meetups-cardwrapper">

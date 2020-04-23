@@ -6,14 +6,22 @@ import {history} from '../components/MeetupApp'
 
 export const getMeetups = (data) => async dispatch => {
     dispatch({type: GET_MEETUPS_REQUEST})
-    var params;
+    let params;
     if (data.type === "private"){
-        params = {type: data.type, ...data.categories && {categories: data.categories}}
+        params = {
+            type: data.type, 
+            ...data.categories && {
+                categories: data.categories
+            },
+            start: data.startDate,
+            end: data.endDate
+        }
     } else {
         params = {
             type: data.type, ...data.categories && {categories: data.categories}, 
             latitude: data.coords.latitude, longitude: data.coords.longitude, 
-            radius: data.coords.radius
+            radius: data.coords.radius,start: data.startDate,
+            end: data.endDate
         }
     }
     
