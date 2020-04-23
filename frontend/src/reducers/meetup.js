@@ -126,7 +126,7 @@ export default function meetupReducer(state = defaultState, action){
 
         case ADD_MEETUP_ACTIVITY:
             var met_uri = action.payload.meetup
-    
+            
             return {...state, meetups: {...state.meetups, 
                 [met_uri]: {...state.meetups[met_uri], 
                     notifications: [

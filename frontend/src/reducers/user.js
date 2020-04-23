@@ -25,7 +25,7 @@ export default function(state = userDefaultState, action){
         case ADD_FRIEND:
             return {...state, friends: [...state.friends, action.payload]}
         case DELETE_FRIEND:
-            return state
+            return {...state, friends: [...action.payload]}
         case GET_FRIEND_INVITES:
             return {...state, invites: {...state.invites, friends: action.payload}, isFriendInvitesInitialized: true}
         case GET_MEETUP_INVITES:

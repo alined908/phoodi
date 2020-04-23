@@ -1,4 +1,4 @@
-import {GET_FRIENDS, DELETE_FRIEND} from '../constants/action-types'
+import {GET_FRIENDS, DELETE_FRIEND, ADD_GLOBAL_MESSAGE} from '../constants/action-types'
 import {axiosClient} from '../accounts/axiosClient'
 
 export const getFriends = (id) => async dispatch => {
@@ -15,16 +15,19 @@ export const getFriends = (id) => async dispatch => {
     }
 }
 
-export const deleteFriend = (id) => async dispatch => {
+export const deleteFriend = (user_id, friend_id) => async dispatch => {
     try {
         const response = await axiosClient.delete(
-            "/api/friends/", {"id": id}, {headers: {
+            `/api/users/${user_id}/friends/`, {data: {"id": friend_id}, headers: {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
         console.log(response)
-        dispatch({type: DELETE_FRIEND, payload: id})
+        Promise.all([
+            dispatch({type: DELETE_FRIEND, payload: response.data}), 
+            dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "success", message: "Removed Friend"}})
+        ])
     } catch(e){
-        console.log(e);
+        dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "error", message: e.message}})
     }
 }

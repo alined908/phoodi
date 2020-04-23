@@ -73,7 +73,7 @@ class FriendsComponent extends Component{
                     <Grid container spacing={3}>
                         {this.props.friends.map((friend) => 
                             <Grid key={friend.id} item xs={12} md={6} lg={4} >
-                                <Friend isUserFriend={true} friend={friend}/>
+                                <Friend user={this.props.user} isUserFriend={true} friend={friend} deleteFriend={this.props.deleteFriend}/>
                             </Grid>
                         )}
                     </Grid>

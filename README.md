@@ -96,7 +96,6 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo General
 - [ ] Change actions to async actions
-- [ ] Specify websocket protocol on link
 
 ## Todo Testing 
 - [ ] Validation for models
@@ -108,9 +107,6 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo User
 - [ ] Confirm email, Change password
 
-## Todo Friends
-- [ ] Friends delete
-
 ## Todo Category
 - [ ] Render local restauraunts on category 
 
@@ -118,6 +114,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Disable actions if event is in the past
 - [ ] Integrate the meetup notifications with the chat 
 - [ ] Change meetups date filter to date range or exact date with calendar
+- [ ] Restauraunt autocomplete notify that no options (because hours/bad search)
 
 ## Todo Chat
 - [ ] Who's online
@@ -133,6 +130,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Change color of home page svgs
 - [ ] Change Avatar text back to normal
 - [ ] Redo responsive layout + design + Safari presentation
+- [ ] Skeleton loading where applicable
 - [ ] Refactor (ex. onTagsChange of MeetupsComponent)
 - [ ] Optimize performance
 - [ ] Separate css files

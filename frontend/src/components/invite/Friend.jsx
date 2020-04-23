@@ -1,7 +1,7 @@
 import React from "react"
 import {Link} from "react-router-dom"
 import {ListItem, ListItemAvatar, ListItemText, Tooltip, Typography, Avatar, makeStyles, IconButton} from '@material-ui/core'
-import ChatIcon from '@material-ui/icons/Chat';
+import {Chat as ChatIcon, Delete as DeleteIcon} from '@material-ui/icons';
 import {friendPropType} from '../../constants/prop-types'
 import PropTypes from 'prop-types'
 import { useHistory } from "react-router-dom";
@@ -20,6 +20,11 @@ const Friend = (props) => {
     const handleClick = (e) => {
         e.preventDefault()
         history.push(`/chat/${props.friend.chat_room}`)
+    }
+
+    const handleDelete = (e) => {
+        e.preventDefault()
+        props.deleteFriend(props.user.id, props.friend.id)
     }
 
     return (
@@ -48,6 +53,13 @@ const Friend = (props) => {
                         <Tooltip title="Chat">
                             <IconButton color="primary" onClick={handleClick}>
                                 <ChatIcon/>
+                            </IconButton>
+                        </Tooltip>
+                    }
+                    {props.isUserFriend && 
+                        <Tooltip title="Delete Friend">
+                            <IconButton color="secondary" onClick={handleDelete}>
+                                <DeleteIcon/>
                             </IconButton>
                         </Tooltip>
                     }

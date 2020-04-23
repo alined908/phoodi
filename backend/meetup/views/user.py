@@ -125,10 +125,11 @@ class UserFriendsView(APIView):
         """
         Delete friend
         """
-        pk = request.data["id"]
+        pk, user = request.data["id"], request.user
         friendship = get_object_or_404(Friendship, pk=pk)
         friendship.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        serializer = FriendshipSerializer(user.get_friends(), many=True, context={'user': user})
+        return Response(serializer.data)
     
 class UserPreferenceListView(APIView):
     permission_classes = [permissions.IsAuthenticated]

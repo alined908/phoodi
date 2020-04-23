@@ -34,9 +34,11 @@ class NotificationWrapper extends Component {
 
     connectSocket = () => {
         const token = AuthenticationService.retrieveToken()
-        const path = `/ws/user/${this.props.user.id}/`;
+        const path = `/ws/user/${this.props.user.id}/`
         this.state.socket.connect(path, token);
-        this.state.socket.waitForSocketConnection(()=>this.state.socket.fetchNotifications({user: this.props.user.id}))
+        this.state.socket.waitForSocketConnection(() =>
+            this.state.socket.fetchNotifications({user: this.props.user.id})
+        )
     }
 
     render() {

@@ -15,10 +15,14 @@ export default class WebSocketService {
     }
 
     connect(path, token){
-        const baseURL = (process.env.NODE_ENV === 'production') ? process.env.REACT_APP_PROD_BASE_URL: process.env.REACT_APP_DEV_BASE_URL
+        const baseURL = (process.env.NODE_ENV === 'production') ? 
+            process.env.REACT_APP_PROD_BASE_URL: 
+            process.env.REACT_APP_DEV_BASE_URL
         const urlWithToken = baseURL 
         var url = new URL(path, urlWithToken)
-        url.protocol = url.protocol.replace('http', 'ws')
+        url.protocol = url.protocol === "http:" ? 
+            url.protocol.replace('http', 'ws') : 
+            url.protocol.replace('https', 'wss')
         if (token===null) {return}
         this.socketRef = new WebSocket(url.href + `?token=${token}`);
     
