@@ -422,7 +422,8 @@ class Comment(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
 class Review(Comment):
-    rating = models.IntegerField()
+    CHOICES = [(i, i) for i in range(1, 11)]
+    rating = models.IntegerField(choices=CHOICES)
     
 class CommentVote(models.Model):
     class Vote(models.IntegerChoices):
