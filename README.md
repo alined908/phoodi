@@ -113,7 +113,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Render local restauraunts on category 
 
 ## Todo Meetup
-- [ ] cant join public meetup for some reason
 - [ ] Disable actions if event is in the past
 - [ ] Integrate the meetup notifications with the chat 
 - [ ] Restauraunt autocomplete notify that no options (because hours/bad search)

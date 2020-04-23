@@ -27,12 +27,14 @@ class MeetupPageComponent extends Component {
 
     render () {
         const meetup = this.props.meetups[this.props.match.params.uri]
-        const isUserMember = meetup ? (this.determineIsUserMember(meetup.members) || meetup.public) : false
+        const isUserMember = meetup && this.determineIsUserMember(meetup.members)
+        console.log(meetup)
+        console.log(isUserMember)
 
-        return (
+        return (    
             <>
                 {meetup ?
-                    (isUserMember ? 
+                    ((isUserMember || meetup.public) ? 
                         <Meetup key={meetup.id} meetup={meetup} isUserMember={isUserMember}/> : 
                         <Redirect to="/meetups"/>
                     ) :

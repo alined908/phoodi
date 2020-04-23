@@ -209,7 +209,7 @@ class MeetupsComponent extends Component {
 
     render(){
         const meetups = this.props.meetups
-        console.log(this.state.datePicker)
+        
         const renderPreset = () => {
             return (
                 <div className="preset">

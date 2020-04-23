@@ -54,21 +54,7 @@ class Meetup extends Component {
         socket.connect(path, token);
     }
 
-    static getDerivedStateFromProps(props, state){
-        var isUserMember = false;
-        for (var key of Object.keys(props.meetup.members)){
-            const member = props.meetup.members[key]
-            if (member.user.id === props.user.id){
-                isUserMember = true
-            }
-        }
-    
-        if (!isUserMember){
-            history.push('/meetups')
-        }
-        return null;
-    }
-
+   
     componentWillUnmount() {
         this.state.socket.disconnect()
     }
@@ -327,7 +313,7 @@ class Meetup extends Component {
                                             <BlockIcon color="secondary"/>
                                         </Tooltip>
                                     }
-                                    
+                                
                                     {members[key].user.id === this.props.user.id && 
                                         <Tooltip title="You">
                                             <img style={{width: 20, height: 20, marginLeft: 10}} alt={"&#9787;"}
@@ -353,7 +339,7 @@ class Meetup extends Component {
                                             </IconButton>
                                         </Tooltip>
                                     } */}
-                                    {(members[key].user.id !== this.props.user.id && members[this.props.user.id].admin) &&
+                                    {isUserMember && (members[key].user.id !== this.props.user.id && members[this.props.user.id].admin) &&
                                         <Tooltip title="Remove Member">
                                             <IconButton color="secondary" onClick={(e) => this.handleLeaveMeetup(e,members[key].user.email)}>
                                                 <ExitToAppIcon/>
