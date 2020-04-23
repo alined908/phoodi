@@ -410,7 +410,27 @@ class Restaurant(models.Model):
     location = models.TextField()
     phone = models.CharField(max_length=20)
     categories = models.TextField()
+    review_count = models.IntegerField()
     objects = models.Manager()
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    parent_comment = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
+    text = models.CharField(max_length=1000)
+    vote_score = models.IntegerField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+class Review(Comment):
+    rating = models.IntegerField()
+    
+class CommentVote(models.Model):
+    class Vote(models.IntegerChoices):
+        UP = 1
+        DOWN = 2
+    user = models.ForeignKey(User, related_name="u_votes", on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment, related_name="c_votes", on_delete=models.CASCADE)
+    vote = models.IntegerField(choices=Vote.choices)
 
 class MeetupEventOption(models.Model):
     event = models.ForeignKey(MeetupEvent, related_name="options", on_delete=models.CASCADE)

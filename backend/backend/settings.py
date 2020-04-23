@@ -68,7 +68,8 @@ SIMPLE_JWT = {
 
 DJOSER = {
     'SET_PASSWORD_RETYPE': True,
-    'SET_USERNAME_RETYPE': True
+    'SET_USERNAME_RETYPE': True,
+    'TOKEN_MODEL': None
 }
 
 AUTH_USER_MODEL = 'meetup.User'

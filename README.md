@@ -115,9 +115,17 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo Meetup
 - [ ] cant join public meetup for some reason
 - [ ] Disable actions if event is in the past
-- [ ] Integrate the meetup notifications with the chat 
 - [ ] Change meetups date filter to date range or exact date with calendar
+- [ ] Integrate the meetup notifications with the chat 
 - [ ] Restauraunt autocomplete notify that no options (because hours/bad search)
+
+## Todo Restaurant
+- [ ] Restaurant page
+- [ ] comment thread 
+- [ ] Leave a rating 
+- [ ] Upvote/Downvote a review
+- [ ] Comment a review
+- [ ] Comment a comment
 
 ## Todo Chat
 - [ ] Who's online
@@ -153,14 +161,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Properly document stuff
 - [ ] Position aware scrolling (meetup tree) (Panda is anchor, dashes are bamboo)
 - [ ] Use inheritance for RestaurauntPreference and CategoryPreference
-
-## Todo Restaurant
-- [ ] Restaurant page
-- [ ] comment thread 
-- [ ] Leave a rating 
-- [ ] Upvote/Downvote a review
-- [ ] Comment a review
-- [ ] Comment a comment
 
 ## Todo Later/Nice Stuff
 - [ ] Update user when email changes
