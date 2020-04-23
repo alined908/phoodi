@@ -115,7 +115,6 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo Meetup
 - [ ] cant join public meetup for some reason
 - [ ] Disable actions if event is in the past
-- [ ] Change meetups date filter to date range or exact date with calendar
 - [ ] Integrate the meetup notifications with the chat 
 - [ ] Restauraunt autocomplete notify that no options (because hours/bad search)
 

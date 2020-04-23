@@ -18,11 +18,9 @@ class MeetupsComponent extends Component {
     constructor(props){
         super(props)
         this.state = {
-            datePicker : {
-                focusedInput: null,
-                startDate: moment(),
-                endDate: moment().add('7', 'd'),
-            },
+            focusedInput: null,
+            startDate: moment(),
+            endDate: moment().add('7', 'd'),
             public: true,
             newMeetupForm: false,
             entries: [],
@@ -36,8 +34,8 @@ class MeetupsComponent extends Component {
             //this.props.getMeetups(),
             this.props.getMeetups({
                 type: "public",
-                startDate: this.state.datePicker.startDate.format("YYYY-MM-DD"),
-                endDate: this.state.datePicker.endDate.format("YYYY-MM-DD"),
+                startDate: this.state.startDate.format("YYYY-MM-DD"),
+                endDate: this.state.endDate.format("YYYY-MM-DD"),
                 categories: this.formatCategories([]), 
                 coords: {
                     ...this.props.user.settings
@@ -75,8 +73,8 @@ class MeetupsComponent extends Component {
         this.setState({public: publicBool}, () => publicBool ? 
             this.props.getMeetups({
                 type: "public", 
-                startDate: this.state.datePicker.startDate.format("YYYY-MM-DD"),
-                endDate: this.state.datePicker.endDate.format("YYYY-MM-DD"),
+                startDate: this.state.startDate.format("YYYY-MM-DD"),
+                endDate: this.state.endDate.format("YYYY-MM-DD"),
                 categories: this.formatCategories(this.state.entries),
                 coords: {
                     ...this.props.user.settings
@@ -84,8 +82,8 @@ class MeetupsComponent extends Component {
             }) : 
             this.props.getMeetups({
                 type: "private",
-                startDate: this.state.datePicker.startDate.format("YYYY-MM-DD"),
-                endDate: this.state.datePicker.endDate.format("YYYY-MM-DD"),
+                startDate: this.state.startDate.format("YYYY-MM-DD"),
+                endDate: this.state.endDate.format("YYYY-MM-DD"),
                 categories: this.formatCategories(this.state.entries)
             })
         )
@@ -108,8 +106,8 @@ class MeetupsComponent extends Component {
             }, () => this.state.public ? 
                 this.props.getMeetups({
                     type: "public", 
-                    startDate: this.state.datePicker.startDate.format("YYYY-MM-DD"),
-                    endDate: this.state.datePicker.endDate.format("YYYY-MM-DD"),
+                    startDate: this.state.startDate.format("YYYY-MM-DD"),
+                    endDate: this.state.endDate.format("YYYY-MM-DD"),
                     categories: this.formatCategories(entries), 
                     coords: {
                         ...this.props.user.settings
@@ -117,8 +115,8 @@ class MeetupsComponent extends Component {
                 }) : 
                 this.props.getMeetups({
                     type: "private", 
-                    startDate: this.state.datePicker.startDate.format("YYYY-MM-DD"),
-                    endDate: this.state.datePicker.endDate.format("YYYY-MM-DD"),
+                    startDate: this.state.startDate.format("YYYY-MM-DD"),
+                    endDate: this.state.endDate.format("YYYY-MM-DD"),
                     categories: this.formatCategories(entries)
                 })
         )
@@ -139,17 +137,18 @@ class MeetupsComponent extends Component {
     }
     
     onDatesChange = ({startDate, endDate}) => {
+        if(!startDate || !endDate) return;
+        if(!startDate.isValid() || !endDate.isValid()) return;
+        console.log(startDate)
+        console.log(endDate)
         this.setState({
-            datePicker: {
-                ...this.state.datePicker,
-                startDate, 
-                endDate
-            }
+            startDate, 
+            endDate
         }, () => this.state.public ? 
             this.props.getMeetups({
                 type: "public", 
-                startDate: this.state.datePicker.startDate.format("YYYY-MM-DD"),
-                endDate: this.state.datePicker.endDate.format("YYYY-MM-DD"),
+                startDate: this.state.startDate.format("YYYY-MM-DD"),
+                endDate: this.state.endDate.format("YYYY-MM-DD"),
                 categories: this.formatCategories(this.state.entries), 
                 coords: {
                     ...this.props.user.settings
@@ -157,15 +156,15 @@ class MeetupsComponent extends Component {
             }) : 
             this.props.getMeetups({
                 type: "private", 
-                startDate: this.state.datePicker.startDate.format("YYYY-MM-DD"),
-                endDate: this.state.datePicker.endDate.format("YYYY-MM-DD"),
+                startDate: this.state.startDate.format("YYYY-MM-DD"),
+                endDate: this.state.endDate.format("YYYY-MM-DD"),
                 categories: this.formatCategories(this.state.entries)
             })
         )
     }
 
     onFocusChange = (focusedInput) => {
-        this.setState({datePicker: {...this.state.datePicker, focusedInput}})
+        this.setState({focusedInput})
     }
 
     isOutsideRange = day => {
@@ -210,7 +209,7 @@ class MeetupsComponent extends Component {
 
     render(){
         const meetups = this.props.meetups
-
+        console.log(this.state.datePicker)
         const renderPreset = () => {
             return (
                 <div className="preset">
@@ -261,13 +260,15 @@ class MeetupsComponent extends Component {
                             <DateRangePicker 
                                 onDatesChange={this.onDatesChange}
                                 onFocusChange={this.onFocusChange}
-                                focusedInput={this.state.datePicker.focusedInput}
-                                startDate={this.state.datePicker.startDate}
-                                endDate={this.state.datePicker.endDate}
+                                focusedInput={this.state.focusedInput}
+                                startDate={this.state.startDate}
+                                startDateId="unique_start_date_id"
+                                endDate={this.state.endDate}
+                                endDateId="unique_end_date_id"
                                 keepOpenOnDateSelect
                                 minimumNights={0}
                                 daySize={50}
-                                isOutsideRange={this.isOutsideRange}
+                                isOutsideRange={this.state.public ? this.isOutsideRange : () => false}
                                 openDirection="up"
                                 noBorder
                                 showDefaultInputIcon
