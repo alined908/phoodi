@@ -8,7 +8,7 @@ from backend.settings import YELP_API_KEY, BASE_URL, BASE_DEV_URL
 from django.utils.dateformat import format
 from uuid import uuid4
 from django.core.exceptions import ObjectDoesNotExist
-import requests, random, json, sys, time, os, geocoder, datetime
+import requests, random, json, sys, time, os, geocoder, datetime, re
 from django.contrib.postgres.fields import JSONField, ArrayField
 from rest_framework_jwt.settings import api_settings
 from django.db import transaction
@@ -342,22 +342,34 @@ class MeetupEvent(models.Model):
             restaurant = Restaurant.objects.get(identifier=identifier)
         except ObjectDoesNotExist:
             info = {
-                "identifier": identifier, "name": option["name"], "image": option["image_url"],
-                "url": option["url"], "rating": option["rating"], "latitude": option['coordinates']['latitude'],
+                "identifier": identifier, "name": option["name"], "yelp_image": option["image_url"],
+                "yelp_url": option["url"], "rating": option["rating"], "latitude": option['coordinates']['latitude'],
                 "longitude": option['coordinates']['longitude'], "price": option.get('price', '$$'),
                 "phone": option['display_phone'], 'location': " ".join(option['location']['display_address']),
-                "categories": json.dumps(option['categories'])
+                "categories": json.dumps(option['categories']), 'city': option['location']['city'],
+                'country': option['location']['country'], 'state': option['location']['state'],
+                'zipcode': option['location']['zip_code'], 'address1': option['location']['address1'],
             }
-            
-            restaurant = Restaurant.objects.create(**info)
 
+            same_name_same_city_restaurants = Restaurant.objects.filter(name = info['name'], city = info['city']).count()
+            urlify_name = re.sub("'", "", re.sub(r"[^\w']", "-", info['name'])).lower()
+            urlify_city = re.sub("'", "", re.sub(r"[^\w']", "-", info['city'])).lower()
+            url = "%s-%s" % (urlify_name, urlify_city)
+
+            if same_name_same_city_restaurants > 0:
+               url += "-%s" % (same_name_same_city_restaurants + 1)
+
+            info['url'] = url
+
+            restaurant = Restaurant.objects.create(**info)
+        
             for category in option['categories']:
                 try:
                     category = Category.objects.get(api_label=category['alias'])
                 except ObjectDoesNotExist:
                     category = Category.objects.create(api_label=category['alias'], label=category['title'])
                 RestaurantCategory.objects.create(category = category, restaurant = restaurant)
-                
+
         option, created = MeetupEventOption.objects.get_or_create(event=self, restaurant=restaurant)
         return option
 
@@ -408,16 +420,24 @@ class MeetupEvent(models.Model):
 class Restaurant(models.Model):
     identifier = models.CharField(max_length=100)
     name = models.TextField()
-    image = models.TextField()
+    yelp_image = models.TextField()
+    yelp_url = models.TextField()
     url = models.TextField()
     rating = models.FloatField()
     latitude = models.FloatField()
     longitude = models.FloatField()
     price = models.CharField(max_length=10)
     location = models.TextField()
+    address1 = models.CharField(max_length=255)
+    address2 = models.CharField(max_length=255, blank=True)
+    city = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    zipcode = models.CharField(max_length=255)
+    country = models.CharField(max_length=255)
     phone = models.CharField(max_length=20)
     categories = models.TextField()
-    review_count = models.IntegerField()
+    review_count = models.IntegerField(default=0)
+    option_count = models.IntegerField(default=0)
     objects = models.Manager()
 
 class Comment(models.Model):

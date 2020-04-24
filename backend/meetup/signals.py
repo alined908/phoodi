@@ -275,7 +275,6 @@ def handle_generate_options_on_meetup_event_field_change(sender, instance, **kwa
 def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
     from .serializers import MeetupEventSerializer, NotificationSerializer
     meetup = instance.meetup
-    
     if created:
         # If random is set then generate options, otherwise No Options Needed.
         if instance.random:
@@ -311,7 +310,6 @@ def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
                     'message': content
                 })
 
-    
     # Create Meetup Activity --> Member did something to Something on Meetup
     if instance._meetup_notification != "chosen changed":
         user = get_user()
@@ -336,7 +334,7 @@ def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
             'type': 'meetup_event',
             'meetup_event': content
         })
-
+ 
     # Send New Event Object To Meetup Channel
     content = {
         'command': 'new_event',
@@ -352,6 +350,13 @@ def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
         'type': 'meetup_event',
         'meetup_event': content
     })
+
+@receiver(post_save, sender = MeetupEventOption)
+def post_save_meetup_option(sender, instance, created, **kwargs):
+    if created:
+        restaurant = instance.restaurant
+        restaurant.option_count += 1
+        restaurant.save()
 
 @receiver(post_save, sender = MeetupInvite)
 def create_notif_meetup_inv(sender, instance, created, **kwargs):

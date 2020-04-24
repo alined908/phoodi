@@ -193,7 +193,7 @@ class MeetupMembersView(APIView):
             return Response({"error": "User does not exist"}, status=status.HTTP_400_BAD_REQUEST)
 
         try: 
-            member = MeetupMember.objects.get(user=user)
+            member = MeetupMember.objects.get(user=user, meetup=meetup)
         except ObjectDoesNotExist:
             return Response({"error": "Member does not exist"}, status=status.HTTP_400_BAD_REQUEST)
 

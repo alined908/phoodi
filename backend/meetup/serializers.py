@@ -194,7 +194,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Restaurant
-        fields = ('id', 'identifier', 'name', 'image', 'url', 'rating', 'latitude', 'longitude', 'price', 'location', 'phone', 'categories')
+        fields = ('id', 'identifier', 'name', 'url', 'yelp_image', 'yelp_url', 'rating', 'latitude', 'longitude', 'price', 'location', 'phone', 'categories')
 
 class MeetupEventOptionVoteSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('_get_user')

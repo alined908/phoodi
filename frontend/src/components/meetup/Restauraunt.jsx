@@ -175,14 +175,14 @@ class Restauraunt extends Component {
                     <div className="rst-info">
                         <span>
                             <Tooltip title="More information on Yelp page" placement="top">
-                                <a className="rst-name" target="_blank" rel="noopener noreferrer" href={data.url}>
+                                <a className="rst-name" target="_blank" rel="noopener noreferrer" href={data.yelp_url}>
                                     {data.name} <LaunchIcon fontSize={"inherit"} fontWeight="inherit"/>
                                 </a>
                             </Tooltip>
                         </span>
                         <span className="rst-rating">{this.determineRating(data.rating)}</span>
                     </div>
-                    <div className="rst-img" style={{backgroundImage: `url(${data.image})`}}>
+                    <div className="rst-img" style={{backgroundImage: `url(${data.yelp_image})`}}>
                     </div>
                 </div>
                 <div className="rst-categories">

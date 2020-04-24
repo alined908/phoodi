@@ -94,20 +94,13 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Author
 * **Daniel Lee** 
 
-## Todo General
-- [ ] Change actions to async actions
-
-## Todo Testing 
-- [ ] Validation for models
-- [ ] Write tests for frontend
-
-## Todo Authentication
-- [ ] Don't allow websocket to send event even after refresh token expire
-
-## Todo User
-- [ ] Confirm email
-- [ ] Forgot/Reset password
-- [ ] Add google, facebook, twitter social auth
+## Todo Restaurant
+- [ ] Restaurant page
+- [ ] comment thread 
+- [ ] Leave a rating 
+- [ ] Upvote/Downvote a review
+- [ ] Comment a review
+- [ ] Comment a comment
 
 ## Todo Category
 - [ ] Render local restauraunts on category 
@@ -116,14 +109,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Disable actions if event is in the past
 - [ ] Integrate the meetup notifications with the chat 
 - [ ] Restauraunt autocomplete notify that no options (because hours/bad search)
-
-## Todo Restaurant
-- [ ] Restaurant page
-- [ ] comment thread 
-- [ ] Leave a rating 
-- [ ] Upvote/Downvote a review
-- [ ] Comment a review
-- [ ] Comment a comment
 
 ## Todo Chat
 - [ ] Who's online
@@ -143,6 +128,21 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Refactor (ex. onTagsChange of MeetupsComponent)
 - [ ] Optimize performance
 - [ ] Separate css files
+
+## Todo General
+- [ ] Change actions to async actions
+
+## Todo Testing 
+- [ ] Validation for models
+- [ ] Write tests for frontend
+
+## Todo Authentication
+- [ ] Don't allow websocket to send event even after refresh token expire
+
+## Todo User
+- [ ] Email activation
+- [ ] Forgot/Reset password
+- [ ] Add google, facebook, twitter social auth
 
 ## Todo Deploy
 - [ ] Separate dev and prod settings
