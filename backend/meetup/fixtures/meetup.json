@@ -8,7 +8,8 @@
             "longitude": -122.258423,
             "name": "Let's get some food",
             "date": "2020-03-03",
-            "public": true
+            "public": true,
+            "creator_id": 1
         }
     },
     {

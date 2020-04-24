@@ -1,7 +1,5 @@
 from rest_framework import serializers
-from meetup.models import (User, UserSettings, Preference, UserSettings, MeetupCategory, 
-Category, MeetupEventOption, MeetupEventOptionVote, MeetupEvent, MeetupInvite, Restaurant, RestaurantCategory, ChatRoomMessage, 
-Friendship, ChatRoom, ChatRoomMember, Meetup, MeetupMember, FriendInvite)
+from meetup.models import *
 from django.forms.models import model_to_dict
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
@@ -194,7 +192,30 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Restaurant
-        fields = ('id', 'identifier', 'name', 'url', 'yelp_image', 'yelp_url', 'rating', 'latitude', 'longitude', 'price', 'location', 'phone', 'categories')
+        fields = '__all__'
+
+class CommentSerializer(serializers.ModelSerializer):
+    children = serializers.SerializerMethodField('_get_children')
+    
+    def _get_children(self, obj):
+        serializer = CommentSerializer(obj.children, many=True)
+        return serializer.data
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+class ReviewSerializer(serializers.ModelSerializer):
+    children = serializers.SerializerMethodField("_get_children")
+
+    def _get_children(self, obj):
+        top = Comment.objects.filter(review = obj, parent_comment = None)
+        serializer = CommentSerializer(top, many=True)
+        return serializer.data
+
+    class Meta:
+        model = Review
+        fields = '__all__'
 
 class MeetupEventOptionVoteSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('_get_user')

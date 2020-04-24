@@ -1,0 +1,60 @@
+from meetup.models import Restaurant, RestaurantCategory, Review, Comment
+from meetup.serializers import RestaurantSerializer, ReviewSerializer, CommentSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import permissions, status
+from django.shortcuts import get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
+
+class RestaurantView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        restaurant = Restaurant.objects.get(url=kwargs['uri'])
+        serializer = RestaurantSerializer(restaurant)
+
+        return Response(serializer.data)
+
+class ReviewView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        restaurant = Restaurant.objects.get(url=kwargs['uri'])
+        serializer = ReviewSerializer(restaurant.r_reviews.all(), many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        user, text, rating = request.user, request.data['text'], request.data['rating']
+        restaurant = Restaurant.objects.get(url=kwargs['uri'])
+
+        review = Review.objects.create(
+            user = user, text = text, rating = rating,
+            restaurant = restaurant
+        )
+
+        serializer = ReviewSerializer(review)
+
+        return Response(serializer.data)
+
+class CommentView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        user, text = request.user, request.data['text']
+        restaurant = Restaurant.objects.get(url=kwargs['uri'])
+        review = Review.objects.get(pk=request.data['review_id'])
+
+        parent_id = request.data.get('parent')
+        if parent_id:
+            parent = Comment.objects.get(pk=parent_id)
+        else:
+            parent = None
+
+        comment = Comment.objects.create(
+            user = user, text = text, restaurant = restaurant,
+            review = review, parent_comment = parent
+        )
+
+        serializer = CommentSerializer(comment)
+
+        return Response(serializer.data)

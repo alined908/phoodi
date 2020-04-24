@@ -94,13 +94,10 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Author
 * **Daniel Lee** 
 
-## Todo Restaurant
-- [ ] Restaurant page
-- [ ] comment thread 
-- [ ] Leave a rating 
-- [ ] Upvote/Downvote a review
+## Todo Restaurant 
 - [ ] Comment a review
 - [ ] Comment a comment
+- [ ] Upvote/Downvote a review
 
 ## Todo Category
 - [ ] Render local restauraunts on category 

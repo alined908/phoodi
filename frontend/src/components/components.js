@@ -27,7 +27,7 @@ import MeetupForm from "./meetup/MeetupForm";
 import MeetupFriend from "./meetup/MeetupFriend";
 import MeetupPageComponent from "./meetup/MeetupPageComponent"
 import MeetupsComponent from "./meetup/MeetupsComponent";
-import Restauraunt from "./meetup/Restauraunt";
+import MeetupEventOption from "./meetup/MeetupEventOption";
 import MeetupTree from "./meetup/MeetupTree"
 
 //fields
@@ -64,13 +64,24 @@ import CategoryComponent from "./category/CategoryComponent"
 import Preferences from "./category/Preferences"
 import Preference from "./category/Preference"
 
+//Restaurant
+import Restaurant from "./restaurant/Restaurant"
+import RestaurantPreview from "./restaurant/RestaurantPreview"
+import RestaurantThread from "./restaurant/RestaurantThread"
+import RestaurantReviewForm from "./restaurant/RestaurantReviewForm"
+import RestaurantReview from "./restaurant/RestaurantReview"
+import CommentForm from "./restaurant/CommentForm"
+import Comments from "./restaurant/Comments"
+import Comment from "./restaurant/Comment"
+
 export {
     ErrorComponent, LoginComponent, LogoutComponent, RegisterComponent, 
     ChatBarComponent, ChatComponent, ChatMessageComponent, ChatWindowComponent, ContactComponent, ChatInput,
     Friend, FriendsComponent, Invite, Invites,
-    Meetup, MeetupCard, MeetupEvent, MeetupEventForm, MeetupFriend, MeetupForm, MeetupPageComponent, MeetupsComponent, MeetupTree, Restauraunt,
+    Meetup, MeetupCard, MeetupEvent, MeetupEventForm, MeetupFriend, MeetupForm, MeetupPageComponent, MeetupsComponent, MeetupTree, MeetupEventOption,
     RestaurauntAutocomplete, CategoryAutocomplete, UserAutocomplete, Location, renderTextField, renderDatePicker, renderDateSimplePicker, Map,
     CategoriesComponent, CategoryComponent, Preferences, Preference,
+    Restaurant, RestaurantPreview, RestaurantThread, RestaurantReviewForm, CommentForm, RestaurantReview, Comments, Comment,
     Profile, SettingsComponent, LocationService, PasswordChange, EmailChange,
     Body, GlobalMessage, GroupAvatars, HomeComponent, LiveUpdatingBadge, Navigation, NotificationWrapper, CalendarComponent, ProgressIcon
 }

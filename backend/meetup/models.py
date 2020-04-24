@@ -352,7 +352,7 @@ class MeetupEvent(models.Model):
             }
 
             same_name_same_city_restaurants = Restaurant.objects.filter(name = info['name'], city = info['city']).count()
-            urlify_name = re.sub("'", "", re.sub(r"[^\w']", "-", info['name'])).lower()
+            urlify_name = re.sub("'", "", re.sub(r"[^\w']", "-", re.sub("&", "and", info['name']))).lower()
             urlify_city = re.sub("'", "", re.sub(r"[^\w']", "-", info['city'])).lower()
             url = "%s-%s" % (urlify_name, urlify_city)
 
@@ -438,19 +438,28 @@ class Restaurant(models.Model):
     categories = models.TextField()
     review_count = models.IntegerField(default=0)
     option_count = models.IntegerField(default=0)
+    comment_count = models.IntegerField(default=0)
     objects = models.Manager()
 
-class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-    parent_comment = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
+class BaseComment(models.Model):
     text = models.CharField(max_length=1000)
-    vote_score = models.IntegerField()
+    vote_score = models.IntegerField(default=0)
     timestamp = models.DateTimeField(auto_now_add=True)
 
-class Review(Comment):
+    class Meta:
+        abstract=True
+
+class Review(BaseComment):
     CHOICES = [(i, i) for i in range(1, 11)]
+    user = models.ForeignKey(User, related_name="u_reviews",on_delete=models.SET_NULL, null=True)
+    restaurant = models.ForeignKey(Restaurant, related_name="r_reviews", on_delete=models.CASCADE)
     rating = models.IntegerField(choices=CHOICES)
+
+class Comment(BaseComment):
+    user = models.ForeignKey(User, related_name="u_comments", on_delete=models.SET_NULL, null=True)
+    restaurant = models.ForeignKey(Restaurant, related_name="rst_comments", on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, related_name="review_comments", on_delete=models.CASCADE)
+    parent_comment = models.ForeignKey('self', related_name="children", on_delete=models.SET_NULL, null=True) 
     
 class CommentVote(models.Model):
     class Vote(models.IntegerChoices):

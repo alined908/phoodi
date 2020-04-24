@@ -8,7 +8,7 @@ import {Cached as CachedIcon, Edit as EditIcon, Close as CloseIcon, Search as Se
     Schedule as ScheduleIcon, Delete as DeleteIcon, Error as ErrorIcon} from '@material-ui/icons'
 import {IconButton, Typography, Grid, Grow, Tooltip, Avatar, Divider} from '@material-ui/core'
 import {compose} from 'redux';
-import {Restauraunt, Map, RestaurauntAutocomplete, ProgressIcon, MeetupEventForm} from '../components'
+import {MeetupEventOption, Map, RestaurauntAutocomplete, ProgressIcon, MeetupEventForm} from '../components'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types';
 import {meetupEventPropType} from "../../constants/prop-types"
@@ -139,7 +139,7 @@ class MeetupEvent extends Component {
                             {keys.map((key, index) => 
                                 <Grow key={key} in={true} timeout={300 * (index + 1)}>
                                     <Grid item id={`option-${key}`} justify={index % 2 === 0 ? "flex-end" : "flex-start"} container xs={12} md={6} sm={12}>
-                                        <Restauraunt 
+                                        <MeetupEventOption
                                             socket={this.props.socket} full={true} 
                                             isUserMember={this.props.isUserMember} event={this.props.event.id} 
                                             meetup={this.props.uri} data={options[key]}
@@ -243,7 +243,7 @@ class MeetupEvent extends Component {
             return (
                 <div className="chosen">
                     <div className="chosen-restauraunt elevate">
-                        <Restauraunt 
+                        <MeetupEventOption 
                             key={chosen.id} socket={this.props.socket} 
                             isUserMember={this.props.isUserMember} full={false} 
                             event={this.props.event.id} meetup={this.props.uri} data={chosen}

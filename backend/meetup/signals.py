@@ -1,5 +1,4 @@
-from .models import (User, ChatRoom, MeetupCategory, ChatRoomMessage, ChatRoomMember, MeetupMember, 
-MeetupEventOptionVote, Meetup, MeetupEvent, MeetupEventOption, MeetupInvite, FriendInvite, Friendship)
+from meetup.models import *
 from notifications.models import Notification
 from channels.layers import get_channel_layer
 from django.db.models.signals import post_save, pre_save, pre_delete
@@ -356,6 +355,20 @@ def post_save_meetup_option(sender, instance, created, **kwargs):
     if created:
         restaurant = instance.restaurant
         restaurant.option_count += 1
+        restaurant.save()
+
+@receiver(post_save, sender = Review)
+def post_save_review(sender, instance, created, **kwargs):
+    if created:
+        restaurant = instance.restaurant
+        restaurant.review_count += 1
+        restaurant.save()
+
+@receiver(post_save, sender = Comment)
+def post_save_comment(sender, instance, created, **kwargs):
+    if created:
+        restaurant = instance.restaurant
+        restaurant.comment_count += 1
         restaurant.save()
 
 @receiver(post_save, sender = MeetupInvite)

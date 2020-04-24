@@ -13,6 +13,13 @@
     right: -12px;
 }
 
+.yelpOption{
+    position: absolute;
+    cursor: pointer;
+    top: 50px;
+    right: -12px;
+}
+
 .deleteOption:hover, .previewOption:hover{
     transform: scale(1.1);
 }
@@ -124,4 +131,28 @@
     display: flex;
     align-items: center;
     margin: 0 3px;
+}
+
+.review {
+    
+}
+
+.reviewForm{
+    width: 100%;
+    min-width: 700px;
+}
+
+.ratings{
+    display:flex;
+    flex-direction: column-reverse;
+    padding: 0 1rem;
+}
+
+.rating{
+    display: flex;
+    padding: .5rem 1rem;
+}
+
+.ratingScore {
+    margin-right: 10px;
 }
