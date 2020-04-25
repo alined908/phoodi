@@ -41,6 +41,7 @@ class CommentForm extends Component {
                 }}
             )
             console.log(response.data)
+            this.props.displayOnSuccess(response.data)
         } catch(e) {
             console.log(e)
         }

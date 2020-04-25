@@ -39,6 +39,7 @@
                                         latitude: rst.latitude, 
                                         longitude: rst.longitude
                                     }}
+                                    notLoad
                                 />
                         </div>
                         <RestaurantThread uri={this.props.match.params.uri} restaurant={rst}/>

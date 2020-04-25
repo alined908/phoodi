@@ -460,14 +460,24 @@ class Comment(BaseComment):
     restaurant = models.ForeignKey(Restaurant, related_name="rst_comments", on_delete=models.CASCADE)
     review = models.ForeignKey(Review, related_name="review_comments", on_delete=models.CASCADE)
     parent_comment = models.ForeignKey('self', related_name="children", on_delete=models.SET_NULL, null=True) 
-    
-class CommentVote(models.Model):
+
+class BaseVote(models.Model):
     class Vote(models.IntegerChoices):
+        DOWN = -1
+        UNVOTE = 0
         UP = 1
-        DOWN = 2
-    user = models.ForeignKey(User, related_name="u_votes", on_delete=models.CASCADE)
-    comment = models.ForeignKey(Comment, related_name="c_votes", on_delete=models.CASCADE)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     vote = models.IntegerField(choices=Vote.choices)
+
+    class Meta:
+        abstract = True
+
+class CommentVote(BaseVote):
+    comment = models.ForeignKey(Comment, related_name="c_votes", on_delete=models.CASCADE)
+
+class ReviewVote(BaseVote):
+    review = models.ForeignKey(Review, related_name="r_votes", on_delete=models.CASCADE)
 
 class MeetupEventOption(models.Model):
     event = models.ForeignKey(MeetupEvent, related_name="options", on_delete=models.CASCADE)

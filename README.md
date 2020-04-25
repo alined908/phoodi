@@ -94,11 +94,6 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Author
 * **Daniel Lee** 
 
-## Todo Restaurant 
-- [ ] Comment a review
-- [ ] Comment a comment
-- [ ] Upvote/Downvote a review
-
 ## Todo Category
 - [ ] Render local restauraunts on category 
 
@@ -126,9 +121,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Optimize performance
 - [ ] Separate css files
 
-## Todo General
-- [ ] Change actions to async actions
-
 ## Todo Testing 
 - [ ] Validation for models
 - [ ] Write tests for frontend
@@ -150,16 +142,18 @@ python manage.py loaddata meetup/fixtures/*.json
 ------------------------------------------------------------------
 
 ## Todo Next Iteration
+- [ ] Use httpOnly cookies for tokens
+- [ ] Rewrite Database (Comments as Tree, scalable solution for voting)
+- [ ] Set up caching system (redis)
+- [ ] Set up celery for asynchronous job processing (convert signals to create task for celery)
 - [ ] Notification Bar on Top right of navbar
 - [ ] Add calendar of meetups
 - [ ] Elasticsearch? - Search bar on top app nav bar
 - [ ] Properly document stuff
 - [ ] Position aware scrolling (meetup tree) (Panda is anchor, dashes are bamboo)
-- [ ] Use inheritance for RestaurauntPreference and CategoryPreference
 
 ## Todo Later/Nice Stuff
 - [ ] Update user when email changes
-- [ ] Use httpOnly cookies for tokens?
 - [ ] Find people who have similar food taste near you?
 - [ ] Some sort of reputation system
 - [ ] Guest accounts

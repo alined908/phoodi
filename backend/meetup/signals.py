@@ -371,6 +371,38 @@ def post_save_comment(sender, instance, created, **kwargs):
         restaurant.comment_count += 1
         restaurant.save()
 
+@receiver(pre_save, sender = ReviewVote)
+def pre_save_review_vote(sender, instance, **kwargs):
+    if instance.id:
+        previous = ReviewVote.objects.get(pk=instance.id)
+        instance._old_vote = previous.vote
+
+@receiver(pre_save, sender = CommentVote)
+def pre_save_comment_vote(sender, instance, **kwargs):
+    if instance. id:
+        previous = CommentVote.objects.get(pk = instance.id)
+        instance._old_vote = previous.vote
+
+@receiver(post_save, sender = ReviewVote)
+def post_save_review_vote(sender, instance, created, **kwargs):
+    review = instance.review
+
+    if not created:
+        review.vote_score -= instance._old_vote
+        
+    review.vote_score += instance.vote
+    review.save()
+
+@receiver(post_save, sender = CommentVote)
+def post_save_comment_vote(sender, instance, created, **kwargs):
+    comment = instance.comment
+
+    if not created:
+        comment.vote_score -= instance._old_vote
+
+    comment.vote_score += instance.vote
+    comment.save()
+
 @receiver(post_save, sender = MeetupInvite)
 def create_notif_meetup_inv(sender, instance, created, **kwargs):
     if created:

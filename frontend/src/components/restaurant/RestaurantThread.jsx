@@ -45,7 +45,7 @@ class RestaurantThread extends Component {
                     Add Review
                 </Button>
                 {reviews.map((review) => 
-                    <RestaurantReview review={review} restaurant={this.props.restaurant}/>
+                    <RestaurantReview key={review.id} review={review} restaurant={this.props.restaurant}/>
                 )}
 
                 {this.state.reviewForm && <RestaurantReviewForm 

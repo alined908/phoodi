@@ -1,5 +1,8 @@
-from meetup.models import Restaurant, RestaurantCategory, Review, Comment
-from meetup.serializers import RestaurantSerializer, ReviewSerializer, CommentSerializer
+from meetup.models import (
+    Restaurant, RestaurantCategory, Review, Comment,
+    CommentVote, ReviewVote
+) 
+from meetup.serializers import RestaurantSerializer, ReviewSerializer, CommentSerializer, ReviewVoteSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
@@ -19,8 +22,8 @@ class ReviewView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        restaurant = Restaurant.objects.get(url=kwargs['uri'])
-        serializer = ReviewSerializer(restaurant.r_reviews.all(), many=True)
+        user, restaurant = request.user, Restaurant.objects.get(url=kwargs['uri'])
+        serializer = ReviewSerializer(restaurant.r_reviews.all(), many=True, context={"user": user})
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
@@ -32,7 +35,7 @@ class ReviewView(APIView):
             restaurant = restaurant
         )
 
-        serializer = ReviewSerializer(review)
+        serializer = ReviewSerializer(review, context={"user": user})
 
         return Response(serializer.data)
 
@@ -57,4 +60,30 @@ class CommentView(APIView):
 
         serializer = CommentSerializer(comment)
 
+        return Response(serializer.data)
+
+class VoteView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        user, direction = request.user, request.data['direction']
+        
+        if request.data.get('review'):
+            review = Review.objects.get(pk=request.data['review'])
+            try:
+                vote = ReviewVote.objects.get(user = user, review = review)
+                vote.vote = direction
+                vote.save()
+            except ObjectDoesNotExist:
+                vote = ReviewVote.objects.create(user = user, review = review, vote = direction)
+        else:
+            comment = Comment.objects.get(pk=request.data['comment'])
+            try:
+                vote = CommentVote.objets.get(user = user, comment = comment)
+                vote.vote = direction
+                vote.save()
+            except ObjectDoesNotExist:
+                vote = CommentVote.objects.create(user = user, comment = comment, vote = direction)
+        
+        serializer = ReviewVoteSerializer(vote)
         return Response(serializer.data)

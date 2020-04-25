@@ -16,6 +16,7 @@ urlpatterns=[
     path("restaurants/<uri>/", views.RestaurantView.as_view()),
     path("restaurants/<uri>/reviews/", views.ReviewView.as_view()),
     path("restaurants/<uri>/comments/", views.CommentView().as_view()),
+    path("vote/", views.VoteView().as_view()),
     path("meetups/", views.MeetupListView.as_view()),
     path("meetups/invite/", views.MeetupInviteAllView.as_view()),
     path("meetups/<uri>/", views.MeetupView.as_view()),
