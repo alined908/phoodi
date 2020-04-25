@@ -6,6 +6,7 @@ from django.dispatch import receiver
 from asgiref.sync import async_to_sync
 from notifications.signals import notify
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone
 import inspect
 
 channel_layer = get_channel_layer()
@@ -505,9 +506,34 @@ def create_chat_room_for_friendship(sender, instance, created, **kwargs):
             'message': content
         })
 
+@receiver(post_save, sender=ChatRoom)
+def post_save_chat_room(sender, instance, created, **kwargs):
+    from .serializers import ChatRoomSerializer
+    
+    for member in instance.members.all():
+        serializer = ChatRoomSerializer(instance, context={"user": member.user})
+
+        content = {
+            'command': 'update_room',
+            'message': {
+                'room': {
+                    instance.uri: serializer.data
+                }
+            }
+        }
+
+        async_to_sync(channel_layer.group_send)("chat_contacts_for_user_%d" % member.user.id, {
+            'type': 'chat_rooms',
+            'message': content
+        })
+
 @receiver(post_save, sender=ChatRoomMessage)
 def create_notif_chat_message(sender, instance, created, **kwargs):
     if created:
+        room = instance.room
+        room.last_updated = timezone.now()
+        room.save()
+
         for member in instance.room.members.all():
             if member.user != instance.sender:
                 notify.send(

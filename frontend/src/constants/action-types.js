@@ -13,6 +13,7 @@ export const GET_ROOMS_REQUEST = 'get_rooms_request';
 export const GET_ROOMS_SUCCESS = 'get_rooms_success';
 export const GET_ROOMS_ERROR = 'get_rooms_error'
 export const ADD_ROOM = 'add_room';
+export const UPDATE_ROOM = 'update_room';
 export const SET_ACTIVE_ROOM = 'set_active_room';
 export const GET_MESSAGES_REQUEST = 'get_messages_request';
 export const GET_MESSAGES_SUCCESS = 'get_messages_success';

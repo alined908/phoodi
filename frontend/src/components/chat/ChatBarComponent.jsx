@@ -5,6 +5,9 @@ import {IconButton, Tooltip, CircularProgress} from '@material-ui/core'
 import {Event as EventIcon, Person as PersonIcon, Search as SearchIcon, Error as ErrorIcon} from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import {chatRoomPropType, userPropType,} from "../../constants/prop-types"
+import WebSocketService from "../../accounts/WebSocket"
+import AuthenticationService from '../../accounts/AuthenticationService';
+import {updateRoom} from '../../actions/chat'
 
 class ChatBarComponent extends Component {
     constructor(props){
@@ -20,8 +23,17 @@ class ChatBarComponent extends Component {
             },
             isFiltered: false,
             isSearched: false,
-            searchInput: ''
+            searchInput: '',
+            socket: new WebSocketService()
         }
+        this.state.socket.addContactsCallbacks(this.props.updateRoom)
+    }
+
+    componentDidMount(){
+        const socket = this.state.socket
+        const token = AuthenticationService.retrieveToken()
+        const path = `/ws/chat/rooms/`;
+        socket.connect(path, token);
     }
 
     componentDidUpdate(prevProps) {
@@ -104,7 +116,7 @@ class ChatBarComponent extends Component {
                         </div>
                     }
                     {this.props.isRoomsInitialized && rooms.map((room) => 
-                        <ContactComponent user={this.props.user} key={room.id} room={room}></ContactComponent>
+                        <ContactComponent user={this.props.user} key={room.id} room={room}/>
                     )}
                 </div>
                 <div className="chat-bar-search">
@@ -132,5 +144,9 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(ChatBarComponent)
+const mapDispatchToProps = {
+    updateRoom
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatBarComponent)
 export {ChatBarComponent as UnderlyingChatBarComponent}

@@ -144,6 +144,14 @@ class User(AbstractBaseUser):
         friendship = self.get_friend(friend)
         return friendship[0]
 
+    def get_chat_rooms(self):
+        rooms = ChatRoom.objects.filter(id__in=RawSQL(
+            'SELECT member.room_id \
+            FROM meetup_chatroommember as member \
+            WHERE user_id = %s' , (self.id,)
+        )).order_by("-last_updated")
+        return rooms
+
 class UserSettings(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     radius = models.IntegerField(default=25)
@@ -733,6 +741,7 @@ class ChatRoom(models.Model):
     name = models.CharField(max_length=200, null=True, blank=True)
     uri = models.URLField(default=generate_unique_uri)
     timestamp = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now_add=True)
     objects=models.Manager()
 
     def __str__(self):

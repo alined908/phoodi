@@ -201,6 +201,10 @@ export default class WebSocketService {
         this.callbacks['new_message'] = newMessageCallback;
     }
 
+    addContactsCallbacks(reloadCallback){
+        this.callbacks['update_room'] = reloadCallback
+    }
+
     addEventCallbacks(eventsCallback, newEventCallback, reloadEventCallback, voteEventCallback, 
         decideEventCallback, deleteEventCallback, addMemberCallback, deleteMemberCallback, newOptionCallback, deleteOptionCallback, addActivityCallback){
         this.callbacks['fetch_events'] = eventsCallback

@@ -1,5 +1,5 @@
 import {GET_ROOMS_SUCCESS, GET_ROOMS_REQUEST, GET_ROOMS_ERROR, SET_ACTIVE_ROOM,
-    GET_MESSAGES_REQUEST, GET_MESSAGES_SUCCESS, GET_MESSAGES_ERROR, 
+    GET_MESSAGES_REQUEST, GET_MESSAGES_SUCCESS, GET_MESSAGES_ERROR, UPDATE_ROOM,
     GET_MORE_MESSAGES_REQUEST, GET_MORE_MESSAGES_SUCCESS, GET_MORE_MESSAGES_ERROR, 
     SET_TYPING_VALUE, ADD_MESSAGE, REMOVE_ACTIVE_ROOM} from "../constants/action-types"
 import {axiosClient} from '../accounts/axiosClient'
@@ -13,7 +13,7 @@ export const getRooms = () => async dispatch => {
             }}
         )
         console.log(response.data)
-        setTimeout(() => dispatch({type: GET_ROOMS_SUCCESS, payload: response.data.rooms}), 100)
+        dispatch({type: GET_ROOMS_SUCCESS, payload: response.data.rooms})
     } catch(e){
         console.log(e);
         dispatch({type: GET_ROOMS_ERROR, payload: e})
@@ -28,7 +28,7 @@ export const getMessages = (room) => async dispatch => {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         console.log(response.data)
-        setTimeout(() => dispatch({type: GET_MESSAGES_SUCCESS, payload: response.data}), 100)
+        dispatch({type: GET_MESSAGES_SUCCESS, payload: response.data})
     } catch(e){
         console.log(e)
         dispatch({type: GET_MESSAGES_ERROR, payload: e})
@@ -79,4 +79,8 @@ export const addMessage = (message) => async dispatch => {
     } catch(e){
         console.log(e);
     }
+}
+
+export const updateRoom = (event) => async dispatch => {
+    dispatch({type: UPDATE_ROOM, payload: event.message})
 }

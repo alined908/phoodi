@@ -14,12 +14,12 @@ class ChatRoomListView(APIView):
         Get user chat rooms
         """
         user = request.user
-        chat_rooms = user.rooms
+        chat_rooms = user.get_chat_rooms()
         rooms = {}
     
         for room in chat_rooms.all():
-            serializer = ChatRoomSerializer(room.room, context={'user': user})
-            rooms[room.room.uri] = serializer.data
+            serializer = ChatRoomSerializer(room, context={'user': user})
+            rooms[room.uri] = serializer.data
 
         return Response ({"rooms": rooms})
 

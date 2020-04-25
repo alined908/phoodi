@@ -98,14 +98,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Disable actions if event is in the past
 - [ ] Integrate the meetup notifications with the chat 
 
-## Todo Chat
-- [ ] Who's online
-- [ ] Edit chat messages
-- [ ] Upload picture
-- [ ] Send invite through chat
-- [ ] Rearrange chat contacts (and list notifications) based off of whoever messaged recently
-- [ ] Detect if user is typing
-
 ## Todo UI/UX/CleanUp
 - [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
 - [ ] Animation when logging out forced
@@ -139,6 +131,11 @@ python manage.py loaddata meetup/fixtures/*.json
 ------------------------------------------------------------------
 
 ## Todo Next Iteration
+- [ ] Edit chat messages
+- [ ] Upload picture
+- [ ] Send invite through chat
+- [ ] Who's online
+- [ ] Detect if user is typing
 - [ ] Use httpOnly cookies for tokens
 - [ ] Rewrite Database (Comments as Tree, scalable solution for voting)
 - [ ] Set up caching system (redis)

@@ -1,7 +1,7 @@
 import {GET_ROOMS_REQUEST, GET_ROOMS_SUCCESS, GET_ROOMS_ERROR, 
     GET_MESSAGES_REQUEST, GET_MESSAGES_SUCCESS, GET_MESSAGES_ERROR, 
     GET_MORE_MESSAGES_REQUEST, GET_MORE_MESSAGES_SUCCESS, GET_MORE_MESSAGES_ERROR,
-    CLEAR_STORE, REMOVE_ACTIVE_ROOM, ADD_ROOM, SET_ACTIVE_ROOM, SET_TYPING_VALUE, ADD_MESSAGE} from "../constants/action-types"
+    CLEAR_STORE, REMOVE_ACTIVE_ROOM, ADD_ROOM, UPDATE_ROOM, SET_ACTIVE_ROOM, SET_TYPING_VALUE, ADD_MESSAGE} from "../constants/action-types"
 
 const defaultState = {
     rooms: {},
@@ -39,6 +39,8 @@ export default function chatReducer(state = defaultState, action){
             return {...state, errorMessage: action.payload.message, isMoreMessagesFetching: false}
         case ADD_ROOM:
             return {...state, rooms: state.rooms.concat([action.payload])}
+        case UPDATE_ROOM:
+            return {...state, rooms: {...action.payload.room, ...state.rooms}}
         case SET_ACTIVE_ROOM:
             return {...state, activeRoom: action.payload.uri, isActiveRoomSet: true, isMessagesInitialized: false}
         case REMOVE_ACTIVE_ROOM:

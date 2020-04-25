@@ -5,6 +5,7 @@ import {Avatar, Badge} from '@material-ui/core';
 import {removeNotifs} from "../../actions/notifications"
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import {GroupAvatars} from '../components'
+import moment from 'moment'
 import PropTypes from 'prop-types';
 import {userPropType, chatRoomPropType} from "../../constants/prop-types"
 
@@ -54,16 +55,19 @@ class ContactComponent extends Component {
                                             {room.members[member].email}
                                         </div>
                                     </div>
-                                    {this.state.notifs > 0 && 
-                                        <div className="chat-contact-notifications">
-                                            <Badge color="secondary" variant="dot" badgeContent={this.state.notifs}>
-                                                <NotificationsIcon/>
-                                            </Badge>
-                                        </div>
-                                    }
                                 </div> : ""
                             )}
                         </>
+                    }
+                    <div>
+                        {moment(room.last_updated).fromNow()}
+                    </div>
+                    {this.state.notifs > 0 && 
+                        <div className="chat-contact-notifications">
+                            <Badge color="secondary" variant="dot" badgeContent={this.state.notifs}>
+                                <NotificationsIcon/>
+                            </Badge>
+                        </div>
                     }
                 </div>
             </Link>

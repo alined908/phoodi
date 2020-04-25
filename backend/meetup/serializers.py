@@ -425,7 +425,7 @@ class ChatRoomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChatRoom
-        fields = ('id', 'uri', 'name', 'timestamp', 'members', 'friendship', 'meetup', 'notifs')
+        fields = '__all__'
 
 class ChatRoomMemberSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('_get_member')

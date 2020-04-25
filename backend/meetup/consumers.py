@@ -13,7 +13,35 @@ from meetup.serializers import (
 from notifications.models import Notification
 from notifications.signals import notify
 
-class ChatConsumer(AsyncWebsocketConsumer):
+class ChatContactsConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        user = self.scope['user']
+      
+        if user.is_anonymous:
+            await self.accept()
+            await self.close(code=4000)
+        else:
+            self.contacts = 'chat_contacts_for_user_%d' % user.id
+
+            await self.channel_layer.group_add(
+                self.contacts,
+                self.channel_name
+            )
+
+            await self.accept()
+
+    async def disconnect(self, close_code):
+        if hasattr(self, 'contacts'):
+            await self.channel_layer.group_discard(
+                self.contacts,
+                self.channel_name
+            )
+
+    async def chat_rooms(self, event):
+        message = event['message']
+        await self.send(text_data=json.dumps(message))
+
+class ChatRoomConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         user = self.scope['user']
