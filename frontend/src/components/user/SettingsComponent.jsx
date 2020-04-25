@@ -28,11 +28,17 @@ class SettingsComponent extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault()
-        let data = {location: this.state.location, radius:this.state.radius, longitude: this.state.longitude, latitude: this.state.latitude}
+        let data = {
+            location: this.state.location, 
+            radius:this.state.radius, 
+            longitude: this.state.longitude, 
+            latitude: this.state.latitude
+        }
         this.props.addSettings(data)
     }
 
     handleClick = (e, value) => {
+        console.log(value)
         let location;
         if (value === null){
             location = ""
@@ -42,6 +48,7 @@ class SettingsComponent extends Component {
             Geocode.fromAddress(location).then(
                 response => {
                     const geolocation = response.results[0].geometry.location
+                    console.log(geolocation)
                     this.setState({longitude: geolocation.lng, latitude: geolocation.lat})
                 },
                 error => {

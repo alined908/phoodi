@@ -94,13 +94,9 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Author
 * **Daniel Lee** 
 
-## Todo Category
-- [ ] Render local restauraunts on category 
-
 ## Todo Meetup
 - [ ] Disable actions if event is in the past
 - [ ] Integrate the meetup notifications with the chat 
-- [ ] Restauraunt autocomplete notify that no options (because hours/bad search)
 
 ## Todo Chat
 - [ ] Who's online
@@ -113,6 +109,7 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo UI/UX/CleanUp
 - [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
 - [ ] Animation when logging out forced
+- [ ] Restauraunt autocomplete notify that no options (because hours/bad search)
 - [ ] Change color of home page svgs
 - [ ] Change Avatar text back to normal
 - [ ] Redo responsive layout + design + Safari presentation

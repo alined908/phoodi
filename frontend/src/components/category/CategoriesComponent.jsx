@@ -43,7 +43,7 @@ class CategoriesComponent extends Component {
         this.setState({randomCategoriesLoaded: false})
 
         const response = await axiosClient.get(
-            `/api/categories/?random=true`, {headers: {
+            `/api/categories/?type=random`, {headers: {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         this.setState({random: response.data.categories, randomCategoriesLoaded: true})

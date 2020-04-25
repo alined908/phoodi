@@ -1,13 +1,28 @@
 from meetup.models import (
     Restaurant, RestaurantCategory, Review, Comment,
-    CommentVote, ReviewVote
+    CommentVote, ReviewVote, Category
 ) 
-from meetup.serializers import RestaurantSerializer, ReviewSerializer, CommentSerializer, ReviewVoteSerializer
+from meetup.serializers import (
+    RestaurantSerializer, ReviewSerializer, CommentSerializer, ReviewVoteSerializer
+)
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
+
+class RestaurantListView(APIView):
+    permission_clases = [permissions.AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        coords = [request.GET.get('latitude'), request.GET.get('longitude'), request.GET.get('radius')]
+        if request.GET.get('category'):
+            category = Category.objects.get(api_label = request.GET.get('category'))
+            restaurants = category.restaurants_near_me(coords, request)
+        else:
+            restaurants = []
+        serializer = RestaurantSerializer(restaurants, many=True)
+        return Response(serializer.data)
 
 class RestaurantView(APIView):
     permission_classes = [permissions.AllowAny]

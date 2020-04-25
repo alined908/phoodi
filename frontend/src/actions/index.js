@@ -70,6 +70,7 @@ export const refreshToken = (dispatch) => {
 }
 
 export const addSettings = (data) => async dispatch => {
+    console.log(data)
     try {
         const response = await axiosClient.post('/api/users/settings/', data, {headers: {
             "Authorization": `Bearer ${localStorage.getItem('token')}`

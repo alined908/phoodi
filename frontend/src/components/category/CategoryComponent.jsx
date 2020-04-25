@@ -18,6 +18,7 @@ class CategoryComponent extends Component {
             category: {},
             friends: [],
             meetups: [],
+            restaurants: [],
             loadingError: false,
             liked: false,
             numLiked: 0
@@ -36,13 +37,14 @@ class CategoryComponent extends Component {
     }
 
     getInformation = async () => {
+        console.log(this.props.user)
         try {
-            const [category, friends, meetups] = await Promise.all(
+            const [category, friends, meetups, restaurants] = await Promise.all(
                 [
                     axiosClient.get(
                         `/api/categories/${this.props.match.params.api_label}/`, {headers: {
                             "Authorization": `Bearer ${localStorage.getItem('token')}`
-                        }}),
+                    }}),
                     axiosClient.get(
                          `/api/users/${this.props.user.id}/friends/`, {params: {category: this.props.match.params.api_label} ,headers: {
                             "Authorization": `Bearer ${localStorage.getItem('token')}`
@@ -60,12 +62,26 @@ class CategoryComponent extends Component {
                             longitude: this.props.user.settings ? this.props.user.settings.longitude: null,
                             radius: this.props.user.settings ? this.props.user.settings.radius : 25
                         }
+                    }),
+                    axiosClient.request({
+                        method: "GET",
+                        url: `/api/restaurants/`,
+                        headers : {
+                            "Authorization": `Bearer ${localStorage.getItem('token')}`
+                        },
+                        params: {
+                            category: this.props.match.params.api_label,
+                            latitude: this.props.user.settings ? this.props.user.settings.latitude: null,
+                            longitude: this.props.user.settings ? this.props.user.settings.longitude: null,
+                            radius: this.props.user.settings ? this.props.user.settings.radius : 25
+                        }
                     })
                 ]
             )
             this.setState({
                 category: category.data, categoryLoaded: true, liked: category.data.preference !== null, 
-                numLiked: category.data.num_liked, friends: friends.data, meetups: Object.values(meetups.data.meetups)
+                numLiked: category.data.num_liked, friends: friends.data, meetups: Object.values(meetups.data.meetups),
+                restaurants: restaurants.data
             })
         } catch(e){
             history.push('/404')
@@ -115,7 +131,13 @@ class CategoryComponent extends Component {
                         }                   
                     </div>
                 </div>
-
+                <div>
+                    {this.state.restaurants.map((rst) => 
+                        <div>
+                            {rst.name}
+                        </div>
+                    )}
+                </div>
                 <div className="category-social">
                     <div className="category-friends">
                         <div className="column">

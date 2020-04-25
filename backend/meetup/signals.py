@@ -361,6 +361,7 @@ def post_save_meetup_option(sender, instance, created, **kwargs):
 def post_save_review(sender, instance, created, **kwargs):
     if created:
         restaurant = instance.restaurant
+        restaurant.rating = ((restaurant.rating * restaurant.review_count) + instance.rating) / (restaurant.review_count + 1)
         restaurant.review_count += 1
         restaurant.save()
 

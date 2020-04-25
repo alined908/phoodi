@@ -13,6 +13,7 @@ urlpatterns=[
     path('users/<id>/preferences/<category_id>/', views.UserPreferenceView.as_view()),
     path("categories/", views.CategoryListView.as_view()),
     path("categories/<api_label>/", views.CategoryView.as_view()),
+    path("restaurants/", views.RestaurantListView.as_view()),
     path("restaurants/<uri>/", views.RestaurantView.as_view()),
     path("restaurants/<uri>/reviews/", views.ReviewView.as_view()),
     path("restaurants/<uri>/comments/", views.CommentView().as_view()),
