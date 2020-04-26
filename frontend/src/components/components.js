@@ -5,11 +5,11 @@ import LogoutComponent from "./auth/LogoutComponent";
 import RegisterComponent from "./auth/RegisterComponent";
 
 //Chat
-import ChatBarComponent from "./chat/ChatBarComponent"
-import ChatComponent from "./chat/ChatComponent"
+import ChatBar from "./chat/ChatBar"
+import Chat from "./chat/Chat"
 import ChatMessage from "./chat/ChatMessage"
 import ChatWindow from "./chat/ChatWindow"
-import ContactComponent from "./chat/ContactComponent"
+import Contact from "./chat/Contact"
 import ChatInput from "./chat/ChatInput"
 
 //invite
@@ -77,7 +77,7 @@ import Comment from "./restaurant/Comment"
 
 export {
     ErrorComponent, LoginComponent, LogoutComponent, RegisterComponent, 
-    ChatBarComponent, ChatComponent, ChatMessage, ChatWindow, ContactComponent, ChatInput,
+    ChatBar, Chat, ChatMessage, ChatWindow, Contact, ChatInput,
     Friend, FriendsComponent, Invite, Invites,
     Meetup, MeetupChat, MeetupCard, MeetupEvent, MeetupEventForm, MeetupFriend, MeetupForm, MeetupPageComponent, MeetupsComponent, MeetupTree, MeetupEventOption,
     RestaurauntAutocomplete, CategoryAutocomplete, UserAutocomplete, Location, renderTextField, renderDatePicker, renderDateSimplePicker, Map,

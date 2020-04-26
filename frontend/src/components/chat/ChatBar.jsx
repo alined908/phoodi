@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ContactComponent} from "../components";
+import {Contact} from "../components";
 import {connect} from 'react-redux';
 import {IconButton, Tooltip, CircularProgress} from '@material-ui/core'
 import {Event as EventIcon, Person as PersonIcon, Search as SearchIcon, Error as ErrorIcon} from '@material-ui/icons';
@@ -8,8 +8,9 @@ import {chatRoomPropType, userPropType,} from "../../constants/prop-types"
 import WebSocketService from "../../accounts/WebSocket"
 import AuthenticationService from '../../accounts/AuthenticationService';
 import {updateRoom} from '../../actions/chat'
+import styles from '../../styles/chat.module.css'
 
-class ChatBarComponent extends Component {
+class ChatBar extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -91,44 +92,58 @@ class ChatBarComponent extends Component {
         const rooms = this.state.liveRooms
 
         return (
-            <div className="chat-bar elevate">
-                <div className="chat-bar-top">
+            <div className={styles.bar}>
+                <div className={styles.barTop}>
                     <div>Contacts</div>
                     <div>
                         <Tooltip title="Friends">
-                            <IconButton color={this.state.filters["friend"] ? "default" : "primary"} onClick={() => this.filterRooms("friend")} edge="end">
+                            <IconButton 
+                                color={this.state.filters["friend"] ? "default" : "primary"} 
+                                onClick={() => this.filterRooms("friend")} edge="end"
+                            >
                                 <PersonIcon/>
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Meetups">
-                            <IconButton color={this.state.filters["meetup"] ? "default" : "primary"} onClick={() => this.filterRooms("meetup")}>
+                            <IconButton 
+                                color={this.state.filters["meetup"] ? "default" : "primary"} 
+                                onClick={() => this.filterRooms("meetup")}
+                            >
                                 <EventIcon/>
                             </IconButton>
                         </Tooltip>
                     </div>
                 </div>
-                <div className="chat-bar-contacts">
+                <div className={styles.contacts}>
                     {!this.props.isRoomsInitialized && <div className="loading"><CircularProgress/></div>}
                     {(this.props.isRoomsInitialized && rooms.length === 0) && 
                         <div className="no-entity">
                             <ErrorIcon style={{color: "rgb(255, 212, 96)"}}/>
-                            <span className="no-entity-text">No chat rooms match criteria!</span>
+                            <span className="no-entity-text">
+                                No chat rooms match criteria!
+                            </span>
                         </div>
                     }
                     {this.props.isRoomsInitialized && rooms.map((room) => 
-                        <ContactComponent user={this.props.user} key={room.id} room={room}/>
+                        <Contact user={this.props.user} key={room.id} room={room}/>
                     )}
                 </div>
-                <div className="chat-bar-search">
+                <div className={styles.search}>
                     <SearchIcon/>
-                    <input className="chat-input" type="text" placeholder="Search Contacts..." value={this.state.searchInput} onChange={this.handleSearchInputChange}></input>
+                    <input 
+                        type="text"
+                        className={styles.input} 
+                        placeholder="Search Contacts..." 
+                        value={this.state.searchInput} 
+                        onChange={this.handleSearchInputChange}
+                    />
                 </div>
             </div>
         )
     }
 }
 
-ChatBarComponent.propTypes = {
+ChatBar.propTypes = {
     rooms: PropTypes.arrayOf(
         chatRoomPropType
     ),
@@ -148,5 +163,5 @@ const mapDispatchToProps = {
     updateRoom
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatBarComponent)
-export {ChatBarComponent as UnderlyingChatBarComponent}
+export default connect(mapStateToProps, mapDispatchToProps)(ChatBar)
+export {ChatBar as UnderlyingChatBar}

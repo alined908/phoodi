@@ -1,6 +1,7 @@
 /* Scrollbar*/
 :root{
   --bg-color: rgb(248, 249, 250);
+  --grey-text: rgba(0, 0, 0, 0.54);
 }
 
 ::-webkit-scrollbar{
@@ -62,6 +63,19 @@ body {
   height: 100%;
 }
 
+/* No Entity */
+.no-entity{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0 1.5rem;
+}
+
+.no-entity-text{
+  margin-left: 1rem;
+}
+
 /* Emoji Picker */
 .emoji-mart-category-label span, .emoji-mart-search input{
   font-family: "Lato";
@@ -101,112 +115,12 @@ body {
   display: none;
 }
 
-.chat {
-  display: grid;
-  grid-template-columns: repeat(30, 1fr);
-  grid-template-areas: 
-    "column-1 column-1 column-1 column-1 column-1 column-1 column-1 . column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2";
-  width: 85%;
-  margin: auto;
-  height: 85%;
-  
-}
-.chat-bar{
-  height: 100%;
-  background-color: #ffffff;
-  color: black;
-  grid-area: column-1;
-  border-radius: 5px;
-  overflow-y: auto;
-}
-
-.chat-bar-contacts{
-  height: calc(100% - 60px - 62px);
-  overflow-y: auto;
-  overflow-x: hidden;
-  background-color: white;
-}
-.chat-bar-top{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: .75rem 1rem;
-  border-bottom: 1px solid #edf0f6;
-  height: 60px;
-  font-size: 18px;
-  background: var(--bg-color);
-}
-.chat-bar-search{
-  display:flex;
-  align-items: center;
-  background: var(--bg-color);
-  margin-top: auto;
-  width: 100%;
-  padding: 0 1rem;
-}
-
-.no-entity{
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  padding: 0 1.5rem;
-}
-
-.no-entity-text{
-  margin-left: 1rem;
-}
-
-.chat-contact{
-  display: flex;
-  justify-content: center; 
-  padding: 1rem;
-  flex-direction: column;
-  color: black;
-  height: 85px;
-  border-bottom: 1px solid #edf0f6;
-  font-weight: 600;
-}
-
-.meetup-avatars{
-  display:flex;
-  padding: 0 1rem;
-  align-items: center;
-}
-
-.chat-contact:hover{
-  background-color: #f1f9ff !important;
-}
-
-.chat-contact-info{
-  display: flex;
-  align-items: center;
-  padding-right: 10px;
-}
-
-.chat-contact-user-info{
-  flex-grow: 1;
-}
-
 .center{
   display:flex;
   justify-content: center;
   height: 100%;
   width: 100%;
   max-width: 400px;
-}
-
-.chat-contact-avatar{
-  margin-right: 10px;
-}
-
-.chat-contact.curr-room{
-  background-color: #f1f9ff;
-}
-
-.chat-contact:hover{
-  background: rgba(0, 0, 0, 0.2);
-  cursor: pointer;
 }
 
 /* Restaurants */

@@ -1,13 +1,14 @@
 import React, {Component} from 'react'
-import {ChatBarComponent, ChatWindow} from "../components"
+import {ChatBar, ChatWindow} from "../components"
 import {connect} from "react-redux";
 import {getMessages, setActiveRoom, addMessage, removeActiveRoom} from "../../actions/chat"
 import {getRooms} from '../../actions/chat';
 import WebSocketService from "../../accounts/WebSocket"
 import AuthenticationService from '../../accounts/AuthenticationService';
 import {Helmet} from "react-helmet"
+import styles from '../../styles/chat.module.css'
 
-class ChatComponent extends Component {
+class Chat extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -66,13 +67,13 @@ class ChatComponent extends Component {
         }
 
         return (
-            <div className={"chat " + (this.state.nonMobile ? "" : "chat-mobile")}>
+            <div className={`${styles.chat}` + (this.state.nonMobile ? "" : "chat-mobile")}>
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>Phoodie - Chat</title>
                     <meta name="description" content="Phoodie Chat" />
                 </Helmet>
-                <ChatBarComponent rooms={this.props.rooms}/>
+                <ChatBar rooms={this.props.rooms}/>
                 {renderChatWindow()}
             </div>
         )
@@ -98,4 +99,4 @@ function mapStateToProps(state){
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(Chat)

@@ -29,7 +29,8 @@ class Meetup extends Component {
         this.state = {
             meetupSocket: new WebSocketService(),
             newMeetupForm: false,
-            newMeetupEventForm: false
+            newMeetupEventForm: false,
+            showChat: true
         }
     }
 
@@ -170,6 +171,10 @@ class Meetup extends Component {
         this.props.sendFriendInvite(email)
     }
 
+    toggleChat = () => {
+        this.setState({showChat: !this.state.showChat})
+    }
+
     render () {
         const meetup =  this.props.meetup
         const isUserMember = this.props.isUserMember
@@ -190,13 +195,13 @@ class Meetup extends Component {
                         <div className="inner-header-icons"><TodayIcon/> {moment(date).format("dddd, MMMM D")}</div>
                         <div className="inner-header-icons"><RoomIcon/> {location}</div>
                     </div>
-                        {isUserMember && <Link to={`/chat/${this.props.meetup.uri}`}>
+                        {isUserMember && !this.state.showChat && 
                             <Tooltip title="Chat">
-                                <IconButton color="primary" aria-label='chat'>
+                                <IconButton color="primary" onClick={this.toggleChat} aria-label='chat'>
                                     <ChatIcon/>
                                 </IconButton>
                             </Tooltip>
-                        </Link>}
+                        }
                     {isUserCreator && <div className="meetup-actions">
                         
                         <Tooltip title="Email">
@@ -404,7 +409,7 @@ class Meetup extends Component {
                         </Grid>
                     </Grid>
                 </div>
-                <MeetupChat meetup={meetup}/>
+                {this.state.showChat && <MeetupChat meetup={meetup} hideChat={this.toggleChat}/>}
             </div>
         )
     }

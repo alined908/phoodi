@@ -5,12 +5,11 @@ import {Link} from 'react-router-dom';
 import moment from "moment"
 import throttle from 'lodash/throttle'
 import {ChatMessage, ChatInput} from "../components"
-import {Button, Tooltip, CircularProgress} from '@material-ui/core'
-import {Person as PersonIcon, Event as EventIcon} from "@material-ui/icons"
+import {Button, IconButton, Tooltip, CircularProgress} from '@material-ui/core'
+import {Person as PersonIcon, Event as EventIcon, ExitToApp as ExitToAppIcon} from "@material-ui/icons"
 import {getMoreMessages} from "../../actions/chat"
 import {removeNotifs} from "../../actions/notifications"
 import {chatMessagePropType} from "../../constants/prop-types"
-import {Helmet} from 'react-helmet'
 import styles from '../../styles/chat.module.css'
 
 class ChatWindow extends Component {
@@ -106,7 +105,7 @@ class ChatWindow extends Component {
         return (
             <div className={styles.window} ref={this.chatsRef}>
                 <div className={styles.header}>
-                    {this.props.room && this.props.room.meetup && 
+                    {!this.props.meetup && this.props.room && this.props.room.meetup && 
                         <Link to={`/meetups/${this.props.room.uri}`}>
                             <Tooltip title="Go to Meetup">
                                 <Button color="primary" startIcon={<EventIcon/>}>
@@ -115,12 +114,22 @@ class ChatWindow extends Component {
                             </Tooltip>
                         </Link>
                     }
-                    {this.props.room && this.props.room.friendship && 
+                    {!this.props.meetup && this.props.room && this.props.room.friendship && 
                         <Link to={`/profile/${this.determineOtherUser()}`}>
                             <Tooltip title="Go to Profile">
                                 <Button color="primary" startIcon={<PersonIcon/>}>Profile</Button>
                             </Tooltip>
                         </Link>
+                    }
+                    {this.props.meetup && 
+                        <>
+                            <Tooltip title="Collapse">
+                                <IconButton onClick={this.props.hideChat} color="primary">
+                                    <ExitToAppIcon/>
+                                </IconButton>
+                            </Tooltip>
+                            Meetup Chat
+                        </>
                     }
                 </div>
                 <div className={styles.messagesWrapper} onScroll={this.handleScrollWrapper} ref={this.messagesRef}>

@@ -38,11 +38,15 @@ class MeetupChat extends Component {
         const renderChatWindow = () => {
             if (this.props.isMessagesInitialized || this.props.isMessagesFetching) {
                 return <ChatWindow
-                            socket={this.state.chatSocket} isMessagesInitialized={this.props.isMessagesInitialized} 
-                            activeRoom={this.props.activeRoom} messages={this.props.messages}
+                            meetup={true}
+                            hideChat={this.props.hideChat}
+                            messages={this.props.messages}
+                            socket={this.state.chatSocket} 
+                            activeRoom={this.props.activeRoom} 
+                            isMessagesInitialized={this.props.isMessagesInitialized} 
                         />
             } else {
-                return <ChatWindow socket={this.state.socket} activeRoom={null} messages={[]}/>
+                return <ChatWindow meetup={true} socket={this.state.socket} activeRoom={null} messages={[]}/>
             }
         }
 

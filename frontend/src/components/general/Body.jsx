@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Route, Switch} from 'react-router-dom';
-import {LogoutComponent, ErrorComponent, RegisterComponent, ChatComponent, MeetupsComponent, HomeComponent, CategoriesComponent, CalendarComponent, CategoryComponent,
+import {LogoutComponent, ErrorComponent, RegisterComponent, Chat, MeetupsComponent, HomeComponent, CategoriesComponent, CalendarComponent, CategoryComponent,
     MeetupPageComponent, FriendsComponent, LoginComponent, Invites, Profile, GlobalMessage, SettingsComponent, Restaurant
 } from "../components"
 import AuthenticatedRoute from "../../accounts/AuthenticatedRoute";
@@ -17,8 +17,8 @@ class Body extends Component {
                     <AuthenticatedRoute path="/logout" component={LogoutComponent}/>
                     <AuthenticatedRoute path="/meetups/:uri" component={MeetupPageComponent}/>
                     <AuthenticatedRoute path="/meetups" exact component={MeetupsComponent}/>
-                    <AuthenticatedRoute path="/chat/:uri" component={ChatComponent}/>
-                    <AuthenticatedRoute path="/chat" exact component={ChatComponent}/>
+                    <AuthenticatedRoute path="/chat/:uri" component={Chat}/>
+                    <AuthenticatedRoute path="/chat" exact component={Chat}/>
                     <AuthenticatedRoute path="/category/:api_label" component={CategoryComponent}/>
                     <AuthenticatedRoute path="/category" exact component={CategoriesComponent}/>
                     <AuthenticatedRoute path="/calendar" exact component={CalendarComponent}/>
