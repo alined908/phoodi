@@ -4,6 +4,22 @@ import {GET_ROOMS_SUCCESS, GET_ROOMS_REQUEST, GET_ROOMS_ERROR, SET_ACTIVE_ROOM,
     SET_TYPING_VALUE, ADD_MESSAGE, REMOVE_ACTIVE_ROOM} from "../constants/action-types"
 import {axiosClient} from '../accounts/axiosClient'
 
+export const getRoom = (uri) => async dispatch => {
+    dispatch({type: GET_ROOMS_REQUEST})
+    try {
+        const response = await axiosClient.get(
+            `/api/chats/${uri}/`, {headers: {
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }}
+        )
+        console.log(response.data)
+        dispatch({type: GET_ROOMS_SUCCESS, payload: response.data})
+    } catch(e){
+        console.log(e);
+        dispatch({type: GET_ROOMS_ERROR, payload: e})
+    }
+}   
+
 export const getRooms = () => async dispatch => {
     dispatch({type: GET_ROOMS_REQUEST})
     try {
@@ -13,7 +29,7 @@ export const getRooms = () => async dispatch => {
             }}
         )
         console.log(response.data)
-        dispatch({type: GET_ROOMS_SUCCESS, payload: response.data.rooms})
+        dispatch({type: GET_ROOMS_SUCCESS, payload: response.data})
     } catch(e){
         console.log(e);
         dispatch({type: GET_ROOMS_ERROR, payload: e})

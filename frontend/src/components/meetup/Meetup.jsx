@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {MeetupFriend, MeetupEvent, ProgressIcon, MeetupForm, MeetupEventForm, MeetupTree} from '../components'
+import {MeetupFriend, MeetupEvent, ProgressIcon, MeetupForm, MeetupChat, MeetupEventForm, MeetupTree} from '../components'
 import {connect} from 'react-redux';
 import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, deleteEventOption,
     addMeetupMember, deleteMeetupMember, addEventOption, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent, addMeetupActivity} from '../../actions/meetup';
@@ -22,13 +22,12 @@ import PropTypes from 'prop-types'
 import {meetupPropType, userPropType, friendPropType} from '../../constants/prop-types'
 import {Helmet} from 'react-helmet'
 import styles from '../../styles/meetup.module.css'
-import {HashLink} from 'react-router-hash-link'
 
 class Meetup extends Component {
     constructor(props){
         super(props)
         this.state = {
-            socket: new WebSocketService(),
+            meetupSocket: new WebSocketService(),
             newMeetupForm: false,
             newMeetupEventForm: false
         }
@@ -45,18 +44,20 @@ class Meetup extends Component {
             this.props.removeNotifs({type: "meetup", id: this.props.meetup.id})
         }
         const token = AuthenticationService.retrieveToken()
-        const path = `/ws/meetups/${uri}/`;
-        const socket = this.state.socket
-        socket.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, 
+        const meetupPath = `/ws/meetups/${uri}/`;
+        const meetupSocket = this.state.meetupSocket
+      
+        meetupSocket.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, 
             this.props.voteMeetupEvent, this.props.decideMeetupEvent, this.props.deleteMeetupEvent, 
             this.props.addMeetupMember, this.props.deleteMeetupMember, this.props.addEventOption, 
             this.props.deleteEventOption, this.props.addMeetupActivity);
-        socket.connect(path, token);
+        
+        meetupSocket.connect(meetupPath, token);
     }
 
    
     componentWillUnmount() {
-        this.state.socket.disconnect()
+        this.state.meetupSocket.disconnect()
     }
     
     handleDelete = () => {
@@ -167,45 +168,6 @@ class Meetup extends Component {
     addFriend = (e, email) => {
         e.preventDefault()
         this.props.sendFriendInvite(email)
-    }
-
-    determineNotification = notif => {
-        const verb = notif.verb
-        let activityHTML;
-        if (verb === "joined" || verb === "created"){
-            activityHTML = (
-                <>
-                    <span>
-                        {verb}
-                    </span>
-                    &nbsp;
-                    <span>
-                        {notif.action_object.name}
-                    </span>
-                </>
-            )
-        } else{
-          
-            activityHTML = (
-                <>
-                    <span>{verb}</span>
-                    &nbsp;
-                    <span>
-                        {notif.action_object ? 
-                            <HashLink to={`/meetups/${this.props.meetup.uri}#event-${notif.action_object.id}`} smooth={true}>
-                                {notif.action_object.title}
-                            </HashLink> :
-                            <span>
-                                DELETED
-                            </span>
-                        }
-                    </span>
-                </>
-            )
-        }
-
-        return activityHTML
-
     }
 
     render () {
@@ -366,36 +328,13 @@ class Meetup extends Component {
                 <>
                     {!this.props.isMeetupEventsInitialized && <div>Initializing Events</div>}
                     {this.props.isMeetupEventsInitialized && events && this.sortEvents(events).map((event, index) => 
-                        <MeetupEvent key={event} number={index} socket={this.state.socket}  
+                        <MeetupEvent key={event} number={index} socket={this.state.meetupSocket}  
                             uri={meetup.uri} event={events[event]} isUserMember={isUserMember} 
                             coords={{latitude: meetup.latitude, longitude: meetup.longitude}}
                             isUserCreator={isUserCreator} user={this.props.user}
                         />
                     )}
                 </>
-            )
-        }
-
-        const renderNotificationLog = () => {
-            return (
-                <Paper className={styles.notifications} elevation={6}>
-                    {this.props.meetup.notifications.map((notif) => 
-                        <div className={styles.notification}>
-                            <div className={styles.notifInfo}>
-                                <Avatar src={notif.actor.user ? notif.actor.user.avatar : notif.actor.avatar}>
-                                    {notif.actor.user ? notif.actor.user.first_name.charAt(0) : notif.actor.first_name.charAt(0)}
-                                    {notif.actor.user ? notif.actor.user.last_name.charAt(0) : notif.actor.last_name.charAt(0)}
-                                </Avatar>
-                                {notif.actor.user ? notif.actor.user.first_name : notif.actor.first_name} &nbsp;
-                                {notif.actor.user ? notif.actor.user.last_name : notif.actor.last_name} &nbsp;
-                                {this.determineNotification(notif)}
-                            </div>
-                            <span className={styles.notifDate}>
-                                {moment(notif.timestamp).calendar()}
-                            </span>
-                        </div>
-                    )}
-                </Paper>
             )
         }
 
@@ -410,9 +349,6 @@ class Meetup extends Component {
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
                             {renderInformation(meetup.name, meetup.date, meetup.location)}
-                        </Grid>
-                        <Grid item xs={12}>
-                            {renderNotificationLog()}
                         </Grid>
                         <Grid item xs={12} md={6} id="Members">
                             <div className="inner-header elevate" >
@@ -462,6 +398,7 @@ class Meetup extends Component {
                         </Grid>
                     </Grid>
                 </div>
+                <MeetupChat meetup={meetup}/>
             </>
         )
     }

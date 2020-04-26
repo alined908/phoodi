@@ -89,7 +89,6 @@ const mapDispatchToProps = {
 
 function mapStateToProps(state){
     return {
-        authenticated: state.user.authenticated,
         isMessagesInitialized: state.chat.isMessagesInitialized,
         activeRoom: state.chat.activeRoom,
         messages: state.chat.messages,

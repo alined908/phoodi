@@ -99,6 +99,7 @@ class ChatWindowComponent extends Component {
     }
  
     render () {
+
         const messagesByDate = (this.props.messages) ? this.groupMessagesByDate(this.props.messages) : {}
 
         return (
@@ -165,7 +166,12 @@ class ChatWindowComponent extends Component {
                                         {date}
                                     </div>
                                     {messagesByDate[date].map((msg, i) => 
-                                        <ChatMessageComponent key={msg.id} user={this.props.user} message={msg} members={this.props.activeChatMembers}/>
+                                        <ChatMessageComponent 
+                                            key={msg.id} 
+                                            user={this.props.user} 
+                                            message={msg} 
+                                            members={this.props.activeChatMembers}
+                                        />
                                     )}
                                 </React.Fragment>
                             )}
@@ -176,8 +182,10 @@ class ChatWindowComponent extends Component {
                 {this.props.activeRoom ? 
                     <div ref={(el) => { this.messagesEnd = el; }} className="chat-input-wrapper">
                         <ChatInput 
-                            user={this.props.user} room={this.props.room} 
-                            socket={this.props.socket} bound={this.state.bound} 
+                            user={this.props.user} 
+                            room={this.props.room} 
+                            socket={this.props.socket} 
+                            bound={this.state.bound} 
                             scrollToBottom={() => this.scrollToBottom("auto")}
                         />
                     </div> :

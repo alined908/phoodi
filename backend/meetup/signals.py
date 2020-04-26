@@ -24,30 +24,30 @@ def get_user():
 
 @receiver(pre_save, sender = Meetup)
 def set_notification_for_meetup(sender, instance, **kwargs):
-    if instance.id is None:
-        instance._meetup_notification = ""
-    else:
+    if instance.id:
         previous = Meetup.objects.get(pk=instance.id)
-        notification_message = "set changes to"
         potential_changes = []
 
         if previous.location != instance.location:
-            potential_changes.append("location")
+            potential_changes.append("changed meetup location from %s to %s" % (previous.location, instance.location))
 
         if previous.date != instance.date:
-            potential_changes.append("date")
+            potential_changes.append("changed meetup date from %s to %s" % (str(previous.date), str(instance.date)))
 
         if previous.public != instance.public:
-            potential_changes.append("public")
+            if instance.public:
+                potential_changes.append("changed meetup from private to public")
+            else:
+                potential_changes.append("changed meetup from public to private")
 
         if previous.name != instance.name:
-            potential_changes.append("name")
+            potential_changes.append("changed meetup name from %s to %s" % (previous.name, instance.name))
 
-        instance._meetup_notification = notification_message + " " + " , ".join(potential_changes)
+        instance._meetup_notification = potential_changes
 
 @receiver(post_save, sender = Meetup)
 def meetup_post_save(sender, instance, created, **kwargs):
-    from .serializers import NotificationSerializer
+    from .serializers import MessageSerializer 
 
     if created:
         uri, name, creator = instance.uri, instance.name, instance.creator
@@ -55,12 +55,10 @@ def meetup_post_save(sender, instance, created, **kwargs):
         room = ChatRoom.objects.create(uri=uri, name=name, meetup=instance)
         ChatRoomMember.objects.create(room = room, user = creator)
 
-        #Create Meetup Activity --> Ex. User created Meetup x days ago
-        notify.send(
-            sender = creator, recipient = creator, action_object = instance,
-            description="meetup_activity", verb="created"
-        )
-
+        #Create Meetup Chat Message --> Ex. User created Meetup x days ago
+        message = "created meetup named %s" % (instance.name)
+        ChatRoomMessage.objects.create(room = room, sender = creator, is_notif=True, message = message)
+    
         #Create User Activity --> Ex. User created Meetup x days ago
         notify.send(
             sender = creator, recipient = creator, action_object = instance,
@@ -70,28 +68,21 @@ def meetup_post_save(sender, instance, created, **kwargs):
         # Get User Who Completed Action
         user = get_user()
         member = MeetupMember.objects.get(meetup=instance, user=user)
+        room = ChatRoom.objects.get(uri = instance.uri)
         
-        #Create Meetup Activity --> Member set changes to Meetup x days ago
-        notify.send(
-            sender = member, recipient=member.user, description="meetup_activity", 
-            action_object = instance, verb=instance._meetup_notification
-        )
+        #Create Meetup Chat Message --> Member set changes to Meetup x days ago
+        for change in instance._meetup_notification:
+            msg = ChatRoomMessage.objects.create(sender = user, room = room, is_notif=True, message = change)
 
-        # Send Meetup Activity to Meetup Channel
-        notif = Notification.objects.filter(action_object_object_id = instance.id, description="meetup_activity").first()
-
-        content = {
-            'command': 'new_meetup_activity',
-            'message': {
-                'meetup': instance.uri,
-                'notification': NotificationSerializer(notif).data
+            content = {
+                'command': 'new_message',
+                'message': MessageSerializer(msg).data
             }
-        }
 
-        async_to_sync(channel_layer.group_send)('meetup_%s' % instance.uri, {
-            'type': 'meetup_event',
-            'meetup_event': content
-        })
+            async_to_sync(channel_layer.group_send)('chat_%s' % instance.uri, {
+                'type': 'chat_message',
+                'message': content
+            })
     
 
 @receiver(post_save, sender=MeetupMember)
@@ -228,52 +219,56 @@ def handle_delete_member(sender, instance, **kwargs):
 @receiver(pre_save, sender = MeetupEvent)
 def handle_generate_options_on_meetup_event_field_change(sender, instance, **kwargs):
     if instance.id is None:
-        instance._meetup_notification = "created event"
+        instance._meetup_notification = ["created an event named %s" % (instance.title)]
     else:
         previous = MeetupEvent.objects.get(pk=instance.id)
         does_change_warrant_new_options = False
-        notification_message = 'set changes on'
         potential_changes = []
+
+        if previous.title != instance.title:
+            potential_changes.append('changed name of event from %s to %s' % (previous.title, instance.title))
 
         if previous.price != instance.price:
             does_change_warrant_new_options = True
-            potential_changes.append('price')
+            potential_changes.append('changed price of event %s from %s to %s' % (instance.title, previous.price, instance.price))
 
         if previous.distance != instance.distance:
             does_change_warrant_new_options = True
-            potential_changes.append('distance')
+            potential_changes.append('changed distance of event %s from %d to %d' % (instance.title, previous.distance, instance.distance))
 
         if previous.entries != instance.entries:
             does_change_warrant_new_options = True
+            previous_entries = ','.join(previous.entries.keys())
+            instance_entries = ','.join(instance.entries.keys())
             previous.event_categories.all().delete()
-            potential_changes.append('entries')
+            potential_changes.append('changed categories of event %s from %s to %s' % (instance.title, previous_entries, instance_entries))
 
         if previous.start != instance.start:
-            potential_changes.append('start')
+            potential_changes.append('changed start time of event %s' % (instance.title))
 
         if previous.end != instance.end:
-            potential_changes.append("end")
+            potential_changes.append("changed end time of event %s" % (instance.title))
 
         if not previous.random and instance.random:
             does_change_warrant_new_options = True
-            potential_changes.append("random enabled")
+            potential_changes.append("changed event %s to give random choices" % (instance.title))
 
         if previous.random and not instance.random:
             instance.delete_options()
-            potential_changes.append("random disabled")
+            potential_changes.append("changed event %s to not give random choices" % (instance.title))
 
         if does_change_warrant_new_options:
             instance.delete_options()
             instance.generate_options()
 
-        instance._meetup_notification = notification_message + " " + " , ".join(potential_changes)
+        instance._meetup_notification =  potential_changes
 
         if previous.chosen != instance.chosen:
             instance._meetup_notification = "chosen changed"
         
 @receiver(post_save, sender = MeetupEvent)
 def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
-    from .serializers import MeetupEventSerializer, NotificationSerializer
+    from .serializers import MeetupEventSerializer, NotificationSerializer, MessageSerializer
     meetup = instance.meetup
     if created:
         # If random is set then generate options, otherwise No Options Needed.
@@ -309,32 +304,25 @@ def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
                     'type': 'notifications',
                     'message': content
                 })
-
-    # Create Meetup Activity --> Member did something to Something on Meetup
+    
+    # Create Meetup Chat Message --> Member did something to Something on Meetup
     if instance._meetup_notification != "chosen changed":
-        user = get_user()
-        member = MeetupMember.objects.get(meetup=meetup, user=user)
-        notify.send(
-            sender = member, recipient=member.user, description="meetup_activity", 
-            action_object = instance, target = meetup, verb=instance._meetup_notification
-        )
+        user = get_user() 
+        room = ChatRoom.objects.get(uri=meetup.uri)
 
-        # Send Meetup Activity to Meetup Channel
-        notif = Notification.objects.filter(action_object_object_id = instance.id, description="meetup_activity").first()
-
-        content = {
-            'command': 'new_meetup_activity',
-            'message': {
-                'meetup': meetup.uri,
-                'notification': NotificationSerializer(notif).data
+        for change in instance._meetup_notification:
+            msg = ChatRoomMessage.objects.create(sender = user, room=room, is_notif=True, message = change)
+   
+            content = {
+                'command': 'new_message',
+                'message': MessageSerializer(msg).data
             }
-        }
-
-        async_to_sync(channel_layer.group_send)('meetup_%s' % meetup.uri, {
-            'type': 'meetup_event',
-            'meetup_event': content
-        })
- 
+        
+            async_to_sync(channel_layer.group_send)('chat_%s' % meetup.uri, {
+                'type': 'chat_message',
+                'message': content
+            })
+      
     # Send New Event Object To Meetup Channel
     content = {
         'command': 'new_event',

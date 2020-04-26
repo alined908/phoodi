@@ -748,9 +748,10 @@ class ChatRoom(models.Model):
         return self.uri
 
 class ChatRoomMessage(models.Model):
-    room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name='messages')
-    message = models.TextField()
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="sent_msgs", on_delete=models.SET_NULL, null=True)
+    room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name='messages')
+    is_notif = models.BooleanField(default=False)
+    message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
     objects=models.Manager()

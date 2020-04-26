@@ -21,7 +21,7 @@ class ChatRoomListView(APIView):
             serializer = ChatRoomSerializer(room, context={'user': user})
             rooms[room.uri] = serializer.data
 
-        return Response ({"rooms": rooms})
+        return Response(rooms)
 
     def post(self, request):
         """
@@ -34,6 +34,12 @@ class ChatRoomListView(APIView):
         return Response({'status': 'Success', 'uri': chat_room.uri, 'message': 'New chat sessions created'})
 
 class ChatRoomView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        user, uri = request.user, kwargs['uri']
+        room = ChatRoom.objects.get(uri=uri)
+        serializer = ChatRoomSerializer(room, context={'user': user})
+        return Response({uri: serializer.data})
 
     def patch(self, request, *args, **kwargs):
         """

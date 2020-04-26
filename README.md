@@ -94,10 +94,6 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Author
 * **Daniel Lee** 
 
-## Todo Meetup
-- [ ] Disable actions if event is in the past
-- [ ] Integrate the meetup notifications with the chat 
-
 ## Todo UI/UX/CleanUp
 - [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
 - [ ] Animation when logging out forced
@@ -109,6 +105,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Refactor (ex. onTagsChange of MeetupsComponent)
 - [ ] Optimize performance
 - [ ] Separate css files
+- [ ] Disable actions if event is in the past 
 
 ## Todo Testing 
 - [ ] Validation for models
