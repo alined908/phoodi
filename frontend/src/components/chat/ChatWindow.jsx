@@ -1,18 +1,19 @@
 import React, {Component} from 'react'
-import {ChatMessageComponent, ChatInput} from "../components"
-import {connect} from 'react-redux'
-import {Button, Tooltip, CircularProgress} from '@material-ui/core'
-import {Link} from 'react-router-dom';
-import {removeNotifs} from "../../actions/notifications"
-import {getMoreMessages} from "../../actions/chat"
-import {Person as PersonIcon, Event as EventIcon} from "@material-ui/icons"
 import PropTypes from 'prop-types';
-import throttle from 'lodash/throttle'
+import {connect} from 'react-redux'
+import {Link} from 'react-router-dom';
 import moment from "moment"
+import throttle from 'lodash/throttle'
+import {ChatMessage, ChatInput} from "../components"
+import {Button, Tooltip, CircularProgress} from '@material-ui/core'
+import {Person as PersonIcon, Event as EventIcon} from "@material-ui/icons"
+import {getMoreMessages} from "../../actions/chat"
+import {removeNotifs} from "../../actions/notifications"
 import {chatMessagePropType} from "../../constants/prop-types"
 import {Helmet} from 'react-helmet'
+import styles from '../../styles/chat.module.css'
 
-class ChatWindowComponent extends Component {
+class ChatWindow extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -103,15 +104,8 @@ class ChatWindowComponent extends Component {
         const messagesByDate = (this.props.messages) ? this.groupMessagesByDate(this.props.messages) : {}
 
         return (
-            <div className="chat-window elevate" ref={this.chatsRef}>
-                {(this.props.activeRoom && this.props.room) && 
-                    <Helmet>
-                        <meta charSet="utf-8" />
-                        <title>{`Chat - ${this.props.room.name ? this.props.room.name : this.props.room.members[this.determineOtherUser()].first_name}`}</title>
-                        <meta name="description" content="Phoodie Chat" />
-                    </Helmet>
-                }
-                <div className="chat-header">
+            <div className={styles.window} ref={this.chatsRef}>
+                <div className={styles.header}>
                     {this.props.room && this.props.room.meetup && 
                         <Link to={`/meetups/${this.props.room.uri}`}>
                             <Tooltip title="Go to Meetup">
@@ -129,44 +123,46 @@ class ChatWindowComponent extends Component {
                         </Link>
                     }
                 </div>
-                <div className="chat-messages-wrapper" onScroll={this.handleScrollWrapper} ref={this.messagesRef}>
+                <div className={styles.messagesWrapper} onScroll={this.handleScrollWrapper} ref={this.messagesRef}>
                     {this.props.isMessagesFetching ? 
                         <div className="loading">
                             <CircularProgress/>
                             <div ref={this.messagesEndRef} />
                         </div>
                         :
-                        <div className="chat-messages">
+                        <div className={styles.messages}>
                             {this.props.isMoreMessagesFetching && 
-                                <div className="chat-loading">
+                                <div className={styles.loading}>
                                     <CircularProgress/>
                                 </div>
                             }
                             {(this.props.room && !this.props.isMoreRetrievable) && 
-                                <div className="chat-messages-header">
+                                <div className={styles.messagesStart}>
                                     {this.props.room.friendship ? 
-                                        <>
-                                            <span>This is the beginning of your direct message history with &nbsp;</span>
-                                            <span className="chat-messages-header-var">
+                                        <span>
+                                            This is the beginning of your direct message history with 
+                                            <span className={styles.messagesStartHighlight}>
                                                 {this.props.room.members[this.determineOtherUser()].first_name} {this.props.room.members[this.determineOtherUser()].last_name}
                                             </span>
-                                            <span>.</span>
-                                        </> : 
-                                        <>
-                                            <span>Welcome to the beginning of the &nbsp;</span>
-                                            <span className="chat-messages-header-var">{this.props.room.name}</span>
-                                            <span>&nbsp; group.</span>
-                                        </>
+                                        </span>
+                                         : 
+                                        <span>
+                                            Welcome to the beginning of the 
+                                            <span className={styles.messagesStartHighlight}>
+                                                {this.props.room.name}
+                                            </span>
+                                            group.
+                                        </span>
                                     }
                                 </div>
                             }
                             {this.props.activeChatMembers && Object.keys(messagesByDate).map((date, index) => 
                                 <React.Fragment key={index}>
-                                    <div className="chat-messages-date">
+                                    <div className={styles.messagesDate}>
                                         {date}
                                     </div>
-                                    {messagesByDate[date].map((msg, i) => 
-                                        <ChatMessageComponent 
+                                    {messagesByDate[date].map((msg) => 
+                                        <ChatMessage
                                             key={msg.id} 
                                             user={this.props.user} 
                                             message={msg} 
@@ -178,18 +174,27 @@ class ChatWindowComponent extends Component {
                             <div ref={this.messagesEndRef} />
                         </div>
                     }
+                    
                 </div>
+                {!this.state.bound && 
+                    <div className={styles.scrollBottomHelper}>
+                        <Button size="small" onClick={() => this.scrollToBottom("auto")}
+                            className={styles.scrollBottom} 
+                            variant="contained" color="primary"
+                        >
+                            Go Bottom
+                        </Button>
+                    </div>
+                }
                 {this.props.activeRoom ? 
-                    <div ref={(el) => { this.messagesEnd = el; }} className="chat-input-wrapper">
+                    <div ref={(el) => { this.messagesEnd = el; }} className={styles.inputWrapper}>
                         <ChatInput 
                             user={this.props.user} 
                             room={this.props.room} 
                             socket={this.props.socket} 
-                            bound={this.state.bound} 
-                            scrollToBottom={() => this.scrollToBottom("auto")}
                         />
                     </div> :
-                    <div className="chat-input"> 
+                    <div className={styles.input}> 
 
                     </div>
                 }
@@ -198,7 +203,7 @@ class ChatWindowComponent extends Component {
     }
 }
 
-ChatWindowComponent.propTypes = {
+ChatWindow.propTypes = {
     socket: PropTypes.object.isRequired,
     isMessagesInitialized: PropTypes.bool,
     activeRoom: PropTypes.string,
@@ -237,5 +242,5 @@ const mapDispatchToProps = {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatWindowComponent)
-export {ChatWindowComponent as UnderlyingChatWindowComponent}
+export default connect(mapStateToProps, mapDispatchToProps)(ChatWindow)
+export {ChatWindow as UnderlyingChatWindow}

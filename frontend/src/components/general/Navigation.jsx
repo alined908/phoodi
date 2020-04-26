@@ -54,7 +54,6 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     padding: "0 1rem",
-    
     background: "white",
   },
   hide: {
@@ -153,13 +152,13 @@ const Navigation = (props) => {
     <div className={classes.root}>
       <CssBaseline />
       
-      <AppBar position="absolute" className={classes.appBar}>
+      <AppBar elevation={1} position="absolute" className={classes.appBar}>
         <Toolbar>
           {props.authenticated && <IconButton aria-label="open drawer" onClick={handleDrawerOpen} edge="start">
             <Badge color="secondary" variant="dot" invisible={!isNotifs(props.notifs)}><Menu /></Badge>
           </IconButton>}
           <Typography className={classes.title} variant="h6" noWrap>
-            <Link onClick={handleDrawerClose} to="/">Phoodie</Link>
+            <Link onClick={handleDrawerClose} to="/">Phoodi</Link>
           </Typography>
           {!props.authenticated && 
             <Link to="/login">

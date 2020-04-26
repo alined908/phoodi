@@ -7,8 +7,8 @@ import RegisterComponent from "./auth/RegisterComponent";
 //Chat
 import ChatBarComponent from "./chat/ChatBarComponent"
 import ChatComponent from "./chat/ChatComponent"
-import ChatMessageComponent from "./chat/ChatMessageComponent"
-import ChatWindowComponent from "./chat/ChatWindowComponent"
+import ChatMessage from "./chat/ChatMessage"
+import ChatWindow from "./chat/ChatWindow"
 import ContactComponent from "./chat/ContactComponent"
 import ChatInput from "./chat/ChatInput"
 
@@ -77,7 +77,7 @@ import Comment from "./restaurant/Comment"
 
 export {
     ErrorComponent, LoginComponent, LogoutComponent, RegisterComponent, 
-    ChatBarComponent, ChatComponent, ChatMessageComponent, ChatWindowComponent, ContactComponent, ChatInput,
+    ChatBarComponent, ChatComponent, ChatMessage, ChatWindow, ContactComponent, ChatInput,
     Friend, FriendsComponent, Invite, Invites,
     Meetup, MeetupChat, MeetupCard, MeetupEvent, MeetupEventForm, MeetupFriend, MeetupForm, MeetupPageComponent, MeetupsComponent, MeetupTree, MeetupEventOption,
     RestaurauntAutocomplete, CategoryAutocomplete, UserAutocomplete, Location, renderTextField, renderDatePicker, renderDateSimplePicker, Map,

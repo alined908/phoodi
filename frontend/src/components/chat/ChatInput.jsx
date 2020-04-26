@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
-import 'emoji-mart/css/emoji-mart.css'
-import { Picker } from 'emoji-mart'
-import {Button} from '@material-ui/core'
 import ReactDOM from 'react-dom'
+import 'emoji-mart/css/emoji-mart.css'
+import {Picker} from 'emoji-mart'
+import {Button} from '@material-ui/core'
+import styles from '../../styles/chat.module.css'
 
 class ChatInput extends Component {
     constructor(props){
@@ -79,41 +80,38 @@ class ChatInput extends Component {
     render(){
         return (
             <>
-                {!this.props.bound && 
-                    <div className="more-messages">
-                        <Button size="small" onClick={() => this.props.scrollToBottom()} 
-                            variant="contained" color="primary" style={{opacity: ".6", fontSize: ".7rem"}}
-                        >
-                            More Messages Below
-                        </Button>
-                    </div>
-                    }
-                <form className="chat-input-form">
-                    <input className="chat-input"
+                <form className={styles.inputForm}>
+                    <input className={styles.input}
                         type="text"
                         onChange={this.handleChange} 
                         onKeyPress={this.handleSubmit}
                         value={this.state.value} 
-                        placeholder="Type a message here...">
+                        placeholder="Type a message..">
                     </input>
                 </form>
                 {this.state.showEmojis ?
-                    <>
-                        <div className="emoji-picker-icon" onClick={this.showEmojis}>
-                        {String.fromCodePoint(0x1F62D)}
+                    <div className={styles.emojiPickerWrapper}>
+                        <div className={styles.emojiIcon} onClick={this.showEmojis}>
+                            {String.fromCodePoint(0x1F62D)}
                         </div>
-                        <div className="emoji-picker elevate">
-                            <Picker ref={this.emojiPicker} title='Pick your emoji…' emoji='point_up' sheetSize={32} emojiSize={22} onSelect={this.addEmoji}/>
+                        <div className={`${styles.emojiPicker} elevate`}>
+                            <Picker 
+                                ref={this.emojiPicker} 
+                                title='Pick your emoji…' 
+                                emoji='point_up' 
+                                sheetSize={20} 
+                                emojiSize={20} 
+                                onSelect={this.addEmoji}
+                            />
                         </div>
-                    </>:
-                    <div className="emoji-picker-icon" onClick={this.showEmojis}>
+                    </div>:
+                    <div className={styles.emojiIcon} onClick={this.showEmojis}>
                         {String.fromCodePoint(0x1f60a)}
                     </div>
                 } 
                 <div>
                     <Button onClick={() => this.handleClick()} 
-                        style={{borderRadius: 15, fontSize: 10, fontFamily: "Lato", 
-                        fontWeight: "700", backgroundColor: "#FFD460"}}
+                        style={{borderRadius: 15, fontSize: 10, backgroundColor: "#FFD460"}}
                     >
                         Send
                     </Button>

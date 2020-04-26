@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {ChatBarComponent, ChatWindowComponent} from "../components"
+import {ChatBarComponent, ChatWindow} from "../components"
 import {connect} from "react-redux";
 import {getMessages, setActiveRoom, addMessage, removeActiveRoom} from "../../actions/chat"
 import {getRooms} from '../../actions/chat';
@@ -56,12 +56,12 @@ class ChatComponent extends Component {
     render(){
         const renderChatWindow = () => {
             if (this.props.isMessagesInitialized || this.props.isMessagesFetching) {
-                return <ChatWindowComponent 
+                return <ChatWindow
                             socket={this.state.socket} isMessagesInitialized={this.props.isMessagesInitialized} 
                             activeRoom={this.props.activeRoom} messages={this.props.messages}
                         />
             } else {
-                return <ChatWindowComponent socket={this.state.socket} activeRoom={null} messages={[]}/>
+                return <ChatWindow socket={this.state.socket} activeRoom={null} messages={[]}/>
             }
         }
 

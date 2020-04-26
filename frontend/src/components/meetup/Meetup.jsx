@@ -339,13 +339,19 @@ class Meetup extends Component {
         }
 
         return (
-            <>
-                <MeetupTree meetup={meetup} sortEvents={(events) => this.sortEvents(events)} initialized={this.props.isMeetupEventsInitialized}/>
-                <div className="inner-wrap" id='head'>
-                    <Helmet>
-                        <meta charSet="utf-8" />
-                        <title>{`${meetup.name}`}</title>
-                    </Helmet>
+            <div className={styles.meetupWrapper}>
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>
+                        {`${meetup.name}`}
+                    </title>
+                </Helmet>
+                <MeetupTree 
+                    meetup={meetup} 
+                    sortEvents={(events) => this.sortEvents(events)} 
+                    initialized={this.props.isMeetupEventsInitialized}
+                />
+                <div className={styles.meetupWrapperInner} id='head'>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
                             {renderInformation(meetup.name, meetup.date, meetup.location)}
@@ -399,7 +405,7 @@ class Meetup extends Component {
                     </Grid>
                 </div>
                 <MeetupChat meetup={meetup}/>
-            </>
+            </div>
         )
     }
 }

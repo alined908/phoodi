@@ -1,65 +1,22 @@
-/* MeetupEventOption*/
-.deleteOption{
-    position: absolute;
-    top:-10px;
-    right:-10px;
-    cursor: pointer;
-}
-
-.previewOption{
-    position: absolute;
-    cursor: pointer;
-    top: 20px;
-    right: -12px;
-}
-
-.yelpOption{
-    position: absolute;
-    cursor: pointer;
-    top: 50px;
-    right: -12px;
-}
-
-.deleteOption:hover, .previewOption:hover{
-    transform: scale(1.1);
-}
-
-/* Meetup Notifications */
-
-.notifications{
+/* Meetup */
+.meetupWrapper{
     display: flex;
-    width: 500px;
-    margin: auto;
-    max-height: 300px;
-    overflow-y: auto;
-    flex-direction: column;
     height: 100%;
+    width: 100%;
 }
 
-.notification{
-    display: flex;
-    justify-content: space-between;
-    padding: .5rem 1rem;
-    border-bottom: 1px solid black;
-
+.meetupWrapperInner{
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding: 2rem 4rem;
+    padding-left: calc(3rem + 200px);
 }
 
-.notification:last-child{
-    border-bottom: 0;
-}
-
-.notifInfo{
-    display:flex;
-    align-items: center;
-}
-
-.notifDate{
-    display: flex;
-    align-items: center;
-    margin-left: 20px;
-    font-size: .7rem;
-    color: grey;
-    white-space:nowrap;
+/* MeetupChat */
+.meetupChat{
+    margin-left: auto;
+    width: 400px;
 }
 
 /* MeetupTree */
@@ -94,6 +51,33 @@
     border-left: 1px dashed rgba(0, 0, 0, 0.4);
     overflow: hidden;
 }
+
+/* MeetupEventOption*/
+.deleteOption{
+    position: absolute;
+    top:-10px;
+    right:-10px;
+    cursor: pointer;
+}
+
+.previewOption{
+    position: absolute;
+    cursor: pointer;
+    top: 20px;
+    right: -12px;
+}
+
+.yelpOption{
+    position: absolute;
+    cursor: pointer;
+    top: 50px;
+    right: -12px;
+}
+
+.deleteOption:hover, .previewOption:hover{
+    transform: scale(1.1);
+}
+
 
 /* RestaurantPreview */
 .photos{
@@ -134,7 +118,7 @@
 }
 
 .review {
-    
+
 }
 
 .reviewForm{

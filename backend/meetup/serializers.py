@@ -439,9 +439,15 @@ class ChatRoomMemberSerializer(serializers.ModelSerializer):
         fields = ['user']
 
 class MessageSerializer(serializers.ModelSerializer):
+    sender = serializers.SerializerMethodField("_get_sender")
+
+    def _get_sender(self, obj):
+        serializer = UserSerializer(obj.sender, context={'plain': True})
+        return serializer.data
+
     class Meta:
         model = ChatRoomMessage
-        fields = ('id', 'message', 'timestamp', 'is_read', 'room_id', 'sender_id')
+        fields = ('id', 'message', 'timestamp', 'is_read', 'is_notif', 'sender')
 
 class GenericNotificationRelatedField(serializers.RelatedField):
     def to_representation(self, value):

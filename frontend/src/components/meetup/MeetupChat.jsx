@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
-import {ChatWindowComponent} from '../components'
+import {ChatWindow} from '../components'
 import {getMessages, addMessage, setActiveRoom, getRoom} from "../../actions/chat"
 import AuthenticationService from "../../accounts/AuthenticationService"
 import WebSocketService from "../../accounts/WebSocket";
 import {connect} from 'react-redux'
+import styles from '../../styles/meetup.module.css'
 
 class MeetupChat extends Component {
     constructor(props){
@@ -36,17 +37,17 @@ class MeetupChat extends Component {
     render () {
         const renderChatWindow = () => {
             if (this.props.isMessagesInitialized || this.props.isMessagesFetching) {
-                return <ChatWindowComponent 
+                return <ChatWindow
                             socket={this.state.chatSocket} isMessagesInitialized={this.props.isMessagesInitialized} 
                             activeRoom={this.props.activeRoom} messages={this.props.messages}
                         />
             } else {
-                return <ChatWindowComponent socket={this.state.socket} activeRoom={null} messages={[]}/>
+                return <ChatWindow socket={this.state.socket} activeRoom={null} messages={[]}/>
             }
         }
 
         return (
-            <div>
+            <div className={styles.meetupChat}>
                 {renderChatWindow()}
             </div>
         )
