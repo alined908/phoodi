@@ -1,3 +1,40 @@
+.profile {
+    height: 80%;
+    display: flex;
+    width: 80%;
+    margin: auto;
+}
+
+.userAvatar {
+    transform: scale(1.7);
+}
+
+.header {
+    flex: 1 1 0;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    padding: 2rem;
+    height: 100%;
+}
+
+.contentName {
+    font-size: 2rem;
+    margin-top: -.5rem;
+}
+
+.contentEmail {
+    font-weight: 500;
+    color: grey;
+    font-size: 14px;
+}
+
+.recentActivity {
+    flex: 2 1 0;
+}
+
 .pastactivity{
     display: flex;
     height: 100%;

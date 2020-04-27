@@ -1,75 +1,81 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import 'emoji-mart/css/emoji-mart.css'
-import {Picker} from 'emoji-mart'
-import {Button} from '@material-ui/core'
+import { Picker } from 'emoji-mart'
+import { Button } from '@material-ui/core'
 import styles from '../../styles/chat.module.css'
 
 class ChatInput extends Component {
     constructor(props){
         super(props)
         this.state = {
-            value: "",
+            textValue: "",
             showEmojis: false
         }
         this.emojiPicker = React.createRef();
-        this.showEmojis = this.showEmojis.bind(this)
+        this.showEmojis = this.showEmojis.bind(this);
     }
     
-    //Add Event listener for emoji picker outside click
+    // Add event listener for emoji picker outside click. 
     componentDidMount(){
         document.addEventListener('mousedown', this.handleOutsideClick, false);
     }
 
-    //If Component unmounts remove outsideclick event listener
+    // Remove event listener for emoji picker outside click. 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleOutsideClick, false);
     }
 
-    //If Send button is clicked
+    // Send message if send button is clicked. 
     handleClick = (e) => {
-        this.sendMessage()
+        this.sendMessage();
     }
 
-    //If enter button is hit
+    // Send message if enter button is touched. 
     handleSubmit = (e) => {
         if (e.key === "Enter"){
             e.preventDefault();
-            this.sendMessage()
+            this.sendMessage();
         }
     }
 
-    // Handle Change in text input
+    // Change text input value. 
     handleChange = (e) => {
-        this.setState({value: e.target.value})       
+        this.setState({textValue: e.target.value});    
     }
 
-    //Send Message with websocket
+    // Send message to chat room websocket and reset chat input value. 
     sendMessage = () => {
-        if (this.state.value.length > 0 ){
-            const messageObject = {from: this.props.user.id, text: this.state.value, room: this.props.room.uri}
-            this.setState({value: ""}, () => this.props.socket.newChatMessage(messageObject))
+        if (this.state.textValue.length > 0 ) {
+            const messageObject = {
+                from: this.props.user.id, 
+                text: this.state.textValue, 
+                room: this.props.room.uri
+            };
+            this.setState({textValue: ""}, 
+                () => this.props.socket.newChatMessage(messageObject)
+            );
         } 
     }
 
-    //Add Emoji to Text Input
+    // Add emoji to text input.
     addEmoji = e => {
         let emoji = e.native;
         this.setState({
-            value: this.state.value + emoji
-        })
+            textValue: this.state.textValue + emoji
+        });
     }
 
-    //Show Emoji Picker
-    showEmojis = (e) => {
+    // Toggle emoji picker visibility.
+    showEmojis = () => {
         this.setState({showEmojis: !this.state.showEmojis})
     }
 
-    //Handle Emoji Picker Outside Click
+    // Handle emoji picker outside click.
     handleOutsideClick = (e) => {
         try {
             let node = ReactDOM.findDOMNode(this.emojiPicker.current)
-            if (!node.contains(e.target)){
+            if (!node.contains(e.target)) {
                 this.setState({showEmojis: false})
             }   
         } catch(error){
@@ -85,7 +91,7 @@ class ChatInput extends Component {
                         type="text"
                         onChange={this.handleChange} 
                         onKeyPress={this.handleSubmit}
-                        value={this.state.value} 
+                        value={this.state.textValue} 
                         placeholder="Type a message..">
                     </input>
                 </form>

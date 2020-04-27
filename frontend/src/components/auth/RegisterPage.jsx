@@ -39,7 +39,7 @@ const validate = values => {
     return errors
 }
 
-class RegisterComponent extends Component {
+class RegisterPage extends Component {
 
     constructor(props){
         super(props)
@@ -220,7 +220,7 @@ class RegisterComponent extends Component {
     }
 }
 
-RegisterComponent.propTypes = {
+RegisterPage.propTypes = {
     errorMessage: PropTypes.string,
     signup: PropTypes.func.isRequired,
     editUser: PropTypes.func.isRequired,
@@ -250,4 +250,4 @@ const mapDispatchToProps = {
 export default compose (
     connect(mapStatetoProps, mapDispatchToProps),
     reduxForm({form: 'signup', validate})
-)(RegisterComponent);
+)(RegisterPage);

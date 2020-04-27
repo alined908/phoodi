@@ -104,12 +104,12 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Skeleton loading where applicable
 - [ ] Refactor (ex. onTagsChange of MeetupsComponent)
 - [ ] Optimize performance
-- [ ] Separate css files
 - [ ] Disable actions if event is in the past 
 
 ## Todo Testing 
 - [ ] Validation for models
 - [ ] Write tests for frontend
+- [ ] Category events doesnt show
 
 ## Todo Authentication
 - [ ] Don't allow websocket to send event even after refresh token expire

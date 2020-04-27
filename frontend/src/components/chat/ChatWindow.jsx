@@ -1,15 +1,15 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom';
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom';
 import moment from "moment"
 import throttle from 'lodash/throttle'
-import {ChatMessage, ChatInput} from "../components"
-import {Button, IconButton, Tooltip, CircularProgress} from '@material-ui/core'
-import {Person as PersonIcon, Event as EventIcon, ExitToApp as ExitToAppIcon} from "@material-ui/icons"
-import {getMoreMessages} from "../../actions/chat"
-import {removeNotifs} from "../../actions/notifications"
-import {chatMessagePropType} from "../../constants/prop-types"
+import { ChatMessage, ChatInput } from "../components"
+import { Button, IconButton, Tooltip, CircularProgress } from '@material-ui/core'
+import { Person as PersonIcon, Event as EventIcon, ExitToApp as ExitToAppIcon } from "@material-ui/icons"
+import { getMoreMessages } from "../../actions/chat"
+import { removeNotifs } from "../../actions/notifications"
+import { chatMessagePropType } from "../../constants/prop-types"
 import styles from '../../styles/chat.module.css'
 
 class ChatWindow extends Component {
@@ -26,7 +26,11 @@ class ChatWindow extends Component {
         this.bound = true
     }
 
-    //If chat window state is bound, scroll to bottom on new chat messages
+    /*  
+        Update component if new message comes in. 
+        If chat window state is bound then scroll to bottom.
+        Scroll to last message position if loading more messages. 
+    */
     componentDidUpdate(prevProps) {
         if (this.state.bound){
             this.scrollToBottom();
@@ -41,18 +45,20 @@ class ChatWindow extends Component {
         first.scrollIntoView()
     }
 
-    //Scroll function to determine bound state and get more messages if necessary
+    /* 
+        Scroll handler function to determine bound state.
+        Get more messages if necessary.
+    */
     handleScroll = (e) => {
         let scrollTop = e.target.scrollTop;
         let scrollHeight = e.target.scrollHeight;
         let clientHeight = e.target.clientHeight;
         
-        //Check if more is retrievable
         if (scrollTop === 0 && this.props.messages && this.props.isMoreRetrievable) {
             this.setState({offset: this.props.messages[0].id})
             this.props.getMoreMessages(this.props.room.uri, this.props.messages[0].id)
         }
-
+        
         let newBound = (scrollHeight - scrollTop === clientHeight)
         if (newBound !== this.bound){
             this.setState({bound: newBound})
@@ -60,13 +66,12 @@ class ChatWindow extends Component {
         } 
     }
 
-    //Scroll wrapper to throttle and persist synthetic event
+    // Scroll wrapper to throttle and persist synthetic event
     handleScrollWrapper = (event) => {
         event.persist()
         this.delayedCallback(event)
     }
 
-    //Scroller if bound
     scrollToBottom = (behavior = "smooth") => {    
         this.messagesEndRef.current.scrollIntoView({behavior});
     };
@@ -82,19 +87,24 @@ class ChatWindow extends Component {
         }
     }
 
+    /**
+     * Group messages by date.
+     * @param {Array.<Object>} messages
+     */
     groupMessagesByDate = (messages) => {
         const mapping = {}
 
         for(var i = 0; i < messages.length; i++){
             let message = messages[i]
             let date = moment(message.timestamp).local().format('MMMM D, YYYY')
-            if (date in mapping){
+            if (date in mapping) {
                 mapping[date].push(message)
             }
             else {
                 mapping[date] = [message]
             }   
         }
+
         return mapping  
     }
  
@@ -226,7 +236,7 @@ ChatWindow.propTypes = {
 }
 
 function mapStateToProps(state){
-    if (state.chat.activeRoom in state.chat.rooms){
+    if (state.chat.activeRoom in state.chat.rooms) {
         return {
             activeChatMembers: state.chat.rooms[state.chat.activeRoom].members,
             user: state.user.user,

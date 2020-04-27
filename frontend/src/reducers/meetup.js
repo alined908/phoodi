@@ -1,7 +1,7 @@
 import {GET_MEETUPS_REQUEST, GET_MEETUPS_SUCCESS, GET_MEETUPS_ERROR, 
         ADD_MEETUP, ADD_MEETUP_MEMBER, DELETE_MEETUP_MEMBER, DELETE_MEETUP, EDIT_MEETUP,
      CLEAR_STORE, VOTE_MEETUP_EVENT, ADD_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, 
-     EDIT_MEETUP_EVENT, ADD_EVENT_OPTION, ADD_MEETUP_ACTIVITY, DELETE_EVENT_OPTION} from '../constants/action-types';
+     EDIT_MEETUP_EVENT, ADD_EVENT_OPTION, DELETE_EVENT_OPTION} from '../constants/action-types';
 
 const defaultState = {
     meetups: {},
@@ -123,17 +123,6 @@ export default function meetupReducer(state = defaultState, action){
                     }
                 }
             }
-
-        case ADD_MEETUP_ACTIVITY:
-            var met_uri = action.payload.meetup
-            
-            return {...state, meetups: {...state.meetups, 
-                [met_uri]: {...state.meetups[met_uri], 
-                    notifications: [
-                        action.payload.notification, ...state.meetups[met_uri].notifications, 
-                    ]
-                }
-            }}
         case CLEAR_STORE:
             return defaultState
         default:

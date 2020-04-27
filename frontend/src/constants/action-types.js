@@ -35,7 +35,6 @@ export const EDIT_MEETUP = 'edit_meetup';
 export const SEND_MEETUP_EMAILS = 'send_meetup_emails';
 export const ADD_MEETUP_MEMBER = 'add_meetup_member';
 export const DELETE_MEETUP_MEMBER = 'delete_meetup_member';
-export const ADD_MEETUP_ACTIVITY = 'add_meetup_activity';
 
 //MeetupEvents
 export const GET_MEETUP_EVENTS = 'get_meetup_events';

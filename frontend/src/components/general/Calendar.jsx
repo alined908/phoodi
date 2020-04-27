@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import {Helmet} from 'react-helmet'
 
-class CalendarComponent extends Component {
+class Calendar extends Component {
     render () {
         return (
             <div className="calendar elevate">
@@ -16,4 +16,4 @@ class CalendarComponent extends Component {
     }
 }
 
-export default CalendarComponent
+export default Calendar

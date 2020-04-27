@@ -1,10 +1,11 @@
 import React from "react"
 import {Link} from "react-router-dom"
-import {ListItem, ListItemAvatar, ListItemText, Tooltip, Typography, Avatar, makeStyles, IconButton} from '@material-ui/core'
+import {ListItem, ListItemAvatar, ListItemText, Tooltip, Typography, Avatar, IconButton} from '@material-ui/core'
 import {Chat as ChatIcon, Delete as DeleteIcon} from '@material-ui/icons';
 import {friendPropType} from '../../constants/prop-types'
 import PropTypes from 'prop-types'
 import { useHistory } from "react-router-dom";
+import styles from "../../styles/friends.module.css"
 
 const Friend = (props) => {
     const history = useHistory();
@@ -21,7 +22,7 @@ const Friend = (props) => {
 
     return (
         <Link to={`/profile/${props.friend.user.id}`}>
-            <div className="friend-chat">
+            <div className={styles.chat}>
                 <ListItem>
                     <ListItemAvatar>
                         <Avatar src={props.friend.user.avatar}>

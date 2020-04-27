@@ -1,8 +1,8 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import moment from 'moment';
-import {Avatar} from "@material-ui/core"
+import { Avatar } from "@material-ui/core"
 import styles from '../../styles/chat.module.css'
-import {userPropType, chatMessagePropType, chatMemberPropType} from "../../constants/prop-types"
+import { userPropType, chatMessagePropType, chatMemberPropType } from "../../constants/prop-types"
 
 class ChatMessage extends Component {
 
@@ -10,8 +10,6 @@ class ChatMessage extends Component {
         const message = this.props.message
         const sender = message.sender
         const notif = message.is_notif
-        // const user = this.props.user
-        // const isUserMessage = user.id === sender.id
         
         return (
             <div id={`${message.id}`} className={notif ? styles.messageNotifWrapper : styles.messageWrapper}>

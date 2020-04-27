@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom'
 import moment from 'moment';
 import Skeleton from '@material-ui/lab/Skeleton';
 import {meetupPropType} from "../../constants/prop-types"
+import styles from '../../styles/meetup.module.css'
 
 const useStyles = makeStyles({
     paper: {
@@ -30,15 +31,18 @@ const MeetupCard = ({meetup}) => {
         {meetup ? 
             <Link to={`/meetups/${meetup.uri}`}>
                 <Paper elevation={4} square={true} className={classes.paper}>
-                    <div className="meetup-card-inner">
-                        <div className="meetup-card-top"> 
-                            <div className="meetup-card-icon flex-clip-2">
+                    <div className={styles.cardInner}>
+                        <div className={styles.cardTop}> 
+                            <div className={`${styles.cardIcon} ${styles.flexClip2}`}>
                                 <Tooltip title={meetup.name}>
-                                    <Typography className="flex-ellipse" variant="h5">{meetup.name}</Typography>
+                                    <Typography className={styles.flexEllipse} variant="h5">
+                                        {meetup.name}
+                                    </Typography>
                                 </Tooltip>
                             </div>
-                            <div className="meetup-card-icon">
-                                <TodayIcon/>{moment(meetup.date).local().format("dddd, MMMM D")}
+                            <div className={styles.cardIcon}>
+                                <TodayIcon/>
+                                {moment(meetup.date).local().format("dddd, MMMM D")}
                             </div>
                             {meetup.notifs !== null && meetup.notifs > 0 && <Badge badgeContent={meetup.notifs} color="primary">
                                 <NotificationsIcon />
@@ -49,11 +53,11 @@ const MeetupCard = ({meetup}) => {
                             <div className={classes.middle}>
                                 <Skeleton animation="wave" variant="rect" height="100%"/>
                             </div> :
-                            <div className={classes.middle} style={{padding: "0 1.5rem", borderTop: "1px solid rgb(211,211,211, 0.4)", borderBottom: "1px solid rgb(211,211,211, 0.4)"}}>
-                                <div className="meetup-card-events">Events</div>
-                                <div className="meetup-card-categories">
+                            <div className={`${classes.middle} ${styles.cardEvents}`} >
+                                <div className={styles.cardEventsHeader}>Events</div>
+                                <div className={styles.cardEventsCategories}>
                                     {meetup.categories.slice(0, 4).map((category) => 
-                                        <div key={category.id} className="meetup-card-category">
+                                        <div key={category.id} className={styles.cardEventsCategory}>
                                             <Avatar style={{width: 28, height: 28}} variant="square"
                                                 src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`} 
                                             />
@@ -63,18 +67,18 @@ const MeetupCard = ({meetup}) => {
                                 </div>
                             </div>
                         }
-                        <div className="meetup-card-bottom">
+                        <div className={styles.cardBottom}>
                             <Tooltip title={meetup.location}>
-                                <div className="meetup-card-icon flex-clip">
+                                <div className={`${styles.cardIcon} ${styles.flexClip}`}>
                                     <RoomIcon/>
-                                    <div className="flex-ellipse">
+                                    <div className={styles.flexEllipse}>
                                         {meetup.location}
                                     </div>
                                 </div>
                             </Tooltip>
-                            <div className="meetup-card-icon flex-clip">
+                            <div className={`${styles.cardIcon} ${styles.flexClip}`}>
                                 <GroupAvatars members={users}/>
-                                <span className="flex-ellipse" style={{display: "flex", overflow:"hidden"}}>
+                                <span className={`${styles.flexEllipse} ${styles.cardMembers}`}>
                                     {users.length + " member"}{users.length > 1 ? "s" : ""}
                                 </span>
                             </div>

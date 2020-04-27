@@ -9,6 +9,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import PropTypes from "prop-types"
 import {invitePropType} from '../../constants/prop-types'
 import {Helmet} from 'react-helmet'
+import styles from "../../styles/friends.module.css"
 
 class Invites extends Component {
 
@@ -57,8 +58,8 @@ class Invites extends Component {
                                         </IconButton>
                                     </Tooltip>
                                 </div>
-                                <div className="invites">
-                                    {this.props.meetupInvites.map((inv, index) => 
+                                <div className={styles.invites}>
+                                    {this.props.meetupInvites.map((inv) => 
                                         <Invite key={inv.id} inv={inv} type={inviteType.meetup}></Invite>
                                     )}
                                 </div>
@@ -77,8 +78,8 @@ class Invites extends Component {
                                         </IconButton>
                                     </Tooltip>
                                 </div>
-                                <div className="invites">
-                                {this.props.friendInvites.map((inv, index) => 
+                                <div className={styles.invites}>
+                                {this.props.friendInvites.map((inv) => 
                                     <Invite key={inv.id} inv={inv} type={inviteType.friend}></Invite>
                                 )}
                                 </div>

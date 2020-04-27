@@ -14,7 +14,7 @@ import {ReactComponent as Twitter} from "../../assets/svgs/twitter.svg"
 import styles from "../../styles/form.module.css"
 import PropTypes from "prop-types"
 
-class LoginComponent extends Component {
+class LoginPage extends Component {
 
     onSubmit = formProps => {
         let redirect;
@@ -99,7 +99,7 @@ class LoginComponent extends Component {
     }
 }
 
-LoginComponent.propTypes = {
+LoginPage.propTypes = {
     errorMessage: PropTypes.string,
     signin: PropTypes.func.isRequired
 }
@@ -119,6 +119,6 @@ export default compose (
     reduxForm({
         form: 'signin'
     })
-)(LoginComponent);
+)(LoginPage);
 
-export {LoginComponent as UnderlyingLoginComponent}
+export {LoginPage as UnderlyingLoginComponent}

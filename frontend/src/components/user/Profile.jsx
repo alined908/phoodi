@@ -6,7 +6,7 @@ import {getPreferences, addPreference, editPreference} from "../../actions/index
 import {Link} from 'react-router-dom'
 import {sendFriendInvite} from '../../actions/invite'
 import {Lock as LockIcon, LockOpen as LockOpenIcon, Search as SearchIcon, Edit as EditIcon, PersonAdd as PersonAddIcon} from '@material-ui/icons';
-import {Friend, CategoryAutocomplete, Preferences, RegisterComponent} from "../components"
+import {Friend, CategoryAutocomplete, Preferences, RegisterPage} from "../components"
 import PropTypes from "prop-types"
 import { userPropType } from '../../constants/prop-types'
 import {history} from '../MeetupApp'
@@ -82,9 +82,9 @@ class Profile extends Component {
     }
 
     handleSearchInputChange = (e) => {
-        var filter = e.target.value;
-        var friends = this.state.friends
-        var newFriends;
+        let filter = e.target.value;
+        let friends = this.state.friends
+        let newFriends;
 
         newFriends = friends.filter((friendship) => {
             let friendCriteria = false;
@@ -203,10 +203,15 @@ class Profile extends Component {
                         <Preferences locked={this.state.locked} isUser={isUser}/>
                         <div className="column-bottom">
                             {isUser && <SearchIcon/>}
-                            {isUser && <CategoryAutocomplete 
-                                fullWidth={true} size="small" entries={this.state.entries} 
-                                handleClick={this.onTagsChange} label="Search to add categories.."
-                            />}
+                            {isUser && 
+                                <CategoryAutocomplete 
+                                    fullWidth={true} 
+                                    size="small" 
+                                    entries={this.state.entries} 
+                                    handleClick={this.onTagsChange} 
+                                    label="Search to add categories.."
+                                />
+                            }
                         </div> 
                     </div>
                 </div>
@@ -216,7 +221,7 @@ class Profile extends Component {
         const renderProfile = () => {
             return (
                 <div className="column-center">
-                    <div className="column-inner profile-header">
+                    <div className={`column-inner ${styles.header}`}>
                         <div className="column-top">
                             <div>Profile</div>
                             <div>
@@ -235,30 +240,30 @@ class Profile extends Component {
                                     </Tooltip>
                                 }
                                 {this.state.editProfileForm && 
-                                    <RegisterComponent type="edit" handleClose={this.openFormModal} open={this.state.editProfileForm}/>
+                                    <RegisterPage type="edit" handleClose={this.openFormModal} open={this.state.editProfileForm}/>
                                 }
                             </div>
                         </div>
                         <div className="column-middle">
-                            <div className="profile-content">
+                            <div className={styles.content}>
                                 <div className="pic">
-                                    <Avatar className="user-avatar" src={this.state.user.avatar}>
+                                    <Avatar className={styles.userAvatar} src={this.state.user.avatar}>
                                         {this.state.user.first_name.charAt(0)}
                                         {this.state.user.last_name.charAt(0)}
                                     </Avatar>
                                 </div>
                                 <div>
-                                    <div className="profile-content-name">
+                                    <div className={styles.contentName}>
                                         {this.state.user.first_name} {this.state.user.last_name}
                                     </div>
-                                    <div className="profile-content-email">
+                                    <div className={styles.contentEmail}>
                                         {this.state.user.email}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="column-inner recent-activity">
+                    <div className={`column-inner ${styles.recentActivity}`}>
                         <div className="column-top">
                             <div>Past Activity</div>
                         </div>
@@ -305,7 +310,13 @@ class Profile extends Component {
                         </div> 
                         <div className="column-bottom">
                             <SearchIcon/>
-                            <input className="chat-input" type="text" placeholder="Search Friends..." value={this.state.searchInput} onChange={this.handleSearchInputChange}></input>
+                            <input 
+                                className="chat-input" 
+                                type="text" 
+                                placeholder="Search Friends..." 
+                                value={this.state.searchInput} 
+                                onChange={this.handleSearchInputChange}
+                            />
                         </div>
                     </div>
                 </div>
@@ -313,7 +324,7 @@ class Profile extends Component {
         }
 
         return (
-            <div className="profile">
+            <div className={styles.profile}>
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>

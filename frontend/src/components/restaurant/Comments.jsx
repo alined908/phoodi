@@ -6,7 +6,12 @@ class Comments extends Component {
         return (
             <div>
                 {this.props.comments.map((comment) => 
-                    <Comment review={this.props.review} restaurant={this.props.restaurant} key={comment.id} comment={comment}/>
+                    <Comment 
+                        key={comment.id}
+                        comment={comment}
+                        review={this.props.review} 
+                        restaurant={this.props.restaurant} 
+                    />
                 )}
             </div>
         )

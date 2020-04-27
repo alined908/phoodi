@@ -9,7 +9,7 @@ import {
 import RestaurantPreview from "../restaurant/RestaurantPreview"
 import {Link} from 'react-router-dom'
 import {ADD_GLOBAL_MESSAGE} from '../../constants/action-types'
-import {Avatar, Tooltip} from '@material-ui/core'
+import {Avatar, Tooltip, Paper} from '@material-ui/core'
 import PropTypes from 'prop-types';
 import {meetupEventOptionPropType, meetupMemberPropType, userPropType} from '../../constants/prop-types'
 import styles from '../../styles/meetup.module.css'
@@ -106,64 +106,64 @@ class MeetupEventOption extends Component {
         const [like, dislike, ban] = [this.determineClicked(status, voteStatus.like), this.determineClicked(status, voteStatus.dislike), this.determineClicked(status, voteStatus.ban)]
         const checkOwn = (status) => {
             if (this.props.user.id in this.props.option.votes && this.props.option.votes[this.props.user.id].status === status) {
-                return "myclick"
+                return styles.myclick
             } else {
                 return ""
             }
         }
 
         return (
-            <div className="rst-actions">
-                <div className={"rst-action-icon " + checkOwn(voteStatus.like)}>
+            <div className={styles.rstActions}>
+                <div className={`${styles.rstActionIcon} ${checkOwn(voteStatus.like)}`}>
                     {!like ?  
                         <Tooltip title="Like">
                             <ThumbUpOutlinedIcon 
-                                disabled={banned} className="clickable" 
+                                disabled={banned} className={styles.clickable} 
                                 onClick={() => this.handleClick(voteStatus.like)}
                             />
                         </Tooltip> :
                         <Tooltip title="Undo Like">
                             <ThumbUpIcon 
-                                disabled={banned} className="clickable" 
+                                disabled={banned} className={styles.clickable} 
                                 color="primary" onClick={() => this.handleClick(voteStatus.like)}
                             />
                         </Tooltip>
                     }
-                    <span className="rst-action-score">{scores[1]}</span>
+                    <span className={styles.rstActionScore}>{scores[1]}</span>
                 </div>
-                <div className={"rst-action-icon " + checkOwn(voteStatus.dislike)}>
+                <div className={`${styles.rstActionIcon} ${checkOwn(voteStatus.dislike)}`}>
                     {!dislike ? 
                         <Tooltip title="Dislike">
                             <ThumbDownOutlinedIcon 
-                                disabled={banned} className="clickable" 
+                                disabled={banned} className={styles.clickable} 
                                 onClick={() => this.handleClick(voteStatus.dislike)}
                             />
                         </Tooltip> :
                         <Tooltip title="Undo Dislike">
                             <ThumbDownIcon 
-                                disabled={banned} className="clickable" 
+                                disabled={banned} className={styles.clickable}  
                                 onClick={() => this.handleClick(voteStatus.dislike)}
                             />
                         </Tooltip>
                     } 
-                    <span className="rst-action-score">{scores[2]}</span>
+                    <span className={styles.rstActionScore}>{scores[2]}</span>
                 </div>
-                <div className={"rst-action-icon " + checkOwn(voteStatus.ban)}>
+                <div className={`${styles.rstActionIcon} ${checkOwn(voteStatus.ban)}`}>
                     {!banned ? 
                         <Tooltip title="Ban">
                             <CancelOutlinedIcon 
-                                className="clickable" 
+                                className={styles.clickable} 
                                 onClick={() => this.handleClick(voteStatus.ban)}
                             />
                         </Tooltip> :
                         <Tooltip title="Undo Ban">
                             <CancelIcon 
-                                disabled={!ban} className="clickable" 
+                                disabled={!ban} className={styles.clickable}  
                                 color="secondary" onClick={() => this.handleClick(voteStatus.ban)}
                             />
                         </Tooltip>
                     }
-                    <span className="rst-action-score">{scores[3]}</span>
+                    <span className={styles.rstActionScore}>{scores[3]}</span>
                 </div>
             </div>
         )
@@ -172,8 +172,8 @@ class MeetupEventOption extends Component {
     renderRestauraunt = (data) => {
         return (   
             <>
-                <div className="rst">
-                    <div className="rst-info">
+                <div className={styles.rst}>
+                    <div className={styles.rstInfo}>
                         <span>
                             <Tooltip title="Go To Restaurant Page" placement="top">
                                 <Link to={`/restaurants/${data.url}`}>
@@ -181,15 +181,17 @@ class MeetupEventOption extends Component {
                                 </Link>
                             </Tooltip>
                         </span>
-                        <span className="rst-rating">{this.determineRating(data.rating)}</span>
+                        <span className={styles.rstRating}>
+                            {this.determineRating(data.rating)}
+                        </span>
                     </div>
-                    <div className="rst-img" style={{backgroundImage: `url(${data.yelp_image})`}}>
+                    <div className={styles.rstImg} style={{backgroundImage: `url(${data.yelp_image})`}}>
                     </div>
                 </div>
-                <div className="rst-categories">
+                <div className={styles.rstCategories}>
                     {data.price} &#8226; 
                     {data.categories.map((rc) =>
-                        <div key={rc.category.id} className="category-chip">
+                        <div key={rc.category.id} className={styles.categoryChip}>
                             <Avatar 
                                 style={{width: 20, height: 20}} variant="square"
                                 src={`${process.env.REACT_APP_S3_STATIC_URL}${rc.category.api_label}.png`}
@@ -218,7 +220,7 @@ class MeetupEventOption extends Component {
         if (this.props.full) {
             return (
                 <div className="center">
-                    <div className={"rst-inner-wrapper elevate " + (banned ? "banned": "")}>
+                    <Paper className={`${styles.rstWrapper} ${(banned ? styles.banned: "")}`} elevation={3}>
                         <div className={styles.deleteOption} onClick={this.handleDeleteOption}>
                             <Tooltip title="Delete Option">
                                 <CloseIcon color="secondary" fontSize="small"/>   
@@ -239,18 +241,18 @@ class MeetupEventOption extends Component {
                         {this.state.preview && <RestaurantPreview handleClose={this.handlePreview} identifier={data.identifier}/>}
                         {this.renderRestauraunt(data)}
                         {this.renderActions(status, scores, banned)}
-                    </div>
+                    </Paper>
                 </div>
             )
         } else {
             return (
-                <div className="rst-horizontal">  
+                <div className={styles.rstHorz}>  
                     {this.renderRestauraunt(data)}
-                    <div className="rst-horz-info">
-                        <div className="rst-horz-info-entry">
+                    <div className={styles.restaurantHorzInfo}>
+                        <div className={styles.rstHorzInfoEntry}>
                             <RoomIcon/> {data.location}
                         </div>
-                        <div className="rst-horz-info-entry">
+                        <div className={styles.rstHorzInfoEntry}>
                             <PhoneIcon/> {data.phone}
                         </div>
                     </div>

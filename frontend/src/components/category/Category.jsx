@@ -10,8 +10,9 @@ import PropTypes from "prop-types"
 import {userPropType} from "../../constants/prop-types"
 import {Helmet} from 'react-helmet'
 import {history} from '../MeetupApp'
+import styles from '../../styles/category.module.css'
 
-class CategoryComponent extends Component {
+class Category extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -37,7 +38,6 @@ class CategoryComponent extends Component {
     }
 
     getInformation = async () => {
-        console.log(this.props.user)
         try {
             const [category, friends, meetups, restaurants] = await Promise.all(
                 [
@@ -100,32 +100,40 @@ class CategoryComponent extends Component {
     render () {
         const category = this.state.category
         return (
-            <div className="category">
+            <div className={styles.category}>
                 <Helmet>
                     <meta charSet="utf-8" />
                     <meta name="description" content="Discover new categories." />
                     <title>{`Discover ${category.label === undefined ? "" : category.label}`}</title>
                 </Helmet>
-                <div className="category-header elevate">
-                    <div className="category-header-avatar">
-                        <span className="category-avatar">
-                            <Avatar style={{width: 100, height: 100}} src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`} variant="square"/>
+                <div className={styles.header}>
+                    <div className={styles.headerAvatar}>
+                        <span className={styles.avatar}>
+                            <Avatar 
+                                variant="square"
+                                className={styles.categoryAvatar}
+                                src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`} 
+                            />
                         </span>
                         <span>{category.label}</span>
                     </div>
-                    <div className="category-actions">
+                    <div className={styles.actions}>
                         {this.state.liked ? 
                             <Tooltip title="Remove Like">
                                 <IconButton color="secondary" onClick={() => this.handleLike(false)}>
                                     <FavoriteIcon/>
-                                    <span className="category-actions-like" style={{color: "black"}}>{this.state.numLiked}</span> 
+                                    <span className={styles.actionLike} style={{color: "black"}}>
+                                        {this.state.numLiked}
+                                    </span> 
                                 </IconButton>
                             </Tooltip>
                             :
                             <Tooltip title="Like">
                                 <IconButton  onClick={() => this.handleLike(true)}>
                                     <FavoriteBorderIcon/>
-                                    <span className="category-actions-like" style={{color: "#f50057"}}>{this.state.numLiked}</span> 
+                                    <span className={styles.actionLike} style={{color: "#f50057"}}>
+                                        {this.state.numLiked}
+                                    </span> 
                                 </IconButton>
                             </Tooltip>
                         }                   
@@ -138,8 +146,8 @@ class CategoryComponent extends Component {
                         </div>
                     )}
                 </div>
-                <div className="category-social">
-                    <div className="category-friends">
+                <div className={styles.social}>
+                    <div className={styles.friends}>
                         <div className="column">
                             <div className="column-inner">
                                 <div className="column-top">
@@ -155,9 +163,9 @@ class CategoryComponent extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="category-meetups">
-                        <div className="category-header-title elevate">
-                            Meetups Near You With <span style={{color: "#f50057", padding: "0 0.5rem"}}>  {category.label}</span> Events           
+                    <div className={styles.meetups}>
+                        <div className={styles.headerTitle}>
+                            Meetups Near You With <span className={styles.categoryHighlight}>{category.label}</span> Events           
                         </div>
                         <Grid container spacing={1}>
                             {this.state.meetups.map((meetup, index) =>
@@ -179,7 +187,7 @@ class CategoryComponent extends Component {
     }
 }
 
-CategoryComponent.propTypes = {
+Category.propTypes = {
     user: userPropType,
     addPreference: PropTypes.func.isRequired,
     deletePreference: PropTypes.func.isRequired,
@@ -202,4 +210,4 @@ const mapDispatchToProps = {
     getMeetups
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CategoryComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(Category)

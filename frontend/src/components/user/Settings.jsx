@@ -6,10 +6,11 @@ import {connect} from 'react-redux'
 import {addSettings} from '../../actions/index'
 import PropTypes from "prop-types"
 import {Helmet} from 'react-helmet'
+import styles from "../../styles/user.module.css"
 
 const labels = {1: "1 Mile", 5: "5 Miles", 10: "10 Miles", 15: "15 Miles", 20: "20 Miles", 25: "25 Miles"}
 
-class SettingsComponent extends Component {
+class Settings extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -62,20 +63,20 @@ class SettingsComponent extends Component {
     render () {
         return (
             <>
-                <div className="settings elevate">
+                <div className={styles.settings}>
                     <Helmet>
                         <meta charSet="utf-8" />
                         <title>Settings</title>
                         <meta name="description" content="Phoodie user settings" />
                     </Helmet>
-                    <div className="form-header">
+                    <div className={styles.settingsHeader}>
                         Settings
                     </div>
                     
-                    <div className="">
-                        <FormControl style={{width: "100%"}}>
+                    <div>
+                        <FormControl className={styles.settingsFormControl}>
                             <InputLabel>Max Radius</InputLabel>
-                            <Select style={{maxHeight: 200}} value={this.state.radius} onChange={this.handleRadius}>
+                            <Select className={styles.select} value={this.state.radius} onChange={this.handleRadius}>
                                 {Object.keys(labels).map((num) => 
                                     <MenuItem value={num}>
                                         {labels[num]}
@@ -84,11 +85,11 @@ class SettingsComponent extends Component {
                             </Select>
                         </FormControl>
                         
-                        <div style={{marginTop: 20}}>
+                        <div className={styles.settingsLocation}>
                             <Location label="Location" handleClick={this.handleClick} textValue={this.state.location}/>
                         </div>
                     </div>
-                    <div className="settings-save">
+                    <div className={styles.settingsSave}>
                         <Button variant="contained" color="primary" onClick={this.handleSubmit}>Save</Button>
                     </div>
                 </div>
@@ -99,7 +100,7 @@ class SettingsComponent extends Component {
     }
 }
 
-SettingsComponent.propTypes = {
+Settings.propTypes = {
     settings: PropTypes.shape({
         radius: PropTypes.number,
         location: PropTypes.string,
@@ -119,4 +120,4 @@ const mapDispatchToProps = {
     addSettings
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(Settings)

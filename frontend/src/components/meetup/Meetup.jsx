@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {MeetupFriend, MeetupEvent, ProgressIcon, MeetupForm, MeetupChat, MeetupEventForm, MeetupTree} from '../components'
 import {connect} from 'react-redux';
 import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, deleteEventOption,
-    addMeetupMember, deleteMeetupMember, addEventOption, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent, addMeetupActivity} from '../../actions/meetup';
+    addMeetupMember, deleteMeetupMember, addEventOption, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent} from '../../actions/meetup';
 import {removeNotifs} from '../../actions/notifications'
 import {getFriends} from "../../actions/friend"
 import {addGlobalMessage} from '../../actions/globalMessages'
@@ -183,17 +183,21 @@ class Meetup extends Component {
         
         const renderInformation = (name, date, location) => {
             return (
-                <div className="inner-header elevate">
+                <Paper className={styles.header} elevation={3}>
                     <Typography variant="h5">{name}</Typography>
-                    <div className="inner-header-middle">
-                        <div className="inner-header-icons">
+                    <div className={styles.headerInfo}>
+                        <div className={styles.headerIcons}>
                             {meetup.public ? 
                                 <><PublicIcon/> Public</> :
                                 <><LockIcon/> Private</>
                             }
                         </div>
-                        <div className="inner-header-icons"><TodayIcon/> {moment(date).format("dddd, MMMM D")}</div>
-                        <div className="inner-header-icons"><RoomIcon/> {location}</div>
+                        <div className={styles.headerIcons}>
+                            <TodayIcon/> {moment(date).format("dddd, MMMM D")}
+                        </div>
+                        <div className={styles.headerIcons}>
+                            <RoomIcon/> {location}
+                        </div>
                     </div>
                         {isUserMember && !this.state.showChat && 
                             <Tooltip title="Chat">
@@ -202,7 +206,7 @@ class Meetup extends Component {
                                 </IconButton>
                             </Tooltip>
                         }
-                    {isUserCreator && <div className="meetup-actions">
+                    {isUserCreator && <div className={styles.actions}>
                         
                         <Tooltip title="Email">
                             <div style={{width: 48, minHeight: 48}}>
@@ -227,14 +231,14 @@ class Meetup extends Component {
                             </IconButton>
                         </Tooltip>
                     </div>}
-                </div>
+                </Paper>
             )
         }
 
         const renderFriends = () => {
             return (
-                <div className='outer-shell elevate'>
-                    <List style={{width: "100%", padding: "0"}}>
+                <Paper className={styles.shell} elevation={3}>
+                    <List className={styles.shellList}>
                         {this.props.friends.map((friend) => 
                             <MeetupFriend 
                                 key={friend.id} 
@@ -244,15 +248,15 @@ class Meetup extends Component {
                             />
                         )}
                     </List>
-                </div>
+                </Paper>
             )
         }
 
         const renderMembers = (members) => {
     
             return (
-                <div className="outer-shell elevate">
-                    <List style={{width: "100%", padding: "0"}}>
+                <Paper className={styles.shell} elevation={3}>
+                    <List className={styles.shellList}>
                         {Object.keys(members).map((key) => 
                             <Link key={key} to={`/profile/${members[key].user.id}`}>
                                 <ListItem>
@@ -324,7 +328,7 @@ class Meetup extends Component {
                             </Link>
                         )}
                     </List>
-                </div>
+                </Paper>
             )
         }
 
@@ -362,7 +366,7 @@ class Meetup extends Component {
                             {renderInformation(meetup.name, meetup.date, meetup.location)}
                         </Grid>
                         <Grid item xs={12} md={6} id="Members">
-                            <div className="inner-header elevate" >
+                            <Paper className={styles.header} elevation={3}>
                                 <Typography variant="h5">Members</Typography>
                                 {!isUserMember && 
                                     <Button onClick={this.handlePublicMeetupJoin} style={{background: "#45B649", color: "white"}} variant="contained">
@@ -374,22 +378,22 @@ class Meetup extends Component {
                                         Leave Meetup
                                     </Button>
                                 }
-                            </div>
+                            </Paper>
                             {renderMembers(meetup.members)}
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <div className="inner-header elevate">
+                            <Paper className={styles.header} elevation={3}>
                                 <Typography variant="h5">Friends</Typography>
                                 <Tooltip title="Refresh">
                                     <IconButton color="primary" onClick={this.refreshFriendsList}>
                                         <RefreshIcon/>
                                     </IconButton>
                                 </Tooltip>
-                            </div>
+                            </Paper>
                             {renderFriends()}
                         </Grid>
                         <Grid item xs={12}>
-                            <div className="inner-header elevate" id="Events">
+                            <Paper className={styles.header} elevation={3} id="Events">
                                 <Typography variant="h5">Events</Typography>
                                 {isUserMember && 
                                     <Button onClick={this.openEventModal} startIcon={<AddIcon />} className="button rainbow" variant="contained" color="primary">
@@ -402,7 +406,7 @@ class Meetup extends Component {
                                         open={this.state.newMeetupEventForm}
                                     />
                                 }
-                            </div>
+                            </Paper>
                         </Grid>
                         <Grid item xs={12}>
                             {renderEvents(meetup.events)}
@@ -452,7 +456,6 @@ const mapDispatchToProps = {
     addGlobalMessage,
     addEventOption,
     sendFriendInvite,
-    addMeetupActivity,
     deleteEventOption,
     deleteMeetupMember
 }

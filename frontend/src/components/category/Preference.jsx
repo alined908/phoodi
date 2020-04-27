@@ -5,6 +5,7 @@ import {Delete as DeleteIcon} from '@material-ui/icons'
 import { editPreference, deletePreference} from "../../actions/index"
 import PropTypes from "prop-types"
 import {preferencePropType} from "../../constants/prop-types"
+import styles from '../../styles/category.module.css'
 
 const useStyles = makeStyles(({
     listItem: {
@@ -24,13 +25,17 @@ const Preference = ({pref, sortIndex, locked, isUser, user, ...props}) => {
 
     return (
         <Tooltip placement="left" title={pref.category.label}>
-            <div className="preference">
+            <div className={styles.preference}>
                 <ListItem className={classes.listItem}>
-                    <span style={{marginRight: "20px"}}>{sortIndex + 1}</span>
+                    <span className={styles.preferenceRank}>{sortIndex + 1}</span>
                     <ListItemAvatar>
-                        <Avatar style={{width: 30, height: 30}} src={`${process.env.REACT_APP_S3_STATIC_URL}${pref.category.api_label}.png`} variant="square"/>
+                        <Avatar 
+                            variant="square"
+                            className={styles.preferenceAvatar}
+                            src={`${process.env.REACT_APP_S3_STATIC_URL}${pref.category.api_label}.png`} 
+                        />
                     </ListItemAvatar>
-                    <ListItemText primary={<Typography variant="body2" style={{fontWeight: "600", fontFamily: "Lato"}}>{pref.category.label}</Typography>} >
+                    <ListItemText primary={<Typography variant="body2">{pref.category.label}</Typography>} >
                     </ListItemText>
                     {((isUser && locked) &&
                         <>  

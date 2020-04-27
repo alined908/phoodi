@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {getMeetups} from "../../actions/meetup";
 import {MeetupCard, CategoryAutocomplete, MeetupForm} from "../components"
-import {Grid, Grow, Tooltip, IconButton, Avatar,  CircularProgress} from '@material-ui/core'
+import {Grid, Grow, Tooltip, IconButton, Avatar,  CircularProgress, Paper} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import moment from "moment"
 import {Public as PublicIcon, Add as AddIcon, Search as SearchIcon, Edit as EditIcon, Error as ErrorIcon, People as PeopleIcon} from '@material-ui/icons'
@@ -13,8 +13,9 @@ import {Helmet} from "react-helmet";
 import 'react-dates/lib/css/_datepicker.css';
 import 'react-dates/initialize';
 import { DateRangePicker, isInclusivelyAfterDay } from "react-dates";
+import styles from '../../styles/meetup.module.css'
 
-class MeetupsComponent extends Component {
+class Meetups extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -212,13 +213,14 @@ class MeetupsComponent extends Component {
         
         const renderPreset = () => {
             return (
-                <div className="preset">
+                <div className={styles.preset}>
                     {this.state.preferences.map((pref, index) => 
                         <div 
-                            key={pref.id} className={"preset-category " + (this.state.clickedPreferences[index] ? "active" : "")} 
+                            key={pref.id}
                             onClick={() => this.handlePreferenceClick(index)}
+                            className={`${styles.presetCategory} ${this.state.clickedPreferences[index] ? styles.active : ""}`} 
                         >
-                            <Avatar varaint="square"
+                            <Avatar variant="square"
                                 src={`${process.env.REACT_APP_S3_STATIC_URL}${pref.category.api_label}.png`}
                             />
                             <span>{pref.category.label}</span>
@@ -235,15 +237,15 @@ class MeetupsComponent extends Component {
         }
 
         return (
-            <div className="meetups-component">
+            <div className={styles.meetups}>
                 <Helmet>
                     <meta charSet="utf-8" />
                     <meta name="description" content="Meetups near you!" />
                     <title>Meetups</title>
                 </Helmet>
-                <div className="meetups-categories">
-                    <div className="meetups-categories-inner elevate">
-                        <div className="meetups-categories-top">
+                <div className={styles.meetupsCategories}>
+                    <Paper className={styles.meetupsCategoriesInner} elevation={2}>
+                        <div className={styles.meetupsCategoriesTop}>
                             <div>Preferences</div>
                             <div>
                                 <Link to={{pathname: `/profile/${this.props.user.id}`, state: {locked: false}}}>
@@ -276,10 +278,10 @@ class MeetupsComponent extends Component {
                                 small
                             />
                         </div>
-                    </div>
+                    </Paper>
                 </div>
-                <div className="meetups-inner-wrap">
-                    <div className="meetups-inner-header elevate">
+                <div className={styles.meetupsInnerWrap}>
+                    <Paper className={styles.meetupsInnerHeader} elevation={2}>
                         <div>
                             Meetups
                             <Tooltip title="Public Meetups">
@@ -299,14 +301,14 @@ class MeetupsComponent extends Component {
                                 </IconButton>
                             </Tooltip>
                         </div>   
-                        <div className="meetups-search-bar">
+                        <div className={styles.meetupsSearchBar}>
                             <SearchIcon/>
                             <CategoryAutocomplete 
                                 fullWidth={true} size="small" entries={this.state.entries} 
                                 handleClick={this.onTagsChange} label="Search Categories..."
                             />
                         </div>
-                        <div className="category-chip">
+                        <div className={styles.categoryChip}>
                             {this.state.public ? 
                                 <>{this.props.user.settings ? this.props.user.settings.radius : "25"} miles</> :
                                 <>X miles</>
@@ -319,9 +321,9 @@ class MeetupsComponent extends Component {
                             </IconButton>
                         </Tooltip>
                         <MeetupForm type="create" handleClose={this.openFormModal} open={this.state.newMeetupForm}/>
-                    </div>
+                    </Paper>
                     
-                    <div className="meetups-container" style={{minHeight: this.props.isMeetupsFetching ? "calc(100% - 60px)" : "0"}}>
+                    <div className={styles.meetupsContainer} style={{minHeight: this.props.isMeetupsFetching ? "calc(100% - 60px)" : "0"}}>
                         {this.props.isMeetupsFetching && <div className="loading" style={{height: "auto"}}><CircularProgress/></div>}
                         {(!this.props.isMeetupsFetching && this.props.isMeetupsInitialized) && 
                             <Grid container spacing={1}>
@@ -343,7 +345,7 @@ class MeetupsComponent extends Component {
     }
 }
 
-MeetupsComponent.propTypes = {
+Meetups.propTypes = {
     isMeetupsInitialized: PropTypes.bool.isRequired,
     meetups: PropTypes.arrayOf(meetupPropType).isRequired,
     user: userPropType,
@@ -368,4 +370,4 @@ const mapDispatchToProps = {
     getPreferences
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MeetupsComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(Meetups);

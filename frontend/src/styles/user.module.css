@@ -1,0 +1,32 @@
+.settings {
+    display:flex;
+    flex-direction: column;
+    width: 50%;
+    height: 50%;
+    margin: auto;
+    font-size: 3rem;
+    padding: 1rem 3rem;
+    justify-content: space-between;
+    background-color: white;
+}
+
+.settingsHeader {
+    margin-bottom: 2rem;
+}
+
+.settingsFormControl {
+    width: 100%;
+}
+
+.settingsSelect {
+    max-height: 200px;
+}
+
+.settingsLocation {
+    margin-top: 20px;
+}
+
+.settingsSave {
+    display: flex;
+    justify-content: flex-end;
+}

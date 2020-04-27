@@ -87,7 +87,7 @@ def meetup_post_save(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=MeetupMember)
 def meetup_member_post_save(sender, instance, created, **kwargs):
-    from .serializers import MeetupMemberSerializer, NotificationSerializer
+    from .serializers import MeetupMemberSerializer, MessageSerializer
     meetup, user = instance.meetup, instance.user
     serializer = MeetupMemberSerializer(instance)
     
@@ -96,36 +96,26 @@ def meetup_member_post_save(sender, instance, created, **kwargs):
         ChatRoomMember.objects.create(room = room, user = user)
         
         #Create Meetup Activity --> Ex. Member joined Meetup
-        notify.send(
-            sender=user, recipient = user, action_object = meetup,
-            description="meetup_activity", verb="joined"
-        )
+        message = "joined the meetup."
+        msg = ChatRoomMessage.objects.create(sender = user, room = room, is_notif = True, message=message)
 
         #Create User Activity --> Ex. User joined Meetup
         notify.send(
             sender=user, recipient= user, action_object = meetup,
             description="user_activity", verb="joined"
         )
-        
-        #Get Meetup Activity to Send
-        notification = Notification.objects.filter(
-            action_object_object_id=meetup.id, 
-            description="meetup_activity"
-        ).first()
     
         #Send Meetup Activity To Meetup Channel
         content = {
-            'command': 'new_meetup_activity',
-            'message': {
-                'meetup': meetup.uri,
-                'notification': NotificationSerializer(notification).data
-            }
+            'command': 'new_message',
+            'message': MessageSerializer(msg).data
         }
 
-        async_to_sync(channel_layer.group_send)('meetup_%s' % meetup.uri, {
-            'type': 'meetup_event',
-            'meetup_event': content
+        async_to_sync(channel_layer.group_send)('chat_%s' % meetup.uri, {
+            'type': 'chat_message',
+            'message': content
         })
+
     
     #Send New/Updated Meetup Member Object to Meetup Channel
     content = {
@@ -143,7 +133,7 @@ def meetup_member_post_save(sender, instance, created, **kwargs):
 
 @receiver(pre_delete, sender = MeetupMember)
 def handle_delete_member(sender, instance, **kwargs):
-    from .serializers import MeetupMemberSerializer, NotificationSerializer
+    from .serializers import MeetupMemberSerializer, MessageSerializer
     meetup = instance.meetup
     user = get_user()
     print(user)
@@ -179,40 +169,25 @@ def handle_delete_member(sender, instance, **kwargs):
     if user == instance.user:
         notify.send(
             sender = user, recipient = user, action_object = meetup, 
-            description = "meetup_activity", verb = "left"
-        )
-        notify.send(
-            sender = user, recipient = user, action_object = meetup, 
             description = "user_activity", verb = "left"
         )
-        notification = Notification.objects.filter(
-            action_object_object_id=meetup.id, 
-            description="meetup_activity"
-        ).first()
+        message = "left the meetup."
     else:
         member = MeetupMember.objects.get(user=user, meetup=meetup)
-        notify.send(
-            sender = member, recipient = member.user, action_object = instance.user,
-            target = meetup, description = "meetup_activity", verb = "removed"
-        )
-        
-        notification = Notification.objects.filter(
-            target_object_id=meetup.id, 
-            description="meetup_activity"
-        ).first()
+        message = "removed %s %s from the meetup." % (instance.user.first_name, instance.user.last_name)
+    
+    room = ChatRoom.objects.get(uri=meetup.uri)
+    msg = ChatRoomMessage.objects.create(sender = user, message = message, room=room, is_notif=True)
 
     #Send Meetup Activity To Meetup Channel
     content = {
-        'command': 'new_meetup_activity',
-        'message': {
-            'meetup': meetup.uri,
-            'notification': NotificationSerializer(notification).data
-        }
+        'command': 'new_message',
+        'message': MessageSerializer(msg).data
     }
 
-    async_to_sync(channel_layer.group_send)('meetup_%s' % meetup.uri, {
-        'type': 'meetup_event',
-        'meetup_event': content
+    async_to_sync(channel_layer.group_send)('chat_%s' % meetup.uri, {
+        'type': 'chat_message',
+        'message': content
     })
 
      

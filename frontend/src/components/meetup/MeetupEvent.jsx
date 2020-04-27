@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Button} from "@material-ui/core"
+import {Button, Paper} from "@material-ui/core"
 import {connect} from 'react-redux'
 import {deleteMeetupEvent} from "../../actions/meetup"
 import {addGlobalMessage} from "../../actions/globalMessages"
@@ -12,6 +12,7 @@ import {MeetupEventOption, Map, RestaurauntAutocomplete, ProgressIcon, MeetupEve
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types';
 import {meetupEventPropType} from "../../constants/prop-types"
+import styles from '../../styles/meetup.module.css'
 
 class MeetupEvent extends Component {
     constructor(props){
@@ -104,15 +105,15 @@ class MeetupEvent extends Component {
 
         const renderHeader = (number) => {
             return (
-                <div className="meetup-event-header elevate">
-                    <div className="inner-header smaller-header">
+                <Paper elevation={3}>
+                    <div className={`${styles.header} ${styles.smallerheader}`} >
                         <Typography variant="h5">#{number+1} - {event.title}</Typography>
-                        <div className="inner-header-middle">
-                            <div className="inner-header-icons">
+                        <div className={styles.headerInfo}>
+                            <div className={styles.headerIcons}>
                                 <ScheduleIcon/> 
                                 {moment(event.start).local().format("h:mm A")} - {moment(event.end).local().format("h:mm A")}
                             </div>
-                            <div className="inner-header-icons">
+                            <div className={styles.headerIcons}>
                                 <img style={{width: 20, height: 20, marginLeft: 10}} alt={"&#9787;"}
                                 src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}/>
                                 {/* <Avatar style={{transform: "scale(0.5)"}} src={event.creator.avatar}>
@@ -125,7 +126,7 @@ class MeetupEvent extends Component {
                             {this.props.isUserMember && renderActions()}
                         </div>
                     </div>
-                </div>
+                </Paper>
             )
         }
 
@@ -133,7 +134,7 @@ class MeetupEvent extends Component {
             const keys = Object.keys(options).reverse()
             
             return (
-                <div className="foursquare">
+                <div className={styles.foursquare}>
                     {keys.length > 0 ?
                         <Grid justify="center" container spacing={3}>
                             {keys.map((key, index) => 
@@ -148,8 +149,10 @@ class MeetupEvent extends Component {
                                 </Grow>
                             )}
                         </Grid>:
-                        <div className="explanation elevate">
-                            <span style={{marginRight: "1rem"}}><ErrorIcon style={{color: "rgb(255, 212, 96)"}}/></span>
+                        <Paper className={styles.explanation} elevation={3}>
+                            <span style={{marginRight: "1rem"}}>
+                                <ErrorIcon style={{color: "rgb(255, 212, 96)"}}/>
+                            </span>
                             {event.random ? <span>
                                 No options available. 
                                 This may be due to no options being available at this time or the categories specified don't have enough options.
@@ -157,7 +160,7 @@ class MeetupEvent extends Component {
                             </span> : <span>
                                     No options chosen.  Click the top right magnifying glass to search for restauraunts near you!
                                 </span>}
-                        </div>
+                        </Paper>
                     }
                 </div>
             )
@@ -165,7 +168,7 @@ class MeetupEvent extends Component {
 
         const renderActions = () => {
             return (
-                <div className="mte-actions">
+                <div className={styles.eventActions}>
                     {(!this.props.chosen) &&
                         <Tooltip title="Add Option">
                             <IconButton style={{color: "#4caf50"}} onClick={this.handleSearchOption}>
@@ -208,7 +211,7 @@ class MeetupEvent extends Component {
 
         const renderFinalizeActions = () => {
             return (
-                <div className="mte-factions">
+                <div className={styles.eventDecideActions}>
                     {(!this.props.chosen && Object.keys(event.options).length > 0) && 
                         <Button 
                             className="button" size="small" variant="contained" 
@@ -241,57 +244,57 @@ class MeetupEvent extends Component {
             const position = {latitude: option.latitude, longitude: option.longitude}
 
             return (
-                <div className="chosen">
-                    <div className="chosen-restauraunt elevate">
+                <div className={styles.chosen}>
+                    <Paper className={styles.chosenRestaurant} elevation={3}>
                         <MeetupEventOption 
                             key={chosen.id} socket={this.props.socket} 
                             isUserMember={this.props.isUserMember} full={false} 
                             event={this.props.event.id} meetup={this.props.uri} data={chosen}
                         />
-                    </div>
-                    <div className="chosen-map elevate2">
-                        <div className="map-wrapper">
+                    </Paper>
+                    <Paper className={styles.chosenMap} elevation={3}>
+                        <div className={styles.mapWrapper}>
                             <Map location={position}/>
                         </div>
-                    </div>
+                    </Paper>
                 </div>
             )
         }
 
         return (
-            <div id={`event-${event.id}`} className="meetup-event">
+            <div id={`event-${event.id}`} className={styles.event}>
                 {renderHeader(this.props.number)}
-                <div className="second-header smaller-header elevate">
-                    <div className="second-header-left">
+                <Paper className={`${styles.smallerHeader} ${styles.secondHeader}`} elevation={3}>
+                    <div className={styles.secondHeaderLeft}>
                         <Typography variant="h6">Categories </Typography>
                         {event.categories.map((category) => 
                             <Link key={category.id} to={`/category/${category.api_label}`}>
-                                <span className="category-chip elevate category-chip-hover">
+                                <span className={`${styles.categoryChip} ${styles.categoryChipHover}`}>
                                     <Avatar style={{width: 20, height: 20}} src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`} variant="square"/>
                                     {category.label}
                                 </span>
                             </Link>
                         )}
                     </div>
-                    <div className="second-header-left">
+                    <div className={styles.secondHeaderLeft}>
                         <Typography variant="h6">Price </Typography>  
                         {(this.handlePriceChips(event.price)).map((price, index) => 
-                            <span key={index} className="category-chip elevate">{price}</span>
+                            <span key={index} className={styles.categoryChip}>{price}</span>
                         )
                         }
                     </div>
-                    <div className="second-header-left">
+                    <div className={styles.secondHeaderLeft}>
                         <Typography variant="h6">Distance </Typography>
-                        <span className="category-chip elevate">
+                        <span className={styles.categoryChip}>
                             {(Math.round(event.distance * 0.000621371192)).toFixed(2)}
                         </span>
                     </div>
                     {this.props.isUserMember && renderFinalizeActions()}
-                </div>
+                </Paper>
                 {!this.props.chosen && 
                     <>
                         {this.state.searchOpen &&
-                            <div className="meetup-event-add-option-search elevate">
+                            <Paper className={styles.addOptionSearch} elevation={3}>
                                 <img style={{width: 20, height: 20, marginLeft: 10}} alt={"&#9787;"}
                                 src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}/>
                                 <RestaurauntAutocomplete 
@@ -307,7 +310,7 @@ class MeetupEvent extends Component {
                                         <CloseIcon/>
                                     </IconButton>
                                 </Tooltip>
-                            </div>
+                            </Paper>
                         }                       
                     </>
                 }

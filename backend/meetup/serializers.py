@@ -125,7 +125,6 @@ class MeetupSerializer(serializers.ModelSerializer):
     creator = serializers.SerializerMethodField('_get_creator')
     members = serializers.SerializerMethodField('_get_members')
     notifs = serializers.SerializerMethodField('_get_notifs')
-    notifications = serializers.SerializerMethodField('_get_notifications')
     categories = serializers.SerializerMethodField('_get_categories')
 
     def _get_creator(self, obj):
@@ -149,14 +148,6 @@ class MeetupSerializer(serializers.ModelSerializer):
         ).unread()
         return notifs.count()
 
-    def _get_notifications(self, obj):
-        notifications = Notification.objects.filter(
-            Q(target_object_id = obj.id) | (Q(action_object_object_id = obj.id) & Q(target_object_id=None)), 
-            description="meetup_activity"
-        )
-        serializer = NotificationSerializer(notifications, many=True)
-        return serializer.data
-
     def _get_categories(self, obj):
         meetup_categories = obj.meetup_categories.all()
         categories = list(set([meetup_category.category for meetup_category in meetup_categories]))
@@ -165,7 +156,7 @@ class MeetupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Meetup
-        fields = ('id', 'name', 'uri', 'creator', 'location', 'date', 'members', 'notifs', 'public', 'categories', 'latitude', 'longitude', 'notifications')
+        fields = ('id', 'name', 'uri', 'creator', 'location', 'date', 'members', 'notifs', 'public', 'categories', 'latitude', 'longitude')
 
 class MeetupSimpleSerializer(serializers.ModelSerializer):
     class Meta:

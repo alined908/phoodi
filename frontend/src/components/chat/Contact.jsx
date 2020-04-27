@@ -1,13 +1,13 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux';
-import {Link} from 'react-router-dom'
-import {Avatar, Badge} from '@material-ui/core';
-import {removeNotifs} from "../../actions/notifications"
+import React, { Component } from 'react'
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom'
+import { Avatar, Badge } from '@material-ui/core';
+import { removeNotifs } from "../../actions/notifications"
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import {GroupAvatars} from '../components'
+import { GroupAvatars } from '../components'
 import moment from 'moment'
 import PropTypes from 'prop-types';
-import {userPropType, chatRoomPropType} from "../../constants/prop-types"
+import { userPropType, chatRoomPropType } from "../../constants/prop-types"
 import styles from '../../styles/chat.module.css'
 
 class Contact extends Component {
@@ -18,6 +18,10 @@ class Contact extends Component {
         }
     }
 
+    /**
+     * Remove notifications alert when clicked.
+     * @param {number} id - Id of room
+     */
     handleClick = (id) => {
         this.setState({notifs: 0}, 
             () => this.props.removeNotifs({type: "chat_message", id: id})
@@ -26,7 +30,7 @@ class Contact extends Component {
 
     render (){
         const room = this.props.room
-        const current_room = this.props.currentRoom === room.uri
+        const isCurrentRoom = this.props.currentRoom === room.uri
         const membersKeys = Object.keys(room.members)
 
         return (
@@ -35,7 +39,7 @@ class Contact extends Component {
                 to={`/chat/${room.uri}`} 
                 onClick={room.notifs > 0 ? () => this.handleClick(room.id): null} 
             >
-                <div className={`${styles.contact} ${current_room ? styles.currentRoom : ""}`}>
+                <div className={`${styles.contact} ${isCurrentRoom ? styles.currentRoom : ""}`}>
                     <div>
                         <div>{room.name}</div>
                         {room.meetup ? 

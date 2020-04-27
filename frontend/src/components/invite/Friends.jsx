@@ -9,8 +9,9 @@ import {Friend, UserAutocomplete} from '../components'
 import PropTypes from 'prop-types'
 import { friendPropType, userPropType } from '../../constants/prop-types'
 import {Helmet} from 'react-helmet'
+import styles from "../../styles/friends.module.css"
 
-class FriendsComponent extends Component{
+class Friends extends Component{
     constructor(props){
         super(props)
         this.state = {
@@ -69,21 +70,28 @@ class FriendsComponent extends Component{
                         </form>
                     </div>
                 }
-                {this.props.isFriendsInitialized && <div className="friends">
-                    <Grid container spacing={3}>
-                        {this.props.friends.map((friend) => 
-                            <Grid key={friend.id} item xs={12} md={6} lg={4} >
-                                <Friend user={this.props.user} isUserFriend={true} friend={friend} deleteFriend={this.props.deleteFriend}/>
-                            </Grid>
-                        )}
-                    </Grid>
-                </div>}
+                {this.props.isFriendsInitialized && 
+                    <div className={styles.friends}>
+                        <Grid container spacing={3}>
+                            {this.props.friends.map((friend) => 
+                                <Grid key={friend.id} item xs={12} md={6} lg={4} >
+                                    <Friend 
+                                        user={this.props.user} 
+                                        isUserFriend={true} 
+                                        friend={friend} 
+                                        deleteFriend={this.props.deleteFriend}
+                                    />
+                                </Grid>
+                            )}
+                        </Grid>
+                    </div>
+                }
             </div>
         )
     }
 }
 
-FriendsComponent.propTypes = {
+Friends.propTypes = {
     user: userPropType,
     friends: PropTypes.arrayOf(friendPropType),
     isFriendsInitialized: PropTypes.bool.isRequired,
@@ -110,4 +118,4 @@ const mapDispatchToProps = {
     addGlobalMessage
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FriendsComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(Friends)

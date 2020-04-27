@@ -8,6 +8,7 @@ import {Paper} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {invitePropType} from '../../constants/prop-types'
+import styles from "../../styles/friends.module.css"
 
 class Invite extends Component {
     constructor(props){
@@ -29,8 +30,8 @@ class Invite extends Component {
         const inv = this.props.inv
 
         return (
-            <Paper className="paper invite elevate" variant="outlined">
-                <div style={{display: "flex", alignItems: "center"}}>
+            <Paper className={`${styles.invite}`} elevation={6} variant="outlined">
+                <div className={styles.avatar}>
                     <Avatar src={inv.sender.avatar}>
                         {inv.sender.first_name.charAt(0)} {inv.sender.last_name.charAt(0)}
                     </Avatar>

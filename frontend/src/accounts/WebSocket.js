@@ -206,7 +206,7 @@ export default class WebSocketService {
     }
 
     addEventCallbacks(eventsCallback, newEventCallback, reloadEventCallback, voteEventCallback, 
-        decideEventCallback, deleteEventCallback, addMemberCallback, deleteMemberCallback, newOptionCallback, deleteOptionCallback, addActivityCallback){
+        decideEventCallback, deleteEventCallback, addMemberCallback, deleteMemberCallback, newOptionCallback, deleteOptionCallback){
         this.callbacks['fetch_events'] = eventsCallback
         this.callbacks['new_event'] = newEventCallback
         this.callbacks['reload_event'] = reloadEventCallback
@@ -218,7 +218,6 @@ export default class WebSocketService {
         this.callbacks['delete_member'] = deleteMemberCallback
         this.callbacks['new_option'] = newOptionCallback
         this.callbacks['delete_option'] = deleteOptionCallback
-        this.callbacks['new_meetup_activity'] = addActivityCallback
     }
 
     addNotifCallbacks(notifsCallback){

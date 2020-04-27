@@ -30,6 +30,7 @@ class ChatBar extends Component {
         this.state.socket.addContactsCallbacks(this.props.updateRoom)
     }
 
+    // Initialize socket for chat rooms.
     componentDidMount(){
         const socket = this.state.socket
         const token = AuthenticationService.retrieveToken()
@@ -44,11 +45,11 @@ class ChatBar extends Component {
     }
 
     filterAndSearch = () => {
-        var rooms = this.state.rooms
-        var filter = this.state.searchInput
-        var filterMeetup = this.state.filters["meetup"]
-        var filterFriend = this.state.filters["friend"]
-        var newRooms;
+        const rooms = this.state.rooms
+        const filter = this.state.searchInput
+        const filterMeetup = this.state.filters["meetup"]
+        const filterFriend = this.state.filters["friend"]
+        let newRooms;
 
         newRooms = rooms.filter((room) => {
         
@@ -61,14 +62,17 @@ class ChatBar extends Component {
             if (room.friendship !== null){
                 const user = this.props.user
                 let friend;
-                for (var key in room.members){
+                for (let key in room.members){
                     if (key !== user.id.toString()){
                         friend = room.members[key]
                     }
                 }
-                const friendName = friend.first_name + " " + friend.last_name
+                const friendName = `${friend.first_name} ${friend.last_name}`
 
-                friendCriteria = ((friendName.toLowerCase().includes(filter.toLowerCase())) || (friend.email.toLowerCase().includes(filter.toLowerCase()))) && !filterFriend
+                friendCriteria = (
+                    (friendName.toLowerCase().includes(filter.toLowerCase())) || 
+                    (friend.email.toLowerCase().includes(filter.toLowerCase()))
+                ) && !filterFriend
             }
 
             return meetupCriteria || friendCriteria
@@ -78,7 +82,7 @@ class ChatBar extends Component {
     }
 
     filterRooms = (type) => {
-        var filters = {...this.state.filters}
+        let filters = {...this.state.filters}
         filters[type] = !filters[type]
         this.setState({filters}, () => this.filterAndSearch())
     }

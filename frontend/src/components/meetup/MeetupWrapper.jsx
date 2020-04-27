@@ -5,7 +5,7 @@ import {Meetup} from '../components';
 import {Redirect} from 'react-router-dom'
 import {CircularProgress} from '@material-ui/core'
 
-class MeetupPageComponent extends Component {
+class MeetupWrapper extends Component {
     constructor(props){
         super(props)
         const uri = this.props.match.params.uri
@@ -15,8 +15,8 @@ class MeetupPageComponent extends Component {
     }
 
     determineIsUserMember = (members) => {
-        var isUserMember = false;
-        for (var key of Object.keys(members)){
+        let isUserMember = false;
+        for (let key of Object.keys(members)){
             const member = members[key]
             if (member.user.id === this.props.user.id){
                 return true
@@ -54,4 +54,4 @@ const mapDispatchToProps = {
     getMeetup
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MeetupPageComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(MeetupWrapper)

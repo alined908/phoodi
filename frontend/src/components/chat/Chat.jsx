@@ -1,11 +1,11 @@
-import React, {Component} from 'react'
-import {ChatBar, ChatWindow} from "../components"
-import {connect} from "react-redux";
-import {getMessages, setActiveRoom, addMessage, removeActiveRoom} from "../../actions/chat"
-import {getRooms} from '../../actions/chat';
+import React, { Component } from 'react'
+import { ChatBar, ChatWindow } from "../components"
+import { connect } from "react-redux";
+import { getMessages, setActiveRoom, addMessage, removeActiveRoom } from "../../actions/chat"
+import { getRooms } from '../../actions/chat';
 import WebSocketService from "../../accounts/WebSocket"
 import AuthenticationService from '../../accounts/AuthenticationService';
-import {Helmet} from "react-helmet"
+import { Helmet } from "react-helmet"
 import styles from '../../styles/chat.module.css'
 
 class Chat extends Component {

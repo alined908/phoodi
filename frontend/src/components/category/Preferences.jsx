@@ -45,7 +45,9 @@ class Preferences extends Component {
                 {this.props.preferences.length === 0 && 
                     <div className="no-entity"> 
                         <ErrorIcon style={{color: "rgb(255, 212, 96)"}}/> 
-                        <span className="no-entity-text">No preferences! Add some by searching below.</span>
+                        <span className="no-entity-text">
+                            No preferences! Add some by searching below.
+                        </span>
                     </div>
                 }
             </div> 
