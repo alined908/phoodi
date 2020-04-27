@@ -97,12 +97,8 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo UI/UX/CleanUp
 - [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
 - [ ] Animation when logging out forced
-- [ ] Restauraunt autocomplete notify that no options (because hours/bad search)
-- [ ] Change color of home page svgs
-- [ ] Change Avatar text back to normal
 - [ ] Redo responsive layout + design + Safari presentation
 - [ ] Skeleton loading where applicable
-- [ ] Refactor (ex. onTagsChange of MeetupsComponent)
 - [ ] Optimize performance
 - [ ] Disable actions if event is in the past 
 
@@ -130,6 +126,7 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo Next Iteration
 - [ ] Edit chat messages
 - [ ] Upload picture
+- [ ] Refactor code/database
 - [ ] Send invite through chat
 - [ ] Who's online
 - [ ] Detect if user is typing

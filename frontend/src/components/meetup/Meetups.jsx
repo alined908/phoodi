@@ -54,12 +54,10 @@ class Meetups extends Component {
         }
     }
 
-    handleFilter = (type) => {
-        const chosen = [...this.state.chosen]
-        chosen[type] = !chosen[type] 
-        this.setState({chosen})
-    }
-
+    /**
+     * Get public meetups or private meetups
+     * @param {string} type - Public or Private
+     */
     handleMeetupsType = (type) => {
         let publicBool = this.state.public;
         if (type === "public") {
@@ -71,97 +69,35 @@ class Meetups extends Component {
                 publicBool = false
             }
         }
-        this.setState({public: publicBool}, () => publicBool ? 
-            this.props.getMeetups({
-                type: "public", 
-                startDate: this.state.startDate.format("YYYY-MM-DD"),
-                endDate: this.state.endDate.format("YYYY-MM-DD"),
-                categories: this.formatCategories(this.state.entries),
-                coords: {
-                    ...this.props.user.settings
-                }
-            }) : 
-            this.props.getMeetups({
-                type: "private",
-                startDate: this.state.startDate.format("YYYY-MM-DD"),
-                endDate: this.state.endDate.format("YYYY-MM-DD"),
-                categories: this.formatCategories(this.state.entries)
-            })
-        )
+        this.setState({public: publicBool}, () => this.determineGetMeetups(publicBool, this.state.entries))
     }
 
+
+    /**
+     * Filter public/private meetups by preferences.
+     * @param {number} index - Index of clicked preference
+     */
     handlePreferenceClick = (index) => {
         var category = this.state.preferences[index].category
-        const clickedPrefs = [...this.state.clickedPreferences]
+        const clickedPreferences = [...this.state.clickedPreferences]
         var entries;
-        if (!clickedPrefs[index]){
+        if (!clickedPreferences[index]){
             entries = [...this.state.entries, category]
         } else {
             entries = this.state.entries.filter(entry => JSON.stringify(entry) !== JSON.stringify(category))
         }
-        clickedPrefs[index] = !clickedPrefs[index]
-        this.setState(
-            {
-                clickedPreferences: clickedPrefs,
-                entries: entries
-            }, () => this.state.public ? 
-                this.props.getMeetups({
-                    type: "public", 
-                    startDate: this.state.startDate.format("YYYY-MM-DD"),
-                    endDate: this.state.endDate.format("YYYY-MM-DD"),
-                    categories: this.formatCategories(entries), 
-                    coords: {
-                        ...this.props.user.settings
-                    }
-                }) : 
-                this.props.getMeetups({
-                    type: "private", 
-                    startDate: this.state.startDate.format("YYYY-MM-DD"),
-                    endDate: this.state.endDate.format("YYYY-MM-DD"),
-                    categories: this.formatCategories(entries)
-                })
-        )
+        clickedPreferences[index] = !clickedPreferences[index]
+        this.setState({clickedPreferences, entries}, () => this.determineGetMeetups(this.state.public, entries))
     }
 
-    openFormModal = () => {
-        this.setState({newMeetupForm: !this.state.newMeetupForm})
-    }
-
-    formatCategories = entries => {
-        var ids = []
-        for (var category in entries){
-            ids.push(entries[category].id)
-        }
-        let categoriesString = ids.join(",")
-
-        return categoriesString.length > 0 ? categoriesString : null
-    }
-    
+    /**
+     * Filter public/private meetups by date range.
+     * @param {Object} - Start date - End date
+     */
     onDatesChange = ({startDate, endDate}) => {
-        if(!startDate || !endDate) return;
-        if(!startDate.isValid() || !endDate.isValid()) return;
-        console.log(startDate)
-        console.log(endDate)
-        this.setState({
-            startDate, 
-            endDate
-        }, () => this.state.public ? 
-            this.props.getMeetups({
-                type: "public", 
-                startDate: this.state.startDate.format("YYYY-MM-DD"),
-                endDate: this.state.endDate.format("YYYY-MM-DD"),
-                categories: this.formatCategories(this.state.entries), 
-                coords: {
-                    ...this.props.user.settings
-                }
-            }) : 
-            this.props.getMeetups({
-                type: "private", 
-                startDate: this.state.startDate.format("YYYY-MM-DD"),
-                endDate: this.state.endDate.format("YYYY-MM-DD"),
-                categories: this.formatCategories(this.state.entries)
-            })
-        )
+        if (!startDate || !endDate) return;
+        if (!startDate.isValid() || !endDate.isValid()) return;
+        this.setState({startDate, endDate}, () => this.determineGetMeetups(this.state.public, this.state.entries))
     }
 
     onFocusChange = (focusedInput) => {
@@ -172,7 +108,12 @@ class Meetups extends Component {
         return !isInclusivelyAfterDay(day, moment()) || day.isAfter(moment().add('30', 'd'))
     }
 
+    /**
+     * Filter public/private meetups by category from autocomplete.
+     * @param {Array} values - Array of categories.
+     */
     onTagsChange = (event, values) => {
+        console.log(values)
         var clickedPrefs = [...this.state.clickedPreferences]
   
         for(var i = 0; i < clickedPrefs.length; i ++){
@@ -196,16 +137,40 @@ class Meetups extends Component {
             }
         }
 
-        this.setState(
-            {
-                entries: values,
-                clickedPreferences: clickedPrefs
-            },
-            () => this.state.public ? 
-                this.props.getMeetups({type: "public", categories: this.formatCategories(values), coords: {...this.props.user.settings}}) : 
-                this.props.getMeetups({type: "private", categories: this.formatCategories(values)})
-        )
+        this.setState({ entries: values, clickedPreferences: clickedPrefs}, () => this.determineGetMeetups(this.state.public, values))
+    }
 
+    openFormModal = () => {
+        this.setState({newMeetupForm: !this.state.newMeetupForm})
+    }
+
+    formatCategories = entries => {
+        var ids = []
+        for (var category in entries){
+            ids.push(entries[category].id)
+        }
+        let categoriesString = ids.join(",")
+
+        return categoriesString.length > 0 ? categoriesString : null
+    }
+
+    determineGetMeetups = (isPublic, categories) => {
+        if (isPublic) {
+            this.props.getMeetups({
+                type: "public",
+                startDate: this.state.startDate.format("YYYY-MM-DD"),
+                endDate: this.state.endDate.format("YYYY-MM-DD"),
+                categories: this.formatCategories(categories), 
+                coords: {...this.props.user.settings}
+            })
+        } else {
+            this.props.getMeetups({
+                type: "private", 
+                startDate: this.state.startDate.format("YYYY-MM-DD"),
+                endDate: this.state.endDate.format("YYYY-MM-DD"),
+                categories: this.formatCategories(categories)
+            })
+        }
     }
 
     render(){

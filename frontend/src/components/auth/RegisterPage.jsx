@@ -4,7 +4,7 @@ import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {signup, editUser} from "../../actions/index"
 import {Paper, Grid, Fab, Button, Avatar, Dialog, DialogActions, DialogTitle, DialogContent} from '@material-ui/core';
-import {ReactComponent as Together} from "../../assets/svgs/undraw_eating_together.svg"
+import {ReactComponent as Together} from "../../assets/svgs/undraw_eattogether.svg"
 import {ReactComponent as Bamboo} from "../../assets/svgs/bamboo-dark.svg"
 import {ReactComponent as Google} from "../../assets/svgs/google.svg"
 import {ReactComponent as Facebook} from "../../assets/svgs/facebook.svg"

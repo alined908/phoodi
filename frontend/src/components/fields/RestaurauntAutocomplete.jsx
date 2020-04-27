@@ -9,13 +9,12 @@ import PropTypes from "prop-types"
 
 const useStyles = makeStyles({
   text : {
-      fontFamily: "Lato",
-      fontWeight: "600",
-      fontSize: "1rem",
+      fontSize: ".9rem",
       color: "black"
   },
   secondary : {
-    fontSize: ".8rem"
+    fontSize: ".75rem",
+    color: "var(--grey-text)"
   },
   root: {
     background: "white"
@@ -140,11 +139,9 @@ export default function RestaurauntAutocomplete(props) {
                     </>
                 }
                 secondary={
-                    <>
-                        <Typography component="span" color="inherit" variant="body2" className={classes.secondary}> 
-                            {option.location.display_address.join(" ")}
-                        </Typography>
-                    </>
+                    <Typography component="span" color="inherit" variant="body2" className={classes.secondary}> 
+                        {option.location.display_address.join(" ")}
+                    </Typography>
                 }>
             >
             </ListItemText>
