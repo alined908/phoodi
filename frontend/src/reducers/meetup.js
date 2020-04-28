@@ -37,7 +37,7 @@ export default function meetupReducer(state = defaultState, action){
                 }
             }
         case types.DELETE_MEETUP:
-            var meetups = {}
+            let meetups = {}
             Object.keys(state.meetups).forEach((key) => {
                 if (key !== action.payload){
                     meetups[key] = state.meetups[key]
@@ -74,8 +74,8 @@ export default function meetupReducer(state = defaultState, action){
                 ...state, 
                 meetups: {
                     ...state.meetups, 
-                    [action.payload.uri]: {
-                        ...state.meetups[action.payload.uri], 
+                    [action.payload.meetup]: {
+                        ...state.meetups[action.payload.meetup], 
                         events: action.payload.events, 
                         isMeetupEventsInitialized: true
                     }
@@ -96,7 +96,6 @@ export default function meetupReducer(state = defaultState, action){
                 }
             }
         case types.EDIT_MEETUP_EVENT:
-            const event_id = action.payload.event_id
             return {
                 ...state, 
                 meetups: {
@@ -105,48 +104,45 @@ export default function meetupReducer(state = defaultState, action){
                         ...state.meetups[action.payload.meetup],
                         events: {
                             ...state.meetups[action.payload.meetup].events, 
-                            [event_id]: action.payload.event
+                            [action.payload.event_id]: action.payload.event
                         }
                     }
                 }
             }
         case types.DELETE_MEETUP_EVENT:
-            var events = {}
-            const uri = action.payload.uri
-            Object.keys(state.meetups[uri].events).forEach((key) => {
-                if (key !== action.payload.event.toString()){
-                    events[key] = state.meetups[uri].events[key]
+            let events = {}
+            Object.keys(state.meetups[action.payload.meetup].events).forEach((key) => {
+                if (key !== action.payload.event_id.toString()){
+                    events[key] = state.meetups[action.payload.meetup].events[key]
                 }
             })
             return {
                 ...state, 
                 meetups: {
                     ...state.meetups, 
-                    [uri] : {
-                        ...state.meetups[uri], 
+                    [action.payload.meetup] : {
+                        ...state.meetups[action.payload.meetup], 
                         events: events
                     }
                 }
             }
         case types.VOTE_EVENT_OPTION:
-            var meetup = action.payload.meetup
-            var member = action.payload.member
             return {
                 ...state, 
                 meetups: {
                     ...state.meetups, 
-                    [meetup]: {
-                        ...state.meetups[meetup], 
+                    [action.payload.meetup]: {
+                        ...state.meetups[action.payload.meetup], 
                         members: {
-                            ...state.meetups[meetup].members, 
-                            ...member
+                            ...state.meetups[action.payload.meetup].members, 
+                            ...action.payload.member
                         },
                         events: {
-                            ...state.meetups[meetup].events, 
+                            ...state.meetups[action.payload.meetup].events, 
                             [action.payload.event_id]: {
-                                ...state.meetups[meetup].events[action.payload.event_id], 
+                                ...state.meetups[action.payload.meetup].events[action.payload.event_id], 
                                 options: {
-                                    ...state.meetups[meetup].events[action.payload.event_id].options, 
+                                    ...state.meetups[action.payload.meetup].events[action.payload.event_id].options, 
                                     [action.payload.option_id]: action.payload.option
                                 }
                             }
@@ -155,20 +151,18 @@ export default function meetupReducer(state = defaultState, action){
                 }
             }
         case types.ADD_EVENT_OPTION:
-            var mt_uri = action.payload.uri
-            var et_id = action.payload.event_id
             return {
                 ...state, 
                 meetups: {
                     ...state.meetups, 
-                    [mt_uri]: {
-                        ...state.meetups[mt_uri], 
+                    [action.payload.meetup]: {
+                        ...state.meetups[action.payload.meetup], 
                         events: {
-                            ...state.meetups[mt_uri].events, 
-                            [et_id]: {
-                                ...state.meetups[mt_uri].events[et_id], 
+                            ...state.meetups[action.payload.meetup].events, 
+                            [action.payload.event_id]: {
+                                ...state.meetups[action.payload.meetup].events[action.payload.event_id], 
                                 options: {
-                                    ...state.meetups[mt_uri].events[et_id].options, 
+                                    ...state.meetups[action.payload.meetup].events[action.payload.event_id].options, 
                                     ...action.payload.option
                                 }
                             }
@@ -177,15 +171,14 @@ export default function meetupReducer(state = defaultState, action){
                 }
             }
         case types.DELETE_EVENT_OPTION:
-            var m_uri = action.payload.uri
             return {
                 ...state, 
                 meetups: {
                     ...state.meetups,
-                    [m_uri]: {
-                        ...state.meetups[m_uri],
+                    [action.payload.meetup]: {
+                        ...state.meetups[action.payload.meetup],
                         events: {
-                            ...state.meetups[m_uri].events,
+                            ...state.meetups[action.payload.meetup].events,
                             [action.payload.event_id] : {
                                 ...action.payload.event
                             }

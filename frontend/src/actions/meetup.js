@@ -1,6 +1,7 @@
 import * as types from '../constants/action-types'
 import {axiosClient} from '../accounts/axiosClient';
 import {history} from '../components/MeetupApp'
+import moment from 'moment';
 
 const determineMeetupsParams = (data) => {
     let params;
@@ -59,8 +60,9 @@ export const getMeetup = (uri) => async dispatch => {
 }
 
 export const addMeetup = (formProps, redirectOnSuccess) => async dispatch => {
-    var params = {...formProps, 
-        date: formProps.date.getFullYear()  + "-" + ("0"+(formProps.date.getMonth()+1)).slice(-2) + "-" + ("0" + formProps.date.getDate()).slice(-2)
+    const params = {
+        ...formProps, 
+        date: moment(formProps.date).format("YYYY-MM-DD")
     }
     try {
         const response = await axiosClient.post(
@@ -76,10 +78,9 @@ export const addMeetup = (formProps, redirectOnSuccess) => async dispatch => {
 } 
 
 export const editMeetup = (formProps, uri) => async dispatch => {
-    console.log('edit meetup')
-    var date = new Date(formProps.date)
-    var params = {...formProps, 
-        date: date.getFullYear()+ "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2)
+    const params = {
+        ...formProps, 
+        date: moment(formProps.date).format("YYYY-MM-DD")
     }
     try {
         const response = await axiosClient.patch(
@@ -113,7 +114,7 @@ export const getMeetupEvents = (uri) => async dispatch => {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         console.log(response)
-        dispatch({type: types.GET_MEETUP_EVENTS, payload: {uri: uri, events: response.data}})
+        dispatch({type: types.GET_MEETUP_EVENTS, payload: {meetup: uri, events: response.data}})
     } catch(e) {
         console.log(e)
     }

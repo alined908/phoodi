@@ -1,17 +1,17 @@
 import React from 'react'
 import {shallow} from 'enzyme';
-import {ContactComponent} from "../../components/components" 
-import {UnderlyingContactComponent} from "../../components/chat/ContactComponent"
+import {Contact} from "../../components/components" 
+import {UnderlyingContact} from "../../components/chat/Contact"
 import {user, rooms} from '../../mocks/index'
 
-describe("ContactComponent unit", () => {
+describe("Contact unit", () => {
 
     it ('renders without crashing given props', () => {
         const props = {
             user: user,
             room: rooms.friend
         }
-        const wrapper = shallow(<UnderlyingContactComponent {...props}/>)
+        const wrapper = shallow(<UnderlyingContact {...props}/>)
         expect(wrapper).toMatchSnapshot()
     })
 
@@ -21,9 +21,9 @@ describe("ContactComponent unit", () => {
             room: rooms.friend
         }
 
-        const wrapper = shallow(<UnderlyingContactComponent {...props}/>)
-        expect(wrapper.find(".chat-contact-info")).toHaveLength(1)
-        expect(wrapper.find(".meetup-avatars")).toHaveLength(0)
+        const wrapper = shallow(<UnderlyingContact {...props}/>)
+        expect(wrapper.find(".contactInfo")).toHaveLength(1)
+        expect(wrapper.find(".avatars")).toHaveLength(0)
     })
 
     it ('determines if contact is meetup', () => {
@@ -32,9 +32,9 @@ describe("ContactComponent unit", () => {
             room: rooms.meetup
         }
 
-        const wrapper = shallow(<UnderlyingContactComponent {...props}/>)
-        expect(wrapper.find(".chat-contact-info")).toHaveLength(0)
-        expect(wrapper.find(".meetup-avatars")).toHaveLength(1)
+        const wrapper = shallow(<UnderlyingContact {...props}/>)
+        expect(wrapper.find(".contactInfo")).toHaveLength(0)
+        expect(wrapper.find(".avatars")).toHaveLength(1)
     })
 
     it ('determines if contact is current room', () => {
@@ -43,8 +43,8 @@ describe("ContactComponent unit", () => {
             room: rooms.friend,
             currentRoom: "abc"
         }
-        const wrapper = shallow(<UnderlyingContactComponent {...props}/>)
-        expect(wrapper.find(".curr-room")).toHaveLength(1)
+        const wrapper = shallow(<UnderlyingContact {...props}/>)
+        expect(wrapper.find(".currentRoom")).toHaveLength(1)
     })
 
     it ('determines if contact is not current room', () => {
@@ -53,8 +53,8 @@ describe("ContactComponent unit", () => {
             room: rooms.friend,
             currentRoom: "xyz"
         }
-        const wrapper = shallow(<UnderlyingContactComponent {...props}/>)
-        expect(wrapper.find(".curr-room")).toHaveLength(0)
+        const wrapper = shallow(<UnderlyingContact {...props}/>)
+        expect(wrapper.find(".currentRoom")).toHaveLength(0)
     })
 
     it ('renders and removes notifications', () => {
@@ -64,9 +64,9 @@ describe("ContactComponent unit", () => {
             currentRoom: "abc",
             removeNotifs: jest.fn()
         }
-        const wrapper = shallow(<UnderlyingContactComponent {...props}/>)
+        const wrapper = shallow(<UnderlyingContact {...props}/>)
         expect(wrapper.state('notifs')).toEqual(3)
-        wrapper.find('.contact-link').simulate('click')
+        wrapper.find('Link').simulate('click')
         expect(wrapper.state('notifs')).toEqual(0)
     })
 })

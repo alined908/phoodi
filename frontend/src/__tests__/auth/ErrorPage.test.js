@@ -1,10 +1,10 @@
 import React from 'react'
 import {shallow} from 'enzyme';
-import {ErrorComponent} from "../../components/components"
+import {ErrorPage} from "../../components/components"
 
-describe("ErrorComponent render", () => {
+describe("ErrorPage render", () => {
     it ('renders without crashing', () => {
-        const wrapper = shallow(<ErrorComponent/>)
+        const wrapper = shallow(<ErrorPage/>)
         expect(wrapper).toMatchSnapshot()
     })
 })

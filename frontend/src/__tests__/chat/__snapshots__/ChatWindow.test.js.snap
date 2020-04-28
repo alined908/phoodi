@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChatWindowComponent unit  renders without crashing given props 1`] = `
+exports[`ChatWindow unit  renders without crashing given props 1`] = `
 <div
-  className="chat-window elevate"
+  className="window"
 >
   <div
-    className="chat-header"
+    className="header"
   >
     <Link
       to="/profile/2"
@@ -23,13 +23,32 @@ exports[`ChatWindowComponent unit  renders without crashing given props 1`] = `
     </Link>
   </div>
   <div
-    className="chat-messages-wrapper"
+    className="messagesWrapper"
     onScroll={[Function]}
   >
     <div
-      className="chat-messages"
+      className="messages"
     >
-      <ChatMessageComponent
+      <div
+        className="messagesStart"
+      >
+        <span>
+          This is the beginning of your direct message history with
+          <span
+            className="messagesStartHighlight"
+          >
+            Bob
+             
+            Jim
+          </span>
+        </span>
+      </div>
+      <div
+        className="messagesDate"
+      >
+        April 28, 2020
+      </div>
+      <ChatMessage
         key="1"
         members={
           Object {
@@ -52,11 +71,17 @@ exports[`ChatWindowComponent unit  renders without crashing given props 1`] = `
         message={
           Object {
             "id": 1,
-            "is_read": false,
+            "is_notif": false,
             "message": "hello",
             "room_id": 1,
-            "sender_id": 1,
-            "timestamp": "1487030400000",
+            "sender": Object {
+              "avatar": null,
+              "email": "example@gmail.com",
+              "first_name": "Daniel",
+              "id": 1,
+              "last_name": "Lee",
+            },
+            "timestamp": "2020-04-28T07:06:33-07:00",
           }
         }
         user={
@@ -69,8 +94,8 @@ exports[`ChatWindowComponent unit  renders without crashing given props 1`] = `
           }
         }
       />
-      <ChatMessageComponent
-        key="1"
+      <ChatMessage
+        key="2"
         members={
           Object {
             "1": Object {
@@ -91,12 +116,18 @@ exports[`ChatWindowComponent unit  renders without crashing given props 1`] = `
         }
         message={
           Object {
-            "id": 1,
-            "is_read": false,
+            "id": 2,
+            "is_notif": true,
             "message": "hello",
             "room_id": 1,
-            "sender_id": 1,
-            "timestamp": "1487030400000",
+            "sender": Object {
+              "avatar": null,
+              "email": "example@gmail.com",
+              "first_name": "Daniel",
+              "id": 1,
+              "last_name": "Lee",
+            },
+            "timestamp": "2020-04-28T07:06:33-07:00",
           }
         }
         user={
@@ -112,35 +143,48 @@ exports[`ChatWindowComponent unit  renders without crashing given props 1`] = `
       <div />
     </div>
   </div>
-  <div>
-    <form
-      className="chat-input-form"
-    >
-      <input
-        className="chat-input"
-        onChange={[Function]}
-        onKeyPress={[Function]}
-        placeholder="Type a message here..."
-        type="text"
-        value=""
-      />
-    </form>
-    <div>
-      <WithStyles(ForwardRef(Button))
-        onClick={[Function]}
-        style={
-          Object {
-            "backgroundColor": "#FFD460",
-            "borderRadius": 15,
-            "fontFamily": "Lato",
-            "fontSize": 10,
-            "fontWeight": "700",
-          }
+  <div
+    className="inputWrapper"
+  >
+    <ChatInput
+      room={
+        Object {
+          "friendship": 1,
+          "id": 1,
+          "meetup": null,
+          "members": Object {
+            "1": Object {
+              "avatar": null,
+              "email": "example@gmail.com",
+              "first_name": "Daniel",
+              "id": 1,
+              "last_name": "Lee",
+            },
+            "2": Object {
+              "avatar": null,
+              "email": "example2@gmail.com",
+              "first_name": "Bob",
+              "id": 2,
+              "last_name": "Jim",
+            },
+          },
+          "name": "Room",
+          "notifs": 0,
+          "timestamp": "2020-04-28T07:06:33-07:00",
+          "uri": "abc",
         }
-      >
-        Send
-      </WithStyles(ForwardRef(Button))>
-    </div>
+      }
+      socket={Object {}}
+      user={
+        Object {
+          "avatar": null,
+          "email": "example@gmail.com",
+          "first_name": "Daniel",
+          "id": 1,
+          "last_name": "Lee",
+        }
+      }
+    />
   </div>
 </div>
 `;

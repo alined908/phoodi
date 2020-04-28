@@ -121,4 +121,4 @@ export default compose (
     })
 )(LoginPage);
 
-export {LoginPage as UnderlyingLoginComponent}
+export {LoginPage as UnderlyingLoginPage}

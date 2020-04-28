@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow, mount} from 'enzyme';
-import {UnderlyingLoginComponent} from "../../components/auth/LoginComponent"
-import {LoginComponent} from "../../components/components"
+import {UnderlyingLoginPage} from "../../components/auth/LoginPage"
+import {LoginPage} from "../../components/components"
 import { Provider } from 'react-redux';
 import setupStore from "../../setupTests"
 import {axiosClient} from "../../accounts/axiosClient";
@@ -10,14 +10,14 @@ import { MemoryRouter } from 'react-router';
 import {Body} from "../../components/components"
 import { createBrowserHistory } from 'history';
 
-describe("LoginComponent unit", () => {
+describe("LoginPage unit", () => {
     it ('renders without crashing given props', () => {
         const props = {
             errorMessage: "",
             signin: jest.fn(),
             handleSubmit: jest.fn()
         }
-        const wrapper = shallow(<UnderlyingLoginComponent {...props}/>)
+        const wrapper = shallow(<UnderlyingLoginPage {...props}/>)
         expect(wrapper).toMatchSnapshot()
     })
 
@@ -29,7 +29,7 @@ describe("LoginComponent unit", () => {
         }
         const mockData = {first_name: "Daniel", last_name: "Lee", email: "daniel@gmail.com", password: "password"}
 
-        const wrapper = shallow(<UnderlyingLoginComponent {...props}/>)
+        const wrapper = shallow(<UnderlyingLoginPage {...props}/>)
         wrapper.instance().onSubmit(mockData);
         expect(props.signin.mock.calls.length).toBe(1);
     })
@@ -63,7 +63,7 @@ describe("LoginComponent integration", () => {
         )
         wrapper.update()
         console.log(wrapper.debug())
-        expect(wrapper.find('Connect(Form(LoginComponent))')).toHaveLength(1)
+        expect(wrapper.find('Connect(Form(LoginPage))')).toHaveLength(1)
         
         // await flushAllPromises();
         // wrapper.update();

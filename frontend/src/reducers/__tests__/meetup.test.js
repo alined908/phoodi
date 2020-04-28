@@ -94,7 +94,7 @@ describe('Meetup Reducer', () => {
     it('should handle GET_MEETUP_EVENTS', () => {
         const action = {
             type: types.GET_MEETUP_EVENTS,
-            payload: {uri: meetup.uri.uri, events}
+            payload: {meetup: meetup.uri.uri, events}
         }
         const state = {...defaultState, meetups}
         const newState = meetupReducer(state, action)
@@ -130,7 +130,7 @@ describe('Meetup Reducer', () => {
     it('should handle DELETE_MEETUP_EVENT', () => {
         const action = {
             type: types.DELETE_MEETUP_EVENT,
-            payload: {uri: meetup.uri.uri, event: 1}
+            payload: {meetup: meetup.uri.uri, event_id: 1}
         }
         const state = {...defaultState, meetups}
         const newState = meetupReducer(state, action)
@@ -142,7 +142,7 @@ describe('Meetup Reducer', () => {
     it('should handle ADD_EVENT_OPTION', () => {
         const action = {
             type: types.ADD_EVENT_OPTION,
-            payload: {uri: meetup.uri.uri, event_id: 1, option}
+            payload: {meetup: meetup.uri.uri, event_id: 1, option}
         }
         const newEvent = {...meetup, [meetup.uri.uri]: {...meetup.uri, events: {...events}}}
         const state = {...defaultState, meetups: {...newEvent}}
@@ -168,7 +168,7 @@ describe('Meetup Reducer', () => {
     it('should handle DELETE_EVENT_OPTION', () => {
         const action = {
             type: types.DELETE_EVENT_OPTION,
-            payload: {uri: meetup.uri.uri, event_id: 1, event: event[1]}
+            payload: {meetup: meetup.uri.uri, event_id: 1, event: event[1]}
         }
 
         const state = {...defaultState, meetups: {...meetup, [meetup.uri.uri]: {...meetup.uri, events}}}

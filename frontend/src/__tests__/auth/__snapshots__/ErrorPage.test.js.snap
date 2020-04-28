@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorPage render renders without crashing 1`] = `
+<div
+  className="errorPage"
+>
+  <div
+    className="errorPageIcon"
+  >
+    <Component
+      height="100%"
+      width="100%"
+    />
+  </div>
+  <div
+    className="errorPageMessage"
+  >
+    <div>
+      Error code: 404
+    </div>
+    <div>
+      We weren't able to find the page!
+    </div>
+    <div
+      onClick={[Function]}
+    >
+      Try Again
+    </div>
+  </div>
+</div>
+`;
