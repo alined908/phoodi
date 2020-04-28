@@ -55,7 +55,6 @@ class Meetup extends Component {
         
         meetupSocket.connect(meetupPath, token);
     }
-
    
     componentWillUnmount() {
         this.state.meetupSocket.disconnect()

@@ -219,7 +219,7 @@ class Meetup(models.Model):
                 category_ids = [category.id]
         else:
             category_ids = []
-
+        
         if request:
             client_ip, is_routable = get_client_ip(request)
 
@@ -235,7 +235,7 @@ class Meetup(models.Model):
 
         if not latitude or not longitude:
             return []
-
+     
         distance_query = RawSQL(
             ' SELECT id FROM \
                 (SELECT *, (3959 * acos(cos(radians(%s)) * cos(radians(latitude)) * \
@@ -249,7 +249,7 @@ class Meetup(models.Model):
                 OFFSET 0 \
                 LIMIT %s' , (latitude, longitude, latitude, radius, datetime.datetime.now().date(), num_results)
         )
-
+     
         if not category_ids:
             meetups = Meetup.objects.filter(public=True, id__in=distance_query, date__range=(start,end)).order_by("date")
         else:

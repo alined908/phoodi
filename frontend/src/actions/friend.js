@@ -1,12 +1,17 @@
 import {GET_FRIENDS, DELETE_FRIEND, ADD_GLOBAL_MESSAGE} from '../constants/action-types'
 import {axiosClient} from '../accounts/axiosClient'
 
-export const getFriends = (id) => async dispatch => {
+export const getFriends = (id, category = null) => async dispatch => {
     try {
         const response = await axiosClient.get(
-            `/api/users/${id}/friends/`, {headers: {
-                "Authorization": `Bearer ${localStorage.getItem('token')}`
-            }}
+            `/api/users/${id}/friends/`, {
+                params: {
+                    ...category && {category}
+                },
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                }
+            }
         )
         // console.log(response)
         dispatch({type: GET_FRIENDS, payload: response.data})

@@ -12,10 +12,8 @@ export const getRoom = (uri) => async dispatch => {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
-        console.log(response.data)
         dispatch({type: GET_ROOMS_SUCCESS, payload: response.data})
     } catch(e){
-        console.log(e);
         dispatch({type: GET_ROOMS_ERROR, payload: e})
     }
 }   
@@ -28,10 +26,8 @@ export const getRooms = () => async dispatch => {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
-        console.log(response.data)
         dispatch({type: GET_ROOMS_SUCCESS, payload: response.data})
     } catch(e){
-        console.log(e);
         dispatch({type: GET_ROOMS_ERROR, payload: e})
     }
 }
@@ -43,10 +39,8 @@ export const getMessages = (room) => async dispatch => {
             `/api/chats/${room}/messages/`, {headers: {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
-        console.log(response.data)
         dispatch({type: GET_MESSAGES_SUCCESS, payload: response.data})
     } catch(e){
-        console.log(e)
         dispatch({type: GET_MESSAGES_ERROR, payload: e})
     }
 }
@@ -58,10 +52,8 @@ export const getMoreMessages = (room, last_message_id) => async dispatch => {
             `/api/chats/${room}/messages/`, {params: {last: last_message_id}, headers: {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
-        console.log(response.data)
         setTimeout(() => dispatch({type: GET_MORE_MESSAGES_SUCCESS, payload: response.data}), 200)
     } catch(e){
-        console.log(e)
         dispatch({type: GET_MORE_MESSAGES_ERROR, payload: e})
     }
 
@@ -90,7 +82,6 @@ export const setTypingValue = (value) => {
 
 export const addMessage = (message) => async dispatch => {
     try {
-        console.log(message);
         dispatch({type: ADD_MESSAGE, payload: {"message": message}})
     } catch(e){
         console.log(e);

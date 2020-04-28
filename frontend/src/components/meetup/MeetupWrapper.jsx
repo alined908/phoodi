@@ -36,7 +36,9 @@ class MeetupWrapper extends Component {
                         <Meetup key={meetup.id} meetup={meetup} isUserMember={isUserMember}/> : 
                         <Redirect to="/meetups"/>
                     ) :
-                    <div><CircularProgress/></div>
+                    <div className="loading">
+                        <CircularProgress/>
+                    </div>
                 }
             </>
         )

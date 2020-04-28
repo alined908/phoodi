@@ -94,26 +94,24 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Author
 * **Daniel Lee** 
 
+## Todo Testing 
+- [ ] Validation for models
+- [ ] Write tests for frontend
+- [ ] Reload doesnt work first time
+
+## Todo Authentication
+- [ ] Don't allow websocket to send event even after refresh token expire
+
 ## Todo UI/UX/CleanUp
-- [ ] Add transitions (ex Natural transition to new options when meetup event is changed)
 - [ ] Animation when logging out forced
 - [ ] Redo responsive layout + design + Safari presentation
 - [ ] Skeleton loading where applicable
 - [ ] Optimize performance
 - [ ] Disable actions if event is in the past 
 
-## Todo Testing 
-- [ ] Validation for models
-- [ ] Write tests for frontend
-- [ ] Category events doesnt show
-
-## Todo Authentication
-- [ ] Don't allow websocket to send event even after refresh token expire
-
 ## Todo User
 - [ ] Email activation
 - [ ] Forgot/Reset password
-- [ ] Add google, facebook, twitter social auth
 
 ## Todo Deploy
 - [ ] Separate dev and prod settings
@@ -124,6 +122,7 @@ python manage.py loaddata meetup/fixtures/*.json
 ------------------------------------------------------------------
 
 ## Todo Next Iteration
+- [ ] Add google, facebook, twitter social auth
 - [ ] Edit chat messages
 - [ ] Upload picture
 - [ ] Refactor code/database
@@ -141,6 +140,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Position aware scrolling (meetup tree) (Panda is anchor, dashes are bamboo)
 
 ## Todo Later/Nice Stuff
+- [ ] Swap out of material ui (maybe tailwind?)
 - [ ] Update user when email changes
 - [ ] Find people who have similar food taste near you?
 - [ ] Some sort of reputation system

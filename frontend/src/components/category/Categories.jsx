@@ -74,7 +74,7 @@ class Categories extends Component {
                                     </Link>
                                 </Grow>
                             )) :
-                            [...Array(16).keys()].map((num) => (
+                            [...Array(12).keys()].map((num) => (
                                 <div key={num} className={styles.placeholder}>
                                     <Skeleton animation="wave" variant="circle" height={40} width={40}/>
                                     <Skeleton animation="wave" height={10} width={60} style={{ marginLeft: 10 }} />
@@ -103,7 +103,7 @@ class Categories extends Component {
                                     </Link>
                                 </Grow>
                             )) :
-                            [...Array(26).keys()].map((num) => (
+                            [...Array(24).keys()].map((num) => (
                                 <div key={num} className={styles.placeholder}>
                                     <Skeleton animation="wave" variant="circle" height={40} width={40}/>
                                     <Skeleton animation="wave" height={10} width={60} style={{ marginLeft: 10 }} />

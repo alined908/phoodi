@@ -5,11 +5,13 @@ import {getMeetups} from "../../actions/meetup";
 import {Friend, MeetupCard} from '../components'
 import {FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon} from '@material-ui/icons';
 import {addPreference, deletePreference} from '../../actions/index'
+import {getFriends} from '../../actions/friend'
 import {connect} from 'react-redux'
 import PropTypes from "prop-types"
 import {userPropType} from "../../constants/prop-types"
 import {Helmet} from 'react-helmet'
 import {history} from '../MeetupApp'
+import moment from 'moment'
 import styles from '../../styles/category.module.css'
 
 class Category extends Component {
@@ -17,8 +19,6 @@ class Category extends Component {
         super(props)
         this.state = {
             category: {},
-            friends: [],
-            meetups: [],
             restaurants: [],
             loadingError: false,
             liked: false,
@@ -39,30 +39,12 @@ class Category extends Component {
 
     getInformation = async () => {
         try {
-            const [category, friends, meetups, restaurants] = await Promise.all(
+            const [category, restaurants] = await Promise.all(
                 [
                     axiosClient.get(
                         `/api/categories/${this.props.match.params.api_label}/`, {headers: {
                             "Authorization": `Bearer ${localStorage.getItem('token')}`
                     }}),
-                    axiosClient.get(
-                         `/api/users/${this.props.user.id}/friends/`, {params: {category: this.props.match.params.api_label} ,headers: {
-                            "Authorization": `Bearer ${localStorage.getItem('token')}`
-                    }}),
-                    axiosClient.request({
-                        method: "GET",
-                        url: "/api/meetups/", 
-                        headers: {
-                            "Authorization": `Bearer ${localStorage.getItem('token')}`
-                        },
-                        params: {
-                            type: "public",
-                            categories: this.props.match.params.api_label,
-                            latitude: this.props.user.settings ? this.props.user.settings.latitude: null,
-                            longitude: this.props.user.settings ? this.props.user.settings.longitude: null,
-                            radius: this.props.user.settings ? this.props.user.settings.radius : 25
-                        }
-                    }),
                     axiosClient.request({
                         method: "GET",
                         url: `/api/restaurants/`,
@@ -75,13 +57,20 @@ class Category extends Component {
                             longitude: this.props.user.settings ? this.props.user.settings.longitude: null,
                             radius: this.props.user.settings ? this.props.user.settings.radius : 25
                         }
+                    }),
+                    this.props.getFriends(this.props.user.id, this.props.match.params.api_label),
+                    this.props.getMeetups({
+                        type: "public",
+                        startDate: moment().format("YYYY-MM-DD"),
+                        endDate: moment().add(7, 'd').format("YYYY-MM-DD"),
+                        categories: this.props.match.params.api_label, 
+                        coords: {...this.props.user.settings}
                     })
                 ]
             )
             this.setState({
                 category: category.data, categoryLoaded: true, liked: category.data.preference !== null, 
-                numLiked: category.data.num_liked, friends: friends.data, meetups: Object.values(meetups.data.meetups),
-                restaurants: restaurants.data
+                numLiked: category.data.num_liked, restaurants: restaurants.data
             })
         } catch(e){
             history.push('/404')
@@ -155,7 +144,7 @@ class Category extends Component {
                                     <div></div>
                                 </div>
                                 <div className="column-middle">
-                                    {this.state.friends.map((friend) => 
+                                    {this.props.friends.map((friend) => 
                                         <Friend key={friend.id} isUserFriend={true} friend={friend}/>
                                     )}
                                 </div> 
@@ -168,11 +157,11 @@ class Category extends Component {
                             Meetups Near You With <span className={styles.categoryHighlight}>{category.label}</span> Events           
                         </div>
                         <Grid container spacing={1}>
-                            {this.state.meetups.map((meetup, index) =>
-                                <Grid key={meetup.id} item xs={12} lg={6} >
+                            {Object.keys(this.props.meetups).map((uri, index) =>
+                                <Grid key={this.props.meetups[uri].id} item xs={12} lg={6} >
                                     <Grow in={true} timeout={Math.max((index + 1) * 200, 500)}>
                                         <div className="meetups-cardwrapper">
-                                            <MeetupCard key={meetup.id} meetup={meetup}/>
+                                            <MeetupCard meetup={this.props.meetups[uri]}/>
                                         </div>
                                     </Grow>
                                 </Grid>
@@ -200,14 +189,17 @@ Category.propTypes = {
 
 function mapStateToProps(state){
     return {
-        user: state.user.user
+        user: state.user.user,
+        meetups: state.meetup.meetups,
+        friends: state.user.friends
     }
 }
 
 const mapDispatchToProps = {
     addPreference,
     deletePreference,
-    getMeetups
+    getMeetups,
+    getFriends
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Category)

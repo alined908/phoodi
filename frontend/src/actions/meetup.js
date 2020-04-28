@@ -4,8 +4,7 @@ import {GET_MEETUPS_REQUEST, GET_MEETUPS_SUCCESS, GET_MEETUPS_ERROR,
 import {axiosClient} from '../accounts/axiosClient';
 import {history} from '../components/MeetupApp'
 
-export const getMeetups = (data) => async dispatch => {
-    dispatch({type: GET_MEETUPS_REQUEST})
+const determineMeetupsParams = (data) => {
     let params;
     if (data.type === "private"){
         params = {
@@ -18,12 +17,19 @@ export const getMeetups = (data) => async dispatch => {
         }
     } else {
         params = {
-            type: data.type, ...data.categories && {categories: data.categories}, 
+            type: data.type, 
+            ...data.categories && {categories: data.categories}, 
             latitude: data.coords.latitude, longitude: data.coords.longitude, 
             radius: data.coords.radius,start: data.startDate,
             end: data.endDate
         }
     }
+    return params
+}
+
+export const getMeetups = (data) => async dispatch => {
+    dispatch({type: GET_MEETUPS_REQUEST})
+    const params = determineMeetupsParams(data)
     
     try {
         const response = await axiosClient.request({
@@ -48,7 +54,6 @@ export const getMeetup = (uri) => async dispatch => {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
-        // console.log(response)
         dispatch({type: ADD_MEETUP, payload: response.data})
     } catch(e){
         history.push('/404')
