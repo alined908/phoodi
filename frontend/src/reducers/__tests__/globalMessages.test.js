@@ -31,4 +31,11 @@ describe('GlobalMessage Reducer' , () => {
         const expectedState = [globalMessage]
         expect(newState).toEqual(expectedState)
     })
+
+    it ('should handle CLEAR_STORE', () => {
+        const action = {type: types.CLEAR_STORE}
+        const newState = globalMessageReducer(defaultState, action)
+        const expectedState = defaultState
+        expect(newState).toEqual(expectedState)
+    })
 })

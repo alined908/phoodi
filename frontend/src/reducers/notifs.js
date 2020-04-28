@@ -1,6 +1,6 @@
 import {GET_NOTIFS, REMOVE_NOTIFS, CLEAR_STORE} from '../constants/action-types'
 
-const defaultState = {
+export const defaultState = {
     chat_message: null,
     friend_inv: null,
     meetup_inv: null,
