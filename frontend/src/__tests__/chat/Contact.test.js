@@ -2,19 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme';
 import {ContactComponent} from "../../components/components" 
 import {UnderlyingContactComponent} from "../../components/chat/ContactComponent"
-
-Date.now = jest.fn(() => new Date(Date.UTC(2017, 1, 14)).valueOf())
-const user = {id: 1, email: "example@gmail.com", first_name: "Daniel", last_name: "Lee", avatar: null}
-const user2 = {id: 2, email: "example2@gmail.com", first_name: "Bob", last_name: "Jim", avatar: null}
-const members = {
-    1: user,
-    2: user2
-}
-const rooms = {
-    friend: {id: 1, uri: "abc", name: "Room", timestamp: Date.now().toString(), members: members, friendship: 1, meetup:null, notifs: 0},
-    meetup: {id: 2, uri: "xyz", name: "Room", timestamp: Date.now().toString(), members: members, friendship: null, meetup:1, notifs: 3}
-}
-
+import {user, rooms} from '../../mocks/index'
 
 describe("ContactComponent unit", () => {
 

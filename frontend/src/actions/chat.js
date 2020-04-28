@@ -52,7 +52,7 @@ export const getMoreMessages = (room, last_message_id) => async dispatch => {
             `/api/chats/${room}/messages/`, {params: {last: last_message_id}, headers: {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
-        setTimeout(() => dispatch({type: GET_MORE_MESSAGES_SUCCESS, payload: response.data}), 200)
+        dispatch({type: GET_MORE_MESSAGES_SUCCESS, payload: response.data})
     } catch(e){
         dispatch({type: GET_MORE_MESSAGES_ERROR, payload: e})
     }
