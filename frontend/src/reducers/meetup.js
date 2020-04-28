@@ -1,9 +1,6 @@
-import {GET_MEETUPS_REQUEST, GET_MEETUPS_SUCCESS, GET_MEETUPS_ERROR, 
-        ADD_MEETUP, ADD_MEETUP_MEMBER, DELETE_MEETUP_MEMBER, DELETE_MEETUP, EDIT_MEETUP,
-     CLEAR_STORE, VOTE_MEETUP_EVENT, ADD_MEETUP_EVENT, GET_MEETUP_EVENTS, DELETE_MEETUP_EVENT, 
-     EDIT_MEETUP_EVENT, ADD_EVENT_OPTION, DELETE_EVENT_OPTION} from '../constants/action-types';
+import * as types from "../constants/action-types"
 
-const defaultState = {
+export const defaultState = {
     meetups: {},
     isMeetupsInitialized: false,
     isMeetupsFetching: false
@@ -11,24 +8,35 @@ const defaultState = {
 
 export default function meetupReducer(state = defaultState, action){
     switch (action.type){
-        case GET_MEETUPS_REQUEST:
+        case types.GET_MEETUPS_REQUEST:
             return {...state, isMeetupsFetching: true}
-        case GET_MEETUPS_SUCCESS:
+        case types.GET_MEETUPS_SUCCESS:
             return {...state, meetups: action.payload, isMeetupsInitialized: true, isMeetupsFetching: false}
-        case GET_MEETUPS_ERROR:
+        case types.GET_MEETUPS_ERROR:
             return {...state, isMeetupsFetching: false, errorMessage: action.payload.message}
-        case ADD_MEETUP:
-            return {...state, meetups: {...state.meetups, [action.payload.uri]: action.payload}}
-        case EDIT_MEETUP:
-            return {...state, 
-                meetups: {...state.meetups, 
-                    [action.payload.uri]: {...action.payload, 
-                        events: {...state.meetups[action.payload.uri].events},
-                        isMeetupEventsInitialized: true
+        case types.ADD_MEETUP:
+            return {
+                ...state, 
+                meetups: {
+                    ...state.meetups, 
+                    [action.payload.uri]: action.payload
+                }
+            }
+        case types.EDIT_MEETUP:
+            return {
+                ...state, 
+                meetups: {
+                    ...state.meetups, 
+                    [action.payload.uri]: {
+                        ...action.payload, 
+                        isMeetupEventsInitialized: true,
+                        events: {
+                            ...state.meetups[action.payload.uri].events
+                        } 
                     }
                 }
             }
-        case DELETE_MEETUP:
+        case types.DELETE_MEETUP:
             var meetups = {}
             Object.keys(state.meetups).forEach((key) => {
                 if (key !== action.payload){
@@ -36,49 +44,73 @@ export default function meetupReducer(state = defaultState, action){
                 }
             })
             return {...state, meetups: meetups}
-        case ADD_MEETUP_MEMBER:
-            return {...state, meetups: {...state.meetups, 
-                        [action.payload.meetup]: {...state.meetups[action.payload.meetup], 
-                            members: {...state.meetups[action.payload.meetup].members, ...action.payload.member}}}}
-        case DELETE_MEETUP_MEMBER:
-            console.log(action.payload.members)
-            return {...state, meetups: {
-                        ...state.meetups, 
-                        [action.payload.meetup]: {
-                            ...state.meetups[action.payload.meetup],
-                            members: action.payload.members
+        case types.ADD_MEETUP_MEMBER:
+            return {
+                ...state, 
+                meetups: {
+                    ...state.meetups, 
+                    [action.payload.meetup]: {
+                        ...state.meetups[action.payload.meetup], 
+                        members: {
+                            ...state.meetups[action.payload.meetup].members, 
+                            ...action.payload.member
                         }
                     }
                 }
-        case GET_MEETUP_EVENTS:
-            return {...state, meetups: {...state.meetups, 
-                    [action.payload.uri]: {...state.meetups[action.payload.uri], 
-                        events: action.payload.data, isMeetupEventsInitialized: true
-                    }}}
-        case ADD_MEETUP_EVENT:
-            return {...state, 
-                        meetups: {...state.meetups, 
-                            [action.payload.meetup]: {...state.meetups[action.payload.meetup], 
-                                events: {...state.meetups[action.payload.meetup].events, 
-                                    ...action.payload.event}}}}
-        case EDIT_MEETUP_EVENT:
+            }
+        case types.DELETE_MEETUP_MEMBER:
+            return {
+                ...state, 
+                meetups: {
+                    ...state.meetups, 
+                    [action.payload.meetup]: {
+                        ...state.meetups[action.payload.meetup],
+                        members: action.payload.members
+                    }
+                }
+            }
+        case types.GET_MEETUP_EVENTS:
+            return {
+                ...state, 
+                meetups: {
+                    ...state.meetups, 
+                    [action.payload.uri]: {
+                        ...state.meetups[action.payload.uri], 
+                        events: action.payload.events, 
+                        isMeetupEventsInitialized: true
+                    }
+                }
+            }
+        case types.ADD_MEETUP_EVENT:
+            return {
+                ...state, 
+                meetups: {
+                    ...state.meetups, 
+                    [action.payload.meetup]: {
+                        ...state.meetups[action.payload.meetup], 
+                        events: {
+                            ...state.meetups[action.payload.meetup].events, 
+                            ...action.payload.event
+                        }
+                    }
+                }
+            }
+        case types.EDIT_MEETUP_EVENT:
             const event_id = action.payload.event_id
-            return {...state, 
-                        meetups: {...state.meetups, 
-                            [action.payload.meetup]: {...state.meetups[action.payload.meetup],
-                                events: {...state.meetups[action.payload.meetup].events, [event_id]: action.payload.event}}}}
-        case VOTE_MEETUP_EVENT:
-            var meetup = action.payload.meetup
-            var member = action.payload.member
-            return {...state, meetups: {...state.meetups, 
-                            [meetup]: {...state.meetups[meetup], 
-                                members: {...state.meetups[meetup].members, ...member},
-                                events: {...state.meetups[meetup].events, 
-                                    [action.payload.event]: {...state.meetups[meetup].events[action.payload.event], 
-                                        options: {...state.meetups[meetup].events[action.payload.event].options, 
-                                            [action.payload.option_id]: action.payload.option
-                    }}}}}}
-        case DELETE_MEETUP_EVENT:
+            return {
+                ...state, 
+                meetups: {
+                    ...state.meetups, 
+                    [action.payload.meetup]: {
+                        ...state.meetups[action.payload.meetup],
+                        events: {
+                            ...state.meetups[action.payload.meetup].events, 
+                            [event_id]: action.payload.event
+                        }
+                    }
+                }
+            }
+        case types.DELETE_MEETUP_EVENT:
             var events = {}
             const uri = action.payload.uri
             Object.keys(state.meetups[uri].events).forEach((key) => {
@@ -86,11 +118,47 @@ export default function meetupReducer(state = defaultState, action){
                     events[key] = state.meetups[uri].events[key]
                 }
             })
-            return {...state, meetups: {...state.meetups, [uri] : {...state.meetups[uri], events: events}}}
-        case ADD_EVENT_OPTION:
+            return {
+                ...state, 
+                meetups: {
+                    ...state.meetups, 
+                    [uri] : {
+                        ...state.meetups[uri], 
+                        events: events
+                    }
+                }
+            }
+        case types.VOTE_EVENT_OPTION:
+            var meetup = action.payload.meetup
+            var member = action.payload.member
+            return {
+                ...state, 
+                meetups: {
+                    ...state.meetups, 
+                    [meetup]: {
+                        ...state.meetups[meetup], 
+                        members: {
+                            ...state.meetups[meetup].members, 
+                            ...member
+                        },
+                        events: {
+                            ...state.meetups[meetup].events, 
+                            [action.payload.event_id]: {
+                                ...state.meetups[meetup].events[action.payload.event_id], 
+                                options: {
+                                    ...state.meetups[meetup].events[action.payload.event_id].options, 
+                                    [action.payload.option_id]: action.payload.option
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        case types.ADD_EVENT_OPTION:
             var mt_uri = action.payload.uri
             var et_id = action.payload.event_id
-            return {...state, 
+            return {
+                ...state, 
                 meetups: {
                     ...state.meetups, 
                     [mt_uri]: {
@@ -100,16 +168,18 @@ export default function meetupReducer(state = defaultState, action){
                             [et_id]: {
                                 ...state.meetups[mt_uri].events[et_id], 
                                 options: {
-                                    ...state.meetups[mt_uri].events[et_id].options, ...action.payload.option
+                                    ...state.meetups[mt_uri].events[et_id].options, 
+                                    ...action.payload.option
                                 }
                             }
                         }
                     }
                 }
             }
-        case DELETE_EVENT_OPTION:
+        case types.DELETE_EVENT_OPTION:
             var m_uri = action.payload.uri
-            return {...state, 
+            return {
+                ...state, 
                 meetups: {
                     ...state.meetups,
                     [m_uri]: {
@@ -123,7 +193,7 @@ export default function meetupReducer(state = defaultState, action){
                     }
                 }
             }
-        case CLEAR_STORE:
+        case types.CLEAR_STORE:
             return defaultState
         default:
             return state
