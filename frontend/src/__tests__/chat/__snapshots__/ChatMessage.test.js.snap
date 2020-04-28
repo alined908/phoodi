@@ -1,39 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChatMessageComponent unit renders without crashing given props 1`] = `
+exports[`ChatMessage Should render chat message without errors 1`] = `
 <div
-  className="chat-msg-wrapper is-user"
+  className="messageWrapper"
+  id="1"
 >
-  <div>
+  <WithStyles(ForwardRef(Avatar))
+    className="messageAvatar"
+    src={null}
+  >
+    D
+    L
+  </WithStyles(ForwardRef(Avatar))>
+  <div
+    className="messageInner"
+  >
     <div
-      className="chat-msg-info is-user"
+      className="messageInfo"
     >
       <div
-        className="chat-msg-id"
+        className="messageUser"
       >
         Daniel
+         
+        Lee
       </div>
       <div
-        className="chat-msg-time"
+        className="messageTime"
       >
-        Invalid date
+        Today at 4:00 PM
       </div>
     </div>
     <div
-      className="chat-msg elevate is-user"
+      className="message"
     >
       hello
     </div>
-  </div>
-  <div
-    className="chat-msg-avatar is-user"
-  >
-    <WithStyles(ForwardRef(Avatar))
-      src={null}
-    >
-      D
-      L
-    </WithStyles(ForwardRef(Avatar))>
   </div>
 </div>
 `;

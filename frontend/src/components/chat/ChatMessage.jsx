@@ -9,10 +9,10 @@ class ChatMessage extends Component {
     render (){
         const message = this.props.message
         const sender = message.sender
-        const notif = message.is_notif
+        // const isUser = this.props.user.id === sender.id
         
         return (
-            <div id={`${message.id}`} className={notif ? styles.messageNotifWrapper : styles.messageWrapper}>
+            <div id={`${message.id}`} className={message.is_notif ? styles.messageNotifWrapper : styles.messageWrapper}>
                 <Avatar className={styles.messageAvatar} src={sender.avatar} >
                     {sender.first_name.charAt(0)}
                     {sender.last_name.charAt(0)}

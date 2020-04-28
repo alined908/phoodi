@@ -95,9 +95,9 @@ export let chatMessagePropType = PropTypes.shape({
     id: PropTypes.number.isRequired,
     message: PropTypes.string.isRequired,
     timestamp: PropTypes.string.isRequired,
-    is_read: PropTypes.bool.isRequired,
     room_id: PropTypes.number.isRequired,
-    sender_id: PropTypes.number.isRequired
+    sender: userPropType,
+    is_notif: PropTypes.bool.isRequired
 })
 
 export let chatMemberPropType = PropTypes.objectOf(
