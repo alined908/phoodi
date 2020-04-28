@@ -16,16 +16,6 @@ export let notifsPropType = PropTypes.shape({
     friend: PropTypes.number,
 })
 
-export let invitePropType = PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    timestamp: PropTypes.string.isRequired,
-    status: PropTypes.number.isRequired,
-    uri: PropTypes.string.isRequired,
-    sender: userPropType,
-    receiver: userPropType,
-    meetup: PropTypes.meetupPropType
-})
-
 export let categoryPropType = PropTypes.shape({
     id: PropTypes.number.isRequired,
     label: PropTypes.string.isRequired,
@@ -77,6 +67,8 @@ export let meetupMemberPropType = PropTypes.shape({
     admin: PropTypes.bool.isRequired
 })
 
+
+
 export let meetupPropType = PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
@@ -89,6 +81,16 @@ export let meetupPropType = PropTypes.shape({
     latitude: PropTypes.number.isRequired,
     longitude: PropTypes.number.isRequired,
     events: PropTypes.objectOf(meetupEventPropType),
+})
+
+export let invitePropType = PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    timestamp: PropTypes.string.isRequired,
+    status: PropTypes.number.isRequired,
+    uri: PropTypes.string.isRequired,
+    sender: userPropType,
+    receiver: userPropType,
+    meetup: meetupPropType
 })
 
 export let chatMessagePropType = PropTypes.shape({

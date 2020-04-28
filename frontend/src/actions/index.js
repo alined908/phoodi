@@ -13,7 +13,7 @@ export const signup = (formProps, redirectOnSuccess) => async dispatch => {
         const decoded = parseJWT(response.data.access)
         AuthenticationService.registerSuccessfulLogin(response.data.access, response.data.refresh)
         localStorage.setItem("user", JSON.stringify(decoded.user))
-        dispatch({type: AUTH_USER, payload: response.data});
+        dispatch({type: AUTH_USER, payload: {access: response.data.access, user: decoded.user}});
         redirectOnSuccess();
     }
     catch (e){
@@ -33,7 +33,7 @@ export const signin = (formProps, redirectOnSuccess) => async dispatch => {
         const decoded = parseJWT(response.data.access)
         AuthenticationService.registerSuccessfulLogin(response.data.access, response.data.refresh)
         localStorage.setItem("user", JSON.stringify(decoded.user))
-        dispatch({type: AUTH_USER, payload: response.data});
+        dispatch({type: AUTH_USER, payload: {access: response.data.access, user: decoded.user}});
         redirectOnSuccess();
     }
     catch (e){
@@ -51,7 +51,8 @@ export const refreshToken = (dispatch) => {
             AuthenticationService.removeToken();
             AuthenticationService.setToken(res.data.access);
             dispatch({type: DONE_REFRESHING_TOKEN});
-            dispatch({type: AUTH_USER, payload: res.data});
+            const decoded = parseJWT(res.data.access)
+            dispatch({type: AUTH_USER, payload: {access: res.data.access, user: decoded.user}});
             
             return res.data.access ? 
                 Promise.resolve(res.data.access) : 

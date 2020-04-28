@@ -34,9 +34,10 @@ class Meetup extends Component {
         }
     }
 
-    componentDidMount () {
+    componentDidMount() {
         const uri = this.props.meetup.uri
         this.props.getMeetupEvents(uri)
+        
         if (!this.props.isFriendsInitialized){
             this.props.getFriends(this.props.user.id)
         } 
