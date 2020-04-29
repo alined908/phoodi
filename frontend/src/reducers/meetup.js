@@ -13,7 +13,7 @@ export default function meetupReducer(state = defaultState, action){
         case types.GET_MEETUPS_SUCCESS:
             return {...state, meetups: action.payload, isMeetupsInitialized: true, isMeetupsFetching: false}
         case types.GET_MEETUPS_ERROR:
-            return {...state, isMeetupsFetching: false, errorMessage: action.payload.message}
+            return {...state, isMeetupsFetching: false, errorMessage: action.payload}
         case types.ADD_MEETUP:
             return {
                 ...state, 

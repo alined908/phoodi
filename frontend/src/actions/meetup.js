@@ -41,8 +41,7 @@ export const getMeetups = (data) => async dispatch => {
         })
         dispatch({type: types.GET_MEETUPS_SUCCESS, payload: response.data.meetups})
     } catch(e){
-        console.log(e)
-        dispatch({type: types.GET_MEETUPS_ERROR, payload: e})
+        dispatch({type: types.GET_MEETUPS_ERROR, payload: "Unable to get meetups."})
     }
 }
 
@@ -60,17 +59,13 @@ export const getMeetup = (uri) => async dispatch => {
 }
 
 export const addMeetup = (formProps, redirectOnSuccess) => async dispatch => {
-    const params = {
-        ...formProps, 
-        date: moment(formProps.date).format("YYYY-MM-DD")
-    }
+    const params = {...formProps, date: moment(formProps.date).format("YYYY-MM-DD")}
     try {
         const response = await axiosClient.post(
             `/api/meetups/`, params, {headers: {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         dispatch({type: types.ADD_MEETUP, payload: response.data.meetup})
-        console.log(response.data)
         redirectOnSuccess(response.data.meetup.uri)
     } catch(e){
         console.log(e)
@@ -78,10 +73,7 @@ export const addMeetup = (formProps, redirectOnSuccess) => async dispatch => {
 } 
 
 export const editMeetup = (formProps, uri) => async dispatch => {
-    const params = {
-        ...formProps, 
-        date: moment(formProps.date).format("YYYY-MM-DD")
-    }
+    const params = {...formProps, date: moment(formProps.date).format("YYYY-MM-DD")}
     try {
         const response = await axiosClient.patch(
             `/api/meetups/${uri}/`, params, {headers: {
@@ -95,11 +87,10 @@ export const editMeetup = (formProps, uri) => async dispatch => {
 
 export const deleteMeetup = (uri) => async dispatch => {
     try {
-        const response = await axiosClient.delete(
+        await axiosClient.delete(
             `/api/meetups/${uri}/`, {headers: {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
-        console.log(response)
         dispatch({type: types.DELETE_MEETUP, payload: uri})
         history.push(`/meetups`)
     } catch(e) {
@@ -114,10 +105,9 @@ export const getMeetupEvents = (uri) => async dispatch => {
             `/api/meetups/${uri}/events/`, {headers: {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
-        console.log(response)
         dispatch({type: types.GET_MEETUP_EVENTS_SUCCESS, payload: {meetup: uri, events: response.data}});
     } catch(e) {
-        dispatch({type: types.GET_MEETUP_EVENTS_ERROR, payload: {meetup: uri, message: e.message}})
+        dispatch({type: types.GET_MEETUP_EVENTS_ERROR, payload: {meetup: uri, message: "Unable to get events."}})
         console.log(e)
     }
 }
@@ -159,7 +149,6 @@ export const deleteEventOption = (event) => async dispatch => {
 }
 
 export const sendMeetupEmails = (uri) => async dispatch => {
-
     try {
         await axiosClient.post(
             `/api/meetups/${uri}/email/`, {}, {headers: {
