@@ -3,7 +3,7 @@ import reducers from "../reducers"
 import reduxThunk from 'redux-thunk';
 import {userDefaultState} from "../constants/default-states"
 import {parseJWT} from '../constants/helpers'
-import {refreshToken} from "../actions/index"
+import {refreshToken} from "../actions"
 import AuthenticationService from "../accounts/AuthenticationService";
 import {history} from '../components/MeetupApp'
 

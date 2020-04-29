@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 import {connect} from "react-redux";
-import {getMeetup} from "../../actions/meetup"
+import {getMeetup} from "../../actions"
 import {Meetup} from '../components';
 import {Redirect} from 'react-router-dom'
 import {CircularProgress} from '@material-ui/core'

@@ -3,7 +3,7 @@ import {Select, MenuItem, FormControl, InputLabel, Button} from '@material-ui/co
 import {Location, PasswordChange, EmailChange} from '../components'
 import Geocode from "react-geocode";
 import {connect} from 'react-redux'
-import {addSettings} from '../../actions/index'
+import {addSettings} from '../../actions'
 import PropTypes from "prop-types"
 import {Helmet} from 'react-helmet'
 import styles from "../../styles/user.module.css"

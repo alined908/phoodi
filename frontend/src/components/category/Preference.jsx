@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {ListItem, ListItemAvatar, ListItemText, Typography, Tooltip, Avatar, IconButton, makeStyles} from '@material-ui/core'
 import {Delete as DeleteIcon} from '@material-ui/icons'
-import { editPreference, deletePreference} from "../../actions/index"
+import { editPreference, deletePreference} from "../../actions"
 import PropTypes from "prop-types"
 import {preferencePropType} from "../../constants/prop-types"
 import styles from '../../styles/category.module.css'

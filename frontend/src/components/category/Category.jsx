@@ -1,11 +1,9 @@
 import React, {Component} from "react"
 import {axiosClient} from '../../accounts/axiosClient'
 import {Avatar, Tooltip, IconButton, Grid, Grow} from '@material-ui/core'
-import {getMeetups} from "../../actions/meetup";
+import {getMeetups, getFriends, addPreference, deletePreference} from "../../actions";
 import {Friend, MeetupCard} from '../components'
 import {FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon} from '@material-ui/icons';
-import {addPreference, deletePreference} from '../../actions/index'
-import {getFriends} from '../../actions/friend'
 import {connect} from 'react-redux'
 import PropTypes from "prop-types"
 import {userPropType} from "../../constants/prop-types"

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {reduxForm, Field} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {signin} from "../../actions/index"
+import {signin} from "../../actions"
 import {Paper, Grid, Fab} from '@material-ui/core';
 import {Link} from "react-router-dom"
 import {renderTextField} from '../components'

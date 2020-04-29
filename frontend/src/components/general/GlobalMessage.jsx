@@ -2,7 +2,7 @@ import React from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import {connect} from 'react-redux'
-import {removeGlobalMessage} from "../../actions/globalMessages"
+import {removeGlobalMessage} from "../../actions"
 import PropTypes from "prop-types"
 
 function Alert(props) {

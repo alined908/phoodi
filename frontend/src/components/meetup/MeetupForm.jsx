@@ -4,7 +4,7 @@ import {reduxForm, Field} from 'redux-form';
 import {compose} from 'redux';
 import {Button, Grid, Radio, DialogContent,
     FormControlLabel, Dialog, DialogActions, DialogTitle} from '@material-ui/core';
-import {addMeetup, editMeetup, getMeetup} from "../../actions/meetup";
+import {addMeetup, editMeetup, getMeetup} from "../../actions";
 import {renderTextField, renderDateSimplePicker, Location} from '../components'
 import styles from "../../styles/form.module.css"
 import moment from "moment"

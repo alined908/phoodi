@@ -7,8 +7,7 @@ import throttle from 'lodash/throttle'
 import { ChatMessage, ChatInput } from "../components"
 import { Button, IconButton, Tooltip, CircularProgress } from '@material-ui/core'
 import { Person as PersonIcon, Event as EventIcon, ExitToApp as ExitToAppIcon } from "@material-ui/icons"
-import { getMoreMessages } from "../../actions/chat"
-import { removeNotifs } from "../../actions/notifications"
+import { getMoreMessages, removeNotifs } from "../../actions"
 import { chatMessagePropType } from "../../constants/prop-types"
 import styles from '../../styles/chat.module.css'
 

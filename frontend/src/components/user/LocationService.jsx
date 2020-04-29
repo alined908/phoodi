@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {setUserSettings} from '../../actions/index'
+import {setUserSettings} from '../../actions'
 import { userPropType } from '../../constants/prop-types'
 import PropTypes from "prop-types"
 

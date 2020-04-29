@@ -1,12 +1,11 @@
 import React, {Component} from 'react'
 import {Button, Paper} from "@material-ui/core"
 import {connect} from 'react-redux'
-import {deleteMeetupEvent} from "../../actions/meetup"
-import {addGlobalMessage} from "../../actions/globalMessages"
+import {deleteMeetupEvent, addGlobalMessage} from "../../actions"
 import moment from "moment"
 import {Cached as CachedIcon, Edit as EditIcon, Close as CloseIcon, Search as SearchIcon, 
     Schedule as ScheduleIcon, Delete as DeleteIcon, Error as ErrorIcon} from '@material-ui/icons'
-import {IconButton, Typography, Grid, Grow, Tooltip, Avatar, Divider} from '@material-ui/core'
+import {IconButton, Typography, Grid, Tooltip, Avatar, Divider} from '@material-ui/core'
 import {compose} from 'redux';
 import {MeetupEventOption, Map, RestaurauntAutocomplete, ProgressIcon, MeetupEventForm} from '../components'
 import {Link} from 'react-router-dom'
@@ -138,15 +137,13 @@ class MeetupEvent extends Component {
                     {keys.length > 0 ?
                         <Grid justify="center" container spacing={3}>
                             {keys.map((key, index) => 
-                                <Grow key={key} in={true} timeout={300 * (index + 1)}>
-                                    <Grid item id={`option-${key}`} justify={index % 2 === 0 ? "flex-end" : "flex-start"} container xs={12} md={6} sm={12}>
-                                        <MeetupEventOption
-                                            socket={this.props.socket} full={true} 
-                                            isUserMember={this.props.isUserMember} event={this.props.event.id} 
-                                            meetup={this.props.uri} data={options[key]}
-                                        />
-                                    </Grid>
-                                </Grow>
+                                <Grid key={key} item id={`option-${key}`} justify={index % 2 === 0 ? "flex-end" : "flex-start"} container xs={12} md={6} sm={12}>
+                                    <MeetupEventOption
+                                        socket={this.props.socket} full={true} 
+                                        isUserMember={this.props.isUserMember} event={this.props.event.id} 
+                                        meetup={this.props.uri} data={options[key]}
+                                    />
+                                </Grid>
                             )}
                         </Grid>:
                         <Paper className={styles.explanation} elevation={3}>

@@ -1,10 +1,7 @@
 import React, {Component} from 'react'
-import {getFriends, deleteFriend} from "../../actions/friend"
-import {sendFriendInvite} from "../../actions/invite"
-import {addGlobalMessage} from "../../actions/globalMessages"
+import {getFriends, deleteFriend, sendFriendInvite, addGlobalMessage, removeNotifs} from "../../actions"
 import {connect} from 'react-redux'
 import {Button, Typography, Grid} from '@material-ui/core';
-import {removeNotifs} from "../../actions/notifications"
 import {Friend, UserAutocomplete} from '../components'
 import PropTypes from 'prop-types'
 import { friendPropType, userPropType } from '../../constants/prop-types'

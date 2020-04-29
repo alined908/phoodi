@@ -4,10 +4,9 @@ import {Button, Typography, Grid, ButtonGroup, Slider, Radio, FormControlLabel, 
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {Error as ErrorIcon} from '@material-ui/icons'
-import {addMeetupEvent, getMeetup, getMeetupEvents} from "../../actions/meetup"
+import {addMeetupEvent, getMeetup, getMeetupEvents, addGlobalMessage} from "../../actions"
 import {renderDatePicker, renderTextField, CategoryAutocomplete} from '../components'
 import {axiosClient} from "../../accounts/axiosClient"
-import {addGlobalMessage} from '../../actions/globalMessages'
 import styles from "../../styles/form.module.css"
 import moment from "moment"
 

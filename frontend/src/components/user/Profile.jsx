@@ -2,9 +2,8 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Avatar, IconButton, Tooltip, Paper} from '@material-ui/core'
 import {axiosClient} from "../../accounts/axiosClient"
-import {getPreferences, addPreference, editPreference} from "../../actions/index"
+import {getPreferences, addPreference, editPreference, sendFriendInvite} from "../../actions"
 import {Link} from 'react-router-dom'
-import {sendFriendInvite} from '../../actions/invite'
 import {Lock as LockIcon, LockOpen as LockOpenIcon, Search as SearchIcon, Edit as EditIcon, PersonAdd as PersonAddIcon} from '@material-ui/icons';
 import {Friend, CategoryAutocomplete, Preferences, RegisterPage} from "../components"
 import PropTypes from "prop-types"

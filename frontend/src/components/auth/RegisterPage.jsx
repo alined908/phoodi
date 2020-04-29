@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {reduxForm, Field} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {signup, editUser} from "../../actions/index"
+import {signup, editUser} from "../../actions"
 import {Paper, Grid, Fab, Button, Avatar, Dialog, DialogActions, DialogTitle, DialogContent} from '@material-ui/core';
 import {ReactComponent as Together} from "../../assets/svgs/undraw_eattogether.svg"
 import {ReactComponent as Bamboo} from "../../assets/svgs/bamboo-dark.svg"

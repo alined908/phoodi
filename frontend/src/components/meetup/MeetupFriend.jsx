@@ -1,6 +1,6 @@
 import React from "react"
 import {CheckCircle as CheckCircleIcon, Check as CheckIcon} from '@material-ui/icons';
-import {sendMeetupInvite} from '../../actions/invite'
+import {sendMeetupInvite} from '../../actions'
 import {connect} from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Typography, Avatar, CircularProgress, ListItem, ListItemText,ListItemAvatar, Tooltip} from "@material-ui/core"

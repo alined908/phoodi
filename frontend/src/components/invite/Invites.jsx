@@ -1,6 +1,5 @@
 import React, {Component} from "react"
-import {getUserMeetupInvites, respondMeetupInvite, getUserFriendInvites, respondFriendInvite} from "../../actions/invite"
-import {removeNotifs} from "../../actions/notifications"
+import {getUserMeetupInvites, respondMeetupInvite, getUserFriendInvites, respondFriendInvite, removeNotifs} from "../../actions"
 import {inviteType} from '../../constants/default-states'
 import {connect} from 'react-redux'
 import {Invite} from "../components"

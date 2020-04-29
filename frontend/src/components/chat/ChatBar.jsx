@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import {chatRoomPropType, userPropType,} from "../../constants/prop-types"
 import WebSocketService from "../../accounts/WebSocket"
 import AuthenticationService from '../../accounts/AuthenticationService';
-import {updateRoom} from '../../actions/chat'
+import {updateRoom} from '../../actions'
 import styles from '../../styles/chat.module.css'
 
 class ChatBar extends Component {

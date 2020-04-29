@@ -1,9 +1,8 @@
 import React, {Component} from "react"
 import {Button, Avatar} from "@material-ui/core"
 import {connect} from 'react-redux'
-import {respondFriendInvite, respondMeetupInvite} from '../../actions/invite'
+import {respondFriendInvite, respondMeetupInvite, removeNotifs} from '../../actions'
 import {inviteType, inviteStatus} from '../../constants/default-states'
-import {removeNotifs} from "../../actions/notifications"
 import {Paper} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'

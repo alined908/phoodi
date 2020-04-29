@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
-import {reorderPreferences} from "../../actions/index"
+import {reorderPreferences} from "../../actions"
 import {connect} from 'react-redux'
 import {Preference} from "../components"
 import PropTypes from "prop-types"

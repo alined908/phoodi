@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {ChatWindow} from '../components'
-import {getMessages, addMessage, setActiveRoom, getRoom, removeActiveRoom} from "../../actions/chat"
+import {getMessages, addMessage, setActiveRoom, getRoom, removeActiveRoom} from "../../actions"
 import AuthenticationService from "../../accounts/AuthenticationService"
 import WebSocketService from "../../accounts/WebSocket";
 import {connect} from 'react-redux'

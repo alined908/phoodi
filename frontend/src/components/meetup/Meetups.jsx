@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {getMeetups} from "../../actions/meetup";
+import {getMeetups, getPreferences} from "../../actions";
 import {MeetupCard, CategoryAutocomplete, MeetupForm} from "../components"
 import {Grid, Grow, Tooltip, IconButton, Avatar,  CircularProgress, Paper} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import moment from "moment"
 import {Public as PublicIcon, Add as AddIcon, Search as SearchIcon, Edit as EditIcon, Error as ErrorIcon, People as PeopleIcon} from '@material-ui/icons'
-import {getPreferences} from "../../actions/index"
 import PropTypes from "prop-types"
 import { userPropType, preferencePropType, meetupPropType} from '../../constants/prop-types';
 import {Helmet} from "react-helmet";

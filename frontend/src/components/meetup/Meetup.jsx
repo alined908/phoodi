@@ -2,15 +2,13 @@ import React, {Component} from 'react'
 import {MeetupFriend, MeetupEvent, ProgressIcon, MeetupForm, MeetupChat, MeetupEventForm, MeetupTree} from '../components'
 import {connect} from 'react-redux';
 import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, deleteEventOption,
-    addMeetupMember, deleteMeetupMember, addEventOption, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent} from '../../actions/meetup';
-import {removeNotifs} from '../../actions/notifications'
-import {getFriends} from "../../actions/friend"
-import {addGlobalMessage} from '../../actions/globalMessages'
-import {sendFriendInvite} from "../../actions/invite"
+    addMeetupMember, deleteMeetupMember, addEventOption, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent,
+    removeNotifs, getFriends, addGlobalMessage, sendFriendInvite
+} from '../../actions';
 import {Link} from 'react-router-dom'
 import moment from 'moment';
 import {history} from '../MeetupApp'
-import {Grid, Button, Typography, Avatar, List, ListItem, Paper, ListItemText, ListItemAvatar, IconButton, Tooltip} from "@material-ui/core"
+import {Grid, Button, Typography, Avatar, List, ListItem, Paper, ListItemText, ListItemAvatar, IconButton, Tooltip, CircularProgress} from "@material-ui/core"
 import WebSocketService from "../../accounts/WebSocket";
 import {Delete as DeleteIcon, Edit as EditIcon, Room as RoomIcon, Chat as ChatIcon, VerifiedUser as VerifiedUserIcon, 
     Lock as LockIcon, Public as PublicIcon, Email as EmailIcon, Add as AddIcon, Today as TodayIcon, PersonAdd as PersonAddIcon,
@@ -335,7 +333,11 @@ class Meetup extends Component {
         const renderEvents = (events) => {
             return (
                 <>
-                    {!this.props.isMeetupEventsInitialized && <div>Initializing Events</div>}
+                    {!this.props.isMeetupEventsInitialized && 
+                        <div className="loading">
+                            <CircularProgress/>
+                        </div>
+                    }
                     {this.props.isMeetupEventsInitialized && events && this.sortEvents(events).map((event, index) => 
                         <MeetupEvent key={event} number={index} socket={this.state.meetupSocket}  
                             uri={meetup.uri} event={events[event]} isUserMember={isUserMember} 

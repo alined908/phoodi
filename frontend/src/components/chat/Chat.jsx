@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { ChatBar, ChatWindow } from "../components"
 import { connect } from "react-redux";
-import { getMessages, setActiveRoom, addMessage, removeActiveRoom } from "../../actions/chat"
-import { getRooms } from '../../actions/chat';
+import {getMessages, setActiveRoom, addMessage, removeActiveRoom, getRooms} from "../../actions"
 import WebSocketService from "../../accounts/WebSocket"
 import AuthenticationService from '../../accounts/AuthenticationService';
 import { Helmet } from "react-helmet"

@@ -5,7 +5,7 @@ import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {renderTextField} from '../components'
 import {axiosClient} from "../../accounts/axiosClient"
-import {addGlobalMessage} from "../../actions/globalMessages"
+import {addGlobalMessage} from "../../actions"
 
 class EmailChange extends Component {
     constructor(props){
