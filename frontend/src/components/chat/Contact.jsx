@@ -70,7 +70,7 @@ class Contact extends Component {
                         }
                     </div>
                     <div className={styles.contactTime}>
-                        {moment(room.last_updated).calendar()}
+                        {moment(room.last_updated).fromNow()}
                     </div>
                     {this.state.notifs > 0 && 
                         <div>

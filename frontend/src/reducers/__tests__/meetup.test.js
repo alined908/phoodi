@@ -91,14 +91,38 @@ describe('Meetup Reducer', () => {
         expect(newState).toEqual(expectedState)
     })
 
-    it('should handle GET_MEETUP_EVENTS', () => {
+    it('should handle GET_MEETUP_EVENTS_REQUEST', () => {
         const action = {
-            type: types.GET_MEETUP_EVENTS,
+            type: types.GET_MEETUP_EVENTS_REQUEST,
+            payload: {meetup: meetup.uri.uri}
+        }
+        const state = {...defaultState, meetups}
+        const newState = meetupReducer(state, action)
+        const newEvent = {...meetup, [meetup.uri.uri]: {...meetup.uri, isMeetupEventsFetching: true, isMeetupEventsInitialized: false}}
+        const expectedState = {...defaultState, meetups: {...newEvent}}
+        expect(newState).toEqual(expectedState)
+    })
+
+    it('should handle GET_MEETUP_EVENTS_SUCCESS', () => {
+        const action = {
+            type: types.GET_MEETUP_EVENTS_SUCCESS,
             payload: {meetup: meetup.uri.uri, events}
         }
         const state = {...defaultState, meetups}
         const newState = meetupReducer(state, action)
-        const newEvent = {...meetup, [meetup.uri.uri]: {...meetup.uri, events: {...events}}}
+        const newEvent = {...meetup, [meetup.uri.uri]: {...meetup.uri, events: {...events}, isMeetupEventsFetching: false, isMeetupEventsInitialized: true}}
+        const expectedState = {...defaultState, meetups: {...newEvent}}
+        expect(newState).toEqual(expectedState)
+    })
+
+    it('should handle GET_MEETUP_EVENTS_ERROR', () => {
+        const action = {
+            type: types.GET_MEETUP_EVENTS_ERROR,
+            payload: {meetup: meetup.uri.uri, message: error.message}
+        }
+        const state = {...defaultState, meetups}
+        const newState = meetupReducer(state, action)
+        const newEvent = {...meetup, [meetup.uri.uri]: {...meetup.uri, isMeetupEventsFetching: false, isMeetupEventsInitialized: false, errorMessage: error.message}}
         const expectedState = {...defaultState, meetups: {...newEvent}}
         expect(newState).toEqual(expectedState)
     })

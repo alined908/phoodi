@@ -208,7 +208,7 @@ class Meetups extends Component {
                     <title>Meetups</title>
                 </Helmet>
                 <div className={styles.meetupsCategories}>
-                    <Paper className={styles.meetupsCategoriesInner} elevation={2}>
+                    <Paper className={styles.meetupsCategoriesInner} elevation={2} square>
                         <div className={styles.meetupsCategoriesTop}>
                             <div>Preferences</div>
                             <div>
@@ -245,7 +245,7 @@ class Meetups extends Component {
                     </Paper>
                 </div>
                 <div className={styles.meetupsInnerWrap}>
-                    <Paper className={styles.meetupsInnerHeader} elevation={2}>
+                    <Paper className={styles.meetupsInnerHeader} elevation={2} square>
                         <div>
                             Meetups
                             <Tooltip title="Public Meetups">
@@ -288,7 +288,11 @@ class Meetups extends Component {
                     </Paper>
                     
                     <div className={styles.meetupsContainer} style={{minHeight: this.props.isMeetupsFetching ? "calc(100% - 60px)" : "0"}}>
-                        {this.props.isMeetupsFetching && <div className="loading" style={{height: "auto"}}><CircularProgress/></div>}
+                        {this.props.isMeetupsFetching && 
+                            <div className="loading" style={{height: "auto"}}>
+                                <CircularProgress/>
+                            </div>
+                        }
                         {(!this.props.isMeetupsFetching && this.props.isMeetupsInitialized) && 
                             <Grid container spacing={1}>
                                 {meetups.map((meetup, i) => 
