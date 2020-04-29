@@ -333,7 +333,7 @@ class Meetup extends Component {
         const renderEvents = (events) => {
             return (
                 <>
-                    {!this.props.isMeetupEventsInitialized && 
+                    {this.props.isMeetupEventsFetching && 
                         <div className="loading">
                             <CircularProgress/>
                         </div>
@@ -439,7 +439,8 @@ function mapStateToProps(state, ownProps){
        user: state.user.user,
        friends: state.user.friends,
        isFriendsInitialized: state.user.isFriendsInitialized,
-       isMeetupEventsInitialized: state.meetup.meetups[ownProps.meetup.uri].isMeetupEventsInitialized
+       isMeetupEventsInitialized: state.meetup.meetups[ownProps.meetup.uri].isMeetupEventsInitialized,
+       isMeetupEventsFetching: state.meetup.meetups[ownProps.meetup.uri].isMeetupEventsFetching
     }
 }
 

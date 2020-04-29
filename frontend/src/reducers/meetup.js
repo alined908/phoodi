@@ -69,7 +69,19 @@ export default function meetupReducer(state = defaultState, action){
                     }
                 }
             }
-        case types.GET_MEETUP_EVENTS:
+        case types.GET_MEETUP_EVENTS_REQUEST:
+            return {
+                ...state,
+                meetups: {
+                    ...state.meetups,
+                    [action.payload.meetup]: {
+                        ...state.meetups[action.payload.meetup],
+                        isMeetupEventsFetching: true,
+                        isMeetupEventsInitialized: false
+                    }
+                }
+            }
+        case types.GET_MEETUP_EVENTS_SUCCESS:
             return {
                 ...state, 
                 meetups: {
@@ -77,7 +89,21 @@ export default function meetupReducer(state = defaultState, action){
                     [action.payload.meetup]: {
                         ...state.meetups[action.payload.meetup], 
                         events: action.payload.events, 
+                        isMeetupEventsFetching: false,
                         isMeetupEventsInitialized: true
+                    }
+                }
+            }
+        case types.GET_MEETUP_EVENTS_ERROR:
+            return {
+                ...state, 
+                meetups : {
+                    ...state.meetups,
+                    [action.payload.meetup] : {
+                        ...state.meetups[action.payload.meetup],
+                        isMeetupEventsFetching: false,
+                        isMeetupEventsInitialized: false,
+                        errorMessage: action.payload.message
                     }
                 }
             }

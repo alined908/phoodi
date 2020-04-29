@@ -28,7 +28,7 @@ export const REMOVE_ACTIVE_ROOM = 'remove_active_room';
 //Meetups
 export const GET_MEETUPS_REQUEST = 'get_meetups_request';
 export const GET_MEETUPS_SUCCESS = 'get_meetups_success';
-export const GET_MEETUPS_ERROR = 'get_meetups_error'
+export const GET_MEETUPS_ERROR = 'get_meetups_error';
 export const ADD_MEETUP = 'add_meetup';
 export const DELETE_MEETUP = 'delete_meetup';
 export const EDIT_MEETUP = 'edit_meetup';
@@ -37,7 +37,9 @@ export const ADD_MEETUP_MEMBER = 'add_meetup_member';
 export const DELETE_MEETUP_MEMBER = 'delete_meetup_member';
 
 //MeetupEvents
-export const GET_MEETUP_EVENTS = 'get_meetup_events';
+export const GET_MEETUP_EVENTS_REQUEST = 'get_meetup_events_request';
+export const GET_MEETUP_EVENTS_SUCCESS = 'get_meetup_events_success';
+export const GET_MEETUP_EVENTS_ERROR = 'get_meetup_events_error'
 export const DELETE_MEETUP_EVENT = 'delete_meetup_event';
 export const ADD_MEETUP_EVENT = 'add_meetup_event';
 export const EDIT_MEETUP_EVENT = 'edit_meetup_event';

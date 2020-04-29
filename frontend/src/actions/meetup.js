@@ -109,13 +109,15 @@ export const deleteMeetup = (uri) => async dispatch => {
 
 export const getMeetupEvents = (uri) => async dispatch => {
     try {
+        dispatch({type: types.GET_MEETUP_EVENTS_REQUEST, payload: {meetup: uri}})
         const response = await axiosClient.get(
             `/api/meetups/${uri}/events/`, {headers: {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         console.log(response)
-        dispatch({type: types.GET_MEETUP_EVENTS, payload: {meetup: uri, events: response.data}})
+        dispatch({type: types.GET_MEETUP_EVENTS_SUCCESS, payload: {meetup: uri, events: response.data}});
     } catch(e) {
+        dispatch({type: types.GET_MEETUP_EVENTS_ERROR, payload: {meetup: uri, message: e.message}})
         console.log(e)
     }
 }
