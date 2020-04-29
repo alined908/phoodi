@@ -48,16 +48,22 @@ export const ADD_EVENT_OPTION = 'add_event_option';
 export const DELETE_EVENT_OPTION = 'delete_event_option';
 
 //Friends
-export const GET_FRIENDS = 'get_friends';
+export const GET_FRIENDS_REQUEST = 'get_friends_request';
+export const GET_FRIENDS_SUCCESS = 'get_friends_success';
+export const GET_FRIENDS_ERROR = 'get_friends_error';
 export const ADD_FRIEND = 'add_friend';
 export const DELETE_FRIEND = 'delete_friend';
 
 //Meetup Invites
-export const GET_MEETUP_INVITES = 'get_meetup_invites';
+export const GET_MEETUP_INVITES_REQUEST = 'get_meetup_invites_request';
+export const GET_MEETUP_INVITES_SUCCESS= 'get_meetup_invites_success';
+export const GET_MEETUP_INVITES_ERROR= 'get_meetup_invites_error';
 export const RESPOND_MEETUP_INVITE = 'respond_meetup_invite';
 
 //Friend Invites
-export const GET_FRIEND_INVITES = 'get_friend_invites';
+export const GET_FRIEND_INVITES_REQUEST = 'get_friend_invites_request';
+export const GET_FRIEND_INVITES_SUCCESS= 'get_friend_invites_success';
+export const GET_FRIEND_INVITES_ERROR= 'get_friend_invites_error';
 export const RESPOND_FRIEND_INVITE = 'respond_friend_invite';
 
 //Notifications

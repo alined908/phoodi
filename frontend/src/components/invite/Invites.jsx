@@ -100,8 +100,8 @@ Invites.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        isFriendInvitesInitialized: state.user.isFriendInvitesInitialized,
-        isMeetupInvitesInitialized: state.user.isMeetupInvitesInitialized,
+        isFriendInvitesInitialized: state.user.invites.isFriendInvitesInitialized,
+        isMeetupInvitesInitialized: state.user.invites.isMeetupInvitesInitialized,
         meetupInvites: state.user.invites.meetups,
         friendInvites: state.user.invites.friends
     }

@@ -18,16 +18,28 @@ export default function(state = userDefaultState, action){
             return {...state, user: {...action.payload}}
         case types.ADD_SETTINGS:
             return {...state, user: {...state.user, settings: {...action.payload}}}
-        case types.GET_FRIENDS:
-            return {...state, isFriendsInitialized: true, friends: action.payload}
+        case types.GET_FRIENDS_REQUEST:
+            return {...state, isFriendsFetching: true}
+        case types.GET_FRIENDS_SUCCESS:
+            return {...state, isFriendsFetching: false, isFriendsInitialized: true, friends: action.payload}
+        case types.GET_FRIENDS_ERROR:
+            return {...state, isFriendsFetching: false, isFriendsInitialized: false, errorMessage: action.payload}
         case types.ADD_FRIEND:
             return {...state, friends: [...state.friends, action.payload]}
         case types.DELETE_FRIEND:
             return {...state, friends: [...action.payload]}
-        case types.GET_FRIEND_INVITES:
-            return {...state, invites: {...state.invites, friends: action.payload}, isFriendInvitesInitialized: true}
-        case types.GET_MEETUP_INVITES:
-            return {...state, invites: {...state.invites, meetups: action.payload}, isMeetupInvitesInitialized: true}
+        case types.GET_FRIEND_INVITES_REQUEST:
+            return {...state, invites: {...state.invites, isFriendInvitesFetching: true}}
+        case types.GET_FRIEND_INVITES_SUCCESS:
+            return {...state, invites: {...state.invites, friends: action.payload, isFriendInvitesFetching: false, isFriendInvitesInitialized: true}}
+        case types.GET_FRIEND_INVITES_ERROR:
+            return {...state, invites: {...state.invites, isFriendInvitesFetching: false, isFriendInvitesInitialized: false, errorMessage: action.payload}}
+        case types.GET_FRIEND_INVITES_REQUEST:
+            return {...state, invites: {...state.invites, isMeetupInvitesFetching: true}}
+        case types.GET_MEETUP_INVITES_SUCCESS:
+            return {...state, invites: {...state.invites, meetups: action.payload, isMeetupInvitesFetching: false, isMeetupInvitesInitialized: true}}
+        case types.GET_FRIEND_INVITES_ERROR:
+            return {...state, invites: {...state.invites, isMeetupInvitesFetching: false, isMeetupInvitesInitialized: false, errorMessage: action.payload}}
         case types.GET_PREFERENCES:
             return {...state, preferences: action.payload}
         case types.ADD_PREFERENCE:

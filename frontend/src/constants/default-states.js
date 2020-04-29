@@ -3,10 +3,13 @@ export const userDefaultState = {
     signUpErrorMessage: '',
     friends: [],
     isFriendsInitialized: false,
-    invites: {meetups: [], friends: []},
-    preferences: [],
-    isMeetupInvitesInitialized: false,
-    isFriendInvitesInitialized: false,
+    invites: {
+        meetups: [], 
+        friends: [], 
+        isMeetupInvitesInitialized: false, 
+        isFriendInvitesInitialized: false
+    },
+    preferences: []
 }
 
 export const inviteType = {

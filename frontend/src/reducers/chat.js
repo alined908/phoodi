@@ -21,19 +21,19 @@ export default function chatReducer(state = defaultState, action){
         case types.GET_ROOMS_SUCCESS:
             return {...state, rooms: action.payload, isRoomsInitialized: true, isRoomsFetching: false}
         case types.GET_ROOMS_ERROR:
-            return {...state, isRoomsFetching: false, errorMessage: action.payload.message}
+            return {...state, isRoomsFetching: false, isRoomsInitialized: false, errorMessage: action.payload}
         case types.GET_MESSAGES_REQUEST:
             return {...state, isMessagesFetching: true}
         case types.GET_MESSAGES_SUCCESS:
             return {...state, messages: action.payload.messages, isMoreRetrievable: action.payload.more, isMessagesInitialized: true, isMessagesFetching: false}
         case types.GET_MESSAGES_ERROR:
-            return {...state, isMessagesFetching: false, errorMessage: action.payload.message}
+            return {...state, isMessagesFetching: false, errorMessage: action.payload}
         case types.GET_MORE_MESSAGES_REQUEST:
             return {...state, isMoreMessagesFetching: true}
         case types.GET_MORE_MESSAGES_SUCCESS:
             return {...state, messages: [...action.payload.messages, ...state.messages], isMoreRetrievable: action.payload.more, isMoreMessagesFetching: false}
         case types.GET_MORE_MESSAGES_ERROR:
-            return {...state, errorMessage: action.payload.message, isMoreMessagesFetching: false}
+            return {...state, errorMessage: action.payload, isMoreMessagesFetching: false}
         case types.ADD_ROOM:
             return {...state, rooms: {...state.rooms, ...action.payload}}
         case types.UPDATE_ROOM:

@@ -3,12 +3,12 @@ import * as types from '../../constants/action-types'
 import * as actions from "../../actions"
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import axios from 'axios';
+import {axiosClient} from '../../accounts/axiosClient'
 import * as mocks from '../../mocks'
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares); 
-const mock = new MockAdapter(axios); 
+const mock = new MockAdapter(axiosClient); 
 const store = mockStore({});
 
 describe('Chat actions', () => {
@@ -17,72 +17,96 @@ describe('Chat actions', () => {
         store.clearActions();
     })
 
-    it ('should handle getRooms()', () => {
+    it ('should handle getRooms() success', async () => {
         const expectedActions = [
             {type: types.GET_ROOMS_REQUEST},
             {type: types.GET_ROOMS_SUCCESS, payload: {...mocks.room}}
         ]
 
-        mock.onGet('/api/chats/').reply(200, {
-            data: [
-                {...mocks.room}
-            ]
-        })
+        mock.onGet('/api/chats/').reply(200, {...mocks.room})
 
-        store.dispatch(actions.getRooms()).then(() => {
-            expect(store.getActions()).toEqual(expectedActions)
-        })
+        await store.dispatch(actions.getRooms())
+        expect(store.getActions()).toEqual(expectedActions)
     })
 
-    it ('should handle getRoom', () => {
+    it ('should handle getRooms() error', async () => {
+        const expectedActions = [
+            {type: types.GET_ROOMS_REQUEST},
+            {type: types.GET_ROOMS_ERROR, payload: "Unable to get chat rooms."}
+        ]
+
+        mock.onGet('/api/chats/').reply(404)
+        await store.dispatch(actions.getRooms())
+        expect(store.getActions()).toEqual(expectedActions)
+    })
+
+    it ('should handle getRoom', async () => {
         const expectedActions = [
             {type: types.GET_ROOMS_REQUEST},
             {type: types.GET_ROOMS_SUCCESS, payload: {...mocks.room}}
         ]
 
-        mock.onGet(`/api/chats/uri/`).reply(200, {
-            data: [
-                {...mocks.room}
-            ]
-        })
+        mock.onGet(`/api/chats/uri/`).reply(200, {...mocks.room})
 
-        store.dispatch(actions.getRoom()).then(() => {
-            expect(store.getActions()).toEqual(expectedActions)
-        })
+        await store.dispatch(actions.getRoom("uri"))
+        expect(store.getActions()).toEqual(expectedActions)
     })
 
-    it ('should handle getMessages()', () => {
+    it ('should handle getRoom() error', async () => {
+        const expectedActions = [
+            {type: types.GET_ROOMS_REQUEST},
+            {type: types.GET_ROOMS_ERROR, payload: "Unable to get chat room."}
+        ]
+
+        mock.onGet('/api/chats/uri/').reply(404)
+        await store.dispatch(actions.getRoom("uri"))
+        expect(store.getActions()).toEqual(expectedActions)
+    })
+
+    it ('should handle getMessages()', async () => {
         const expectedActions = [
             {type: types.GET_MESSAGES_REQUEST},
             {type: types.GET_MESSAGES_SUCCESS, payload: [...mocks.messages]}
         ]
 
-        mock.onGet(`/api/chats/uri/messages/`).reply(200, {
-            data: [
-                [...mocks.messages]
-            ]
-        })
+        mock.onGet(`/api/chats/uri/messages/`).reply(200, [...mocks.messages])
 
-        store.dispatch(actions.getMessages()).then(() => {
-            expect(store.getActions()).toEqual(expectedActions)
-        })
+        await store.dispatch(actions.getMessages("uri"))
+        expect(store.getActions()).toEqual(expectedActions)
     })
 
-    it ('should handle getMoreMessages()', () => {
+    it ('should handle getMessages() error', async () => {
+        const expectedActions = [
+            {type: types.GET_MESSAGES_REQUEST},
+            {type: types.GET_MESSAGES_ERROR, payload: "Unable to get messages."}
+        ]
+
+        mock.onGet('/api/chats/uri/messages/').reply(404)
+        await store.dispatch(actions.getMessages("uri"))
+        expect(store.getActions()).toEqual(expectedActions)
+    })
+
+    it ('should handle getMoreMessages()', async () => {
         const expectedActions = [
             {type: types.GET_MORE_MESSAGES_REQUEST},
             {type: types.GET_MORE_MESSAGES_SUCCESS, payload: [...mocks.messages]}
         ]
 
-        mock.onGet(`/api/chats/uri/messages/`, {params: {last: 50}}).reply(200, {
-            data: [
-                [...mocks.messages]
-            ]
-        })
+        mock.onGet(`/api/chats/uri/messages/`).reply(200, [...mocks.messages])
 
-        store.dispatch(actions.getMoreMessages()).then(() => {
-            expect(store.getActions()).toEqual(expectedActions)
-        })
+        await store.dispatch(actions.getMoreMessages("uri", 1))
+        expect(store.getActions()).toEqual(expectedActions)
+    })
+
+    it ('should handle getMoreMessages() error', async () => {
+        const expectedActions = [
+            {type: types.GET_MORE_MESSAGES_REQUEST},
+            {type: types.GET_MORE_MESSAGES_ERROR, payload: "Unable to get more messages."}
+        ]
+
+        mock.onGet('/api/chats/uri/messages/').reply(404)
+        await store.dispatch(actions.getMoreMessages("uri", 50))
+        expect(store.getActions()).toEqual(expectedActions)
     })
 
     it('should handle setActiveRoom()', () => {

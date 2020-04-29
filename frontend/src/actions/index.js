@@ -1,4 +1,3 @@
-export * from './category'
 export * from './chat'
 export * from './friend'
 export * from './globalMessages'

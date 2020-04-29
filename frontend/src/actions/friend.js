@@ -1,22 +1,18 @@
-import {GET_FRIENDS, DELETE_FRIEND, ADD_GLOBAL_MESSAGE} from '../constants/action-types'
+import * as types from '../constants/action-types'
 import {axiosClient} from '../accounts/axiosClient'
 
 export const getFriends = (id, category = null) => async dispatch => {
+    dispatch({type: types.GET_FRIENDS_REQUEST})
     try {
         const response = await axiosClient.get(
-            `/api/users/${id}/friends/`, {
-                params: {
-                    ...category && {category}
-                },
-                headers: {
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                }
-            }
+            `/api/users/${id}/friends/`, {params: {...category && {category}},
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }}
         )
-        // console.log(response)
-        dispatch({type: GET_FRIENDS, payload: response.data})
+        dispatch({type: types.GET_FRIENDS_SUCCESS, payload: response.data})
     } catch(e){
-        console.log(e);
+        dispatch({type: types.GET_FRIENDS_ERROR, payload: "Unable to get friends."})
     }
 }
 
@@ -27,12 +23,11 @@ export const deleteFriend = (user_id, friend_id) => async dispatch => {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
-        console.log(response)
         Promise.all([
-            dispatch({type: DELETE_FRIEND, payload: response.data}), 
-            dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "success", message: "Removed Friend"}})
+            dispatch({type: types.DELETE_FRIEND, payload: response.data}), 
+            dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "success", message: "Removed Friend"}})
         ])
     } catch(e){
-        dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "error", message: e.message}})
+        dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Unable to delete friend."}})
     }
 }
