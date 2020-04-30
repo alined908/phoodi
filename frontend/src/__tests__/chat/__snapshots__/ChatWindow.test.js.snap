@@ -46,7 +46,7 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
       <div
         className="messagesDate"
       >
-        April 28, 2020
+        April 30, 2020
       </div>
       <ChatMessage
         key="1"
@@ -54,7 +54,7 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
           Object {
             "1": Object {
               "avatar": null,
-              "email": "example@gmail.com",
+              "email": "daniel@gmail.com",
               "first_name": "Daniel",
               "id": 1,
               "last_name": "Lee",
@@ -76,18 +76,18 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
             "room_id": 1,
             "sender": Object {
               "avatar": null,
-              "email": "example@gmail.com",
+              "email": "daniel@gmail.com",
               "first_name": "Daniel",
               "id": 1,
               "last_name": "Lee",
             },
-            "timestamp": "2020-04-28T07:06:33-07:00",
+            "timestamp": "2020-04-30T05:10:15-07:00",
           }
         }
         user={
           Object {
             "avatar": null,
-            "email": "example@gmail.com",
+            "email": "daniel@gmail.com",
             "first_name": "Daniel",
             "id": 1,
             "last_name": "Lee",
@@ -100,7 +100,7 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
           Object {
             "1": Object {
               "avatar": null,
-              "email": "example@gmail.com",
+              "email": "daniel@gmail.com",
               "first_name": "Daniel",
               "id": 1,
               "last_name": "Lee",
@@ -122,18 +122,18 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
             "room_id": 1,
             "sender": Object {
               "avatar": null,
-              "email": "example@gmail.com",
+              "email": "daniel@gmail.com",
               "first_name": "Daniel",
               "id": 1,
               "last_name": "Lee",
             },
-            "timestamp": "2020-04-28T07:06:33-07:00",
+            "timestamp": "2020-04-30T05:10:15-07:00",
           }
         }
         user={
           Object {
             "avatar": null,
-            "email": "example@gmail.com",
+            "email": "daniel@gmail.com",
             "first_name": "Daniel",
             "id": 1,
             "last_name": "Lee",
@@ -155,7 +155,7 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
           "members": Object {
             "1": Object {
               "avatar": null,
-              "email": "example@gmail.com",
+              "email": "daniel@gmail.com",
               "first_name": "Daniel",
               "id": 1,
               "last_name": "Lee",
@@ -168,9 +168,9 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
               "last_name": "Jim",
             },
           },
-          "name": "Room",
+          "name": "Friend",
           "notifs": 0,
-          "timestamp": "2020-04-28T07:06:33-07:00",
+          "timestamp": "2020-04-30T05:10:15-07:00",
           "uri": "abc",
         }
       }
@@ -178,7 +178,7 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
       user={
         Object {
           "avatar": null,
-          "email": "example@gmail.com",
+          "email": "daniel@gmail.com",
           "first_name": "Daniel",
           "id": 1,
           "last_name": "Lee",

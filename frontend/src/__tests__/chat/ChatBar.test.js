@@ -1,6 +1,5 @@
 import React from 'react'
 import {shallow} from 'enzyme';
-import {ChatBar} from "../../components/components" 
 import {UnderlyingChatBar} from "../../components/chat/ChatBar"
 import {user, user2, rooms} from "../../mocks/index"
 
@@ -14,6 +13,16 @@ describe("ChatBar unit", () => {
         expect(wrapper).toMatchSnapshot()
     })
 
+    it ('render loader if fetching', () => {
+        const props = {
+            rooms: Object.values(rooms),
+            isRoomsInitialized: false,
+            isRoomsFetching: true
+        }
+        const wrapper = shallow(<UnderlyingChatBar {...props}/>)
+        expect(wrapper.find(".loading")).toHaveLength(1)
+    })
+
     it ('correctly displays message when there are no chat rooms', () => {
         const props = {
             rooms: [],
@@ -21,7 +30,7 @@ describe("ChatBar unit", () => {
             isRoomsInitialized: true
         }
         const wrapper = shallow(<UnderlyingChatBar {...props}/>)
-        expect(wrapper.find(".chat-bar-none")).toHaveLength(1)
+        expect(wrapper.find(".no-entity")).toHaveLength(1)
     })
 
     it ('correctly filters out rooms onclick', () => {
@@ -57,7 +66,7 @@ describe("ChatBar unit", () => {
             isRoomsInitialized: true
         }
         const wrapper = shallow(<UnderlyingChatBar {...props}/>)
-        const chatInput = wrapper.find(".chat-input")
+        const chatInput = wrapper.find(".input")
         wrapper.setProps({rooms: Object.values(rooms)})
         chatInput.simulate("change", {target: {value: "me"}})
         expect(wrapper.state('searchInput')).toEqual("me")
@@ -73,12 +82,13 @@ describe("ChatBar unit", () => {
         const props = {
             rooms: [],
             user: user,
-            isRoomsInitialized: true
+            isRoomsInitialized: true,
+            currentRoom: null
         }
         const wrapper = shallow(<UnderlyingChatBar {...props}/>)
         const friendButton = wrapper.find("WithStyles(ForwardRef(IconButton))").first()
         const meetupButton = wrapper.find("WithStyles(ForwardRef(IconButton))").at(1)
-        const chatInput = wrapper.find(".chat-input")
+        const chatInput = wrapper.find(".input")
         wrapper.setProps({rooms: Object.values(rooms)})
         chatInput.simulate("change", {target: {value: "me"}})
         expect(wrapper.find("Connect(Contact)")).toHaveLength(1)

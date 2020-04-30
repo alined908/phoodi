@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatInput should render given props 1`] = `
+<Fragment>
+  <form
+    className="inputForm"
+  >
+    <input
+      className="input"
+      onChange={[Function]}
+      onKeyPress={[Function]}
+      placeholder="Type a message.."
+      type="text"
+      value=""
+    />
+  </form>
+  <div
+    className="emojiIcon"
+    onClick={[Function]}
+  >
+    😊
+  </div>
+  <div>
+    <WithStyles(ForwardRef(Button))
+      className="sendButton"
+      disabled={true}
+      onClick={[Function]}
+    >
+      Send
+    </WithStyles(ForwardRef(Button))>
+  </div>
+</Fragment>
+`;

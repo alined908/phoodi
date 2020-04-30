@@ -74,13 +74,13 @@ describe('User Reducer', () => {
         expect(newState).toEqual(expectedState)
     })
 
-    it('should handle GET_FRIENDS', () => {
+    it('should handle GET_FRIENDS_SUCCESS', () => {
         const action = {
-            type: types.GET_FRIENDS,
+            type: types.GET_FRIENDS_SUCCESS,
             payload: friends
         }
         const newState = userReducer(userDefaultState, action)
-        const expectedState = {...userDefaultState, friends, isFriendsInitialized: true}
+        const expectedState = {...userDefaultState, friends, isFriendsInitialized: true, isFriendsFetching: false}
         expect(newState).toEqual(expectedState)
     })
 
@@ -105,23 +105,40 @@ describe('User Reducer', () => {
         expect(newState).toEqual(expectedState)
     })
 
-    it('should handle GET_FRIEND_INVITES', () => {
+    it('should handle GET_FRIEND_INVITES_SUCCESS', () => {
         const action = {
             type: types.GET_FRIEND_INVITES_SUCCESS,
             payload: [friendInvite]
         }
         const newState = userReducer(userDefaultState, action)
-        const expectedState = {...userDefaultState, invites: {...userDefaultState.invites, friends: [friendInvite]}, isFriendInvitesInitialized: true}
+        const expectedState = {
+            ...userDefaultState, 
+            invites: {
+                ...userDefaultState.invites, 
+                friends: [friendInvite],
+                isFriendInvitesInitialized: true,
+                isFriendInvitesFetching: false,
+            }
+        }
         expect(newState).toEqual(expectedState)
     })
 
-    it('should handle GET_MEETUP_INVITES', () => {
+    it('should handle GET_MEETUP_INVITES_SUCCESS', () => {
         const action = {
             type: types.GET_MEETUP_INVITES_SUCCESS,
             payload: [friendInvite]
         }
         const newState = userReducer(userDefaultState, action)
-        const expectedState = {...userDefaultState, invites: {...userDefaultState.invites, meetups: [friendInvite]}, isMeetupInvitesInitialized: true}
+        const expectedState = {
+            ...userDefaultState, 
+            
+            invites: {
+                ...userDefaultState.invites, 
+                meetups: [friendInvite],
+                isMeetupInvitesInitialized: true,
+                isMeetupInvitesFetching: false,
+            }
+        }
         expect(newState).toEqual(expectedState)
     })
 

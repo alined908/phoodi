@@ -29,7 +29,7 @@ describe('Chat Reducer' , () => {
     it('should handle GET_ROOMS_ERROR', () => {
         const action = {
             type: types.GET_ROOMS_ERROR,
-            payload: error
+            payload: error.message
         }
         const newState = chatReducer(defaultState, action)
         const expectedState = {...defaultState, isRoomsFetching: false, errorMessage: error.message}
@@ -56,7 +56,7 @@ describe('Chat Reducer' , () => {
     it('should handle GET_MESSAGES_ERROR', () => {
         const action = {
             type: types.GET_MESSAGES_ERROR,
-            payload: error
+            payload: error.message
         }
         const newState = chatReducer(defaultState, action)
         const expectedState = {...defaultState, isMessagesFetching: false, errorMessage: error.message}
@@ -84,7 +84,7 @@ describe('Chat Reducer' , () => {
     it('should handle GET_MORE_MESSAGES_ERROR', () => {
         const action = {
             type: types.GET_MORE_MESSAGES_ERROR,
-            payload: error
+            payload: error.message
         }
         const newState = chatReducer(defaultState, action)
         const expectedState = {...defaultState, isMoreMessagesFetching: false, errorMessage: error.message}

@@ -60,7 +60,9 @@ class LoginPage extends Component {
                             </Grid> 
                             {this.props.errorMessage && 
                                 <Grid item xs={12}>
-                                    <div className={styles.error}>{this.props.errorMessage}</div>
+                                    <div className={styles.error}>
+                                        {this.props.errorMessage}
+                                    </div>
                                 </Grid>
                             }
                         </Grid>

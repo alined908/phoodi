@@ -11,7 +11,7 @@ exports[`Contact unit renders without crashing given props 1`] = `
   >
     <div>
       <div>
-        Room
+        Friend
       </div>
       <div
         className="contactInfo"
@@ -46,7 +46,7 @@ exports[`Contact unit renders without crashing given props 1`] = `
     <div
       className="contactTime"
     >
-      Today at 7:06 AM
+      a few seconds ago
     </div>
   </div>
 </Link>

@@ -68,5 +68,6 @@ describe("Contact unit", () => {
         expect(wrapper.state('notifs')).toEqual(3)
         wrapper.find('Link').simulate('click')
         expect(wrapper.state('notifs')).toEqual(0)
+        expect(props.removeNotifs.mock.calls.length).toBe(1);
     })
 })

@@ -96,11 +96,5 @@ const mapDispatchToProps = {
     removeNotifs
 }
 
-function mapStateToProps(state){
-    return {
-        currentRoom: state.chat.activeRoom
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Contact)
+export default connect(null, mapDispatchToProps)(Contact)
 export {Contact as UnderlyingContact}

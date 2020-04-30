@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Chat unit  renders without crashing given props 1`] = `
+<div
+  className="chatchat-mobile"
+>
+  <HelmetWrapper
+    defer={true}
+    encodeSpecialCharacters={true}
+  >
+    <meta
+      charSet="utf-8"
+    />
+    <title>
+      Chat
+    </title>
+    <meta
+      content="Phoodie Chat"
+      name="description"
+    />
+  </HelmetWrapper>
+  <Connect(ChatBar)
+    rooms={Array []}
+  />
+  <Connect(ChatWindow)
+    activeRoom={null}
+    messages={Array []}
+    socket={
+      WebSocketService {
+        "callbacks": Object {
+          "fetch_messages": [MockFunction],
+          "new_message": [MockFunction],
+        },
+        "connect": [Function],
+        "disconnect": [Function],
+        "socketRef": null,
+        "waitForSocketConnection": [Function],
+      }
+    }
+  />
+</div>
+`;

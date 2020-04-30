@@ -101,7 +101,7 @@ export const rooms = {
     friend: {
         id: 1, 
         uri: "abc", 
-        name: "Room", 
+        name: "Friend", 
         timestamp: moment().format(), 
         members: members, 
         friendship: 1, 
@@ -111,7 +111,7 @@ export const rooms = {
     meetup: {
         id: 2, 
         uri: "xyz", 
-        name: "Room", 
+        name: "Meetup", 
         timestamp: moment().format(), 
         members: members, 
         friendship: null, 

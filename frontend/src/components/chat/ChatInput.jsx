@@ -46,16 +46,14 @@ class ChatInput extends Component {
 
     // Send message to chat room websocket and reset chat input value. 
     sendMessage = () => {
-        if (this.state.textValue.length > 0 ) {
-            const messageObject = {
-                from: this.props.user.id, 
-                text: this.state.textValue, 
-                room: this.props.room.uri
-            };
-            this.setState({textValue: ""}, 
-                () => this.props.socket.newChatMessage(messageObject)
-            );
-        } 
+        const messageObject = {
+            from: this.props.user.id, 
+            text: this.state.textValue, 
+            room: this.props.room.uri
+        };
+        this.setState({textValue: ""}, 
+            () => this.props.socket.newChatMessage(messageObject)
+        );
     }
 
     // Add emoji to text input.
@@ -116,8 +114,10 @@ class ChatInput extends Component {
                     </div>
                 } 
                 <div>
-                    <Button onClick={() => this.handleClick()} 
-                        style={{borderRadius: 15, fontSize: 10, backgroundColor: "#FFD460"}}
+                    <Button 
+                        disabled={this.state.textValue.length === 0}
+                        onClick={() => this.handleClick()} 
+                        className={styles.sendButton}
                     >
                         Send
                     </Button>

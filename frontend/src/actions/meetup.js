@@ -68,7 +68,7 @@ export const addMeetup = (formProps, redirectOnSuccess) => async dispatch => {
         dispatch({type: types.ADD_MEETUP, payload: response.data.meetup})
         redirectOnSuccess(response.data.meetup.uri)
     } catch(e){
-        console.log(e)
+        console.log("some error")
     }
 } 
 
@@ -81,7 +81,7 @@ export const editMeetup = (formProps, uri) => async dispatch => {
         }})
         dispatch({type: types.EDIT_MEETUP, payload: response.data})
     } catch(e){
-        console.log(e)
+        console.log("some error")
     }
 }
 
@@ -94,7 +94,7 @@ export const deleteMeetup = (uri) => async dispatch => {
         dispatch({type: types.DELETE_MEETUP, payload: uri})
         history.push(`/meetups`)
     } catch(e) {
-        console.log(e)
+        console.log("some error")
     }
 }
 
@@ -108,7 +108,7 @@ export const getMeetupEvents = (uri) => async dispatch => {
         dispatch({type: types.GET_MEETUP_EVENTS_SUCCESS, payload: {meetup: uri, events: response.data}});
     } catch(e) {
         dispatch({type: types.GET_MEETUP_EVENTS_ERROR, payload: {meetup: uri, message: "Unable to get events."}})
-        console.log(e)
+        console.log("some error")
     }
 }
 

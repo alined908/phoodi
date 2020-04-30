@@ -119,7 +119,11 @@ class ChatBar extends Component {
                     </div>
                 </div>
                 <div className={styles.contacts}>
-                    {!this.props.isRoomsInitialized && <div className="loading"><CircularProgress/></div>}
+                    {this.props.isRoomsFetching && 
+                        <div className="loading">
+                            <CircularProgress/>
+                        </div>
+                    }
                     {(this.props.isRoomsInitialized && rooms.length === 0) && 
                         <div className="no-entity">
                             <ErrorIcon style={{color: "rgb(255, 212, 96)"}}/>
@@ -129,7 +133,12 @@ class ChatBar extends Component {
                         </div>
                     }
                     {this.props.isRoomsInitialized && rooms.map((room) => 
-                        <Contact user={this.props.user} key={room.id} room={room}/>
+                        <Contact 
+                            key={room.id}
+                            room={room}
+                            user={this.props.user} 
+                            currentRoom={this.props.currentRoom}
+                        />
                     )}
                 </div>
                 <div className={styles.search}>
@@ -159,7 +168,8 @@ const mapStateToProps = (state) => {
     return {
         user: state.user.user,
         isRoomsInitialized: state.chat.isRoomsInitialized,
-        isRoomsFetching: state.chat.isRoomsFetching
+        isRoomsFetching: state.chat.isRoomsFetching,
+        currentRoom: state.chat.activeRoom
     }
 }
 

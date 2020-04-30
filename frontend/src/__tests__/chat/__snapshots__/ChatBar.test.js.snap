@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatBar unit renders without crashing given props 1`] = `
+<div
+  className="bar"
+>
+  <div
+    className="barTop"
+  >
+    <div>
+      Contacts
+    </div>
+    <div>
+      <WithStyles(ForwardRef(Tooltip))
+        title="Friends"
+      >
+        <WithStyles(ForwardRef(IconButton))
+          color="primary"
+          edge="end"
+          onClick={[Function]}
+        >
+          <PersonIcon />
+        </WithStyles(ForwardRef(IconButton))>
+      </WithStyles(ForwardRef(Tooltip))>
+      <WithStyles(ForwardRef(Tooltip))
+        title="Meetups"
+      >
+        <WithStyles(ForwardRef(IconButton))
+          color="primary"
+          onClick={[Function]}
+        >
+          <EventIcon />
+        </WithStyles(ForwardRef(IconButton))>
+      </WithStyles(ForwardRef(Tooltip))>
+    </div>
+  </div>
+  <div
+    className="contacts"
+  />
+  <div
+    className="search"
+  >
+    <SearchIcon />
+    <input
+      className="input"
+      onChange={[Function]}
+      placeholder="Search Contacts..."
+      type="text"
+      value=""
+    />
+  </div>
+</div>
+`;

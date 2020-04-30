@@ -69,7 +69,7 @@ class Chat extends Component {
             <div className={`${styles.chat}` + (this.state.nonMobile ? "" : "chat-mobile")}>
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>Phoodie - Chat</title>
+                    <title>Chat</title>
                     <meta name="description" content="Phoodie Chat" />
                 </Helmet>
                 <ChatBar rooms={this.props.rooms}/>
@@ -99,3 +99,4 @@ function mapStateToProps(state){
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat)
+export {Chat as UnderlyingChat}

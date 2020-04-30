@@ -22,7 +22,6 @@ class ChatWindow extends Component {
         this.messagesEndRef = React.createRef();
         this.handleScrollWrapper = this.handleScrollWrapper.bind(this)
         this.delayedCallback = throttle(this.handleScroll, 300)
-        this.bound = true
     }
 
     /*  
@@ -59,9 +58,8 @@ class ChatWindow extends Component {
         }
         
         let newBound = (scrollHeight - scrollTop === clientHeight)
-        if (newBound !== this.bound){
+        if (newBound !== this.state.bound){
             this.setState({bound: newBound})
-            this.bound = newBound
         } 
     }
 
@@ -109,7 +107,7 @@ class ChatWindow extends Component {
  
     render () {
 
-        const messagesByDate = (this.props.messages) ? this.groupMessagesByDate(this.props.messages) : {}
+        const messagesByDate = this.groupMessagesByDate(this.props.messages)
 
         return (
             <div className={styles.window} ref={this.chatsRef}>

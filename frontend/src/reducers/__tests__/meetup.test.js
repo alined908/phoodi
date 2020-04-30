@@ -29,7 +29,7 @@ describe('Meetup Reducer', () => {
     it('should handle GET_MEETUPS_ERROR', () => {
         const action = {
             type: types.GET_MEETUPS_ERROR,
-            payload: error
+            payload: error.message
         }
         const newState = meetupReducer(defaultState, action)
         const expectedState = {...defaultState, isMeetupsFetching: false, errorMessage: error.message}
