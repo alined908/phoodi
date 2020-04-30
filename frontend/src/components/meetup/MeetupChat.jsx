@@ -12,16 +12,15 @@ class MeetupChat extends Component {
         this.state = {
             chatSocket: new WebSocketService(),
         }
+        this.state.chatSocket.addChatCallbacks(this.props.getMessages, this.props.addMessage)
     }
 
     componentDidMount() {
         const uri = this.props.meetup.uri
-        this.getRoomInfo(uri)
-        const chatSocket = this.state.chatSocket
         const chatPath = `/ws/chat/${uri}/`;
         const token = AuthenticationService.retrieveToken()
-        chatSocket.addChatCallbacks(this.props.getMessages, this.props.addMessage)
-        chatSocket.connect(chatPath, token)
+        this.state.chatSocket.connect(chatPath, token)
+        this.getRoomInfo(uri)
     }
 
     getRoomInfo(uri){
@@ -47,7 +46,12 @@ class MeetupChat extends Component {
                             isMessagesInitialized={this.props.isMessagesInitialized} 
                         />
             } else {
-                return <ChatWindow meetup={true} socket={this.state.socket} activeRoom={null} messages={[]}/>
+                return <ChatWindow 
+                            meetup={true} 
+                            socket={this.state.socket} 
+                            activeRoom={null} 
+                            messages={[]}
+                        />
             }
         }
 
@@ -61,10 +65,10 @@ class MeetupChat extends Component {
 
 const mapStateToProps = state => {
     return {
+        isMessagesFetching: state.chat.isMessagesFetching,
         isMessagesInitialized: state.chat.isMessagesInitialized,
         activeRoom: state.chat.activeRoom,
-        messages: state.chat.messages,
-        isMessagesFetching: state.chat.isMessagesFetching
+        messages: state.chat.messages
     }
 }
 
@@ -77,3 +81,4 @@ const mapDispatchToProps = {
 }   
 
 export default connect(mapStateToProps, mapDispatchToProps)(MeetupChat)
+export {MeetupChat as UnderlyingMeetupChat}

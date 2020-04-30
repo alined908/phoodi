@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MeetupChat unit  renders without crashing given props 1`] = `
+<div
+  className="meetupChat"
+>
+  <Connect(ChatWindow)
+    activeRoom={null}
+    meetup={true}
+    messages={Array []}
+  />
+</div>
+`;

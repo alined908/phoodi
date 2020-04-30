@@ -1,0 +1,424 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Meetup tests general renders without crashing given props 1`] = `
+<div
+  className="meetupWrapper"
+>
+  <HelmetWrapper
+    defer={true}
+    encodeSpecialCharacters={true}
+  >
+    <meta
+      charSet="utf-8"
+    />
+    <title>
+      Meetup
+    </title>
+  </HelmetWrapper>
+  <MeetupTree
+    meetup={
+      Object {
+        "categories": Array [
+          Object {
+            "api_label": "desserts",
+            "id": 1,
+            "image": null,
+            "label": "Dessert",
+          },
+        ],
+        "creator": Object {
+          "avatar": null,
+          "email": "daniel@gmail.com",
+          "first_name": "Daniel",
+          "id": 1,
+          "last_name": "Lee",
+        },
+        "date": "2020-04-30",
+        "events": Object {},
+        "id": 1,
+        "isMeetupEventsInitialized": true,
+        "latitude": 34.228754,
+        "location": "location",
+        "longitude": -118.2351192,
+        "members": Object {
+          "1": Object {
+            "admin": true,
+            "ban": false,
+            "id": 1,
+            "user": Object {
+              "avatar": null,
+              "email": "daniel@gmail.com",
+              "first_name": "Daniel",
+              "id": 1,
+              "last_name": "Lee",
+            },
+          },
+          "2": Object {
+            "admin": false,
+            "ban": false,
+            "id": 2,
+            "user": Object {
+              "avatar": null,
+              "email": "example2@gmail.com",
+              "first_name": "Bob",
+              "id": 2,
+              "last_name": "Jim",
+            },
+          },
+        },
+        "name": "Meetup",
+        "notifs": 0,
+        "public": true,
+        "uri": "uri",
+      }
+    }
+    sortEvents={[Function]}
+  />
+  <div
+    className="meetupWrapperInner"
+    id="head"
+  >
+    <WithStyles(ForwardRef(Grid))
+      container={true}
+      spacing={3}
+    >
+      <WithStyles(ForwardRef(Grid))
+        item={true}
+        xs={12}
+      >
+        <WithStyles(ForwardRef(Paper))
+          className="header"
+          elevation={3}
+        >
+          <WithStyles(ForwardRef(Typography))
+            variant="h5"
+          >
+            Meetup
+          </WithStyles(ForwardRef(Typography))>
+          <div
+            className="headerInfo"
+          >
+            <div
+              className="headerIcons"
+            >
+              <PublicIcon />
+               Public
+            </div>
+            <div
+              className="headerIcons"
+            >
+              <TodayIcon />
+               
+              Thursday, April 30
+            </div>
+            <div
+              className="headerIcons"
+            >
+              <RoomIcon />
+               
+              location
+            </div>
+          </div>
+          <div
+            className="actions"
+          >
+            <WithStyles(ForwardRef(Tooltip))
+              title="Email"
+            >
+              <div
+                style={
+                  Object {
+                    "minHeight": 48,
+                    "width": 48,
+                  }
+                }
+              >
+                <ProgressIcon
+                  ariaLabel="email"
+                  check={true}
+                  disabled={true}
+                  handleClick={[Function]}
+                  icon={<UNDEFINED />}
+                />
+              </div>
+            </WithStyles(ForwardRef(Tooltip))>
+            <WithStyles(ForwardRef(Tooltip))
+              title="Edit"
+            >
+              <WithStyles(ForwardRef(IconButton))
+                aria-label="edit"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "color": "black",
+                  }
+                }
+              >
+                <EditIcon />
+              </WithStyles(ForwardRef(IconButton))>
+            </WithStyles(ForwardRef(Tooltip))>
+            <WithStyles(ForwardRef(Tooltip))
+              title="Delete"
+            >
+              <WithStyles(ForwardRef(IconButton))
+                aria-label="delete"
+                color="secondary"
+                onClick={[Function]}
+              >
+                <DeleteIcon />
+              </WithStyles(ForwardRef(IconButton))>
+            </WithStyles(ForwardRef(Tooltip))>
+          </div>
+        </WithStyles(ForwardRef(Paper))>
+      </WithStyles(ForwardRef(Grid))>
+      <WithStyles(ForwardRef(Grid))
+        id="Members"
+        item={true}
+        md={6}
+        xs={12}
+      >
+        <WithStyles(ForwardRef(Paper))
+          className="header"
+          elevation={3}
+        >
+          <WithStyles(ForwardRef(Typography))
+            variant="h5"
+          >
+            Members
+          </WithStyles(ForwardRef(Typography))>
+          <WithStyles(ForwardRef(Button))
+            onClick={[Function]}
+            style={
+              Object {
+                "background": "#45B649",
+                "color": "white",
+              }
+            }
+            variant="contained"
+          >
+            Join Meetup
+          </WithStyles(ForwardRef(Button))>
+        </WithStyles(ForwardRef(Paper))>
+        <WithStyles(ForwardRef(Paper))
+          className="shell"
+          elevation={3}
+        >
+          <WithStyles(ForwardRef(List))
+            className="shellList"
+          >
+            <Link
+              key="1"
+              to="/profile/1"
+            >
+              <WithStyles(ForwardRef(ListItem))>
+                <WithStyles(ForwardRef(ListItemAvatar))>
+                  <WithStyles(ForwardRef(Avatar))
+                    src={null}
+                  >
+                    D
+                    L
+                  </WithStyles(ForwardRef(Avatar))>
+                </WithStyles(ForwardRef(ListItemAvatar))>
+                <WithStyles(ForwardRef(ListItemText))
+                  primary="Daniel"
+                  secondary={
+                    <React.Fragment>
+                      <ForwardRef(WithStyles)
+                        color="inherit"
+                        component="span"
+                        variant="body2"
+                      >
+                        daniel@gmail.com 
+                      </ForwardRef(WithStyles)>
+                    </React.Fragment>
+                  }
+                />
+                <WithStyles(ForwardRef(Tooltip))
+                  title="Creator"
+                >
+                  <Component
+                    height={24}
+                    width={24}
+                  />
+                </WithStyles(ForwardRef(Tooltip))>
+                <WithStyles(ForwardRef(Tooltip))
+                  title="You"
+                >
+                  <img
+                    alt="&#9787;"
+                    src="https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png"
+                    style={
+                      Object {
+                        "height": 20,
+                        "marginLeft": 10,
+                        "width": 20,
+                      }
+                    }
+                  />
+                </WithStyles(ForwardRef(Tooltip))>
+              </WithStyles(ForwardRef(ListItem))>
+            </Link>
+            <Link
+              key="2"
+              to="/profile/2"
+            >
+              <WithStyles(ForwardRef(ListItem))>
+                <WithStyles(ForwardRef(ListItemAvatar))>
+                  <WithStyles(ForwardRef(Avatar))
+                    src={null}
+                  >
+                    B
+                    J
+                  </WithStyles(ForwardRef(Avatar))>
+                </WithStyles(ForwardRef(ListItemAvatar))>
+                <WithStyles(ForwardRef(ListItemText))
+                  primary="Bob"
+                  secondary={
+                    <React.Fragment>
+                      <ForwardRef(WithStyles)
+                        color="inherit"
+                        component="span"
+                        variant="body2"
+                      >
+                        example2@gmail.com 
+                      </ForwardRef(WithStyles)>
+                    </React.Fragment>
+                  }
+                />
+              </WithStyles(ForwardRef(ListItem))>
+            </Link>
+          </WithStyles(ForwardRef(List))>
+        </WithStyles(ForwardRef(Paper))>
+      </WithStyles(ForwardRef(Grid))>
+      <WithStyles(ForwardRef(Grid))
+        item={true}
+        md={6}
+        xs={12}
+      >
+        <WithStyles(ForwardRef(Paper))
+          className="header"
+          elevation={3}
+        >
+          <WithStyles(ForwardRef(Typography))
+            variant="h5"
+          >
+            Friends
+          </WithStyles(ForwardRef(Typography))>
+          <WithStyles(ForwardRef(Tooltip))
+            title="Refresh"
+          >
+            <WithStyles(ForwardRef(IconButton))
+              color="primary"
+              onClick={[Function]}
+            >
+              <RefreshIcon />
+            </WithStyles(ForwardRef(IconButton))>
+          </WithStyles(ForwardRef(Tooltip))>
+        </WithStyles(ForwardRef(Paper))>
+        <WithStyles(ForwardRef(Paper))
+          className="shell"
+          elevation={3}
+        >
+          <WithStyles(ForwardRef(List))
+            className="shellList"
+          >
+            <Connect(MeetupFriend)
+              friend={
+                Object {
+                  "avatar": null,
+                  "email": "example2@gmail.com",
+                  "first_name": "Bob",
+                  "id": 2,
+                  "last_name": "Jim",
+                }
+              }
+              isMember={true}
+              key="1"
+              uri="uri"
+            />
+          </WithStyles(ForwardRef(List))>
+        </WithStyles(ForwardRef(Paper))>
+      </WithStyles(ForwardRef(Grid))>
+      <WithStyles(ForwardRef(Grid))
+        item={true}
+        xs={12}
+      >
+        <WithStyles(ForwardRef(Paper))
+          className="header"
+          elevation={3}
+          id="Events"
+        >
+          <WithStyles(ForwardRef(Typography))
+            variant="h5"
+          >
+            Events
+          </WithStyles(ForwardRef(Typography))>
+        </WithStyles(ForwardRef(Paper))>
+      </WithStyles(ForwardRef(Grid))>
+      <WithStyles(ForwardRef(Grid))
+        item={true}
+        xs={12}
+      />
+    </WithStyles(ForwardRef(Grid))>
+  </div>
+  <Connect(MeetupChat)
+    hideChat={[Function]}
+    meetup={
+      Object {
+        "categories": Array [
+          Object {
+            "api_label": "desserts",
+            "id": 1,
+            "image": null,
+            "label": "Dessert",
+          },
+        ],
+        "creator": Object {
+          "avatar": null,
+          "email": "daniel@gmail.com",
+          "first_name": "Daniel",
+          "id": 1,
+          "last_name": "Lee",
+        },
+        "date": "2020-04-30",
+        "events": Object {},
+        "id": 1,
+        "isMeetupEventsInitialized": true,
+        "latitude": 34.228754,
+        "location": "location",
+        "longitude": -118.2351192,
+        "members": Object {
+          "1": Object {
+            "admin": true,
+            "ban": false,
+            "id": 1,
+            "user": Object {
+              "avatar": null,
+              "email": "daniel@gmail.com",
+              "first_name": "Daniel",
+              "id": 1,
+              "last_name": "Lee",
+            },
+          },
+          "2": Object {
+            "admin": false,
+            "ban": false,
+            "id": 2,
+            "user": Object {
+              "avatar": null,
+              "email": "example2@gmail.com",
+              "first_name": "Bob",
+              "id": 2,
+              "last_name": "Jim",
+            },
+          },
+        },
+        "name": "Meetup",
+        "notifs": 0,
+        "public": true,
+        "uri": "uri",
+      }
+    }
+  />
+</div>
+`;

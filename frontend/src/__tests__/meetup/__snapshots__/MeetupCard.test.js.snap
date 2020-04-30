@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MeetupCard renders without crashing given props 1`] = `
+<Fragment>
+  <Link
+    to="/meetups/uri"
+  >
+    <WithStyles(ForwardRef(Paper))
+      className="makeStyles-paper-1"
+      elevation={6}
+      square={true}
+    >
+      <div
+        className="cardInner"
+      >
+        <div
+          className="cardTop"
+        >
+          <div
+            className="cardIcon flexClip2"
+          >
+            <WithStyles(ForwardRef(Tooltip))
+              title="Meetup"
+            >
+              <WithStyles(ForwardRef(Typography))
+                className="flexEllipse"
+                variant="h5"
+              >
+                Meetup
+              </WithStyles(ForwardRef(Typography))>
+            </WithStyles(ForwardRef(Tooltip))>
+          </div>
+          <div
+            className="cardIcon"
+          >
+            <TodayIcon />
+            Thursday, April 30
+          </div>
+        </div>
+        <div
+          className="makeStyles-middle-2 cardEvents"
+        >
+          <div
+            className="cardEventsHeader"
+          >
+            Events
+          </div>
+          <div
+            className="cardEventsCategories"
+          >
+            <div
+              className="cardEventsCategory"
+              key="1"
+            >
+              <WithStyles(ForwardRef(Avatar))
+                src="undefineddesserts.png"
+                style={
+                  Object {
+                    "height": 28,
+                    "width": 28,
+                  }
+                }
+                variant="square"
+              />
+              Dessert
+            </div>
+          </div>
+        </div>
+        <div
+          className="cardBottom"
+        >
+          <WithStyles(ForwardRef(Tooltip))
+            title="location"
+          >
+            <div
+              className="cardIcon flexClip"
+            >
+              <RoomIcon />
+              <div
+                className="flexEllipse"
+              >
+                location
+              </div>
+            </div>
+          </WithStyles(ForwardRef(Tooltip))>
+          <div
+            className="cardIcon flexClip"
+          >
+            <Connect(GroupAvatars)
+              members={
+                Array [
+                  Object {
+                    "avatar": null,
+                    "email": "daniel@gmail.com",
+                    "first_name": "Daniel",
+                    "id": 1,
+                    "last_name": "Lee",
+                  },
+                  Object {
+                    "avatar": null,
+                    "email": "example2@gmail.com",
+                    "first_name": "Bob",
+                    "id": 2,
+                    "last_name": "Jim",
+                  },
+                ]
+              }
+            />
+            <span
+              className="flexEllipse cardMembers"
+            >
+              2 member
+              s
+            </span>
+          </div>
+        </div>
+      </div>
+    </WithStyles(ForwardRef(Paper))>
+  </Link>
+</Fragment>
+`;

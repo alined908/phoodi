@@ -70,7 +70,11 @@ const MeetupFriend = (props) => {
                     </>
                 }>
                 </ListItemText>
-                {props.isMember && <Tooltip title="Member"><CheckCircleIcon className={classes.check}/></Tooltip>}
+                {props.isMember && 
+                    <Tooltip title="Member">
+                        <CheckCircleIcon className={classes.check}/>
+                    </Tooltip>
+                }
                 {!props.isMember && 
                     <div className={classes.wrapper}>
                         <Button 

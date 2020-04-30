@@ -205,7 +205,7 @@ export default class WebSocketService {
         this.callbacks['update_room'] = reloadCallback
     }
 
-    addEventCallbacks(eventsCallback, newEventCallback, reloadEventCallback, voteEventCallback, 
+    addMeetupCallbacks(eventsCallback, newEventCallback, reloadEventCallback, voteEventCallback, 
         decideEventCallback, deleteEventCallback, addMemberCallback, deleteMemberCallback, newOptionCallback, deleteOptionCallback){
         this.callbacks['fetch_events'] = eventsCallback
         this.callbacks['new_event'] = newEventCallback

@@ -339,3 +339,4 @@ const mapDispatchToProps = {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Meetups);
+export {Meetups as UnderlyingMeetups}

@@ -174,6 +174,25 @@ export const meetup = {
     }
 }
 
+export const meetupWithoutCategories = {
+    uri: {
+        id: 1, 
+        name: "Meetup", 
+        uri: "uri", 
+        creator: user, 
+        location: "location", 
+        date: moment().format("YYYY-MM-DD"),
+        members: meetupMembers,
+        notifs: 0,
+        public: true,
+        categories: [],
+        latitude: 34.228754, 
+        longitude: -118.2351192,
+        events: {},
+        isMeetupEventsInitialized : true
+    }
+}
+
 export const meetups = {...meetup}
 
 export const event = {
@@ -192,6 +211,10 @@ export const event = {
         entries: {},
         random: true
     }
+}
+
+export const chosenEvent = {
+    2: {...event[1], chosen: 1}
 }
 export const events = {...event}
 

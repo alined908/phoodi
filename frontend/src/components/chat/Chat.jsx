@@ -41,11 +41,11 @@ class Chat extends Component {
     }
 
     getRelevantInfo(uri) {
-        this.setRoomInfo(uri)
         const socket = this.state.socket
         const token = AuthenticationService.retrieveToken()
         const path = `/ws/chat/${this.props.match.params.uri}/`;
         socket.connect(path, token);
+        this.setRoomInfo(uri)
     }
 
     setRoomInfo(uri){

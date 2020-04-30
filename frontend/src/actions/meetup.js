@@ -112,6 +112,37 @@ export const getMeetupEvents = (uri) => async dispatch => {
     }
 }
 
+export const handleLeaveMeetup = (uri, email, userEmail) => async dispatch => {
+    try {
+        await axiosClient.delete(
+            `/api/meetups/${uri}/members/`, {data: {email}, headers: {
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }})
+        if (email === userEmail){
+            history.push("/meetups")
+            dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "success", message: "Left meetup"}})
+        } else {
+            dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "success", message: "Removed Member from Meetup"}})
+        }
+        
+    } catch (e) {
+        dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Unable to leave meetup. You are stuck!!"}})
+    }
+}
+
+export const handlePublicMeetupJoin = (uri, email) => async dispatch => {
+    try {
+        await axiosClient.post(
+            `/api/meetups/${uri}/members/`, {email}, {headers: {
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }})
+        dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "success", message: "Successfully joined meetup"}})
+    }
+    catch(e){
+        dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Not able to join this meetup"}})
+    }
+}
+
 export const addMeetupEvent = (event) => async dispatch => {
     dispatch({type: types.ADD_MEETUP_EVENT, payload: event.message})
 }

@@ -26,15 +26,24 @@ exports[`Chat unit  renders without crashing given props 1`] = `
     activeRoom={null}
     messages={Array []}
     socket={
-      WebSocketService {
-        "callbacks": Object {
-          "fetch_messages": [MockFunction],
-          "new_message": [MockFunction],
+      Object {
+        "addChatCallbacks": [MockFunction] {
+          "calls": Array [
+            Array [
+              [MockFunction],
+              [MockFunction],
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": undefined,
+            },
+          ],
         },
-        "connect": [Function],
-        "disconnect": [Function],
-        "socketRef": null,
-        "waitForSocketConnection": [Function],
+        "connect": [MockFunction],
+        "disconnect": [MockFunction],
+        "exists": [MockFunction],
       }
     }
   />

@@ -3,11 +3,10 @@ import {MeetupFriend, MeetupEvent, ProgressIcon, MeetupForm, MeetupChat, MeetupE
 import {connect} from 'react-redux';
 import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteMeetupEvent, deleteEventOption,
     addMeetupMember, deleteMeetupMember, addEventOption, reloadMeetupEvent, voteMeetupEvent, decideMeetupEvent,
-    removeNotifs, getFriends, addGlobalMessage, sendFriendInvite
+    removeNotifs, getFriends, addGlobalMessage, sendFriendInvite, handleLeaveMeetup, handlePublicMeetupJoin
 } from '../../actions';
 import {Link} from 'react-router-dom'
 import moment from 'moment';
-import {history} from '../MeetupApp'
 import {Grid, Button, Typography, Avatar, List, ListItem, Paper, ListItemText, ListItemAvatar, IconButton, Tooltip, CircularProgress} from "@material-ui/core"
 import WebSocketService from "../../accounts/WebSocket";
 import {Delete as DeleteIcon, Edit as EditIcon, Room as RoomIcon, Chat as ChatIcon, VerifiedUser as VerifiedUserIcon, 
@@ -15,7 +14,6 @@ import {Delete as DeleteIcon, Edit as EditIcon, Room as RoomIcon, Chat as ChatIc
     Refresh as RefreshIcon, Block as BlockIcon, ExitToApp as ExitToAppIcon, PersonAddDisabled as PersonAddDisabledIcon} from '@material-ui/icons'
 import AuthenticationService from "../../accounts/AuthenticationService"
 import {ReactComponent as Crown} from "../../assets/svgs/crown.svg"
-import {axiosClient} from '../../accounts/axiosClient'
 import PropTypes from 'prop-types'
 import {meetupPropType, userPropType, friendPropType} from '../../constants/prop-types'
 import {Helmet} from 'react-helmet'
@@ -30,12 +28,23 @@ class Meetup extends Component {
             newMeetupEventForm: false,
             showChat: true
         }
+
+        this.state.meetupSocket.addMeetupCallbacks(
+            this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, 
+            this.props.voteMeetupEvent, this.props.decideMeetupEvent, this.props.deleteMeetupEvent, 
+            this.props.addMeetupMember, this.props.deleteMeetupMember, this.props.addEventOption, 
+            this.props.deleteEventOption, this.props.addMeetupActivity
+        );
     }
 
     componentDidMount() {
         const uri = this.props.meetup.uri
+        const token = AuthenticationService.retrieveToken()
+        const meetupPath = `/ws/meetups/${uri}/`;
+        const meetupSocket = this.state.meetupSocket
+        meetupSocket.connect(meetupPath, token);
+
         this.props.getMeetupEvents(uri)
-        
         if (!this.props.isFriendsInitialized){
             this.props.getFriends(this.props.user.id)
         } 
@@ -43,16 +52,6 @@ class Meetup extends Component {
         if (this.props.meetup.notifs > 0){
             this.props.removeNotifs({type: "meetup", id: this.props.meetup.id})
         }
-        const token = AuthenticationService.retrieveToken()
-        const meetupPath = `/ws/meetups/${uri}/`;
-        const meetupSocket = this.state.meetupSocket
-      
-        meetupSocket.addEventCallbacks(this.props.getMeetupEvents, this.props.addMeetupEvent, this.props.reloadMeetupEvent, 
-            this.props.voteMeetupEvent, this.props.decideMeetupEvent, this.props.deleteMeetupEvent, 
-            this.props.addMeetupMember, this.props.deleteMeetupMember, this.props.addEventOption, 
-            this.props.deleteEventOption, this.props.addMeetupActivity);
-        
-        meetupSocket.connect(meetupPath, token);
     }
    
     componentWillUnmount() {
@@ -77,37 +76,12 @@ class Meetup extends Component {
         }
     }
 
-    handlePublicMeetupJoin = async () => {
-        try {
-            const response = await axiosClient.post(
-                `/api/meetups/${this.props.meetup.uri}/members/`, {email: this.props.user.email}, {headers: {
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-            }})
-            console.log(response.data)
-            this.props.addGlobalMessage("success", "Successfully joined meetup")
-        }
-        catch(e){
-            this.props.addGlobalMessage("error", "Not able to join this meetup")
-        }
+    handlePublicMeetupJoin = () => {
+        this.props.handlePublicMeetupJoin(this.props.meetup.uri, this.props.user.email)
     }
 
-    handleLeaveMeetup = async (e, email) => {
-        e.preventDefault()
-        try {
-            await axiosClient.delete(
-                `/api/meetups/${this.props.meetup.uri}/members/`, {data: {email: email}, headers: {
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-            }})
-            if (email === this.props.user.email){
-                history.push("/meetups")
-                this.props.addGlobalMessage("success", "Left Meetup")
-            } else {
-                this.props.addGlobalMessage("success", "Removed Member from Meetup")
-            }
-            
-        } catch (e) {
-            this.props.addGlobalMessage("error", "Unable to leave meetup. You are stuck!!")
-        }
+    handleLeaveMeetup = (email) => {
+        this.props.handleLeaveMeetup(this.props.meetup.uri, email, this.props.user.email)     
     }
 
     refreshFriendsList = () => {
@@ -197,38 +171,47 @@ class Meetup extends Component {
                             <RoomIcon/> {location}
                         </div>
                     </div>
-                        {isUserMember && !this.state.showChat && 
-                            <Tooltip title="Chat">
-                                <IconButton color="primary" onClick={this.toggleChat} aria-label='chat'>
-                                    <ChatIcon/>
+                    {(isUserMember && !this.state.showChat) && 
+                        <Tooltip title="Chat">
+                            <IconButton color="primary" onClick={this.toggleChat} aria-label='chat'>
+                                <ChatIcon/>
+                            </IconButton>
+                        </Tooltip>
+                    }
+                    {isUserCreator && 
+                        <div className={styles.actions}>
+                        
+                            <Tooltip title="Email">
+                                <div style={{width: 48, minHeight: 48}}>
+                                    <ProgressIcon 
+                                        check={true}
+                                        disabled={emailDisable}  
+                                        icon={<EmailIcon />} 
+                                        ariaLabel="email" 
+                                        handleClick={!emailDisable ? 
+                                            () => this.handleEmail() : 
+                                            () => this.handleDisabledEmail(meetup.events)
+                                        } 
+                                    />
+                                </div>
+                            </Tooltip>
+                            
+                            <Tooltip title="Edit">
+                                <IconButton onClick={this.openFormModal} style={{color: "black"}} aria-label='edit' >
+                                    <EditIcon />
                                 </IconButton>
                             </Tooltip>
-                        }
-                    {isUserCreator && <div className={styles.actions}>
-                        
-                        <Tooltip title="Email">
-                            <div style={{width: 48, minHeight: 48}}>
-                                <ProgressIcon 
-                                    disabled={emailDisable}  icon={<EmailIcon />} ariaLabel="email" check={true}
-                                    handleClick={!emailDisable ? () => this.handleEmail() : () => this.handleDisabledEmail(meetup.events)} 
-                                />
-                            </div>
-                        </Tooltip>
-                        
-                        <Tooltip title="Edit">
-                            <IconButton onClick={this.openFormModal} style={{color: "black"}} aria-label='edit' >
-                                <EditIcon />
-                            </IconButton>
-                        </Tooltip>
-                        {this.state.newMeetupForm && 
-                            <MeetupForm type="edit" uri={this.props.meetup.uri} handleClose={this.openFormModal} open={this.state.newMeetupForm}/>
-                        }
-                        <Tooltip title="Delete">
-                            <IconButton onClick={() => this.handleDelete()} color="secondary" aria-label='delete'>
-                                <DeleteIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </div>}
+                            
+                            <Tooltip title="Delete">
+                                <IconButton onClick={() => this.handleDelete()} color="secondary" aria-label='delete'>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                    }
+                    {this.state.newMeetupForm && 
+                        <MeetupForm type="edit" uri={this.props.meetup.uri} handleClose={this.openFormModal} open={this.state.newMeetupForm}/>
+                    }
                 </Paper>
             )
         }
@@ -460,7 +443,10 @@ const mapDispatchToProps = {
     addEventOption,
     sendFriendInvite,
     deleteEventOption,
-    deleteMeetupMember
+    deleteMeetupMember,
+    handlePublicMeetupJoin,
+    handleLeaveMeetup
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Meetup)
+export {Meetup as UnderlyingMeetup}
