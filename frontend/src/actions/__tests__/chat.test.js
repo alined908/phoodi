@@ -127,14 +127,12 @@ describe('Chat actions', () => {
         expect(actions.removeActiveRoom()).toEqual(expectedAction)
     })
 
-    it('should handle updateRoom()', () => {
+    it('should handle updateRoom()', async () => {
         const event = {message: "message"}
-        const expectedAction = {
-            type: types.UPDATE_ROOM,
-            payload: event.message
-        }
-
-        expect(actions.updateRoom(event)).toEqual(expectedAction)
+        const expectedActions = [{type: types.UPDATE_ROOM, payload: event.message}]
+        
+        await store.dispatch(actions.updateRoom(event))
+        expect(store.getActions()).toEqual(expectedActions)
     })
 
     it('should handle setTypingValue()', () => {
@@ -147,13 +145,11 @@ describe('Chat actions', () => {
         expect(actions.setTypingValue(message)).toEqual(expectedAction)
     })
 
-    it('should handle addMessage()', () => {
+    it('should handle addMessage()', async () => {
         const message = "message"
-        const expectedAction = {
-            type: types.ADD_MESSAGE,
-            payload: {message}
-        }
-
-        expect(actions.addMessage(message)).toEqual(expectedAction)
+        const expectedActions = [{type: types.ADD_MESSAGE, payload: {message}}]
+        
+        await store.dispatch(actions.addMessage(message))
+        expect(store.getActions()).toEqual(expectedActions)
     })
 })

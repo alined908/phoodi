@@ -14,3 +14,11 @@ Enzyme.configure({ adapter: new Adapter() });
 export default function setupStore(initialState) {
     return createStore(appReducer, {...initialState}, applyMiddleware(thunk));
 }
+
+const localStorageMock = {
+    getItem: jest.fn(),
+    setItem: jest.fn(),
+    removeItem: jest.fn(),
+    clear: jest.fn(),
+  };
+global.localStorage = localStorageMock;

@@ -11,7 +11,7 @@ export const category = {
 //User
 export const user = {
     id: 1, 
-    email: "example@gmail.com", 
+    email: "daniel@gmail.com", 
     first_name: "Daniel", 
     last_name: "Lee",
     avatar: null
@@ -32,9 +32,14 @@ export const user3 = {
 }
 export const settings = {
     radius: 25, 
-    location: "La Crescenta, CA, USA", 
-    latitude: 34.228754, 
-    longitude: -118.2351192
+    location: null, 
+    latitude: null,
+    longitude: null
+}
+
+export const userWithSettings = {
+    ...user,
+    settings: {...settings}
 }
 export const friend = {
     id: 1, 
@@ -203,3 +208,7 @@ export const option = {
 
 export const options = {...option}
 
+export const tokens = {
+    access: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTg4MjI5OTEzLCJqdGkiOiIwOTg2YTg0MDA1ZGM0OGQ1ODEzYmIyNzE1OWViNGUyZCIsInVzZXJfaWQiOjEsInVzZXIiOnsiaWQiOjEsImVtYWlsIjoiZGFuaWVsQGdtYWlsLmNvbSIsImZpcnN0X25hbWUiOiJEYW5pZWwiLCJsYXN0X25hbWUiOiJMZWUiLCJhdmF0YXIiOm51bGwsInNldHRpbmdzIjp7InJhZGl1cyI6MjUsImxvY2F0aW9uIjpudWxsLCJsYXRpdHVkZSI6bnVsbCwibG9uZ2l0dWRlIjpudWxsfX19.FbffRthOKX5F0TGvqA5mZXuXUWNkUojzKexDGCoP518",
+    refresh : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU4ODM4Mjk0NiwianRpIjoiN2ZhNGY2MDE4OWM3NDA5ZmFjOTMwYmE4ZTRlMWFhMTMiLCJ1c2VyX2lkIjoxLCJ1c2VyIjp7ImlkIjoxLCJlbWFpbCI6ImRhbmllbEBnbWFpbC5jb20iLCJmaXJzdF9uYW1lIjoiRGFuaWVsIiwibGFzdF9uYW1lIjoiTGVlIiwiYXZhdGFyIjpudWxsLCJzZXR0aW5ncyI6eyJyYWRpdXMiOjI1LCJsb2NhdGlvbiI6bnVsbCwibGF0aXR1ZGUiOm51bGwsImxvbmdpdHVkZSI6bnVsbH19fQ.qqaY4Ye7rmyOKLbDS2EKz4SGWH0fwZ0MvrGP6NJ3IRE"
+}

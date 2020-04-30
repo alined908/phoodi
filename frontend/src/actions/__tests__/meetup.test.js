@@ -12,7 +12,7 @@ const mockStore = configureMockStore(middlewares);
 const mock = new MockAdapter(axiosClient); 
 const store = mockStore({});
 
-describe('Invite actions', () => {
+describe('Meetup actions', () => {
 
     beforeEach(() => {
         store.clearActions();

@@ -107,7 +107,7 @@ describe('User Reducer', () => {
 
     it('should handle GET_FRIEND_INVITES', () => {
         const action = {
-            type: types.GET_FRIEND_INVITES,
+            type: types.GET_FRIEND_INVITES_SUCCESS,
             payload: [friendInvite]
         }
         const newState = userReducer(userDefaultState, action)
@@ -117,7 +117,7 @@ describe('User Reducer', () => {
 
     it('should handle GET_MEETUP_INVITES', () => {
         const action = {
-            type: types.GET_MEETUP_INVITES,
+            type: types.GET_MEETUP_INVITES_SUCCESS,
             payload: [friendInvite]
         }
         const newState = userReducer(userDefaultState, action)

@@ -70,12 +70,10 @@ export const refreshToken = (dispatch) => {
 }
 
 export const addSettings = (data) => async dispatch => {
-    console.log(data)
     try {
         const response = await axiosClient.post('/api/users/settings/', data, {headers: {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
-        console.log(response.data)
         localStorage.setItem("user", JSON.stringify(response.data))
         return Promise.all([
             dispatch({type: types.ADD_SETTINGS, payload: response.data.settings}),
@@ -138,10 +136,9 @@ export const addPreference = (data, user_id) => async dispatch => {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
-        console.log(response.data)
         return Promise.all([dispatch({type: types.ADD_PREFERENCE, payload: response.data}), dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "success", message: "Successfully added preference"}})])
     } catch(e) {
-        dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "error", message: e.response.data.error}})
+        dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Unable to add preference."}})
     }
 }
 
@@ -151,7 +148,6 @@ export const editPreference = (data, user_id, pref_id) => async dispatch => {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
-        console.log(response.data)
         dispatch({type: types.EDIT_PREFERENCE, payload: response.data})
     } catch(e) {
         dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Unable to edit preference."}})
@@ -164,7 +160,6 @@ export const reorderPreferences = (data, user_id) => async dispatch => {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
-        console.log(response.data)
         dispatch({type: types.REORDER_PREFERENCES, payload: response.data})
     } catch(e) {
         dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Unable to reorder preference."}})
@@ -177,7 +172,6 @@ export const deletePreference = (user_id, category_id) => async dispatch => {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
-        console.log(response.data)
         return Promise.all(
             [dispatch({type: types.DELETE_PREFERENCE, payload: response.data}), 
                 dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "success", message: "Successfully deleted preference"}})

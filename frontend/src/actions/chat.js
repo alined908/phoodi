@@ -64,16 +64,11 @@ export const setActiveRoom = (room) => {
 }
 
 export const removeActiveRoom = () => {
-    return {
-        type: types.REMOVE_ACTIVE_ROOM
-    }
+    return {type: types.REMOVE_ACTIVE_ROOM}
 }
 
-export const updateRoom = (event) => {
-    return {
-        type: types.UPDATE_ROOM, 
-        payload: event.message
-    }
+export const updateRoom = (event) => async dispatch => {
+    dispatch({type: types.UPDATE_ROOM, payload: event.message})
 }
 
 export const setTypingValue = (value) => {
@@ -83,9 +78,6 @@ export const setTypingValue = (value) => {
     }
 }
 
-export const addMessage = (message) => {
-    return {
-        type: types.ADD_MESSAGE, 
-        payload: {message}
-    }    
+export const addMessage = (message) => async dispatch => {
+    dispatch({type: types.ADD_MESSAGE, payload: {message}})    
 }
