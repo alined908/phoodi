@@ -333,10 +333,10 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         data, user = command['data'], self.user
         event_id = data['event']
         event = await database_sync_to_async(MeetupEvent.objects.get)(pk=event_id)
-        event_serializer = await self.get_event_serializer(event)
         meetup_obj = await database_sync_to_async(Meetup.objects.get)(uri=self.meetup_name)
         await self.handle_event_reload(event)
         await self.generate_options(event)
+        event_serializer = await self.get_event_serializer(event)
         message = "reloaded options for event named %s" % event.title
         msg = await self.generate_message(user, message)
         msg_serializer = await self.get_message_serializer(msg)
@@ -608,4 +608,5 @@ class MeetupConsumer(AsyncWebsocketConsumer):
     async def meetup_event(self, event):
         print("Meetup Consumer: Meetup Event Object sent")
         meetup_event = event['meetup_event']
+        print(meetup_event)
         await self.send(text_data=json.dumps(meetup_event))

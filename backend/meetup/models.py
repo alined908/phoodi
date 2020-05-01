@@ -350,13 +350,22 @@ class MeetupEvent(models.Model):
             restaurant = Restaurant.objects.get(identifier=identifier)
         except ObjectDoesNotExist:
             info = {
-                "identifier": identifier, "name": option["name"], "yelp_image": option["image_url"],
-                "yelp_url": option["url"], "rating": option["rating"], "latitude": option['coordinates']['latitude'],
-                "longitude": option['coordinates']['longitude'], "price": option.get('price', '$$'),
-                "phone": option['display_phone'], 'location': " ".join(option['location']['display_address']),
-                "categories": json.dumps(option['categories']), 'city': option['location']['city'],
-                'country': option['location']['country'], 'state': option['location']['state'],
-                'zipcode': option['location']['zip_code'], 'address1': option['location']['address1'],
+                "identifier": identifier, 
+                "name": option["name"], 
+                "yelp_image": option["image_url"],
+                "yelp_url": option["url"], 
+                "rating": option["rating"], 
+                "latitude": option['coordinates']['latitude'],
+                "longitude": option['coordinates']['longitude'], 
+                "price": option.get('price', '$$'),
+                "phone": option['display_phone'], 
+                'location': " ".join(option['location']['display_address']),
+                "categories": json.dumps(option['categories']), 
+                'city': option['location']['city'],
+                'country': option['location']['country'], 
+                'state': option['location']['state'],
+                'zipcode': option['location']['zip_code'], 
+                'address1': option['location']['address1'],
             }
 
             same_name_same_city_restaurants = Restaurant.objects.filter(name = info['name'], city = info['city']).count()
@@ -436,7 +445,7 @@ class Restaurant(models.Model):
     longitude = models.FloatField()
     price = models.CharField(max_length=10)
     location = models.TextField()
-    address1 = models.CharField(max_length=255)
+    address1 = models.CharField(max_length=255, null=True, blank=True)
     address2 = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=255)
     state = models.CharField(max_length=255)

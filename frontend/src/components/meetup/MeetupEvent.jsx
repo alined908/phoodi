@@ -125,43 +125,6 @@ class MeetupEvent extends Component {
             )
         }
 
-        const renderFourSquare = (options) => {
-            const keys = Object.keys(options).reverse()
-            
-            return (
-                <div className={styles.foursquare}>
-                    {keys.length > 0 ?
-                        <Grid justify="center" container spacing={3}>
-                            {keys.map((key, index) => 
-                                <Grid key={key} item id={`option-${key}`} justify={index % 2 === 0 ? "flex-end" : "flex-start"} container xs={12} md={6} sm={12}>
-                                    <MeetupEventOption
-                                        socket={this.props.socket} 
-                                        full={true} 
-                                        isUserMember={this.props.isUserMember}
-                                        event={this.props.event.id} 
-                                        meetup={this.props.uri} 
-                                        optionId={key}
-                                    />
-                                </Grid>
-                            )}
-                        </Grid>:
-                        <Paper className={styles.explanation} elevation={3}>
-                            <span style={{marginRight: "1rem"}}>
-                                <ErrorIcon style={{color: "rgb(255, 212, 96)"}}/>
-                            </span>
-                            {event.random ? <span>
-                                No options available. 
-                                This may be due to no options being available at this time or the categories specified don't have enough options.
-                                Press the edit button to add more categories or change time if inputted incorrectly.
-                            </span> : <span>
-                                    No options chosen.  Click the top right magnifying glass to search for restauraunts near you!
-                                </span>}
-                        </Paper>
-                    }
-                </div>
-            )
-        }
-
         const renderActions = () => {
             return (
                 <div className={styles.eventActions}>
@@ -254,6 +217,43 @@ class MeetupEvent extends Component {
             )
         }
 
+        const renderFourSquare = (options) => {
+            const keys = Object.keys(options).reverse()
+            
+            return (
+                <div className={styles.foursquare}>
+                    {keys.length > 0 ?
+                        <Grid justify="center" container spacing={3}>
+                            {keys.map((key, index) => 
+                                <Grid key={key} item id={`option-${key}`} justify={index % 2 === 0 ? "flex-end" : "flex-start"} container xs={12} md={6} sm={12}>
+                                    <MeetupEventOption
+                                        socket={this.props.socket} 
+                                        full={true} 
+                                        isUserMember={this.props.isUserMember}
+                                        event={this.props.event.id} 
+                                        meetup={this.props.uri} 
+                                        optionId={key}
+                                    />
+                                </Grid>
+                            )}
+                        </Grid>:
+                        <Paper className={styles.explanation} elevation={3}>
+                            <span style={{marginRight: "1rem"}}>
+                                <ErrorIcon style={{color: "rgb(255, 212, 96)"}}/>
+                            </span>
+                            {event.random ? <span>
+                                No options available. 
+                                This may be due to no options being available at this time or the categories specified don't have enough options.
+                                Press the edit button to add more categories or change time if inputted incorrectly.
+                            </span> : <span>
+                                    No options chosen.  Click the top right magnifying glass to search for restauraunts near you!
+                                </span>}
+                        </Paper>
+                    }
+                </div>
+            )
+        }
+
         const renderChosen = (chosen) => {
             const option = chosen.restaurant
             const position = {latitude: option.latitude, longitude: option.longitude}
@@ -268,7 +268,7 @@ class MeetupEvent extends Component {
                             full={false} 
                             event={this.props.event.id} 
                             meetup={this.props.uri} 
-                            data={chosen}
+                            optionId={chosen.id}
                         />
                     </Paper>
                     <Paper className={styles.chosenMap} elevation={3}>

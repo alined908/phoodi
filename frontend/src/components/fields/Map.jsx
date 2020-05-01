@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import ReactMapGL, {Marker, NavigationControl, FlyToInterpolator} from "react-map-gl"
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-import * as d3 from 'd3-ease'
+// import * as d3 from 'd3-ease'
 import PropTypes from 'prop-types'
 
 const token = process.env.REACT_APP_MAPBOX_API_KEY;
@@ -25,18 +25,18 @@ class Map extends Component {
       this._isMounted = true;
     }
 
-    onLoad = () => {
-        const viewport = {
-            ...this.state.viewport,
-            zoom: 15,
-            transitionDuration: 3000,
-            transitionInterpolator: new FlyToInterpolator(),
-            transitionEasing: d3.easeSin
-        }
-        if (this._isMounted){
-          this.setState({viewport})
-        }
-    }
+    // onLoad = () => {
+    //     const viewport = {
+    //         ...this.state.viewport,
+    //         zoom: 15,
+    //         transitionDuration: 3000,
+    //         transitionInterpolator: new FlyToInterpolator(),
+    //         transitionEasing: d3.easeSin
+    //     }
+    //     if (this._isMounted){
+    //       this.setState({viewport})
+    //     }
+    // }
 
     componentWillUnmount() {
       this._isMounted = false;
@@ -51,7 +51,7 @@ class Map extends Component {
             className="map"
             mapStyle="mapbox://styles/mapbox/streets-v11"
             onViewportChange={viewport => this.setState({viewport})}
-            onLoad={this.props.notLoad ? undefined : this.onLoad }
+            // onLoad={this.props.notLoad ? undefined : this.onLoad }
             mapboxApiAccessToken={token}
           >
             <div style={{position: 'absolute', left: 10, top: 10}}>

@@ -153,6 +153,7 @@ export const deleteMeetupEvent = (event) => async dispatch => {
 }
 
 export const reloadMeetupEvent = (event) => async dispatch => {
+    console.log(event.message)
     dispatch({type: types.EDIT_MEETUP_EVENT, payload: event.message})
 }
 
