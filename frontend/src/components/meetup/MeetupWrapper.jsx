@@ -15,14 +15,13 @@ class MeetupWrapper extends Component {
     }
 
     determineIsUserMember = (members) => {
-        let isUserMember = false;
         for (let key of Object.keys(members)){
             const member = members[key]
             if (member.user.id === this.props.user.id){
                 return true
             }
         }
-        return isUserMember
+        return false
     }
 
     render () {
@@ -57,3 +56,4 @@ const mapDispatchToProps = {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MeetupWrapper)
+export {MeetupWrapper as UnderlyingMeetupWrapper}

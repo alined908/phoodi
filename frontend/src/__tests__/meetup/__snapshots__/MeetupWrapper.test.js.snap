@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MeetupWrapper tests should render without crashing 1`] = `
+<Fragment>
+  <Connect(Meetup)
+    isUserMember={true}
+    key="1"
+    meetup={
+      Object {
+        "categories": Array [
+          Object {
+            "api_label": "desserts",
+            "id": 1,
+            "image": null,
+            "label": "Dessert",
+          },
+        ],
+        "creator": Object {
+          "avatar": null,
+          "email": "daniel@gmail.com",
+          "first_name": "Daniel",
+          "id": 1,
+          "last_name": "Lee",
+        },
+        "date": "2020-05-01",
+        "events": Object {},
+        "id": 1,
+        "isMeetupEventsInitialized": true,
+        "latitude": 34.228754,
+        "location": "location",
+        "longitude": -118.2351192,
+        "members": Object {
+          "1": Object {
+            "admin": true,
+            "ban": false,
+            "id": 1,
+            "user": Object {
+              "avatar": null,
+              "email": "daniel@gmail.com",
+              "first_name": "Daniel",
+              "id": 1,
+              "last_name": "Lee",
+            },
+          },
+          "2": Object {
+            "admin": false,
+            "ban": false,
+            "id": 2,
+            "user": Object {
+              "avatar": null,
+              "email": "example2@gmail.com",
+              "first_name": "Bob",
+              "id": 2,
+              "last_name": "Jim",
+            },
+          },
+        },
+        "name": "Meetup",
+        "notifs": 0,
+        "public": true,
+        "uri": "uri",
+      }
+    }
+  />
+</Fragment>
+`;

@@ -284,3 +284,4 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps)(MeetupEventOption)
+export {MeetupEventOption as UnderlyingMeetupEventOption}

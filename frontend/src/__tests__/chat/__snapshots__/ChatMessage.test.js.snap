@@ -28,7 +28,7 @@ exports[`ChatMessage Should render chat message without errors 1`] = `
       <div
         className="messageTime"
       >
-        Today at 5:52 AM
+        Today at 6:07 AM
       </div>
     </div>
     <div
