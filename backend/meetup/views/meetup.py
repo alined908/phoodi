@@ -181,6 +181,7 @@ class MeetupMembersView(APIView):
     def delete(self, request, *args, **kwargs):
         uri = kwargs['uri']
         email = request.data['email']
+        print(email)
 
         try: 
             meetup = Meetup.objects.get(uri=uri)

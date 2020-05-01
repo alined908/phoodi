@@ -230,13 +230,13 @@ class MeetupConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def handle_vote_event(self, option, status, user, meetup):
         option = MeetupEventOption.objects.get(id = option)
-        event = option.event.id
+        event_id = option.event.id
         meetup = Meetup.objects.get(uri=meetup)
         member = MeetupMember.objects.get(meetup=meetup, user=user)
         option.handle_vote(status, member)
         event_serializer = MeetupEventOptionSerializer(option)
         member_serializer = MeetupMemberSerializer(member)
-        return event_serializer.data, event, member_serializer.data
+        return event_serializer.data, event_id, member_serializer.data
 
     @sync_to_async
     def decide_event_helper(self, event, randomBool):
@@ -317,9 +317,9 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         content = {
             'command': 'new_event',
             'message': {
-                    'meetup': data['uri'], 
-                    'event': {event.id: serializer}
-                }
+                'meetup': data['uri'], 
+                'event': {event.id: serializer}
+            }
         }
 
         await self.channel_layer.group_send(
@@ -379,7 +379,7 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         content = {
             'command': 'vote_event',
             'message': {
-                "meetup": self.meetup_name, "event": event, 
+                "meetup": self.meetup_name, "event_id": event, 
                 "option_id": option, "option": option_json[option], 
                 "member": member
             }
@@ -486,8 +486,8 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         content = {
             'command': 'delete_event',
             'message': {
-                "uri": self.meetup_name, 
-                "event": event_id
+                "meetup": self.meetup_name, 
+                "event_id": event_id
             }
         }
 
@@ -525,7 +525,7 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         content = {
             'command': 'new_option',
             'message': {
-                "uri": self.meetup_name, 
+                "meetup": self.meetup_name, 
                 "event_id": event_id, 
                 "option": serializer
             }
@@ -561,11 +561,10 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         msg = await self.generate_message(user, "deleted option")
         msg_serializer = await self.get_message_serializer(msg)
         
-        
         content = {
             'command': 'delete_option',
             'message': {
-                "uri": self.meetup_name, 
+                "meetup": self.meetup_name, 
                 "event_id": event_id, 
                 "event": serializer
             }

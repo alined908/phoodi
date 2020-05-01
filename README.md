@@ -20,7 +20,7 @@ docker-compose up
 **1. Run tests for backend**
 ```
 cd backend
-coverage run --parallel-test --source="." manage.py test meetup
+coverage run --parallel-mode --source="." manage.py test meetup
 coverage run --parallel-mode -m pytest
 coverage combine
 coverage report
@@ -28,7 +28,7 @@ coverage report
 **2. Run tests for frontend**
 ```
 cd frontend
-npm test
+npm test -- --coverage
 ```
 
 ## Deployment (For AWS EC2, Amazon Linux 2)
@@ -96,11 +96,14 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Testing 
 - [ ] Validation for models
-- [ ] Write tests for frontend
 - [ ] Reload doesnt work first time
 
 ## Todo Authentication
 - [ ] Don't allow websocket to send event even after refresh token expire
+
+## Todo User
+- [ ] Email activation
+- [ ] Forgot/Reset password
 
 ## Todo UI/UX/CleanUp
 - [ ] Animation when logging out forced
@@ -108,10 +111,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Skeleton loading where applicable
 - [ ] Optimize performance
 - [ ] Disable actions if event is in the past 
-
-## Todo User
-- [ ] Email activation
-- [ ] Forgot/Reset password
 
 ## Todo Deploy
 - [ ] Separate dev and prod settings
@@ -122,6 +121,7 @@ python manage.py loaddata meetup/fixtures/*.json
 ------------------------------------------------------------------
 
 ## Todo Next Iteration
+- [ ] Finish writing tests for frontend
 - [ ] Add google, facebook, twitter social auth
 - [ ] Edit chat messages
 - [ ] Upload picture
@@ -143,6 +143,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Swap out of material ui (maybe tailwind?)
 - [ ] Update user when email changes
 - [ ] Find people who have similar food taste near you?
+- [ ] Eliminate user_id from preferences api calls
 - [ ] Some sort of reputation system
 - [ ] Guest accounts
 - [ ] Admin functionality for meetup member
