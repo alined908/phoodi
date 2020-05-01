@@ -16,6 +16,7 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
     </title>
   </HelmetWrapper>
   <MeetupTree
+    initialized={false}
     meetup={
       Object {
         "categories": Array [
@@ -33,7 +34,7 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
           "id": 1,
           "last_name": "Lee",
         },
-        "date": "2020-04-30",
+        "date": "2020-05-01",
         "events": Object {},
         "id": 1,
         "isMeetupEventsInitialized": true,
@@ -99,6 +100,7 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
             className="headerInfo"
           >
             <div
+              aria-label="meetup-type"
               className="headerIcons"
             >
               <PublicIcon />
@@ -109,9 +111,10 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
             >
               <TodayIcon />
                
-              Thursday, April 30
+              Friday, May 1
             </div>
             <div
+              aria-label="location"
               className="headerIcons"
             >
               <RoomIcon />
@@ -187,6 +190,7 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
             Members
           </WithStyles(ForwardRef(Typography))>
           <WithStyles(ForwardRef(Button))
+            aria-label="join-meetup"
             onClick={[Function]}
             style={
               Object {
@@ -308,6 +312,7 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
             title="Refresh"
           >
             <WithStyles(ForwardRef(IconButton))
+              aria-label="refresh-friends"
               color="primary"
               onClick={[Function]}
             >
@@ -358,67 +363,14 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
       <WithStyles(ForwardRef(Grid))
         item={true}
         xs={12}
-      />
+      >
+        <div
+          className="loading"
+        >
+          <WithStyles(ForwardRef(CircularProgress)) />
+        </div>
+      </WithStyles(ForwardRef(Grid))>
     </WithStyles(ForwardRef(Grid))>
   </div>
-  <Connect(MeetupChat)
-    hideChat={[Function]}
-    meetup={
-      Object {
-        "categories": Array [
-          Object {
-            "api_label": "desserts",
-            "id": 1,
-            "image": null,
-            "label": "Dessert",
-          },
-        ],
-        "creator": Object {
-          "avatar": null,
-          "email": "daniel@gmail.com",
-          "first_name": "Daniel",
-          "id": 1,
-          "last_name": "Lee",
-        },
-        "date": "2020-04-30",
-        "events": Object {},
-        "id": 1,
-        "isMeetupEventsInitialized": true,
-        "latitude": 34.228754,
-        "location": "location",
-        "longitude": -118.2351192,
-        "members": Object {
-          "1": Object {
-            "admin": true,
-            "ban": false,
-            "id": 1,
-            "user": Object {
-              "avatar": null,
-              "email": "daniel@gmail.com",
-              "first_name": "Daniel",
-              "id": 1,
-              "last_name": "Lee",
-            },
-          },
-          "2": Object {
-            "admin": false,
-            "ban": false,
-            "id": 2,
-            "user": Object {
-              "avatar": null,
-              "email": "example2@gmail.com",
-              "first_name": "Bob",
-              "id": 2,
-              "last_name": "Jim",
-            },
-          },
-        },
-        "name": "Meetup",
-        "notifs": 0,
-        "public": true,
-        "uri": "uri",
-      }
-    }
-  />
 </div>
 `;

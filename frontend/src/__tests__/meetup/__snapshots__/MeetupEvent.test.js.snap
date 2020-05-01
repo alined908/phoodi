@@ -1,0 +1,219 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MeetupEvent tests general renders without crashing 1`] = `
+<div
+  className="event"
+  id="event-1"
+>
+  <WithStyles(ForwardRef(Paper))
+    elevation={3}
+  >
+    <div
+      className="header smallerheader"
+    >
+      <WithStyles(ForwardRef(Typography))
+        variant="h5"
+      >
+        #
+        2
+         - 
+        Dessert
+      </WithStyles(ForwardRef(Typography))>
+      <div
+        className="headerInfo"
+      >
+        <div
+          className="headerIcons"
+        >
+          <ScheduleIcon />
+          5:52 AM
+           - 
+          5:52 AM
+        </div>
+        <div
+          className="headerIcons"
+        >
+          <img
+            alt="&#9787;"
+            src="https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png"
+            style={
+              Object {
+                "height": 20,
+                "marginLeft": 10,
+                "width": 20,
+              }
+            }
+          />
+          - 
+          Daniel
+           
+          Lee
+        </div>
+      </div>
+      <div>
+        <div
+          className="eventActions"
+        >
+          <WithStyles(ForwardRef(Tooltip))
+            title="Add Option"
+          >
+            <WithStyles(ForwardRef(IconButton))
+              aria-label="add-option"
+              onClick={[Function]}
+              style={
+                Object {
+                  "color": "#4caf50",
+                }
+              }
+            >
+              <SearchIcon />
+            </WithStyles(ForwardRef(IconButton))>
+          </WithStyles(ForwardRef(Tooltip))>
+          <WithStyles(ForwardRef(Tooltip))
+            title="Reload"
+          >
+            <div
+              style={
+                Object {
+                  "minHeight": 48,
+                  "width": 48,
+                }
+              }
+            >
+              <ProgressIcon
+                ariaLabel="reload"
+                check={false}
+                color="primary"
+                disabled={false}
+                handleClick={[Function]}
+                icon={<UNDEFINED />}
+              />
+            </div>
+          </WithStyles(ForwardRef(Tooltip))>
+          <WithStyles(ForwardRef(Tooltip))
+            title="Edit"
+          >
+            <WithStyles(ForwardRef(IconButton))
+              aria-label="edit"
+              color="inherit"
+              onClick={[Function]}
+            >
+              <EditIcon />
+            </WithStyles(ForwardRef(IconButton))>
+          </WithStyles(ForwardRef(Tooltip))>
+          <WithStyles(ForwardRef(Tooltip))
+            title="Delete"
+          >
+            <WithStyles(ForwardRef(IconButton))
+              aria-label="delete"
+              color="secondary"
+              onClick={[Function]}
+            >
+              <DeleteIcon />
+            </WithStyles(ForwardRef(IconButton))>
+          </WithStyles(ForwardRef(Tooltip))>
+        </div>
+      </div>
+    </div>
+  </WithStyles(ForwardRef(Paper))>
+  <WithStyles(ForwardRef(Paper))
+    className="smallerHeader secondHeader"
+    elevation={3}
+  >
+    <div
+      className="secondHeaderLeft"
+    >
+      <WithStyles(ForwardRef(Typography))
+        variant="h6"
+      >
+        Categories 
+      </WithStyles(ForwardRef(Typography))>
+      <Link
+        key="1"
+        to="/category/desserts"
+      >
+        <span
+          className="categoryChip categoryChipHover"
+        >
+          <WithStyles(ForwardRef(Avatar))
+            src="undefineddesserts.png"
+            style={
+              Object {
+                "height": 20,
+                "width": 20,
+              }
+            }
+            variant="square"
+          />
+          Dessert
+        </span>
+      </Link>
+    </div>
+    <div
+      className="secondHeaderLeft"
+    >
+      <WithStyles(ForwardRef(Typography))
+        variant="h6"
+      >
+        Price 
+      </WithStyles(ForwardRef(Typography))>
+      <span
+        className="categoryChip"
+        key="0"
+      >
+        $
+      </span>
+      <span
+        className="categoryChip"
+        key="1"
+      >
+        $$
+      </span>
+    </div>
+    <div
+      className="secondHeaderLeft"
+    >
+      <WithStyles(ForwardRef(Typography))
+        variant="h6"
+      >
+        Distance 
+      </WithStyles(ForwardRef(Typography))>
+      <span
+        className="categoryChip"
+      >
+        10.00
+      </span>
+    </div>
+    <div
+      className="eventDecideActions"
+    />
+  </WithStyles(ForwardRef(Paper))>
+  <div
+    className="foursquare"
+  >
+    <WithStyles(ForwardRef(Paper))
+      className="explanation"
+      elevation={3}
+    >
+      <span
+        style={
+          Object {
+            "marginRight": "1rem",
+          }
+        }
+      >
+        <ErrorIcon
+          style={
+            Object {
+              "color": "rgb(255, 212, 96)",
+            }
+          }
+        />
+      </span>
+      <span>
+        No options available. This may be due to no options being available at this time or the categories specified don't have enough options. Press the edit button to add more categories or change time if inputted incorrectly.
+      </span>
+    </WithStyles(ForwardRef(Paper))>
+  </div>
+</div>
+`;

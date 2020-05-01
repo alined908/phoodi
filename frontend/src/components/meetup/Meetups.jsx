@@ -71,15 +71,14 @@ class Meetups extends Component {
         this.setState({public: publicBool}, () => this.determineGetMeetups(publicBool, this.state.entries))
     }
 
-
     /**
      * Filter public/private meetups by preferences.
      * @param {number} index - Index of clicked preference
      */
     handlePreferenceClick = (index) => {
-        var category = this.state.preferences[index].category
+        const category = this.state.preferences[index].category
         const clickedPreferences = [...this.state.clickedPreferences]
-        var entries;
+        let entries;
         if (!clickedPreferences[index]){
             entries = [...this.state.entries, category]
         } else {
@@ -112,13 +111,14 @@ class Meetups extends Component {
      * @param {Array} values - Array of categories.
      */
     onTagsChange = (event, values) => {
-        console.log(values)
         var clickedPrefs = [...this.state.clickedPreferences]
   
         for(var i = 0; i < clickedPrefs.length; i ++){
             if (clickedPrefs[i]){
                 let pref = this.state.preferences[i]
                 let category = pref.category
+                console.log(category)
+                console.log(values)
                 if (!values.includes(category)){
                     clickedPrefs[i] = !clickedPrefs[i]
                 }
@@ -249,17 +249,20 @@ class Meetups extends Component {
                         <div>
                             Meetups
                             <Tooltip title="Public Meetups">
-                                    <IconButton 
-                                        onClick={() => this.handleMeetupsType("public")} 
-                                        color={this.state.public ? "primary" :"default"} edge="end"
-                                    >
-                                        <PublicIcon/>
-                                    </IconButton>
+                                <IconButton 
+                                    aria-label="public-meetups"
+                                    onClick={() => this.handleMeetupsType("public")} 
+                                    color={this.state.public ? "primary" :"default"} 
+                                    edge="end"
+                                >
+                                    <PublicIcon/>
+                                </IconButton>
                             </Tooltip>
                             <Tooltip title="Your Meetups">
                                 <IconButton 
                                     onClick={() => this.handleMeetupsType("private")} 
                                     color={this.state.public ? "default" : "primary"}
+                                    aria-label="private-meetups"
                                 >
                                     <PeopleIcon/>
                                 </IconButton>
@@ -268,8 +271,11 @@ class Meetups extends Component {
                         <div className={styles.meetupsSearchBar}>
                             <SearchIcon/>
                             <CategoryAutocomplete 
-                                fullWidth={true} size="small" entries={this.state.entries} 
-                                handleClick={this.onTagsChange} label="Search Categories..."
+                                fullWidth={true} 
+                                size="small" 
+                                entries={this.state.entries} 
+                                handleClick={this.onTagsChange} 
+                                label="Search Categories..."
                             />
                         </div>
                         <div className={styles.categoryChip}>
@@ -280,11 +286,15 @@ class Meetups extends Component {
                         </div>
                     
                         <Tooltip title="Add Meetup">
-                            <IconButton onClick={this.openFormModal} style={{color: "black"}}>
+                            <IconButton aria-label="add-meetup" onClick={this.openFormModal} style={{color: "black"}}>
                                 <AddIcon/>
                             </IconButton>
                         </Tooltip>
-                        <MeetupForm type="create" handleClose={this.openFormModal} open={this.state.newMeetupForm}/>
+                        <MeetupForm 
+                            type="create" 
+                            handleClose={this.openFormModal} 
+                            open={this.state.newMeetupForm}
+                        />
                     </Paper>
                     
                     <div className={styles.meetupsContainer} style={{minHeight: this.props.isMeetupsFetching ? "calc(100% - 60px)" : "0"}}>

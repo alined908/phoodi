@@ -46,7 +46,7 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
       <div
         className="messagesDate"
       >
-        April 30, 2020
+        May 1, 2020
       </div>
       <ChatMessage
         key="1"
@@ -81,7 +81,7 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
               "id": 1,
               "last_name": "Lee",
             },
-            "timestamp": "2020-04-30T09:16:37-07:00",
+            "timestamp": "2020-05-01T05:52:42-07:00",
           }
         }
         user={
@@ -127,7 +127,7 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
               "id": 1,
               "last_name": "Lee",
             },
-            "timestamp": "2020-04-30T09:16:37-07:00",
+            "timestamp": "2020-05-01T05:52:42-07:00",
           }
         }
         user={
@@ -170,7 +170,7 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
           },
           "name": "Friend",
           "notifs": 0,
-          "timestamp": "2020-04-30T09:16:37-07:00",
+          "timestamp": "2020-05-01T05:52:42-07:00",
           "uri": "abc",
         }
       }

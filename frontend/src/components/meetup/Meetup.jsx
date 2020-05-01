@@ -24,9 +24,9 @@ class Meetup extends Component {
         super(props)
         this.state = {
             meetupSocket: new WebSocketService(),
-            newMeetupForm: false,
+            editMeetupForm: false,
             newMeetupEventForm: false,
-            showChat: true
+            showChat: props.isUserMember
         }
 
         this.state.meetupSocket.addMeetupCallbacks(
@@ -76,11 +76,12 @@ class Meetup extends Component {
         }
     }
 
-    handlePublicMeetupJoin = () => {
-        this.props.handlePublicMeetupJoin(this.props.meetup.uri, this.props.user.email)
+    handlePublicMeetupJoin = (e) => {
+        this.props.handlePublicMeetupJoin(this.props.meetup.uri, this.props.user.email, () => this.setState({showChat: true}))
     }
 
-    handleLeaveMeetup = (email) => {
+    handleLeaveMeetup = (e, email) => {
+        e.stopPropagation();
         this.props.handleLeaveMeetup(this.props.meetup.uri, email, this.props.user.email)     
     }
 
@@ -89,7 +90,7 @@ class Meetup extends Component {
     }
 
     openFormModal = () => {
-        this.setState({newMeetupForm: !this.state.newMeetupForm})
+        this.setState({editMeetupForm: !this.state.editMeetupForm})
     }
 
     openEventModal = () => {
@@ -158,7 +159,7 @@ class Meetup extends Component {
                 <Paper className={styles.header} elevation={3}>
                     <Typography variant="h5">{name}</Typography>
                     <div className={styles.headerInfo}>
-                        <div className={styles.headerIcons}>
+                        <div className={styles.headerIcons} aria-label="meetup-type">
                             {meetup.public ? 
                                 <><PublicIcon/> Public</> :
                                 <><LockIcon/> Private</>
@@ -167,7 +168,7 @@ class Meetup extends Component {
                         <div className={styles.headerIcons}>
                             <TodayIcon/> {moment(date).format("dddd, MMMM D")}
                         </div>
-                        <div className={styles.headerIcons}>
+                        <div className={styles.headerIcons} aria-label="location">
                             <RoomIcon/> {location}
                         </div>
                     </div>
@@ -180,7 +181,6 @@ class Meetup extends Component {
                     }
                     {isUserCreator && 
                         <div className={styles.actions}>
-                        
                             <Tooltip title="Email">
                                 <div style={{width: 48, minHeight: 48}}>
                                     <ProgressIcon 
@@ -209,8 +209,14 @@ class Meetup extends Component {
                             </Tooltip>
                         </div>
                     }
-                    {this.state.newMeetupForm && 
-                        <MeetupForm type="edit" uri={this.props.meetup.uri} handleClose={this.openFormModal} open={this.state.newMeetupForm}/>
+                    {this.state.editMeetupForm && 
+                        <MeetupForm 
+                            type="edit" 
+                            uri={this.props.meetup.uri}
+                            handleClose={this.openFormModal} 
+                            open={this.state.editMeetupForm}
+                            aria-label="meetup-form"
+                        />
                     }
                 </Paper>
             )
@@ -293,7 +299,7 @@ class Meetup extends Component {
                                     } */}
                                     {isUserMember && (members[key].user.id !== this.props.user.id && members[this.props.user.id].admin) &&
                                         <Tooltip title="Remove Member">
-                                            <IconButton color="secondary" onClick={(e) => this.handleLeaveMeetup(e,members[key].user.email)}>
+                                            <IconButton aria-label="remove-member" color="secondary" onClick={(e) => this.handleLeaveMeetup(e,members[key].user.email)}>
                                                 <ExitToAppIcon/>
                                             </IconButton>
                                         </Tooltip>
@@ -322,10 +328,16 @@ class Meetup extends Component {
                         </div>
                     }
                     {this.props.isMeetupEventsInitialized && events && this.sortEvents(events).map((event, index) => 
-                        <MeetupEvent key={event} number={index} socket={this.state.meetupSocket}  
-                            uri={meetup.uri} event={events[event]} isUserMember={isUserMember} 
+                        <MeetupEvent 
+                            key={event} 
+                            number={index} 
+                            socket={this.state.meetupSocket}  
+                            uri={meetup.uri} 
+                            event={events[event]} 
+                            isUserMember={isUserMember} 
                             coords={{latitude: meetup.latitude, longitude: meetup.longitude}}
-                            isUserCreator={isUserCreator} user={this.props.user}
+                            isUserCreator={isUserCreator} 
+                            user={this.props.user}
                         />
                     )}
                 </>
@@ -354,12 +366,17 @@ class Meetup extends Component {
                             <Paper className={styles.header} elevation={3}>
                                 <Typography variant="h5">Members</Typography>
                                 {!isUserMember && 
-                                    <Button onClick={this.handlePublicMeetupJoin} style={{background: "#45B649", color: "white"}} variant="contained">
+                                    <Button aria-label="join-meetup" onClick={this.handlePublicMeetupJoin} style={{background: "#45B649", color: "white"}} variant="contained">
                                         Join Meetup
                                     </Button>
                                 }
-                                {(isUserMember && !isUserCreator )&& 
-                                    <Button onClick={(e) => this.handleLeaveMeetup(e, this.props.user.email)} variant="contained" color="secondary"> 
+                                {(isUserMember && !isUserCreator) && 
+                                    <Button 
+                                        color="secondary"
+                                        variant="contained"
+                                        aria-label="leave-meetup" 
+                                        onClick={(e) => this.handleLeaveMeetup(e, this.props.user.email)}
+                                    > 
                                         Leave Meetup
                                     </Button>
                                 }
@@ -370,7 +387,7 @@ class Meetup extends Component {
                             <Paper className={styles.header} elevation={3}>
                                 <Typography variant="h5">Friends</Typography>
                                 <Tooltip title="Refresh">
-                                    <IconButton color="primary" onClick={this.refreshFriendsList}>
+                                    <IconButton color="primary" onClick={this.refreshFriendsList} aria-label="refresh-friends">
                                         <RefreshIcon/>
                                     </IconButton>
                                 </Tooltip>
@@ -381,13 +398,23 @@ class Meetup extends Component {
                             <Paper className={styles.header} elevation={3} id="Events">
                                 <Typography variant="h5">Events</Typography>
                                 {isUserMember && 
-                                    <Button onClick={this.openEventModal} startIcon={<AddIcon />} className="button rainbow" variant="contained" color="primary">
+                                    <Button 
+                                        aria-label="add-event" 
+                                        onClick={this.openEventModal} 
+                                        startIcon={<AddIcon />} 
+                                        className="button rainbow" 
+                                        variant="contained" 
+                                        color="primary"
+                                    >
                                         Event
                                     </Button>
                                 }
                                 {this.state.newMeetupEventForm && 
                                     <MeetupEventForm 
-                                        type="create" uri={meetup.uri} handleClose={this.openEventModal}
+                                        type="create" 
+                                        uri={meetup.uri}
+                                        aria-label="add-event-form" 
+                                        handleClose={this.openEventModal}
                                         open={this.state.newMeetupEventForm}
                                     />
                                 }
@@ -398,7 +425,13 @@ class Meetup extends Component {
                         </Grid>
                     </Grid>
                 </div>
-                {this.state.showChat && <MeetupChat meetup={meetup} hideChat={this.toggleChat}/>}
+                {this.state.showChat && 
+                    <MeetupChat 
+                        aria-label="meetup-chat" 
+                        meetup={meetup} 
+                        hideChat={this.toggleChat}
+                    />
+                }
             </div>
         )
     }

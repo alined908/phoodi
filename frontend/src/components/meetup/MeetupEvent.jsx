@@ -57,10 +57,6 @@ class MeetupEvent extends Component {
         this.setState({searchOpen: !this.state.searchOpen})
     }
 
-    handleSearchValue = (e) => {
-        this.setState({searchInput: e.target.value})
-    }
-
     handleSearchValueClick = (e, value) => {
         if (value !== null){
             if (this.isRestaurantOptionAlready(value)){
@@ -168,7 +164,7 @@ class MeetupEvent extends Component {
                 <div className={styles.eventActions}>
                     {(!this.props.chosen) &&
                         <Tooltip title="Add Option">
-                            <IconButton style={{color: "#4caf50"}} onClick={this.handleSearchOption}>
+                            <IconButton style={{color: "#4caf50"}} aria-label="add-option" onClick={this.handleSearchOption}>
                                 <SearchIcon/>
                             </IconButton>
                         </Tooltip>
@@ -178,8 +174,12 @@ class MeetupEvent extends Component {
                             <Tooltip title="Reload">
                                 <div style={{width: 48, minHeight: 48}}>
                                     <ProgressIcon 
-                                        disabled={false} icon={<CachedIcon />} ariaLabel="reload" check={false}
-                                        color="primary" handleClick={() => this.handleReload()} 
+                                        disabled={false} 
+                                        icon={<CachedIcon />} 
+                                        ariaLabel="reload" 
+                                        check={false}
+                                        color="primary" 
+                                        handleClick={() => this.handleReload()} 
                                     />
                                 </div>
                             </Tooltip>
@@ -193,7 +193,10 @@ class MeetupEvent extends Component {
                     </Tooltip>
                     {this.state.editMeetupEventForm && 
                         <MeetupEventForm 
-                            type="edit" event={event.id} uri={this.props.uri} handleClose={this.openEventModal}
+                            type="edit" 
+                            event={event.id}
+                            uri={this.props.uri} 
+                            handleClose={this.openEventModal}
                             open={this.state.editMeetupEventForm}
                         />
                     }
@@ -211,23 +214,35 @@ class MeetupEvent extends Component {
                 <div className={styles.eventDecideActions}>
                     {(!this.props.chosen && Object.keys(event.options).length > 0) && 
                         <Button 
-                            className="button" size="small" variant="contained" 
-                            color="primary" onClick={() => this.handleDecide()}
+                            className="button" 
+                            size="small" 
+                            variant="contained" 
+                            color="primary"
+                            aria-label="decide"
+                            onClick={() => this.handleDecide()}
                         >
                             Decide
                         </Button>
                     }
                     {(!this.props.chosen && Object.keys(event.options).length > 0) && 
                         <Button 
-                            className="button" size="small" variant="contained" 
-                            color="primary" onClick={() => this.handleRandom()}
+                            className="button" 
+                            size="small" 
+                            variant="contained" 
+                            color="primary" 
+                            aria-label="random"
+                            onClick={() => this.handleRandom()}
                         >
                                 Random
                         </Button>}
                     {this.props.chosen && 
                         <Button 
-                            className="button" size="small" variant="contained" 
-                            color="primary" onClick={() => this.handleRedecide()}
+                            className="button" 
+                            size="small" 
+                            variant="contained" 
+                            color="primary" 
+                            aria-label="redecide"
+                            onClick={() => this.handleRedecide()}
                         >
                             Redecide
                         </Button>
@@ -244,9 +259,13 @@ class MeetupEvent extends Component {
                 <div className={styles.chosen}>
                     <Paper className={styles.chosenRestaurant} elevation={3}>
                         <MeetupEventOption 
-                            key={chosen.id} socket={this.props.socket} 
-                            isUserMember={this.props.isUserMember} full={false} 
-                            event={this.props.event.id} meetup={this.props.uri} data={chosen}
+                            key={chosen.id} 
+                            socket={this.props.socket} 
+                            isUserMember={this.props.isUserMember} 
+                            full={false} 
+                            event={this.props.event.id} 
+                            meetup={this.props.uri} 
+                            data={chosen}
                         />
                     </Paper>
                     <Paper className={styles.chosenMap} elevation={3}>
@@ -350,3 +369,5 @@ const mapDispatchToProps = {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps), 
   )(MeetupEvent)
+
+export{MeetupEvent as UnderlyingMeetupEvent}

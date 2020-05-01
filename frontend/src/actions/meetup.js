@@ -130,13 +130,14 @@ export const handleLeaveMeetup = (uri, email, userEmail) => async dispatch => {
     }
 }
 
-export const handlePublicMeetupJoin = (uri, email) => async dispatch => {
+export const handlePublicMeetupJoin = (uri, email, callback) => async dispatch => {
     try {
         await axiosClient.post(
             `/api/meetups/${uri}/members/`, {email}, {headers: {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
         }})
         dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "success", message: "Successfully joined meetup"}})
+        callback()
     }
     catch(e){
         dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Not able to join this meetup"}})

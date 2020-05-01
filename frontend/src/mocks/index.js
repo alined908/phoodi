@@ -174,6 +174,15 @@ export const meetup = {
     }
 }
 
+export const privateMeetup = {
+    uri2: {
+        ...meetup.uri,
+        id: 2,
+        uri: "uri2",
+        public: false
+    }
+}
+
 export const meetupWithoutCategories = {
     uri: {
         id: 1, 
@@ -223,7 +232,7 @@ export const option = {
         id: 1,
         score: 0,
         option: null,
-        restaurant: {},
+        restaurant: {identifier: "rst"},
         votes: {},
         banned: false
     }

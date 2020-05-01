@@ -98,7 +98,7 @@ exports[`Meetups tests renders without crashing 1`] = `
           disabled={false}
           displayFormat="MMM DD"
           enableOutsideDays={false}
-          endDate={"2020-05-07T16:16:40.771Z"}
+          endDate={"2020-05-08T12:52:47.507Z"}
           endDateId="unique_end_date_id"
           endDatePlaceholderText="End Date"
           firstDayOfWeek={null}
@@ -178,7 +178,7 @@ exports[`Meetups tests renders without crashing 1`] = `
           showClearDates={false}
           showDefaultInputIcon={true}
           small={true}
-          startDate={"2020-04-30T16:16:40.771Z"}
+          startDate={"2020-05-01T12:52:47.507Z"}
           startDateId="unique_start_date_id"
           startDatePlaceholderText="Start Date"
           verticalHeight={null}
@@ -204,6 +204,7 @@ exports[`Meetups tests renders without crashing 1`] = `
           title="Public Meetups"
         >
           <WithStyles(ForwardRef(IconButton))
+            aria-label="public-meetups"
             color="primary"
             edge="end"
             onClick={[Function]}
@@ -215,6 +216,7 @@ exports[`Meetups tests renders without crashing 1`] = `
           title="Your Meetups"
         >
           <WithStyles(ForwardRef(IconButton))
+            aria-label="private-meetups"
             color="default"
             onClick={[Function]}
           >
@@ -244,6 +246,7 @@ exports[`Meetups tests renders without crashing 1`] = `
         title="Add Meetup"
       >
         <WithStyles(ForwardRef(IconButton))
+          aria-label="add-meetup"
           onClick={[Function]}
           style={
             Object {
@@ -305,7 +308,7 @@ exports[`Meetups tests renders without crashing 1`] = `
                       "id": 1,
                       "last_name": "Lee",
                     },
-                    "date": "2020-04-30",
+                    "date": "2020-05-01",
                     "events": Object {},
                     "id": 1,
                     "isMeetupEventsInitialized": true,
@@ -342,6 +345,82 @@ exports[`Meetups tests renders without crashing 1`] = `
                     "notifs": 0,
                     "public": true,
                     "uri": "uri",
+                  }
+                }
+              />
+            </div>
+          </ForwardRef(Grow)>
+        </WithStyles(ForwardRef(Grid))>
+        <WithStyles(ForwardRef(Grid))
+          item={true}
+          key="2"
+          lg={6}
+          xl={4}
+          xs={12}
+        >
+          <ForwardRef(Grow)
+            in={true}
+            timeout={500}
+          >
+            <div
+              className="meetups-cardwrapper"
+            >
+              <MeetupCard
+                key="2"
+                meetup={
+                  Object {
+                    "categories": Array [
+                      Object {
+                        "api_label": "desserts",
+                        "id": 1,
+                        "image": null,
+                        "label": "Dessert",
+                      },
+                    ],
+                    "creator": Object {
+                      "avatar": null,
+                      "email": "daniel@gmail.com",
+                      "first_name": "Daniel",
+                      "id": 1,
+                      "last_name": "Lee",
+                    },
+                    "date": "2020-05-01",
+                    "events": Object {},
+                    "id": 2,
+                    "isMeetupEventsInitialized": true,
+                    "latitude": 34.228754,
+                    "location": "location",
+                    "longitude": -118.2351192,
+                    "members": Object {
+                      "1": Object {
+                        "admin": true,
+                        "ban": false,
+                        "id": 1,
+                        "user": Object {
+                          "avatar": null,
+                          "email": "daniel@gmail.com",
+                          "first_name": "Daniel",
+                          "id": 1,
+                          "last_name": "Lee",
+                        },
+                      },
+                      "2": Object {
+                        "admin": false,
+                        "ban": false,
+                        "id": 2,
+                        "user": Object {
+                          "avatar": null,
+                          "email": "example2@gmail.com",
+                          "first_name": "Bob",
+                          "id": 2,
+                          "last_name": "Jim",
+                        },
+                      },
+                    },
+                    "name": "Meetup",
+                    "notifs": 0,
+                    "public": false,
+                    "uri": "uri2",
                   }
                 }
               />
