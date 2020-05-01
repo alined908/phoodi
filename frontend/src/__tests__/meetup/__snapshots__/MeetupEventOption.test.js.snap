@@ -1,0 +1,184 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MeetupWrapper tests should render without crashing 1`] = `
+<div
+  className="center"
+>
+  <WithStyles(ForwardRef(Paper))
+    className="rstWrapper "
+    elevation={3}
+  >
+    <div
+      className="deleteOption"
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(Tooltip))
+        title="Delete Option"
+      >
+        <CloseIcon
+          color="secondary"
+          fontSize="small"
+        />
+      </WithStyles(ForwardRef(Tooltip))>
+    </div>
+    <div
+      className="previewOption"
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(Tooltip))
+        title="Preview Option"
+      >
+        <ZoomInIcon
+          color="primary"
+          fontSize="small"
+        />
+      </WithStyles(ForwardRef(Tooltip))>
+    </div>
+    <div
+      className="yelpOption"
+    >
+      <WithStyles(ForwardRef(Tooltip))
+        title="Yelp Page"
+      >
+        <a
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <LaunchIcon
+            color="primary"
+            fontSize="small"
+          />
+        </a>
+      </WithStyles(ForwardRef(Tooltip))>
+    </div>
+    <div
+      className="rst"
+    >
+      <div
+        className="rstInfo"
+      >
+        <span>
+          <WithStyles(ForwardRef(Tooltip))
+            placement="top"
+            title="Go To Restaurant Page"
+          >
+            <Link
+              to="/restaurants/undefined"
+            >
+               
+              <LaunchIcon
+                fontSize="inherit"
+              />
+            </Link>
+          </WithStyles(ForwardRef(Tooltip))>
+        </span>
+        <span
+          className="rstRating"
+        >
+          <StarHalfIcon
+            fontSize="inherit"
+          />
+        </span>
+      </div>
+      <div
+        className="rstImg"
+        style={
+          Object {
+            "backgroundImage": "url(undefined)",
+          }
+        }
+      />
+    </div>
+    <div
+      className="rstCategories"
+    >
+      $
+       •
+      <div
+        className="categoryChip"
+        key="1"
+      >
+        <WithStyles(ForwardRef(Avatar))
+          src="undefineddesserts.png"
+          style={
+            Object {
+              "height": 20,
+              "width": 20,
+            }
+          }
+          variant="square"
+        >
+          <img
+            alt="&#9787;"
+            src="https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png"
+            style={
+              Object {
+                "height": 20,
+                "width": 20,
+              }
+            }
+          />
+        </WithStyles(ForwardRef(Avatar))>
+        Dessert
+      </div>
+    </div>
+    <div
+      className="rstActions"
+    >
+      <div
+        className="rstActionIcon "
+      >
+        <WithStyles(ForwardRef(Tooltip))
+          title="Like"
+        >
+          <ThumbUpOutlinedIcon
+            className="clickable"
+            disabled={false}
+            onClick={[Function]}
+          />
+        </WithStyles(ForwardRef(Tooltip))>
+        <span
+          className="rstActionScore"
+        >
+          0
+        </span>
+      </div>
+      <div
+        className="rstActionIcon "
+      >
+        <WithStyles(ForwardRef(Tooltip))
+          title="Dislike"
+        >
+          <ThumbDownOutlinedIcon
+            className="clickable"
+            disabled={false}
+            onClick={[Function]}
+          />
+        </WithStyles(ForwardRef(Tooltip))>
+        <span
+          className="rstActionScore"
+        >
+          0
+        </span>
+      </div>
+      <div
+        className="rstActionIcon "
+      >
+        <WithStyles(ForwardRef(Tooltip))
+          title="Ban"
+        >
+          <CancelOutlinedIcon
+            className="clickable"
+            onClick={[Function]}
+          />
+        </WithStyles(ForwardRef(Tooltip))>
+        <span
+          className="rstActionScore"
+        >
+          0
+        </span>
+      </div>
+    </div>
+  </WithStyles(ForwardRef(Paper))>
+</div>
+`;

@@ -26,9 +26,9 @@ exports[`MeetupEvent tests general renders without crashing 1`] = `
           className="headerIcons"
         >
           <ScheduleIcon />
-          6:07 AM
+          6:21 AM
            - 
-          6:07 AM
+          6:21 AM
         </div>
         <div
           className="headerIcons"

@@ -135,9 +135,12 @@ class MeetupEvent extends Component {
                             {keys.map((key, index) => 
                                 <Grid key={key} item id={`option-${key}`} justify={index % 2 === 0 ? "flex-end" : "flex-start"} container xs={12} md={6} sm={12}>
                                     <MeetupEventOption
-                                        socket={this.props.socket} full={true} 
-                                        isUserMember={this.props.isUserMember} event={this.props.event.id} 
-                                        meetup={this.props.uri} data={options[key]}
+                                        socket={this.props.socket} 
+                                        full={true} 
+                                        isUserMember={this.props.isUserMember}
+                                        event={this.props.event.id} 
+                                        meetup={this.props.uri} 
+                                        optionId={key}
                                     />
                                 </Grid>
                             )}

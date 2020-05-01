@@ -227,14 +227,20 @@ export const chosenEvent = {
 }
 export const events = {...event}
 
+export const restaurant = {}
+
 export const option = {
     1 : {
         id: 1,
         score: 0,
         option: null,
-        restaurant: {identifier: "rst"},
+        restaurant: {
+            identifier: "rst",
+            categories: [{category}],
+            price: '$'
+        },
         votes: {},
-        banned: false
+        banned: false,
     }
 }
 

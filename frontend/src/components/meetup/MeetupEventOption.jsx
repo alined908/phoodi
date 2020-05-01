@@ -277,7 +277,7 @@ MeetupEventOption.propTypes = {
 
 function mapStateToProps(state, props) { 
     return {
-        option: state.meetup.meetups[props.meetup].events[props.event].options[props.data.id],
+        option: state.meetup.meetups[props.meetup].events[props.event].options[props.optionId],
         members: state.meetup.meetups[props.meetup].members,
         user: state.user.user
     }
