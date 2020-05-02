@@ -29,7 +29,7 @@ export default class WebSocketService {
         this.socketRef.onmessage = e => {
             console.log("Step 2 - Channel sends message from backend")
             this.socketNewMessage(e.data);
-          };
+        };
 
         this.socketRef.onopen = () => {
             console.log("WebSocket open");

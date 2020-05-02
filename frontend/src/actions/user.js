@@ -6,6 +6,7 @@ import {parseJWT} from '../constants/helpers'
 
 export const signup = (formProps, redirectOnSuccess) => async dispatch => {
     try {
+        console.log(...formProps)
         const response = await axiosClient.post('/api/users/', 
             formProps, {headers: {"Content-Type": 'multipart/form-data'
         }})
@@ -16,6 +17,7 @@ export const signup = (formProps, redirectOnSuccess) => async dispatch => {
         redirectOnSuccess();
     }
     catch (e){
+        console.log(e.response)
         dispatch({type: types.SIGNUP_ERROR, payload: e.response.data.error})
     }
 }

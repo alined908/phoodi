@@ -69,7 +69,7 @@ class MeetupEventOption extends Component {
         if (!this.props.isUserMember){
             return;
         }
-        var check = true;
+        let check = true;
 
         if (status === voteStatus.ban && !this.props.option.banned && this.props.members[this.props.user.id].ban){
             this.props.dispatch({type: ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Already used ban"}})

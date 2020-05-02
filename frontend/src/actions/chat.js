@@ -23,6 +23,7 @@ export const getRooms = () => async dispatch => {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
             }}
         )
+        console.log(response.data)
         dispatch({type: types.GET_ROOMS_SUCCESS, payload: response.data})
     } catch(e){
         dispatch({type: types.GET_ROOMS_ERROR, payload: "Unable to get chat rooms."})

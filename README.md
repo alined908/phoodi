@@ -99,7 +99,6 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo User
 - [ ] Email activation
-- [ ] Forgot/Reset password
 
 ## Todo UI/UX/CleanUp
 - [ ] Swap out of material ui (maybe tailwind?)

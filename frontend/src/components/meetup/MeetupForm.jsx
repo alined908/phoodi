@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {reduxForm, Field} from 'redux-form';
 import {compose} from 'redux';
 import {Button, Grid, Radio, DialogContent,
-    FormControlLabel, Dialog, DialogActions, DialogTitle} from '@material-ui/core';
+    FormControlLabel, Dialog, DialogActions, DialogTitle, CircularProgress} from '@material-ui/core';
 import {addMeetup, editMeetup, getMeetup} from "../../actions";
 import {renderTextField, renderDateSimplePicker, Location} from '../components'
 import styles from "../../styles/form.module.css"
@@ -40,7 +40,7 @@ class MeetupForm extends Component {
                 location: "", latitude: null, 
                 longitude: null, public: false
             }
-        this.state = values
+        this.state = {...values, isSubmitting: false}
         this.handleClick = this.handleClick.bind(this)
     }
 
@@ -53,19 +53,21 @@ class MeetupForm extends Component {
         }   
     }
 
-    onSubmit = (formProps) => {
+    onSubmit = async (formProps) => {
+        this.setState({isSubmitting: true})
         let data = {...formProps, location: this.state.location, public: this.state.public, longitude: this.state.longitude, latitude: this.state.latitude}
 
         if (this.props.type === "create") {
-            this.props.addMeetup(data, (uri) => {
+            await this.props.addMeetup(data, (uri) => {
                 history.push(`/meetups/${uri}`)
             })
         }
         
         if (this.props.type === "edit"){
-            this.props.editMeetup(data, this.props.meetup.uri)
+            await this.props.editMeetup(data, this.props.meetup.uri)
         }
-        this.props.handleClose()
+        await this.props.handleClose()
+        this.setState({isSubmitting: false})
     }
 
     handleClick = (e, value) => {
@@ -145,9 +147,17 @@ class MeetupForm extends Component {
                         <Button onClick={this.props.handleClose} color="secondary" disabled={submitting}>
                             Close
                         </Button>
-                        <Button type="submit" color="primary" aria-label="add" disabled={invalid || submitting || (this.state.location.length === 0 || !this.state.latitude)}>
-                            {create ? "Add Meetup" : "Edit Meetup"}
-                        </Button>
+                        <div className={styles.loading}>
+                            <Button 
+                                type="submit" 
+                                color="primary" 
+                                aria-label="add" 
+                                disabled={invalid || submitting || (this.state.location.length === 0 || !this.state.latitude)}
+                            >
+                                {create ? "Add Meetup" : "Edit Meetup"}
+                            </Button>
+                            {this.state.isSubmitting && <CircularProgress size={20} className={styles.progress}/>}
+                        </div>
                     </DialogActions>
                 </form>
             </Dialog>

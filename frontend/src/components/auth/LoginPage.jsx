@@ -91,7 +91,7 @@ class LoginPage extends Component {
                         <div className={styles.action}>
                             Forgot Password?
                             <span className={styles.link}>
-                                Recover
+                                <Link to="/password/reset">Reset</Link>
                             </span>
                         </div>
                     </div>

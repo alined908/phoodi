@@ -60,11 +60,8 @@ AUTHENTICATION_BACKENDS = (
 )
   
 CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',
     'http://localhost:8003',
-    'https://localhost:8003',
     'http://localhost',
-    'https://localhost',
     'https://phoodie.me',
     'https://www.phoodie.me'
 )
@@ -79,7 +76,11 @@ SIMPLE_JWT = {
 DJOSER = {
     'SET_PASSWORD_RETYPE': True,
     'SET_USERNAME_RETYPE': True,
-    'TOKEN_MODEL': None
+    'TOKEN_MODEL': None,
+    'PASSWORD_RESET_CONFIRM_RETYPE': True,
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/{uid}/{token}'
+    # 'SEND_ACTIVATION_EMAIL': True,
+    # 'ACTIVATION_URL': '#/activate/{uid}/{token}'
 }
 
 AUTH_USER_MODEL = 'meetup.User'
@@ -151,12 +152,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+DOMAIN = "localhost:8003"
+SITE_NAME = 'Phoodi'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = os.environ.get("EMAIL_HOST")
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv('SENDGRID_API_KEY')
 EMAIL_PORT = os.environ.get("EMAIL_PORT")
+DEFAULT_FROM_EMAIL = 'team@phoodie.me'
+SERVER_EMAIL = 'team@phoodie.me'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

@@ -57,8 +57,8 @@ class RegisterPage extends Component {
         }
         if (this.state.image !== null) {
             data.append('avatar', this.state.image, this.state.image.name)
-        }   
-
+        } 
+        
         let redirect;
         if (this.props.location.state && this.props.location.state.from) {
             redirect = () => {

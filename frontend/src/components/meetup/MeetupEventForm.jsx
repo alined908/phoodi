@@ -120,8 +120,8 @@ class MeetupEventForm extends Component {
                 this.props.addGlobalMessage("error", "Something went wrong")
             }
         }
-        this.setState({isSubmitting: false})
         this.props.handleClose()
+        this.setState({isSubmitting: false})
     }
 
     handlePrice = (price) => {

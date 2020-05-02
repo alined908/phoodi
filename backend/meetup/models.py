@@ -28,7 +28,7 @@ def generate_unique_uri():
     return str(uuid4()).replace('-', '')[:15]
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, first_name, last_name, avatar, is_staff=False, is_admin=False, password=None, **kwargs):
+    def create_user(self, email, first_name, last_name, avatar = None, is_staff=False, is_admin=False, password=None, **kwargs):
         if not email:
             raise ValueError("Users must have an email address")
         if not password:
@@ -43,24 +43,24 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
     
-    def create_staffuser(self, email, first_name, last_name, avatar, password=None, **kwargs):
+    def create_staffuser(self, email, first_name, last_name, avatar = None, password=None, **kwargs):
         return self.create_user(email, first_name, last_name, avatar, True, False, password)
         
-    def create_superuser(self, email, first_name, last_name, avatar, password=None, **kwargs):
+    def create_superuser(self, email, first_name, last_name, avatar = None, password=None, **kwargs):
         return self.create_user(email, first_name, last_name, avatar, True, True, password)
 
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True, max_length=255)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
     staff = models.BooleanField(default=False)
     confirmed = models.BooleanField(default =False)
     avatar = models.ImageField(blank=True, null=True, upload_to=path_and_rename_avatar)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'avatar']
 
     objects = UserManager()
 
