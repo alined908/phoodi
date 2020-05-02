@@ -78,9 +78,9 @@ DJOSER = {
     'SET_USERNAME_RETYPE': True,
     'TOKEN_MODEL': None,
     'PASSWORD_RESET_CONFIRM_RETYPE': True,
-    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/{uid}/{token}'
-    # 'SEND_ACTIVATION_EMAIL': True,
-    # 'ACTIVATION_URL': '#/activate/{uid}/{token}'
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'ACTIVATION_URL': 'activate/{uid}/{token}'
 }
 
 AUTH_USER_MODEL = 'meetup.User'

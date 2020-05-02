@@ -97,9 +97,6 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo Authentication
 - [ ] Don't allow websocket to send event even after refresh token expire
 
-## Todo User
-- [ ] Email activation
-
 ## Todo UI/UX/CleanUp
 - [ ] Swap out of material ui (maybe tailwind?)
 - [ ] swap skeleton from meetupcard

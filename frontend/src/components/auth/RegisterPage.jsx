@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {reduxForm, Field} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {signup, editUser} from "../../actions"
+import {signup, editUser, removeSuccessMessage} from "../../actions"
 import {Paper, Grid, Fab, Button, Avatar, Dialog, DialogActions, DialogTitle, DialogContent} from '@material-ui/core';
 import {ReactComponent as Together} from "../../assets/svgs/undraw_eattogether.svg"
 import {ReactComponent as Bamboo} from "../../assets/svgs/bamboo-dark.svg"
@@ -14,6 +14,7 @@ import {Link} from "react-router-dom"
 import PropTypes from "prop-types"
 import {userPropType} from "../../constants/prop-types"
 import styles from "../../styles/form.module.css"
+import {Helmet} from "react-helmet"
 
 const validate = values => {
     const errors = {}
@@ -58,7 +59,7 @@ class RegisterPage extends Component {
         if (this.state.image !== null) {
             data.append('avatar', this.state.image, this.state.image.name)
         } 
-        
+
         let redirect;
         if (this.props.location.state && this.props.location.state.from) {
             redirect = () => {
@@ -77,6 +78,10 @@ class RegisterPage extends Component {
             this.props.editUser(data, this.props.user.id, () => this.props.handleClose())
         }
        
+    }
+
+    componentWillUnmount(){
+        this.props.removeSuccessMessage()
     }
 
     handleImageChange = (e) => {
@@ -101,6 +106,12 @@ class RegisterPage extends Component {
             <>
                 {create ? 
                     <Paper className={styles.container} elevation={8}>
+                        <Helmet>
+                            <meta charSet="utf-8" />
+                            <title>
+                                Register
+                            </title>
+                        </Helmet>
                         <div className={styles.left}>
                             <Together height="70%" width="70%"/>
                         </div>
@@ -132,7 +143,16 @@ class RegisterPage extends Component {
                                     </Grid> 
                                     {this.props.errorMessage && 
                                         <Grid item xs={12}>
-                                            <div className="error-message">{this.props.errorMessage}</div>
+                                            <div className={styles.error}>
+                                                {this.props.errorMessage}
+                                            </div>
+                                        </Grid>
+                                    }
+                                    {this.props.successMessage && 
+                                        <Grid item xs={12}>
+                                            <div className={styles.success}>
+                                                {this.props.successMessage}
+                                            </div>
                                         </Grid>
                                     }
                                 </Grid>
@@ -237,14 +257,16 @@ function mapStatetoProps(state, ownProps) {
         }
     } else {
         return {
-            errorMessage: state.user.signupErrorMessage
+            errorMessage: state.user.signupErrorMessage,
+            successMessage: state.user.signupSuccessMessage
         }
     }
 }
 
 const mapDispatchToProps = {
     signup,
-    editUser
+    editUser,
+    removeSuccessMessage
 }
 
 export default compose (

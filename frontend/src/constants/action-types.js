@@ -1,5 +1,6 @@
 //User
 export const AUTH_USER = 'auth_user';
+export const SIGNUP_SUCCESS = 'signup_success';
 export const SIGNUP_ERROR = 'signup_error';
 export const LOGIN_ERROR = 'login_error'
 export const CLEAR_STORE= 'clear_store'

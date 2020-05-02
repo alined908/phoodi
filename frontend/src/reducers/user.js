@@ -5,6 +5,8 @@ export default function(state = userDefaultState, action){
     switch(action.type){
         case types.AUTH_USER:
             return {...state, authenticated: action.payload.access, user: action.payload.user};
+        case types.SIGNUP_SUCCESS:
+            return {...state, signupSuccessMessage: action.payload}
         case types.SIGNUP_ERROR:
             return {...state, signupErrorMessage: action.payload}
         case types.LOGIN_ERROR:

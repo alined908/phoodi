@@ -5,6 +5,7 @@ import LogoutPage from "./auth/LogoutPage";
 import RegisterPage from "./auth/RegisterPage";
 import PasswordResetPage from "./auth/PasswordResetPage"
 import PasswordResetConfirmPage from './auth/PasswordResetConfirmPage'
+import EmailActivationPage from './auth/EmailActivationPage'
 
 //Chat
 import ChatBar from "./chat/ChatBar"
@@ -78,7 +79,7 @@ import Comments from "./restaurant/Comments"
 import Comment from "./restaurant/Comment"
 
 export {
-    ErrorPage, LoginPage, LogoutPage, RegisterPage, PasswordResetPage, PasswordResetConfirmPage,
+    ErrorPage, LoginPage, LogoutPage, RegisterPage, PasswordResetPage, PasswordResetConfirmPage, EmailActivationPage,
     ChatBar, Chat, ChatMessage, ChatWindow, Contact, ChatInput,
     Friend, Friends, Invite, Invites,
     Meetup, MeetupChat, MeetupCard, MeetupEvent, MeetupEventForm, MeetupFriend, MeetupForm, MeetupWrapper, Meetups, MeetupTree, MeetupEventOption,

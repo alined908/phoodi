@@ -6,19 +6,22 @@ import {parseJWT} from '../constants/helpers'
 
 export const signup = (formProps, redirectOnSuccess) => async dispatch => {
     try {
-        console.log(...formProps)
-        const response = await axiosClient.post('/api/users/', 
+        const response = await axiosClient.post('/auth/users/', 
             formProps, {headers: {"Content-Type": 'multipart/form-data'
         }})
-        const decoded = parseJWT(response.data.access)
-        AuthenticationService.registerSuccessfulLogin(response.data.access, response.data.refresh)
-        localStorage.setItem("user", JSON.stringify(decoded.user))
-        dispatch({type: types.AUTH_USER, payload: {access: response.data.access, user: decoded.user}});
-        redirectOnSuccess();
+        console.log(response.data)
+        dispatch({type: types.SIGNUP_SUCCESS, payload: "Your account has been registered. Complete signup by activating account in email."})
+        // const decoded = parseJWT(response.data.access)
+        // AuthenticationService.registerSuccessfulLogin(response.data.access, response.data.refresh)
+        // localStorage.setItem("user", JSON.stringify(decoded.user))
+        // dispatch({type: types.AUTH_USER, payload: {access: response.data.access, user: decoded.user}});
+        // redirectOnSuccess();
     }
     catch (e){
         console.log(e.response)
-        dispatch({type: types.SIGNUP_ERROR, payload: e.response.data.error})
+        const firstKey = Object.keys(e.response.data)[0];
+        const errorMessage = e.response.data[firstKey][0]
+        dispatch({type: types.SIGNUP_ERROR, payload: errorMessage})
     }
 }
 
@@ -69,6 +72,12 @@ export const refreshToken = (dispatch) => {
     dispatch({type: types.REFRESHING_TOKEN, payload: freshTokenPromise});
 
     return freshTokenPromise;
+}
+
+export const removeSuccessMessage = () => {
+    return {
+        type: types.SIGNUP_SUCCESS, payload: ""
+    }
 }
 
 export const addSettings = (data) => async dispatch => {

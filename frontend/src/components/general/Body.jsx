@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Route, Switch} from 'react-router-dom';
 import {LogoutPage, ErrorPage, RegisterPage, Chat, Meetups, HomeComponent, Categories, Calendar, Category,
     MeetupWrapper, Friends, LoginPage, Invites, Profile, GlobalMessage, 
-    Settings, Restaurant, PasswordResetPage, PasswordResetConfirmPage
+    Settings, Restaurant, PasswordResetPage, PasswordResetConfirmPage, EmailActivationPage
 } from "../components"
 import AuthenticatedRoute from "../../accounts/AuthenticatedRoute";
 import UnAuthenticatedRoute from "../../accounts/UnAuthenticatedRoute";
@@ -13,6 +13,7 @@ class Body extends Component {
             <div className="c">
                 <Switch>
                     <Route path="/" exact component={HomeComponent}/>
+                    <UnAuthenticatedRoute path="/activate/:uid/:token" component={EmailActivationPage}/>
                     <UnAuthenticatedRoute path="/password/reset/:uid/:token" component={PasswordResetConfirmPage}/>
                     <UnAuthenticatedRoute path="/password/reset" exact component={PasswordResetPage}/>
                     <UnAuthenticatedRoute path="/login" component={LoginPage}/>

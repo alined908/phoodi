@@ -12,6 +12,7 @@ import {ReactComponent as Google} from "../../assets/svgs/google.svg"
 import {ReactComponent as Facebook} from "../../assets/svgs/facebook.svg"
 import {ReactComponent as Twitter} from "../../assets/svgs/twitter.svg"
 import styles from "../../styles/form.module.css"
+import {Helmet} from 'react-helmet'
 import PropTypes from "prop-types"
 
 class LoginPage extends Component {
@@ -35,6 +36,12 @@ class LoginPage extends Component {
         
         return (
             <Paper className={styles.container} elevation={8}>
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>
+                        Login
+                    </title>
+                </Helmet>
                 <div className={styles.left}>
                     <Fan height="70%" width="70%"/>
                 </div>
