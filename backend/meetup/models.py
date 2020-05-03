@@ -10,7 +10,6 @@ from uuid import uuid4
 from django.core.exceptions import ObjectDoesNotExist
 import requests, random, json, sys, time, os, geocoder, datetime, re
 from django.contrib.postgres.fields import JSONField, ArrayField
-from rest_framework_jwt.settings import api_settings
 from django.db import transaction
 from django.db.models import F, Q
 from django.db.models.expressions import RawSQL

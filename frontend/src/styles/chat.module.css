@@ -1,9 +1,9 @@
 /* Chat */
 .chat {
   display: grid;
-  grid-template-columns: repeat(30, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   grid-template-areas: 
-    "column-1 column-1 column-1 column-1 column-1 column-1 column-1 . column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2 column-2";
+    "column-1 column-1 column-2 column-2 column-2 column-2 column-2";
   width: 75%;
   margin: auto;
   height: 90%;
@@ -15,7 +15,7 @@
     background-color: #ffffff;
     color: black;
     grid-area: column-1;
-    border-radius: 5px;
+    border-right: 1px solid var(--border-color-grey);
     overflow-y: auto;
 }
 
@@ -24,14 +24,14 @@
     align-items: center;
     justify-content: space-between;
     padding: .75rem 1rem;
-    border-bottom: 1px solid #edf0f6;
+    border-bottom: 1px solid var(--border-color-grey);
     height: 60px;
     font-size: 18px;
     background: var(--bg-color);
 }
 
 .contacts{
-    height: calc(100% - 60px - 62px);
+    height: calc(100% - 60px - 63px);
     overflow-y: auto;
     overflow-x: hidden;
     background-color: white;
@@ -41,6 +41,7 @@
     display:flex;
     align-items: center;
     background: var(--bg-color);
+    border-top: 1px solid var(--border-color-grey);
     margin-top: auto;
     width: 100%;
     padding: 0 1rem;
@@ -51,7 +52,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: .5rem 1rem;
+    padding: 1rem;
     border-bottom: 1px solid #edf0f6;
 }
 
@@ -117,7 +118,7 @@
 }
 
 .messagesWrapper{
-    height: calc(100% - 60px - 62px);
+    height: calc(100% - 60px - 63px);
     overflow-y: auto;
     display:flex; 
     flex-direction:column-reverse;
@@ -202,6 +203,7 @@
     padding: 0 .5rem;
     background: var(--bg-color);
     position: relative;
+    border-top: 1px solid var(--border-color-grey);
 }
 
 .input{

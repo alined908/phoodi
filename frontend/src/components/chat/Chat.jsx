@@ -66,7 +66,7 @@ class Chat extends Component {
         }
 
         return (
-            <div className={`${styles.chat}` + (this.state.nonMobile ? "" : "chat-mobile")}>
+            <div className={`elevate ${styles.chat}` + (this.state.nonMobile ? "" : "chat-mobile")}>
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>Chat</title>

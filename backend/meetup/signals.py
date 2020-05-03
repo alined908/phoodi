@@ -25,6 +25,7 @@ def get_user():
 @receiver(pre_save, sender = Meetup)
 def set_notification_for_meetup(sender, instance, **kwargs):
     if instance.id:
+        print(instance.id)
         previous = Meetup.objects.get(pk=instance.id)
         potential_changes = []
 
