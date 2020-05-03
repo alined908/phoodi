@@ -83,7 +83,7 @@ class ChatInput extends Component {
 
     render(){
         return (
-            <>
+            <div className={styles.inputPadding}>
                 <form className={styles.inputForm}>
                     <input className={styles.input}
                         type="text"
@@ -122,7 +122,7 @@ class ChatInput extends Component {
                         Send
                     </Button>
                 </div>
-            </>
+            </div>
         )
     }
 }

@@ -12,7 +12,8 @@ class Chat extends Component {
         super(props)
         this.state = {
             socket: new WebSocketService(),
-            nonMobile: window.matchMedia("(min-width: 768px)").matches
+            nonMobile: window.matchMedia("(min-width: 768px)").matches,
+            showChat: this.props.match.params.uri ? true : false
         }
         this.state.socket.addChatCallbacks(this.props.getMessages, this.props.addMessage)
     }
@@ -53,27 +54,61 @@ class Chat extends Component {
         this.props.getMessages(uri);
     }
 
-    render(){
-        const renderChatWindow = () => {
-            if (this.props.isMessagesInitialized || this.props.isMessagesFetching) {
-                return <ChatWindow
-                            socket={this.state.socket} isMessagesInitialized={this.props.isMessagesInitialized} 
-                            activeRoom={this.props.activeRoom} messages={this.props.messages}
-                        />
-            } else {
-                return <ChatWindow socket={this.state.socket} activeRoom={null} messages={[]}/>
-            }
-        }
+    handleChatMobileHide = () => {
+        this.setState({showChat: false})
+    }
 
+    handleChatMobileShow = () => {
+        console.log('this reached')
+        this.setState({showChat: true})
+    }
+
+    render(){
         return (
-            <div className={`elevate ${styles.chat}` + (this.state.nonMobile ? "" : "chat-mobile")}>
+            <div className={`${styles.chat} ${this.state.nonMobile ? "" : styles.chatMobile}`}>
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>Chat</title>
                     <meta name="description" content="Phoodie Chat" />
                 </Helmet>
-                <ChatBar rooms={this.props.rooms}/>
-                {renderChatWindow()}
+                
+                {(this.props.isMessagesInitialized || this.props.isMessagesFetching) ? 
+                    <>
+                        <ChatBar
+                            show={!this.state.showChat}
+                            onShow={this.handleChatMobileShow} 
+                            rooms={this.props.rooms} 
+                            mobile={!this.state.nonMobile}
+                            activeRoom={this.props.activeRoom} 
+                        />
+                        <ChatWindow
+                            show={this.state.showChat}
+                            onHide={this.handleChatMobileHide}
+                            mobile={!this.state.nonMobile}
+                            socket={this.state.socket}
+                            messages={this.props.messages}
+                            activeRoom={this.props.activeRoom} 
+                            isMessagesInitialized={this.props.isMessagesInitialized} 
+                        />
+                    </>
+                    :
+                    <>
+                        <ChatBar
+                            show={!this.state.showChat} 
+                            activeRoom={null} 
+                            rooms={this.props.rooms} 
+                            mobile={!this.state.nonMobile}
+                            onShow={this.handleChatMobileShow} 
+                        />
+                        <ChatWindow 
+                            show={this.state.showChat}
+                            mobile={!this.state.nonMobile}
+                            messages={[]}
+                            activeRoom={null}
+                            socket={this.state.socket} 
+                        />
+                    </>
+                }
             </div>
         )
     }

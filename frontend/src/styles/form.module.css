@@ -152,6 +152,10 @@
     color: #f44336;
 }
 
+.success {
+    color: #006600;
+}
+
 .loading{
     position:relative;
 }

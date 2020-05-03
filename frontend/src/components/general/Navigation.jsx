@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     height: '100%',
-    backgroundColor: "white"
+    backgroundColor: "var(--background)"
   },
   appBar: {
     transition: theme.transitions.create(['margin', 'width'], {
@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     padding: "0 1rem",
-    background: "white",
+    background: 'inherit', boxShadow: 'none'
   },
   hide: {
     display: 'none',
@@ -67,8 +67,6 @@ const useStyles = makeStyles(theme => ({
     color: "black",
     flexGrow: 1,
     marginLeft: '.5rem',
-    fontWeight: "600",
-    fontFamily: "Lato",
   },
   icon: {
     color: "#03396c"
@@ -90,6 +88,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
+    minHeight: '50px !important'
   },
   content: {
     flexGrow: 1,
@@ -101,16 +100,12 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
   },
   primary: {
-    fontWeight: 600,
-    fontFamily: "Lato",
     fontSize: ".9rem"
   },
   self: {
     marginTop: "auto"
   },
   secondary: {
-    fontWeight: 600,
-    fontFamily: "Lato",
     fontSize: ".75rem"
   },
   ellipsis: {

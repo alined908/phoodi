@@ -6,7 +6,9 @@ import moment from "moment"
 import throttle from 'lodash/throttle'
 import { ChatMessage, ChatInput } from "../components"
 import { Button, IconButton, Tooltip, CircularProgress } from '@material-ui/core'
-import { Person as PersonIcon, Event as EventIcon, ExitToApp as ExitToAppIcon } from "@material-ui/icons"
+import { Person as PersonIcon, Event as EventIcon, ExitToApp as ExitToAppIcon,
+    ArrowBackIos as ArrowBackIosIcon
+ } from "@material-ui/icons"
 import { getMoreMessages, removeNotifs } from "../../actions"
 import { chatMessagePropType } from "../../constants/prop-types"
 import styles from '../../styles/chat.module.css'
@@ -79,7 +81,7 @@ class ChatWindow extends Component {
 
         for (var key in this.props.room.members){
             if (key !== user.id.toString()){
-                return this.props.room.members[key].id
+                return this.props.room.members[key]
             }
         }
     }
@@ -110,8 +112,22 @@ class ChatWindow extends Component {
         const messagesByDate = this.groupMessagesByDate(this.props.messages)
 
         return (
-            <div className={styles.window} ref={this.chatsRef}>
+            <div className={`${(this.props.mobile && this.props.activeRoom && this.props.show) ? styles.showChat : ""} ${this.props.meetup ? styles.meetupWindow : styles.window} elevate`} ref={this.chatsRef}>
                 <div className={styles.header}>
+                    {this.props.mobile && this.props.room && 
+                        <> 
+                            <IconButton color="primary" onClick={this.props.onHide}> 
+                                <ArrowBackIosIcon/>
+                            </IconButton> 
+                            <div>
+                                {this.props.room.meetup ? 
+                                    this.props.room.name
+                                : 
+                                    `${this.determineOtherUser().first_name} ${this.determineOtherUser().last_name}`
+                                }
+                            </div>
+                        </>
+                    }
                     {!this.props.meetup && this.props.room && this.props.room.meetup && 
                         <Link to={`/meetups/${this.props.room.uri}`}>
                             <Tooltip title="Go to Meetup">
@@ -122,9 +138,11 @@ class ChatWindow extends Component {
                         </Link>
                     }
                     {!this.props.meetup && this.props.room && this.props.room.friendship && 
-                        <Link to={`/profile/${this.determineOtherUser()}`}>
+                        <Link to={`/profile/${this.determineOtherUser().id}`}>
                             <Tooltip title="Go to Profile">
-                                <Button color="primary" startIcon={<PersonIcon/>}>Profile</Button>
+                                <Button color="primary" startIcon={<PersonIcon/>}>
+                                    Profile
+                                </Button>
                             </Tooltip>
                         </Link>
                     }
@@ -158,7 +176,7 @@ class ChatWindow extends Component {
                                         <span>
                                             This is the beginning of your direct message history with 
                                             <span className={styles.messagesStartHighlight}>
-                                                {this.props.room.members[this.determineOtherUser()].first_name} {this.props.room.members[this.determineOtherUser()].last_name}
+                                                {this.props.room.members[this.determineOtherUser().id].first_name} {this.props.room.members[this.determineOtherUser().id].last_name}
                                             </span>
                                         </span>
                                          : 
@@ -210,7 +228,7 @@ class ChatWindow extends Component {
                             socket={this.props.socket} 
                         />
                     </div> :
-                    <div className={styles.input}> 
+                    <div> 
 
                     </div>
                 }

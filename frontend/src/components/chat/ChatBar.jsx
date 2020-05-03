@@ -96,7 +96,7 @@ class ChatBar extends Component {
         const rooms = this.state.liveRooms
 
         return (
-            <div className={styles.bar}>
+            <div className={`${styles.bar} ${(this.props.mobile && this.props.show) ? styles.showContacts : ""} elevate`}>
                 <div className={styles.barTop}>
                     <div>Contacts</div>
                     <div>
@@ -138,14 +138,16 @@ class ChatBar extends Component {
                             room={room}
                             user={this.props.user} 
                             currentRoom={this.props.currentRoom}
+                            onShow={this.props.onShow}
+                            mobile={this.props.mobile}
                         />
                     )}
                 </div>
                 <div className={styles.search}>
-                    <SearchIcon/>
+                    <SearchIcon color="primary"/>
                     <input 
                         type="text"
-                        className={styles.input} 
+                        className={styles.searchInput} 
                         placeholder="Search Contacts..." 
                         value={this.state.searchInput} 
                         onChange={this.handleSearchInputChange}

@@ -3,7 +3,8 @@
   --bg-color: white;
   --grey-text: rgba(0, 0, 0, 0.54);
   --border-color-grey: #edf0f6;
-  --background: rgb(237,242,247);
+  --background: rgb(245,242,247);
+  --bg-grey: 	#F0F0F0;
 }
 
 ::-webkit-scrollbar{
@@ -31,27 +32,16 @@ html, body, #root, .MeetupApp{
   height: 100%;
 }
 
+body{
+  overflow-x: hidden;
+}
+
 .loading{
   display: flex;
   height: 100%;
   width: 100%;
   justify-content: center;
   align-items: center;
-}
-
-.error-message{
-  color: #9a0036;
-}
-
-.horizontal-form{
-  display: flex;
-  width : 100%;
-  max-width: 400px;
-}
-
-.bar-img{
-  width: 40px;
-  height: 50px;
 }
 
 .App {
@@ -136,7 +126,7 @@ html, body, #root, .MeetupApp{
 .c {
   display: flex;
   justify-content: center;
-  height: calc(100% - 64px);
+  height: calc(100% - 50px);
   width: 100%;
   background-color: var(--background);
 }
@@ -399,10 +389,6 @@ html, body, #root, .MeetupApp{
     padding: 1.5rem;
   }
 
-  .horizontal-form{
-    margin-left: 20px;
-  }
-
   .friends {
     margin-top: 0;
     padding: 1rem 0;
@@ -569,17 +555,4 @@ html, body, #root, .MeetupApp{
     height: 60%;
     padding: 1rem 2rem;
   }
-}
-
-.chat-mobile{
-  min-height: 700px;
-  padding: 1rem 0;
-  height: 90%;
-  width: 90%;
-  grid-template-columns: repeat(1, 1fr);
-  grid-template-areas: "column-1" "column-2"
-}
-
-.chat-mobile .chat-bar{
-  max-height: 400px;
 }

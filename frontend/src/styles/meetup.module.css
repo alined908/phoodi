@@ -469,6 +469,10 @@
     width: 400px;
 }
 
+.meetupChat .header {
+    justify-content: flex-start;
+}
+
 /* MeetupTree */
 
 .tree{

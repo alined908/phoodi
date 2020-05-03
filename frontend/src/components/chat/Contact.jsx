@@ -23,9 +23,12 @@ class Contact extends Component {
      * @param {number} id - Id of room
      */
     handleClick = (id) => {
-        this.setState({notifs: 0}, 
-            () => this.props.removeNotifs({type: "chat_message", id: id})
-        )  
+        this.props.onShow();
+        if (this.state.notifs > 0) {
+            this.setState({notifs: 0}, 
+                () => this.props.removeNotifs({type: "chat_message", id: id})
+            )  
+        }
     }
 
     render (){
@@ -37,7 +40,7 @@ class Contact extends Component {
             <Link 
                 key={room.id} 
                 to={`/chat/${room.uri}`} 
-                onClick={room.notifs > 0 ? () => this.handleClick(room.id): null} 
+                onClick={(room.notifs > 0 || this.props.mobile) ? () => this.handleClick(room.id): null} 
             >
                 <div className={`${styles.contact} ${isCurrentRoom ? styles.currentRoom : ""}`}>
                     <div>

@@ -6,10 +6,11 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import {store} from "../store/index";
 import {createBrowserHistory} from 'history'
-const bold = {fontWeight: 600}
-
 export const history = createBrowserHistory()
 
+const bold = {
+    fontWeight: 600
+}
 const theme = createMuiTheme({
     typography: {
       fontFamily: ['Lato','Roboto','"Helvetica Neue"','Arial','sans-serif'].join(','),
@@ -18,11 +19,6 @@ const theme = createMuiTheme({
       body1:{...bold, fontSize: ".85rem"}, body2: {...bold, fontSize: ".8rem"},
       button:{...bold, fontSize: ".75rem"}
     }, 
-    palette: {
-        primary: {
-            main: "#006600"
-        }
-    },
     overrides: {
         MuiButton:{
             sizeSmall:{
@@ -34,6 +30,12 @@ const theme = createMuiTheme({
                 fontFamily: "Arial",
                 fontSize: "1.15rem"
             } 
+        },
+        MuiTooltip : {
+            tooltip: {
+                backgroundColor: "rgba(16,16,16, .8)",
+                color: "white"
+            }
         }
     }
   });
