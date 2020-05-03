@@ -7,7 +7,7 @@ import {deleteMeetup, getMeetupEvents, addMeetupEvent, sendMeetupEmails, deleteM
 } from '../../actions';
 import {Link} from 'react-router-dom'
 import moment from 'moment';
-import {Grid, Button, Typography, Avatar, List, ListItem, Paper, ListItemText, ListItemAvatar, IconButton, Tooltip, CircularProgress} from "@material-ui/core"
+import {Grid, Button, Typography, Avatar, List, ListItem, ListItemText, ListItemAvatar, IconButton, Tooltip, CircularProgress} from "@material-ui/core"
 import WebSocketService from "../../accounts/WebSocket";
 import {Delete as DeleteIcon, Edit as EditIcon, Room as RoomIcon, Chat as ChatIcon, VerifiedUser as VerifiedUserIcon, 
     Lock as LockIcon, Public as PublicIcon, Email as EmailIcon, Add as AddIcon, Today as TodayIcon, PersonAdd as PersonAddIcon,
@@ -156,7 +156,7 @@ class Meetup extends Component {
         
         const renderInformation = (name, date, location) => {
             return (
-                <Paper className={styles.header} elevation={3}>
+                <div className={`${styles.header} elevate`}>
                     <Typography variant="h5">{name}</Typography>
                     <div className={styles.headerInfo}>
                         <div className={styles.headerIcons} aria-label="meetup-type">
@@ -218,14 +218,19 @@ class Meetup extends Component {
                             aria-label="meetup-form"
                         />
                     }
-                </Paper>
+                </div>
             )
         }
 
         const renderFriends = () => {
             return (
-                <Paper className={styles.shell} elevation={3}>
+                <div className={`${styles.shell} elevate`}>
                     <List className={styles.shellList}>
+                        {this.props.isFriendsFetching && 
+                            <div className="loading">
+                                <CircularProgress/>
+                            </div>
+                        }
                         {this.props.friends.map((friend) => 
                             <MeetupFriend 
                                 key={friend.id} 
@@ -235,14 +240,14 @@ class Meetup extends Component {
                             />
                         )}
                     </List>
-                </Paper>
+                </div>
             )
         }
 
         const renderMembers = (members) => {
     
             return (
-                <Paper className={styles.shell} elevation={3}>
+                <div className={`${styles.shell} elevate`}>
                     <List className={styles.shellList}>
                         {Object.keys(members).map((key) => 
                             <Link key={key} to={`/profile/${members[key].user.id}`}>
@@ -315,7 +320,7 @@ class Meetup extends Component {
                             </Link>
                         )}
                     </List>
-                </Paper>
+                </div>
             )
         }
 
@@ -363,7 +368,7 @@ class Meetup extends Component {
                             {renderInformation(meetup.name, meetup.date, meetup.location)}
                         </Grid>
                         <Grid item xs={12} md={6} id="Members">
-                            <Paper className={styles.header} elevation={3}>
+                            <div className={`${styles.header} elevate`}>
                                 <Typography variant="h5">Members</Typography>
                                 {!isUserMember && 
                                     <Button aria-label="join-meetup" onClick={this.handlePublicMeetupJoin} style={{background: "#45B649", color: "white"}} variant="contained">
@@ -380,22 +385,22 @@ class Meetup extends Component {
                                         Leave Meetup
                                     </Button>
                                 }
-                            </Paper>
+                            </div>
                             {renderMembers(meetup.members)}
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <Paper className={styles.header} elevation={3}>
+                            <div className={`${styles.header} elevate`}>
                                 <Typography variant="h5">Friends</Typography>
                                 <Tooltip title="Refresh">
                                     <IconButton color="primary" onClick={this.refreshFriendsList} aria-label="refresh-friends">
                                         <RefreshIcon/>
                                     </IconButton>
                                 </Tooltip>
-                            </Paper>
+                            </div>
                             {renderFriends()}
                         </Grid>
                         <Grid item xs={12}>
-                            <Paper className={styles.header} elevation={3} id="Events">
+                            <div className={`${styles.header} elevate`} id="Events">
                                 <Typography variant="h5">Events</Typography>
                                 {isUserMember && 
                                     <Button 
@@ -418,7 +423,7 @@ class Meetup extends Component {
                                         open={this.state.newMeetupEventForm}
                                     />
                                 }
-                            </Paper>
+                            </div>
                         </Grid>
                         <Grid item xs={12}>
                             {renderEvents(meetup.events)}
@@ -456,7 +461,8 @@ function mapStateToProps(state, ownProps){
        friends: state.user.friends,
        isFriendsInitialized: state.user.isFriendsInitialized,
        isMeetupEventsInitialized: state.meetup.meetups[ownProps.meetup.uri].isMeetupEventsInitialized,
-       isMeetupEventsFetching: state.meetup.meetups[ownProps.meetup.uri].isMeetupEventsFetching
+       isMeetupEventsFetching: state.meetup.meetups[ownProps.meetup.uri].isMeetupEventsFetching,
+       isFriendsFetching: state.user.isFriendsFetching
     }
 }
 

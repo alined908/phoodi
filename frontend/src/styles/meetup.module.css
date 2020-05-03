@@ -147,8 +147,12 @@
     width: 100%;
     height: 100%;
     overflow: auto;
-    padding: 2rem 4rem;
+    padding: 3rem 4rem;
     padding-left: calc(3rem + 200px);
+}
+
+.meetupWrapperInner::-webkit-scrollbar{
+    width: 0px;
 }
 
 .shell {
@@ -157,7 +161,7 @@
     margin: 1rem auto 0 auto;
     padding-right: .05rem;
     border: 1px solid #eeeeef;
-    min-height: 20px;
+    min-height: 66px;
     max-height: 218px;
     background-color: white;
     overflow-y: auto;
@@ -165,7 +169,7 @@
 
 .shellList{
     width: 100%;
-    padding: 0;
+    padding: 0 !important;
 }
 
 /* MeetupEvent */
@@ -466,7 +470,9 @@
 /* MeetupChat */
 .meetupChat{
     margin-left: auto;
-    width: 400px;
+    width: 450px;
+    height: 85%;
+    padding: 3rem 1rem 1rem 1rem;
 }
 
 .meetupChat .header {

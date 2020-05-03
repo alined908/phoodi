@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Button, Paper} from "@material-ui/core"
+import {Button} from "@material-ui/core"
 import {connect} from 'react-redux'
 import {deleteMeetupEvent, addGlobalMessage} from "../../actions"
 import moment from "moment"
@@ -80,7 +80,6 @@ class MeetupEvent extends Component {
 
         for (let key in options_keys){
             let rst = options_keys[key].restaurant
-            console.log(rst.identifier)
             if(rst.identifier === identifier){
                 return true
             }
@@ -100,28 +99,26 @@ class MeetupEvent extends Component {
 
         const renderHeader = (number) => {
             return (
-                <Paper elevation={3}>
-                    <div className={`${styles.header} ${styles.smallerheader}`} >
-                        <Typography variant="h5">#{number+1} - {event.title}</Typography>
-                        <div className={styles.headerInfo}>
-                            <div className={styles.headerIcons}>
-                                <ScheduleIcon/> 
-                                {moment(event.start).local().format("h:mm A")} - {moment(event.end).local().format("h:mm A")}
-                            </div>
-                            <div className={styles.headerIcons}>
-                                <img style={{width: 20, height: 20, marginLeft: 10}} alt={"&#9787;"}
-                                src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}/>
-                                {/* <Avatar style={{transform: "scale(0.5)"}} src={event.creator.avatar}>
-                                    {event.creator.first_name.charAt(0)} {event.creator.last_name.charAt(0)}
-                                </Avatar> */}
-                                 - {event.creator.first_name} {event.creator.last_name}
-                            </div>
+                <div className={`${styles.header} ${styles.smallerheader} elevate`} >
+                    <Typography variant="h5">#{number+1} - {event.title}</Typography>
+                    <div className={styles.headerInfo}>
+                        <div className={styles.headerIcons}>
+                            <ScheduleIcon/> 
+                            {moment(event.start).local().format("h:mm A")} - {moment(event.end).local().format("h:mm A")}
                         </div>
-                        <div>
-                            {this.props.isUserMember && renderActions()}
+                        <div className={styles.headerIcons}>
+                            <img style={{width: 20, height: 20, marginLeft: 10}} alt={"&#9787;"}
+                            src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}/>
+                            {/* <Avatar style={{transform: "scale(0.5)"}} src={event.creator.avatar}>
+                                {event.creator.first_name.charAt(0)} {event.creator.last_name.charAt(0)}
+                            </Avatar> */}
+                                - {event.creator.first_name} {event.creator.last_name}
                         </div>
                     </div>
-                </Paper>
+                    <div>
+                        {this.props.isUserMember && renderActions()}
+                    </div>
+                </div>
             )
         }
 
@@ -237,7 +234,7 @@ class MeetupEvent extends Component {
                                 </Grid>
                             )}
                         </Grid>:
-                        <Paper className={styles.explanation} elevation={3}>
+                        <div className={`${styles.explanation} elevate`}>
                             <span style={{marginRight: "1rem"}}>
                                 <ErrorIcon style={{color: "rgb(255, 212, 96)"}}/>
                             </span>
@@ -248,7 +245,7 @@ class MeetupEvent extends Component {
                             </span> : <span>
                                     No options chosen.  Click the top right magnifying glass to search for restauraunts near you!
                                 </span>}
-                        </Paper>
+                        </div>
                     }
                 </div>
             )
@@ -260,7 +257,7 @@ class MeetupEvent extends Component {
 
             return (
                 <div className={styles.chosen}>
-                    <Paper className={styles.chosenRestaurant} elevation={3}>
+                    <div className={`${styles.chosenRestaurant} elevate`}>
                         <MeetupEventOption 
                             key={chosen.id} 
                             socket={this.props.socket} 
@@ -270,12 +267,12 @@ class MeetupEvent extends Component {
                             meetup={this.props.uri} 
                             optionId={chosen.id}
                         />
-                    </Paper>
-                    <Paper className={styles.chosenMap} elevation={3}>
+                    </div>
+                    <div className={`${styles.chosenMap} elevate`}>
                         <div className={styles.mapWrapper}>
                             <Map location={position}/>
                         </div>
-                    </Paper>
+                    </div>
                 </div>
             )
         }
@@ -283,7 +280,7 @@ class MeetupEvent extends Component {
         return (
             <div id={`event-${event.id}`} className={styles.event}>
                 {renderHeader(this.props.number)}
-                <Paper className={`${styles.smallerHeader} ${styles.secondHeader}`} elevation={3}>
+                <div className={`${styles.smallerHeader} ${styles.secondHeader} elevate`}>
                     <div className={styles.secondHeaderLeft}>
                         <Typography variant="h6">Categories </Typography>
                         {event.categories.map((category) => 
@@ -309,11 +306,11 @@ class MeetupEvent extends Component {
                         </span>
                     </div>
                     {this.props.isUserMember && renderFinalizeActions()}
-                </Paper>
+                </div>
                 {!this.props.chosen && 
                     <>
                         {this.state.searchOpen &&
-                            <Paper className={styles.addOptionSearch} elevation={3}>
+                            <div className={`${styles.addOptionSearch} elevate`}>
                                 <img style={{width: 20, height: 20, marginLeft: 10}} alt={"&#9787;"}
                                 src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}/>
                                 <RestaurauntAutocomplete 
@@ -329,7 +326,7 @@ class MeetupEvent extends Component {
                                         <CloseIcon/>
                                     </IconButton>
                                 </Tooltip>
-                            </Paper>
+                            </div>
                         }                       
                     </>
                 }

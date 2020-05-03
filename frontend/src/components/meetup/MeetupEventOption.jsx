@@ -9,7 +9,7 @@ import {
 import RestaurantPreview from "../restaurant/RestaurantPreview"
 import {Link} from 'react-router-dom'
 import {ADD_GLOBAL_MESSAGE} from '../../constants/action-types'
-import {Avatar, Tooltip, Paper} from '@material-ui/core'
+import {Avatar, Tooltip} from '@material-ui/core'
 import PropTypes from 'prop-types';
 import {meetupEventOptionPropType, meetupMemberPropType, userPropType} from '../../constants/prop-types'
 import styles from '../../styles/meetup.module.css'
@@ -220,7 +220,7 @@ class MeetupEventOption extends Component {
         if (this.props.full) {
             return (
                 <div className="center">
-                    <Paper className={`${styles.rstWrapper} ${(banned ? styles.banned: "")}`} elevation={3}>
+                    <div className={`${styles.rstWrapper} ${(banned ? styles.banned: "")} elevate`}>
                         <div className={styles.deleteOption} onClick={this.handleDeleteOption}>
                             <Tooltip title="Delete Option">
                                 <CloseIcon color="secondary" fontSize="small"/>   
@@ -241,7 +241,7 @@ class MeetupEventOption extends Component {
                         {this.state.preview && <RestaurantPreview handleClose={this.handlePreview} identifier={data.identifier}/>}
                         {this.renderRestauraunt(data)}
                         {this.renderActions(status, scores, banned)}
-                    </Paper>
+                    </div>
                 </div>
             )
         } else {

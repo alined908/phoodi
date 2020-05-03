@@ -94,15 +94,23 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Author
 * **Daniel Lee** 
 
-## Todo Authentication
+## Todo Bugs
 - [ ] Don't allow websocket to send event even after refresh token expire
 - [ ] Disable actions if event is in the past 
+- [ ] Chat contact time ago doesnt update
 
 ## Todo UI/UX/CleanUp
 - [ ] Swap out of material ui (maybe tailwind?)
 - [ ] swap skeleton from meetupcard
 - [ ] Animation when logging out forced
 - [ ] Redo responsive layout + design + Safari presentation
+    - [x] Chat
+    - [ ] Meetups
+    - [ ] Meetup
+    - [ ] Category
+    - [ ] Restaurant
+    - [ ] Profile
+    - [ ] Settings
 - [ ] Skeleton loading where applicable
 - [ ] Optimize performance
 

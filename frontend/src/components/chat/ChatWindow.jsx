@@ -149,7 +149,7 @@ class ChatWindow extends Component {
                     {this.props.meetup && 
                         <>
                             <Tooltip title="Collapse">
-                                <IconButton onClick={this.props.hideChat} color="primary">
+                                <IconButton edge="start" onClick={this.props.hideChat} color="primary">
                                     <ExitToAppIcon/>
                                 </IconButton>
                             </Tooltip>

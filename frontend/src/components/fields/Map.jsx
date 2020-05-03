@@ -49,7 +49,7 @@ class Map extends Component {
             width='100%'
             height='100%'
             className="map"
-            mapStyle="mapbox://styles/mapbox/streets-v11"
+            mapStyle="mapbox://styles/mapbox/streets-v11?optimize=true"
             onViewportChange={viewport => this.setState({viewport})}
             // onLoad={this.props.notLoad ? undefined : this.onLoad }
             mapboxApiAccessToken={token}
@@ -58,7 +58,7 @@ class Map extends Component {
                 <NavigationControl showCompass={false}/>
             </div>
             <Marker latitude={this.props.location.latitude} longitude={this.props.location.longitude} offsetLeft={-10} offsetTop={-25}>
-              <LocationOnIcon fontSize="large" color="secondary"></LocationOnIcon>
+              <LocationOnIcon fontSize="large" color="secondary"/>
             </Marker>
           </ReactMapGL>
         );

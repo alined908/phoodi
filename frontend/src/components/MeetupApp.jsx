@@ -36,6 +36,15 @@ const theme = createMuiTheme({
                 backgroundColor: "rgba(16,16,16, .8)",
                 color: "white"
             }
+        },
+        MuiCircularProgress: {
+            colorPrimary: {
+                color: "black"
+            },
+            root: {
+                width: "30px !important",
+                height: "30px !important"
+            }
         }
     }
   });
