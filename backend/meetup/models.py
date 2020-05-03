@@ -353,7 +353,7 @@ class MeetupEvent(models.Model):
                 "name": option["name"], 
                 "yelp_image": option["image_url"],
                 "yelp_url": option["url"], 
-                "rating": option["rating"], 
+                "rating": option["rating"] * 2, 
                 "latitude": option['coordinates']['latitude'],
                 "longitude": option['coordinates']['longitude'], 
                 "price": option.get('price', '$$'),

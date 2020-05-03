@@ -3,12 +3,12 @@ import {connect} from "react-redux"
 import {voteStatus} from "../../constants/default-states"
 import {
     ThumbUpOutlined as ThumbUpOutlinedIcon, ThumbDownOutlined as ThumbDownOutlinedIcon, ThumbUp as ThumbUpIcon, ThumbDown as ThumbDownIcon, 
-    Cancel as CancelIcon, CancelOutlined as CancelOutlinedIcon, Star as StarIcon, StarBorder as StarBorderIcon, StarHalf as StarHalfIcon, 
-    Room as RoomIcon, Phone as PhoneIcon, Launch as LaunchIcon, Close as CloseIcon, ZoomIn as ZoomInIcon
+    Cancel as CancelIcon, CancelOutlined as CancelOutlinedIcon, Room as RoomIcon, Phone as PhoneIcon, Launch as LaunchIcon, Close as CloseIcon, ZoomIn as ZoomInIcon
 } from '@material-ui/icons'
 import RestaurantPreview from "../restaurant/RestaurantPreview"
 import {Link} from 'react-router-dom'
 import {ADD_GLOBAL_MESSAGE} from '../../constants/action-types'
+import {Rating} from '../components'
 import {Avatar, Tooltip} from '@material-ui/core'
 import PropTypes from 'prop-types';
 import {meetupEventOptionPropType, meetupMemberPropType, userPropType} from '../../constants/prop-types'
@@ -41,27 +41,6 @@ class MeetupEventOption extends Component {
 
     determineClicked = (status, option) => {
         return status === option
-    }
-
-    determineRating = (rating) => {
-        const numFilledStars = Math.floor(rating)
-        const numEmptyStars = Math.floor(5 - rating)
-        const numHalfStars = rating % 1 === 0 ? 0: 1
-
-        var stars = []
-
-        for(var i = 0; i < numFilledStars; i++){
-            stars.push(<StarIcon fontSize="inherit"/>)
-        }
-
-        for (var j = 0; j < numHalfStars; j++){
-            stars.push(<StarHalfIcon fontSize="inherit"/>)
-        }
-
-        for (var k = 0; k < numEmptyStars; k++){
-            stars.push(<StarBorderIcon fontSize="inherit"/>)
-        }
-        return stars
     }
 
     handleClick = (status) => {
@@ -103,7 +82,11 @@ class MeetupEventOption extends Component {
     }
 
     renderActions = (status, scores, banned) => {
-        const [like, dislike, ban] = [this.determineClicked(status, voteStatus.like), this.determineClicked(status, voteStatus.dislike), this.determineClicked(status, voteStatus.ban)]
+        const [like, dislike, ban] = [
+            this.determineClicked(status, voteStatus.like), 
+            this.determineClicked(status, voteStatus.dislike), 
+            this.determineClicked(status, voteStatus.ban)
+        ]
         const checkOwn = (status) => {
             if (this.props.user.id in this.props.option.votes && this.props.option.votes[this.props.user.id].status === status) {
                 return styles.myclick
@@ -170,38 +153,43 @@ class MeetupEventOption extends Component {
     }
 
     renderRestauraunt = (data) => {
+
+        const banned = this.props.option.banned
+        const scores = this.determineNumVotes()
+        const status = this.determineStatus()
+
         return (   
             <>
                 <div className={styles.rst}>
-                    <div className={styles.rstInfo}>
-                        <span>
-                            <Tooltip title="Go To Restaurant Page" placement="top">
-                                <Link to={`/restaurants/${data.url}`}>
-                                    {data.name} <LaunchIcon fontSize={"inherit"}/>
-                                </Link>
-                            </Tooltip>
-                        </span>
-                        <span className={styles.rstRating}>
-                            {this.determineRating(data.rating)}
-                        </span>
-                    </div>
-                    <div className={styles.rstImg} style={{backgroundImage: `url(${data.yelp_image})`}}>
-                    </div>
+                    <img className={styles.rstImg} src={data.yelp_image}/>
                 </div>
-                <div className={styles.rstCategories}>
-                    {data.price} &#8226; 
-                    {data.categories.map((rc) =>
-                        <div key={rc.category.id} className={styles.categoryChip}>
-                            <Avatar 
-                                style={{width: 20, height: 20}} variant="square"
-                                src={`${process.env.REACT_APP_S3_STATIC_URL}${rc.category.api_label}.png`}
-                            >
-                                <img style={{width: 20, height: 20}} alt={"&#9787;"}
-                                    src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}/>
-                            </Avatar>
-                            {rc.category.label}
-                        </div>
-                    )}
+                <div className={styles.rstCardBottom}>
+                    <div className={styles.rstInfo}>
+                        <Tooltip title="Go To Restaurant Page" placement="top">
+                            <Link to={`/restaurants/${data.url}`}>
+                                {data.name}
+                            </Link>
+                        </Tooltip>
+                        <Rating rating={data.rating}/>
+                    </div>
+                    <div className={styles.rstCategories}>
+                        {data.price} &#8226; 
+                        {data.categories.map((rc) =>
+                            <div key={rc.category.id} className={styles.categoryChip}>
+                                <Avatar 
+                                    style={{width: 20, height: 20}} variant="square"
+                                    src={`${process.env.REACT_APP_S3_STATIC_URL}${rc.category.api_label}.png`}
+                                >
+                                    <img style={{width: 20, height: 20}} alt={"&#9787;"}
+                                        src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}/>
+                                </Avatar>
+                                {rc.category.label}
+                            </div>
+                        )}
+                    </div>
+                    {this.props.full && 
+                        this.renderActions(status, scores, banned)
+                    }
                 </div>
             </>
         )
@@ -214,12 +202,10 @@ class MeetupEventOption extends Component {
     render (){
         const data = this.props.option.restaurant
         const banned = this.props.option.banned
-        const scores = this.determineNumVotes()
-        const status = this.determineStatus()
 
         if (this.props.full) {
             return (
-                <div className="center">
+                <div className={styles.center}>
                     <div className={`${styles.rstWrapper} ${(banned ? styles.banned: "")} elevate`}>
                         <div className={styles.deleteOption} onClick={this.handleDeleteOption}>
                             <Tooltip title="Delete Option">
@@ -238,9 +224,13 @@ class MeetupEventOption extends Component {
                                 </a>
                             </Tooltip>
                         </div>
-                        {this.state.preview && <RestaurantPreview handleClose={this.handlePreview} identifier={data.identifier}/>}
+                        {this.state.preview && 
+                            <RestaurantPreview 
+                                handleClose={this.handlePreview} 
+                                identifier={data.identifier}
+                            />
+                        }
                         {this.renderRestauraunt(data)}
-                        {this.renderActions(status, scores, banned)}
                     </div>
                 </div>
             )

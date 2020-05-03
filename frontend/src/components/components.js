@@ -46,6 +46,7 @@ import Map from "./fields/Map"
 
 //General
 import Body from "./general/Body"
+import Rating from './general/Rating'
 import GlobalMessage from "./general/GlobalMessage"
 import HomeComponent from "./general/HomeComponent";
 import LiveUpdatingBadge from "./general/LiveUpdatingBadge"
@@ -87,5 +88,5 @@ export {
     Categories, Category, Preferences, Preference,
     Restaurant, RestaurantPreview, RestaurantThread, RestaurantReviewForm, CommentForm, RestaurantReview, Comments, Comment,
     Profile, Settings, LocationService, PasswordChange, EmailChange,
-    Body, GlobalMessage, GroupAvatars, HomeComponent, LiveUpdatingBadge, Navigation, NotificationWrapper, Calendar, ProgressIcon
+    Body, Rating, GlobalMessage, GroupAvatars, HomeComponent, LiveUpdatingBadge, Navigation, NotificationWrapper, Calendar, ProgressIcon
 }

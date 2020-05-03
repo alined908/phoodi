@@ -106,18 +106,6 @@ body{
   display: none;
 }
 
-.center{
-  display:flex;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  max-width: 400px;
-}
-
-.MuiAvatar-root{
-  margin-right: 10px;
-}
-
 .elevate {
   -webkit-box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
@@ -216,18 +204,6 @@ body{
   width: 100%;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #eeeeef;
-}
-
-.MuiChip-root{
-  padding: 3px 4px !important;
-  font-size: 0.75rem !important;
-  border-radius: 4px !important;
-  letter-spacing: 0.02857em;
-  text-transform: capitalize;
-  box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12) !important;
-  background-color: #3f51b5 !important;
-  color: white !important;
-  margin: .25rem .25rem !important; 
 }
 
 .MuiChip-deleteIcon{
