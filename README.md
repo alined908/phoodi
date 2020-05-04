@@ -98,6 +98,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Don't allow websocket to send event even after refresh token expire
 - [ ] Disable actions if event is in the past 
 - [ ] Chat contact time ago doesnt update
+- [ ] Delete option doesnt delete option
 
 ## Todo UI/UX/CleanUp
 - [ ] Swap out of material ui (maybe tailwind?)
@@ -113,13 +114,14 @@ python manage.py loaddata meetup/fixtures/*.json
     - [ ] Settings
 - [ ] Skeleton loading where applicable
 - [ ] Optimize performance
+- [ ] Hide notifs of meetup, 
 
 ## Todo Deploy
 - [ ] Separate dev and prod settings
 - [ ] Continuous integration
 - [ ] Django settings
 
-------------------------------------------------------------------
+---------------------------------------------------------------
 
 ## Todo Next Iteration
 - [ ] Cache images

@@ -11,6 +11,7 @@ import {
   Schedule as ScheduleIcon,
   Delete as DeleteIcon,
   Error as ErrorIcon,
+  MoreVert as MoreVertIcon
 } from "@material-ui/icons";
 import {
   IconButton,
@@ -19,6 +20,9 @@ import {
   Tooltip,
   Avatar,
   Divider,
+  Menu,
+  MenuItem,
+  ListItemIcon
 } from "@material-ui/core";
 import { compose } from "redux";
 import {
@@ -40,6 +44,7 @@ class MeetupEvent extends Component {
       searchOpen: false,
       searchInput: "",
       editMeetupEventForm: false,
+      anchor: null,
     };
   }
 
@@ -110,6 +115,14 @@ class MeetupEvent extends Component {
     this.setState({ searchInput: "" });
   };
 
+  handleMenuClick = (e) => {
+    this.setState({anchor: e.currentTarget})
+  }
+
+  handleMenuClose  = () => {
+    this.setState({anchor: null})
+  }
+
   openEventModal = () => {
     this.setState({ editMeetupEventForm: !this.state.editMeetupEventForm });
   };
@@ -137,13 +150,13 @@ class MeetupEvent extends Component {
     const isUserEventCreator = this.isUserEventCreator();
     const permission = isUserEventCreator || this.props.isUserCreator;
 
-    const renderHeader = (number) => {
+    const renderHeader = () => {
       return (
-        <div className={`${styles.header} ${styles.smallerheader} elevate`}>
+        <div className={`${styles.header} ${styles.smallerHeader} elevate`}>
           <Typography variant="h5">
-            #{number + 1} - {event.title}
+            {event.title}
           </Typography>
-          <div className={styles.headerInfo}>
+         
             <div className={styles.headerIcons}>
               <ScheduleIcon />
               {moment(event.start).local().format("h:mm A")} -{" "}
@@ -151,17 +164,19 @@ class MeetupEvent extends Component {
             </div>
             <div className={styles.headerIcons}>
               <img
-                style={{ width: 20, height: 20, marginLeft: 10 }}
+                style={{ width: 20, height: 20, marginRight: 5 }}
                 alt={"&#9787;"}
                 src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}
               />
               {/* <Avatar style={{transform: "scale(0.5)"}} src={event.creator.avatar}>
-                                {event.creator.first_name.charAt(0)} {event.creator.last_name.charAt(0)}
-                            </Avatar> */}
-              - {event.creator.first_name} {event.creator.last_name}
+                    {event.creator.first_name.charAt(0)} {event.creator.last_name.charAt(0)}
+                </Avatar>  */}
+               {event.creator.first_name} {event.creator.last_name}
             </div>
-          </div>
-          <div>{this.props.isUserMember && renderActions()}</div>
+          
+          <div>
+              {this.props.isUserMember && renderActions()}
+            </div>
         </div>
       );
     };
@@ -169,61 +184,54 @@ class MeetupEvent extends Component {
     const renderActions = () => {
       return (
         <div className={styles.eventActions}>
-          {!this.props.chosen && (
-            <Tooltip title="Add Option">
-              <IconButton
-                style={{ color: "#4caf50" }}
-                aria-label="add-option"
-                onClick={this.handleSearchOption}
-              >
-                <SearchIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-          {!this.props.chosen && event.random && (
-            <Tooltip title="Reload">
-              <div style={{ width: 48, minHeight: 48 }}>
-                <ProgressIcon
-                  disabled={false}
-                  icon={<CachedIcon />}
-                  ariaLabel="reload"
-                  check={false}
-                  color="primary"
-                  handleClick={() => this.handleReload()}
-                />
-              </div>
-            </Tooltip>
-          )}
-
-          <Tooltip title="Edit">
-            <IconButton
-              onClick={this.openEventModal}
-              color="inherit"
-              aria-label="edit"
-            >
-              <EditIcon />
+            <IconButton style={{color: "rgba(10,10,10, .95)"}} edge="end" onClick={this.handleMenuClick}>
+                <MoreVertIcon/>
             </IconButton>
-          </Tooltip>
-          {this.state.editMeetupEventForm && (
-            <MeetupEventForm
-              type="edit"
-              event={event.id}
-              uri={this.props.uri}
-              handleClose={this.openEventModal}
-              open={this.state.editMeetupEventForm}
-            />
-          )}
-          {permission && (
-            <Tooltip title="Delete">
-              <IconButton
-                onClick={() => this.handleDelete()}
-                color="secondary"
-                aria-label="delete"
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          )}
+            <Menu 
+                anchorEl={this.state.anchor} 
+                open={this.state.anchor} 
+                onClose={this.handleMenuClose}
+            >
+                {!this.props.chosen && (
+                    <MenuItem onClick={(e) => {this.handleSearchOption(); this.handleMenuClose(e);}}>
+                        <ListItemIcon>
+                            <SearchIcon style={{ color: "#4caf50" }} fontSize="small" />
+                        </ListItemIcon>
+                        <Typography variant="body2" noWrap>
+                            Add Option
+                        </Typography>
+                    </MenuItem>
+                )}
+                {!this.props.chosen && event.random && (
+                    <MenuItem onClick={(e) => {this.handleReload(); this.handleMenuClose(e);}}>
+                        <ListItemIcon>
+                            <CachedIcon aria-label="reload" color="primary" fontSize="small" />
+                        </ListItemIcon>
+                        <Typography variant="body2" noWrap>
+                            Reload Options
+                        </Typography>
+                    </MenuItem>
+                )}
+                <MenuItem onClick={(e) => {this.openEventModal(); this.handleMenuClose(e);}}>
+                    <ListItemIcon aria-label="edit">
+                        <EditIcon color="inherit" fontSize="small" />
+                    </ListItemIcon>
+                    <Typography variant="body2" noWrap>
+                        Edit Meetup Event
+                    </Typography>
+                </MenuItem>
+                
+                {permission && 
+                    <MenuItem onClick={(e) => {this.handleDelete(); this.handleMenuClose(e);}}>
+                        <ListItemIcon>
+                            <DeleteIcon aria-label="delete" color="secondary" fontSize="small" />
+                        </ListItemIcon>
+                        <Typography variant="body2" noWrap>
+                            Delete Option
+                        </Typography>
+                    </MenuItem>
+                }
+            </Menu>
         </div>
       );
     };
@@ -287,6 +295,7 @@ class MeetupEvent extends Component {
                   container
                   xs={12}
                   md={4}
+                  className={styles.meetupEventOptionGrid}
                 >
                   <MeetupEventOption
                     socket={this.props.socket}
@@ -332,7 +341,7 @@ class MeetupEvent extends Component {
 
       return (
         <div className={styles.chosen}>
-          <div className={`${styles.chosenRestaurant} elevate`}>
+          <div className={styles.chosenRestaurant}>
             <MeetupEventOption
               key={chosen.id}
               socket={this.props.socket}
@@ -354,7 +363,7 @@ class MeetupEvent extends Component {
 
     return (
       <div id={`event-${event.id}`} className={styles.event}>
-        {renderHeader(this.props.number)}
+        {renderHeader()}
         <div
           className={`${styles.smallerHeader} ${styles.secondHeader} elevate`}
         >
@@ -422,6 +431,15 @@ class MeetupEvent extends Component {
         )}
         {!this.props.chosen && renderFourSquare(event.options)}
         {this.props.chosen && renderChosen(event.options[this.props.chosen])}
+        {this.state.editMeetupEventForm && (
+            <MeetupEventForm
+              type="edit"
+              event={event.id}
+              uri={this.props.uri}
+              handleClose={this.openEventModal}
+              open={this.state.editMeetupEventForm}
+            />
+        )}
       </div>
     );
   }

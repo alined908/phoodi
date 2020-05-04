@@ -16,6 +16,7 @@ import {
   Event as EventIcon,
   ExitToApp as ExitToAppIcon,
   ArrowBackIos as ArrowBackIosIcon,
+  NotificationsActive as NotificationsActiveIcon
 } from "@material-ui/icons";
 import { getMoreMessages, removeNotifs } from "../../actions";
 import { chatMessagePropType } from "../../constants/prop-types";
@@ -27,6 +28,7 @@ class ChatWindow extends Component {
     this.state = {
       bound: true,
       offset: 0,
+      hideNotifs: false
     };
     this.firstMessageRef = React.createRef();
     this.messagesEndRef = React.createRef();
@@ -93,6 +95,10 @@ class ChatWindow extends Component {
     this.messagesEndRef.current.scrollIntoView({ behavior });
   };
 
+  hideNotifs = () => {
+      this.setState({hideNotifs: !this.state.hideNotifs})
+  }
+
   //Determine non self user if chat room is friendship
   determineOtherUser = () => {
     const user = this.props.user;
@@ -133,7 +139,7 @@ class ChatWindow extends Component {
           this.props.mobile && this.props.activeRoom && this.props.show
             ? styles.showChat
             : ""
-        } ${this.props.meetup ? styles.meetupWindow : styles.window} elevate`}
+        } ${this.props.isMeetup ? styles.meetupWindow : styles.window} elevate`}
         ref={this.chatsRef}
       >
         <div className={styles.header}>
@@ -151,7 +157,7 @@ class ChatWindow extends Component {
               </div>
             </>
           )}
-          {!this.props.meetup && this.props.room && this.props.room.meetup && (
+          {!this.props.isMeetup && this.props.room && this.props.room.meetup && (
             <Link to={`/meetups/${this.props.room.uri}`}>
               <Tooltip title="Go to Meetup">
                 <Button color="primary" startIcon={<EventIcon />}>
@@ -160,7 +166,7 @@ class ChatWindow extends Component {
               </Tooltip>
             </Link>
           )}
-          {!this.props.meetup && this.props.room && this.props.room.friendship && (
+          {!this.props.isMeetup && this.props.room && this.props.room.friendship && (
             <Link to={`/profile/${this.determineOtherUser().id}`}>
               <Tooltip title="Go to Profile">
                 <Button color="primary" startIcon={<PersonIcon />}>
@@ -169,7 +175,7 @@ class ChatWindow extends Component {
               </Tooltip>
             </Link>
           )}
-          {this.props.meetup && (
+          {this.props.isMeetup && (
             <>
               <Tooltip title="Collapse">
                 <IconButton
@@ -182,6 +188,19 @@ class ChatWindow extends Component {
               </Tooltip>
               Meetup Chat
             </>
+          )}
+          {this.props.isMeetup && (
+              <div style={{marginLeft: "auto"}}>
+                <Tooltip title="Hide Notifications">
+                    <IconButton
+                        edge="end"
+                        onClick={this.hideNotifs}
+                        color={this.state.hideNotifs ? "" : "secondary"}
+                    >
+                        <NotificationsActiveIcon />
+                    </IconButton>
+                </Tooltip>
+              </div>
           )}
         </div>
         <div
@@ -238,6 +257,7 @@ class ChatWindow extends Component {
                         user={this.props.user}
                         message={msg}
                         members={this.props.activeChatMembers}
+                        hideNotif={this.state.hideNotifs}
                       />
                     ))}
                   </React.Fragment>

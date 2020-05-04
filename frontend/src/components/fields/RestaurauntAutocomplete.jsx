@@ -35,6 +35,10 @@ const useStyles = makeStyles({
       borderBottom: "none",
     },
   },
+  progress : {
+    width: "20px !important",
+    height: "20px !important"
+  }
 });
 
 export default function RestaurauntAutocomplete(props) {
@@ -125,7 +129,7 @@ export default function RestaurauntAutocomplete(props) {
             endAdornment: (
               <React.Fragment>
                 {loading ? (
-                  <CircularProgress color="inherit" size={20} />
+                  <CircularProgress color="inherit" className={classes.progress} />
                 ) : null}
                 {params.InputProps.endAdornment}
               </React.Fragment>

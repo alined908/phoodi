@@ -324,6 +324,10 @@
   width: 100%;
 }
 
+.messageNotifHide {
+    display: none;
+}
+
 .messageNotifWrapper {
   display: flex;
   margin: 0.4rem 0;

@@ -13,12 +13,13 @@ import {
   Launch as LaunchIcon,
   Close as CloseIcon,
   ZoomIn as ZoomInIcon,
+  MoreVert as MoreVertIcon
 } from "@material-ui/icons";
 import RestaurantPreview from "../restaurant/RestaurantPreview";
 import { Link } from "react-router-dom";
 import { ADD_GLOBAL_MESSAGE } from "../../constants/action-types";
 import { Rating } from "../components";
-import { Avatar, Tooltip } from "@material-ui/core";
+import { Avatar, Tooltip, IconButton, Menu, MenuItem , ListItemIcon, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
 import {
   meetupEventOptionPropType,
@@ -32,6 +33,8 @@ class MeetupEventOption extends Component {
     super(props);
     this.state = {
       preview: false,
+      anchor: null,
+      hover: false
     };
   }
 
@@ -109,6 +112,18 @@ class MeetupEventOption extends Component {
     }
   };
 
+  handleMenuClick = (e) => {
+    this.setState({anchor: e.currentTarget})
+  }
+
+  handleMenuClose  = () => {
+    this.setState({anchor: null})
+  }
+
+  handlePreview = () => {
+    this.setState({ preview: !this.state.preview });
+  };
+
   renderActions = (status, scores, banned) => {
     const [like, dislike, ban] = [
       this.determineClicked(status, voteStatus.like),
@@ -147,7 +162,9 @@ class MeetupEventOption extends Component {
               />
             </Tooltip>
           )}
-          <span className={styles.rstActionScore}>{scores[1]}</span>
+          <span className={styles.rstActionScore}>
+              {scores[1]}
+          </span>
         </div>
         <div
           className={`${styles.rstActionIcon} ${checkOwn(voteStatus.dislike)}`}
@@ -169,7 +186,9 @@ class MeetupEventOption extends Component {
               />
             </Tooltip>
           )}
-          <span className={styles.rstActionScore}>{scores[2]}</span>
+          <span className={styles.rstActionScore}>
+              {scores[2]}
+          </span>
         </div>
         <div className={`${styles.rstActionIcon} ${checkOwn(voteStatus.ban)}`}>
           {!banned ? (
@@ -189,28 +208,87 @@ class MeetupEventOption extends Component {
               />
             </Tooltip>
           )}
-          <span className={styles.rstActionScore}>{scores[3]}</span>
+          <span className={styles.rstActionScore}>
+              {scores[3]}
+          </span>
         </div>
       </div>
     );
   };
 
-  renderRestauraunt = (data) => {
+  renderRestauraunt = (data, isNotChosen) => {
     const banned = this.props.option.banned;
     const scores = this.determineNumVotes();
     const status = this.determineStatus();
 
     return (
       <>
-        <div className={styles.rst}>
-          <img className={styles.rstImg} src={data.yelp_image} />
+        <div 
+            className={styles.rst} 
+            onMouseEnter={() => this.setState({hover: true})} 
+            onMouseLeave={() => this.setState({hover: false})}
+        >
+          <Link to={`/restaurants/${data.url}`}>
+            <img className={styles.rstImg} src={data.yelp_image} />
+          </Link>
         </div>
         <div className={styles.rstCardBottom}>
           <div className={styles.rstInfo}>
-            <Tooltip title="Go To Restaurant Page" placement="top">
-              <Link to={`/restaurants/${data.url}`}>{data.name}</Link>
-            </Tooltip>
-            <Rating rating={data.rating} />
+            <div className={styles.rstInfoTop}>
+                <Rating rating={data.rating} />
+                <Tooltip title="Go To Restaurant Page" placement="top">
+                    <Link to={`/restaurants/${data.url}`} className={styles.rstInfoName}>
+                      <Typography variant="h6" noWrap>
+                        {data.name}
+                      </Typography>
+                    </Link>
+                </Tooltip>
+            </div>  
+            <div>
+                <IconButton style={{color: "rgba(10,10,10, .95)"}} edge="end" onClick={this.handleMenuClick}>
+                    <MoreVertIcon/>
+                </IconButton>
+                <Menu 
+                    anchorEl={this.state.anchor} 
+                    open={this.state.anchor} 
+                    onClose={this.handleMenuClose}
+                >
+                    <MenuItem onClick={(e) => {this.handlePreview(); this.handleMenuClose(e);}}>
+                        <ListItemIcon>
+                            <ZoomInIcon color="primary" fontSize="small" />
+                        </ListItemIcon>
+                        <Typography variant="body2" noWrap>
+                            Preview Option
+                        </Typography>
+                    </MenuItem>
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={data.yelp_url}
+                    >
+                        <MenuItem onClick={this.handleMenuClose}>
+                            
+                            <ListItemIcon>
+                                <LaunchIcon color="primary" fontSize="small" />
+                            </ListItemIcon>
+                            <Typography variant="body2" noWrap>
+                                Go to Yelp Page
+                            </Typography>
+                            
+                        </MenuItem>
+                    </a>
+                    {(isNotChosen && this.props.isUserMember) &&
+                        <MenuItem onClick={(e) => {this.handleDeleteOption(); this.handleMenuClose(e);}}>
+                            <ListItemIcon>
+                                <CloseIcon color="secondary" fontSize="small" />
+                            </ListItemIcon>
+                            <Typography variant="body2" noWrap>
+                                Delete Option
+                            </Typography>
+                        </MenuItem>
+                    }
+                </Menu>
+            </div>
           </div>
           <div className={styles.rstCategories}>
             {data.price} &#8226;
@@ -237,10 +315,6 @@ class MeetupEventOption extends Component {
     );
   };
 
-  handlePreview = () => {
-    this.setState({ preview: !this.state.preview });
-  };
-
   render() {
     const data = this.props.option.restaurant;
     const banned = this.props.option.banned;
@@ -251,46 +325,22 @@ class MeetupEventOption extends Component {
           <div
             className={`${styles.rstWrapper} ${
               banned ? styles.banned : ""
-            } elevate`}
+            } ${this.state.hover ? "elevate-2" : "elevate"}`}
           >
-            <div
-              className={styles.deleteOption}
-              onClick={this.handleDeleteOption}
-            >
-              <Tooltip title="Delete Option">
-                <CloseIcon color="secondary" fontSize="small" />
-              </Tooltip>
-            </div>
-            <div className={styles.previewOption} onClick={this.handlePreview}>
-              <Tooltip title="Preview Option">
-                <ZoomInIcon color="primary" fontSize="small" />
-              </Tooltip>
-            </div>
-            <div className={styles.yelpOption}>
-              <Tooltip title="Yelp Page">
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={data.yelp_url}
-                >
-                  <LaunchIcon color="primary" fontSize="small" />
-                </a>
-              </Tooltip>
-            </div>
             {this.state.preview && (
               <RestaurantPreview
                 handleClose={this.handlePreview}
                 identifier={data.identifier}
               />
             )}
-            {this.renderRestauraunt(data)}
+            {this.renderRestauraunt(data, this.props.full)}
           </div>
         </div>
       );
     } else {
       return (
-        <div className={styles.rstHorz}>
-          {this.renderRestauraunt(data)}
+        <div className={`${styles.rstHorz} ${this.state.hover ? "elevate-2" : "elevate"}`}>
+          {this.renderRestauraunt(data, this.props.full)}
           <div className={styles.restaurantHorzInfo}>
             <div className={styles.rstHorzInfoEntry}>
               <RoomIcon /> <span>{data.location}</span>

@@ -13,12 +13,16 @@ class ChatMessage extends Component {
     const message = this.props.message;
     const sender = message.sender;
     // const isUser = this.props.user.id === sender.id
-
+   
     return (
       <div
         id={`${message.id}`}
         className={
-          message.is_notif ? styles.messageNotifWrapper : styles.messageWrapper
+          message.is_notif ? 
+          (this.props.hideNotif ? 
+            styles.messageNotifHide : 
+            styles.messageNotifWrapper) : 
+          styles.messageWrapper
         }
       >
         <Avatar className={styles.messageAvatar} src={sender.avatar}>

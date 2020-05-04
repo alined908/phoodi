@@ -63,12 +63,26 @@ export const MuiTheme = {
         fontSize: ".7rem",
       },
     },
+    MuiFab : {
+        root: {
+            background: "rgba(10,10,10, .95) !important",
+            color: "white !important",
+            '&:hover': {
+                background: "black !important"
+            }
+        }
+    },
     MuiAvatar: {
       root: {
         fontFamily: "Arial",
         fontSize: "1.15rem",
         marginRight: 5,
       },
+    },
+    MuiListItemIcon : {
+        root: {
+            minWidth: 35
+        }
     },
     MuiTooltip: {
       tooltip: {

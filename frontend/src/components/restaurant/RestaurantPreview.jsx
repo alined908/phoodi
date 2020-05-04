@@ -85,7 +85,7 @@ const RestaurantPreview = (props) => {
               </div>
             </Grid>
             <Grid item xs={6}>
-              <div className={styles.mapWrapper}>
+              <div className={styles.rstMapWrapper}>
                 <Map
                   location={{
                     latitude: info.coordinates.latitude,

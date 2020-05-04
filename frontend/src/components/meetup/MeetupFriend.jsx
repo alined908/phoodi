@@ -35,8 +35,10 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: "50%",
     left: "50%",
-    marginTop: -12,
-    marginLeft: -12,
+    marginTop: -8,
+    marginLeft: -8,
+    width: "20px !important",
+    height: "20px !important"
   },
   check: {
     color: green[500],
@@ -105,7 +107,7 @@ const MeetupFriend = (props) => {
               Invite
             </Button>
             {loading && (
-              <CircularProgress size={24} className={classes.buttonProgress} />
+              <CircularProgress className={classes.buttonProgress} />
             )}
           </div>
         )}

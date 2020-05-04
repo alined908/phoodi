@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {
   MeetupFriend,
   MeetupEvent,
-  ProgressIcon,
   MeetupForm,
   MeetupChat,
   MeetupEventForm,
@@ -43,6 +42,10 @@ import {
   IconButton,
   Tooltip,
   CircularProgress,
+  Fab,
+  Menu,
+  MenuItem,
+  ListItemIcon
 } from "@material-ui/core";
 import WebSocketService from "../../accounts/WebSocket";
 import {
@@ -61,6 +64,7 @@ import {
   Block as BlockIcon,
   ExitToApp as ExitToAppIcon,
   PersonAddDisabled as PersonAddDisabledIcon,
+  MoreVert as MoreVertIcon
 } from "@material-ui/icons";
 import AuthenticationService from "../../accounts/AuthenticationService";
 import { ReactComponent as Crown } from "../../assets/svgs/crown.svg";
@@ -81,6 +85,7 @@ class Meetup extends Component {
       editMeetupForm: false,
       newMeetupEventForm: false,
       showChat: props.isUserMember,
+      anchor: null
     };
 
     this.state.meetupSocket.addMeetupCallbacks(
@@ -129,17 +134,6 @@ class Meetup extends Component {
     this.props.sendMeetupEmails(this.props.meetup.uri);
   };
 
-  handleDisabledEmail = (events) => {
-    if (Object.keys(events).length === 0 && events.constructor === Object) {
-      this.props.addGlobalMessage("error", "No events created yet");
-    } else {
-      this.props.addGlobalMessage(
-        "error",
-        "All events must be decided to send email"
-      );
-    }
-  };
-
   handlePublicMeetupJoin = (e) => {
     this.props.handlePublicMeetupJoin(
       this.props.meetup.uri,
@@ -156,6 +150,14 @@ class Meetup extends Component {
       this.props.user.email
     );
   };
+
+  handleMenuClick = (e) => {
+    this.setState({anchor: e.currentTarget})
+  }
+
+  handleMenuClose  = () => {
+    this.setState({anchor: null})
+  }
 
   refreshFriendsList = () => {
     this.props.getFriends(this.props.user.id);
@@ -233,7 +235,7 @@ class Meetup extends Component {
       return (
         <div className={`${styles.header} elevate`}>
           <Typography variant="h5">{name}</Typography>
-          <div className={styles.headerInfo}>
+         
             <div className={styles.headerIcons} aria-label="meetup-type">
               {meetup.public ? (
                 <>
@@ -251,57 +253,62 @@ class Meetup extends Component {
             <div className={styles.headerIcons} aria-label="location">
               <RoomIcon /> {location}
             </div>
-          </div>
-          {isUserMember && !this.state.showChat && (
-            <Tooltip title="Chat">
-              <IconButton
-                color="primary"
-                onClick={this.toggleChat}
-                aria-label="chat"
-              >
-                <ChatIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-          {isUserCreator && (
+                         
             <div className={styles.actions}>
-              <Tooltip title="Email">
-                <div style={{ width: 48, minHeight: 48 }}>
-                  <ProgressIcon
-                    check={true}
-                    disabled={emailDisable}
-                    icon={<EmailIcon />}
-                    ariaLabel="email"
-                    handleClick={
-                      !emailDisable
-                        ? () => this.handleEmail()
-                        : () => this.handleDisabledEmail(meetup.events)
-                    }
-                  />
-                </div>
-              </Tooltip>
-
-              <Tooltip title="Edit">
-                <IconButton
-                  onClick={this.openFormModal}
-                  style={{ color: "black" }}
-                  aria-label="edit"
-                >
-                  <EditIcon />
+                <IconButton style={{color: "rgba(10,10,10, .95)"}} edge="end" onClick={this.handleMenuClick}>
+                    <MoreVertIcon/>
                 </IconButton>
-              </Tooltip>
-
-              <Tooltip title="Delete">
-                <IconButton
-                  onClick={() => this.handleDelete()}
-                  color="secondary"
-                  aria-label="delete"
+                <Menu 
+                    anchorEl={this.state.anchor} 
+                    open={this.state.anchor} 
+                    onClose={this.handleMenuClose}
                 >
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
+                     {isUserMember && !this.state.showChat && (
+                        <MenuItem onClick={(e) => {this.toggleChat(); this.handleMenuClose(e);}}>
+                            <ListItemIcon>
+                                <ChatIcon aria-label="chat" color="primary" fontSize="small" />
+                            </ListItemIcon>
+                            <Typography variant="body2" noWrap>
+                                Chat Window
+                            </Typography>
+                        </MenuItem>
+                    )}
+                    {isUserCreator && (
+                        <>  
+                            <MenuItem 
+                                disabled={emailDisable} 
+                                onClick={(e) => {
+                                    this.handleEmail();
+                                    this.handleMenuClose(e);
+                                }}
+                            >
+                                <ListItemIcon>
+                                    <EmailIcon aria-label="email" style={{color: "black"}} fontSize="small" />
+                                </ListItemIcon>
+                                <Typography variant="body2" noWrap>
+                                    Send Email
+                                </Typography>
+                            </MenuItem>
+                            <MenuItem onClick={(e) => {this.openFormModal(); this.handleMenuClose(e);}}>
+                                <ListItemIcon>
+                                    <EditIcon aria-label="edit" style={{color: "black"}} fontSize="small" />
+                                </ListItemIcon>
+                                <Typography variant="body2" noWrap>
+                                    Edit Meetup
+                                </Typography>
+                            </MenuItem>
+                            <MenuItem onClick={(e) => {this.handleDelete(); this.handleMenuClose(e);}}>
+                                <ListItemIcon>
+                                    <DeleteIcon aria-label="delete" color="secondary" fontSize="small" />
+                                </ListItemIcon>
+                                <Typography variant="body2" noWrap>
+                                    Delete Meetup
+                                </Typography>
+                            </MenuItem>
+                        </>
+                    )}
+                </Menu>
             </div>
-          )}
           {this.state.editMeetupForm && (
             <MeetupForm
               type="edit"
@@ -453,7 +460,6 @@ class Meetup extends Component {
             this.sortEvents(events).map((event, index) => (
               <MeetupEvent
                 key={event}
-                number={index}
                 socket={this.state.meetupSocket}
                 uri={meetup.uri}
                 event={events[event]}
@@ -487,85 +493,87 @@ class Meetup extends Component {
               {renderInformation(meetup.name, meetup.date, meetup.location)}
             </Grid>
             <Grid item xs={12} md={6} id="Members">
-              <div className={`${styles.header} elevate`}>
-                <Typography variant="h5">Members</Typography>
-                {!isUserMember && (
-                  <Button
-                    aria-label="join-meetup"
-                    onClick={this.handlePublicMeetupJoin}
-                    style={{ background: "#45B649", color: "white" }}
-                    variant="contained"
-                  >
-                    Join Meetup
-                  </Button>
-                )}
-                {isUserMember && !isUserCreator && (
-                  <Button
-                    color="secondary"
-                    variant="contained"
-                    aria-label="leave-meetup"
-                    onClick={(e) =>
-                      this.handleLeaveMeetup(e, this.props.user.email)
-                    }
-                  >
-                    Leave Meetup
-                  </Button>
-                )}
+              <div className={styles.headerIndented}>
+                <div className={`${styles.header} elevate`}>
+                    <Typography variant="h5">Members</Typography>
+                    {!isUserMember && (
+                    <Button
+                        aria-label="join-meetup"
+                        onClick={this.handlePublicMeetupJoin}
+                        style={{ background: "#45B649", color: "white" }}
+                        variant="contained"
+                    >
+                        Join Meetup
+                    </Button>
+                    )}
+                    {isUserMember && !isUserCreator && (
+                    <Button
+                        color="secondary"
+                        variant="contained"
+                        aria-label="leave-meetup"
+                        onClick={(e) =>
+                        this.handleLeaveMeetup(e, this.props.user.email)
+                        }
+                    >
+                        Leave Meetup
+                    </Button>
+                    )}
+                </div>
               </div>
               {renderMembers(meetup.members)}
             </Grid>
             <Grid item xs={12} md={6}>
-              <div className={`${styles.header} elevate`}>
-                <Typography variant="h5">Friends</Typography>
-                <Tooltip title="Refresh">
-                  <IconButton
-                    color="primary"
-                    onClick={this.refreshFriendsList}
-                    aria-label="refresh-friends"
-                  >
-                    <RefreshIcon />
-                  </IconButton>
-                </Tooltip>
-              </div>
-              {renderFriends()}
+                <div className={styles.headerIndented}>
+                    <div className={`${styles.header} elevate`}>
+                        <Typography variant="h5">Friends</Typography>
+                        <Tooltip title="Refresh">
+                        <IconButton
+                            color="primary"
+                            onClick={this.refreshFriendsList}
+                            aria-label="refresh-friends"
+                        >
+                            <RefreshIcon />
+                        </IconButton>
+                        </Tooltip>
+                    </div>
+                    {renderFriends()}
+                </div>
             </Grid>
             <Grid item xs={12}>
-              <div className={`${styles.header} elevate`} id="Events">
-                <Typography variant="h5">Events</Typography>
-                {isUserMember && (
-                  <Button
-                    aria-label="add-event"
-                    onClick={this.openEventModal}
-                    startIcon={<AddIcon />}
-                    className="button rainbow"
-                    variant="contained"
-                    color="primary"
-                  >
-                    Event
-                  </Button>
-                )}
-                {this.state.newMeetupEventForm && (
-                  <MeetupEventForm
-                    type="create"
-                    uri={meetup.uri}
-                    aria-label="add-event-form"
-                    handleClose={this.openEventModal}
-                    open={this.state.newMeetupEventForm}
-                  />
-                )}
-              </div>
+                <div className={styles.hr} id="Events">
+                    Events
+                </div>
             </Grid>
             <Grid item xs={12}>
               {renderEvents(meetup.events)}
             </Grid>
           </Grid>
         </div>
+        <div className={styles.addEvent}>
+            {isUserMember && (
+                <Fab
+                    aria-label="add-event"
+                    onClick={this.openEventModal}
+                >
+                    <AddIcon />
+                </Fab>
+            )}
+          </div>
         {this.state.showChat && (
           <MeetupChat
             aria-label="meetup-chat"
             meetup={meetup}
             hideChat={this.toggleChat}
           />
+        )}
+        {this.state.newMeetupEventForm && (
+            <MeetupEventForm
+            type="create"
+            uri={meetup.uri}
+            aria-label="add-event-form"
+            handleClose={this.openEventModal}
+            open={this.state.newMeetupEventForm}
+            />
         )}
       </div>
     );
