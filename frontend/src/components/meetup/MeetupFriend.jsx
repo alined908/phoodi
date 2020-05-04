@@ -35,10 +35,8 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: "50%",
     left: "50%",
-    marginTop: -8,
-    marginLeft: -8,
-    width: "20px !important",
-    height: "20px !important"
+    marginTop: -10,
+    marginLeft: -10
   },
   check: {
     color: green[500],
@@ -99,7 +97,7 @@ const MeetupFriend = (props) => {
             <Button
               variant="contained"
               endIcon={success ? <CheckIcon /> : <></>}
-              disabled={loading || success}
+              disabled={loading || success || props.isPast}
               color="primary"
               size="small"
               onClick={(event) => handleClick(event)}
@@ -107,7 +105,7 @@ const MeetupFriend = (props) => {
               Invite
             </Button>
             {loading && (
-              <CircularProgress className={classes.buttonProgress} />
+              <CircularProgress size={20} className={classes.buttonProgress} />
             )}
           </div>
         )}

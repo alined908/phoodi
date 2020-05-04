@@ -129,7 +129,7 @@ export default function RestaurauntAutocomplete(props) {
             endAdornment: (
               <React.Fragment>
                 {loading ? (
-                  <CircularProgress color="inherit" className={classes.progress} />
+                  <CircularProgress color="inherit" size={20} />
                 ) : null}
                 {params.InputProps.endAdornment}
               </React.Fragment>

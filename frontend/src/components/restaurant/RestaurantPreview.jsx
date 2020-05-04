@@ -2,26 +2,31 @@ import React, { useEffect, useState } from "react";
 import {
   Dialog,
   Button,
-  DialogActions,
   DialogContent,
-  DialogTitle,
-  Grid,
   Tooltip,
   Avatar,
   Divider,
+  makeStyles
 } from "@material-ui/core";
 import axios from "axios";
 import styles from "../../styles/meetup.module.css";
-import { Map } from "../components";
+import { Map, Rating  } from "../components";
 import PropTypes from "prop-types";
-import { Rating, Skeleton } from "@material-ui/lab";
+import {Skeleton } from "@material-ui/lab";
 import moment from "moment";
+
+const useStyles = makeStyles({
+  dialog: {
+    padding: "0 !important"
+  },
+});
 
 const RestaurantPreview = (props) => {
   const [fetching, setFetching] = useState(true);
   const [info, setInfo] = useState({});
   const [reviews, setReviews] = useState({});
   const [error, setError] = useState(false);
+  const classes = useStyles()
 
   useEffect(() => {
     (async () => {
@@ -58,93 +63,73 @@ const RestaurantPreview = (props) => {
   }, []);
 
   return (
-    <Dialog open={true} onClose={props.handleClose} maxWidth="md">
-      <DialogTitle>
+    <Dialog open={true} onClose={props.handleClose} maxWidth="lg" fullWidth={true}>
+      <DialogContent className={classes.dialog}>
         {!fetching && (
-          <div className={styles.previewTitle}>
-            {info.name}
-            <span className={styles.previewRating}>
-              <span className={styles.ratingElement}>
-                <Rating value={info.rating} readOnly />
-              </span>
-              <span className={styles.ratingElement}>
-                ({info.review_count})
-              </span>
-            </span>
-          </div>
-        )}
-      </DialogTitle>
-      <DialogContent dividers>
-        {!fetching && (
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
+          <div className={styles.rstPreview}>
+            <div className={styles.rstPreviewInfo}>
               <div className={styles.photos}>
                 {info.photos.map((photo) => (
                   <img className={styles.photo} src={photo} />
                 ))}
               </div>
-            </Grid>
-            <Grid item xs={6}>
-              <div className={styles.rstMapWrapper}>
-                <Map
-                  location={{
-                    latitude: info.coordinates.latitude,
-                    longitude: info.coordinates.longitude,
-                  }}
-                />
-              </div>
-            </Grid>
-            <Grid item xs={6}>
-              <div className={styles.previewInfo}>
-                <div>{info.display_phone}</div>
-                <div>{info.location.display_address.join(" ")}</div>
-                <div>{info.price}</div>
-                <div>
-                  {info.hours[0].is_open_now ? "Open Now!" : "Closed Now"}
-                  {info.hours[0].open.map((day) => (
-                    <div>
-                      {day.start} - {day.end}
+              <div className={styles.rstPreviewInfoBottom}>
+                <div className={styles.previewTitle}>
+                  {info.name}
+                  <Rating rating={info.rating} />
+                </div>
+                <div className={styles.previewInfo}>
+                  <div className={styles.previewInfoLeft}>
+                    <span>{info.price}</span>
+                    <span>{info.display_phone}</span>
+                    <span>{info.location.display_address.join(" ")}</span>
+                  </div>
+                  <div className={styles.previewInfoRight}>
+                    {info.hours[0].is_open_now ? "Open Now!" : "Closed Now"}
+                    {info.hours[0].open.map((day) => (
+                      <div>
+                        {day.start} - {day.end}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className={styles.reviews}>
+                  <div>3 Reviews</div>
+                  {reviews.reviews.map((review) => (
+                    <div className={styles.review}>
+                      <Avatar src={review.user.image_url}>
+                        {review.user.name.charAt(0)}
+                      </Avatar>
+                      <div className={styles.reviewInner}>
+                        <div className={styles.reviewInfo}>
+                          <div className={styles.reviewUser}>
+                            {review.user.name}
+                          </div>
+                          <div className={styles.reviewDate}>
+                            {moment(review.time_created).calendar()}
+                          </div>
+                        </div>
+                        <div className={styles.reviewComment}>
+                          {review.text}
+                        </div>
+                      </div>
+                      <Rating rating={review.rating * 2}/>
                     </div>
                   ))}
                 </div>
               </div>
-            </Grid>
-            <Divider />
-            <Grid item xs={12}>
-              <div className={styles.reviews}>
-                <div>3 Reviews</div>
-                {reviews.reviews.map((review) => (
-                  <div className={styles.review}>
-                    <div className={styles.reviewUser}>
-                      <Avatar src={review.user.image_url}>
-                        {review.user.name.charAt(0)}
-                      </Avatar>
-                      {review.user.name}
-                      <Rating value={review.rating} readOnly />
-                    </div>
-                    <div className={styles.reviewComment}>{review.text}</div>
-                    <div className={styles.reviewDate}>
-                      {moment(review.time_created).calendar()}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Grid>
-          </Grid>
+          </div>
+          <div className={styles.rstMapWrapper}>
+            <Map
+              location={{
+                latitude: info.coordinates.latitude,
+                longitude: info.coordinates.longitude,
+              }}
+            />
+          </div>
+        </div>
         )}
       </DialogContent>
-      <DialogActions>
-        {!fetching && (
-          <>
-            <Button onClick={props.handleClose} color="secondary">
-              Close
-            </Button>
-            <Button target="_blank" href={info.url} color="primary">
-              Open Yelp Page
-            </Button>
-          </>
-        )}
-      </DialogActions>
     </Dialog>
   );
 };

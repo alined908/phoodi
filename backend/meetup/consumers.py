@@ -536,10 +536,10 @@ class MeetupConsumer(AsyncWebsocketConsumer):
             uri=self.meetup_name
         )
         event = await database_sync_to_async(MeetupEvent.objects.get)(pk=event_id)
-        serializer = await self.get_event_serializer(event)
         rst = await self.delete_option_helper(option_id)
+        serializer = await self.get_event_serializer(event)
         message = "deleted option for %s in event named %s" % (rst, event.title)
-        msg = await self.generate_message(user, "deleted option")
+        msg = await self.generate_message(user, message)
         msg_serializer = await self.get_message_serializer(msg)
 
         content = {
@@ -580,5 +580,4 @@ class MeetupConsumer(AsyncWebsocketConsumer):
     async def meetup_event(self, event):
         print("Meetup Consumer: Meetup Event Object sent")
         meetup_event = event["meetup_event"]
-        print(meetup_event)
         await self.send(text_data=json.dumps(meetup_event))

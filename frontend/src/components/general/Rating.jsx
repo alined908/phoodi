@@ -4,8 +4,8 @@ import "react-circular-progressbar/dist/styles.css";
 
 const styles = {
   width: 40,
-  height: 40,
-  boxShadow: "0 1px 5px rgba(27,31,35,.15)",
+  height: "auto",
+  boxShadow: "0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
   borderRadius: "50%",
 };
 

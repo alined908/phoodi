@@ -52,13 +52,12 @@ class Map extends Component {
         {...this.state.viewport}
         width="100%"
         height="100%"
-        className="map"
-        mapStyle="mapbox://styles/mapbox/streets-v11?optimize=true"
+        mapStyle="mapbox://styles/mapbox/streets-v11"
         onViewportChange={(viewport) => this.setState({ viewport })}
         // onLoad={this.props.notLoad ? undefined : this.onLoad }
         mapboxApiAccessToken={token}
       >
-        <div style={{ position: "absolute", left: 10, top: 10 }}>
+        <div style={{ position: "absolute", right: 10, top: 10 }}>
           <NavigationControl showCompass={false} />
         </div>
         <Marker

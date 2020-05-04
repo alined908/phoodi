@@ -319,39 +319,39 @@ class MeetupEventOption extends Component {
     const data = this.props.option.restaurant;
     const banned = this.props.option.banned;
 
-    if (this.props.full) {
-      return (
-        <div className={styles.center}>
-          <div
-            className={`${styles.rstWrapper} ${
-              banned ? styles.banned : ""
-            } ${this.state.hover ? "elevate-2" : "elevate"}`}
-          >
-            {this.state.preview && (
-              <RestaurantPreview
-                handleClose={this.handlePreview}
-                identifier={data.identifier}
-              />
-            )}
+    return (
+      <>
+        {this.props.full ? 
+          <div className={styles.center}>
+            <div
+              className={`${styles.rstWrapper} ${
+                banned ? styles.banned : ""
+              } ${this.state.hover ? "elevate-2" : "elevate"}`}
+            >
+              {this.renderRestauraunt(data, this.props.full)}
+            </div>
+          </div>
+          :
+          <div className={`${styles.rstHorz} ${this.state.hover ? "elevate-2" : "elevate"}`}>
             {this.renderRestauraunt(data, this.props.full)}
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div className={`${styles.rstHorz} ${this.state.hover ? "elevate-2" : "elevate"}`}>
-          {this.renderRestauraunt(data, this.props.full)}
-          <div className={styles.restaurantHorzInfo}>
-            <div className={styles.rstHorzInfoEntry}>
-              <RoomIcon /> <span>{data.location}</span>
-            </div>
-            <div className={styles.rstHorzInfoEntry}>
-              <PhoneIcon /> <span>{data.phone}</span>
+            <div className={styles.restaurantHorzInfo}>
+              <div className={styles.rstHorzInfoEntry}>
+                <RoomIcon /> <span>{data.location}</span>
+              </div>
+              <div className={styles.rstHorzInfoEntry}>
+                <PhoneIcon /> <span>{data.phone}</span>
+              </div>
             </div>
           </div>
-        </div>
-      );
-    }
+        }
+        {this.state.preview && (
+          <RestaurantPreview
+            handleClose={this.handlePreview}
+            identifier={data.identifier}
+          />
+        )}
+      </>
+    )
   }
 }
 

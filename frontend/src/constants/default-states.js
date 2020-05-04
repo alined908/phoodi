@@ -50,9 +50,9 @@ export const MuiTheme = {
     h1: bold,
     h2: bold,
     h3: bold,
-    h4: bold,
+    h4: {...bold, fontSize: "1.3rem"},
     h5: { ...bold, fontSize: "1.15rem" },
-    h6: { ...bold, fontSize: "1rem" },
+    h6: { ...bold, fontSize: ".95rem" },
     body1: { ...bold, fontSize: ".85rem" },
     body2: { ...bold, fontSize: ".8rem" },
     button: { ...bold, fontSize: ".75rem" },
@@ -93,11 +93,7 @@ export const MuiTheme = {
     MuiCircularProgress: {
       colorPrimary: {
         color: "black",
-      },
-      root: {
-        width: "30px !important",
-        height: "30px !important",
-      },
+      }
     },
     MuiChip: {
       root: {

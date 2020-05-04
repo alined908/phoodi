@@ -42,7 +42,7 @@ class MeetupWrapper extends Component {
           )
         ) : (
           <div className="loading">
-            <CircularProgress />
+            <CircularProgress size={30}/>
           </div>
         )}
       </>

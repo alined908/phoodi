@@ -364,7 +364,7 @@ class Meetups extends Component {
           >
             {this.props.isMeetupsFetching && (
               <div className="loading" style={{ height: "auto" }}>
-                <CircularProgress />
+                <CircularProgress size={30}/>
               </div>
             )}
             {!this.props.isMeetupsFetching && this.props.isMeetupsInitialized && (

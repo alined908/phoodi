@@ -96,16 +96,12 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Bugs
 - [ ] Don't allow websocket to send event even after refresh token expire
-- [ ] Disable actions if event is in the past 
 - [ ] Chat contact time ago doesnt update
-- [ ] Delete option doesnt delete option
 
 ## Todo UI/UX/CleanUp
-- [ ] Swap out of material ui (maybe tailwind?)
 - [ ] swap skeleton from meetupcard
 - [ ] Animation when logging out forced
 - [ ] Redo responsive layout + design + Safari presentation
-    - [x] Chat
     - [ ] Meetups
     - [ ] Meetup
     - [ ] Category

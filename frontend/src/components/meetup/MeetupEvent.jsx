@@ -152,7 +152,7 @@ class MeetupEvent extends Component {
 
     const renderHeader = () => {
       return (
-        <div className={`${styles.header} ${styles.smallerHeader} elevate`}>
+        <div className={`${styles.header} elevate`}>
           <Typography variant="h5">
             {event.title}
           </Typography>
@@ -175,7 +175,7 @@ class MeetupEvent extends Component {
             </div>
           
           <div>
-              {this.props.isUserMember && renderActions()}
+              {(this.props.isUserMember && !this.props.isPast) && renderActions()}
             </div>
         </div>
       );
@@ -227,7 +227,7 @@ class MeetupEvent extends Component {
                             <DeleteIcon aria-label="delete" color="secondary" fontSize="small" />
                         </ListItemIcon>
                         <Typography variant="body2" noWrap>
-                            Delete Option
+                            Delete Event
                         </Typography>
                     </MenuItem>
                 }
@@ -294,7 +294,8 @@ class MeetupEvent extends Component {
                   justify={index % 2 === 0 ? "flex-end" : "flex-start"}
                   container
                   xs={12}
-                  md={4}
+                  lg={6}
+                  xl={4}
                   className={styles.meetupEventOptionGrid}
                 >
                   <MeetupEventOption
@@ -365,24 +366,31 @@ class MeetupEvent extends Component {
       <div id={`event-${event.id}`} className={styles.event}>
         {renderHeader()}
         <div
-          className={`${styles.smallerHeader} ${styles.secondHeader} elevate`}
+          className={`${styles.secondHeader} elevate`}
         >
           <div className={styles.secondHeaderLeft}>
             <Typography variant="h6">Categories </Typography>
-            {event.categories.map((category) => (
-              <Link key={category.id} to={`/category/${category.api_label}`}>
-                <span
-                  className={`${styles.categoryChip} ${styles.categoryChipHover}`}
-                >
-                  <Avatar
-                    style={{ width: 20, height: 20 }}
-                    src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`}
-                    variant="square"
-                  />
-                  {category.label}
+            {event.categories.length === 0  ?
+                <span className={styles.categoryChip}>
+                    All
                 </span>
-              </Link>
-            ))}
+                :
+                event.categories.map((category) => (
+                    <Link key={category.id} to={`/category/${category.api_label}`}>
+                      <span
+                        className={`${styles.categoryChip} ${styles.categoryChipHover}`}
+                      >
+                        <Avatar
+                          style={{ width: 20, height: 20 }}
+                          src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`}
+                          variant="square"
+                        />
+                        {category.label}
+                      </span>
+                    </Link>
+                ))
+            }
+            
           </div>
           <div className={styles.secondHeaderLeft}>
             <Typography variant="h6">Price </Typography>
@@ -398,7 +406,7 @@ class MeetupEvent extends Component {
               {Math.round(event.distance * 0.000621371192).toFixed(2)}
             </span>
           </div>
-          {this.props.isUserMember && renderFinalizeActions()}
+          {(this.props.isUserMember && !this.props.isPast) && renderFinalizeActions()}
         </div>
         {!this.props.chosen && (
           <>

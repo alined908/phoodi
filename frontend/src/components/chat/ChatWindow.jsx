@@ -210,14 +210,14 @@ class ChatWindow extends Component {
         >
           {this.props.isMessagesFetching ? (
             <div className="loading">
-              <CircularProgress />
+              <CircularProgress size={30}/>
               <div ref={this.messagesEndRef} />
             </div>
           ) : (
             <div className={styles.messages}>
               {this.props.isMoreMessagesFetching && (
                 <div className={styles.loading}>
-                  <CircularProgress />
+                  <CircularProgress size={30}/>
                 </div>
               )}
               {this.props.room && !this.props.isMoreRetrievable && (

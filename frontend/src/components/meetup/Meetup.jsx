@@ -230,12 +230,20 @@ class Meetup extends Component {
     const isUserMember = this.props.isUserMember;
     const isUserCreator = this.determineIsUserCreator(this.props.user.id);
     const emailDisable = this.determineEmailDisable(meetup.events);
+    const isPast = moment(meetup.date).isBefore(moment(), 'day')
+    console.log(isPast)
 
     const renderInformation = (name, date, location) => {
       return (
         <div className={`${styles.header} elevate`}>
-          <Typography variant="h5">{name}</Typography>
+          <Typography variant="h4">{name}</Typography>
          
+            <div className={styles.headerIcons}>
+              <TodayIcon /> {moment(date).format("dddd, MMMM D")}
+            </div>
+            <div className={styles.headerIcons} aria-label="location">
+              <RoomIcon /> {location}
+            </div>
             <div className={styles.headerIcons} aria-label="meetup-type">
               {meetup.public ? (
                 <>
@@ -246,68 +254,65 @@ class Meetup extends Component {
                   <LockIcon /> Private
                 </>
               )}
-            </div>
-            <div className={styles.headerIcons}>
-              <TodayIcon /> {moment(date).format("dddd, MMMM D")}
-            </div>
-            <div className={styles.headerIcons} aria-label="location">
-              <RoomIcon /> {location}
-            </div>
-                         
+            </div>      
             <div className={styles.actions}>
-                <IconButton style={{color: "rgba(10,10,10, .95)"}} edge="end" onClick={this.handleMenuClick}>
-                    <MoreVertIcon/>
-                </IconButton>
-                <Menu 
-                    anchorEl={this.state.anchor} 
-                    open={this.state.anchor} 
-                    onClose={this.handleMenuClose}
-                >
-                     {isUserMember && !this.state.showChat && (
-                        <MenuItem onClick={(e) => {this.toggleChat(); this.handleMenuClose(e);}}>
-                            <ListItemIcon>
-                                <ChatIcon aria-label="chat" color="primary" fontSize="small" />
-                            </ListItemIcon>
-                            <Typography variant="body2" noWrap>
-                                Chat Window
-                            </Typography>
-                        </MenuItem>
-                    )}
-                    {isUserCreator && (
-                        <>  
-                            <MenuItem 
-                                disabled={emailDisable} 
-                                onClick={(e) => {
-                                    this.handleEmail();
-                                    this.handleMenuClose(e);
-                                }}
-                            >
+                {!isPast && 
+                    <>
+                    <IconButton style={{color: "rgba(10,10,10, .95)"}} edge="end" onClick={this.handleMenuClick}>
+                        <MoreVertIcon/>
+                    </IconButton>
+                    <Menu 
+                        anchorEl={this.state.anchor} 
+                        open={this.state.anchor} 
+                        onClose={this.handleMenuClose}
+                    >
+                        {isUserMember && !this.state.showChat && (
+                            <MenuItem onClick={(e) => {this.toggleChat(); this.handleMenuClose(e);}}>
                                 <ListItemIcon>
-                                    <EmailIcon aria-label="email" style={{color: "black"}} fontSize="small" />
+                                    <ChatIcon aria-label="chat" color="primary" fontSize="small" />
                                 </ListItemIcon>
                                 <Typography variant="body2" noWrap>
-                                    Send Email
+                                    Chat Window
                                 </Typography>
                             </MenuItem>
-                            <MenuItem onClick={(e) => {this.openFormModal(); this.handleMenuClose(e);}}>
-                                <ListItemIcon>
-                                    <EditIcon aria-label="edit" style={{color: "black"}} fontSize="small" />
-                                </ListItemIcon>
-                                <Typography variant="body2" noWrap>
-                                    Edit Meetup
-                                </Typography>
-                            </MenuItem>
-                            <MenuItem onClick={(e) => {this.handleDelete(); this.handleMenuClose(e);}}>
-                                <ListItemIcon>
-                                    <DeleteIcon aria-label="delete" color="secondary" fontSize="small" />
-                                </ListItemIcon>
-                                <Typography variant="body2" noWrap>
-                                    Delete Meetup
-                                </Typography>
-                            </MenuItem>
-                        </>
-                    )}
-                </Menu>
+                        )}
+                        {isUserCreator && (
+                            <>  
+                                <MenuItem 
+                                    disabled={emailDisable} 
+                                    onClick={(e) => {
+                                        this.handleEmail();
+                                        this.handleMenuClose(e);
+                                    }}
+                                >
+                                    <ListItemIcon>
+                                        <EmailIcon aria-label="email" style={{color: "black"}} fontSize="small" />
+                                    </ListItemIcon>
+                                    <Typography variant="body2" noWrap>
+                                        Send Email
+                                    </Typography>
+                                </MenuItem>
+                                <MenuItem onClick={(e) => {this.openFormModal(); this.handleMenuClose(e);}}>
+                                    <ListItemIcon>
+                                        <EditIcon aria-label="edit" style={{color: "black"}} fontSize="small" />
+                                    </ListItemIcon>
+                                    <Typography variant="body2" noWrap>
+                                        Edit Meetup
+                                    </Typography>
+                                </MenuItem>
+                                <MenuItem onClick={(e) => {this.handleDelete(); this.handleMenuClose(e);}}>
+                                    <ListItemIcon>
+                                        <DeleteIcon aria-label="delete" color="secondary" fontSize="small" />
+                                    </ListItemIcon>
+                                    <Typography variant="body2" noWrap>
+                                        Delete Meetup
+                                    </Typography>
+                                </MenuItem>
+                            </>
+                        )}
+                    </Menu>
+                    </>
+                }
             </div>
           {this.state.editMeetupForm && (
             <MeetupForm
@@ -328,7 +333,7 @@ class Meetup extends Component {
           <List className={styles.shellList}>
             {this.props.isFriendsFetching && (
               <div className="loading">
-                <CircularProgress />
+                <CircularProgress size={30}/>
               </div>
             )}
             {this.props.friends.map((friend) => (
@@ -339,6 +344,7 @@ class Meetup extends Component {
                   friend.user.id,
                   meetup.members
                 )}
+                isPast={isPast}
                 uri={meetup.uri}
               />
             ))}
@@ -400,19 +406,19 @@ class Meetup extends Component {
                                         </Tooltip>
                                     } */}
                   {/* {(isUserCreator && members[key].admin && this.props.user.id !== members[key].user.id) &&  
-                                        <Tooltip title="Demote Admin">
-                                            <IconButton>
-                                                <PersonAddDisabledIcon/>
-                                            </IconButton>
-                                    </Tooltip> }
-                                    {(isUserCreator && !members[key].admin && this.props.user.id !== members[key].user.id) &&
-                                        <Tooltip title="Make Admin">
-                                            <IconButton>
-                                                <PersonAddIcon/>
-                                            </IconButton>
-                                        </Tooltip>
-                                    } */}
-                  {isUserMember &&
+                        <Tooltip title="Demote Admin">
+                            <IconButton>
+                                <PersonAddDisabledIcon/>
+                            </IconButton>
+                    </Tooltip> }
+                    {(isUserCreator && !members[key].admin && this.props.user.id !== members[key].user.id) &&
+                        <Tooltip title="Make Admin">
+                            <IconButton>
+                                <PersonAddIcon/>
+                            </IconButton>
+                        </Tooltip>
+                    } */}
+                  {isUserMember && !isPast &&
                     members[key].user.id !== this.props.user.id &&
                     members[this.props.user.id].admin && (
                       <Tooltip title="Remove Member">
@@ -452,7 +458,7 @@ class Meetup extends Component {
         <>
           {this.props.isMeetupEventsFetching && (
             <div className="loading">
-              <CircularProgress />
+              <CircularProgress size={30}/>
             </div>
           )}
           {this.props.isMeetupEventsInitialized &&
@@ -470,6 +476,7 @@ class Meetup extends Component {
                 }}
                 isUserCreator={isUserCreator}
                 user={this.props.user}
+                isPast={isPast}
               />
             ))}
         </>
@@ -496,28 +503,28 @@ class Meetup extends Component {
               <div className={styles.headerIndented}>
                 <div className={`${styles.header} elevate`}>
                     <Typography variant="h5">Members</Typography>
-                    {!isUserMember && (
-                    <Button
-                        aria-label="join-meetup"
-                        onClick={this.handlePublicMeetupJoin}
-                        style={{ background: "#45B649", color: "white" }}
-                        variant="contained"
-                    >
-                        Join Meetup
-                    </Button>
-                    )}
-                    {isUserMember && !isUserCreator && (
-                    <Button
-                        color="secondary"
-                        variant="contained"
-                        aria-label="leave-meetup"
-                        onClick={(e) =>
-                        this.handleLeaveMeetup(e, this.props.user.email)
-                        }
-                    >
-                        Leave Meetup
-                    </Button>
-                    )}
+                    {(!isUserMember && !isPast) && 
+                        <Button
+                            aria-label="join-meetup"
+                            onClick={this.handlePublicMeetupJoin}
+                            style={{ background: "#45B649", color: "white" }}
+                            variant="contained"
+                        >
+                            Join Meetup
+                        </Button>
+                    }
+                    {(isUserMember && !isUserCreator && !isPast) && 
+                        <Button
+                            color="secondary"
+                            variant="contained"
+                            aria-label="leave-meetup"
+                            onClick={(e) =>
+                            this.handleLeaveMeetup(e, this.props.user.email)
+                            }
+                        >
+                            Leave Meetup
+                        </Button>
+                    }
                 </div>
               </div>
               {renderMembers(meetup.members)}
@@ -526,18 +533,20 @@ class Meetup extends Component {
                 <div className={styles.headerIndented}>
                     <div className={`${styles.header} elevate`}>
                         <Typography variant="h5">Friends</Typography>
+                        {!isPast && 
                         <Tooltip title="Refresh">
-                        <IconButton
-                            color="primary"
-                            onClick={this.refreshFriendsList}
-                            aria-label="refresh-friends"
-                        >
-                            <RefreshIcon />
-                        </IconButton>
+                            <IconButton
+                                style={{color: "black"}}
+                                onClick={this.refreshFriendsList}
+                                aria-label="refresh-friends"
+                            >
+                                <RefreshIcon />
+                            </IconButton>
                         </Tooltip>
+                        }
                     </div>
-                    {renderFriends()}
                 </div>
+                {renderFriends()}
             </Grid>
             <Grid item xs={12}>
                 <div className={styles.hr} id="Events">
@@ -549,16 +558,20 @@ class Meetup extends Component {
             </Grid>
           </Grid>
         </div>
-        <div className={styles.addEvent}>
+        {!isPast && <div className={styles.addEvent}>
             {isUserMember && (
-                <Fab
-                    aria-label="add-event"
-                    onClick={this.openEventModal}
-                >
-                    <AddIcon />
-                </Fab>
+                <Tooltip title="Create Event">
+                    <Fab
+                        aria-label="add-event"
+                        size="medium"
+                        onClick={this.openEventModal}
+                    >
+                        <AddIcon />
+                    </Fab>
+                </Tooltip>
             )}
           </div>
+        }
         {this.state.showChat && (
           <MeetupChat
             aria-label="meetup-chat"
@@ -568,11 +581,11 @@ class Meetup extends Component {
         )}
         {this.state.newMeetupEventForm && (
             <MeetupEventForm
-            type="create"
-            uri={meetup.uri}
-            aria-label="add-event-form"
-            handleClose={this.openEventModal}
-            open={this.state.newMeetupEventForm}
+                type="create"
+                uri={meetup.uri}
+                aria-label="add-event-form"
+                handleClose={this.openEventModal}
+                open={this.state.newMeetupEventForm}
             />
         )}
       </div>

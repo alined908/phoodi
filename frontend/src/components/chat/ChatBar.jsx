@@ -132,7 +132,7 @@ class ChatBar extends Component {
         <div className={styles.contacts}>
           {this.props.isRoomsFetching && (
             <div className="loading">
-              <CircularProgress />
+              <CircularProgress size={30}/>
             </div>
           )}
           {this.props.isRoomsInitialized && rooms.length === 0 && (
