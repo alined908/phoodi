@@ -7,30 +7,54 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('meetup', '0007_restaurant_comment_count'),
+        ("meetup", "0007_restaurant_comment_count"),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='commentvote',
-            name='user',
-        ),
-        migrations.RemoveField(
-            model_name='commentvote',
-            name='vote',
-        ),
+        migrations.RemoveField(model_name="commentvote", name="user",),
+        migrations.RemoveField(model_name="commentvote", name="vote",),
         migrations.CreateModel(
-            name='ReviewVote',
+            name="ReviewVote",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('review', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='r_votes', to='meetup.Review')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "review",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="r_votes",
+                        to="meetup.Review",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='RestaurantVote',
+            name="RestaurantVote",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('restaurant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rst_votes', to='meetup.Restaurant')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "restaurant",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="rst_votes",
+                        to="meetup.Restaurant",
+                    ),
+                ),
             ],
         ),
     ]

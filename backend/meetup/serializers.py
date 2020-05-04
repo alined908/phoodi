@@ -6,66 +6,67 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from notifications.models import Notification
 
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super(MyTokenObtainPairSerializer, cls).get_token(user)
         serializer = UserSerializerWithToken(user, context={"plain": True})
-        token['user'] = serializer.data
+        token["user"] = serializer.data
         return token
 
-class UserSerializer(serializers.ModelSerializer):
 
+class UserSerializer(serializers.ModelSerializer):
     def to_representation(self, data):
         res = super(UserSerializer, self).to_representation(data)
         if self.context.get("plain"):
             return res
         else:
-            return {res['id']: res}
-        
+            return {res["id"]: res}
+
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'avatar')
+        fields = ("id", "email", "first_name", "last_name", "avatar")
+
 
 class UserSerializerWithActivity(serializers.ModelSerializer):
-    activity = serializers.SerializerMethodField('_get_activity')
-    
+    activity = serializers.SerializerMethodField("_get_activity")
+
     def _get_activity(self, obj):
-        notifications = Notification.objects.filter( 
-            actor_object_id = obj.id,
-            description="user_activity"
+        notifications = Notification.objects.filter(
+            actor_object_id=obj.id, description="user_activity"
         )
         serializer = NotificationSerializer(notifications, many=True)
         return serializer.data
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'avatar', 'activity')
+        fields = ("id", "email", "first_name", "last_name", "avatar", "activity")
+
 
 class UserSerializerWithToken(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
     first_name = serializers.CharField(max_length=255)
     password = serializers.CharField(write_only=True)
-    settings = serializers.SerializerMethodField('_get_settings')
+    settings = serializers.SerializerMethodField("_get_settings")
 
     def to_representation(self, data):
         res = super(UserSerializerWithToken, self).to_representation(data)
         if self.context.get("plain"):
             return res
         else:
-            return {res['id']: res}
+            return {res["id"]: res}
 
     def create(self, validated_data):
         if "avatar" not in validated_data:
             avatar = None
         else:
-            avatar = validated_data['avatar']
+            avatar = validated_data["avatar"]
         user = User.objects.create_user(
-            email=validated_data['email'], 
-            first_name=validated_data['first_name'], 
-            last_name=validated_data['last_name'], 
-            avatar=avatar, 
-            password=validated_data['password']
+            email=validated_data["email"],
+            first_name=validated_data["first_name"],
+            last_name=validated_data["last_name"],
+            avatar=avatar,
+            password=validated_data["password"],
         )
         return user
 
@@ -75,21 +76,36 @@ class UserSerializerWithToken(serializers.ModelSerializer):
             serializer = UserSettingsSerializer(settings)
             settings_json = serializer.data
         except ObjectDoesNotExist:
-            settings_json = {"radius": 25, "location": None, "latitude": None, "longitude": None}
+            settings_json = {
+                "radius": 25,
+                "location": None,
+                "latitude": None,
+                "longitude": None,
+            }
         return settings_json
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'password', 'avatar', 'settings')
+        fields = (
+            "id",
+            "email",
+            "first_name",
+            "last_name",
+            "password",
+            "avatar",
+            "settings",
+        )
+
 
 class UserSettingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserSettings
-        fields = ('radius', 'location', 'latitude', 'longitude')
+        fields = ("radius", "location", "latitude", "longitude")
+
 
 class PreferenceSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField('_get_user')
-    category = serializers.SerializerMethodField('_get_category')
+    user = serializers.SerializerMethodField("_get_user")
+    category = serializers.SerializerMethodField("_get_category")
 
     def _get_user(self, obj):
         serializer = UserSerializer(obj.user, context={"plain": True})
@@ -101,22 +117,23 @@ class PreferenceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Preference
-        fields = ('id', 'user', 'category', 'name', 'ranking', 'timestamp')
-    
+        fields = ("id", "user", "category", "name", "ranking", "timestamp")
+
+
 class FriendshipSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField('_get_friend')
-    chat_room = serializers.SerializerMethodField('_get_chat_room')
+    user = serializers.SerializerMethodField("_get_friend")
+    chat_room = serializers.SerializerMethodField("_get_chat_room")
 
     def _get_friend(self, obj):
-        user = self.context.get('user')
-        
+        user = self.context.get("user")
+
         if obj.creator == user:
-            return UserSerializer(obj.friend, context={'plain': True}).data
+            return UserSerializer(obj.friend, context={"plain": True}).data
         else:
-            return UserSerializer(obj.creator, context={'plain': True}).data
+            return UserSerializer(obj.creator, context={"plain": True}).data
 
     def _get_chat_room(self, obj):
-        try: 
+        try:
             room = ChatRoom.objects.get(friendship=obj)
         except ObjectDoesNotExist:
             return None
@@ -125,13 +142,14 @@ class FriendshipSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Friendship
-        fields = ('id', 'user', 'created_at', 'chat_room')
+        fields = ("id", "user", "created_at", "chat_room")
+
 
 class MeetupSerializer(serializers.ModelSerializer):
-    creator = serializers.SerializerMethodField('_get_creator')
-    members = serializers.SerializerMethodField('_get_members')
-    notifs = serializers.SerializerMethodField('_get_notifs')
-    categories = serializers.SerializerMethodField('_get_categories')
+    creator = serializers.SerializerMethodField("_get_creator")
+    members = serializers.SerializerMethodField("_get_members")
+    notifs = serializers.SerializerMethodField("_get_notifs")
+    categories = serializers.SerializerMethodField("_get_categories")
 
     def _get_creator(self, obj):
         user = obj.creator
@@ -145,40 +163,57 @@ class MeetupSerializer(serializers.ModelSerializer):
         return mapping
 
     def _get_notifs(self, obj):
-        if 'user' not in self.context:
+        if "user" not in self.context:
             return 0
-        user =  self.context['user']
+        user = self.context["user"]
         notifs = user.notifications.filter(
-            target_object_id=obj.id, 
-            description="meetup"
+            target_object_id=obj.id, description="meetup"
         ).unread()
         return notifs.count()
 
     def _get_categories(self, obj):
         meetup_categories = obj.meetup_categories.all()
-        categories = list(set([meetup_category.category for meetup_category in meetup_categories]))
+        categories = list(
+            set([meetup_category.category for meetup_category in meetup_categories])
+        )
         serializer = CategorySerializer(categories, many=True)
         return serializer.data
 
     class Meta:
         model = Meetup
-        fields = ('id', 'name', 'uri', 'creator', 'location', 'date', 'members', 'notifs', 'public', 'categories', 'latitude', 'longitude')
+        fields = (
+            "id",
+            "name",
+            "uri",
+            "creator",
+            "location",
+            "date",
+            "members",
+            "notifs",
+            "public",
+            "categories",
+            "latitude",
+            "longitude",
+        )
+
 
 class MeetupSimpleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meetup
-        fields = ('id', 'name', 'uri', 'public')
+        fields = ("id", "name", "uri", "public")
+
 
 class RestaurantCategorySerializer(serializers.ModelSerializer):
     category = serializers.SerializerMethodField("_get_category")
-    
+
     def _get_category(self, obj):
         serializer = CategorySerializer(obj.category)
         return serializer.data
 
     class Meta:
         model = RestaurantCategory
-        fields = ('category',)
+        fields = ("category",)
+
 
 class RestaurantSerializer(serializers.ModelSerializer):
     categories = serializers.SerializerMethodField("_get_categories")
@@ -189,15 +224,17 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Restaurant
-        fields = '__all__'
+        fields = "__all__"
+
 
 class CommentVoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = CommentVote
-        fields = '__all__'
+        fields = "__all__"
+
 
 class CommentSerializer(serializers.ModelSerializer):
-    children = serializers.SerializerMethodField('_get_children')
+    children = serializers.SerializerMethodField("_get_children")
     user = serializers.SerializerMethodField("_get_user")
     vote = serializers.SerializerMethodField("_get_vote")
 
@@ -209,11 +246,11 @@ class CommentSerializer(serializers.ModelSerializer):
     def _get_children(self, obj):
         serializer = CommentSerializer(obj.children, many=True)
         return serializer.data
-    
+
     def _get_vote(self, obj):
-        user = self.context.get('user')
+        user = self.context.get("user")
         try:
-            vote = CommentVote.objects.get(comment = obj, user=user)
+            vote = CommentVote.objects.get(comment=obj, user=user)
             serializer = CommentVoteSerializer(vote)
             return serializer.data
         except ObjectDoesNotExist:
@@ -221,12 +258,14 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = '__all__'
+        fields = "__all__"
+
 
 class ReviewVoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReviewVote
-        fields = '__all__'
+        fields = "__all__"
+
 
 class ReviewSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField("_get_children")
@@ -239,14 +278,14 @@ class ReviewSerializer(serializers.ModelSerializer):
         return serializer.data
 
     def _get_children(self, obj):
-        top = Comment.objects.filter(review = obj, parent_comment = None)
+        top = Comment.objects.filter(review=obj, parent_comment=None)
         serializer = CommentSerializer(top, many=True)
         return serializer.data
 
     def _get_vote(self, obj):
-        user = self.context.get('user')
+        user = self.context.get("user")
         try:
-            vote = ReviewVote.objects.get(review = obj, user=user)
+            vote = ReviewVote.objects.get(review=obj, user=user)
             serializer = ReviewVoteSerializer(vote)
             return serializer.data
         except ObjectDoesNotExist:
@@ -254,14 +293,15 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = '__all__'
+        fields = "__all__"
+
 
 class MeetupEventOptionVoteSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField('_get_user')
+    user = serializers.SerializerMethodField("_get_user")
 
     def to_representation(self, data):
         res = super(MeetupEventOptionVoteSerializer, self).to_representation(data)
-        return {res['user']['id']: res}
+        return {res["user"]["id"]: res}
 
     def _get_user(self, obj):
         user = obj.member.user
@@ -270,15 +310,16 @@ class MeetupEventOptionVoteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MeetupEventOptionVote
-        fields = ('id', 'status', 'user')
+        fields = ("id", "status", "user")
+
 
 class MeetupEventOptionSerializer(serializers.ModelSerializer):
     votes = serializers.SerializerMethodField("_get_votes")
-    restaurant = serializers.SerializerMethodField('_get_restaurant')
+    restaurant = serializers.SerializerMethodField("_get_restaurant")
 
     def to_representation(self, data):
         res = super(MeetupEventOptionSerializer, self).to_representation(data)
-        return {res['id']: res}
+        return {res["id"]: res}
 
     def _get_votes(self, obj):
         mapping = {}
@@ -292,12 +333,13 @@ class MeetupEventOptionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MeetupEventOption
-        fields = ('id', 'score', 'option', 'restaurant', 'votes', 'banned')
+        fields = ("id", "score", "option", "restaurant", "votes", "banned")
+
 
 class MeetupEventSerializer(serializers.ModelSerializer):
-    options = serializers.SerializerMethodField('_get_options')
-    categories = serializers.SerializerMethodField('_get_categories')
-    creator = serializers.SerializerMethodField('_get_creator')
+    options = serializers.SerializerMethodField("_get_options")
+    categories = serializers.SerializerMethodField("_get_categories")
+    creator = serializers.SerializerMethodField("_get_creator")
 
     def _get_categories(self, obj):
         ids = obj.entries.values()
@@ -319,17 +361,32 @@ class MeetupEventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MeetupEvent
-        fields = ('id', 'meetup', 'creator', 'title', 'start', 'end', 'chosen', 'categories', 'options', 'price', 'distance', 'entries', 'random')
+        fields = (
+            "id",
+            "meetup",
+            "creator",
+            "title",
+            "start",
+            "end",
+            "chosen",
+            "categories",
+            "options",
+            "price",
+            "distance",
+            "entries",
+            "random",
+        )
+
 
 class MeetupMemberSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField('_get_user')
+    user = serializers.SerializerMethodField("_get_user")
 
     def to_representation(self, data):
         res = super(MeetupMemberSerializer, self).to_representation(data)
         if self.context.get("plain"):
             return res
         else:
-            return {res['user']['id']: res}
+            return {res["user"]["id"]: res}
 
     def _get_user(self, obj):
         serializer = UserSerializer(obj.user, context={"plain": True})
@@ -337,53 +394,57 @@ class MeetupMemberSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MeetupMember
-        fields = ['id', 'user', 'ban', 'admin']
+        fields = ["id", "user", "ban", "admin"]
+
 
 class MeetupInviteSerializer(serializers.ModelSerializer):
-    sender = serializers.SerializerMethodField('_get_sender')
-    receiver = serializers.SerializerMethodField('_get_receiver')
-    meetup = serializers.SerializerMethodField('_get_meetup')
+    sender = serializers.SerializerMethodField("_get_sender")
+    receiver = serializers.SerializerMethodField("_get_receiver")
+    meetup = serializers.SerializerMethodField("_get_meetup")
 
     def _get_sender(self, obj):
-        serializer = UserSerializer(obj.sender, context={'plain': True})
+        serializer = UserSerializer(obj.sender, context={"plain": True})
         return serializer.data
 
     def _get_receiver(self, obj):
-        serializer = UserSerializer(obj.receiver, context={'plain': True})
+        serializer = UserSerializer(obj.receiver, context={"plain": True})
         return serializer.data
-    
+
     def _get_meetup(self, obj):
         serializer = MeetupSerializer(obj.meetup)
         return serializer.data
 
     class Meta:
         model = MeetupInvite
-        fields = ('id', 'timestamp', 'status', 'uri', 'sender', 'receiver','meetup')
+        fields = ("id", "timestamp", "status", "uri", "sender", "receiver", "meetup")
+
 
 class FriendInviteSerializer(serializers.ModelSerializer):
-    sender = serializers.SerializerMethodField('_get_sender')
-    receiver = serializers.SerializerMethodField('_get_receiver')
+    sender = serializers.SerializerMethodField("_get_sender")
+    receiver = serializers.SerializerMethodField("_get_receiver")
 
     def _get_sender(self, obj):
-        serializer = UserSerializer(obj.sender, context={'plain': True})
+        serializer = UserSerializer(obj.sender, context={"plain": True})
         return serializer.data
 
     def _get_receiver(self, obj):
-        serializer = UserSerializer(obj.receiver, context={'plain': True})
+        serializer = UserSerializer(obj.receiver, context={"plain": True})
         return serializer.data
 
     class Meta:
         model = FriendInvite
-        fields = ('id', 'timestamp', 'status', 'uri', 'sender', 'receiver')
+        fields = ("id", "timestamp", "status", "uri", "sender", "receiver")
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('id', 'label', 'api_label', 'image')
+        fields = ("id", "label", "api_label", "image")
+
 
 class CategoryVerboseSerializer(CategorySerializer):
-    preference = serializers.SerializerMethodField('_get_preference')
-    num_liked = serializers.SerializerMethodField('_get_numliked')
+    preference = serializers.SerializerMethodField("_get_preference")
+    num_liked = serializers.SerializerMethodField("_get_numliked")
 
     def _get_preference(self, obj):
         user = self.context.get("user")
@@ -399,11 +460,12 @@ class CategoryVerboseSerializer(CategorySerializer):
 
     class Meta(CategorySerializer.Meta):
         model = Category
-        fields = ('id', 'label', 'api_label', 'image', 'num_liked', 'preference')
+        fields = ("id", "label", "api_label", "image", "num_liked", "preference")
+
 
 class ChatRoomSerializer(serializers.ModelSerializer):
-    members = serializers.SerializerMethodField('_get_members')
-    notifs = serializers.SerializerMethodField('_get_notifs')
+    members = serializers.SerializerMethodField("_get_members")
+    notifs = serializers.SerializerMethodField("_get_notifs")
 
     def _get_members(self, obj):
         mapping = {}
@@ -413,19 +475,19 @@ class ChatRoomSerializer(serializers.ModelSerializer):
         return mapping
 
     def _get_notifs(self, obj):
-        user =  self.context['user']
+        user = self.context["user"]
         notifs = user.notifications.filter(
-            action_object_object_id=obj.id, 
-            description="chat_message"
+            action_object_object_id=obj.id, description="chat_message"
         ).unread()
         return notifs.count()
 
     class Meta:
         model = ChatRoom
-        fields = '__all__'
+        fields = "__all__"
+
 
 class ChatRoomMemberSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField('_get_member')
+    user = serializers.SerializerMethodField("_get_member")
 
     def _get_member(self, obj):
         serializer = UserSerializer(obj.user)
@@ -433,22 +495,24 @@ class ChatRoomMemberSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChatRoomMember
-        fields = ['user']
+        fields = ["user"]
+
 
 class MessageSerializer(serializers.ModelSerializer):
     sender = serializers.SerializerMethodField("_get_sender")
 
     def _get_sender(self, obj):
-        serializer = UserSerializer(obj.sender, context={'plain': True})
+        serializer = UserSerializer(obj.sender, context={"plain": True})
         return serializer.data
 
     class Meta:
         model = ChatRoomMessage
-        fields = ('id', 'message', 'timestamp', 'is_read', 'is_notif', 'sender')
+        fields = ("id", "message", "timestamp", "is_read", "is_notif", "sender")
+
 
 class GenericNotificationRelatedField(serializers.RelatedField):
     def to_representation(self, value):
-    
+
         if isinstance(value, User):
             serializer = UserSerializer(value, context={"plain": True})
         elif isinstance(value, Meetup):
@@ -466,6 +530,7 @@ class GenericNotificationRelatedField(serializers.RelatedField):
 
         return serializer.data
 
+
 class NotificationSerializer(serializers.ModelSerializer):
     actor = GenericNotificationRelatedField(read_only=True)
     target = GenericNotificationRelatedField(read_only=True)
@@ -473,4 +538,12 @@ class NotificationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Notification
-        fields = ('id', 'actor', 'verb', 'action_object', 'target', 'description', 'timestamp')
+        fields = (
+            "id",
+            "actor",
+            "verb",
+            "action_object",
+            "target",
+            "description",
+            "timestamp",
+        )

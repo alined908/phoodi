@@ -13,309 +13,777 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name="User",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('email', models.EmailField(max_length=255, unique=True)),
-                ('first_name', models.CharField(max_length=255)),
-                ('last_name', models.CharField(max_length=255)),
-                ('active', models.BooleanField(default=True)),
-                ('admin', models.BooleanField(default=False)),
-                ('staff', models.BooleanField(default=False)),
-                ('confirmed', models.BooleanField(default=False)),
-                ('avatar', models.ImageField(blank=True, null=True, upload_to=meetup.helpers.PathAndRename('avatar'))),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("password", models.CharField(max_length=128, verbose_name="password")),
+                (
+                    "last_login",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="last login"
+                    ),
+                ),
+                ("email", models.EmailField(max_length=255, unique=True)),
+                ("first_name", models.CharField(max_length=255)),
+                ("last_name", models.CharField(max_length=255)),
+                ("active", models.BooleanField(default=True)),
+                ("admin", models.BooleanField(default=False)),
+                ("staff", models.BooleanField(default=False)),
+                ("confirmed", models.BooleanField(default=False)),
+                (
+                    "avatar",
+                    models.ImageField(
+                        blank=True,
+                        null=True,
+                        upload_to=meetup.helpers.PathAndRename("avatar"),
+                    ),
+                ),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False,},
         ),
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('label', models.CharField(max_length=255)),
-                ('api_label', models.CharField(max_length=255)),
-                ('image', models.ImageField(blank=True, null=True, upload_to='category')),
-            ],
-        ),
-        migrations.CreateModel(
-            name='ChatRoom',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(blank=True, max_length=200, null=True)),
-                ('uri', models.URLField(default=meetup.models.generate_unique_uri)),
-                ('timestamp', models.DateTimeField(auto_now_add=True)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Comment',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('text', models.CharField(max_length=1000)),
-                ('vote_score', models.IntegerField()),
-                ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('parent_comment', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='children', to='meetup.Comment')),
-            ],
-            options={
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='Meetup',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uri', models.URLField(default=meetup.models.generate_unique_uri)),
-                ('location', models.TextField()),
-                ('longitude', models.FloatField()),
-                ('latitude', models.FloatField()),
-                ('name', models.CharField(default='Meetup', max_length=255)),
-                ('date', models.DateField()),
-                ('public', models.BooleanField()),
-                ('creator', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='created_meetups', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("label", models.CharField(max_length=255)),
+                ("api_label", models.CharField(max_length=255)),
+                (
+                    "image",
+                    models.ImageField(blank=True, null=True, upload_to="category"),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='MeetupEvent',
+            name="ChatRoom",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=255)),
-                ('distance', models.IntegerField()),
-                ('price', models.CharField(max_length=10)),
-                ('start', models.DateTimeField()),
-                ('end', models.DateTimeField(blank=True, null=True)),
-                ('chosen', models.IntegerField(blank=True, null=True)),
-                ('random', models.BooleanField()),
-                ('entries', django.contrib.postgres.fields.jsonb.JSONField()),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(blank=True, max_length=200, null=True)),
+                ("uri", models.URLField(default=meetup.models.generate_unique_uri)),
+                ("timestamp", models.DateTimeField(auto_now_add=True)),
             ],
         ),
         migrations.CreateModel(
-            name='MeetupEventOption',
+            name="Comment",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('option', models.TextField(blank=True, null=True)),
-                ('banned', models.BooleanField(default=False)),
-                ('score', models.IntegerField(default=0)),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='options', to='meetup.MeetupEvent')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("text", models.CharField(max_length=1000)),
+                ("vote_score", models.IntegerField()),
+                ("timestamp", models.DateTimeField(auto_now_add=True)),
+                (
+                    "parent_comment",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="children",
+                        to="meetup.Comment",
+                    ),
+                ),
+            ],
+            options={"abstract": False,},
+        ),
+        migrations.CreateModel(
+            name="Meetup",
+            fields=[
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("uri", models.URLField(default=meetup.models.generate_unique_uri)),
+                ("location", models.TextField()),
+                ("longitude", models.FloatField()),
+                ("latitude", models.FloatField()),
+                ("name", models.CharField(default="Meetup", max_length=255)),
+                ("date", models.DateField()),
+                ("public", models.BooleanField()),
+                (
+                    "creator",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="created_meetups",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Restaurant',
+            name="MeetupEvent",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('identifier', models.CharField(max_length=100)),
-                ('name', models.TextField()),
-                ('yelp_image', models.TextField()),
-                ('yelp_url', models.TextField()),
-                ('url', models.TextField()),
-                ('rating', models.FloatField()),
-                ('latitude', models.FloatField()),
-                ('longitude', models.FloatField()),
-                ('price', models.CharField(max_length=10)),
-                ('location', models.TextField()),
-                ('address1', models.CharField(max_length=255)),
-                ('address2', models.CharField(blank=True, max_length=255)),
-                ('city', models.CharField(max_length=255)),
-                ('state', models.CharField(max_length=255)),
-                ('zipcode', models.CharField(max_length=255)),
-                ('country', models.CharField(max_length=255)),
-                ('phone', models.CharField(max_length=20)),
-                ('categories', models.TextField()),
-                ('review_count', models.IntegerField(default=0)),
-                ('option_count', models.IntegerField(default=0)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=255)),
+                ("distance", models.IntegerField()),
+                ("price", models.CharField(max_length=10)),
+                ("start", models.DateTimeField()),
+                ("end", models.DateTimeField(blank=True, null=True)),
+                ("chosen", models.IntegerField(blank=True, null=True)),
+                ("random", models.BooleanField()),
+                ("entries", django.contrib.postgres.fields.jsonb.JSONField()),
             ],
         ),
         migrations.CreateModel(
-            name='UserSettings',
+            name="MeetupEventOption",
             fields=[
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
-                ('radius', models.IntegerField(default=25)),
-                ('location', models.TextField(blank=True, null=True)),
-                ('latitude', models.FloatField(blank=True, null=True)),
-                ('longitude', models.FloatField(blank=True, null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("option", models.TextField(blank=True, null=True)),
+                ("banned", models.BooleanField(default=False)),
+                ("score", models.IntegerField(default=0)),
+                (
+                    "event",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="options",
+                        to="meetup.MeetupEvent",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Review',
+            name="Restaurant",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('text', models.CharField(max_length=1000)),
-                ('vote_score', models.IntegerField()),
-                ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('rating', models.IntegerField(choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10)])),
-                ('restaurant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='r_reviews', to='meetup.Restaurant')),
-                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='u_reviews', to=settings.AUTH_USER_MODEL)),
-            ],
-            options={
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='RestaurantPreference',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('ranking', models.PositiveSmallIntegerField()),
-                ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('restaurant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='likes', to='meetup.Restaurant')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='preferred_restaurants', to=settings.AUTH_USER_MODEL)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='RestaurantCategory',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='c_restaurants', to='meetup.Category')),
-                ('restaurant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='r_categories', to='meetup.Restaurant')),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Preference',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('ranking', models.PositiveSmallIntegerField()),
-                ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='meetup.Category')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='preferences', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("identifier", models.CharField(max_length=100)),
+                ("name", models.TextField()),
+                ("yelp_image", models.TextField()),
+                ("yelp_url", models.TextField()),
+                ("url", models.TextField()),
+                ("rating", models.FloatField()),
+                ("latitude", models.FloatField()),
+                ("longitude", models.FloatField()),
+                ("price", models.CharField(max_length=10)),
+                ("location", models.TextField()),
+                ("address1", models.CharField(max_length=255)),
+                ("address2", models.CharField(blank=True, max_length=255)),
+                ("city", models.CharField(max_length=255)),
+                ("state", models.CharField(max_length=255)),
+                ("zipcode", models.CharField(max_length=255)),
+                ("country", models.CharField(max_length=255)),
+                ("phone", models.CharField(max_length=20)),
+                ("categories", models.TextField()),
+                ("review_count", models.IntegerField(default=0)),
+                ("option_count", models.IntegerField(default=0)),
             ],
         ),
         migrations.CreateModel(
-            name='MeetupMember',
+            name="UserSettings",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('ban', models.BooleanField(default=False)),
-                ('admin', models.BooleanField(default=False)),
-                ('meetup', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='members', to='meetup.Meetup')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='meetups', to=settings.AUTH_USER_MODEL)),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        primary_key=True,
+                        serialize=False,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                ("radius", models.IntegerField(default=25)),
+                ("location", models.TextField(blank=True, null=True)),
+                ("latitude", models.FloatField(blank=True, null=True)),
+                ("longitude", models.FloatField(blank=True, null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='MeetupInvite',
+            name="Review",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('status', models.IntegerField(choices=[(1, 'Open'), (2, 'Accepted'), (3, 'Rejected')], default=1)),
-                ('uri', models.URLField(default=meetup.models.generate_unique_uri)),
-                ('meetup', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='invs', to='meetup.Meetup')),
-                ('receiver', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='received_meetupinvites', to=settings.AUTH_USER_MODEL)),
-                ('sender', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sent_meetupinvites', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("text", models.CharField(max_length=1000)),
+                ("vote_score", models.IntegerField()),
+                ("timestamp", models.DateTimeField(auto_now_add=True)),
+                (
+                    "rating",
+                    models.IntegerField(
+                        choices=[
+                            (1, 1),
+                            (2, 2),
+                            (3, 3),
+                            (4, 4),
+                            (5, 5),
+                            (6, 6),
+                            (7, 7),
+                            (8, 8),
+                            (9, 9),
+                            (10, 10),
+                        ]
+                    ),
+                ),
+                (
+                    "restaurant",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="r_reviews",
+                        to="meetup.Restaurant",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="u_reviews",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False,},
         ),
         migrations.CreateModel(
-            name='MeetupEventOptionVote',
+            name="RestaurantPreference",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('status', models.IntegerField(choices=[(1, 'Like'), (2, 'Dislike'), (3, 'Ban')])),
-                ('member', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='member_votes', to='meetup.MeetupMember')),
-                ('option', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='event_votes', to='meetup.MeetupEventOption')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("ranking", models.PositiveSmallIntegerField()),
+                ("timestamp", models.DateTimeField(auto_now_add=True)),
+                (
+                    "restaurant",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="likes",
+                        to="meetup.Restaurant",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="preferred_restaurants",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+            ],
+        ),
+        migrations.CreateModel(
+            name="RestaurantCategory",
+            fields=[
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="c_restaurants",
+                        to="meetup.Category",
+                    ),
+                ),
+                (
+                    "restaurant",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="r_categories",
+                        to="meetup.Restaurant",
+                    ),
+                ),
+            ],
+        ),
+        migrations.CreateModel(
+            name="Preference",
+            fields=[
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("ranking", models.PositiveSmallIntegerField()),
+                ("timestamp", models.DateTimeField(auto_now_add=True)),
+                (
+                    "category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="meetup.Category",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="preferences",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+            ],
+        ),
+        migrations.CreateModel(
+            name="MeetupMember",
+            fields=[
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("ban", models.BooleanField(default=False)),
+                ("admin", models.BooleanField(default=False)),
+                (
+                    "meetup",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="members",
+                        to="meetup.Meetup",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="meetups",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+            ],
+        ),
+        migrations.CreateModel(
+            name="MeetupInvite",
+            fields=[
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("timestamp", models.DateTimeField(auto_now_add=True)),
+                (
+                    "status",
+                    models.IntegerField(
+                        choices=[(1, "Open"), (2, "Accepted"), (3, "Rejected")],
+                        default=1,
+                    ),
+                ),
+                ("uri", models.URLField(default=meetup.models.generate_unique_uri)),
+                (
+                    "meetup",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="invs",
+                        to="meetup.Meetup",
+                    ),
+                ),
+                (
+                    "receiver",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="received_meetupinvites",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "sender",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="sent_meetupinvites",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+            ],
+            options={"abstract": False,},
+        ),
+        migrations.CreateModel(
+            name="MeetupEventOptionVote",
+            fields=[
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "status",
+                    models.IntegerField(
+                        choices=[(1, "Like"), (2, "Dislike"), (3, "Ban")]
+                    ),
+                ),
+                (
+                    "member",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="member_votes",
+                        to="meetup.MeetupMember",
+                    ),
+                ),
+                (
+                    "option",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="event_votes",
+                        to="meetup.MeetupEventOption",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='meetupeventoption',
-            name='restaurant',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='meetup_options', to='meetup.Restaurant'),
+            model_name="meetupeventoption",
+            name="restaurant",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="meetup_options",
+                to="meetup.Restaurant",
+            ),
         ),
         migrations.AddField(
-            model_name='meetupevent',
-            name='creator',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='created_events', to='meetup.MeetupMember'),
+            model_name="meetupevent",
+            name="creator",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="created_events",
+                to="meetup.MeetupMember",
+            ),
         ),
         migrations.AddField(
-            model_name='meetupevent',
-            name='meetup',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='events', to='meetup.Meetup'),
+            model_name="meetupevent",
+            name="meetup",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="events",
+                to="meetup.Meetup",
+            ),
         ),
         migrations.CreateModel(
-            name='MeetupCategory',
+            name="MeetupCategory",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='meetup_events', to='meetup.Category')),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='event_categories', to='meetup.MeetupEvent')),
-                ('meetup', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='meetup_categories', to='meetup.Meetup')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="meetup_events",
+                        to="meetup.Category",
+                    ),
+                ),
+                (
+                    "event",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="event_categories",
+                        to="meetup.MeetupEvent",
+                    ),
+                ),
+                (
+                    "meetup",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="meetup_categories",
+                        to="meetup.Meetup",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Friendship',
+            name="Friendship",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(default=django.utils.timezone.now, editable=False)),
-                ('creator', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='friend_creators', to=settings.AUTH_USER_MODEL)),
-                ('friend', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='friends', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now, editable=False
+                    ),
+                ),
+                (
+                    "creator",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="friend_creators",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "friend",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="friends",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='FriendInvite',
+            name="FriendInvite",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('status', models.IntegerField(choices=[(1, 'Open'), (2, 'Accepted'), (3, 'Rejected')], default=1)),
-                ('uri', models.URLField(default=meetup.models.generate_unique_uri)),
-                ('receiver', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='received_friendinvites', to=settings.AUTH_USER_MODEL)),
-                ('sender', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sent_friendinvites', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("timestamp", models.DateTimeField(auto_now_add=True)),
+                (
+                    "status",
+                    models.IntegerField(
+                        choices=[(1, "Open"), (2, "Accepted"), (3, "Rejected")],
+                        default=1,
+                    ),
+                ),
+                ("uri", models.URLField(default=meetup.models.generate_unique_uri)),
+                (
+                    "receiver",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="received_friendinvites",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "sender",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="sent_friendinvites",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False,},
         ),
         migrations.CreateModel(
-            name='CommentVote',
+            name="CommentVote",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('vote', models.IntegerField(choices=[(1, 'Up'), (2, 'Down')])),
-                ('comment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='c_votes', to='meetup.Comment')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='u_votes', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("vote", models.IntegerField(choices=[(1, "Up"), (2, "Down")])),
+                (
+                    "comment",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="c_votes",
+                        to="meetup.Comment",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="u_votes",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='comment',
-            name='restaurant',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='r_comments', to='meetup.Restaurant'),
+            model_name="comment",
+            name="restaurant",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="r_comments",
+                to="meetup.Restaurant",
+            ),
         ),
         migrations.AddField(
-            model_name='comment',
-            name='user',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='u_comments', to=settings.AUTH_USER_MODEL),
+            model_name="comment",
+            name="user",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="u_comments",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.CreateModel(
-            name='ChatRoomMessage',
+            name="ChatRoomMessage",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('message', models.TextField()),
-                ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('is_read', models.BooleanField(default=False)),
-                ('room', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='messages', to='meetup.ChatRoom')),
-                ('sender', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='sent_msgs', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("message", models.TextField()),
+                ("timestamp", models.DateTimeField(auto_now_add=True)),
+                ("is_read", models.BooleanField(default=False)),
+                (
+                    "room",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="messages",
+                        to="meetup.ChatRoom",
+                    ),
+                ),
+                (
+                    "sender",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="sent_msgs",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
-            options={
-                'ordering': ('timestamp',),
-            },
+            options={"ordering": ("timestamp",),},
         ),
         migrations.CreateModel(
-            name='ChatRoomMember',
+            name="ChatRoomMember",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('room', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='members', to='meetup.ChatRoom')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rooms', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "room",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="members",
+                        to="meetup.ChatRoom",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="rooms",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='chatroom',
-            name='friendship',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='meetup.Friendship'),
+            model_name="chatroom",
+            name="friendship",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="meetup.Friendship",
+            ),
         ),
         migrations.AddField(
-            model_name='chatroom',
-            name='meetup',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='meetup.Meetup'),
+            model_name="chatroom",
+            name="meetup",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="meetup.Meetup",
+            ),
         ),
     ]

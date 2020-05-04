@@ -7,19 +7,28 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('meetup', '0005_auto_20200424_0653'),
+        ("meetup", "0005_auto_20200424_0653"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='comment',
-            name='review',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='review_comments', to='meetup.Review'),
+            model_name="comment",
+            name="review",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="review_comments",
+                to="meetup.Review",
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='comment',
-            name='restaurant',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rst_comments', to='meetup.Restaurant'),
+            model_name="comment",
+            name="restaurant",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="rst_comments",
+                to="meetup.Restaurant",
+            ),
         ),
     ]

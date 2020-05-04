@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('meetup', '0004_review'),
+        ("meetup", "0004_review"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='comment',
-            name='vote_score',
+            model_name="comment",
+            name="vote_score",
             field=models.IntegerField(default=0),
         ),
         migrations.AlterField(
-            model_name='review',
-            name='vote_score',
+            model_name="review",
+            name="vote_score",
             field=models.IntegerField(default=0),
         ),
     ]

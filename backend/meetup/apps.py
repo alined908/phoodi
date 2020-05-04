@@ -1,7 +1,8 @@
 from django.apps import AppConfig
 
+
 class MeetupConfig(AppConfig):
-    name = 'meetup'
+    name = "meetup"
 
     def ready(self):
         import meetup.signals

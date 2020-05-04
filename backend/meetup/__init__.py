@@ -1,1 +1,1 @@
-default_app_config = 'meetup.apps.MeetupConfig'
+default_app_config = "meetup.apps.MeetupConfig"

@@ -3,8 +3,10 @@ from uuid import uuid4
 from django.utils.deconstruct import deconstructible
 from django.core.mail import get_connection, EmailMultiAlternatives
 
-def send_mass_html_mail(datatuple, fail_silently=False, user=None, password=None, 
-                        connection=None):
+
+def send_mass_html_mail(
+    datatuple, fail_silently=False, user=None, password=None, connection=None
+):
     """
     Given a datatuple of (subject, text_content, html_content, from_email,
     recipient_list), sends each message to each recipient list. Returns the
@@ -16,26 +18,28 @@ def send_mass_html_mail(datatuple, fail_silently=False, user=None, password=None
     If auth_password is None, the EMAIL_HOST_PASSWORD setting is used.
     """
     connection = connection or get_connection(
-        username=user, password=password, fail_silently=fail_silently)
+        username=user, password=password, fail_silently=fail_silently
+    )
     messages = []
     for subject, text, html, from_email, recipient in datatuple:
         message = EmailMultiAlternatives(subject, text, from_email, recipient)
-        message.attach_alternative(html, 'text/html')
+        message.attach_alternative(html, "text/html")
         messages.append(message)
     return connection.send_messages(messages)
 
+
 @deconstructible
 class PathAndRename(object):
-
     def __init__(self, sub_path):
         self.path = sub_path
 
     def __call__(self, instance, filename):
-        ext = filename.split('.')[-1]
+        ext = filename.split(".")[-1]
         # set filename as random string
-        filename = '{}.{}'.format(uuid4().hex, ext)
+        filename = "{}.{}".format(uuid4().hex, ext)
         # return the whole path to the file
         return os.path.join(self.path, filename)
+
 
 path_and_rename_avatar = PathAndRename("avatar")
 path_and_rename_category = PathAndRename("category")

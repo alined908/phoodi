@@ -6,17 +6,14 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('meetup', '0013_auto_20200501_0633'),
+        ("meetup", "0013_auto_20200501_0633"),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='user',
-            name='active',
-        ),
+        migrations.RemoveField(model_name="user", name="active",),
         migrations.AddField(
-            model_name='user',
-            name='is_active',
+            model_name="user",
+            name="is_active",
             field=models.BooleanField(default=False),
         ),
     ]

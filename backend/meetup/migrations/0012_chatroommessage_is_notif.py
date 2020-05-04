@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('meetup', '0011_chatroom_last_updated'),
+        ("meetup", "0011_chatroom_last_updated"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='chatroommessage',
-            name='is_notif',
+            model_name="chatroommessage",
+            name="is_notif",
             field=models.BooleanField(default=False),
         ),
     ]

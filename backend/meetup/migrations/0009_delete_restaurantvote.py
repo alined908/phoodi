@@ -6,11 +6,9 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('meetup', '0008_auto_20200424_1842'),
+        ("meetup", "0008_auto_20200424_1842"),
     ]
 
     operations = [
-        migrations.DeleteModel(
-            name='RestaurantVote',
-        ),
+        migrations.DeleteModel(name="RestaurantVote",),
     ]

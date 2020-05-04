@@ -2,15 +2,15 @@ from django.urls import path
 from django.conf.urls import url
 from . import views
 
-app_name='meetup'
+app_name = "meetup"
 
-urlpatterns=[
-    path('users/', views.UserListView.as_view()),
-    path('users/settings/', views.UserSettingsView.as_view()),
-    path('users/<id>/', views.UserView.as_view()),
-    path('users/<id>/friends/', views.UserFriendsView.as_view()),
-    path('users/<id>/preferences/', views.UserPreferenceListView.as_view()),
-    path('users/<id>/preferences/<category_id>/', views.UserPreferenceView.as_view()),
+urlpatterns = [
+    path("users/", views.UserListView.as_view()),
+    path("users/settings/", views.UserSettingsView.as_view()),
+    path("users/<id>/", views.UserView.as_view()),
+    path("users/<id>/friends/", views.UserFriendsView.as_view()),
+    path("users/<id>/preferences/", views.UserPreferenceListView.as_view()),
+    path("users/<id>/preferences/<category_id>/", views.UserPreferenceView.as_view()),
     path("categories/", views.CategoryListView.as_view()),
     path("categories/<api_label>/", views.CategoryView.as_view()),
     path("restaurants/", views.RestaurantListView.as_view()),
@@ -32,5 +32,5 @@ urlpatterns=[
     path("chats/", views.ChatRoomListView.as_view()),
     path("chats/<uri>/", views.ChatRoomView.as_view()),
     path("chats/<uri>/messages/", views.ChatRoomMessageView.as_view()),
-    path("notifs/", views.UserNotificationView.as_view())
+    path("notifs/", views.UserNotificationView.as_view()),
 ]

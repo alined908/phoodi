@@ -7,14 +7,16 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('meetup', '0010_auto_20200424_2313'),
+        ("meetup", "0010_auto_20200424_2313"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='chatroom',
-            name='last_updated',
-            field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
+            model_name="chatroom",
+            name="last_updated",
+            field=models.DateTimeField(
+                auto_now_add=True, default=django.utils.timezone.now
+            ),
             preserve_default=False,
         ),
     ]
