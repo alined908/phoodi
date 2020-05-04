@@ -1,54 +1,53 @@
-class AuthenticationService{
+class AuthenticationService {
+  registerSuccessfulLogin(access, refresh) {
+    this.setToken(access);
+    this.setRefresh(refresh);
+  }
+  retrieveUser() {
+    return localStorage.getItem("user");
+  }
 
-    registerSuccessfulLogin(access, refresh){
-        this.setToken(access)
-        this.setRefresh(refresh)
-    }
-    retrieveUser(){
-        return localStorage.getItem('user')
-    }
+  setToken(token) {
+    localStorage.setItem("token", token);
+  }
 
-    setToken(token){
-        localStorage.setItem('token', token);
-    }
+  setRefresh(refresh) {
+    localStorage.setItem("refresh", refresh);
+  }
 
-    setRefresh(refresh){
-        localStorage.setItem('refresh', refresh);
-    }
+  retrieveToken() {
+    return localStorage.getItem("token");
+  }
 
-    retrieveToken(){
-        return localStorage.getItem('token');
-    }
+  retrieveRefresh() {
+    return localStorage.getItem("refresh");
+  }
 
-    retrieveRefresh(){
-        return localStorage.getItem('refresh')
-    }
+  removeToken() {
+    localStorage.removeItem("token");
+  }
 
-    removeToken(){
-        localStorage.removeItem('token');
-    }
+  removeUser() {
+    localStorage.removeItem("user");
+  }
 
-    removeUser(){
-        localStorage.removeItem('user')
-    }
+  removeRefresh() {
+    localStorage.removeItem("refresh");
+  }
 
-    removeRefresh(){
-        localStorage.removeItem('refresh')
-    }
+  logout() {
+    this.removeToken();
+    this.removeUser();
+    this.removeRefresh();
+  }
 
-    logout(){
-        this.removeToken()
-        this.removeUser()
-        this.removeRefresh()
+  isUserLoggedIn() {
+    let user = this.retrieveToken();
+    if (user === null) {
+      return false;
     }
-
-    isUserLoggedIn(){
-        let user = this.retrieveToken();
-        if (user === null){
-            return false
-        }
-        return true
-    }
+    return true;
+  }
 }
 
-export default new AuthenticationService()
+export default new AuthenticationService();

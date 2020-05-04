@@ -1,69 +1,76 @@
-import React from "react"
-import {Link} from "react-router-dom"
-import {ListItem, ListItemAvatar, ListItemText, Tooltip, Typography, Avatar, IconButton} from '@material-ui/core'
-import {Chat as ChatIcon, Delete as DeleteIcon} from '@material-ui/icons';
-import {friendPropType} from '../../constants/prop-types'
-import PropTypes from 'prop-types'
+import React from "react";
+import { Link } from "react-router-dom";
+import {
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Tooltip,
+  Typography,
+  Avatar,
+  IconButton,
+} from "@material-ui/core";
+import { Chat as ChatIcon, Delete as DeleteIcon } from "@material-ui/icons";
+import { friendPropType } from "../../constants/prop-types";
+import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
-import styles from "../../styles/friends.module.css"
+import styles from "../../styles/friends.module.css";
 
 const Friend = (props) => {
-    const history = useHistory();
+  const history = useHistory();
 
-    const handleClick = (e) => {
-        e.preventDefault()
-        history.push(`/chat/${props.friend.chat_room}`)
-    }
+  const handleClick = (e) => {
+    e.preventDefault();
+    history.push(`/chat/${props.friend.chat_room}`);
+  };
 
-    const handleDelete = (e) => {
-        e.preventDefault()
-        props.deleteFriend(props.user.id, props.friend.id)
-    }
+  const handleDelete = (e) => {
+    e.preventDefault();
+    props.deleteFriend(props.user.id, props.friend.id);
+  };
 
-    return (
-        <Link to={`/profile/${props.friend.user.id}`}>
-            <div className={styles.chat}>
-                <ListItem>
-                    <ListItemAvatar>
-                        <Avatar src={props.friend.user.avatar}>
-                            {props.friend.user.first_name.charAt(0)}
-                            {props.friend.user.last_name.charAt(0)}
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText 
-                        primary={props.friend.user.first_name} 
-                        secondary={
-                            <>
-                                <Typography component="span" color="inherit" variant="body2"> 
-                                    {props.friend.user.email + " "}
-                                </Typography>
-                            </>
-                        }
-                    >
-                    </ListItemText>
-                    {props.isUserFriend && 
-                        <Tooltip title="Chat">
-                            <IconButton color="primary" onClick={handleClick}>
-                                <ChatIcon/>
-                            </IconButton>
-                        </Tooltip>
-                    }
-                    {props.isUserFriend && 
-                        <Tooltip title="Delete Friend">
-                            <IconButton color="secondary" onClick={handleDelete}>
-                                <DeleteIcon/>
-                            </IconButton>
-                        </Tooltip>
-                    }
-                </ListItem>
-            </div>
-        </Link>
-    )
-}
+  return (
+    <Link to={`/profile/${props.friend.user.id}`}>
+      <div className={styles.chat}>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar src={props.friend.user.avatar}>
+              {props.friend.user.first_name.charAt(0)}
+              {props.friend.user.last_name.charAt(0)}
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText
+            primary={props.friend.user.first_name}
+            secondary={
+              <>
+                <Typography component="span" color="inherit" variant="body2">
+                  {props.friend.user.email + " "}
+                </Typography>
+              </>
+            }
+          ></ListItemText>
+          {props.isUserFriend && (
+            <Tooltip title="Chat">
+              <IconButton color="primary" onClick={handleClick}>
+                <ChatIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+          {props.isUserFriend && (
+            <Tooltip title="Delete Friend">
+              <IconButton color="secondary" onClick={handleDelete}>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+        </ListItem>
+      </div>
+    </Link>
+  );
+};
 
 Friend.propTypes = {
-    friend: friendPropType,
-    isUserFriend: PropTypes.bool.isRequired
-}
+  friend: friendPropType,
+  isUserFriend: PropTypes.bool.isRequired,
+};
 
-export default Friend
+export default Friend;

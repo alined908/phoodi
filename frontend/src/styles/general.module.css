@@ -1,22 +1,22 @@
 /* ErrorComponent */
 
-.errorPage{
-    display: flex;
-    width: 85%;
-    height: 85%;
-    margin: auto;
-    padding: 2rem;
-    justify-content: center;
-    align-items: center;
-    font-size: 3.5rem;
-    font-family: "Roboto";
-    font-weight: 500;
+.errorPage {
+  display: flex;
+  width: 85%;
+  height: 85%;
+  margin: auto;
+  padding: 2rem;
+  justify-content: center;
+  align-items: center;
+  font-size: 3.5rem;
+  font-family: "Roboto";
+  font-weight: 500;
 }
 
-.errorPageIcon{
-    min-width: 200px;
+.errorPageIcon {
+  min-width: 200px;
 }
 
-.errorPageMessage{
-    margin-left: 3rem;
+.errorPageMessage {
+  margin-left: 3rem;
 }

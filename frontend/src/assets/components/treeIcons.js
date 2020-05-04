@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const MinusSquareO = props => (
+const MinusSquareO = (props) => (
   <svg {...props} viewBox="64 -65 897 897">
     <g>
       <path
@@ -9,9 +9,9 @@ const MinusSquareO = props => (
       />
     </g>
   </svg>
-)
+);
 
-const PlusSquareO = props => (
+const PlusSquareO = (props) => (
   <svg {...props} viewBox="64 -65 897 897">
     <g>
       <path
@@ -20,9 +20,9 @@ const PlusSquareO = props => (
       />
     </g>
   </svg>
-)
+);
 
-const CloseSquareO = props => (
+const CloseSquareO = (props) => (
   <svg {...props} viewBox="64 -65 897 897">
     <g>
       <path
@@ -31,6 +31,6 @@ const CloseSquareO = props => (
       />
     </g>
   </svg>
-)
+);
 
-export { PlusSquareO, MinusSquareO, CloseSquareO }
+export { PlusSquareO, MinusSquareO, CloseSquareO };

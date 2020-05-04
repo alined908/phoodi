@@ -1,169 +1,169 @@
 .container {
-    display: flex;
-    width: 80%;
-    height: 80%;
-    margin: auto;
-    font-weight: 600;
-    max-width: 1300px;
+  display: flex;
+  width: 80%;
+  height: 80%;
+  margin: auto;
+  font-weight: 600;
+  max-width: 1300px;
 }
 
 .left {
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    width: 65%;
-    padding: 1rem;
-    background: rgb(250,250,250);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 65%;
+  padding: 1rem;
+  background: rgb(250, 250, 250);
 }
 
 .right {
-    display:flex;
-    flex-direction: column;
-    width: 35%;
-    padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 35%;
+  padding: 1rem;
 }
 
 .form {
-    flex-basis: 35%;
-    width: 100%;
-    padding: 1rem 2rem;
+  flex-basis: 35%;
+  width: 100%;
+  padding: 1rem 2rem;
 }
 
-.formhead{
-    flex-basis: 20%;
-    width: 100%;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    font-size: 3rem;
+.formhead {
+  flex-basis: 20%;
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  font-size: 3rem;
 }
 
-.header{
-    margin: 0 1.5rem;
+.header {
+  margin: 0 1.5rem;
 }
 
-.icon{
-    width: 50px;
-    height: auto;
+.icon {
+  width: 50px;
+  height: auto;
 }
 
-.fab{
-    margin-top: 2.5rem;
+.fab {
+  margin-top: 2.5rem;
 }
 
-.bottom{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    flex-basis: 30%;
+.bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-basis: 30%;
 }
 
-.avatarlabel{
-    font-size: 1rem;
-    margin-bottom: 1rem;
+.avatarlabel {
+  font-size: 1rem;
+  margin-bottom: 1rem;
 }
 
-.avatarBig{
-    width: 60px !important;
-    height: 60px !important;
+.avatarBig {
+  width: 60px !important;
+  height: 60px !important;
 }
 
-.avatar{
-    display:flex;
-    align-items: center;
+.avatar {
+  display: flex;
+  align-items: center;
 }
 
-.none{
-    display:none;
+.none {
+  display: none;
 }
 
-.link{
-    color: #006600;
-    margin-left: 5px;
+.link {
+  color: #006600;
+  margin-left: 5px;
 }
 
-.link:hover{
-    text-decoration: underline;
+.link:hover {
+  text-decoration: underline;
 }
 
-.socials{
-    display: flex;
-    justify-content: center;
-    height: 100%;
-    align-items: center;
-    width: 100%;
+.socials {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  align-items: center;
+  width: 100%;
 }
 
-.social{
-    display:flex;
-    align-items: center;
-    cursor:pointer;
-    margin: 0 .3rem;
-    width: 40px;
-    height: 40px;
+.social {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin: 0 0.3rem;
+  width: 40px;
+  height: 40px;
 }
 
-.social:hover{
-    transform: scale(1.1, 1.1);
+.social:hover {
+  transform: scale(1.1, 1.1);
 }
 
-.action{
-    margin: .5rem 0;
+.action {
+  margin: 0.5rem 0;
 }
 
-.indent{
-    padding-right: 10px !important; 
+.indent {
+  padding-right: 10px !important;
 }
 
-.control{
-    margin-top: 1rem !important;
+.control {
+  margin-top: 1rem !important;
 }
 
 .label {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    color: grey;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  color: grey;
 }
 
-.priceoptions{
-    display: flex;
-    margin-top: 1rem;
+.priceoptions {
+  display: flex;
+  margin-top: 1rem;
 }
 
-.indentlabel{
-    color: grey;
-    display: flex;
-    align-items: center;
-    margin-left: 1rem;
+.indentlabel {
+  color: grey;
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
 }
 
-.catlabel{
-    display: flex;
-    align-items: center;
-    margin-bottom: .5rem;
+.catlabel {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
 }
 
 .distanceoptions {
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .error {
-    color: #f44336;
+  color: #f44336;
 }
 
 .success {
-    color: #006600;
+  color: #006600;
 }
 
-.loading{
-    position:relative;
+.loading {
+  position: relative;
 }
 
-.progress{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -10px;
-    margin-left: -10px;
+.progress {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -10px;
+  margin-left: -10px;
 }

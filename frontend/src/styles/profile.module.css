@@ -1,83 +1,83 @@
 .profile {
-    height: 80%;
-    display: flex;
-    width: 80%;
-    margin: auto;
+  height: 80%;
+  display: flex;
+  width: 80%;
+  margin: auto;
 }
 
 .userAvatar {
-    transform: scale(1.7);
+  transform: scale(1.7);
 }
 
 .header {
-    flex: 1 1 0;
+  flex: 1 1 0;
 }
 
 .content {
-    display: flex;
-    align-items: center;
-    padding: 2rem;
-    height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 2rem;
+  height: 100%;
 }
 
 .contentName {
-    font-size: 2rem;
-    margin-top: -.5rem;
+  font-size: 2rem;
+  margin-top: -0.5rem;
 }
 
 .contentEmail {
-    font-weight: 500;
-    color: grey;
-    font-size: 14px;
+  font-weight: 500;
+  color: grey;
+  font-size: 14px;
 }
 
 .recentActivity {
-    flex: 2 1 0;
+  flex: 2 1 0;
 }
 
-.pastactivity{
-    display: flex;
-    height: 100%;
-    overflow-y: auto;
-    max-height: 350px;
-    flex-direction: column;
+.pastactivity {
+  display: flex;
+  height: 100%;
+  overflow-y: auto;
+  max-height: 350px;
+  flex-direction: column;
 }
 
-.activity{
-    display: flex;
-    padding: 1rem;
-    border-bottom: 1px solid black;
-    justify-content: space-between;
-    font-size: .85rem;
+.activity {
+  display: flex;
+  padding: 1rem;
+  border-bottom: 1px solid black;
+  justify-content: space-between;
+  font-size: 0.85rem;
 }
 
-.activitydate{
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-    font-size: .7rem;
-    color: 	#696969;
+.activitydate {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font-size: 0.7rem;
+  color: #696969;
 }
 
-.activityinfo{
-    display: flex;
-    align-items: center;
+.activityinfo {
+  display: flex;
+  align-items: center;
 }
 
-.activity:last-child{
-    border-bottom: 0;
+.activity:last-child {
+  border-bottom: 0;
 }
 
-.useravatar{
-    transform: scale(0.8);
+.useravatar {
+  transform: scale(0.8);
 }
 
-.link{
-    color: red;
-    display: flex;
-    align-items: center;
+.link {
+  color: red;
+  display: flex;
+  align-items: center;
 }
 
-.space{
-    margin-left: 3px;
+.space {
+  margin-left: 3px;
 }

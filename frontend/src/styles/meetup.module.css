@@ -1,609 +1,618 @@
 /* General */
-.categoryChip{
-    display:flex;
-    padding: 3px 8px;
-    font-size: 0.7rem;
-    border-radius: 4px;
-    text-transform: capitalize;  
-    margin: .25rem .25rem;
-    align-items: center;
-    background-color: #FFDFD3;
-    border: 1px solid #eeeeef;
+.categoryChip {
+  display: flex;
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  border-radius: 4px;
+  text-transform: capitalize;
+  margin: 0.25rem 0.25rem;
+  align-items: center;
+  background-color: #e5f0ff;
+  border: 1px solid #eeeeef;
 }
 
-.categoryChip .MuiAvatar-colorDefault{
-    background-color: inherit;
+.categoryChip .MuiAvatar-colorDefault {
+  background-color: inherit;
 }
 
-.categoryChipHover{
-    border: 1px solid black;
-}
-
-.headerIcons{
-    display: flex;
-    align-items: center;
-    text-transform: capitalize;
+.headerIcons {
+  display: flex;
+  align-items: center;
+  text-transform: capitalize;
 }
 
 .headerInfo {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
 }
 
 .headerInfo div {
-    margin: 0 30px;
+  margin: 0 30px;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    border: 1px solid #eeeeef;
-    padding: 1.25rem 2rem;
-    background-color: white;
-    align-items: center;
-    max-height: 66px;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #eeeeef;
+  padding: 1.25rem 2rem;
+  background-color: white;
+  align-items: center;
+  max-height: 66px;
 }
 
 /* Meetups */
 
 .meetups {
-    height: 90%;
-    display: flex;
-    width: 90%;
-    margin: auto;
+  height: 90%;
+  display: flex;
+  width: 90%;
+  margin: auto;
 }
 
 .meetupsCategories {
-    margin: auto 0;
-    max-width: 350px;
-    height: 100%;
+  margin: auto 0;
+  max-width: 350px;
+  height: 100%;
 }
 
-.meetupsCategoriesInner{
-    background-color: white;
-    height: 100%;
-    width: 100%;
+.meetupsCategoriesInner {
+  background-color: white;
+  height: 100%;
+  width: 100%;
 }
 
-.meetupsCategoriesTop, .meetupsInnerHeader{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: .75rem 1rem;
-    border-bottom: 1px solid #edf0f6;
-    height: 60px;
-    font-size: 18px;
-    background: var(--bg-color);
+.meetupsCategoriesTop,
+.meetupsInnerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #edf0f6;
+  height: 60px;
+  font-size: 18px;
+  background: var(--bg-color);
 }
 
 .meetupsInnerWrap {
-    margin: 0 0 0 2rem;
-    height: 100%;
-    width: 100%;
+  margin: 0 0 0 2rem;
+  height: 100%;
+  width: 100%;
 }
 
 .meetupsSearchBar {
-    display:flex;
-    flex: 1 1 0;
-    padding: 0 1rem 0 1rem;
-    align-items: center;
+  display: flex;
+  flex: 1 1 0;
+  padding: 0 1rem 0 1rem;
+  align-items: center;
 }
 
 .meetupsContainer {
-    margin: .5rem;
-    max-height: calc(100% - 60px);
-    padding: .5rem;
-    display: flex;
-    position: relative;
-    overflow-y: auto;
-    flex-wrap: wrap;
+  margin: 0.5rem;
+  max-height: calc(100% - 60px);
+  padding: 0.5rem;
+  display: flex;
+  position: relative;
+  overflow-y: auto;
+  flex-wrap: wrap;
 }
 
-.meetupsContainer::-webkit-scrollbar{
-    display: none;
+.meetupsContainer::-webkit-scrollbar {
+  display: none;
 }
 
 .preset {
-    height: calc(100% - 60px - 60px);
-    overflow-y: auto;
-    overflow-x: hidden;
-    background-color: white;
-    padding: 0 1rem;
+  height: calc(100% - 60px - 60px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: white;
+  padding: 0 1rem;
 }
 
 .presetCategory {
-    display:flex;
-    align-items: center;
-    background-color: rgb(255,255,255);
-    height: calc(2rem + 10px);
-    margin: .5rem 0;
-    padding: 0 1rem;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+  height: calc(2rem + 10px);
+  margin: 0.5rem 0;
+  padding: 0 1rem;
+  cursor: pointer;
 }
 
 .active {
-    border: 2px solid #3f51b5;
-    border-radius: 4px; 
+  border: 2px solid #3f51b5;
+  border-radius: 4px;
 }
 
 .presetCategory img {
-    width: auto;
+  width: auto;
   height: 20px;
 }
 
 /* Meetup */
-.meetupWrapper{
-    display: flex;
-    height: 100%;
-    width: 100%;
+.meetupWrapper {
+  display: flex;
+  height: 100%;
+  width: 100%;
 }
 
 .actions {
-    display: flex;
+  display: flex;
 }
 
-.meetupWrapperInner{
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    padding: 3rem 4rem;
-    padding-left: calc(3rem + 200px);
+.meetupWrapperInner {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 3rem 4rem;
+  padding-left: calc(3rem + 200px);
 }
 
-.meetupWrapperInner::-webkit-scrollbar{
-    width: 0px;
+.meetupWrapperInner::-webkit-scrollbar {
+  width: 0px;
 }
 
 .shell {
-    display: flex;
-    width: 70%;
-    margin: 1rem auto 0 auto;
-    padding-right: .05rem;
-    border: 1px solid #eeeeef;
-    min-height: 66px;
-    max-height: 218px;
-    background-color: white;
-    overflow-y: auto;
+  display: flex;
+  width: 70%;
+  margin: 1rem auto 0 auto;
+  padding-right: 0.05rem;
+  border: 1px solid #eeeeef;
+  min-height: 66px;
+  max-height: 218px;
+  background-color: white;
+  overflow-y: auto;
 }
 
-.shellList{
-    width: 100%;
-    padding: 0 !important;
+.shellList {
+  width: 100%;
+  padding: 0 !important;
 }
 
 /* MeetupEvent */
 .event {
-    padding: 0 1.75rem;
-    width: 90%;
-    margin: 0 auto 2rem auto;
+  padding: 0 1.75rem;
+  width: 90%;
+  margin: 0 auto 2rem auto;
 }
 
-.addOptionSearch{
-    width: 45%;
-    margin: 2rem auto 0 auto;
-    border-radius: 5px;
-    color: white;
-    font-weight: 500;
-    font-size: 1.2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #eeeeef;
-    overflow: hidden;
+.addOptionSearch {
+  width: 45%;
+  margin: 2rem auto 0 auto;
+  border-radius: 5px;
+  color: white;
+  font-weight: 500;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #eeeeef;
+  overflow: hidden;
 }
 
 .smallerHeader {
-    padding: .75rem 2rem !important;
+  padding: 0.75rem 2rem !important;
 }
 
 .secondHeader {
-    margin: 1rem auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid #eeeeef;
-    background-color: white;
-    width: 90%;
+  margin: 1rem auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #eeeeef;
+  background-color: white;
+  width: 90%;
 }
 
 .secondHeaderLeft {
-    display:flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .chosen {
-    display: flex;
-    width: 70%;
-    margin: 0 auto;
-    align-items: center;
-    justify-content: space-evenly;
+  display: flex;
+  width: 70%;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
-.chosenMap{
-    height: 100%;
-    border: 1px solid #eeeeef;
-    border-radius: 10px;
+.chosenMap {
+  height: 100%;
+  border: 1px solid #eeeeef;
+  border-radius: 10px;
 }
 
-.chosenRestaurant{
-    border: 1px solid #eeeeef;
-    border-radius: 10px;
-    margin: 1.5rem;
-    background-color: white;
+.chosenRestaurant {
+  border: 1px solid #eeeeef;
+  border-radius: 5px;
+  margin: 1.5rem;
+  background-color: white;
 }
 
-.mapWrapper{
-    height: 350px;
-    border-radius: 10px;
-    width: 450px;
-    overflow: hidden;
+.mapWrapper {
+  height: 350px;
+  border-radius: 10px;
+  width: 450px;
+  overflow: hidden;
 }
 
-.eventActions{
-    display: flex;
+.eventActions {
+  display: flex;
 }
 
-.eventDecideActions{
-    display:flex;
-    justify-content: center;
+.eventDecideActions {
+  display: flex;
+  justify-content: center;
 }
 
 .foursquare {
-    display:flex;   
-    width: 80%;
-    margin: 2rem auto;
+  display: flex;
+  width: 80%;
+  margin: 2rem auto;
 }
 
 .explanation {
-    background-color: white;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
+  background-color: white;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
 }
 
 /* MeetupEventOption */
 
 .center {
-    display:flex;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
 }
 
-.rstWrapper{
-    display: flex;
-    flex-direction: column;
-    width: 85%;
-    min-width: 310px;
-    margin: 0 auto;
-    background-color: white;
-    height: 100%;
-    position: relative;
-    transform: scale(.875);
-    border-radius: .25rem;
+.rstWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 85%;
+  min-width: 310px;
+  margin: 0 auto;
+  background-color: white;
+  height: 100%;
+  position: relative;
+  transform: scale(0.875);
+  border-radius: 0.25rem;
 }
 
 .rst {
-    width: 100%;
-    min-height: 210px; /* or other desired height */
-    overflow: hidden;
-    position: relative;
+  width: 100%;
+  min-height: 210px; /* or other desired height */
+  overflow: hidden;
+  position: relative;
 }
 
 .rstCardBottom {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-grow : 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
 }
 
-.rstImg{
-    width: 350px;
-    height: auto;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translateY(-50%) translateX(-50%);
+.rstImg {
+  width: 350px;
+  height: auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translateY(-50%) translateX(-50%);
 }
 
 .rstActions {
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-    padding: .5rem 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 0.75rem 0;
 }
 
 .rstActionIcon {
-    display:flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .rstActionScore {
-    margin-left: .25rem;
+  margin-left: 0.25rem;
 }
 
 .rstCategories {
-    padding: 0 1rem;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    width: 100%;
+  padding: 0 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
 }
 
 .rstInfo {
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: .5rem 1rem;
-    font-size: 1rem;
-    width: 100%;
-    text-transform: capitalize;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  width: 100%;
+  text-transform: capitalize;
 }
 
-.rstHorz{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 300px;
+.rstHorz {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 300px;
 }
 
-.rstHorzInfo{
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
+.rstHorzInfo {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
 }
 
-.rstHorzInfoEntry{
-    display:flex;
-    align-items: center;
-    margin-bottom: .25rem;
+.restaurantHorzInfo {
+  padding: 0.75rem 0.25rem;
+}
+
+.rstHorzInfoEntry {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.rstHorzInfoEntry:not(:last-child) {
+  padding-bottom: 0.5rem;
+}
+
+.rstHorzInfoEntry span {
+  margin-left: 5px;
 }
 
 .banned > div:not(.rstCardBottom),
 .banned .rstCardBottom > div:not(.rstActions),
-.banned .rstActionIcon{
-    opacity: .25;
+.banned .rstActionIcon {
+  opacity: 0.25;
 }
 
 .banned {
-    background-color: rgb(255, 255, 255, 0.5) !important;
+  background-color: rgb(255, 255, 255, 0.5) !important;
 }
 
-.myclick{
-    opacity: 1 !important;
+.myclick {
+  opacity: 1 !important;
 }
 
 .clickable {
-    cursor:pointer;
+  cursor: pointer;
 }
 
 /* MeetupCard */
-.cardInner{
-    height: 100%;
-    display:flex;
-    flex-direction: column;
-    justify-content: space-between;
+.cardInner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.cardInner:hover{
-    background-color: #F0F0F0;
+.cardInner:hover {
+  background-color: #f0f0f0;
 }
 
-.cardTop{
-    padding: 1rem 1.25rem 0rem 1.25rem;
-    display: flex;
-    justify-content: space-between;
-    text-transform: capitalize;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+.cardTop {
+  padding: 1rem 1.25rem 0rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  text-transform: capitalize;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.cardIcon{
-    display: flex;
-    align-items: center;
-    flex-wrap: nowrap;
+.cardIcon {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
 }
 
-.cardIcon.flexClip{
-    max-width: calc(100% - 170px);
+.cardIcon.flexClip {
+  max-width: calc(100% - 170px);
 }
 
 .cardIcon.flexClip2 {
-    max-width: calc(100% - 120px);
+  max-width: calc(100% - 120px);
 }
 
 .cardIcon > .flexEllipse {
-    min-width: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .cardEvents {
-    padding: 0 1.5rem;
-    border-top: 1px solid rgb(211,211,211, 0.4);
-    border-bottom: 1px solid rgb(211,211,211, 0.4);
+  padding: 0 1.5rem;
+  border-top: 1px solid rgb(211, 211, 211, 0.4);
+  border-bottom: 1px solid rgb(211, 211, 211, 0.4);
 }
 
 .cardEventsHeader {
-    margin: .5rem 0 0 0;
-    position: relative;
+  margin: 0.5rem 0 0 0;
+  position: relative;
 }
 
 .cardEventsHeader:before {
-    position: absolute; 
-    border: .5px dotted black; 
-    width: 0; 
-    height: 100px; 
-    display: block; 
-    content: ''; 
-    left: 10px; 
-    z-index: 1; 
-    top: 25px; 
-    margin-left: -1px;
+  position: absolute;
+  border: 0.5px dotted black;
+  width: 0;
+  height: 100px;
+  display: block;
+  content: "";
+  left: 10px;
+  z-index: 1;
+  top: 25px;
+  margin-left: -1px;
 }
 
 .cardEventsCategories {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0 0 0 .25rem;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 0 0 0.25rem;
 }
 
-.cardEventsCategory{
-    display: flex;
-    flex-direction: column;
-    padding: 0 1.5rem;
-    margin-top: .5rem;
-    position: relative;
+.cardEventsCategory {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1.5rem;
+  margin-top: 0.5rem;
+  position: relative;
 }
 
 .cardMembers {
-    display: flex;
-    overflow: hidden;
+  display: flex;
+  overflow: hidden;
 }
 
 .cardBottom {
-    display:flex;
-    justify-content: space-between;
-    padding: 0 1rem 1rem 1rem;
-    text-transform: capitalize;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem 1rem 1rem;
+  text-transform: capitalize;
 }
 
 .cardBottom > .cardIcon:not(:last-child) {
-    margin-right: 30px;
+  margin-right: 30px;
 }
 
 /* MeetupChat */
-.meetupChat{
-    margin-left: auto;
-    width: 450px;
-    height: 85%;
-    min-height: 700px;
-    padding: 3rem 1rem 1rem 1rem;
+.meetupChat {
+  margin-left: auto;
+  width: 450px;
+  height: 85%;
+  min-height: 700px;
+  padding: 3rem 1rem 1rem 1rem;
 }
 
 .meetupChat .header {
-    justify-content: flex-start;
+  justify-content: flex-start;
 }
 
 /* MeetupTree */
 
-.tree{
-    position: fixed;
-    left: 2.5%;
-    top: 30%;  
-    max-width: 200px;
+.tree {
+  position: fixed;
+  left: 2.5%;
+  top: 30%;
+  max-width: 200px;
 }
 
-.treeNode{
-    font-size: .8rem;
-    position: relative;
-    padding: 4px 0px 0px 0px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow-x: hidden;
-    vertical-align: middle;
-    color: black;
-    fill: black;
+.treeNode {
+  font-size: 0.8rem;
+  position: relative;
+  padding: 4px 0px 0px 0px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-x: hidden;
+  vertical-align: middle;
+  color: black;
+  fill: black;
 }
 
-.treeTitle{
-    vertical-align: middle;
+.treeTitle {
+  vertical-align: middle;
 }
 
-.content{
-    will-change: transform, opacity, height;
-    margin-left: 6px;
-    padding: 0px 0px 0px 14px;
-    border-left: 1px dashed rgba(0, 0, 0, 0.4);
-    overflow: hidden;
+.content {
+  will-change: transform, opacity, height;
+  margin-left: 6px;
+  padding: 0px 0px 0px 14px;
+  border-left: 1px dashed rgba(0, 0, 0, 0.4);
+  overflow: hidden;
 }
 
 /* MeetupEventOption*/
-.deleteOption{
-    position: absolute;
-    top:-10px;
-    right:-10px;
-    cursor: pointer;
+.deleteOption {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  cursor: pointer;
 }
 
-.previewOption{
-    position: absolute;
-    cursor: pointer;
-    top: 20px;
-    right: -12px;
+.previewOption {
+  position: absolute;
+  cursor: pointer;
+  top: 20px;
+  right: -12px;
 }
 
-.yelpOption{
-    position: absolute;
-    cursor: pointer;
-    top: 50px;
-    right: -12px;
+.yelpOption {
+  position: absolute;
+  cursor: pointer;
+  top: 50px;
+  right: -12px;
 }
 
-.deleteOption:hover, .previewOption:hover{
-    transform: scale(1.1);
+.deleteOption:hover,
+.previewOption:hover {
+  transform: scale(1.1);
 }
 
 /* RestaurantPreview */
-.photos{
-    display: flex;
+.photos {
+  display: flex;
 }
 
-.photo{
-    display: block;
-    max-width:230px;
-    max-height:150px;
-    width: auto;
-    height: auto;
+.photo {
+  display: block;
+  max-width: 230px;
+  max-height: 150px;
+  width: auto;
+  height: auto;
 }
 
-.mapWrapper{
-    height: 275px;
-    border-radius: 10px;
-    width: 353px;
-    overflow: hidden;
+.mapWrapper {
+  height: 275px;
+  border-radius: 10px;
+  width: 353px;
+  overflow: hidden;
 }
 
-.previewTitle{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.previewTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .previewRating {
-    display: flex;
-    align-items: center;
-    font-size: .8rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
 }
 
 .ratingElement {
-    display: flex;
-    align-items: center;
-    margin: 0 3px;
+  display: flex;
+  align-items: center;
+  margin: 0 3px;
 }
 
 .review {
-
 }
 
-.reviewForm{
-    width: 100%;
-    min-width: 700px;
+.reviewForm {
+  width: 100%;
+  min-width: 700px;
 }
 
-.ratings{
-    display:flex;
-    flex-direction: column-reverse;
-    padding: 0 1rem;
+.ratings {
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 0 1rem;
 }
 
-.rating{
-    display: flex;
-    padding: .5rem 1rem;
+.rating {
+  display: flex;
+  padding: 0.5rem 1rem;
 }
 
 .ratingScore {
-    margin-right: 10px;
+  margin-right: 10px;
 }

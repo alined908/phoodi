@@ -1,82 +1,92 @@
-import React from 'react';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import {TextField, makeStyles, ListItemAvatar, ListItemText, Avatar, Typography, CircularProgress} from '@material-ui/core'
-import parse from 'autosuggest-highlight/parse';
-import match from 'autosuggest-highlight/match';
-import throttle from 'lodash/throttle';
-import axios from 'axios'
-import PropTypes from "prop-types"
+import React from "react";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import {
+  TextField,
+  makeStyles,
+  ListItemAvatar,
+  ListItemText,
+  Avatar,
+  Typography,
+  CircularProgress,
+} from "@material-ui/core";
+import parse from "autosuggest-highlight/parse";
+import match from "autosuggest-highlight/match";
+import throttle from "lodash/throttle";
+import axios from "axios";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
-  text : {
-      fontSize: ".9rem",
-      color: "black"
+  text: {
+    fontSize: ".9rem",
+    color: "black",
   },
-  secondary : {
+  secondary: {
     fontSize: ".75rem",
-    color: "var(--grey-text)"
+    color: "var(--grey-text)",
   },
   root: {
-    background: "white"
+    background: "white",
   },
   underline: {
     "&&&:before": {
-      borderBottom: "none"
+      borderBottom: "none",
     },
     "&&:after": {
-      borderBottom: "none"
-    }
-  }
+      borderBottom: "none",
+    },
+  },
 });
 
 export default function RestaurauntAutocomplete(props) {
   const classes = useStyles();
-  const [inputValue, setInputValue] = React.useState('');
-  const [options, setOptions] = React.useState([]);  
+  const [inputValue, setInputValue] = React.useState("");
+  const [options, setOptions] = React.useState([]);
   const loading = inputValue.length > 0 && options.length === 0;
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setInputValue(event.target.value);
-    setOptions([])
+    setOptions([]);
   };
 
   const fetch = React.useMemo(
     () =>
       throttle((request, callback) => {
         var params = {
-            term: request.input, 
-            latitude: props.coords.latitude,
-            longitude: props.coords.longitude,
-            radius: props.radius,
-            limit: 8
-        }
-        axios.request({
+          term: request.input,
+          latitude: props.coords.latitude,
+          longitude: props.coords.longitude,
+          radius: props.radius,
+          limit: 8,
+        };
+        axios
+          .request({
             method: "GET",
-            url: 'https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search', 
+            url:
+              "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search",
             headers: {
-              Authorization: `Bearer ${process.env.REACT_APP_YELP_API_KEY}`
+              Authorization: `Bearer ${process.env.REACT_APP_YELP_API_KEY}`,
             },
-            params: params
-        })
-        .then((res) => {
-          callback(res.data.businesses)
-        })
-        .catch((err) => {
-          console.log ('error')
-        })
+            params: params,
+          })
+          .then((res) => {
+            callback(res.data.businesses);
+          })
+          .catch((err) => {
+            console.log("error");
+          });
       }, 200),
-    [props.coords.latitude, props.coords.longitude, props.radius],
+    [props.coords.latitude, props.coords.longitude, props.radius]
   );
 
   React.useEffect(() => {
-    let active = true
+    let active = true;
 
-    if (inputValue === '') {
+    if (inputValue === "") {
       setOptions([]);
       return undefined;
     }
 
-    fetch({ input: inputValue}, results => {
+    fetch({ input: inputValue }, (results) => {
       if (active) {
         setOptions(results || []);
       }
@@ -90,16 +100,18 @@ export default function RestaurauntAutocomplete(props) {
   return (
     <Autocomplete
       className="restauraunt-autocomplete"
-      getOptionLabel={option => (typeof option === 'string' ? option : option.name)}
-      filterOptions={x => x}
+      getOptionLabel={(option) =>
+        typeof option === "string" ? option : option.name
+      }
+      filterOptions={(x) => x}
       value={props.textValue}
       options={options}
       autoComplete
       autoHighlight
       onChange={props.handleSearchValueClick}
-      includeInputInList 
-      loading={loading} 
-      renderInput={params => (
+      includeInputInList
+      loading={loading}
+      renderInput={(params) => (
         <TextField
           {...params}
           label={props.label}
@@ -112,40 +124,54 @@ export default function RestaurauntAutocomplete(props) {
             classes,
             endAdornment: (
               <React.Fragment>
-                {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                {loading ? (
+                  <CircularProgress color="inherit" size={20} />
+                ) : null}
                 {params.InputProps.endAdornment}
               </React.Fragment>
             ),
           }}
         />
       )}
-      renderOption={option => {
-        const matches = match(option.name, inputValue)
-        const parts = parse(option.name, matches)
+      renderOption={(option) => {
+        const matches = match(option.name, inputValue);
+        const parts = parse(option.name, matches);
 
         return (
-        <>
+          <>
             <ListItemAvatar>
-                <Avatar variant="square" src={option.image_url}>{option.name.charAt(0)}</Avatar>
+              <Avatar variant="square" src={option.image_url}>
+                {option.name.charAt(0)}
+              </Avatar>
             </ListItemAvatar>
-            <ListItemText 
-                primary={
-                    <>
-                        {parts.map((part, index) => (
-                            <span key={index} className={classes.text} style={{ color: part.highlight ? "red" : "black" }}>
-                                {part.text}
-                            </span>
-                        ))}
-                    </>
-                }
-                secondary={
-                    <Typography component="span" color="inherit" variant="body2" className={classes.secondary}> 
-                        {option.location.display_address.join(" ")}
-                    </Typography>
-                }>
+            <ListItemText
+              primary={
+                <>
+                  {parts.map((part, index) => (
+                    <span
+                      key={index}
+                      className={classes.text}
+                      style={{ color: part.highlight ? "red" : "black" }}
+                    >
+                      {part.text}
+                    </span>
+                  ))}
+                </>
+              }
+              secondary={
+                <Typography
+                  component="span"
+                  color="inherit"
+                  variant="body2"
+                  className={classes.secondary}
+                >
+                  {option.location.display_address.join(" ")}
+                </Typography>
+              }
             >
+              >
             </ListItemText>
-        </>
+          </>
         );
       }}
     />
@@ -155,5 +181,5 @@ export default function RestaurauntAutocomplete(props) {
 RestaurauntAutocomplete.propTypes = {
   textValue: PropTypes.string.isRequired,
   handleSearchValueClick: PropTypes.func.isRequired,
-  label: PropTypes.string.isRequired
-}
+  label: PropTypes.string.isRequired,
+};

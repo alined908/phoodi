@@ -1,29 +1,34 @@
-import React from 'react';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import {TextField, Grid, Typography, makeStyles} from '@material-ui/core'
-import parse from 'autosuggest-highlight/parse';
-import throttle from 'lodash/throttle';
-import PropTypes from 'prop-types'
+import React from "react";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
+import { TextField, Grid, Typography, makeStyles } from "@material-ui/core";
+import parse from "autosuggest-highlight/parse";
+import throttle from "lodash/throttle";
+import PropTypes from "prop-types";
 
-const customFont = {fontSize: 14, fontFamily: "Lato", fontWeight: "600"}
-const customFontSmall = {fontSize: 11, fontFamily: "Lato", fontWeight: "600", height: 15}
+const customFont = { fontSize: 14, fontFamily: "Lato", fontWeight: "600" };
+const customFontSmall = {
+  fontSize: 11,
+  fontFamily: "Lato",
+  fontWeight: "600",
+  height: 15,
+};
 
 function loadScript(src, position, id) {
   if (!position) {
     return;
   }
 
-  const script = document.createElement('script');
-  script.setAttribute('async', '');
-  script.setAttribute('id', id);
+  const script = document.createElement("script");
+  script.setAttribute("async", "");
+  script.setAttribute("id", id);
   script.src = src;
   position.appendChild(script);
 }
 
 const autocompleteService = { current: null };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   icon: {
     color: theme.palette.text.secondary,
     marginRight: theme.spacing(2),
@@ -32,23 +37,23 @@ const useStyles = makeStyles(theme => ({
 
 export default function Location(props) {
   const classes = useStyles();
-  const [inputValue, setInputValue] = React.useState('');
+  const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState([]);
   const loaded = React.useRef(false);
 
-  if (typeof window !== 'undefined' && !loaded.current) {
-    if (!document.querySelector('#google-maps')) {
+  if (typeof window !== "undefined" && !loaded.current) {
+    if (!document.querySelector("#google-maps")) {
       loadScript(
         `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`,
-        document.querySelector('head'),
-        'google-maps',
+        document.querySelector("head"),
+        "google-maps"
       );
     }
 
     loaded.current = true;
   }
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setInputValue(event.target.value);
   };
 
@@ -57,7 +62,7 @@ export default function Location(props) {
       throttle((request, callback) => {
         autocompleteService.current.getPlacePredictions(request, callback);
       }, 200),
-    [],
+    []
   );
 
   React.useEffect(() => {
@@ -70,12 +75,12 @@ export default function Location(props) {
       return undefined;
     }
 
-    if (inputValue === '') {
+    if (inputValue === "") {
       setOptions([]);
       return undefined;
     }
 
-    fetch({ input: inputValue }, results => {
+    fetch({ input: inputValue }, (results) => {
       if (active) {
         setOptions(results || []);
       }
@@ -88,15 +93,17 @@ export default function Location(props) {
 
   return (
     <Autocomplete
-      getOptionLabel={option => (typeof option === 'string' ? option : option.description)}
-      filterOptions={x => x}
+      getOptionLabel={(option) =>
+        typeof option === "string" ? option : option.description
+      }
+      filterOptions={(x) => x}
       value={props.textValue}
       options={options}
       autoComplete
       autoHighlight
       onChange={props.handleClick}
-      includeInputInList  
-      renderInput={params => {
+      includeInputInList
+      renderInput={(params) => {
         return (
           <TextField
             {...params}
@@ -104,18 +111,24 @@ export default function Location(props) {
             error={props.textValue && props.textValue.length === 0}
             label={props.label}
             fullWidth
-            inputProps={{...params.inputProps, style: customFont}}
-            InputLabelProps={{style: customFont}}
-            FormHelperTextProps={{style: customFontSmall}}
+            inputProps={{ ...params.inputProps, style: customFont }}
+            InputLabelProps={{ style: customFont }}
+            FormHelperTextProps={{ style: customFontSmall }}
             onChange={handleChange}
-            helperText={(props.textValue && props.textValue.length === 0) ? "Location is required." : ""}
+            helperText={
+              props.textValue && props.textValue.length === 0
+                ? "Location is required."
+                : ""
+            }
           />
-      )}}
-      renderOption={option => {
-        const matches = option.structured_formatting.main_text_matched_substrings;
+        );
+      }}
+      renderOption={(option) => {
+        const matches =
+          option.structured_formatting.main_text_matched_substrings;
         const parts = parse(
           option.structured_formatting.main_text,
-          matches.map(match => [match.offset, match.offset + match.length]),
+          matches.map((match) => [match.offset, match.offset + match.length])
         );
 
         return (
@@ -125,7 +138,10 @@ export default function Location(props) {
             </Grid>
             <Grid item xs>
               {parts.map((part, index) => (
-                <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
+                <span
+                  key={index}
+                  style={{ fontWeight: part.highlight ? 700 : 400 }}
+                >
                   {part.text}
                 </span>
               ))}
@@ -144,5 +160,5 @@ export default function Location(props) {
 Location.propTypes = {
   textValue: PropTypes.string.isRequired,
   handleClick: PropTypes.func.isRequired,
-  label: PropTypes.string.isRequired
-}
+  label: PropTypes.string.isRequired,
+};

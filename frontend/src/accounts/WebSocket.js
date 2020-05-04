@@ -1,226 +1,240 @@
-import AuthenticationService from "./AuthenticationService"
+import AuthenticationService from "./AuthenticationService";
 
 export default class WebSocketService {
-    callbacks = {};
+  callbacks = {};
 
-    constructor(){
-        this.socketRef = null;
-        this.waitForSocketConnection = this.waitForSocketConnection.bind(this)
-        this.disconnect = this.disconnect.bind(this)
-        this.connect = this.connect.bind(this)
+  constructor() {
+    this.socketRef = null;
+    this.waitForSocketConnection = this.waitForSocketConnection.bind(this);
+    this.disconnect = this.disconnect.bind(this);
+    this.connect = this.connect.bind(this);
+  }
+
+  getCallbacks() {
+    return this.callbacks;
+  }
+
+  connect(path, token) {
+    const baseURL =
+      process.env.NODE_ENV === "production"
+        ? process.env.REACT_APP_PROD_BASE_URL
+        : process.env.REACT_APP_DEV_BASE_URL;
+    const urlWithToken = baseURL;
+    var url = new URL(path, urlWithToken);
+    url.protocol =
+      url.protocol === "http:"
+        ? url.protocol.replace("http", "ws")
+        : url.protocol.replace("https", "wss");
+    if (token === null) {
+      return;
     }
+    this.socketRef = new WebSocket(url.href + `?token=${token}`);
 
-    getCallbacks(){
-        return this.callbacks;
+    this.socketRef.onmessage = (e) => {
+      console.log("Step 2 - Channel sends message from backend");
+      this.socketNewMessage(e.data);
+    };
+
+    this.socketRef.onopen = () => {
+      console.log("WebSocket open");
+    };
+
+    this.socketRef.onerror = (e) => {
+      console.log(e.message);
+    };
+
+    this.socketRef.onclose = (e) => {
+      console.log(e);
+      //Token not authenticated
+      if (e.code === 4000) {
+        const access = AuthenticationService.retrieveToken();
+        setTimeout(() => this.connect(path, access), 3000);
+      } else {
+        setTimeout(() => this.connect(path, token), 3000);
+      }
+    };
+  }
+
+  disconnect() {
+    console.log("disconnect called");
+    if (this.socketRef) {
+      this.socketRef.onclose = function () {};
+      this.socketRef.close();
     }
+  }
 
-    connect(path, token){
-        const baseURL = (process.env.NODE_ENV === 'production') ? 
-            process.env.REACT_APP_PROD_BASE_URL: 
-            process.env.REACT_APP_DEV_BASE_URL
-        const urlWithToken = baseURL 
-        var url = new URL(path, urlWithToken)
-        url.protocol = url.protocol === "http:" ? 
-            url.protocol.replace('http', 'ws') : 
-            url.protocol.replace('https', 'wss')
-        if (token===null) {return}
-        this.socketRef = new WebSocket(url.href + `?token=${token}`);
-    
-        this.socketRef.onmessage = e => {
-            console.log("Step 2 - Channel sends message from backend")
-            this.socketNewMessage(e.data);
-        };
-
-        this.socketRef.onopen = () => {
-            console.log("WebSocket open");
-        };
-        
-        this.socketRef.onerror = e => {
-            console.log(e.message);
-        };
-
-        this.socketRef.onclose = (e) => {
-            console.log(e)
-            //Token not authenticated
-            if (e.code === 4000) {
-                const access = AuthenticationService.retrieveToken();
-                setTimeout(() => this.connect(path, access), 3000);
-            } else {
-                setTimeout(() => this.connect(path, token), 3000);
-            }
-        };
+  socketNewMessage(data) {
+    const parsedData = JSON.parse(data);
+    const command = parsedData.command;
+    if (Object.keys(this.callbacks).length === 0) {
+      return;
     }
+    console.log("Step 3 - " + command + " command");
 
-    disconnect() {
-        console.log("disconnect called")
-        if (this.socketRef){
-            this.socketRef.onclose = function(){}
-            this.socketRef.close()
+    //Convert all ifs to this.callbacks[command](parsedData)
+    if (command === "fetch_messages") {
+      this.callbacks[command](parsedData.messages);
+    } else if (command === "new_message") {
+      this.callbacks[command](parsedData.message);
+    } else {
+      console.log(parsedData);
+      this.callbacks[command](parsedData);
+    }
+  }
+
+  sendMessage(data) {
+    console.log("Step 1 - Send Message to Channel");
+    try {
+      console.log({ ...data });
+      console.log(this.socketRef.readyState);
+      console.log(this.socketRef.url);
+      this.socketRef.send(JSON.stringify({ ...data }));
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  exists() {
+    return this.socketRef !== null;
+  }
+
+  state() {
+    return this.socketRef.readyState;
+  }
+
+  uri() {
+    return this.socketRef.uri;
+  }
+
+  waitForSocketConnection(callback) {
+    const socket = this.socketRef;
+    const recursion = this.waitForSocketConnection;
+    setTimeout(function () {
+      if (socket.readyState === 1) {
+        console.log("Connection is made");
+        if (callback != null) {
+          callback();
         }
-    }
+        return;
+      } else {
+        // console.log("Wait for connection..");
+        recursion(callback);
+      }
+    }, 2000);
+  }
+  //Chat commands
+  fetchMessages(uri) {
+    console.log("Websocket - fetchMessages");
+    this.sendMessage({ command: "fetch_messages", uri: uri });
+  }
 
-    socketNewMessage(data){
-        const parsedData = JSON.parse(data);
-        const command = parsedData.command;
-        if(Object.keys(this.callbacks).length === 0){
-            return;
-        }
-        console.log("Step 3 - " + command + " command")
+  newChatMessage(message) {
+    console.log("Websocket - newChatMessage");
+    this.sendMessage({
+      command: "new_message",
+      from: message.from,
+      text: message.text,
+      room: message.room,
+    });
+  }
 
-        //Convert all ifs to this.callbacks[command](parsedData)
-        if(command === 'fetch_messages'){
-            this.callbacks[command](parsedData.messages);
-        }
-        else if(command === 'new_message'){
-            this.callbacks[command](parsedData.message);
-        }
-        else {
-            console.log(parsedData)
-            this.callbacks[command](parsedData)
-        }
-    }
+  newMeetupEvent(data) {
+    console.log("Websocket - newEvent");
+    console.log(data);
+    this.sendMessage({ command: "new_event", data: data });
+  }
 
-    sendMessage(data){
-        console.log("Step 1 - Send Message to Channel")
-        try{
-            console.log({...data})
-            console.log(this.socketRef.readyState)
-            console.log(this.socketRef.url)
-            this.socketRef.send(JSON.stringify({...data}))
-        }
-        catch(err){
-            console.log(err.message);
-        }
-    }
+  reloadMeetupEvent(data) {
+    console.log("Websocket - reloadEvent");
+    this.sendMessage({ command: "reload_event", data: data });
+  }
 
-    exists() {
-        return this.socketRef !== null
-    }
+  decideMeetupEvent(data) {
+    console.log("Websocket - decideEvent");
+    this.sendMessage({ command: "decide_event", data: data });
+  }
 
-    state(){
-        return this.socketRef.readyState;
-    }
+  deleteMeetupEvent(data) {
+    console.log("Websocket - delete meetup event");
+    this.sendMessage({ command: "delete_event", data: data });
+  }
 
-    uri(){
-        return this.socketRef.uri;
-    }
+  redecideMeetupEvent(data) {
+    console.log("Websocket - redecideEvent");
+    this.sendMessage({ command: "redecide_event", data: data });
+  }
 
-    waitForSocketConnection(callback){
-        const socket = this.socketRef;
-        const recursion = this.waitForSocketConnection;
-        setTimeout(
-            function(){
-                if(socket.readyState === 1){
-                    console.log("Connection is made");
-                    if(callback != null){
-                        callback();
-                    }
-                    return;
-                }
-                else{
-                    // console.log("Wait for connection..");
-                    recursion(callback);
-                }
-            }, 2000);
-    }
-    //Chat commands
-    fetchMessages(uri){
-        console.log("Websocket - fetchMessages")
-        this.sendMessage({command : 'fetch_messages', uri: uri});
-    }
+  voteMeetupEvent(data) {
+    console.log("Websocket - voteEvent");
+    this.sendMessage({ command: "vote_event", data: data });
+  }
 
-    newChatMessage(message){
-        console.log("Websocket - newChatMessage")
-        this.sendMessage({command : 'new_message', from : message.from, text : message.text, room: message.room});
-    }
+  addEventOption(data) {
+    console.log("Websocket - addMeetupEventOption");
+    this.sendMessage({ command: "new_option", data: data });
+  }
 
-    newMeetupEvent(data){
-        console.log("Websocket - newEvent")
-        console.log(data)
-        this.sendMessage({command: 'new_event', data: data})
-    }
+  deleteEventOption(data) {
+    console.log("Websocket - deleteMeetupEventOption");
+    this.sendMessage({ command: "delete_option", data: data });
+  }
 
-    reloadMeetupEvent(data){
-        console.log("Websocket - reloadEvent")
-        this.sendMessage({command: 'reload_event', data: data})
-    }
+  //Invite Commands
+  fetchInvites(user) {
+    console.log("Websocket - fetchInvites");
+    this.sendMessage({ command: "fetch_invites", user: user });
+  }
 
-    decideMeetupEvent(data) {
-        console.log("Websocket - decideEvent")
-        this.sendMessage({command: 'decide_event', data: data})
-    }
+  newInvite(user) {
+    console.log("Websocket - newInvite");
+    this.sendMessage({ command: "new_invite", user: user });
+  }
 
-    deleteMeetupEvent(data){
-        console.log("Websocket - delete meetup event")
-        this.sendMessage({command: 'delete_event', data:data})
-    }
+  fetchNotifications(data) {
+    console.log("Websocket - fetchNotifications");
+    this.sendMessage({ command: "fetch_notifications", data: data });
+  }
 
-    redecideMeetupEvent(data){
-        console.log("Websocket - redecideEvent")
-        this.sendMessage({command: 'redecide_event', data:data})
-    }
+  readNotifications(user, type) {
+    console.log("Websocket - readNotifications");
+    this.sendMessage({ command: "read_notifs", user: user, type: type });
+  }
 
-    voteMeetupEvent(data){
-        console.log("Websocket - voteEvent")
-        this.sendMessage({command: 'vote_event', data: data})
-    }
+  addChatCallbacks(messagesCallback, newMessageCallback) {
+    this.callbacks["fetch_messages"] = messagesCallback;
+    this.callbacks["new_message"] = newMessageCallback;
+  }
 
-    addEventOption(data){
-        console.log("Websocket - addMeetupEventOption")
-        this.sendMessage({command: 'new_option', data: data})
-    }
+  addContactsCallbacks(reloadCallback) {
+    this.callbacks["update_room"] = reloadCallback;
+  }
 
-    deleteEventOption(data){
-        console.log("Websocket - deleteMeetupEventOption")
-        this.sendMessage({command: 'delete_option', data:data})
-    }
+  addMeetupCallbacks(
+    eventsCallback,
+    newEventCallback,
+    reloadEventCallback,
+    voteEventCallback,
+    decideEventCallback,
+    deleteEventCallback,
+    addMemberCallback,
+    deleteMemberCallback,
+    newOptionCallback,
+    deleteOptionCallback
+  ) {
+    this.callbacks["fetch_events"] = eventsCallback;
+    this.callbacks["new_event"] = newEventCallback;
+    this.callbacks["reload_event"] = reloadEventCallback;
+    this.callbacks["vote_event"] = voteEventCallback;
+    this.callbacks["decide_event"] = decideEventCallback;
+    this.callbacks["redecide_event"] = decideEventCallback;
+    this.callbacks["delete_event"] = deleteEventCallback;
+    this.callbacks["new_member"] = addMemberCallback;
+    this.callbacks["delete_member"] = deleteMemberCallback;
+    this.callbacks["new_option"] = newOptionCallback;
+    this.callbacks["delete_option"] = deleteOptionCallback;
+  }
 
-    //Invite Commands
-    fetchInvites(user){
-        console.log("Websocket - fetchInvites")
-        this.sendMessage({command: 'fetch_invites', user:user})
-    }
-
-    newInvite(user){
-        console.log("Websocket - newInvite")
-        this.sendMessage({command: 'new_invite', user:user})
-    }
-
-    fetchNotifications(data){
-        console.log("Websocket - fetchNotifications")
-        this.sendMessage({command: 'fetch_notifications', data : data})
-    }
-
-    readNotifications(user, type) {
-        console.log("Websocket - readNotifications")
-        this.sendMessage({command: 'read_notifs', user:user, type:type})
-    }
-
-    addChatCallbacks(messagesCallback, newMessageCallback){
-        this.callbacks['fetch_messages'] = messagesCallback;
-        this.callbacks['new_message'] = newMessageCallback;
-    }
-
-    addContactsCallbacks(reloadCallback){
-        this.callbacks['update_room'] = reloadCallback
-    }
-
-    addMeetupCallbacks(eventsCallback, newEventCallback, reloadEventCallback, voteEventCallback, 
-        decideEventCallback, deleteEventCallback, addMemberCallback, deleteMemberCallback, newOptionCallback, deleteOptionCallback){
-        this.callbacks['fetch_events'] = eventsCallback
-        this.callbacks['new_event'] = newEventCallback
-        this.callbacks['reload_event'] = reloadEventCallback
-        this.callbacks['vote_event'] = voteEventCallback
-        this.callbacks['decide_event'] = decideEventCallback
-        this.callbacks['redecide_event'] = decideEventCallback
-        this.callbacks['delete_event'] = deleteEventCallback
-        this.callbacks['new_member'] = addMemberCallback
-        this.callbacks['delete_member'] = deleteMemberCallback
-        this.callbacks['new_option'] = newOptionCallback
-        this.callbacks['delete_option'] = deleteOptionCallback
-    }
-
-    addNotifCallbacks(notifsCallback){
-        this.callbacks['fetch_notifs'] = notifsCallback
-    }
+  addNotifCallbacks(notifsCallback) {
+    this.callbacks["fetch_notifs"] = notifsCallback;
+  }
 }

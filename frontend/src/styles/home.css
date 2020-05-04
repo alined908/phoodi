@@ -1,463 +1,462 @@
-
-  .home{
-      width: 100%;
-      height: 100%;
-  }
-
-  .scrollbot{
-      position:absolute;
-      bottom: 1rem;
-  }
-
-  .wheel {
-      height: 100%;
-      width: 620px;
-  }
-
-  .food-belt{
-      margin-top: -3rem;
-  }
-  
-  .top {
-      display:flex;
-      width: 100%;
-      margin: auto 0;
-      border-bottom: 2px solid #edf0f6;
-      background-color: #dff7e5;
-      height: 100%;
-      align-items: center;
-      justify-content: center;
-  }
-
-  .home-banner{
-      flex: 0 0 300px;
-      margin-left: auto;
-      font-family: "Lato";
-  }
-
-  .middle {
-      padding-bottom: 4rem;
-      background-color: rgba(255, 255, 255, 1) !important;
-  }
-
-  .middle-header{
-      width: 75%;
-      margin: 0 auto;
-      padding: 6rem 0;
-      text-align: center;
-  }
-
-  .middle-entry{
-      display:flex;
-      width: 80%;
-      justify-content: space-evenly;
-      margin: 0 auto;
-      padding: 3rem 0;
-      align-items: center;
-  }
-
-  .middle-entry-text{
-      display: flex;
-      height: 100%;
-      flex-direction: column;
-      justify-content: space-evenly;
-  }
-
-  .middle-tri{
-      display: flex;
-      width: 90%;
-      margin: 7rem auto 0 auto;
-      justify-content: space-evenly;
-  }
-
-  .middle-tri-col-txt{
-      margin-top: 2rem;
-      text-align: center;
-  }
-
-  .tri-col-head{
-      margin-bottom:1rem;
-  }
-
-  .bottom{
-      display:flex;
-      align-items: center;
-      padding: 4rem 0;
-      flex-direction: column;
-      text-align: center;
-      background-color: white;
-  }
-  .bottom-button{
-      margin-top: 1rem; 
-  }
-
-  .middle-img-enter-active{
-    transition: all 400ms;
-  }
-
-  .middle-header:hover svg {
-      animation: shake 1s linear infinite;
-  }
-
-  .claw{
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    width: 20%;
-    margin-top: 30px;
-    transform: translate(346%, -1045%);
-  }
-
-  .base {
-    background-color: rgb(220, 220, 220);
-    width: 80px;
-    height: 20px;
-    border-radius: 0 0 10px 10px;
-}
-.claw-body{
-    display: flex;
-    width: 100%;
-}
-.claw-left{
-    height: 100%;
-}  
-      
-
-.left-top{
-    background: linear-gradient(to left,  rgb(220, 220, 220) 30%, black 70%);
-    width: 40px;
-    height: 5px;
-    transform: rotate(-45deg);
+.home {
+  width: 100%;
+  height: 100%;
 }
 
-.left-bot{
-    background-color: black;
-    width: 30px;
-    height: 5px;
-    transform: rotate(50deg) translate(60%, 200%);
-    animation: open-left 15s linear infinite;
+.scrollbot {
+  position: absolute;
+  bottom: 1rem;
+}
+
+.wheel {
+  height: 100%;
+  width: 620px;
+}
+
+.food-belt {
+  margin-top: -3rem;
+}
+
+.top {
+  display: flex;
+  width: 100%;
+  margin: auto 0;
+  border-bottom: 2px solid #edf0f6;
+  background-color: #dff7e5;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-banner {
+  flex: 0 0 300px;
+  margin-left: auto;
+  font-family: "Lato";
+}
+
+.middle {
+  padding-bottom: 4rem;
+  background-color: rgba(255, 255, 255, 1) !important;
+}
+
+.middle-header {
+  width: 75%;
+  margin: 0 auto;
+  padding: 6rem 0;
+  text-align: center;
+}
+
+.middle-entry {
+  display: flex;
+  width: 80%;
+  justify-content: space-evenly;
+  margin: 0 auto;
+  padding: 3rem 0;
+  align-items: center;
+}
+
+.middle-entry-text {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.middle-tri {
+  display: flex;
+  width: 90%;
+  margin: 7rem auto 0 auto;
+  justify-content: space-evenly;
+}
+
+.middle-tri-col-txt {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.tri-col-head {
+  margin-bottom: 1rem;
+}
+
+.bottom {
+  display: flex;
+  align-items: center;
+  padding: 4rem 0;
+  flex-direction: column;
+  text-align: center;
+  background-color: white;
+}
+.bottom-button {
+  margin-top: 1rem;
+}
+
+.middle-img-enter-active {
+  transition: all 400ms;
+}
+
+.middle-header:hover svg {
+  animation: shake 1s linear infinite;
+}
+
+.claw {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  margin-top: 30px;
+  transform: translate(346%, -1045%);
+}
+
+.base {
+  background-color: rgb(220, 220, 220);
+  width: 80px;
+  height: 20px;
+  border-radius: 0 0 10px 10px;
+}
+.claw-body {
+  display: flex;
+  width: 100%;
+}
+.claw-left {
+  height: 100%;
+}
+
+.left-top {
+  background: linear-gradient(to left, rgb(220, 220, 220) 30%, black 70%);
+  width: 40px;
+  height: 5px;
+  transform: rotate(-45deg);
+}
+
+.left-bot {
+  background-color: black;
+  width: 30px;
+  height: 5px;
+  transform: rotate(50deg) translate(60%, 200%);
+  animation: open-left 15s linear infinite;
 }
 
 @keyframes open-left {
-    0%{
-        transform: rotate(50deg) translate(60%, 200%);
-    }
-    5%{
-        transform: rotate(70deg) translate(60%, 200%);
-    }
-    10%{
-        transform: rotate(50deg) translate(60%, 200%);
-    }
-    100%{
-        transform: rotate(50deg) translate(60%, 200%);
-    }
-}
-        
-.claw-right{
-    height: 100%;
+  0% {
+    transform: rotate(50deg) translate(60%, 200%);
+  }
+  5% {
+    transform: rotate(70deg) translate(60%, 200%);
+  }
+  10% {
+    transform: rotate(50deg) translate(60%, 200%);
+  }
+  100% {
+    transform: rotate(50deg) translate(60%, 200%);
+  }
 }
 
-.right-top{
-    background: linear-gradient(to right,  rgb(220, 220, 220) 30%, black 70%);
-    width: 40px;
-    height: 5px;
-    transform: rotate(45deg);
+.claw-right {
+  height: 100%;
 }
 
-.right-bot{
-    background-color: black;
-    width: 30px;
-    height: 5px;
+.right-top {
+  background: linear-gradient(to right, rgb(220, 220, 220) 30%, black 70%);
+  width: 40px;
+  height: 5px;
+  transform: rotate(45deg);
+}
+
+.right-bot {
+  background-color: black;
+  width: 30px;
+  height: 5px;
+  transform: rotate(-50deg) translate(-30%, 380%);
+  animation: open-right 15s linear infinite;
+}
+
+@keyframes open-right {
+  0% {
     transform: rotate(-50deg) translate(-30%, 380%);
-    animation: open-right 15s linear infinite;
+  }
+  5% {
+    transform: rotate(-70deg) translate(-50%, 380%);
+  }
+  10% {
+    transform: rotate(-50deg) translate(-30%, 380%);
+  }
+  100% {
+    transform: rotate(-50deg) translate(-30%, 380%);
+  }
 }
-            
-@keyframes open-right{
-    0%{
-        transform: rotate(-50deg) translate(-30%, 380%);
-    }
-    5%{
-        transform: rotate(-70deg) translate(-50%, 380%);
-    }
-    10%{
-        transform: rotate(-50deg) translate(-30%, 380%);
-    }
-    100%{
-        transform: rotate(-50deg) translate(-30%, 380%);
-    }
+
+.clock {
+  fill: #5ddef5;
 }
-        
-    
 
-
-  .clock {
-      fill: #5DDEF5;
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-0.5px, -0.5px, 0);
   }
 
-  @keyframes shake{
-    10%, 90% {
-        transform: translate3d(-.5px, -.5px, 0);
-      }
-    
-      20%, 80% {
-        transform: translate3d(.5px, .5px, 0);
-      }
-    
-      30%, 50%, 70% {
-        transform: translate3d(-.5px, -.5px, 0);
-      }
-    
-      40%, 60% {
-        transform: translate3d(.5px, .5px, 0);
-      }
-  }
-  
-    #chain_st {
-        -webkit-animation: dash 1s infinite linear;
-        -moz-animation: dash 1s infinite linear;
-        -o-animation: dash 1s infinite linear;
-        animation: dash 1s infinite linear;
-    }
-    @-webkit-keyframes dash {
-    to { stroke-dashoffset: -5; }
-    }
-    @keyframes dash {
-    to { stroke-dashoffset: -5; }
-    }
-
-  .cupcake {
-      position: absolute;
+  20%,
+  80% {
+    transform: translate3d(0.5px, 0.5px, 0);
   }
 
-  .svg-1{
-      animation: moveFood 15s linear infinite, changeFood1 75s linear infinite;
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-0.5px, -0.5px, 0);
   }
 
-  @keyframes changeFood1 {
-      0%{
-          opacity: 1
-      }
-      19.99%{
-          opacity: 1
-      }
-      20%{
-          opacity: 0
-      }
-      100%{
-          opacity: 0
-      }
+  40%,
+  60% {
+    transform: translate3d(0.5px, 0.5px, 0);
   }
+}
 
-  .svg-2{
-    animation: moveFood 15s linear infinite, changeFood2 75s linear infinite;
+#chain_st {
+  -webkit-animation: dash 1s infinite linear;
+  -moz-animation: dash 1s infinite linear;
+  -o-animation: dash 1s infinite linear;
+  animation: dash 1s infinite linear;
+}
+@-webkit-keyframes dash {
+  to {
+    stroke-dashoffset: -5;
+  }
+}
+@keyframes dash {
+  to {
+    stroke-dashoffset: -5;
+  }
+}
+
+.cupcake {
+  position: absolute;
+}
+
+.svg-1 {
+  animation: moveFood 15s linear infinite, changeFood1 75s linear infinite;
+}
+
+@keyframes changeFood1 {
+  0% {
+    opacity: 1;
+  }
+  19.99% {
+    opacity: 1;
+  }
+  20% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.svg-2 {
+  animation: moveFood 15s linear infinite, changeFood2 75s linear infinite;
 }
 
 @keyframes changeFood2 {
-    0%{
-        opacity: 0
-    }
-    20%{
-        opacity: 0
-    }
-    20.01%{
-        opacity: 1
-    }
-    39.99%{
-        opacity: 1
-    }
-    40%{
-        opacity: 0
-    }
-    100%{
-        opacity: 0
-    }
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  20.01% {
+    opacity: 1;
+  }
+  39.99% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
-.svg-3{
-    animation: moveFood 15s linear infinite, changeFood3 75s linear infinite;
+.svg-3 {
+  animation: moveFood 15s linear infinite, changeFood3 75s linear infinite;
 }
 
 @keyframes changeFood3 {
-    0%{
-        opacity: 0
-    }
-    40%{
-        opacity: 0
-    }
-    40.01%{
-        opacity: 1
-    }
-    59.99%{
-        opacity: 1
-    }
-    60%{
-        opacity: 0
-    }
-    100%{
-        opacity: 0
-    }
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0;
+  }
+  40.01% {
+    opacity: 1;
+  }
+  59.99% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
-.svg-4{
-    animation: moveFood 15s linear infinite, changeFood4 75s linear infinite;
+.svg-4 {
+  animation: moveFood 15s linear infinite, changeFood4 75s linear infinite;
 }
 
 @keyframes changeFood4 {
-    0%{
-        opacity: 0
-    }
-    60%{
-        opacity: 0
-    }
-    60.01%{
-        opacity: 1
-    }
-    79.99%{
-        opacity: 1
-    }
-    80%{
-        opacity: 0
-    }
-    100%{
-        opacity: 0
-    }
+  0% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 0;
+  }
+  60.01% {
+    opacity: 1;
+  }
+  79.99% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
-.svg-5{
-    animation: moveFood 15s linear infinite, changeFood5 75s linear infinite;
+.svg-5 {
+  animation: moveFood 15s linear infinite, changeFood5 75s linear infinite;
 }
 
 @keyframes changeFood5 {
-    0%{
-        opacity: 0
-    }
-    80%{
-        opacity: 0
-    }
-    80.01%{
-        opacity: 1
-    }
-    99.99%{
-        opacity: 1
-    }
-    100%{
-        opacity: 0
-    }
+  0% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 0;
+  }
+  80.01% {
+    opacity: 1;
+  }
+  99.99% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
-
-  @keyframes moveFood {
-      0%{
-          transform: translate(700%, -550%)
-      }
-     
-      5%{
-          transform: translate(700%, -550%)
-      }
-      10% {
-        transform: translate(700%, 0%)
-      }
-
-      90% {
-        transform: translate(-60%, 0%)
-      }
-      95% {
-        transform: rotate(-45deg) translateX(-200%) 
-      }
-      100%{
-        transform: translate(-125%, 950%) rotate(720deg)
-      }
+@keyframes moveFood {
+  0% {
+    transform: translate(700%, -550%);
   }
 
-  .food{
-      position: absolute;
-      display: flex;
-      justify-content: flex-start;
-      width: 85%;
-      margin-top: 30px;
-      margin-left: 95px;
+  5% {
+    transform: translate(700%, -550%);
   }
-  .food:not(:last-child) {
-    margin-right: 25px;
+  10% {
+    transform: translate(700%, 0%);
+  }
+
+  90% {
+    transform: translate(-60%, 0%);
+  }
+  95% {
+    transform: rotate(-45deg) translateX(-200%);
+  }
+  100% {
+    transform: translate(-125%, 950%) rotate(720deg);
+  }
 }
 
-
-  @media only screen and (max-width: 1600px){
-    .middle-entry-img{
-        transform: scale(0.9)
-    }
-    .food-belt{
-        transform: scale(0.9)
-    }
-
-    .left {
-        flex-direction: column;
-        padding: 0;
-    }
-
-    .right {
-        padding: 0;
-        flex-direction: column-reverse;
-    }
-
-    .middle-entry{
-        padding: 3rem 0;
-        justify-content: center;
-        width: 85%;
-    }
-
-    .middle-entry-text{
-        margin-top: 1rem;
-        text-align:center;
-    }
-
-    .middle-entry-text h4 {
-        margin-bottom: 1rem;
-    }
-  }
-
-  @media only screen and (max-width: 600px) {
-
-    .middle{
-        padding-bottom: 0;
-    }
-
-    .middle-header{
-        padding: 3rem 0 0 0;
-        width: 85%;
-    }
-
-    .middle-tri{
-        margin-top: 4rem;
-        flex-direction:  column;
-    }
-
-    .middle-tri-col{
-        margin: 2rem 0;
-    }
-
-    .middle-entry-img{
-        transform: scale(0.45)
-    }
-
-    .food-belt{
-        transform: scale(0.6);
-    }
-
-    .top{
-        padding: 1rem;
-        height: 500px;
-        position: relative;
-    }
-
-    .scrollbot{
-        position: absolute; 
-        bottom: 0; 
-    }
-
-    .bottom{
-        padding-top: 2rem;
-    }
-
+.food {
+  position: absolute;
+  display: flex;
+  justify-content: flex-start;
+  width: 85%;
+  margin-top: 30px;
+  margin-left: 95px;
+}
+.food:not(:last-child) {
+  margin-right: 25px;
 }
 
+@media only screen and (max-width: 1600px) {
+  .middle-entry-img {
+    transform: scale(0.9);
+  }
+  .food-belt {
+    transform: scale(0.9);
+  }
+
+  .left {
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .right {
+    padding: 0;
+    flex-direction: column-reverse;
+  }
+
+  .middle-entry {
+    padding: 3rem 0;
+    justify-content: center;
+    width: 85%;
+  }
+
+  .middle-entry-text {
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  .middle-entry-text h4 {
+    margin-bottom: 1rem;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .middle {
+    padding-bottom: 0;
+  }
+
+  .middle-header {
+    padding: 3rem 0 0 0;
+    width: 85%;
+  }
+
+  .middle-tri {
+    margin-top: 4rem;
+    flex-direction: column;
+  }
+
+  .middle-tri-col {
+    margin: 2rem 0;
+  }
+
+  .middle-entry-img {
+    transform: scale(0.45);
+  }
+
+  .food-belt {
+    transform: scale(0.6);
+  }
+
+  .top {
+    padding: 1rem;
+    height: 500px;
+    position: relative;
+  }
+
+  .scrollbot {
+    position: absolute;
+    bottom: 0;
+  }
+
+  .bottom {
+    padding-top: 2rem;
+  }
+}

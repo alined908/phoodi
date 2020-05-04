@@ -1,42 +1,46 @@
 /* Scrollbar*/
-:root{
+:root {
   --bg-color: white;
   --grey-text: rgba(0, 0, 0, 0.54);
   --border-color-grey: #edf0f6;
-  --background: rgb(245,242,247);
-  --bg-grey: 	#F0F0F0;
+  --background: rgb(245, 242, 247);
+  --bg-grey: #f0f0f0;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   width: 5px;
 }
 
 ::-webkit-scrollbar-track {
   border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	background-color: #F5F5F5;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #f5f5f5;
 }
 
 ::-webkit-scrollbar-thumb {
-	border-radius: 10px;
-	background: #3b444b;
+  border-radius: 10px;
+  background: #3b444b;
 }
 
-a, a:hover {
+a,
+a:hover {
   text-decoration: none;
   color: inherit;
 }
 
-html, body, #root, .MeetupApp{
+html,
+body,
+#root,
+.MeetupApp {
   background-color: var(--background);
   height: 100%;
 }
 
-body{
+body {
   overflow-x: hidden;
 }
 
-.loading{
+.loading {
   display: flex;
   height: 100%;
   width: 100%;
@@ -55,60 +59,64 @@ body{
 }
 
 /* No Entity */
-.no-entity{
-  display:flex;
+.no-entity {
+  display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
   padding: 0 1.5rem;
 }
 
-.no-entity-text{
+.no-entity-text {
   margin-left: 1rem;
 }
 
 /* Emoji Picker */
-.emoji-mart-category-label span, .emoji-mart-search input{
+.emoji-mart-category-label span,
+.emoji-mart-search input {
   font-family: "Lato";
   font-weight: 600;
   font-size: 13px;
 }
 
-.emoji-mart-preview{
+.emoji-mart-preview {
   height: 50px;
   font-family: "Lato" !important;
   font-weight: 600 !important;
 }
-.emoji-mart-preview-emoji{
+.emoji-mart-preview-emoji {
   left: 6px;
 }
 
-.emoji-mart-preview-data{
+.emoji-mart-preview-data {
   left: 50px;
 }
 
-.emoji-mart-preview .emoji-mart-emoji span{
+.emoji-mart-preview .emoji-mart-emoji span {
   width: 25px !important;
   height: 25px !important;
 }
 
-.emoji-mart-preview-name, .emoji-mart-preview-shortnames{
+.emoji-mart-preview-name,
+.emoji-mart-preview-shortnames {
   font-size: 12px;
 }
 
-.emoji-mart-title-label{
+.emoji-mart-title-label {
   color: black !important;
   font-size: 12px !important;
   font-weight: 600 !important;
 }
 
-.emoji-mart-preview-emoticons{
+.emoji-mart-preview-emoticons {
   display: none;
 }
 
 .elevate {
-  -webkit-box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  -webkit-box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
 }
 
 .c {
@@ -119,8 +127,8 @@ body{
   background-color: var(--background);
 }
 
-.MuiListItem-root:hover{
-  background-color: #F0F0F0;
+.MuiListItem-root:hover {
+  background-color: #f0f0f0;
 }
 
 .inner-wrap {
@@ -131,30 +139,34 @@ body{
   position: relative;
 }
 
-.restauraunt-autocomplete{
+.restauraunt-autocomplete {
   width: 100%;
 }
 
-.restauraunt-autocomplete .MuiFilledInput-root, .restauraunt-autocomplete .MuiFilledInput-root:hover, .restauraunt-autocomplete .MuiFilledInput-root:active, .restauraunt-autocomplete .MuiFilledInput-root:focus{
+.restauraunt-autocomplete .MuiFilledInput-root,
+.restauraunt-autocomplete .MuiFilledInput-root:hover,
+.restauraunt-autocomplete .MuiFilledInput-root:active,
+.restauraunt-autocomplete .MuiFilledInput-root:focus {
   background-color: white !important;
 }
 
-.restauraunt-autocomplete .MuiInputAdornment-filled.MuiInputAdornment-positionStart:not(.MuiInputAdornment-hiddenLabel) {
+.restauraunt-autocomplete
+  .MuiInputAdornment-filled.MuiInputAdornment-positionStart:not(.MuiInputAdornment-hiddenLabel) {
   margin-top: 0;
 }
 
-.divider{
+.divider {
   height: 28px !important;
 }
 
-.meetups-cardwrapper{
-  padding: .5rem;
+.meetups-cardwrapper {
+  padding: 0.5rem;
   max-height: 300px;
 }
 
 /* Calendar */
-.calendar{
-  display:flex;
+.calendar {
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 80%;
@@ -189,15 +201,15 @@ body{
   justify-content: center;
 }
 
-.MuiFab-root{
+.MuiFab-root {
   width: 100% !important;
 }
 
-.home{
+.home {
   background-color: white;
 }
 
-.person{
+.person {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -206,14 +218,14 @@ body{
   border-bottom: 1px solid #eeeeef;
 }
 
-.MuiChip-deleteIcon{
+.MuiChip-deleteIcon {
   color: white !important;
 }
 
 .search {
-  display:flex;
+  display: flex;
   align-items: center;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   height: 60px;
   width: 100%;
   min-width: 300px;
@@ -221,34 +233,33 @@ body{
   justify-content: center;
 }
 
-.search .MuiFormGroup-root{
+.search .MuiFormGroup-root {
   flex-wrap: nowrap !important;
 }
 
-.search .MuiFormControlLabel-label{
-  font-size: .75rem !important;
+.search .MuiFormControlLabel-label {
+  font-size: 0.75rem !important;
   font-family: "Lato" !important;
   font-weight: 600 !important;
 }
 
-.search .MuiFormControlLabel-root{
+.search .MuiFormControlLabel-root {
   margin-right: 0;
 }
 
-.category-autocomplete{
+.category-autocomplete {
   width: 100%;
 }
 
-
 /*Profile*/
 
-.column{
+.column {
   margin: auto 0;
   max-width: 350px;
   height: 100%;
   min-height: 100%;
 }
-.column-center{
+.column-center {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -256,34 +267,34 @@ body{
   margin: 0 2rem;
 }
 
-.column-center .column-middle{
+.column-center .column-middle {
   height: calc(100% - 60px);
 }
 
-.column-inner{
+.column-inner {
   background-color: white;
   height: 100%;
   width: 100%;
-  box-shadow: 0 10px 20px rgba(3,27,78,.1) !important;
-  transition: box-shadow .25s linear !important;
+  box-shadow: 0 10px 20px rgba(3, 27, 78, 0.1) !important;
+  transition: box-shadow 0.25s linear !important;
 }
 
-.column-inner:not(:first-child){
+.column-inner:not(:first-child) {
   margin-top: 2rem;
 }
 
-.column-top{
+.column-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: .75rem 1rem;
+  padding: 0.75rem 1rem;
   border-bottom: 1px solid #edf0f6;
   height: 60px;
   font-size: 18px;
   background: var(--bg-color);
 }
 
-.column-middle{
+.column-middle {
   height: calc(100% - 60px - 62px);
   min-height: 200px;
   overflow-y: auto;
@@ -291,7 +302,7 @@ body{
   background-color: white;
 }
 
-.column-bottom{
+.column-bottom {
   display: flex;
   align-items: center;
   padding: 0 1rem;
@@ -301,67 +312,62 @@ body{
   background-color: var(--bg-color);
 }
 
-.MuiAvatarGroup-root .MuiBadge-dot{
+.MuiAvatarGroup-root .MuiBadge-dot {
   min-width: 5px;
   height: 5px;
   background-color: #44b700;
 }
 
-.reset-dimensions img{
+.reset-dimensions img {
   width: 20px;
   height: 20px;
 }
 
-@media only screen and (max-width: 1350px){
-  .foursquare{
+@media only screen and (max-width: 1350px) {
+  .foursquare {
     width: 90%;
   }
-  
-  .meetups-component{
+
+  .meetups-component {
     width: 90%;
     height: 90%;
   }
 
-  .profile{
+  .profile {
     width: 90%;
     height: 90%;
   }
 }
 
-@media only screen and (max-width: 1150px){
-  .map-wrapper{
+@media only screen and (max-width: 1150px) {
+  .map-wrapper {
     width: 400px;
     height: 330px;
   }
-
-  
 }
 
-@media only screen and (max-width: 1000px){
-
-  .smaller-header{
+@media only screen and (max-width: 1000px) {
+  .smaller-header {
     flex-wrap: wrap;
   }
 
-  .smaller-header div{
-    padding: .5rem 0 ;
+  .smaller-header div {
+    padding: 0.5rem 0;
   }
 
-  .chosen{
+  .chosen {
     flex-direction: column;
     align-items: center;
   }
-
-  
 }
 
 @media only screen and (max-width: 600px) {
-  .inner-wrap{
+  .inner-wrap {
     padding: 1rem;
     overflow-y: auto;
   }
 
-  .inner-header{
+  .inner-header {
     padding: 1.5rem;
   }
 
@@ -375,15 +381,15 @@ body{
     width: 100%;
   }
 
-  .invite{
+  .invite {
     padding: 1rem 1.5rem;
   }
 
-  .invites .invite:last-child{
+  .invites .invite:last-child {
     margin-bottom: 0;
   }
 
-  .outer-shell{
+  .outer-shell {
     width: 90%;
   }
 
@@ -392,74 +398,74 @@ body{
     width: 100%;
   }
 
-  .form-paper{
+  .form-paper {
     padding: 1.5rem 1rem 1rem 1rem;
   }
-  .inner-header{
+  .inner-header {
     flex-wrap: wrap;
     padding: 1rem;
     justify-content: center;
   }
-  .inner-header-middle{
+  .inner-header-middle {
     padding: 1rem 0;
   }
 
-  .inner-header button{
+  .inner-header button {
     margin-left: 10px;
   }
 
-  .meetup-event{
+  .meetup-event {
     padding: 0;
   }
 
-  .smaller-header{
-    padding: .5rem 1rem !important;
+  .smaller-header {
+    padding: 0.5rem 1rem !important;
   }
 
-  .second-header{
+  .second-header {
     width: 100%;
-    flex-wrap: wrap
+    flex-wrap: wrap;
   }
-  .foursquare{
+  .foursquare {
     width: 100%;
   }
 
-  h5{
+  h5 {
     font-size: 1.75rem !important;
   }
 
-  .chosen{
+  .chosen {
     width: 100%;
   }
 
-  .map-wrapper{
+  .map-wrapper {
     width: calc(300px + 2rem);
     height: 300px;
   }
 
-  .c{
+  .c {
     height: calc(100% - 56px);
   }
 
-  .category{
+  .category {
     width: 90%;
   }
-  .category-header{
+  .category-header {
     font-size: 1.5rem;
   }
-  .category-actions{
+  .category-actions {
     padding-right: 0;
   }
-  
-  .category-social{
+
+  .category-social {
     flex-direction: column;
   }
-  
-  .category-meetups{
+
+  .category-meetups {
     padding: 0 0;
   }
 
-  .category-friends{
+  .category-friends {
     margin-bottom: 2rem;
   }
 
@@ -471,33 +477,33 @@ body{
     min-height: 400px;
   }
 
-  .profile{
+  .profile {
     height: 90%;
     width: 90%;
     flex-direction: column;
   }
 
-  .category .column{
-    max-width : none;
+  .category .column {
+    max-width: none;
   }
 
-  .profile .column{
+  .profile .column {
     margin: 2rem 0;
   }
 
-  .profile .column:nth-child(1){
-    order: 2
+  .profile .column:nth-child(1) {
+    order: 2;
   }
-  .profile .column-center{
+  .profile .column-center {
     margin: 0;
-    order: 1
+    order: 1;
   }
 
-  .profile .column:nth-child(3){
-    order: 3
+  .profile .column:nth-child(3) {
+    order: 3;
   }
 
-  .inner-header-middle div{
+  .inner-header-middle div {
     margin: 0 10px;
   }
   .meetups-component {
@@ -505,11 +511,11 @@ body{
     flex-direction: column;
   }
 
-  .meetups-inner-wrap{
+  .meetups-inner-wrap {
     margin: 2rem 0 0 0;
   }
 
-  .meetups-inner-header{
+  .meetups-inner-header {
     flex-wrap: wrap;
     height: auto;
   }
@@ -522,7 +528,7 @@ body{
     padding: 0;
   }
 
-  .preset{
+  .preset {
     min-height: 150px;
   }
 
