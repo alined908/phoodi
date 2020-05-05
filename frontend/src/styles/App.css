@@ -5,6 +5,7 @@
   --border-color-grey: #edf0f6;
   --background: rgb(245, 242, 247);
   --bg-grey: #f0f0f0;
+  --light-blue: #e5f0ff;
 }
 
 ::-webkit-scrollbar {
@@ -112,6 +113,10 @@ body {
   display: none;
 }
 
+.elevate-0 {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
 .elevate {
   -webkit-box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
@@ -164,11 +169,6 @@ body {
   height: 28px !important;
 }
 
-.meetups-cardwrapper {
-  padding: 0.5rem;
-  max-height: 300px;
-}
-
 /* Calendar */
 .calendar {
   display: flex;
@@ -219,10 +219,6 @@ body {
   border-bottom: 1px solid #eeeeef;
 }
 
-.MuiChip-deleteIcon {
-  color: white !important;
-}
-
 .search {
   display: flex;
   align-items: center;
@@ -250,6 +246,8 @@ body {
 
 .category-autocomplete {
   width: 100%;
+  height: 50px;
+  background-color: var(--light-blue);
 }
 
 /*Profile*/

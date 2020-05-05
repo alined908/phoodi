@@ -81,9 +81,7 @@ const CategoryAutocomplete = (props) => {
               height: "2rem",
               display: "flex",
               alignItems: "center",
-              fontFamily: "Lato",
-              fontWeight: "600",
-              fontSize: ".8rem",
+              fontSize: ".75rem",
             }}
           >
             <Avatar

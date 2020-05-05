@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "-14px",
     border: "1px solid #fafafa",
     fontSize: ".75rem",
+    zIndex: 0
   },
   badge: {
     backgroundColor: "inherit",

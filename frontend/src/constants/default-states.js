@@ -57,8 +57,16 @@ export const MuiTheme = {
     body2: { ...bold, fontSize: ".8rem" },
     button: { ...bold, fontSize: ".75rem" },
   },
+  palette: {
+    primary : {
+        main: "rgba(0,0,0,.9)"
+    }
+  },
   overrides: {
     MuiButton: {
+      root: {
+        padding: "6px 10px"
+      },
       sizeSmall: {
         fontSize: ".7rem",
         padding: "4px 8px"
@@ -99,16 +107,29 @@ export const MuiTheme = {
     MuiChip: {
       root: {
         padding: "3px 4px",
-        fontSize: ".75rem",
+        fontSize: ".7rem",
         borderRadius: "4px",
-        backgroundColor: "#3f51b5",
-        color: "white",
+        border: "1px solid #eeeeef",
+        backgroundColor: "var(--background)",
+        color: "black",
         margin: ".25rem",
         letterSpacing: "0.02857em",
         textTransform: "capitalize",
-        boxShadow:
-          "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
       },
     },
+    MuiFilledInput : {
+        root: {
+            backgroundColor: "var(--light-blue) !important",
+        }
+    },
+    MuiSlider : {
+        root: {
+            color: "var(--background)"
+        },
+        thumb: {
+            color: "#99c4ff",
+
+        }
+    }
   },
 };

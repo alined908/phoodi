@@ -9,17 +9,15 @@ import {
   IconButton,
   Avatar,
   CircularProgress,
-  Paper,
+  Button,
+  Slider
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import {
-  Public as PublicIcon,
   Add as AddIcon,
-  Search as SearchIcon,
   Edit as EditIcon,
   Error as ErrorIcon,
-  People as PeopleIcon,
 } from "@material-ui/icons";
 import PropTypes from "prop-types";
 import {
@@ -30,8 +28,17 @@ import {
 import { Helmet } from "react-helmet";
 import "react-dates/lib/css/_datepicker.css";
 import "react-dates/initialize";
+import "../../styles/datePicker.css"
 import { DateRangePicker, isInclusivelyAfterDay } from "react-dates";
 import styles from "../../styles/meetup.module.css";
+
+const marks = [
+  { value: 5 },
+  { value: 10 },
+  { value: 15 },
+  { value: 20 },
+  { value: 25 },
+];
 
 class Meetups extends Component {
   constructor(props) {
@@ -45,6 +52,7 @@ class Meetups extends Component {
       entries: [],
       preferences: [],
       clickedPreferences: [],
+      radius: props.user.settings.radius
     };
   }
 
@@ -195,7 +203,7 @@ class Meetups extends Component {
         startDate: this.state.startDate.format("YYYY-MM-DD"),
         endDate: this.state.endDate.format("YYYY-MM-DD"),
         categories: this.formatCategories(categories),
-        coords: { ...this.props.user.settings },
+        coords: { ...this.props.user.settings, radius: this.state.radius },
       });
     } else {
       this.props.getMeetups({
@@ -218,8 +226,8 @@ class Meetups extends Component {
               key={pref.id}
               onClick={() => this.handlePreferenceClick(index)}
               className={`${styles.presetCategory} ${
-                this.state.clickedPreferences[index] ? styles.active : ""
-              }`}
+                this.state.clickedPreferences[index] ? styles.active: ""
+              }  elevate-0`}
             >
               <Avatar
                 variant="square"
@@ -248,112 +256,139 @@ class Meetups extends Component {
           <title>Meetups</title>
         </Helmet>
         <div className={styles.meetupsCategories}>
-          <Paper className={styles.meetupsCategoriesInner} elevation={2} square>
+          <div className={`${styles.meetupsCategoriesInner} elevate`}>
             <div className={styles.meetupsCategoriesTop}>
-              <div>Preferences</div>
-              <div>
-                <Link
-                  to={{
-                    pathname: `/profile/${this.props.user.id}`,
-                    state: { locked: false },
-                  }}
+              <div>Meetups</div>
+              
+                <Button
+                  aria-label="add-meetup"
+                  onClick={this.openFormModal}
+                  color="primary"
+                  variant="contained"
                 >
-                  <Tooltip title="Edit Preferences">
-                    <IconButton style={{ color: "black" }} edge="end">
-                      <EditIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Link>
+                  Create
+                </Button>
+              
+            </div>
+            <div className={styles.settingsWrapper}>
+              <div className={styles.setting}>
+                <div className={styles.settingHeader}>
+                  Type
+                </div>
+                <div className={styles.settingInner}>
+                  <div className={styles.meetupTypes}>
+                    <div 
+                      className={`${styles.meetupType} ${this.state.public ? styles.meetupTypeActive : ""} elevate`} 
+                      onClick={() => this.handleMeetupsType("public")} 
+                      aria-label="public-meetups"
+                    >
+                      Public
+                    </div>
+                    <div 
+                      className={`${styles.meetupType} ${this.state.public ? "" : styles.meetupTypeActive} elevate`} 
+                      onClick={() => this.handleMeetupsType("private")} 
+                      aria-label="private-meetups"
+                    >
+                      Private
+                    </div>
+                  </div>
+                </div>
+              </div> 
+              <div className={styles.setting}>
+                <div className={styles.settingHeader}>
+                  Dates
+                </div>
+                <div className={`${styles.settingInner} ${styles.calendar}`}>
+                  <DateRangePicker
+                    onDatesChange={this.onDatesChange}
+                    onFocusChange={this.onFocusChange}
+                    focusedInput={this.state.focusedInput}
+                    startDate={this.state.startDate}
+                    startDateId="unique_start_date_id"
+                    endDate={this.state.endDate}
+                    endDateId="unique_end_date_id"
+                    keepOpenOnDateSelect
+                    hideKeyboardShortcutsPanel
+                    minimumNights={0}
+                    daySize={50}
+                    isOutsideRange={
+                      this.state.public ? this.isOutsideRange : () => false
+                    }
+                    noBorder  
+                    displayFormat="MMM DD"
+                    small
+                  />
+                </div>
+              </div>   
+              <div className={styles.setting}>
+                <div className={styles.settingHeader}>
+                  Radius
+                </div>
+                <div className={styles.settingInner}>
+                    <Slider
+                      disabled={!this.state.public}
+                      valueLabelDisplay="off"
+                      step={5}
+                      marks={marks}
+                      value={this.state.radius}
+                      min={5}
+                      max={25}
+                      onChange={(e, val) => this.setState({radius: val})}
+                      onChangeCommitted={(e, val) => this.determineGetMeetups(this.state.public, this.state.entries)}
+                    />
+                  <div className={`${styles.categoryChip} elevate`} style={{marginLeft: '10px'}}>
+                      {this.state.public ? 
+                        <>
+                          {`${this.state.radius} miles`}
+                        </>
+                       : 
+                        <>X miles</>
+                      }
+                  </div>
+                </div>
               </div>
-            </div>
-            {renderPreset()}
-            <div className="search">
-              <DateRangePicker
-                onDatesChange={this.onDatesChange}
-                onFocusChange={this.onFocusChange}
-                focusedInput={this.state.focusedInput}
-                startDate={this.state.startDate}
-                startDateId="unique_start_date_id"
-                endDate={this.state.endDate}
-                endDateId="unique_end_date_id"
-                keepOpenOnDateSelect
-                minimumNights={0}
-                daySize={50}
-                isOutsideRange={
-                  this.state.public ? this.isOutsideRange : () => false
-                }
-                openDirection="up"
-                noBorder
-                showDefaultInputIcon
-                displayFormat="MMM DD"
-                small
-              />
-            </div>
-          </Paper>
+             
+              <div className={styles.setting}>
+                <div className={styles.settingHeader}>
+                  Categories
+                </div>
+                <div className={styles.settingInner}>
+                  <div className={`${styles.meetupsSearchBar} elevate`}>
+                    <CategoryAutocomplete
+                      fullWidth={true}
+                      size="small"
+                      entries={this.state.entries}
+                      handleClick={this.onTagsChange}
+                      label="Search Categories..."
+                    />
+                  </div>
+                  {/* {renderPreset()} */}
+                </div>
+              </div>
+              <div className={styles.setting}>
+                <div className={styles.settingHeader}>
+                  Preferences
+                  <Link
+                    to={{
+                      pathname: `/profile/${this.props.user.id}`,
+                      state: { locked: false },
+                    }}
+                  >
+                    <Tooltip title="Edit Preferences">
+                      <IconButton size="small">
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Link>
+                </div>
+                <div className={styles.settingInner}>
+                  {renderPreset()}
+                </div>
+              </div>
+            </div> 
+          </div>   
         </div>
         <div className={styles.meetupsInnerWrap}>
-          <Paper className={styles.meetupsInnerHeader} elevation={2} square>
-            <div>
-              Meetups
-              <Tooltip title="Public Meetups">
-                <IconButton
-                  aria-label="public-meetups"
-                  onClick={() => this.handleMeetupsType("public")}
-                  color={this.state.public ? "primary" : "default"}
-                  edge="end"
-                >
-                  <PublicIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Your Meetups">
-                <IconButton
-                  onClick={() => this.handleMeetupsType("private")}
-                  color={this.state.public ? "default" : "primary"}
-                  aria-label="private-meetups"
-                >
-                  <PeopleIcon />
-                </IconButton>
-              </Tooltip>
-            </div>
-            <div className={styles.meetupsSearchBar}>
-              <SearchIcon />
-              <CategoryAutocomplete
-                fullWidth={true}
-                size="small"
-                entries={this.state.entries}
-                handleClick={this.onTagsChange}
-                label="Search Categories..."
-              />
-            </div>
-            <div className={styles.categoryChip}>
-              {this.state.public ? (
-                <>
-                  {this.props.user.settings
-                    ? this.props.user.settings.radius
-                    : "25"}{" "}
-                  miles
-                </>
-              ) : (
-                <>X miles</>
-              )}
-            </div>
-
-            <Tooltip title="Add Meetup">
-              <IconButton
-                aria-label="add-meetup"
-                onClick={this.openFormModal}
-                style={{ color: "black" }}
-              >
-                <AddIcon />
-              </IconButton>
-            </Tooltip>
-            <MeetupForm
-              type="create"
-              handleClose={this.openFormModal}
-              open={this.state.newMeetupForm}
-            />
-          </Paper>
-
           <div
             className={styles.meetupsContainer}
             style={{
@@ -368,7 +403,7 @@ class Meetups extends Component {
               </div>
             )}
             {!this.props.isMeetupsFetching && this.props.isMeetupsInitialized && (
-              <Grid container spacing={1}>
+              <Grid container spacing={3}>
                 {meetups.map((meetup, i) => (
                   <Grid key={meetup.id} item xs={12} lg={6} xl={4}>
                     <Grow in={true} timeout={Math.max((i + 1) * 50, 500)}>
@@ -382,6 +417,11 @@ class Meetups extends Component {
             )}
           </div>
         </div>
+        <MeetupForm
+            type="create"
+            handleClose={this.openFormModal}
+            open={this.state.newMeetupForm}
+          />
       </div>
     );
   }
