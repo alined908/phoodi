@@ -5,7 +5,7 @@
   font-size: 0.7rem;
   border-radius: 4px;
   text-transform: capitalize;
-  margin: 0.25rem 0.25rem;
+  margin: 0.25rem 0.15rem;
   align-items: center;
   background-color: #e5f0ff;
   border: 1px solid #eeeeef;
@@ -327,6 +327,7 @@
   flex-direction: column;
   width: 85%;
   min-width: 310px;
+  max-width: 286px;
   margin: 0 auto;
   background-color: white;
   height: 100%;
@@ -752,4 +753,65 @@
 
 .ratingScore {
   margin-right: 10px;
+}
+
+@media only screen and (max-width: 1450px) {
+    .tree {
+        display: none;
+    }
+
+    .meetupWrapperInner {
+        padding: 2rem;
+    }
+
+    .meetupChat {
+        padding-top: 2rem;
+        width: 450px;
+    }
+
+    .addEvent {
+        right: 7%;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .headerIndented {
+        width: 90%;
+    }
+
+    .shell {
+        width: 80%;
+    }
+
+    .event {
+        padding: 0 1.5rem;
+        width: 100%;
+    }
+
+    .secondHeader {
+        width: 95%;
+    }
+
+    .addEvent {
+        right: 5%;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .meetupWrapperInner {
+        padding: 2rem 1rem;
+    }
+
+    .foursquare {
+        margin: 1rem auto;
+        width: 90%;
+    }
+
+    .rstWrapper {
+        transform: scale(.75);
+    }
+
+    .secondHeader {
+        padding: 0.7rem 1rem;
+    }
 }

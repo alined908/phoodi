@@ -110,7 +110,6 @@ python manage.py loaddata meetup/fixtures/*.json
     - [ ] Settings
 - [ ] Skeleton loading where applicable
 - [ ] Optimize performance
-- [ ] Hide notifs of meetup, 
 
 ## Todo Deploy
 - [ ] Separate dev and prod settings

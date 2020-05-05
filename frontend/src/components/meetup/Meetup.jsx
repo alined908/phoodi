@@ -381,7 +381,7 @@ class Meetup extends Component {
                     }
                   ></ListItemText>
                   {this.determineIsUserCreator(members[key].user.id) && (
-                    <Tooltip title="Creator">
+                    <Tooltip title="Meetup Creator">
                       <Crown width={24} height={24} />
                     </Tooltip>
                   )}
@@ -391,7 +391,7 @@ class Meetup extends Component {
                     </Tooltip>
                   )}
 
-                  {members[key].user.id === this.props.user.id && (
+                  {(members[key].user.id === this.props.user.id && !isUserCreator) &&
                     <Tooltip title="You">
                       <img
                         style={{ width: 20, height: 20, marginLeft: 10 }}
@@ -399,7 +399,7 @@ class Meetup extends Component {
                         src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}
                       />
                     </Tooltip>
-                  )}
+                  }
                   {/* {members[key].admin && 
                                         <Tooltip title="Admin">
                                             <VerifiedUserIcon style={{color: "#3f51b5"}}/>
@@ -499,7 +499,7 @@ class Meetup extends Component {
             <Grid item xs={12}>
               {renderInformation(meetup.name, meetup.date, meetup.location)}
             </Grid>
-            <Grid item xs={12} md={6} id="Members">
+            <Grid item xs={12} sm={6} id="Members">
               <div className={styles.headerIndented}>
                 <div className={`${styles.header} elevate`}>
                     <Typography variant="h5">Members</Typography>
@@ -529,7 +529,7 @@ class Meetup extends Component {
               </div>
               {renderMembers(meetup.members)}
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} sm={6}>
                 <div className={styles.headerIndented}>
                     <div className={`${styles.header} elevate`}>
                         <Typography variant="h5">Friends</Typography>

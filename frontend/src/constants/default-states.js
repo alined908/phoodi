@@ -61,6 +61,7 @@ export const MuiTheme = {
     MuiButton: {
       sizeSmall: {
         fontSize: ".7rem",
+        padding: "4px 8px"
       },
     },
     MuiFab : {

@@ -104,7 +104,8 @@ class ChatInput extends Component {
                 ref={this.emojiPicker}
                 title="Pick your emoji…"
                 emoji="point_up"
-                sheetSize={20}
+                sheetSize={32}
+                perLine={7}
                 emojiSize={20}
                 onSelect={this.addEmoji}
               />

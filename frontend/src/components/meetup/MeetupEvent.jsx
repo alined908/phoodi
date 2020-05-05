@@ -32,6 +32,7 @@ import {
   ProgressIcon,
   MeetupEventForm,
 } from "../components";
+import { ReactComponent as Crown } from "../../assets/svgs/crown.svg";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { meetupEventPropType } from "../../constants/prop-types";
@@ -162,18 +163,15 @@ class MeetupEvent extends Component {
               {moment(event.start).local().format("h:mm A")} -{" "}
               {moment(event.end).local().format("h:mm A")}
             </div>
-            <div className={styles.headerIcons}>
-              <img
-                style={{ width: 20, height: 20, marginRight: 5 }}
-                alt={"&#9787;"}
-                src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}
-              />
+            <Tooltip title="Event Creator">
+                <div className={styles.headerIcons}>
+                    <Crown width={18} height={18} />
+                    {event.creator.first_name} {event.creator.last_name}
               {/* <Avatar style={{transform: "scale(0.5)"}} src={event.creator.avatar}>
                     {event.creator.first_name.charAt(0)} {event.creator.last_name.charAt(0)}
                 </Avatar>  */}
-               {event.creator.first_name} {event.creator.last_name}
-            </div>
-          
+                </div>
+            </Tooltip>
           <div>
               {(this.props.isUserMember && !this.props.isPast) && renderActions()}
             </div>
@@ -294,6 +292,8 @@ class MeetupEvent extends Component {
                   justify={index % 2 === 0 ? "flex-end" : "flex-start"}
                   container
                   xs={12}
+                  sm={6}
+                  md={4}
                   lg={6}
                   xl={4}
                   className={styles.meetupEventOptionGrid}
@@ -369,7 +369,7 @@ class MeetupEvent extends Component {
           className={`${styles.secondHeader} elevate`}
         >
           <div className={styles.secondHeaderLeft}>
-            <Typography variant="h6">Categories </Typography>
+            Categories  
             {event.categories.length === 0  ?
                 <span className={styles.categoryChip}>
                     All
@@ -393,7 +393,7 @@ class MeetupEvent extends Component {
             
           </div>
           <div className={styles.secondHeaderLeft}>
-            <Typography variant="h6">Price </Typography>
+            Price
             {this.handlePriceChips(event.price).map((price, index) => (
               <span key={index} className={styles.categoryChip}>
                 {price}
@@ -401,7 +401,7 @@ class MeetupEvent extends Component {
             ))}
           </div>
           <div className={styles.secondHeaderLeft}>
-            <Typography variant="h6">Distance </Typography>
+            Distance
             <span className={styles.categoryChip}>
               {Math.round(event.distance * 0.000621371192).toFixed(2)}
             </span>
