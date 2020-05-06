@@ -347,10 +347,6 @@ body {
   align-items: center;
 }
 
-.innerLeftHeaderBlockAction button {
-  margin-top: 10px;
-}
-
 .innerRight {
     display: flex;
     flex: 1;

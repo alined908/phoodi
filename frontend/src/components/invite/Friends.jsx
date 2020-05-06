@@ -69,15 +69,8 @@ class Friends extends Component {
             <div className="innerLeftHeaderBlockAction">
               <div className="blockActionHeader">
                 Add Friend 
-              </div>
-              <div className="blockActionContent">
-                <UserAutocomplete
-                  handleClick={this.handleClick}
-                  handleType={this.handleType}
-                />
-                
-              </div>
-              <Button
+
+                <Button
                   size="small"
                   type="submit"
                   onClick={this.handleSubmit}
@@ -86,6 +79,14 @@ class Friends extends Component {
                 >
                   Send
                 </Button>
+              </div>
+              <div className="blockActionContent" style={{marginTop: ".5rem"}}>
+                <UserAutocomplete
+                  handleClick={this.handleClick}
+                  handleType={this.handleType}
+                />
+                
+              </div>
             </div>
           </div>
         </div>
