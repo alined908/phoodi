@@ -65,19 +65,18 @@
   height: 90%;
   display: flex;
   width: 90%;
-  align-items: center;
   margin: auto;
 }
 
 .meetupsCategories {
-  max-width: 290px;
   height: 90%;
+  min-height: 700px;
 }
 
 .meetupsCategoriesInner {
   background-color: rgba(255, 255, 255);
   height: 100%;
-  width: 290px;
+  width: 310px;
   position: relative;
   border-radius: 5px;
 }

@@ -39,7 +39,7 @@ import { Body, LiveUpdatingBadge } from "../components";
 import PropTypes from "prop-types";
 import { userPropType, notifsPropType } from "../../constants/prop-types";
 
-const drawerWidth = 220;
+const drawerWidth = 240;
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -99,18 +99,22 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: ".5rem",
   },
   icon: {
-    color: "#03396c",
+    color: "rgba(0, 0, 0, .75) ",
   },
   actionButton: {
     marginRight: "1rem",
   },
+  list : {
+    padding: ".4rem"
+  },
   drawerText: {
     fontSize: ".8rem",
-    fontWeight: "700",
     fontFamily: "Roboto",
+    marginLeft: ".75rem",
+    color: "rgba(40,40,40,.90)"
   },
   drawerPaper: {
-    width: drawerWidth,
+    width: drawerWidth
   },
   drawerHeader: {
     display: "flex",
@@ -194,7 +198,7 @@ const Navigation = (props) => {
               </Badge>
             </IconButton>
           )}
-          <Typography className={classes.title} variant="h6" noWrap>
+          <Typography className={classes.title} variant="h5" noWrap>
             <Link onClick={handleDrawerClose} to="/">
               Phoodi
             </Link>
@@ -237,7 +241,7 @@ const Navigation = (props) => {
           </IconButton>
         </div>
         <Divider />
-        <List style={{ padding: 0 }}>
+        <List>
           {props.authenticated && (
             <Link to={`/profile/${props.user.id}`}>
               <ListItem className={classes.self}>
@@ -280,7 +284,7 @@ const Navigation = (props) => {
           )}
         </List>
         <Divider />
-        <List>
+        <List  className={classes.list}>
           {props.authenticated && (
             <Link to="/meetups" onClick={handleDrawerClose}>
               <ListItem button key="Meetups" selected={isActive("/meetups")}>
@@ -378,7 +382,7 @@ const Navigation = (props) => {
           )}
         </List>
         <Divider />
-        <List>
+        <List  className={classes.list}>
           {props.authenticated && props.user && (
             <Link to={`/profile/${props.user.id}`} onClick={handleDrawerClose}>
               <ListItem button key="Profile" selected={isActive("/profile")}>

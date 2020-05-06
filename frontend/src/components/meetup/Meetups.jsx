@@ -362,7 +362,6 @@ class Meetups extends Component {
                       label="Search Categories..."
                     />
                   </div>
-                  {/* {renderPreset()} */}
                 </div>
               </div>
               <div className={styles.setting}>

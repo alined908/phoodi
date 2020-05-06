@@ -7,7 +7,7 @@ import {
   removeNotifs,
 } from "../../actions";
 import { connect } from "react-redux";
-import { Button, Typography, Grid } from "@material-ui/core";
+import { Button, Typography, Grid, CircularProgress } from "@material-ui/core";
 import { Friend, UserAutocomplete } from "../components";
 import PropTypes from "prop-types";
 import { friendPropType, userPropType } from "../../constants/prop-types";
@@ -62,7 +62,11 @@ class Friends extends Component {
           <title>Friends</title>
           <meta name="description" content="Phoodie Friends" />
         </Helmet>
-        {!this.props.isFriendsInitialized && <div>...Initializing Friends</div>}
+        {this.props.isFriendsFetching && 
+          <div className="loading">
+            <CircularProgress size={30}/>
+          </div>
+        }
         {this.props.isFriendsInitialized && (
           <div className="inner-header elevate">
             <Typography variant="h5">Friends</Typography>
@@ -120,6 +124,7 @@ function mapStateToProps(state) {
     user: state.user.user,
     friends: state.user.friends,
     isFriendsInitialized: state.user.isFriendsInitialized,
+    isFriendsFetching: state.user.isFriendsFetching,
     notifs: state.notifs.friend,
   };
 }

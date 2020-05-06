@@ -99,16 +99,14 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Chat contact time ago doesnt update
 
 ## Todo UI/UX/CleanUp
-- [ ] swap skeleton from meetupcard
 - [ ] Animation when logging out forced
 - [ ] Redo responsive layout + design + Safari presentation
-    - [ ] Meetups
     - [ ] Meetup
     - [ ] Category
     - [ ] Restaurant
     - [ ] Profile
     - [ ] Settings
-- [ ] Skeleton loading where applicable
+- [ ] Skeleton loading where applicable (preferences)
 - [ ] Optimize performance
 
 ## Todo Deploy

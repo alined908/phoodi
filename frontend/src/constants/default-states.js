@@ -130,6 +130,17 @@ export const MuiTheme = {
             color: "#99c4ff",
 
         }
+    },
+    MuiListItem : {
+        root: {
+            '&$selected' : {
+                backgroundColor: "var(--light-blue)",
+                boxShadow: "var(--shadow-0)",
+                '&:hover': {
+                    backgroundColor: "var(--light-blue)"
+                }
+            }
+        }
     }
   },
 };

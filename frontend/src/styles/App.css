@@ -6,6 +6,7 @@
   --background: rgb(245, 242, 247);
   --bg-grey: #f0f0f0;
   --light-blue: #e5f0ff;
+  --shadow-0: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 ::-webkit-scrollbar {
@@ -57,6 +58,40 @@ body {
 
 .button {
   margin: 0 5px !important;
+}
+
+.inner-header {
+  display: flex;
+  align-items: center;
+  background-color: white;
+}
+
+.elevate-0 {
+  box-shadow: var(--shadow-0)
+}
+
+.elevate {
+  -webkit-box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+}
+
+.elevate-2{
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.c {
+  display: flex;
+  justify-content: center;
+  height: calc(100% - 50px);
+  width: 100%;
+  background-color: var(--background);
+}
+
+.MuiListItem-root:hover {
+  background-color: #f0f0f0;
 }
 
 /* No Entity */
@@ -113,33 +148,7 @@ body {
   display: none;
 }
 
-.elevate-0 {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
 
-.elevate {
-  -webkit-box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
-}
-
-.elevate-2{
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  -webkit-box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-}
-
-.c {
-  display: flex;
-  justify-content: center;
-  height: calc(100% - 50px);
-  width: 100%;
-  background-color: var(--background);
-}
-
-.MuiListItem-root:hover {
-  background-color: #f0f0f0;
-}
 
 .inner-wrap {
   width: 100%;
@@ -147,22 +156,6 @@ body {
   padding: 3rem 0;
   max-width: 1150px;
   position: relative;
-}
-
-.restauraunt-autocomplete {
-  width: 100%;
-}
-
-.restauraunt-autocomplete .MuiFilledInput-root,
-.restauraunt-autocomplete .MuiFilledInput-root:hover,
-.restauraunt-autocomplete .MuiFilledInput-root:active,
-.restauraunt-autocomplete .MuiFilledInput-root:focus {
-  background-color: white !important;
-}
-
-.restauraunt-autocomplete
-  .MuiInputAdornment-filled.MuiInputAdornment-positionStart:not(.MuiInputAdornment-hiddenLabel) {
-  margin-top: 0;
 }
 
 .divider {
@@ -250,6 +243,23 @@ body {
   background-color: var(--light-blue);
 }
 
+/* Restaurant AutoComplete */
+.restauraunt-autocomplete {
+  width: 100%;
+}
+
+.restauraunt-autocomplete .MuiFilledInput-root,
+.restauraunt-autocomplete .MuiFilledInput-root:hover,
+.restauraunt-autocomplete .MuiFilledInput-root:active,
+.restauraunt-autocomplete .MuiFilledInput-root:focus {
+  background-color: white !important;
+}
+
+.restauraunt-autocomplete
+  .MuiInputAdornment-filled.MuiInputAdornment-positionStart:not(.MuiInputAdornment-hiddenLabel) {
+  margin-top: 0;
+}
+
 /*Profile*/
 
 .column {
@@ -323,15 +333,6 @@ body {
 }
 
 @media only screen and (max-width: 1350px) {
-  .foursquare {
-    width: 90%;
-  }
-
-  .meetups-component {
-    width: 90%;
-    height: 90%;
-  }
-
   .profile {
     width: 90%;
     height: 90%;
@@ -345,20 +346,6 @@ body {
   }
 }
 
-@media only screen and (max-width: 1000px) {
-  .smaller-header {
-    flex-wrap: wrap;
-  }
-
-  .smaller-header div {
-    padding: 0.5rem 0;
-  }
-
-  .chosen {
-    flex-direction: column;
-    align-items: center;
-  }
-}
 
 @media only screen and (max-width: 600px) {
   .inner-wrap {
@@ -388,10 +375,6 @@ body {
     margin-bottom: 0;
   }
 
-  .outer-shell {
-    width: 90%;
-  }
-
   .form {
     margin: 2rem auto;
     width: 100%;
@@ -411,35 +394,6 @@ body {
 
   .inner-header button {
     margin-left: 10px;
-  }
-
-  .meetup-event {
-    padding: 0;
-  }
-
-  .smaller-header {
-    padding: 0.5rem 1rem !important;
-  }
-
-  .second-header {
-    width: 100%;
-    flex-wrap: wrap;
-  }
-  .foursquare {
-    width: 100%;
-  }
-
-  h5 {
-    font-size: 1.75rem !important;
-  }
-
-  .chosen {
-    width: 100%;
-  }
-
-  .map-wrapper {
-    width: calc(300px + 2rem);
-    height: 300px;
   }
 
   .c {
@@ -504,31 +458,6 @@ body {
 
   .inner-header-middle div {
     margin: 0 10px;
-  }
-  .meetups-component {
-    height: 95%;
-    flex-direction: column;
-  }
-
-  .meetups-inner-wrap {
-    margin: 2rem 0 0 0;
-  }
-
-  .meetups-inner-header {
-    flex-wrap: wrap;
-    height: auto;
-  }
-
-  .meetups-search-bar {
-    padding: 0 0 0 1rem;
-  }
-
-  .meetups-container {
-    padding: 0;
-  }
-
-  .preset {
-    min-height: 150px;
   }
 
   .settings {
