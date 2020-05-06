@@ -102,10 +102,9 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Animation when logging out forced
 - [ ] Redo responsive layout + design + Safari presentation
     - [ ] Meetup
-    - [ ] Category
+    - [ ] Categories
     - [ ] Restaurant
     - [ ] Profile
-    - [ ] Settings
 - [ ] Skeleton loading where applicable (preferences)
 - [ ] Optimize performance
 
@@ -133,7 +132,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Set up celery for asynchronous job processing (convert signals to create task for celery)
 - [ ] Notification Bar on Top right of navbar
 - [ ] Add calendar of meetups
-- [ ] Elasticsearch? - Search bar on top app nav bar
+- [ ] Elasticsearch - Search bar on top app nav bar, user autocomplete, restaurant autocomplete, etc
 - [ ] Properly document stuff
 - [ ] Position aware scrolling (meetup tree) (Panda is anchor, dashes are bamboo)
 

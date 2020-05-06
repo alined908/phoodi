@@ -5,6 +5,7 @@ import {
   FormControl,
   InputLabel,
   Button,
+  Grid
 } from "@material-ui/core";
 import { Location, PasswordChange, EmailChange } from "../components";
 import Geocode from "react-geocode";
@@ -31,6 +32,7 @@ class Settings extends Component {
       location: props.settings.location,
       longitude: props.settings.longitude,
       latitude: props.settings.latitude,
+      activeForm: 0
     };
     this.handleClick = this.handleClick.bind(this);
     Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_API_KEY}`);
@@ -75,52 +77,127 @@ class Settings extends Component {
     this.setState({ location });
   };
 
+  handleFormChange = (index) => {
+    if (index !== this.state.activeForm){
+      this.setState({activeForm: index})
+    }
+  }
+
   render() {
     return (
-      <>
-        <div className={styles.settings}>
+        <div className="innerWrap">
           <Helmet>
             <meta charSet="utf-8" />
             <title>Settings</title>
-            <meta name="description" content="Phoodie user settings" />
+            <meta name="description" content="Settings" />
           </Helmet>
-          <div className={styles.settingsHeader}>Settings</div>
-
-          <div>
-            <FormControl className={styles.settingsFormControl}>
-              <InputLabel>Max Radius</InputLabel>
-              <Select
-                className={styles.select}
-                value={this.state.radius}
-                onChange={this.handleRadius}
-              >
-                {Object.keys(labels).map((num) => (
-                  <MenuItem value={num}>{labels[num]}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <div className={styles.settingsLocation}>
-              <Location
-                label="Location"
-                handleClick={this.handleClick}
-                textValue={this.state.location}
-              />
+            <div className="innerLeft">
+              <div className="innerLeftHeader">
+                Settings
+              </div>
+              <div className="innerLeftHeaderBlock">
+                <div className="hr">General</div>
+                <div className="innerLeftHeaderBlockAction">
+                  <div className="blockActionHeader">
+                    Max Radius 
+                    <span className="blockActionChip">
+                      {this.props.settings.radius} miles
+                    </span>
+                  </div>
+                </div>
+                <div className="innerLeftHeaderBlockAction">
+                  <div className="blockActionHeader">
+                    Location 
+                    <span className="blockActionChip">
+                      {this.props.settings.location}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="innerLeftHeaderBlock">
+                <div className="hr">Account</div>
+                <div 
+                  className={`innerLeftHeaderBlockAction ${styles.clickable} ${this.state.activeForm === 0 ? styles.active : ""}`}
+                  onClick={() => this.handleFormChange(0)}
+                >
+                  <div className="blockActionHeader" >
+                    Change General
+                  </div>
+                </div>
+                <div 
+                  className={`innerLeftHeaderBlockAction ${styles.clickable} ${this.state.activeForm === 1 ? styles.active : ""}`} 
+                  onClick={() => this.handleFormChange(1)}
+                >
+                  <div className="blockActionHeader">
+                    Change Password
+                  </div>
+                </div>
+                <div 
+                  className={`innerLeftHeaderBlockAction ${styles.clickable} ${this.state.activeForm === 2 ? styles.active : ""}`} 
+                  onClick={() => this.handleFormChange(2)}
+                >
+                  <div className="blockActionHeader">
+                    Change Email
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div className="innerRight">
+            <div className="innerRightBlock">
+              <div className="innerRightBlockHeader" style={{"height": "100%"}}>
+                <div className="hr">Settings</div>
+                <div className={styles.form}>
+                  {this.state.activeForm === 0 &&
+                    <form className={styles.formInner}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                          <FormControl className={styles.settingsFormControl}>
+                            <InputLabel>Max Radius</InputLabel>
+                            <Select
+                              className={styles.select}
+                              value={this.state.radius}
+                              onChange={this.handleRadius}
+                            >
+                              {Object.keys(labels).map((num) => (
+                                <MenuItem value={num}>{labels[num]}</MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <div className={styles.settingsLocation}>
+                            <Location
+                              label="Location"
+                              handleClick={this.handleClick}
+                              textValue={this.state.location}
+                            />
+                          </div>        
+                        </Grid>
+                      </Grid>
+                      <div className={styles.settingsSave}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={this.handleSubmit}
+                        >
+                          Save
+                        </Button>
+                      </div>
+                    </form>
+                  }
+                  {this.state.activeForm === 1 && 
+                    <PasswordChange />
+                  }
+                  {this.state.activeForm === 2 && 
+                    <EmailChange/>
+                  }
+                </div>
+              </div>
             </div>
           </div>
-          <div className={styles.settingsSave}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.handleSubmit}
-            >
-              Save
-            </Button>
-          </div>
+          
         </div>
-        <PasswordChange />
-        {/* <EmailChange/> */}
-      </>
+        
     );
   }
 }

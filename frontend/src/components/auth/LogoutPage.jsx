@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { signout } from "../../actions";
+import {CircularProgress} from '@material-ui/core'
 import PropTypes from "prop-types";
 
 class LogoutComponent extends Component {
@@ -12,10 +13,9 @@ class LogoutComponent extends Component {
 
   render() {
     return (
-      <>
-        <h1>You are logged out</h1>
-        <div>Thank you for using our application</div>
-      </>
+        <div className="loading">
+          <CircularProgress size={30}/>
+        </div>
     );
   }
 }

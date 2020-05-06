@@ -280,6 +280,7 @@ body {
   width: 100%;
   height: 100%;
   padding-bottom: 2rem;
+  overflow: hidden;
 }
 
 .innerLeft {
@@ -321,8 +322,24 @@ body {
 }
 
 .blockActionHeader {
+  display: flex;
+  justify-content: space-between;
   font-size: .85rem;
     margin-bottom: .2rem;
+    align-items: center;
+}
+
+.blockActionChip {
+  display: flex;
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  border-radius: 4px;
+  text-transform: capitalize;
+  margin: 0.25rem 0.15rem;
+  align-items: center;
+  background-color: var(--light-blue);
+  border: 1px solid #eeeeef;
+  white-space:nowrap;
 }
 
 .blockActionContent {
@@ -353,13 +370,6 @@ body {
 
 /*Profile*/
 
-@media only screen and (max-width: 1350px) {
-  .profile {
-    width: 90%;
-    height: 90%;
-  }
-}
-
 @media only screen and (max-width: 1150px) {
   .map-wrapper {
     width: 400px;
@@ -370,31 +380,9 @@ body {
 
 @media only screen and (max-width: 600px) {
 
-  .friends {
-    margin-top: 0;
-    padding: 1rem 0;
-  }
-
-  .profile {
-    margin: 1rem 0;
-    width: 100%;
-  }
-
-  .invite {
-    padding: 1rem 1.5rem;
-  }
-
-  .invites .invite:last-child {
-    margin-bottom: 0;
-  }
-
   .form {
     margin: 2rem auto;
     width: 100%;
-  }
-
-  .form-paper {
-    padding: 1.5rem 1rem 1rem 1rem;
   }
 
   .c {
@@ -429,10 +417,5 @@ body {
   }
   .c {
     min-height: 400px;
-  }
-  .settings {
-    width: 80%;
-    height: 60%;
-    padding: 1rem 2rem;
   }
 }

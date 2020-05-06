@@ -70,10 +70,13 @@ class EmailChange extends Component {
               label="Password"
             />
           </Grid>
-          <Button color="primary" type="submit">
-            Change
-          </Button>
         </Grid>
+        <div style={{display: "flex", justifyContent: "flex-end"}}>
+          <Button color="primary" type="submit" variant="contained">
+              Change
+          </Button>
+        </div>
+        
       </form>
     );
   }
