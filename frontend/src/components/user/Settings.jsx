@@ -27,10 +27,10 @@ class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      radius: props.settings ? props.settings.radius : null,
-      location: props.settings ? props.settings.location : "",
-      longitude: props.settings ? props.settings.longitude : null,
-      latitude: props.settings ? props.settings.latitude : null,
+      radius: props.settings.radius,
+      location: props.settings.location,
+      longitude: props.settings.longitude,
+      latitude: props.settings.latitude,
     };
     this.handleClick = this.handleClick.bind(this);
     Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_API_KEY}`);

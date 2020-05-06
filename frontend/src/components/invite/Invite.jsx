@@ -38,16 +38,16 @@ class Invite extends Component {
     const inv = this.props.inv;
 
     return (
-      <Paper className={`${styles.invite}`} elevation={6} variant="outlined">
-        <div className={styles.avatar}>
-          <Avatar src={inv.sender.avatar}>
-            {inv.sender.first_name.charAt(0)} {inv.sender.last_name.charAt(0)}
-          </Avatar>
-          <Link to={`/profile/${inv.sender.id}`}>
-            {inv.sender.first_name} {inv.sender.last_name}
-          </Link>
-          {this.props.type === inviteType.meetup ? "- " + inv.meetup.name : ""}
-        </div>
+      <div className={`${styles.invite} elevate-0`}>
+          <div className={styles.avatar}>
+            <Avatar src={inv.sender.avatar}>
+              {inv.sender.first_name.charAt(0)} {inv.sender.last_name.charAt(0)}
+            </Avatar>
+            <Link to={`/profile/${inv.sender.id}`}>
+              {inv.sender.first_name} {inv.sender.last_name}
+            </Link>
+            {this.props.type === inviteType.meetup ? "- " + inv.meetup.name : ""}
+          </div>
         {!this.state.responded && inv.status === 1 && (
           <div>
             <Button
@@ -100,7 +100,7 @@ class Invite extends Component {
         {this.state.responded && this.state.status === 3 && (
           <span>Rejected</span>
         )}
-      </Paper>
+      </div>
     );
   }
 }

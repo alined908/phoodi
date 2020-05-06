@@ -22,8 +22,7 @@ const useStyles = makeStyles({
     width: "100%",
     height: "100%",
     minWidth: "320px",
-    background: "white",
-    transform: "scale(.9)"
+    background: "white"
   },
   middle: {
     height: "150px",

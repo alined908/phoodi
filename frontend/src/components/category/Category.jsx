@@ -264,7 +264,7 @@ class Category extends Component {
               </div>
             }
             {!this.state.isRestaurantsFetching && 
-              <Grid container justify="center" spacing={1}>
+              <Grid container spacing={1}>
                 {this.state.restaurants.map((rst) => (
                   <RestaurantCard data={rst}/>
                 ))}

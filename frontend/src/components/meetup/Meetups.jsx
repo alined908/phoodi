@@ -236,14 +236,6 @@ class Meetups extends Component {
               <span>{pref.category.label}</span>
             </div>
           ))}
-          {this.state.preferences.length === 0 && (
-            <div className="no-entity">
-              <ErrorIcon style={{ color: "rgb(255, 212, 96)" }} />
-              <span className="no-entity-text">
-                No preferences! Add some by pressing the top right pencil.
-              </span>
-            </div>
-          )}
         </div>
       );
     };
@@ -256,8 +248,8 @@ class Meetups extends Component {
           <title>Meetups</title>
         </Helmet>
         <div className={styles.meetupsCategories}>
-          <div className={`${styles.meetupsCategoriesInner} elevate`}>
-            <div className={styles.meetupsCategoriesTop}>
+          <div className={styles.meetupsCategoriesInner}>
+            <div className={`${styles.meetupsCategoriesTop} elevate-0`}>
               <div>Meetups</div>
               
                 <Button
@@ -271,21 +263,24 @@ class Meetups extends Component {
               
             </div>
             <div className={styles.settingsWrapper}>
-              <div className={styles.setting}>
+              <div className="hr">
+                Settings
+              </div>
+              <div className={`${styles.setting}  elevate-0`}>
                 <div className={styles.settingHeader}>
                   Type
                 </div>
                 <div className={styles.settingInner}>
                   <div className={styles.meetupTypes}>
                     <div 
-                      className={`${styles.meetupType} ${this.state.public ? styles.meetupTypeActive : ""} elevate`} 
+                      className={`${styles.meetupType} ${this.state.public ? styles.meetupTypeActive : ""} elevate-0`} 
                       onClick={() => this.handleMeetupsType("public")} 
                       aria-label="public-meetups"
                     >
                       Public
                     </div>
                     <div 
-                      className={`${styles.meetupType} ${this.state.public ? "" : styles.meetupTypeActive} elevate`} 
+                      className={`${styles.meetupType} ${this.state.public ? "" : styles.meetupTypeActive} elevate-0`} 
                       onClick={() => this.handleMeetupsType("private")} 
                       aria-label="private-meetups"
                     >
@@ -294,7 +289,7 @@ class Meetups extends Component {
                   </div>
                 </div>
               </div> 
-              <div className={styles.setting}>
+              <div className={`${styles.setting}  elevate-0`}>
                 <div className={styles.settingHeader}>
                   Dates
                 </div>
@@ -320,7 +315,7 @@ class Meetups extends Component {
                   />
                 </div>
               </div>   
-              <div className={styles.setting}>
+              <div className={`${styles.setting}  elevate-0`}>
                 <div className={styles.settingHeader}>
                   Radius
                 </div>
@@ -336,7 +331,7 @@ class Meetups extends Component {
                       onChange={(e, val) => this.setState({radius: val})}
                       onChangeCommitted={(e, val) => this.determineGetMeetups(this.state.public, this.state.entries)}
                     />
-                  <div className={`${styles.categoryChip} elevate`} style={{marginLeft: '10px'}}>
+                  <div className={`${styles.categoryChip} elevate-0`} style={{marginLeft: '10px'}}>
                       {this.state.public ? 
                         <>
                           {`${this.state.radius} miles`}
@@ -348,12 +343,12 @@ class Meetups extends Component {
                 </div>
               </div>
              
-              <div className={styles.setting}>
+              <div className={`${styles.setting}  elevate-0`} style={{marginBottom: 0}}>
                 <div className={styles.settingHeader}>
                   Categories
                 </div>
                 <div className={styles.settingInner}>
-                  <div className={`${styles.meetupsSearchBar} elevate`}>
+                  <div className={`${styles.meetupsSearchBar} elevate-0`}>
                     <CategoryAutocomplete
                       fullWidth={true}
                       size="small"
@@ -364,30 +359,19 @@ class Meetups extends Component {
                   </div>
                 </div>
               </div>
-              <div className={styles.setting}>
-                <div className={styles.settingHeader}>
-                  Preferences
-                  <Link
-                    to={{
-                      pathname: `/profile/${this.props.user.id}`,
-                      state: { locked: false },
-                    }}
-                  >
-                    <Tooltip title="Edit Preferences">
-                      <IconButton size="small">
-                        <EditIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </Link>
-                </div>
-                <div className={styles.settingInner}>
+              <div className="hr">
+                Preferences
+              </div>
+              <div className={styles.preferences}>
                   {renderPreset()}
-                </div>
               </div>
             </div> 
           </div>   
         </div>
         <div className={styles.meetupsInnerWrap}>
+          <div className="hr">
+            Meetups Near You
+          </div>
           <div
             className={styles.meetupsContainer}
             style={{

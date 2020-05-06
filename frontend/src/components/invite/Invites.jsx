@@ -9,12 +9,10 @@ import {
 import { inviteType } from "../../constants/default-states";
 import { connect } from "react-redux";
 import { Invite } from "../components";
-import { Grid, Typography, IconButton, Tooltip } from "@material-ui/core";
-import RefreshIcon from "@material-ui/icons/Refresh";
+import { Grid, Button, CircularProgress } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { invitePropType } from "../../constants/prop-types";
 import { Helmet } from "react-helmet";
-import styles from "../../styles/friends.module.css";
 
 class Invites extends Component {
   async componentDidMount() {
@@ -23,90 +21,109 @@ class Invites extends Component {
       this.props.getUserFriendInvites(),
     ]);
 
-    // if (this.props.meetupInvites && this.props.meetupInvites.length === 0){
-    //     this.props.removeNotifs({type: "meetup_inv"})
-    // }
-    // if (this.props.friendInvites && this.props.friendInvites.length > 0){
-    //     this.props.removeNotifs({type: "friend_inv"})
-    // }
+    if (this.props.meetupInvites && this.props.meetupInvites.length > 0){
+        this.props.removeNotifs({type: "meetup_inv"})
+    }
+    if (this.props.friendInvites && this.props.friendInvites.length > 0){
+        this.props.removeNotifs({type: "friend_inv"})
+    }
   }
 
   refreshMeetupInvites = () => {
-    console.log("this");
     this.props.getUserMeetupInvites();
   };
 
   refreshFriendInvites = () => {
-    console.log("that");
     this.props.getUserFriendInvites();
   };
 
   render() {
     return (
-      <div className="inner-wrap">
+      <div className="innerWrap">
         <Helmet>
           <meta charSet="utf-8" />
           <title>Invites</title>
-          <meta name="description" content="Phoodie Invites" />
+          <meta name="description" content="Invites" />
         </Helmet>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
-            {!this.props.isMeetupInvitesInitialized ? (
-              <div>Initializing Meetup Invites..</div>
-            ) : (
-              <>
-                <div className="inner-header elevate">
-                  <Typography variant="h5">Meetup Invites</Typography>
-                  <Tooltip title="Refresh">
-                    <IconButton
-                      color="primary"
-                      onClick={this.refreshMeetupInvites}
-                    >
-                      <RefreshIcon />
-                    </IconButton>
-                  </Tooltip>
+        <div className="innerLeft">
+          <div className="innerLeftHeader">
+            Invites
+          </div>
+          <div className="innerLeftHeaderBlock">
+            <div className="hr">Meetups</div>
+            <div className="innerLeftHeaderBlockAction">
+              <div className="blockActionHeader">
+                Actions
+              </div>
+              <div className="blockActionContent">
+                <Button onClick={this.refreshMeetupInvites} variant="contained" color="primary">
+                  Refresh
+                </Button>
+              </div>
+            </div>
+          </div>
+          <div className="innerLeftHeaderBlock">
+            <div className="hr">Friends</div>
+            <div className="innerLeftHeaderBlockAction">
+              <div className="blockActionHeader">
+                Actions
+              </div>
+              <div className="blockActionContent">
+                <Button onClick={this.refreshFriendInvites} variant="contained" color="primary">
+                  Refresh
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="innerRight">
+          <div className="innerRightBlock">
+            <div className="innerRightBlockHeader">
+              <div className="hr">Meetups</div>
+              {this.props.isMeetupInvitesFetching && 
+                <div className="loading">
+                  <CircularProgress size={30}/>
                 </div>
-                <div className={styles.invites}>
-                  {this.props.meetupInvites.map((inv) => (
-                    <Invite
-                      key={inv.id}
-                      inv={inv}
-                      type={inviteType.meetup}
-                    ></Invite>
-                  ))}
+              }
+              {this.props.isMeetupInvitesInitialized && 
+                <Grid container spacing={3}>
+                  <Grid item xs={12} md={4}>
+                      {this.props.meetupInvites.map((inv) => (
+                        <Invite
+                          key={inv.id}
+                          inv={inv}
+                          type={inviteType.meetup}
+                        ></Invite>
+                      ))}
+                  </Grid>
+                </Grid>
+              }
+            </div>
+          </div>
+          <div className="innerRightBlock">
+            <div className="innerRightBlockHeader">
+              <div className="hr">Friends</div>
+              {this.props.isFriendsInvitesFetching && 
+                <div className="loading">
+                  <CircularProgress size={30}/>
                 </div>
-              </>
-            )}
-          </Grid>
-          <Grid item xs={12} md={6}>
-            {!this.props.isFriendInvitesInitialized ? (
-              <div>Initializing Friend Invites..</div>
-            ) : (
-              <>
-                <div className="inner-header elevate">
-                  <Typography variant="h5">Friend Invites</Typography>
-                  <Tooltip title="Refresh">
-                    <IconButton
-                      color="primary"
-                      onClick={this.refreshFriendInvites}
-                    >
-                      <RefreshIcon />
-                    </IconButton>
-                  </Tooltip>
-                </div>
-                <div className={styles.invites}>
-                  {this.props.friendInvites.map((inv) => (
-                    <Invite
-                      key={inv.id}
-                      inv={inv}
-                      type={inviteType.friend}
-                    ></Invite>
-                  ))}
-                </div>
-              </>
-            )}
-          </Grid>
-        </Grid>
+              }
+              {this.props.isFriendInvitesInitialized && 
+                <Grid container spacing={3}>
+                  <Grid item xs={12} md={4}>
+                    {this.props.friendInvites.map((inv) => (
+                      <Invite
+                        key={inv.id}
+                        inv={inv}
+                        type={inviteType.friend}
+                      ></Invite>
+                    ))}
+                  </Grid>
+                </Grid>
+              }
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -125,6 +142,8 @@ Invites.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    isFriendInvitesFetching: state.user.invites.isFriendInvitesFetching,
+    isMeetupInvitesFetching: state.user.invites.isMeetupInvitesFetching,
     isFriendInvitesInitialized: state.user.invites.isFriendInvitesInitialized,
     isMeetupInvitesInitialized: state.user.invites.isMeetupInvitesInitialized,
     meetupInvites: state.user.invites.meetups,

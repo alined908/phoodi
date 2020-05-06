@@ -5,17 +5,11 @@
   border-bottom: 1px solid #edf0f6;
 }
 
-.friends {
-  display: flex;
-  margin-top: 1rem;
-  padding: 1rem;
-}
-
 /* Invites */
 
 .avatar {
-  display: "flex";
-  align-items: "center";
+  display: flex;
+  align-items: center;
 }
 
 .invites {
@@ -28,7 +22,8 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
-  padding: 1.5rem 2rem;
+  padding: 1rem;
+  background-color: white;
 }
 
 .friend {

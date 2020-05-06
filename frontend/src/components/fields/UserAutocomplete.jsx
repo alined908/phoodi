@@ -13,12 +13,6 @@ import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 import PropTypes from "prop-types";
 
-function sleep(delay = 0) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, delay);
-  });
-}
-
 const UserAutocomplete = (props) => {
   const [open, setOpen] = React.useState(false);
   const [loaded, setLoaded] = React.useState(false);
@@ -37,7 +31,6 @@ const UserAutocomplete = (props) => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        await sleep(1e3);
         setOptions(response.data);
         setLoaded(true);
       })();
@@ -47,8 +40,9 @@ const UserAutocomplete = (props) => {
   return (
     <Autocomplete
       size="small"
+      style={{flex: 1}}
+      className="elevate-0"
       freeSolo
-      style={{ width: 400 }}
       open={open}
       onOpen={() => {
         setOpen(true);
@@ -125,7 +119,7 @@ const UserAutocomplete = (props) => {
         <TextField
           {...params}
           label="Search users"
-          variant="outlined"
+          variant="filled"
           onChange={props.handleType}
           InputProps={{
             ...params.InputProps,

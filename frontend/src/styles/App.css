@@ -60,14 +60,8 @@ body {
   margin: 0 5px !important;
 }
 
-.inner-header {
-  display: flex;
-  align-items: center;
-  background-color: white;
-}
-
 .elevate-0 {
-  box-shadow: var(--shadow-0)
+  box-shadow: var(--shadow-0);
 }
 
 .elevate {
@@ -178,16 +172,6 @@ body {
   display: none;
 }
 
-
-
-.inner-wrap {
-  width: 100%;
-  height: 100%;
-  padding: 3rem 0;
-  max-width: 1150px;
-  position: relative;
-}
-
 .divider {
   height: 28px !important;
 }
@@ -269,7 +253,7 @@ body {
 
 .category-autocomplete {
   width: 100%;
-  height: 50px;
+  min-height: 50px;
   background-color: var(--light-blue);
 }
 
@@ -290,77 +274,84 @@ body {
   margin-top: 0;
 }
 
-/*Profile*/
-
-.column {
-  margin: auto 0;
-  max-width: 350px;
-  height: 100%;
-  min-height: 100%;
-}
-.column-center {
+/* Layout */
+.innerWrap {
   display: flex;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 2rem;
+}
+
+.innerLeft {
+  display: flex;
+  padding: 1rem 0.5rem;
+  margin: 1.5rem;
+  font-size: 1.75rem;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
-  margin: 0 2rem;
+  width: 300px;
 }
 
-.column-center .column-middle {
-  height: calc(100% - 60px);
-}
-
-.column-inner {
-  background-color: white;
-  height: 100%;
-  width: 100%;
-  box-shadow: 0 10px 20px rgba(3, 27, 78, 0.1) !important;
-  transition: box-shadow 0.25s linear !important;
-}
-
-.column-inner:not(:first-child) {
-  margin-top: 2rem;
-}
-
-.column-top {
+.innerLeftHeader {
   display: flex;
   align-items: center;
+  width: 100%;
+  font-size: 1.2rem;
+  background-color: white;
   justify-content: space-between;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #edf0f6;
-  height: 60px;
-  font-size: 18px;
-  background: var(--bg-color);
+  padding: 1rem;
+  box-shadow: var(--shadow-0);
 }
 
-.column-middle {
-  height: calc(100% - 60px - 62px);
-  min-height: 200px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  background-color: white;
+.innerLeftHeaderBlock {
+
 }
 
-.column-bottom {
+.innerLeftHeaderBlockAction {
+  font-size: .7rem;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    margin-bottom: 1rem;
+    padding: .5rem .75rem;
+    box-shadow: var(--shadow-0);
+}
+
+.innerLeftHeaderBlockAction:last-child{
+  margin-bottom: 0;
+}
+
+.blockActionHeader {
+  font-size: .85rem;
+    margin-bottom: .2rem;
+}
+
+.blockActionContent {
   display: flex;
   align-items: center;
-  padding: 0 1rem;
-  height: 62px;
+}
+
+.innerLeftHeaderBlockAction button {
+  margin-top: 10px;
+}
+
+.innerRight {
+    display: flex;
+    flex: 1;
+    padding: 0 1.5rem;
+    border-left: 1px solid #e3e3e3;
+    flex-direction: column;
+}
+
+.innerRightBlock {
   width: 100%;
-  min-width: 300px;
-  background-color: var(--bg-color);
+  flex: 1;
 }
 
-.MuiAvatarGroup-root .MuiBadge-dot {
-  min-width: 5px;
-  height: 5px;
-  background-color: #44b700;
+.innerRightBlockHeader {
+  padding: 1rem 0;
 }
 
-.reset-dimensions img {
-  width: 20px;
-  height: 20px;
-}
+/*Profile*/
 
 @media only screen and (max-width: 1350px) {
   .profile {
@@ -378,14 +369,6 @@ body {
 
 
 @media only screen and (max-width: 600px) {
-  .inner-wrap {
-    padding: 1rem;
-    overflow-y: auto;
-  }
-
-  .inner-header {
-    padding: 1.5rem;
-  }
 
   .friends {
     margin-top: 0;
@@ -412,18 +395,6 @@ body {
 
   .form-paper {
     padding: 1.5rem 1rem 1rem 1rem;
-  }
-  .inner-header {
-    flex-wrap: wrap;
-    padding: 1rem;
-    justify-content: center;
-  }
-  .inner-header-middle {
-    padding: 1rem 0;
-  }
-
-  .inner-header button {
-    margin-left: 10px;
   }
 
   .c {
@@ -459,37 +430,6 @@ body {
   .c {
     min-height: 400px;
   }
-
-  .profile {
-    height: 90%;
-    width: 90%;
-    flex-direction: column;
-  }
-
-  .category .column {
-    max-width: none;
-  }
-
-  .profile .column {
-    margin: 2rem 0;
-  }
-
-  .profile .column:nth-child(1) {
-    order: 2;
-  }
-  .profile .column-center {
-    margin: 0;
-    order: 1;
-  }
-
-  .profile .column:nth-child(3) {
-    order: 3;
-  }
-
-  .inner-header-middle div {
-    margin: 0 10px;
-  }
-
   .settings {
     width: 80%;
     height: 60%;

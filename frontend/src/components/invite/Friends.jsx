@@ -56,52 +56,67 @@ class Friends extends Component {
 
   render() {
     return (
-      <div className="inner-wrap">
+      <div className="innerWrap">
         <Helmet>
           <meta charSet="utf-8" />
           <title>Friends</title>
-          <meta name="description" content="Phoodie Friends" />
+          <meta name="description" content="Friends" />
         </Helmet>
-        {this.props.isFriendsFetching && 
-          <div className="loading">
-            <CircularProgress size={30}/>
-          </div>
-        }
-        {this.props.isFriendsInitialized && (
-          <div className="inner-header elevate">
-            <Typography variant="h5">Friends</Typography>
-            <form className="horizontal-form" onSubmit={this.handleSubmit}>
-              <UserAutocomplete
-                handleClick={this.handleClick}
-                handleType={this.handleType}
-              />
+        <div className="innerLeft">
+          <div className="innerLeftHeader">Friends</div>
+          <div className="innerLeftHeaderBlock">
+            <div className="hr">Actions</div>
+            <div className="innerLeftHeaderBlockAction">
+              <div className="blockActionHeader">
+                Add Friend 
+              </div>
+              <div className="blockActionContent">
+                <UserAutocomplete
+                  handleClick={this.handleClick}
+                  handleType={this.handleType}
+                />
+                
+              </div>
               <Button
-                size="small"
-                type="submit"
-                variant="contained"
-                color="primary"
-              >
-                Send
-              </Button>
-            </form>
+                  size="small"
+                  type="submit"
+                  onClick={this.handleSubmit}
+                  variant="contained"
+                  color="primary"
+                >
+                  Send
+                </Button>
+            </div>
           </div>
-        )}
-        {this.props.isFriendsInitialized && (
-          <div className={styles.friends}>
-            <Grid container spacing={3}>
-              {this.props.friends.map((friend) => (
-                <Grid key={friend.id} item xs={12} md={6} lg={4}>
-                  <Friend
-                    user={this.props.user}
-                    isUserFriend={true}
-                    friend={friend}
-                    deleteFriend={this.props.deleteFriend}
-                  />
-                </Grid>
-              ))}
-            </Grid>
+        </div>
+        <div className="innerRight">
+          <div className="innerRightBlock">
+            <div className="innerRightBlockHeader">
+              <div className="hr">Friends</div>
+            </div>
+            {this.props.isFriendsFetching && 
+              <div className="loading">
+                <CircularProgress size={30}/>
+              </div>
+            }
+            {this.props.isFriendsInitialized && (
+              <Grid container spacing={3}>
+                {this.props.friends.map((friend) => (
+                  <Grid key={friend.id} item xs={12} md={6} lg={4}>
+                    <div className="elevate-0">
+                      <Friend
+                        user={this.props.user}
+                        isUserFriend={true}
+                        friend={friend}
+                        deleteFriend={this.props.deleteFriend}
+                      />
+                    </div>
+                  </Grid>
+                ))}
+              </Grid>
+            )}
           </div>
-        )}
+        </div>
       </div>
     );
   }

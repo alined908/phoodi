@@ -63,17 +63,18 @@
 /* Category */
 .category {
   display: flex;
-  height: 90%;
+  height: 100%;
   margin: auto;
-  width: 95%;
+  width: 100%;
+  padding-bottom: 1rem;
 }
 
 .header {
   display: flex;
   padding: 1rem 0.5rem;
+  margin: 1.5rem;
   font-size: 1.75rem;
   flex-direction: column;
-  height: 80%;
   min-width: 300px;
 }
 
@@ -81,7 +82,7 @@
   display: flex;
   align-items: center;
   width: 100%;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   background-color: white;
   justify-content: space-between;
   padding: .5rem .75rem;
@@ -163,7 +164,7 @@
 .headerTitle {
   display: flex;
   width: 100%;
-  padding: 1rem;
+  padding: 1rem 0;
   font-size: 1.2rem;
   justify-content: flex-start;
 }
@@ -177,7 +178,8 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 0 3rem;
+  padding: 0 1.5rem;
+  border-left: 1px solid #e3e3e3;
 }
 
 /* Preferences */
