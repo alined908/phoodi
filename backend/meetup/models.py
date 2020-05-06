@@ -471,13 +471,12 @@ class MeetupEvent(models.Model):
             for category in option["categories"]:
                 try:
                     category = Category.objects.get(api_label=category["alias"])
-                except ObjectDoesNotExist:
-                    category = Category.objects.create(
-                        api_label=category["alias"], label=category["title"]
+                    RestaurantCategory.objects.create(
+                        category=category, restaurant=restaurant
                     )
-                RestaurantCategory.objects.create(
-                    category=category, restaurant=restaurant
-                )
+                except ObjectDoesNotExist:
+                    pass
+                
 
         option, created = MeetupEventOption.objects.get_or_create(
             event=self, restaurant=restaurant

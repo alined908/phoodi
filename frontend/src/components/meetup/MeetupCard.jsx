@@ -23,6 +23,7 @@ const useStyles = makeStyles({
     height: "100%",
     minWidth: "320px",
     background: "white",
+    transform: "scale(.9)"
   },
   middle: {
     height: "150px",
@@ -38,7 +39,7 @@ const MeetupCard = ({ meetup }) => {
 
   return (
     <Link to={`/meetups/${meetup.uri}`}>
-        <div className={`${classes.paper} elevate`}>
+      <div className={`${classes.paper} elevate`}>
         <div className={styles.cardInner}>
             <div className={styles.cardTop}>
             <div className={`${styles.cardIcon} ${styles.flexClip2}`}>

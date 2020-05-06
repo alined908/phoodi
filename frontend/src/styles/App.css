@@ -82,6 +82,36 @@ body {
   -webkit-box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
+.hr {
+  text-align: center;
+  width: 100%;
+  padding: 1rem 0;
+  overflow: hidden;
+  font-size: .75rem;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.hr:before,
+.hr:after {
+  background-color: #e3e3e3;
+  content: "";
+  display: inline-block;
+  height: 1px;
+  position: relative;
+  vertical-align: middle;
+  width: 50%;
+}
+
+.hr:before {
+    right: 0.5em;
+    margin-left: -50%;
+  }
+  
+.hr:after {
+    left: 0.5em;
+    margin-right: -50%;
+}
+
 .c {
   display: flex;
   justify-content: center;

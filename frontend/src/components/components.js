@@ -71,6 +71,8 @@ import Preference from "./category/Preference";
 
 //Restaurant
 import Restaurant from "./restaurant/Restaurant";
+import RestaurantCard from "./restaurant/RestaurantCard"
+import Restaurants from "./restaurant/Restaurants"
 import RestaurantPreview from "./restaurant/RestaurantPreview";
 import RestaurantThread from "./restaurant/RestaurantThread";
 import RestaurantReviewForm from "./restaurant/RestaurantReviewForm";
@@ -121,6 +123,8 @@ export {
   Preferences,
   Preference,
   Restaurant,
+  RestaurantCard,
+  Restaurants,
   RestaurantPreview,
   RestaurantThread,
   RestaurantReviewForm,

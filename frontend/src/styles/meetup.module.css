@@ -242,35 +242,6 @@ background: var(--light-blue);
 }
 
 /* MeetupEvent */
-.hr {
-  text-align: center;
-  width: 100%;
-  padding: 0.5rem 0;
-  overflow: hidden;
-  font-size: 1rem;
-  color: rgba(0, 0, 0, 0.65);
-}
-
-.hr:before,
-.hr:after {
-  background-color: #e3e3e3;
-  content: "";
-  display: inline-block;
-  height: 1px;
-  position: relative;
-  vertical-align: middle;
-  width: 50%;
-}
-
-.hr:before {
-    right: 0.5em;
-    margin-left: -50%;
-  }
-  
-.hr:after {
-    left: 0.5em;
-    margin-right: -50%;
-}
 
 .addEvent{
     position: absolute;
@@ -368,6 +339,12 @@ background: var(--light-blue);
 }
 
 /* MeetupEventOption */
+.cardWrapper {
+    width: 290px;
+    background-color: white;
+    margin: 1rem;
+    transform: scale(.9);
+}
 
 .center {
   display: flex;
@@ -403,6 +380,7 @@ background: var(--light-blue);
   justify-content: space-between;
   flex-grow: 1;
   width: 100%;
+  padding-bottom: .5rem;
 }
 
 .rstImg {

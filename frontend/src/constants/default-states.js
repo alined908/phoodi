@@ -60,7 +60,10 @@ export const MuiTheme = {
   palette: {
     primary : {
         main: "rgba(0,0,0,.9)"
-    }
+    },
+    secondary : {
+        main: "rgb(220,0,0)"
+    },
   },
   overrides: {
     MuiButton: {

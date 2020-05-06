@@ -32,6 +32,7 @@ import {
   ExitToApp,
   EventNote as EventNoteIcon,
   Category as CategoryIcon,
+  Restaurant as RestaurantIcon,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -302,11 +303,28 @@ const Navigation = (props) => {
             </Link>
           )}
           {props.authenticated && (
-            <Link to="/category" onClick={handleDrawerClose}>
+            <Link to="/restaurants" onClick={handleDrawerClose}>
+              <ListItem
+                button
+                key="Restaurants"
+                selected={isActive("/restaurants")}
+              >
+                <ListItemIcon>
+                  <RestaurantIcon className={classes.icon} />
+                </ListItemIcon>
+                <ListItemText
+                  classes={{ primary: classes.drawerText }}
+                  primary="Restaurants"
+                />
+              </ListItem>
+            </Link>
+          )}
+          {props.authenticated && (
+            <Link to="/categories" onClick={handleDrawerClose}>
               <ListItem
                 button
                 key="Categories"
-                selected={isActive("/category")}
+                selected={isActive("/categories")}
               >
                 <ListItemIcon>
                   <CategoryIcon className={classes.icon} />
@@ -314,19 +332,6 @@ const Navigation = (props) => {
                 <ListItemText
                   classes={{ primary: classes.drawerText }}
                   primary="Categories"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
-            <Link to="/calendar" onClick={handleDrawerClose}>
-              <ListItem button key="Calendar" selected={isActive("/calendar")}>
-                <ListItemIcon>
-                  <EventNoteIcon className={classes.icon} />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Calendar"
                 />
               </ListItem>
             </Link>
@@ -363,7 +368,22 @@ const Navigation = (props) => {
               </ListItem>
             </Link>
           )}
-
+        </List>
+        <Divider />
+        <List  className={classes.list}>
+          {props.authenticated && props.user && (
+            <Link to={`/profile/${props.user.id}`} onClick={handleDrawerClose}>
+              <ListItem button key="Profile" selected={isActive("/profile")}>
+                <ListItemIcon>
+                  <PersonIcon className={classes.icon} />
+                </ListItemIcon>
+                <ListItemText
+                  classes={{ primary: classes.drawerText }}
+                  primary="Profile"
+                />
+              </ListItem>
+            </Link>
+          )}
           {props.authenticated && (
             <Link to="/invites" onClick={handleDrawerClose}>
               <ListItem button key="Invites" selected={isActive("/invites")}>
@@ -380,18 +400,15 @@ const Navigation = (props) => {
               </ListItem>
             </Link>
           )}
-        </List>
-        <Divider />
-        <List  className={classes.list}>
-          {props.authenticated && props.user && (
-            <Link to={`/profile/${props.user.id}`} onClick={handleDrawerClose}>
-              <ListItem button key="Profile" selected={isActive("/profile")}>
+          {props.authenticated && (
+            <Link to="/calendar" onClick={handleDrawerClose}>
+              <ListItem button key="Calendar" selected={isActive("/calendar")}>
                 <ListItemIcon>
-                  <PersonIcon className={classes.icon} />
+                  <EventNoteIcon className={classes.icon} />
                 </ListItemIcon>
                 <ListItemText
                   classes={{ primary: classes.drawerText }}
-                  primary="Profile"
+                  primary="Calendar"
                 />
               </ListItem>
             </Link>

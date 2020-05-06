@@ -18,6 +18,7 @@ import {
   GlobalMessage,
   Settings,
   Restaurant,
+  Restaurants,
   PasswordResetPage,
   PasswordResetConfirmPage,
   EmailActivationPage,
@@ -55,12 +56,13 @@ class Body extends Component {
           <AuthenticatedRoute path="/chat/:uri" component={Chat} />
           <AuthenticatedRoute path="/chat" exact component={Chat} />
           <AuthenticatedRoute
-            path="/category/:api_label"
+            path="/categories/:api_label"
             component={Category}
           />
-          <AuthenticatedRoute path="/category" exact component={Categories} />
+          <AuthenticatedRoute path="/categories" exact component={Categories} />
           <AuthenticatedRoute path="/calendar" exact component={Calendar} />
           <AuthenticatedRoute path="/restaurants/:uri" component={Restaurant} />
+          <AuthenticatedRoute path="/restaurants" exact component={Restaurants}/>
           <AuthenticatedRoute path="/friends" component={Friends} />
           <AuthenticatedRoute path="/invites" component={Invites} />
           <AuthenticatedRoute path="/settings" component={Settings} />

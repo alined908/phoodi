@@ -63,38 +63,90 @@
 /* Category */
 .category {
   display: flex;
-  flex-direction: column;
   height: 90%;
   margin: auto;
-  width: 70%;
+  width: 95%;
 }
 
 .header {
   display: flex;
   padding: 1rem 0.5rem;
-  font-size: 2.5rem;
-  background-color: white;
-  justify-content: space-between;
+  font-size: 1.75rem;
+  flex-direction: column;
+  height: 80%;
+  min-width: 300px;
 }
 
 .headerAvatar {
   display: flex;
   align-items: center;
-  padding: 1rem 0;
-  padding-left: 2rem;
+  width: 100%;
+  font-size: 1.3rem;
+  background-color: white;
+  justify-content: space-between;
+  padding: .5rem .75rem;
+  border-bottom: 1px solid #eeeeef;
 }
 
-.avatar {
-  margin-right: 20px;
+.categoryChip {
+  display: flex;
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  border-radius: 4px;
+  text-transform: capitalize;
+  margin: 0.25rem 0.15rem;
+  align-items: center;
+  background-color: var(--light-blue);
+  border: 1px solid #eeeeef;
+  white-space:nowrap;
+  margin-left: 10px;
+}
+
+.categoryStats {
+  font-size: .7rem;
+  display: flex;
+  background-color: white;
+  justify-content: space-around;
+  padding: .6rem 1rem;
+}
+
+.numberChip {
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  border-radius: 4px;
+  text-transform: capitalize;
+  margin: 0.25rem 0.15rem;
+  align-items: center;
+  background-color: var(--light-blue);
+  border: 1px solid #eeeeef;
+  white-space:nowrap;
+}
+
+.categorySettings {
+  font-size: .7rem;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  margin-bottom: 1rem;
+  padding: .5rem .75rem;
+}
+
+.categorySettings:last-child {
+  margin-bottom: 0;
+}
+
+.categorySettingHeader {
+  font-size: .9rem;
+}
+
+.categorySettingInner{
+  display:flex;
+  align-items: center;
 }
 
 .categoryAvatar {
   width: 100px;
   height: 100px;
-}
-
-.actions {
-  padding-right: 1rem;
 }
 
 .actionLike {
@@ -103,35 +155,29 @@
   margin-left: 2px;
 }
 
-.social {
-  display: flex;
-  height: 100%;
-  margin-top: 2rem;
-}
-
-.friends {
-  height: 100%;
-  min-width: 300px;
-}
-
 .meetups {
   width: 100%;
-  padding: 0 2rem;
+  flex: 1;
 }
 
 .headerTitle {
   display: flex;
   width: 100%;
-  background-color: white;
   padding: 1rem;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  font-size: 1.2rem;
   justify-content: flex-start;
 }
 
 .categoryHighlight {
   color: #f50057;
   padding: 0 0.5rem;
+}
+
+.categoryActions {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 0 3rem;
 }
 
 /* Preferences */

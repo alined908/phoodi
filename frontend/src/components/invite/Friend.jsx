@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import {
   ListItem,
@@ -8,8 +8,11 @@ import {
   Typography,
   Avatar,
   IconButton,
+  Menu, 
+  MenuItem,
+  ListItemIcon
 } from "@material-ui/core";
-import { Chat as ChatIcon, Delete as DeleteIcon } from "@material-ui/icons";
+import { Chat as ChatIcon, Delete as DeleteIcon, MoreVert as MoreVertIcon } from "@material-ui/icons";
 import { friendPropType } from "../../constants/prop-types";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
@@ -17,8 +20,20 @@ import styles from "../../styles/friends.module.css";
 
 const Friend = (props) => {
   const history = useHistory();
+  const [settings, openSettings] = useState(null)
+  const open = Boolean(settings);
 
-  const handleClick = (e) => {
+  const handleOpen = (e) => {
+    e.preventDefault()
+    openSettings(e.currentTarget)
+  }
+
+  const handleClose = (e) => {
+    e.preventDefault()
+    openSettings(null)
+  }
+
+  const handleChat = (e) => {
     e.preventDefault();
     history.push(`/chat/${props.friend.chat_room}`);
   };
@@ -47,21 +62,36 @@ const Friend = (props) => {
                 </Typography>
               </>
             }
-          ></ListItemText>
-          {props.isUserFriend && (
-            <Tooltip title="Chat">
-              <IconButton color="primary" onClick={handleClick}>
-                <ChatIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-          {props.isUserFriend && (
-            <Tooltip title="Delete Friend">
-              <IconButton color="secondary" onClick={handleDelete}>
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          )}
+          />
+          <IconButton style={{color: "rgba(10,10,10, .95)"}} edge="end" onClick={handleOpen}>
+              <MoreVertIcon/>
+          </IconButton>
+          <Menu 
+              anchorEl={settings} 
+              open={open} 
+              onClose={handleClose}
+          >
+            {props.isUserFriend && 
+              <MenuItem onClick={(e) => {handleChat(e); handleClose(e)}}>
+                  <ListItemIcon>
+                      <ChatIcon color="primary" fontSize="small" />
+                  </ListItemIcon>
+                  <Typography variant="body2" noWrap>
+                      Send Message
+                  </Typography>
+              </MenuItem>
+            }
+            {props.isUserFriend && 
+              <MenuItem onClick={(e) => {handleDelete(e); handleClose(e)}}>
+                <ListItemIcon>
+                    <DeleteIcon color="secondary" fontSize="small" />
+                </ListItemIcon>
+                <Typography variant="body2" noWrap>
+                    Delete
+                </Typography>
+              </MenuItem>
+            }
+          </Menu>
         </ListItem>
       </div>
     </Link>

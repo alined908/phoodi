@@ -549,7 +549,7 @@ class Meetup extends Component {
                 {renderFriends()}
             </Grid>
             <Grid item xs={12}>
-                <div className={styles.hr} id="Events">
+                <div className="hr" id="Events" style={{fontSize: "1rem"}}>
                     Events
                 </div>
             </Grid>
