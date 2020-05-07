@@ -364,7 +364,7 @@ def post_save_review(sender, instance, created, **kwargs):
     if created:
         restaurant = instance.restaurant
         restaurant.rating = (
-            (restaurant.rating * restaurant.review_count) + instance.rating
+            (restaurant.rating * restaurant.review_count) + float(instance.rating)
         ) / (restaurant.review_count + 1)
         restaurant.review_count += 1
         restaurant.save()

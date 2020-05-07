@@ -287,22 +287,6 @@ const Navigation = (props) => {
         <Divider />
         <List  className={classes.list}>
           {props.authenticated && (
-            <Link to="/meetups" onClick={handleDrawerClose}>
-              <ListItem button key="Meetups" selected={isActive("/meetups")}>
-                <ListItemIcon>
-                  <LiveUpdatingBadge
-                    type={"meetup"}
-                    icon={<PeopleIcon className={classes.icon} />}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Meetups"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
             <Link to="/restaurants" onClick={handleDrawerClose}>
               <ListItem
                 button
@@ -315,6 +299,22 @@ const Navigation = (props) => {
                 <ListItemText
                   classes={{ primary: classes.drawerText }}
                   primary="Restaurants"
+                />
+              </ListItem>
+            </Link>
+          )}
+          {props.authenticated && (
+            <Link to="/meetups" onClick={handleDrawerClose}>
+              <ListItem button key="Meetups" selected={isActive("/meetups")}>
+                <ListItemIcon>
+                  <LiveUpdatingBadge
+                    type={"meetup"}
+                    icon={<PeopleIcon className={classes.icon} />}
+                  />
+                </ListItemIcon>
+                <ListItemText
+                  classes={{ primary: classes.drawerText }}
+                  primary="Meetups"
                 />
               </ListItem>
             </Link>

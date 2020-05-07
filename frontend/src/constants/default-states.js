@@ -71,7 +71,7 @@ export const MuiTheme = {
         padding: "6px 10px"
       },
       sizeSmall: {
-        fontSize: ".7rem",
+        fontSize: ".65rem",
         padding: "4px 8px"
       },
     },
@@ -86,7 +86,7 @@ export const MuiTheme = {
     },
     MuiAvatar: {
       root: {
-        fontFamily: "Arial",
+        fontFamily: "Lato",
         fontSize: "1.15rem",
         marginRight: 5,
       },

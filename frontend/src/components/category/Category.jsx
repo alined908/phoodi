@@ -217,21 +217,7 @@ class Category extends Component {
                 <div className={styles.categorySettingHeader}>
                   Price
                 </div>
-                <div className={styles.categorySettingInner}>
-                    <Slider
-                      valueLabelDisplay="off"
-                      step={5}
-                      marks={marks}
-                      value={this.state.radius}
-                      min={5}
-                      max={25}
-                      onChange={(e, val) => this.setState({radius: val})}
-                      onChangeCommitted={(e, val) => this.handleSettingsChange()}
-                    />
-                  <div className={`${styles.categoryChip} elevate-0`}>
-                    {`${this.state.radius} miles`}
-                  </div>
-                </div>
+                
               </div>
             </div>
           </div>

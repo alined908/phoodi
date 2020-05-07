@@ -96,7 +96,7 @@ class Categories extends Component {
             <div className="hr">Actions</div>
             <div className="innerLeftHeaderBlockAction">
               <div className="blockActionHeader">
-                New Categories
+                Discover Categories
                 <Button onClick={this.handleReload} color="primary" size="small" variant="contained">
                   Refresh
                 </Button>
@@ -155,7 +155,7 @@ class Categories extends Component {
           </div>
           <div className="innerRightBlock">
             <div className="innerRightBlockHeader">
-              <div className="hr">New Categories</div>
+              <div className="hr">Discover Categories</div>
               <div className={styles.entries}>
                 {this.state.randomCategoriesLoaded
                   ? this.state.random.map((random, index) => (

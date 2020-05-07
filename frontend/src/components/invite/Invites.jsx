@@ -54,7 +54,7 @@ class Invites extends Component {
             <div className="innerLeftHeaderBlockAction">
               <div className="blockActionHeader">
                 Actions
-                <Button onClick={this.refreshMeetupInvites} variant="contained" color="primary">
+                <Button size="small" onClick={this.refreshMeetupInvites} variant="contained" color="primary">
                   Refresh
                 </Button>
               </div>
@@ -65,7 +65,7 @@ class Invites extends Component {
             <div className="innerLeftHeaderBlockAction">
               <div className="blockActionHeader">
                 Actions
-                <Button onClick={this.refreshFriendInvites} variant="contained" color="primary">
+                <Button size="small" onClick={this.refreshFriendInvites} variant="contained" color="primary">
                   Refresh
                 </Button>
               </div>

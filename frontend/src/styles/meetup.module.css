@@ -796,6 +796,14 @@ background: var(--light-blue);
   margin-right: 10px;
 }
 
+
+/* Restaurant */
+.rstMap {
+    width: 100%;
+    height: 200px;
+    box-shadow: var(--shadow-0);
+}
+
 @media only screen and (max-width: 1450px) {
     .tree {
         display: none;

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { CommentForm, Comments } from "../components";
-import { Button, IconButton } from "@material-ui/core";
+import { CommentForm, Comments, Rating } from "../components";
+import { Button, IconButton, Avatar } from "@material-ui/core";
 import { axiosClient } from "../../accounts/axiosClient";
 import {
   ThumbUpOutlined as ThumbUpOutlinedIcon,
@@ -8,6 +8,8 @@ import {
   ThumbUp as ThumbUpIcon,
   ThumbDown as ThumbDownIcon,
 } from "@material-ui/icons";
+import styles from "../../styles/forum.module.css"
+import moment from "moment"
 
 class RestaurantReview extends Component {
   constructor(props) {
@@ -57,48 +59,67 @@ class RestaurantReview extends Component {
 
   render() {
     return (
-      <div>
-        {this.props.review.rating} - {this.props.review.text}
-        <div>
-          {this.state.vote && this.state.vote.vote === 1 ? (
-            <IconButton onClick={() => this.voteComment(0)}>
-              <ThumbUpIcon />
-            </IconButton>
-          ) : (
-            <IconButton onClick={() => this.voteComment(1)}>
-              <ThumbUpOutlinedIcon />
-            </IconButton>
-          )}
-          {this.state.score}
-          {this.state.vote && this.state.vote.vote === -1 ? (
-            <IconButton onClick={() => this.voteComment(0)}>
-              <ThumbDownIcon />
-            </IconButton>
-          ) : (
-            <IconButton onClick={() => this.voteComment(-1)}>
-              <ThumbDownOutlinedIcon />
-            </IconButton>
-          )}
+      <div className={styles.commentWrapper}>
+        <div className={styles.comment}>
+          <div className={styles.commentTop}>
+            <div className={styles.commentTopLeft}>
+              <Rating rating={this.props.review.rating}/>
+              <span className={styles.commentUser}>
+                {/* <Avatar style={{width: 20, height: 20, fontSize: ".65rem"}} src={this.props.review.user.avatar}>
+                  {this.props.review.user.first_name.charAt(0)} {this.props.review.user.last_name.charAt(0)}
+                </Avatar> */}
+                {this.props.review.user.first_name} {this.props.review.user.last_name}
+              </span>
+              <span className={styles.commentDate}>
+                {moment(this.props.review.timestamp).fromNow()}
+              </span>
+            </div>
+            <div className={styles.commentTopRight}>
+              <Button color="primary" onClick={this.openCommentForm} size="small" variant="contained">
+                Reply
+              </Button>
+            </div>
+          </div>
+          <div className={styles.commentMiddle}>
+            <div className={styles.commentVote}>
+              {this.state.vote && this.state.vote.vote === 1 ? (
+                <IconButton size="small" onClick={() => this.voteComment(0)} color="primary">
+                  <ThumbUpIcon />
+                </IconButton>
+              ) : (
+                <IconButton size="small" onClick={() => this.voteComment(1)}>
+                  <ThumbUpOutlinedIcon />
+                </IconButton>
+              )}
+              {this.state.score}
+              {this.state.vote && this.state.vote.vote === -1 ? (
+                <IconButton size="small" onClick={() => this.voteComment(0)} color="primary">
+                  <ThumbDownIcon />
+                </IconButton>
+              ) : (
+                <IconButton size="small" onClick={() => this.voteComment(-1)}>
+                  <ThumbDownOutlinedIcon />
+                </IconButton>
+              )}
+            </div>
+            <span className={styles.commentText}>{this.props.review.text}</span>
+            
+          </div>
         </div>
-        <Button color="primary" onClick={this.openCommentForm}>
-          Comment
-        </Button>
-        <div>
-          <Comments
-            review={this.props.review}
-            restaurant={this.props.restaurant}
-            comments={this.state.comments}
-          />
-        </div>
+        <Comments
+          review={this.props.review}
+          restaurant={this.props.restaurant}
+          comments={this.state.comments}
+        />
         {this.state.commentForm && (
-          <CommentForm
-            parent={null}
-            review={this.props.review}
-            handleClose={this.openCommentForm}
-            restaurant={this.props.restaurant}
-            displayOnSuccess={this.displayOnSuccess}
-          />
-        )}
+            <CommentForm
+              parent={null}
+              review={this.props.review}
+              handleClose={this.openCommentForm}
+              restaurant={this.props.restaurant}
+              displayOnSuccess={this.displayOnSuccess}
+            />
+          )}
       </div>
     );
   }

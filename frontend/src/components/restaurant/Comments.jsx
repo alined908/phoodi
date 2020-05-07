@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { Comment } from "../components";
+import styles from "../../styles/forum.module.css"
 
 class Comments extends Component {
   render() {
     return (
-      <div>
+      <div className={styles.children}>
         {this.props.comments.map((comment) => (
           <Comment
             key={comment.id}

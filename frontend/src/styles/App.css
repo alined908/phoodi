@@ -3,7 +3,7 @@
   --bg-color: white;
   --grey-text: rgba(0, 0, 0, 0.54);
   --border-color-grey: #edf0f6;
-  --background: rgb(245, 242, 247);
+  --background: rgb(247, 247, 247);
   --bg-grey: #f0f0f0;
   --light-blue: #e5f0ff;
   --shadow-0: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -350,16 +350,25 @@ body {
 }
 
 .blockActionChip {
-  display: flex;
   padding: 3px 8px;
   font-size: 0.7rem;
   border-radius: 4px;
   text-transform: capitalize;
   margin: 0.25rem 0.15rem;
-  align-items: center;
   background-color: var(--light-blue);
   border: 1px solid #eeeeef;
   white-space:nowrap;
+  box-shadow: var(--shadow-0);
+  max-width: 180px;
+  min-width: 60px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.blockActionChip > div {
+  width: 20px !important;
+  height: 20px !important;
 }
 
 .blockActionContent {
