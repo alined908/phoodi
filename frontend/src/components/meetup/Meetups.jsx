@@ -5,20 +5,12 @@ import { MeetupCard, CategoryAutocomplete, MeetupForm } from "../components";
 import {
   Grid,
   Grow,
-  Tooltip,
-  IconButton,
   Avatar,
   CircularProgress,
   Button,
   Slider
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
 import moment from "moment";
-import {
-  Add as AddIcon,
-  Edit as EditIcon,
-  Error as ErrorIcon,
-} from "@material-ui/icons";
 import PropTypes from "prop-types";
 import {
   userPropType,
@@ -257,6 +249,7 @@ class Meetups extends Component {
                   onClick={this.openFormModal}
                   color="primary"
                   variant="contained"
+                  size="small"
                 >
                   Create
                 </Button>

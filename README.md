@@ -96,6 +96,7 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Bugs
 - [ ] Don't allow websocket to send event even after refresh token expire
+- [ ] Logout , websocket (notification wrapper cant find property id of this.props.user)
 - [ ] Chat contact time ago doesnt update
 
 ## Todo UI/UX/CleanUp
