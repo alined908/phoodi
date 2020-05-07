@@ -113,7 +113,7 @@ class Category extends Component {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       params: {
-        category: this.props.match.params.api_label,
+        categories: this.props.match.params.api_label,
         latitude: this.props.user.settings.latitude,
         longitude: this.props.user.settings.longitude,
         radius: this.state.radius,

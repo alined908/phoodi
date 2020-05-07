@@ -553,6 +553,69 @@ class Restaurant(models.Model):
     comment_count = models.IntegerField(default=0)
     objects = models.Manager()
 
+    @staticmethod
+    def get_nearby(coords, request, categories, num_results=16):
+        if categories:
+            try:
+                category_ids = [int(x) for x in categories.split(",")]
+            except:
+                category = Category.objects.get(api_label=categories)
+                category_ids = [category.id]
+        else:
+            category_ids = []
+
+        if request:
+            client_ip, is_routable = get_client_ip(request)
+
+            if client_ip:
+                if is_routable:
+                    geocode = geocoder.ip(client_ip)
+                    location = geocode.latlng
+                    lat, lng = location[0], location[1]
+                else:
+                    lat, lng = None, None
+
+        latitude, longitude, radius = (
+            coords[0] or lat,
+            coords[1] or lng,
+            coords[2] or 25,
+        )
+
+        if not latitude or not longitude:
+            return []
+
+        distance_query = RawSQL(
+            " SELECT id FROM \
+                (SELECT *, (3959 * acos(cos(radians(%s)) * cos(radians(latitude)) * \
+                                        cos(radians(longitude) - radians(%s)) + \
+                                        sin(radians(%s)) * sin(radians(latitude)))) \
+                    AS distance \
+                    FROM meetup_restaurant) \
+                AS distances \
+                WHERE distance < %s \
+                ORDER BY distance \
+                OFFSET 0 \
+                LIMIT %s",
+            (latitude, longitude, latitude, radius, num_results),
+        )
+
+        if not category_ids:
+            restaurants = Restaurant.objects.filter(id__in=distance_query).order_by("-rating")
+        else:
+            restaurants = Restaurant.objects.filter(
+                Q(
+                    id__in=RawSQL(
+                        "SELECT DISTINCT category.restaurant_id \
+                        FROM meetup_restaurantcategory as category \
+                        WHERE category_id = ANY(%s)",
+                        (category_ids,),
+                    )
+                )
+                & Q(id__in=distance_query)
+            ).order_by("-rating")
+  
+        return restaurants
+
 
 class BaseComment(models.Model):
     text = models.CharField(max_length=1000)
@@ -601,16 +664,13 @@ class BaseVote(models.Model):
     class Meta:
         abstract = True
 
-
 class CommentVote(BaseVote):
     comment = models.ForeignKey(
         Comment, related_name="c_votes", on_delete=models.CASCADE
     )
 
-
 class ReviewVote(BaseVote):
     review = models.ForeignKey(Review, related_name="r_votes", on_delete=models.CASCADE)
-
 
 class MeetupEventOption(models.Model):
     event = models.ForeignKey(
@@ -835,57 +895,6 @@ class Category(models.Model):
             )
         )
         return categories
-
-    def restaurants_near_me(self, coords, request, num_results=8):
-        if request:
-            client_ip, is_routable = get_client_ip(request)
-
-            if client_ip:
-                if is_routable:
-                    geocode = geocoder.ip(client_ip)
-                    location = geocode.latlng
-                    lat, lng = location[0], location[1]
-                else:
-                    lat, lng = None, None
-
-        latitude, longitude, radius = (
-            coords[0] or lat,
-            coords[1] or lng,
-            coords[2] or 25,
-        )
-
-        if not latitude or not longitude:
-            return []
-
-        distance_query = RawSQL(
-            " SELECT id FROM \
-                (SELECT *, (3959 * acos(cos(radians(%s)) * cos(radians(latitude)) * \
-                                        cos(radians(longitude) - radians(%s)) + \
-                                        sin(radians(%s)) * sin(radians(latitude)))) \
-                    AS distance \
-                    FROM meetup_restaurant) \
-                AS distances \
-                WHERE distance < %s \
-                ORDER BY distance \
-                OFFSET 0 \
-                LIMIT %s",
-            (latitude, longitude, latitude, radius, num_results),
-        )
-
-        restaurants = Restaurant.objects.filter(
-            Q(
-                id__in=RawSQL(
-                    "SELECT DISTINCT category.restaurant_id \
-                    FROM meetup_restaurantcategory as category \
-                    WHERE category_id = %s",
-                    (self.id,),
-                )
-            )
-            & Q(id__in=distance_query)
-        ).order_by("rating")
-        print(restaurants)
-        return restaurants
-
 
 class RestaurantCategory(models.Model):
     restaurant = models.ForeignKey(

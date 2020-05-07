@@ -101,7 +101,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] TypeError: Cannot read property 'scrollIntoView' of null
 
 ## Todo UI/UX/CleanUp
-- [ ] Animation when logging out forced
 - [ ] Redo responsive layout + design + Safari presentation
     - [ ] Restaurant
 - [ ] Skeleton loading where applicable (preferences)

@@ -24,16 +24,12 @@ class RestaurantListView(APIView):
     permission_clases = [permissions.AllowAny]
 
     def get(self, request, *args, **kwargs):
-        coords = [
+        coords, categories = [
             request.GET.get("latitude"),
             request.GET.get("longitude"),
             request.GET.get("radius"),
-        ]
-        if request.GET.get("category"):
-            category = Category.objects.get(api_label=request.GET.get("category"))
-            restaurants = category.restaurants_near_me(coords, request)
-        else:
-            restaurants = []
+        ], request.GET.get("categories", [])
+        restaurants = Restaurant.get_nearby(coords, request, categories)
         serializer = RestaurantSerializer(restaurants, many=True)
         return Response(serializer.data)
 

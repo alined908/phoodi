@@ -94,13 +94,12 @@ class Friends extends Component {
           <div className="innerRightBlock">
             <div className="innerRightBlockHeader">
               <div className="hr">Friends</div>
-            </div>
-            {this.props.isFriendsFetching && 
+              {this.props.isFriendsFetching && 
               <div className="loading">
                 <CircularProgress size={30}/>
               </div>
             }
-            {this.props.isFriendsInitialized && (
+              {this.props.isFriendsInitialized && (
               <Grid container spacing={3}>
                 {this.props.friends.map((friend) => (
                   <Grid key={friend.id} item xs={12} md={6} lg={4}>
@@ -116,6 +115,8 @@ class Friends extends Component {
                 ))}
               </Grid>
             )}
+            </div>
+            
           </div>
         </div>
       </div>
