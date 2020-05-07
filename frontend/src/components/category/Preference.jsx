@@ -33,29 +33,25 @@ const Preference = ({ pref, sortIndex, locked, isUser, user, ...props }) => {
   };
 
   return (
-    <Tooltip placement="left" title={pref.category.label}>
       <div className={styles.preference}>
-        <ListItem className={classes.listItem}>
-          <span className={styles.preferenceRank}>{sortIndex + 1}</span>
-          <ListItemAvatar>
+          <div className={styles.preferenceInfo}>
+            <span className={styles.preferenceRank}>
+              {sortIndex + 1}
+            </span>
             <Avatar
               variant="square"
               className={styles.preferenceAvatar}
               src={`${process.env.REACT_APP_S3_STATIC_URL}${pref.category.api_label}.png`}
             />
-          </ListItemAvatar>
-          <ListItemText
-            primary={
-              <Typography variant="body2">{pref.category.label}</Typography>
-            }
-          ></ListItemText>
+            <Typography variant="body2">{pref.category.label}</Typography>
+          </div>
           {isUser && locked && (
             <>
               {/* <Tooltip title="Edit">
-                                <IconButton onClick={() => handleEdit(pref)} style={{color: "black"}} size="small">
-                                    <EditIcon fontSize="inherit"/>
-                                </IconButton>
-                            </Tooltip> */}
+                    <IconButton onClick={() => handleEdit(pref)} style={{color: "black"}} size="small">
+                        <EditIcon fontSize="inherit"/>
+                    </IconButton>
+                </Tooltip> */}
               <Tooltip title="Delete">
                 <IconButton
                   onClick={() => handleDelete(pref, user)}
@@ -67,9 +63,7 @@ const Preference = ({ pref, sortIndex, locked, isUser, user, ...props }) => {
               </Tooltip>
             </>
           )}
-        </ListItem>
       </div>
-    </Tooltip>
   );
 };
 

@@ -6,11 +6,29 @@
 }
 
 .userAvatar {
-  transform: scale(1.7);
+  margin-right: 10px !important;
+}
+
+.userInfo {
+  display:flex;
+  align-items: center;
 }
 
 .header {
   flex: 1 1 0;
+}
+
+.friend {
+  margin: 1rem 0;
+  box-shadow: var(--shadow-0);
+}
+
+.friend:first-child{
+  margin-top: 0;
+}
+
+.friend:last-child{
+  margin-bottom: 0;
 }
 
 .content {
@@ -38,17 +56,20 @@
 .pastactivity {
   display: flex;
   height: 100%;
-  overflow-y: auto;
-  max-height: 350px;
   flex-direction: column;
+  align-items: center;
 }
 
 .activity {
   display: flex;
-  padding: 1rem;
-  border-bottom: 1px solid black;
+  padding: .75rem 1rem;
+  background-color: white;
+  box-shadow: var(--shadow-0);
+  margin: .75rem 0;
   justify-content: space-between;
   font-size: 0.85rem;
+  flex: 1;
+  min-width: 500px;
 }
 
 .activitydate {

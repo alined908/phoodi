@@ -140,15 +140,15 @@ class Profile extends Component {
         <>
           <span>{verb} a</span>
           <span className={styles.space}>
-            {activity.action_object.public ? "public" : "private"}
+            {activity.action_object && activity.action_object.public ? "public" : "private"}
           </span>
           <span className={styles.space}>meetup named</span>
           <span className={styles.space}>
             <Link
               className={styles.link}
-              to={`/meetups/${activity.action_object.uri}`}
+              to={`/meetups/${activity.action_object && activity.action_object.uri}`}
             >
-              {activity.action_object.name}
+              {activity.action_object && activity.action_object.name}
             </Link>
           </span>
           .
@@ -210,161 +210,48 @@ class Profile extends Component {
     const isUser = this.props.user.id.toString() === this.props.match.params.id;
     const isUserFriend = !isUser && !this.isUserFriend();
 
-    const renderPreferences = () => {
+    const renderPastActivity = () => {
       return (
-        <div className="column">
-          <div className="column-inner">
-            <div className="column-top">
-              <div>Preferences</div>
-              <div>
-                {isUser &&
-                  (this.state.locked ? (
-                    <Tooltip title="Click to Reorder">
-                      <IconButton color="primary" onClick={this.handleLock}>
-                        <LockIcon />
-                      </IconButton>
-                    </Tooltip>
-                  ) : (
-                    <Tooltip title="Click to Lock">
-                      <IconButton onClick={this.handleLock}>
-                        <LockOpenIcon />
-                      </IconButton>
-                    </Tooltip>
-                  ))}
-              </div>
-            </div>
-            <Preferences locked={this.state.locked} isUser={isUser} />
-            <div className="column-bottom">
-              {isUser && <SearchIcon />}
-              {isUser && (
-                <CategoryAutocomplete
-                  fullWidth={true}
-                  size="small"
-                  entries={this.state.entries}
-                  handleClick={this.onTagsChange}
-                  label="Search to add categories.."
-                />
-              )}
-            </div>
-          </div>
-        </div>
-      );
-    };
-
-    const renderProfile = () => {
-      return (
-        <div className="column-center">
-          <div className={`column-inner ${styles.header}`}>
-            <div className="column-top">
-              <div>Profile</div>
-              <div>
-                {isUserFriend && (
-                  <Tooltip title="Add Friend">
-                    <IconButton color="primary" onClick={this.addFriend}>
-                      <PersonAddIcon />
-                    </IconButton>
-                  </Tooltip>
-                )}
-                {isUser && (
-                  <Tooltip title="Edit Profile">
-                    <IconButton color="primary" onClick={this.openFormModal}>
-                      <EditIcon />
-                    </IconButton>
-                  </Tooltip>
-                )}
-                {this.state.editProfileForm && (
-                  <RegisterPage
-                    type="edit"
-                    handleClose={this.openFormModal}
-                    open={this.state.editProfileForm}
-                  />
-                )}
-              </div>
-            </div>
-            <div className="column-middle">
-              <div className={styles.content}>
-                <div className="pic">
+        <div className={styles.pastactivity}>
+          {this.state.user.activity.map((activity) => (
+            <div className={styles.activity}>
+              <div className={styles.activityinfo}>
+                <div className={styles.activityuser}>
                   <Avatar
-                    className={styles.userAvatar}
+                    className={styles.useravatar}
                     src={this.state.user.avatar}
                   >
                     {this.state.user.first_name.charAt(0)}
                     {this.state.user.last_name.charAt(0)}
                   </Avatar>
                 </div>
-                <div>
-                  <div className={styles.contentName}>
-                    {this.state.user.first_name} {this.state.user.last_name}
-                  </div>
-                  <div className={styles.contentEmail}>
-                    {this.state.user.email}
-                  </div>
-                </div>
+                {this.state.user.first_name} {this.state.user.last_name}{" "}
+                &nbsp;
+                {this.formatActivity(activity)}
+              </div>
+              <div className={styles.activitydate}>
+                {moment(activity.timestamp).fromNow()}
               </div>
             </div>
-          </div>
-          <div className={`column-inner ${styles.recentActivity}`}>
-            <div className="column-top">
-              <div>Past Activity</div>
-            </div>
-            <Paper className={styles.pastactivity} elevation={6}>
-              {this.state.user.activity.map((activity) => (
-                <div className={styles.activity}>
-                  <div className={styles.activityinfo}>
-                    <div className={styles.activityuser}>
-                      <Avatar
-                        className={styles.useravatar}
-                        src={this.state.user.avatar}
-                      >
-                        {this.state.user.first_name.charAt(0)}
-                        {this.state.user.last_name.charAt(0)}
-                      </Avatar>
-                    </div>
-                    {this.state.user.first_name} {this.state.user.last_name}{" "}
-                    &nbsp;
-                    {this.formatActivity(activity)}
-                  </div>
-                  <div className={styles.activitydate}>
-                    {moment(activity.timestamp).calendar()}
-                  </div>
-                </div>
-              ))}
-            </Paper>
-          </div>
+          ))}
         </div>
       );
     };
 
     const renderFriends = () => {
       return (
-        <div className="column">
-          <div className="column-inner">
-            <div className="column-top">
-              <div>Friends</div>
-              <div></div>
+        <div>
+          {this.state.filteredFriends.map((friend) => (
+            <div className={styles.friend}>
+              <Friend key={friend.id} isUserFriend={isUser} friend={friend} />
             </div>
-            <div className="column-middle">
-              {this.state.filteredFriends.map((friend) => (
-                <Friend key={friend.id} isUserFriend={isUser} friend={friend} />
-              ))}
-            </div>
-            <div className="column-bottom">
-              <SearchIcon />
-              <input
-                className="chat-input"
-                type="text"
-                placeholder="Search Friends..."
-                value={this.state.searchInput}
-                onChange={this.handleSearchInputChange}
-              />
-            </div>
-          </div>
+          ))}
         </div>
       );
     };
 
     return (
-      <div className={styles.profile}>
+      <div className="innerWrap">
         <Helmet>
           <meta charSet="utf-8" />
           <title>
@@ -381,10 +268,117 @@ class Profile extends Component {
           </title>
           <meta name="description" content="Phoodie Profile" />
         </Helmet>
-        {this.state.userLoaded && renderPreferences()}
-        {this.state.userLoaded && renderProfile()}
-        {this.state.userLoaded && renderFriends()}
+        <div className="innerLeft">
+          <div className="innerLeftHeader" style={{padding: ".5rem .7rem"}}>
+              <span className={styles.userInfo}>
+                <Avatar
+                    className={styles.userAvatar}
+                    src={this.state.user.avatar}
+                  >
+                  {this.state.user.first_name && this.state.user.first_name.charAt(0)}
+                  {this.state.user.last_name && this.state.user.last_name.charAt(0)}
+                </Avatar>
+                {this.state.user.first_name} {this.state.user.last_name}
+              </span>
+              {isUserFriend && (
+                  <Tooltip title="Add Friend">
+                    <IconButton color="primary" size="small" onClick={this.addFriend}>
+                      <PersonAddIcon />
+                    </IconButton>
+                  </Tooltip>
+                )}
+                {isUser && (
+                  <Tooltip title="Edit Profile">
+                    <IconButton color="primary" onClick={this.openFormModal}>
+                      <EditIcon />
+                    </IconButton>
+                  </Tooltip>
+                )}
+          </div>
+          <div className="innerLeftHeaderBlock">
+            <div className="hr">Info</div>
+            <div className="innerLeftHeaderBlockAction">
+              <div className="blockActionHeader">
+                Created
+                <span className="blockActionChip">
+                  {moment(this.state.user.created_at).fromNow()}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="innerLeftHeaderBlock">
+            <div className="hr">Preferences</div>
+            <div className="innerLeftHeaderBlockAction">
+              <div className="blockActionHeader">
+                Modify
+                {isUser &&
+                  (this.state.locked ? (
+                    <Tooltip title="Click to Reorder">
+                      <IconButton size="small" color="primary" onClick={this.handleLock}>
+                        <LockIcon />
+                      </IconButton>
+                    </Tooltip>
+                  ) : (
+                    <Tooltip title="Click to Lock">
+                      <IconButton size="small" onClick={this.handleLock}>
+                        <LockOpenIcon />
+                      </IconButton>
+                    </Tooltip>
+                  ))}         
+              </div>
+              <div className="blockActionContent">
+                {isUser && (
+                  <CategoryAutocomplete
+                    fullWidth={true}
+                    size="small"
+                    entries={this.state.entries}
+                    handleClick={this.onTagsChange}
+                    label="Search to add categories.."
+                  />
+                )}
+              </div>
+            </div>
+            <Preferences locked={this.state.locked} isUser={isUser} />
+          </div>
+        </div>
+        <div className="innerRight" style={{borderRight: "1px solid #e3e3e3"}}>
+          <div className="innerRightBlock">
+            <div className="innerRightBlockHeader">
+              <div className="hr">Past Activity</div>
+              {this.state.userLoaded && renderPastActivity()}
+            </div>
+          </div>
+        </div>
+        <div className="innerLeft">
+          <div className="innerLeftHeaderBlock">
+            <div className="hr">Friends</div>
+            <div className="innerLeftHeaderBlockAction">
+              <div className="blockActionHeader">
+                  Search Friends
+              </div>
+              <div className="blockActionContent">
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Search..."
+                  value={this.state.searchInput}
+                  onChange={this.handleSearchInputChange}
+                />
+              </div>
+            </div>
+            
+            {this.state.userLoaded && renderFriends()}
+          </div>
+        </div>
+        {this.state.editProfileForm && (
+          <RegisterPage
+            type="edit"
+            handleClose={this.openFormModal}
+            open={this.state.editProfileForm}
+          />
+        )}
       </div>
+      
     );
   }
 }

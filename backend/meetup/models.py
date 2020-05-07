@@ -82,6 +82,7 @@ class User(AbstractBaseUser):
     staff = models.BooleanField(default=False)
     confirmed = models.BooleanField(default=False)
     avatar = models.ImageField(blank=True, null=True, upload_to=path_and_rename_avatar)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name", "avatar"]

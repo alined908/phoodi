@@ -57,7 +57,7 @@ class Preferences extends Component {
       user: this.props.user,
     };
     return (
-      <div className="column-middle">
+      <div>
         {this.props.isUser && !this.props.locked ? (
           <SortablePreferenceList {...props} onSortEnd={this.onSortEnd} />
         ) : (
@@ -75,14 +75,6 @@ class Preferences extends Component {
               );
             })}
           </>
-        )}
-        {this.props.preferences.length === 0 && (
-          <div className="no-entity">
-            <ErrorIcon style={{ color: "rgb(255, 212, 96)" }} />
-            <span className="no-entity-text">
-              No preferences! Add some by searching below.
-            </span>
-          </div>
         )}
       </div>
     );

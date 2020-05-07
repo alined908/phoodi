@@ -98,16 +98,13 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Don't allow websocket to send event even after refresh token expire
 - [ ] Logout , websocket (notification wrapper cant find property id of this.props.user)
 - [ ] Chat contact time ago doesnt update
+- [ ] TypeError: Cannot read property 'scrollIntoView' of null
 
 ## Todo UI/UX/CleanUp
 - [ ] Animation when logging out forced
 - [ ] Redo responsive layout + design + Safari presentation
-    - [ ] Meetup
-    - [ ] Categories
     - [ ] Restaurant
-    - [ ] Profile
 - [ ] Skeleton loading where applicable (preferences)
-- [ ] Optimize performance
 
 ## Todo Deploy
 - [ ] Separate dev and prod settings
@@ -117,6 +114,7 @@ python manage.py loaddata meetup/fixtures/*.json
 ---------------------------------------------------------------
 
 ## Todo Next Iteration
+- [ ] Optimize performance
 - [ ] Cache images
 - [ ] Validation for models
 - [ ] Finish writing tests for frontend
