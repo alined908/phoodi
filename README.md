@@ -1,11 +1,7 @@
-# Meetup App
+# Phoodi
 **Prototype** @ https://phoodie.me
 
 The purpose of the application is to allow friend groups to schedule meetups and decide where to eat quickly.  We always run into the problem where no one knows what to eat, where to eat, and when to eat.  The hope is that this will simplify the process.  Eventually, the goal is to connect people with other nearby people that share common food interests and hobbies. Use cases of this includes college campuses, metropolitan cities, etc. The end goal is to recreate a more social Yelp.
-
-## Walkthrough Video
-**Click to watch**  
-[![Walkthrough](https://lh3.googleusercontent.com/vA4tG0v4aasE7oIvRIvTkOYTwom07DfqHdUPr6k7jmrDwy_qA_SonqZkw6KX0OXKAdk)](https://www.youtube.com/watch?v=cGb9SDsrlQ0)
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [Deployment](#deployment) for notes on how to deploy the project on a live system.
@@ -100,11 +96,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Chat contact time ago doesnt update
 - [ ] TypeError: Cannot read property 'scrollIntoView' of null
 
-## Todo UI/UX/CleanUp
-- [ ] Redo responsive layout + design + Safari presentation
-    - [ ] Restaurant
-- [ ] Skeleton loading where applicable (preferences)
-
 ## Todo Deploy
 - [ ] Separate dev and prod settings
 - [ ] Continuous integration
@@ -135,6 +126,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Position aware scrolling (meetup tree) (Panda is anchor, dashes are bamboo)
 
 ## Todo Later/Nice Stuff
+- [ ] Skeleton loading where applicable (preferences)
 - [ ] Update user when email changes
 - [ ] Find people who have similar food taste near you?
 - [ ] Eliminate user_id from preferences api calls
