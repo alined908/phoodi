@@ -62,6 +62,7 @@ describe("Contact unit", () => {
       room: rooms.meetup,
       currentRoom: "abc",
       removeNotifs: jest.fn(),
+      onShow: jest.fn()
     };
     const wrapper = shallow(<UnderlyingContact {...props} />);
     expect(wrapper.state("notifs")).toEqual(3);

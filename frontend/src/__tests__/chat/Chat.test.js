@@ -67,7 +67,6 @@ describe("Chat unit ", () => {
     const withUri = { ...props, match: { params: { uri: "uri" } } };
     const wrapper = shallow(<UnderlyingChat {...withUri} />);
     wrapper.setProps({ match: { params: { uri: "something" } } });
-    expect(exists.mock.calls.length).toBe(1);
     expect(disconnect.mock.calls.length).toBe(1);
     expect(props.setActiveRoom.mock.calls.length).toBe(2);
     expect(props.getMessages.mock.calls.length).toBe(2);

@@ -258,7 +258,7 @@ class Meetup extends Component {
             <div className={styles.actions}>
                 {!isPast && 
                     <>
-                    <IconButton style={{color: "rgba(10,10,10, .95)"}} edge="end" onClick={this.handleMenuClick}>
+                    <IconButton aria-label="meetup-menu" style={{color: "rgba(10,10,10, .95)"}} edge="end" onClick={this.handleMenuClick}>
                         <MoreVertIcon/>
                     </IconButton>
                     <Menu 
@@ -279,6 +279,7 @@ class Meetup extends Component {
                         {isUserCreator && (
                             <>  
                                 <MenuItem 
+                                    aria-label="email"
                                     disabled={emailDisable} 
                                     onClick={(e) => {
                                         this.handleEmail();
@@ -286,23 +287,23 @@ class Meetup extends Component {
                                     }}
                                 >
                                     <ListItemIcon>
-                                        <EmailIcon aria-label="email" style={{color: "black"}} fontSize="small" />
+                                        <EmailIcon  style={{color: "black"}} fontSize="small" />
                                     </ListItemIcon>
                                     <Typography variant="body2" noWrap>
                                         Send Email
                                     </Typography>
                                 </MenuItem>
-                                <MenuItem onClick={(e) => {this.openFormModal(); this.handleMenuClose(e);}}>
+                                <MenuItem aria-label="edit" onClick={(e) => {this.openFormModal(); this.handleMenuClose(e);}}>
                                     <ListItemIcon>
-                                        <EditIcon aria-label="edit" style={{color: "black"}} fontSize="small" />
+                                        <EditIcon style={{color: "black"}} fontSize="small" />
                                     </ListItemIcon>
                                     <Typography variant="body2" noWrap>
                                         Edit Meetup
                                     </Typography>
                                 </MenuItem>
-                                <MenuItem onClick={(e) => {this.handleDelete(); this.handleMenuClose(e);}}>
+                                <MenuItem aria-label="delete" onClick={(e) => {this.handleDelete(); this.handleMenuClose(e);}}>
                                     <ListItemIcon>
-                                        <DeleteIcon aria-label="delete" color="secondary" fontSize="small" />
+                                        <DeleteIcon  color="secondary" fontSize="small" />
                                     </ListItemIcon>
                                     <Typography variant="body2" noWrap>
                                         Delete Meetup

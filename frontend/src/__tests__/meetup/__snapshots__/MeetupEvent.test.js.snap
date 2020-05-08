@@ -17,10 +17,10 @@ exports[`MeetupEvent tests general renders without crashing 1`] = `
       className="headerIcons"
     >
       <ScheduleIcon />
-      7:06 AM
+      8:33 AM
        -
        
-      7:06 AM
+      8:33 AM
     </div>
     <WithStyles(ForwardRef(Tooltip))
       title="Event Creator"
@@ -42,6 +42,7 @@ exports[`MeetupEvent tests general renders without crashing 1`] = `
         className="eventActions"
       >
         <WithStyles(ForwardRef(IconButton))
+          aria-label="menu"
           edge="end"
           onClick={[Function]}
           style={
@@ -58,6 +59,7 @@ exports[`MeetupEvent tests general renders without crashing 1`] = `
           open={null}
         >
           <WithStyles(ForwardRef(MenuItem))
+            aria-label="add-option"
             onClick={[Function]}
           >
             <WithStyles(ForwardRef(ListItemIcon))>
@@ -78,11 +80,11 @@ exports[`MeetupEvent tests general renders without crashing 1`] = `
             </WithStyles(ForwardRef(Typography))>
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
+            aria-label="reload"
             onClick={[Function]}
           >
             <WithStyles(ForwardRef(ListItemIcon))>
               <CachedIcon
-                aria-label="reload"
                 color="primary"
                 fontSize="small"
               />
@@ -95,11 +97,10 @@ exports[`MeetupEvent tests general renders without crashing 1`] = `
             </WithStyles(ForwardRef(Typography))>
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
+            aria-label="edit"
             onClick={[Function]}
           >
-            <WithStyles(ForwardRef(ListItemIcon))
-              aria-label="edit"
-            >
+            <WithStyles(ForwardRef(ListItemIcon))>
               <EditIcon
                 color="inherit"
                 fontSize="small"
@@ -113,11 +114,11 @@ exports[`MeetupEvent tests general renders without crashing 1`] = `
             </WithStyles(ForwardRef(Typography))>
           </WithStyles(ForwardRef(MenuItem))>
           <WithStyles(ForwardRef(MenuItem))
+            aria-label="delete"
             onClick={[Function]}
           >
             <WithStyles(ForwardRef(ListItemIcon))>
               <DeleteIcon
-                aria-label="delete"
                 color="secondary"
                 fontSize="small"
               />

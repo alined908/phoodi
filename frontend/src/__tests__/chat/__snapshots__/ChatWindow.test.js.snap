@@ -82,7 +82,7 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
               "id": 1,
               "last_name": "Lee",
             },
-            "timestamp": "2020-05-08T07:06:38-07:00",
+            "timestamp": "2020-05-08T08:33:28-07:00",
           }
         }
         user={
@@ -129,7 +129,7 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
               "id": 1,
               "last_name": "Lee",
             },
-            "timestamp": "2020-05-08T07:06:38-07:00",
+            "timestamp": "2020-05-08T08:33:28-07:00",
           }
         }
         user={
@@ -172,7 +172,7 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
           },
           "name": "Friend",
           "notifs": 0,
-          "timestamp": "2020-05-08T07:06:38-07:00",
+          "timestamp": "2020-05-08T08:33:28-07:00",
           "uri": "abc",
         }
       }

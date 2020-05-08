@@ -121,6 +121,7 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
             className="actions"
           >
             <WithStyles(ForwardRef(IconButton))
+              aria-label="meetup-menu"
               edge="end"
               onClick={[Function]}
               style={
@@ -137,12 +138,12 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
               open={null}
             >
               <WithStyles(ForwardRef(MenuItem))
+                aria-label="email"
                 disabled={true}
                 onClick={[Function]}
               >
                 <WithStyles(ForwardRef(ListItemIcon))>
                   <EmailIcon
-                    aria-label="email"
                     fontSize="small"
                     style={
                       Object {
@@ -159,11 +160,11 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
                 </WithStyles(ForwardRef(Typography))>
               </WithStyles(ForwardRef(MenuItem))>
               <WithStyles(ForwardRef(MenuItem))
+                aria-label="edit"
                 onClick={[Function]}
               >
                 <WithStyles(ForwardRef(ListItemIcon))>
                   <EditIcon
-                    aria-label="edit"
                     fontSize="small"
                     style={
                       Object {
@@ -180,11 +181,11 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
                 </WithStyles(ForwardRef(Typography))>
               </WithStyles(ForwardRef(MenuItem))>
               <WithStyles(ForwardRef(MenuItem))
+                aria-label="delete"
                 onClick={[Function]}
               >
                 <WithStyles(ForwardRef(ListItemIcon))>
                   <DeleteIcon
-                    aria-label="delete"
                     color="secondary"
                     fontSize="small"
                   />

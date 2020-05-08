@@ -108,9 +108,13 @@ describe("Meetup tests where user is creator", () => {
 
   it("should send deleteMeetup action if button clicked", () => {
     const wrapper = shallow(<UnderlyingMeetup {...props} />);
+    const menu = wrapper.find('[aria-label="meetup-menu"]')
+    menu.simulate('click', {currentTarget: "something"})
+    expect(wrapper.state("anchor")).not.toBe(null)
     const button = wrapper.find('[aria-label="delete"]');
     button.simulate("click");
     expect(props.deleteMeetup.mock.calls.length).toBe(1);
+    expect(wrapper.state("anchor")).toBe(null)
   });
 
   // it('should handle disabled email if button is clicked', () => {
@@ -141,6 +145,9 @@ describe("Meetup tests where user is creator", () => {
 
   it("should show edit meetup button and open form modal when clicked", () => {
     const wrapper = shallow(<UnderlyingMeetup {...props} />);
+    const menu = wrapper.find('[aria-label="meetup-menu"]')
+    menu.simulate('click', {currentTarget: "something"})
+    expect(wrapper.state("anchor")).not.toBe(null)
     expect(wrapper.state("editMeetupForm")).toBe(false);
     expect(wrapper.find('[aria-label="meetup-form"]')).toHaveLength(0);
     const editButton = wrapper.find('[aria-label="edit"]');
@@ -148,6 +155,7 @@ describe("Meetup tests where user is creator", () => {
     editButton.simulate("click");
     expect(wrapper.state("editMeetupForm")).toBe(true);
     expect(wrapper.find('[aria-label="meetup-form"]')).toHaveLength(1);
+    expect(wrapper.state("anchor")).toBe(null)
   });
 });
 

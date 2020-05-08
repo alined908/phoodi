@@ -182,7 +182,7 @@ class MeetupEvent extends Component {
     const renderActions = () => {
       return (
         <div className={styles.eventActions}>
-            <IconButton style={{color: "rgba(10,10,10, .95)"}} edge="end" onClick={this.handleMenuClick}>
+            <IconButton aria-label="menu" style={{color: "rgba(10,10,10, .95)"}} edge="end" onClick={this.handleMenuClick}>
                 <MoreVertIcon/>
             </IconButton>
             <Menu 
@@ -191,7 +191,7 @@ class MeetupEvent extends Component {
                 onClose={this.handleMenuClose}
             >
                 {!this.props.chosen && (
-                    <MenuItem onClick={(e) => {this.handleSearchOption(); this.handleMenuClose(e);}}>
+                    <MenuItem aria-label="add-option" onClick={(e) => {this.handleSearchOption(); this.handleMenuClose(e);}}>
                         <ListItemIcon>
                             <SearchIcon style={{ color: "#4caf50" }} fontSize="small" />
                         </ListItemIcon>
@@ -201,17 +201,17 @@ class MeetupEvent extends Component {
                     </MenuItem>
                 )}
                 {!this.props.chosen && event.random && (
-                    <MenuItem onClick={(e) => {this.handleReload(); this.handleMenuClose(e);}}>
+                    <MenuItem aria-label="reload" onClick={(e) => {this.handleReload(); this.handleMenuClose(e);}}>
                         <ListItemIcon>
-                            <CachedIcon aria-label="reload" color="primary" fontSize="small" />
+                            <CachedIcon color="primary" fontSize="small" />
                         </ListItemIcon>
                         <Typography variant="body2" noWrap>
                             Reload Options
                         </Typography>
                     </MenuItem>
                 )}
-                <MenuItem onClick={(e) => {this.openEventModal(); this.handleMenuClose(e);}}>
-                    <ListItemIcon aria-label="edit">
+                <MenuItem aria-label="edit" onClick={(e) => {this.openEventModal(); this.handleMenuClose(e);}}>
+                    <ListItemIcon>
                         <EditIcon color="inherit" fontSize="small" />
                     </ListItemIcon>
                     <Typography variant="body2" noWrap>
@@ -220,9 +220,9 @@ class MeetupEvent extends Component {
                 </MenuItem>
                 
                 {permission && 
-                    <MenuItem onClick={(e) => {this.handleDelete(); this.handleMenuClose(e);}}>
+                    <MenuItem aria-label="delete" onClick={(e) => {this.handleDelete(); this.handleMenuClose(e);}}>
                         <ListItemIcon>
-                            <DeleteIcon aria-label="delete" color="secondary" fontSize="small" />
+                            <DeleteIcon color="secondary" fontSize="small" />
                         </ListItemIcon>
                         <Typography variant="body2" noWrap>
                             Delete Event
