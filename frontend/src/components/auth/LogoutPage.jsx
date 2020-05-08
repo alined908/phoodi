@@ -6,9 +6,9 @@ import PropTypes from "prop-types";
 
 class LogoutComponent extends Component {
   componentDidMount() {
-    this.props.signout(() => {
+    setTimeout(() => this.props.signout(() => {
       this.props.history.push("/login");
-    });
+    }), 500);
   }
 
   render() {

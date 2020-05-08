@@ -18,10 +18,10 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { Error as ErrorIcon } from "@material-ui/icons";
 import {
-  addMeetupEvent,
   getMeetup,
   getMeetupEvents,
-  addGlobalMessage,
+  newMeetupEvent,
+  editMeetupEvent
 } from "../../actions";
 import {
   renderDatePicker,
@@ -139,17 +139,7 @@ class MeetupEventForm extends Component {
         random: this.state.random,
         ...formProps,
       };
-
-      try {
-        await axiosClient.post(`/api/meetups/${this.props.uri}/events/`, data, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        this.props.addGlobalMessage("success", "New Meetup Event Added");
-      } catch (e) {
-        this.props.addGlobalMessage("error", "Something went wrong");
-      }
+      await this.props.newMeetupEvent(this.props.uri, data)
     }
 
     if (this.props.type === "edit") {
@@ -173,22 +163,9 @@ class MeetupEventForm extends Component {
         end: end.toDate(),
         title: formProps.title,
       };
-      try {
-        await axiosClient.patch(
-          `/api/meetups/${meetup.uri}/events/${this.props.event}/`,
-          data,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        this.props.addGlobalMessage("success", "Meetup Event Changed");
-      } catch (e) {
-        this.props.addGlobalMessage("error", "Something went wrong");
-      }
+      await this.props.editMeetupEvent(meetup.uri, this.props.event, data)
     }
-    this.props.handleClose();
+    await this.props.handleClose();
     this.setState({ isSubmitting: false });
   };
 
@@ -450,10 +427,10 @@ function mapStateToProps(state, ownProps) {
 }
 
 const mapDispatchToProps = {
-  addMeetupEvent,
+  newMeetupEvent,
   getMeetup,
   getMeetupEvents,
-  addGlobalMessage,
+  editMeetupEvent
 };
 
 export default compose(

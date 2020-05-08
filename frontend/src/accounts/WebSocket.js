@@ -46,12 +46,17 @@ export default class WebSocketService {
     this.socketRef.onclose = (e) => {
       console.log(e);
       //Token not authenticated
-      if (e.code === 4000) {
-        const access = AuthenticationService.retrieveToken();
-        setTimeout(() => this.connect(path, access), 3000);
-      } else {
-        setTimeout(() => this.connect(path, token), 3000);
-      }
+      console.log(e.code)
+      const access = AuthenticationService.retrieveToken();
+      setTimeout(() => this.connect(path, access), 500);
+    //   if (e.code === 4000) {
+    //     console.log("this reached")
+    //     const access = AuthenticationService.retrieveToken();
+    //     setTimeout(() => this.connect(path, access), 3000);
+    //   } else {
+    //     console.log("that reached")
+    //     setTimeout(() => this.connect(path, token), 3000);
+    //   }
     };
   }
 
@@ -92,6 +97,10 @@ export default class WebSocketService {
     } catch (err) {
       console.log(err.message);
     }
+  }
+
+  ref() {
+      return this.socketRef
   }
 
   exists() {
@@ -140,7 +149,6 @@ export default class WebSocketService {
 
   newMeetupEvent(data) {
     console.log("Websocket - newEvent");
-    console.log(data);
     this.sendMessage({ command: "new_event", data: data });
   }
 

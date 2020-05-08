@@ -90,9 +90,6 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Author
 * **Daniel Lee** 
 
-## Todo Bugs
-- [ ] Don't allow websocket to send event even after refresh token expire
-
 ## Todo Deploy
 - [ ] Separate dev and prod settings
 - [ ] Continuous integration
@@ -101,8 +98,7 @@ python manage.py loaddata meetup/fixtures/*.json
 ---------------------------------------------------------------
 
 ## Todo Next Iteration
-- [ ] Optimize performance
-- [ ] Cache images
+- [ ] Cdn for images
 - [ ] Validation for models
 - [ ] Finish writing tests for frontend
 - [ ] Add google, facebook, twitter social auth
@@ -132,3 +128,6 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Admin functionality for meetup member
 - [ ] Change name of preference
 - [ ] Add capacity if wanted and adjust circles to meetups
+
+## Todo Bugs
+- [ ] Don't allow websocket to send event even after refresh token expire

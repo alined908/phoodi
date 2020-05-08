@@ -23,11 +23,25 @@ class NotificationWrapper extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    console.log(this.props.authenticated)
+    console.log(prevProps.authenticated)
     if ( this.props.authenticated !== prevProps.authenticated) {
-      console.log("token changed");
-      this.state.socket.disconnect();
-      if (prevProps.authenticated === null) {
+     
+      // Connecting through login/signup
+      if (!prevProps.authenticated) {
+        console.log('loggin in')
         this.connectSocket();
+      }
+
+      // Logging out
+      if (!this.props.authenticated) {
+        console.log("logging out")
+        this.state.socket.disconnect();
+      }
+
+      if (prevProps.authenticated && this.props.authenticated) {
+        console.log("change tokens")
+        this.state.socket.ref().close(4100, "Access token changed.")
       }
     }
   }

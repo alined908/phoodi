@@ -4,7 +4,6 @@ import { reorderPreferences } from "../../actions";
 import { connect } from "react-redux";
 import { Preference } from "../components";
 import PropTypes from "prop-types";
-import { Error as ErrorIcon } from "@material-ui/icons";
 import { preferencePropType, userPropType } from "../../constants/prop-types";
 
 const SortablePreference = SortableElement(

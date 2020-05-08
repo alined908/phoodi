@@ -139,6 +139,36 @@ export const getMeetupEvents = (uri) => async (dispatch) => {
   }
 };
 
+export const newMeetupEvent = (uri, data) => async (dispatch) => {
+    try {
+        await axiosClient.post(`/api/meetups/${uri}/events/`, data, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        });
+        dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "success", message: "New Meetup Event Added"}});
+    } catch (e) {
+        dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Something went wrong"}});
+    }
+}
+
+export const editMeetupEvent = (uri, event, data) => async (dispatch) =>{
+    try {
+        await axiosClient.patch(
+          `/api/meetups/${uri}/events/${event}/`,
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "success", message: "Meetup Event Changed"}});
+      } catch (e) {
+        dispatch({type: types.ADD_GLOBAL_MESSAGE, payload: {type: "error", message: "Something went wrong"}});
+      }
+}
+
 export const handleLeaveMeetup = (uri, email, userEmail) => async (
   dispatch
 ) => {

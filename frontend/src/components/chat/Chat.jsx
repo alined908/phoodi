@@ -38,9 +38,7 @@ class Chat extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.match.params.uri !== prevProps.match.params.uri) {
-      if (this.state.socket.exists()) {
-        this.state.socket.disconnect();
-      }
+      this.state.socket.disconnect();
       this.getRelevantInfo(this.props.match.params.uri);
     }
   }
