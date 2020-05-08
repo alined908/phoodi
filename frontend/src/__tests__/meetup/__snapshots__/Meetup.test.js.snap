@@ -34,7 +34,7 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
           "id": 1,
           "last_name": "Lee",
         },
-        "date": "2020-05-01",
+        "date": "2020-05-08",
         "events": Object {},
         "id": 1,
         "isMeetupEventsInitialized": true,
@@ -87,125 +87,153 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
         item={true}
         xs={12}
       >
-        <WithStyles(ForwardRef(Paper))
-          className="header"
-          elevation={3}
+        <div
+          className="header elevate"
         >
           <WithStyles(ForwardRef(Typography))
-            variant="h5"
+            variant="h4"
           >
             Meetup
           </WithStyles(ForwardRef(Typography))>
           <div
-            className="headerInfo"
+            className="headerIcons"
           >
-            <div
-              aria-label="meetup-type"
-              className="headerIcons"
-            >
-              <PublicIcon />
-               Public
-            </div>
-            <div
-              className="headerIcons"
-            >
-              <TodayIcon />
-               
-              Friday, May 1
-            </div>
-            <div
-              aria-label="location"
-              className="headerIcons"
-            >
-              <RoomIcon />
-               
-              location
-            </div>
+            <TodayIcon />
+             
+            Friday, May 8
+          </div>
+          <div
+            aria-label="location"
+            className="headerIcons"
+          >
+            <RoomIcon />
+             
+            location
+          </div>
+          <div
+            aria-label="meetup-type"
+            className="headerIcons"
+          >
+            <PublicIcon />
+             Public
           </div>
           <div
             className="actions"
           >
-            <WithStyles(ForwardRef(Tooltip))
-              title="Email"
-            >
-              <div
-                style={
-                  Object {
-                    "minHeight": 48,
-                    "width": 48,
-                  }
+            <WithStyles(ForwardRef(IconButton))
+              edge="end"
+              onClick={[Function]}
+              style={
+                Object {
+                  "color": "rgba(10,10,10, .95)",
                 }
-              >
-                <ProgressIcon
-                  ariaLabel="email"
-                  check={true}
-                  disabled={true}
-                  handleClick={[Function]}
-                  icon={<UNDEFINED />}
-                />
-              </div>
-            </WithStyles(ForwardRef(Tooltip))>
-            <WithStyles(ForwardRef(Tooltip))
-              title="Edit"
+              }
             >
-              <WithStyles(ForwardRef(IconButton))
-                aria-label="edit"
-                onClick={[Function]}
-                style={
-                  Object {
-                    "color": "black",
-                  }
-                }
-              >
-                <EditIcon />
-              </WithStyles(ForwardRef(IconButton))>
-            </WithStyles(ForwardRef(Tooltip))>
-            <WithStyles(ForwardRef(Tooltip))
-              title="Delete"
+              <MoreVertIcon />
+            </WithStyles(ForwardRef(IconButton))>
+            <WithStyles(ForwardRef(Menu))
+              anchorEl={null}
+              onClose={[Function]}
+              open={null}
             >
-              <WithStyles(ForwardRef(IconButton))
-                aria-label="delete"
-                color="secondary"
+              <WithStyles(ForwardRef(MenuItem))
+                disabled={true}
                 onClick={[Function]}
               >
-                <DeleteIcon />
-              </WithStyles(ForwardRef(IconButton))>
-            </WithStyles(ForwardRef(Tooltip))>
+                <WithStyles(ForwardRef(ListItemIcon))>
+                  <EmailIcon
+                    aria-label="email"
+                    fontSize="small"
+                    style={
+                      Object {
+                        "color": "black",
+                      }
+                    }
+                  />
+                </WithStyles(ForwardRef(ListItemIcon))>
+                <WithStyles(ForwardRef(Typography))
+                  noWrap={true}
+                  variant="body2"
+                >
+                  Send Email
+                </WithStyles(ForwardRef(Typography))>
+              </WithStyles(ForwardRef(MenuItem))>
+              <WithStyles(ForwardRef(MenuItem))
+                onClick={[Function]}
+              >
+                <WithStyles(ForwardRef(ListItemIcon))>
+                  <EditIcon
+                    aria-label="edit"
+                    fontSize="small"
+                    style={
+                      Object {
+                        "color": "black",
+                      }
+                    }
+                  />
+                </WithStyles(ForwardRef(ListItemIcon))>
+                <WithStyles(ForwardRef(Typography))
+                  noWrap={true}
+                  variant="body2"
+                >
+                  Edit Meetup
+                </WithStyles(ForwardRef(Typography))>
+              </WithStyles(ForwardRef(MenuItem))>
+              <WithStyles(ForwardRef(MenuItem))
+                onClick={[Function]}
+              >
+                <WithStyles(ForwardRef(ListItemIcon))>
+                  <DeleteIcon
+                    aria-label="delete"
+                    color="secondary"
+                    fontSize="small"
+                  />
+                </WithStyles(ForwardRef(ListItemIcon))>
+                <WithStyles(ForwardRef(Typography))
+                  noWrap={true}
+                  variant="body2"
+                >
+                  Delete Meetup
+                </WithStyles(ForwardRef(Typography))>
+              </WithStyles(ForwardRef(MenuItem))>
+            </WithStyles(ForwardRef(Menu))>
           </div>
-        </WithStyles(ForwardRef(Paper))>
+        </div>
       </WithStyles(ForwardRef(Grid))>
       <WithStyles(ForwardRef(Grid))
         id="Members"
         item={true}
-        md={6}
+        sm={6}
         xs={12}
       >
-        <WithStyles(ForwardRef(Paper))
-          className="header"
-          elevation={3}
+        <div
+          className="headerIndented"
         >
-          <WithStyles(ForwardRef(Typography))
-            variant="h5"
+          <div
+            className="header elevate"
           >
-            Members
-          </WithStyles(ForwardRef(Typography))>
-          <WithStyles(ForwardRef(Button))
-            aria-label="join-meetup"
-            onClick={[Function]}
-            style={
-              Object {
-                "background": "#45B649",
-                "color": "white",
+            <WithStyles(ForwardRef(Typography))
+              variant="h5"
+            >
+              Members
+            </WithStyles(ForwardRef(Typography))>
+            <WithStyles(ForwardRef(Button))
+              aria-label="join-meetup"
+              onClick={[Function]}
+              style={
+                Object {
+                  "background": "#45B649",
+                  "color": "white",
+                }
               }
-            }
-            variant="contained"
-          >
-            Join Meetup
-          </WithStyles(ForwardRef(Button))>
-        </WithStyles(ForwardRef(Paper))>
-        <WithStyles(ForwardRef(Paper))
-          className="shell"
-          elevation={3}
+              variant="contained"
+            >
+              Join Meetup
+            </WithStyles(ForwardRef(Button))>
+          </div>
+        </div>
+        <div
+          className="shell elevate"
         >
           <WithStyles(ForwardRef(List))
             className="shellList"
@@ -238,26 +266,11 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
                   }
                 />
                 <WithStyles(ForwardRef(Tooltip))
-                  title="Creator"
+                  title="Meetup Creator"
                 >
                   <Component
                     height={24}
                     width={24}
-                  />
-                </WithStyles(ForwardRef(Tooltip))>
-                <WithStyles(ForwardRef(Tooltip))
-                  title="You"
-                >
-                  <img
-                    alt="&#9787;"
-                    src="https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png"
-                    style={
-                      Object {
-                        "height": 20,
-                        "marginLeft": 10,
-                        "width": 20,
-                      }
-                    }
                   />
                 </WithStyles(ForwardRef(Tooltip))>
               </WithStyles(ForwardRef(ListItem))>
@@ -292,37 +305,43 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
               </WithStyles(ForwardRef(ListItem))>
             </Link>
           </WithStyles(ForwardRef(List))>
-        </WithStyles(ForwardRef(Paper))>
+        </div>
       </WithStyles(ForwardRef(Grid))>
       <WithStyles(ForwardRef(Grid))
         item={true}
-        md={6}
+        sm={6}
         xs={12}
       >
-        <WithStyles(ForwardRef(Paper))
-          className="header"
-          elevation={3}
+        <div
+          className="headerIndented"
         >
-          <WithStyles(ForwardRef(Typography))
-            variant="h5"
+          <div
+            className="header elevate"
           >
-            Friends
-          </WithStyles(ForwardRef(Typography))>
-          <WithStyles(ForwardRef(Tooltip))
-            title="Refresh"
-          >
-            <WithStyles(ForwardRef(IconButton))
-              aria-label="refresh-friends"
-              color="primary"
-              onClick={[Function]}
+            <WithStyles(ForwardRef(Typography))
+              variant="h5"
             >
-              <RefreshIcon />
-            </WithStyles(ForwardRef(IconButton))>
-          </WithStyles(ForwardRef(Tooltip))>
-        </WithStyles(ForwardRef(Paper))>
-        <WithStyles(ForwardRef(Paper))
-          className="shell"
-          elevation={3}
+              Friends
+            </WithStyles(ForwardRef(Typography))>
+            <WithStyles(ForwardRef(Tooltip))
+              title="Refresh"
+            >
+              <WithStyles(ForwardRef(IconButton))
+                aria-label="refresh-friends"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "color": "black",
+                  }
+                }
+              >
+                <RefreshIcon />
+              </WithStyles(ForwardRef(IconButton))>
+            </WithStyles(ForwardRef(Tooltip))>
+          </div>
+        </div>
+        <div
+          className="shell elevate"
         >
           <WithStyles(ForwardRef(List))
             className="shellList"
@@ -338,27 +357,28 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
                 }
               }
               isMember={true}
+              isPast={false}
               key="1"
               uri="uri"
             />
           </WithStyles(ForwardRef(List))>
-        </WithStyles(ForwardRef(Paper))>
+        </div>
       </WithStyles(ForwardRef(Grid))>
       <WithStyles(ForwardRef(Grid))
         item={true}
         xs={12}
       >
-        <WithStyles(ForwardRef(Paper))
-          className="header"
-          elevation={3}
+        <div
+          className="hr"
           id="Events"
+          style={
+            Object {
+              "fontSize": "1rem",
+            }
+          }
         >
-          <WithStyles(ForwardRef(Typography))
-            variant="h5"
-          >
-            Events
-          </WithStyles(ForwardRef(Typography))>
-        </WithStyles(ForwardRef(Paper))>
+          Events
+        </div>
       </WithStyles(ForwardRef(Grid))>
       <WithStyles(ForwardRef(Grid))
         item={true}
@@ -367,10 +387,15 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
         <div
           className="loading"
         >
-          <WithStyles(ForwardRef(CircularProgress)) />
+          <WithStyles(ForwardRef(CircularProgress))
+            size={30}
+          />
         </div>
       </WithStyles(ForwardRef(Grid))>
     </WithStyles(ForwardRef(Grid))>
   </div>
+  <div
+    className="addEvent"
+  />
 </div>
 `;

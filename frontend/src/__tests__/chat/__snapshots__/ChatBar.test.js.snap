@@ -2,7 +2,7 @@
 
 exports[`ChatBar unit renders without crashing given props 1`] = `
 <div
-  className="bar"
+  className="bar  elevate"
 >
   <div
     className="barTop"
@@ -40,9 +40,11 @@ exports[`ChatBar unit renders without crashing given props 1`] = `
   <div
     className="search"
   >
-    <SearchIcon />
+    <SearchIcon
+      color="primary"
+    />
     <input
-      className="input"
+      className="searchInput"
       onChange={[Function]}
       placeholder="Search Contacts..."
       type="text"

@@ -5,6 +5,17 @@ exports[`LoginPage renders without crashing given props 1`] = `
   className="container"
   elevation={8}
 >
+  <HelmetWrapper
+    defer={true}
+    encodeSpecialCharacters={true}
+  >
+    <meta
+      charSet="utf-8"
+    />
+    <title>
+      Login
+    </title>
+  </HelmetWrapper>
   <div
     className="left"
   >
@@ -135,7 +146,11 @@ exports[`LoginPage renders without crashing given props 1`] = `
         <span
           className="link"
         >
-          Recover
+          <Link
+            to="/password/reset"
+          >
+            Reset
+          </Link>
         </span>
       </div>
     </div>

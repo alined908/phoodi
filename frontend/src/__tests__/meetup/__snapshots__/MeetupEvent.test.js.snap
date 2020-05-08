@@ -5,129 +5,141 @@ exports[`MeetupEvent tests general renders without crashing 1`] = `
   className="event"
   id="event-1"
 >
-  <WithStyles(ForwardRef(Paper))
-    elevation={3}
+  <div
+    className="header elevate"
   >
-    <div
-      className="header smallerheader"
+    <WithStyles(ForwardRef(Typography))
+      variant="h5"
     >
-      <WithStyles(ForwardRef(Typography))
-        variant="h5"
-      >
-        #
-        2
-         - 
-        Dessert
-      </WithStyles(ForwardRef(Typography))>
+      Dessert
+    </WithStyles(ForwardRef(Typography))>
+    <div
+      className="headerIcons"
+    >
+      <ScheduleIcon />
+      7:06 AM
+       -
+       
+      7:06 AM
+    </div>
+    <WithStyles(ForwardRef(Tooltip))
+      title="Event Creator"
+    >
       <div
-        className="headerInfo"
+        className="headerIcons"
       >
-        <div
-          className="headerIcons"
-        >
-          <ScheduleIcon />
-          6:21 AM
-           - 
-          6:21 AM
-        </div>
-        <div
-          className="headerIcons"
-        >
-          <img
-            alt="&#9787;"
-            src="https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png"
-            style={
-              Object {
-                "height": 20,
-                "marginLeft": 10,
-                "width": 20,
-              }
-            }
-          />
-          - 
-          Daniel
-           
-          Lee
-        </div>
+        <Component
+          height={18}
+          width={18}
+        />
+        Daniel
+         
+        Lee
       </div>
-      <div>
-        <div
-          className="eventActions"
+    </WithStyles(ForwardRef(Tooltip))>
+    <div>
+      <div
+        className="eventActions"
+      >
+        <WithStyles(ForwardRef(IconButton))
+          edge="end"
+          onClick={[Function]}
+          style={
+            Object {
+              "color": "rgba(10,10,10, .95)",
+            }
+          }
         >
-          <WithStyles(ForwardRef(Tooltip))
-            title="Add Option"
+          <MoreVertIcon />
+        </WithStyles(ForwardRef(IconButton))>
+        <WithStyles(ForwardRef(Menu))
+          anchorEl={null}
+          onClose={[Function]}
+          open={null}
+        >
+          <WithStyles(ForwardRef(MenuItem))
+            onClick={[Function]}
           >
-            <WithStyles(ForwardRef(IconButton))
-              aria-label="add-option"
-              onClick={[Function]}
-              style={
-                Object {
-                  "color": "#4caf50",
+            <WithStyles(ForwardRef(ListItemIcon))>
+              <SearchIcon
+                fontSize="small"
+                style={
+                  Object {
+                    "color": "#4caf50",
+                  }
                 }
-              }
-            >
-              <SearchIcon />
-            </WithStyles(ForwardRef(IconButton))>
-          </WithStyles(ForwardRef(Tooltip))>
-          <WithStyles(ForwardRef(Tooltip))
-            title="Reload"
-          >
-            <div
-              style={
-                Object {
-                  "minHeight": 48,
-                  "width": 48,
-                }
-              }
-            >
-              <ProgressIcon
-                ariaLabel="reload"
-                check={false}
-                color="primary"
-                disabled={false}
-                handleClick={[Function]}
-                icon={<UNDEFINED />}
               />
-            </div>
-          </WithStyles(ForwardRef(Tooltip))>
-          <WithStyles(ForwardRef(Tooltip))
-            title="Edit"
+            </WithStyles(ForwardRef(ListItemIcon))>
+            <WithStyles(ForwardRef(Typography))
+              noWrap={true}
+              variant="body2"
+            >
+              Add Option
+            </WithStyles(ForwardRef(Typography))>
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            onClick={[Function]}
           >
-            <WithStyles(ForwardRef(IconButton))
+            <WithStyles(ForwardRef(ListItemIcon))>
+              <CachedIcon
+                aria-label="reload"
+                color="primary"
+                fontSize="small"
+              />
+            </WithStyles(ForwardRef(ListItemIcon))>
+            <WithStyles(ForwardRef(Typography))
+              noWrap={true}
+              variant="body2"
+            >
+              Reload Options
+            </WithStyles(ForwardRef(Typography))>
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            onClick={[Function]}
+          >
+            <WithStyles(ForwardRef(ListItemIcon))
               aria-label="edit"
-              color="inherit"
-              onClick={[Function]}
             >
-              <EditIcon />
-            </WithStyles(ForwardRef(IconButton))>
-          </WithStyles(ForwardRef(Tooltip))>
-          <WithStyles(ForwardRef(Tooltip))
-            title="Delete"
+              <EditIcon
+                color="inherit"
+                fontSize="small"
+              />
+            </WithStyles(ForwardRef(ListItemIcon))>
+            <WithStyles(ForwardRef(Typography))
+              noWrap={true}
+              variant="body2"
+            >
+              Edit Meetup Event
+            </WithStyles(ForwardRef(Typography))>
+          </WithStyles(ForwardRef(MenuItem))>
+          <WithStyles(ForwardRef(MenuItem))
+            onClick={[Function]}
           >
-            <WithStyles(ForwardRef(IconButton))
-              aria-label="delete"
-              color="secondary"
-              onClick={[Function]}
+            <WithStyles(ForwardRef(ListItemIcon))>
+              <DeleteIcon
+                aria-label="delete"
+                color="secondary"
+                fontSize="small"
+              />
+            </WithStyles(ForwardRef(ListItemIcon))>
+            <WithStyles(ForwardRef(Typography))
+              noWrap={true}
+              variant="body2"
             >
-              <DeleteIcon />
-            </WithStyles(ForwardRef(IconButton))>
-          </WithStyles(ForwardRef(Tooltip))>
-        </div>
+              Delete Event
+            </WithStyles(ForwardRef(Typography))>
+          </WithStyles(ForwardRef(MenuItem))>
+        </WithStyles(ForwardRef(Menu))>
       </div>
     </div>
-  </WithStyles(ForwardRef(Paper))>
-  <WithStyles(ForwardRef(Paper))
-    className="smallerHeader secondHeader"
-    elevation={3}
+  </div>
+  <div
+    className="secondHeader elevate"
   >
     <div
       className="secondHeaderLeft"
     >
-      <WithStyles(ForwardRef(Typography))
-        variant="h6"
-      >
-        Categories 
-      </WithStyles(ForwardRef(Typography))>
+      Categories
       <Link
         key="1"
         to="/category/desserts"
@@ -152,11 +164,7 @@ exports[`MeetupEvent tests general renders without crashing 1`] = `
     <div
       className="secondHeaderLeft"
     >
-      <WithStyles(ForwardRef(Typography))
-        variant="h6"
-      >
-        Price 
-      </WithStyles(ForwardRef(Typography))>
+      Price
       <span
         className="categoryChip"
         key="0"
@@ -173,11 +181,7 @@ exports[`MeetupEvent tests general renders without crashing 1`] = `
     <div
       className="secondHeaderLeft"
     >
-      <WithStyles(ForwardRef(Typography))
-        variant="h6"
-      >
-        Distance 
-      </WithStyles(ForwardRef(Typography))>
+      Distance
       <span
         className="categoryChip"
       >
@@ -187,13 +191,12 @@ exports[`MeetupEvent tests general renders without crashing 1`] = `
     <div
       className="eventDecideActions"
     />
-  </WithStyles(ForwardRef(Paper))>
+  </div>
   <div
     className="foursquare"
   >
-    <WithStyles(ForwardRef(Paper))
-      className="explanation"
-      elevation={3}
+    <div
+      className="explanation elevate"
     >
       <span
         style={
@@ -213,7 +216,7 @@ exports[`MeetupEvent tests general renders without crashing 1`] = `
       <span>
         No options available. This may be due to no options being available at this time or the categories specified don't have enough options. Press the edit button to add more categories or change time if inputted incorrectly.
       </span>
-    </WithStyles(ForwardRef(Paper))>
+    </div>
   </div>
 </div>
 `;

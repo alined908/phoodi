@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ChatInput should render given props 1`] = `
-<Fragment>
+<div
+  className="inputPadding"
+>
   <form
     className="inputForm"
   >
@@ -29,5 +31,5 @@ exports[`ChatInput should render given props 1`] = `
       Send
     </WithStyles(ForwardRef(Button))>
   </div>
-</Fragment>
+</div>
 `;

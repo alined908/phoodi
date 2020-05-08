@@ -2,7 +2,7 @@
 
 exports[`Chat unit  renders without crashing given props 1`] = `
 <div
-  className="chatchat-mobile"
+  className="chat chatMobile"
 >
   <HelmetWrapper
     defer={true}
@@ -20,11 +20,17 @@ exports[`Chat unit  renders without crashing given props 1`] = `
     />
   </HelmetWrapper>
   <Connect(ChatBar)
+    activeRoom={null}
+    mobile={true}
+    onShow={[Function]}
     rooms={Array []}
+    show={true}
   />
   <Connect(ChatWindow)
     activeRoom={null}
     messages={Array []}
+    mobile={true}
+    show={false}
     socket={
       Object {
         "addChatCallbacks": [MockFunction] {

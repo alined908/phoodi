@@ -6,7 +6,7 @@ exports[`MeetupChat unit  renders without crashing given props 1`] = `
 >
   <Connect(ChatWindow)
     activeRoom={null}
-    meetup={true}
+    isMeetup={true}
     messages={Array []}
   />
 </div>
