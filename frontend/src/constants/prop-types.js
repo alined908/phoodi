@@ -95,7 +95,6 @@ export let chatMessagePropType = PropTypes.shape({
   id: PropTypes.number.isRequired,
   message: PropTypes.string.isRequired,
   timestamp: PropTypes.string.isRequired,
-  room_id: PropTypes.number.isRequired,
   sender: userPropType,
   is_notif: PropTypes.bool.isRequired,
 });

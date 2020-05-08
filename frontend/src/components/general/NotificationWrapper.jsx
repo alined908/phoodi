@@ -17,21 +17,18 @@ class NotificationWrapper extends Component {
 
   componentDidMount() {
     if (this.props.authenticated) {
+      console.log("component did moutn called")
       this.connectSocket();
     }
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.authenticated &&
-      this.props.authenticated !== prevProps.authenticated
-    ) {
+    if ( this.props.authenticated !== prevProps.authenticated) {
       console.log("token changed");
-      if (this.state.socket.exists()) {
-        console.log("socket exists");
-        this.state.socket.disconnect();
+      this.state.socket.disconnect();
+      if (prevProps.authenticated === null) {
+        this.connectSocket();
       }
-      this.connectSocket();
     }
   }
 

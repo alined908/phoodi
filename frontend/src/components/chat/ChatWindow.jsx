@@ -66,12 +66,6 @@ class ChatWindow extends Component {
     let scrollTop = e.target.scrollTop;
     let scrollHeight = e.target.scrollHeight;
     let clientHeight = e.target.clientHeight;
-    console.log(this.state.bound)
-    console.log(scrollTop)
-    console.log(scrollHeight)
-    console.log(clientHeight)
-    console.log(this.props.messages)
-    console.log(this.props.isMoreRetrievable)
     if (
       scrollTop === 0 &&
       this.props.messages &&
@@ -79,7 +73,6 @@ class ChatWindow extends Component {
       !this.state.bound
       && scrollHeight !== clientHeight
     ) {
-      console.log("WHY IS THIS BEING CALLED")
       this.setState({ offset: this.props.messages[0].id });
       this.props.getMoreMessages(
         this.props.room.uri,

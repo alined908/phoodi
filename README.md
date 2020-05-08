@@ -92,7 +92,6 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Bugs
 - [ ] Don't allow websocket to send event even after refresh token expire
-- [ ] Logout , websocket (notification wrapper cant find property id of this.props.user)
 
 ## Todo Deploy
 - [ ] Separate dev and prod settings

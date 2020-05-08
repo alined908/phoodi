@@ -49,6 +49,10 @@ class ChatBar extends Component {
     }
   }
 
+  componentWillUnmount(){
+    this.state.socket.disconnect()
+  }
+
   filterAndSearch = () => {
     const rooms = this.state.rooms;
     const filter = this.state.searchInput;
