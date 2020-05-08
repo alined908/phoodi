@@ -20,12 +20,12 @@ describe("User actions", () => {
   it("should handle signup", async () => {
     const expectedActions = [
       {
-        type: types.AUTH_USER,
-        payload: { access: mocks.tokens.access, user: mocks.userWithSettings },
+        type: types.SIGNUP_SUCCESS,
+        payload: "Your account has been registered. Complete signup by activating account in email.",
       },
     ];
 
-    mock.onPost("/api/users/").reply(200, { ...mocks.tokens });
+    mock.onPost("/auth/users/").reply(200, {});
 
     await store.dispatch(actions.signup({}, () => null));
     expect(store.getActions()).toEqual(expectedActions);

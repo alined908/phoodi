@@ -73,7 +73,7 @@ describe("ChatBar unit", () => {
       isRoomsInitialized: true,
     };
     const wrapper = shallow(<UnderlyingChatBar {...props} />);
-    const chatInput = wrapper.find(".input");
+    const chatInput = wrapper.find(".searchInput");
     wrapper.setProps({ rooms: Object.values(rooms) });
     chatInput.simulate("change", { target: { value: "me" } });
     expect(wrapper.state("searchInput")).toEqual("me");
@@ -103,7 +103,7 @@ describe("ChatBar unit", () => {
     const meetupButton = wrapper
       .find("WithStyles(ForwardRef(IconButton))")
       .at(1);
-    const chatInput = wrapper.find(".input");
+    const chatInput = wrapper.find(".searchInput");
     wrapper.setProps({ rooms: Object.values(rooms) });
     chatInput.simulate("change", { target: { value: "me" } });
     expect(wrapper.find("Connect(Contact)")).toHaveLength(1);

@@ -62,6 +62,7 @@ describe("ChatWindow unit ", () => {
       </Router>
     );
     const instance = wrapper.childAt(0).childAt(0).instance();
+    instance.setState({bound: false})
     const event = {
       target: { scrollTop: 0, scrollHeight: 50, clientHeight: 60 },
       persist: jest.fn(),

@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import setupStore from "../../setupTests";
 
 const props = {
-  user: mocks.user,
+  user: {...mocks.user, settings: {...mocks.settings}},
   meetups: [mocks.meetup.uri, mocks.privateMeetup.uri2],
   preferences: mocks.preferences,
   isMeetupsFetching: false,

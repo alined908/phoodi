@@ -26,7 +26,7 @@ describe("MeetupCard", () => {
   it("doesnt show events section if meetup has no categories", () => {
     const propsNoCategories = { meetup: mocks.meetupWithoutCategories.uri };
     const wrapper = shallow(<MeetupCard {...propsNoCategories} />);
-    expect(wrapper.find(".cardEvents")).toHaveLength(0);
+    expect(wrapper.find(".cardEventsCategory")).toHaveLength(0);
   });
 
   it("shows how many members in meetup", () => {

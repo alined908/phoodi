@@ -77,27 +77,39 @@ describe("MeetupEvent tests not chosen", () => {
 
   it("shows reload button and sends action on click", () => {
     const wrapper = shallow(<UnderlyingMeetupEvent {...props} />);
-    const button = wrapper.find("ProgressIcon");
-    expect(button).toHaveLength(1);
-    wrapper.instance().handleReload();
+    const options = wrapper.find('[aria-label="menu"]')
+    options.simulate('click', {currentTarget: "something"})
+    expect(wrapper.state("anchor")).not.toBe(null)
+    const reload = wrapper.find('[aria-label="reload"]');
+    expect(reload).toHaveLength(1);
+    reload.simulate("click")
     expect(props.socket.reloadMeetupEvent.mock.calls.length).toBe(1);
+    expect(wrapper.state("anchor")).toBe(null)
   });
 
   it("shows add option action and shows searchbar onclick", () => {
     const wrapper = shallow(<UnderlyingMeetupEvent {...props} />);
+    const options = wrapper.find('[aria-label="menu"]')
+    options.simulate('click', {currentTarget: "something"})
+    expect(wrapper.state("anchor")).not.toBe(null)
     const button = wrapper.find('[aria-label="add-option"]');
     expect(button).toHaveLength(1);
     button.simulate("click");
     expect(wrapper.state("searchOpen")).toBe(true);
     expect(wrapper.find(".addOptionSearch")).toHaveLength(1);
+    expect(wrapper.state("anchor")).toBe(null)
   });
 
-  it("shows reload button and sends action on click", () => {
+  it("shows delete button and sends action on click", () => {
     const wrapper = shallow(<UnderlyingMeetupEvent {...props} />);
+    const options = wrapper.find('[aria-label="menu"]')
+    options.simulate('click', {currentTarget: "something"})
+    expect(wrapper.state("anchor")).not.toBe(null)
     const button = wrapper.find('[aria-label="delete"]');
     expect(button).toHaveLength(1);
     button.simulate("click");
     expect(props.socket.deleteMeetupEvent.mock.calls.length).toBe(1);
+    expect(wrapper.state("anchor")).toBe(null)
   });
 
   it("if there are no options doesnt show decide and random and displays helper text", () => {

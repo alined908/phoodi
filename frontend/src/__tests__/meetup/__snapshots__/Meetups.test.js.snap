@@ -22,247 +22,284 @@ exports[`Meetups tests renders without crashing 1`] = `
   <div
     className="meetupsCategories"
   >
-    <WithStyles(ForwardRef(Paper))
+    <div
       className="meetupsCategoriesInner"
-      elevation={2}
-      square={true}
     >
       <div
-        className="meetupsCategoriesTop"
+        className="meetupsCategoriesTop elevate-0"
       >
         <div>
-          Preferences
+          Meetups
         </div>
-        <div>
-          <Link
-            to={
-              Object {
-                "pathname": "/profile/1",
-                "state": Object {
-                  "locked": false,
-                },
-              }
-            }
-          >
-            <WithStyles(ForwardRef(Tooltip))
-              title="Edit Preferences"
-            >
-              <WithStyles(ForwardRef(IconButton))
-                edge="end"
-                style={
-                  Object {
-                    "color": "black",
-                  }
-                }
-              >
-                <EditIcon />
-              </WithStyles(ForwardRef(IconButton))>
-            </WithStyles(ForwardRef(Tooltip))>
-          </Link>
-        </div>
+        <WithStyles(ForwardRef(Button))
+          aria-label="add-meetup"
+          color="primary"
+          onClick={[Function]}
+          size="small"
+          variant="contained"
+        >
+          Create
+        </WithStyles(ForwardRef(Button))>
       </div>
       <div
-        className="preset"
+        className="settingsWrapper"
       >
         <div
-          className="no-entity"
+          className="hr"
         >
-          <ErrorIcon
-            style={
-              Object {
-                "color": "rgb(255, 212, 96)",
-              }
-            }
-          />
-          <span
-            className="no-entity-text"
-          >
-            No preferences! Add some by pressing the top right pencil.
-          </span>
+          Settings
         </div>
-      </div>
-      <div
-        className="search"
-      >
-        <withStyles(DateRangePicker)
-          anchorDirection="left"
-          appendToBody={false}
-          block={false}
-          calendarInfoPosition="bottom"
-          customArrowIcon={null}
-          customCloseIcon={null}
-          customInputIcon={null}
-          dayPickerNavigationInlineStyles={null}
-          daySize={50}
-          disableScroll={false}
-          disabled={false}
-          displayFormat="MMM DD"
-          enableOutsideDays={false}
-          endDate={"2020-05-08T13:21:01.048Z"}
-          endDateId="unique_end_date_id"
-          endDatePlaceholderText="End Date"
-          firstDayOfWeek={null}
-          focusedInput={null}
-          hideKeyboardShortcutsPanel={false}
-          horizontalMargin={0}
-          initialVisibleMonth={null}
-          inputIconPosition="before"
-          isDayBlocked={[Function]}
-          isDayHighlighted={[Function]}
-          isOutsideRange={[Function]}
-          isRTL={false}
-          keepFocusOnInput={false}
-          keepOpenOnDateSelect={true}
-          minimumNights={0}
-          monthFormat="MMMM YYYY"
-          navNext={null}
-          navPosition="navPositionTop"
-          navPrev={null}
-          noBorder={true}
-          numberOfMonths={2}
-          onClose={[Function]}
-          onDatesChange={[Function]}
-          onFocusChange={[Function]}
-          onNextMonthClick={[Function]}
-          onPrevMonthClick={[Function]}
-          openDirection="up"
-          orientation="horizontal"
-          phrases={
+        <div
+          className="setting  elevate-0"
+        >
+          <div
+            className="settingHeader"
+          >
+            Type
+          </div>
+          <div
+            className="settingInner"
+          >
+            <div
+              className="meetupTypes"
+            >
+              <div
+                aria-label="public-meetups"
+                className="meetupType meetupTypeActive elevate-0"
+                onClick={[Function]}
+              >
+                Public
+              </div>
+              <div
+                aria-label="private-meetups"
+                className="meetupType  elevate-0"
+                onClick={[Function]}
+              >
+                Private
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="setting  elevate-0"
+        >
+          <div
+            className="settingHeader"
+          >
+            Dates
+          </div>
+          <div
+            className="settingInner calendar"
+          >
+            <withStyles(DateRangePicker)
+              anchorDirection="left"
+              appendToBody={false}
+              block={false}
+              calendarInfoPosition="bottom"
+              customArrowIcon={null}
+              customCloseIcon={null}
+              customInputIcon={null}
+              dayPickerNavigationInlineStyles={null}
+              daySize={50}
+              disableScroll={false}
+              disabled={false}
+              displayFormat="MMM DD"
+              enableOutsideDays={false}
+              endDate={"2020-05-15T15:33:28.631Z"}
+              endDateId="unique_end_date_id"
+              endDatePlaceholderText="End Date"
+              firstDayOfWeek={null}
+              focusedInput={null}
+              hideKeyboardShortcutsPanel={true}
+              horizontalMargin={0}
+              initialVisibleMonth={null}
+              inputIconPosition="before"
+              isDayBlocked={[Function]}
+              isDayHighlighted={[Function]}
+              isOutsideRange={[Function]}
+              isRTL={false}
+              keepFocusOnInput={false}
+              keepOpenOnDateSelect={true}
+              minimumNights={0}
+              monthFormat="MMMM YYYY"
+              navNext={null}
+              navPosition="navPositionTop"
+              navPrev={null}
+              noBorder={true}
+              numberOfMonths={2}
+              onClose={[Function]}
+              onDatesChange={[Function]}
+              onFocusChange={[Function]}
+              onNextMonthClick={[Function]}
+              onPrevMonthClick={[Function]}
+              openDirection="down"
+              orientation="horizontal"
+              phrases={
+                Object {
+                  "calendarLabel": "Calendar",
+                  "chooseAvailableEndDate": [Function],
+                  "chooseAvailableStartDate": [Function],
+                  "clearDates": "Clear Dates",
+                  "closeDatePicker": "Close",
+                  "dateIsSelected": [Function],
+                  "dateIsSelectedAsEndDate": [Function],
+                  "dateIsSelectedAsStartDate": [Function],
+                  "dateIsUnavailable": [Function],
+                  "enterKey": "Enter key",
+                  "escape": "Escape key",
+                  "focusStartDate": "Interact with the calendar and add the check-in date for your trip.",
+                  "hideKeyboardShortcutsPanel": "Close the shortcuts panel.",
+                  "homeEnd": "Home and end keys",
+                  "jumpToNextMonth": "Move forward to switch to the next month.",
+                  "jumpToPrevMonth": "Move backward to switch to the previous month.",
+                  "keyboardBackwardNavigationInstructions": "Navigate backward to interact with the calendar and select a date. Press the question mark key to get the keyboard shortcuts for changing dates.",
+                  "keyboardForwardNavigationInstructions": "Navigate forward to interact with the calendar and select a date. Press the question mark key to get the keyboard shortcuts for changing dates.",
+                  "keyboardShortcuts": "Keyboard Shortcuts",
+                  "leftArrowRightArrow": "Right and left arrow keys",
+                  "moveFocusByOneDay": "Move backward (left) and forward (right) by one day.",
+                  "moveFocusByOneMonth": "Switch months.",
+                  "moveFocusByOneWeek": "Move backward (up) and forward (down) by one week.",
+                  "moveFocustoStartAndEndOfWeek": "Go to the first or last day of a week.",
+                  "openThisPanel": "Open this panel.",
+                  "pageUpPageDown": "page up and page down keys",
+                  "questionMark": "Question mark",
+                  "returnFocusToInput": "Return to the date input field.",
+                  "roleDescription": "datepicker",
+                  "selectFocusedDate": "Select the date in focus.",
+                  "showKeyboardShortcutsPanel": "Open the keyboard shortcuts panel.",
+                  "upArrowDownArrow": "up and down arrow keys",
+                }
+              }
+              readOnly={false}
+              regular={false}
+              renderCalendarInfo={null}
+              renderDayContents={null}
+              renderMonthElement={null}
+              renderMonthText={null}
+              renderNavNextButton={null}
+              renderNavPrevButton={null}
+              renderWeekHeaderElement={null}
+              reopenPickerOnClearDates={false}
+              required={false}
+              screenReaderInputMessage=""
+              showClearDates={false}
+              showDefaultInputIcon={false}
+              small={true}
+              startDate={"2020-05-08T15:33:28.631Z"}
+              startDateId="unique_start_date_id"
+              startDatePlaceholderText="Start Date"
+              verticalHeight={null}
+              verticalSpacing={22}
+              weekDayFormat="dd"
+              withFullScreenPortal={false}
+              withPortal={false}
+            />
+          </div>
+        </div>
+        <div
+          className="setting  elevate-0"
+        >
+          <div
+            className="settingHeader"
+          >
+            Radius
+          </div>
+          <div
+            className="settingInner"
+          >
+            <WithStyles(ForwardRef(Slider))
+              disabled={false}
+              marks={
+                Array [
+                  Object {
+                    "value": 5,
+                  },
+                  Object {
+                    "value": 10,
+                  },
+                  Object {
+                    "value": 15,
+                  },
+                  Object {
+                    "value": 20,
+                  },
+                  Object {
+                    "value": 25,
+                  },
+                ]
+              }
+              max={25}
+              min={5}
+              onChange={[Function]}
+              onChangeCommitted={[Function]}
+              step={5}
+              value={25}
+              valueLabelDisplay="off"
+            />
+            <div
+              className="categoryChip elevate-0"
+              style={
+                Object {
+                  "marginLeft": "10px",
+                }
+              }
+            >
+              25 miles
+            </div>
+          </div>
+        </div>
+        <div
+          className="setting  elevate-0"
+          style={
             Object {
-              "calendarLabel": "Calendar",
-              "chooseAvailableEndDate": [Function],
-              "chooseAvailableStartDate": [Function],
-              "clearDates": "Clear Dates",
-              "closeDatePicker": "Close",
-              "dateIsSelected": [Function],
-              "dateIsSelectedAsEndDate": [Function],
-              "dateIsSelectedAsStartDate": [Function],
-              "dateIsUnavailable": [Function],
-              "enterKey": "Enter key",
-              "escape": "Escape key",
-              "focusStartDate": "Interact with the calendar and add the check-in date for your trip.",
-              "hideKeyboardShortcutsPanel": "Close the shortcuts panel.",
-              "homeEnd": "Home and end keys",
-              "jumpToNextMonth": "Move forward to switch to the next month.",
-              "jumpToPrevMonth": "Move backward to switch to the previous month.",
-              "keyboardBackwardNavigationInstructions": "Navigate backward to interact with the calendar and select a date. Press the question mark key to get the keyboard shortcuts for changing dates.",
-              "keyboardForwardNavigationInstructions": "Navigate forward to interact with the calendar and select a date. Press the question mark key to get the keyboard shortcuts for changing dates.",
-              "keyboardShortcuts": "Keyboard Shortcuts",
-              "leftArrowRightArrow": "Right and left arrow keys",
-              "moveFocusByOneDay": "Move backward (left) and forward (right) by one day.",
-              "moveFocusByOneMonth": "Switch months.",
-              "moveFocusByOneWeek": "Move backward (up) and forward (down) by one week.",
-              "moveFocustoStartAndEndOfWeek": "Go to the first or last day of a week.",
-              "openThisPanel": "Open this panel.",
-              "pageUpPageDown": "page up and page down keys",
-              "questionMark": "Question mark",
-              "returnFocusToInput": "Return to the date input field.",
-              "roleDescription": "datepicker",
-              "selectFocusedDate": "Select the date in focus.",
-              "showKeyboardShortcutsPanel": "Open the keyboard shortcuts panel.",
-              "upArrowDownArrow": "up and down arrow keys",
+              "marginBottom": 0,
             }
           }
-          readOnly={false}
-          regular={false}
-          renderCalendarInfo={null}
-          renderDayContents={null}
-          renderMonthElement={null}
-          renderMonthText={null}
-          renderNavNextButton={null}
-          renderNavPrevButton={null}
-          renderWeekHeaderElement={null}
-          reopenPickerOnClearDates={false}
-          required={false}
-          screenReaderInputMessage=""
-          showClearDates={false}
-          showDefaultInputIcon={true}
-          small={true}
-          startDate={"2020-05-01T13:21:01.048Z"}
-          startDateId="unique_start_date_id"
-          startDatePlaceholderText="Start Date"
-          verticalHeight={null}
-          verticalSpacing={22}
-          weekDayFormat="dd"
-          withFullScreenPortal={false}
-          withPortal={false}
-        />
+        >
+          <div
+            className="settingHeader"
+          >
+            Categories
+          </div>
+          <div
+            className="settingInner"
+          >
+            <div
+              className="meetupsSearchBar elevate-0"
+            >
+              <CategoryAutocomplete
+                entries={Array []}
+                fullWidth={true}
+                handleClick={[Function]}
+                label="Search Categories..."
+                size="small"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          className="hr"
+        >
+          Preferences
+        </div>
+        <div
+          className="preferences"
+        >
+          <div
+            className="preset"
+          />
+        </div>
       </div>
-    </WithStyles(ForwardRef(Paper))>
+    </div>
   </div>
   <div
     className="meetupsInnerWrap"
   >
-    <WithStyles(ForwardRef(Paper))
-      className="meetupsInnerHeader"
-      elevation={2}
-      square={true}
+    <div
+      className="hr"
     >
-      <div>
-        Meetups
-        <WithStyles(ForwardRef(Tooltip))
-          title="Public Meetups"
-        >
-          <WithStyles(ForwardRef(IconButton))
-            aria-label="public-meetups"
-            color="primary"
-            edge="end"
-            onClick={[Function]}
-          >
-            <PublicIcon />
-          </WithStyles(ForwardRef(IconButton))>
-        </WithStyles(ForwardRef(Tooltip))>
-        <WithStyles(ForwardRef(Tooltip))
-          title="Your Meetups"
-        >
-          <WithStyles(ForwardRef(IconButton))
-            aria-label="private-meetups"
-            color="default"
-            onClick={[Function]}
-          >
-            <PeopleIcon />
-          </WithStyles(ForwardRef(IconButton))>
-        </WithStyles(ForwardRef(Tooltip))>
-      </div>
-      <div
-        className="meetupsSearchBar"
-      >
-        <SearchIcon />
-        <CategoryAutocomplete
-          entries={Array []}
-          fullWidth={true}
-          handleClick={[Function]}
-          label="Search Categories..."
-          size="small"
-        />
-      </div>
-      <div
-        className="categoryChip"
-      >
-        25
-         miles
-      </div>
-      <WithStyles(ForwardRef(Tooltip))
-        title="Add Meetup"
-      >
-        <WithStyles(ForwardRef(IconButton))
-          aria-label="add-meetup"
-          onClick={[Function]}
-          style={
-            Object {
-              "color": "black",
-            }
-          }
-        >
-          <AddIcon />
-        </WithStyles(ForwardRef(IconButton))>
-      </WithStyles(ForwardRef(Tooltip))>
-      <Connect(ReduxForm)
-        handleClose={[Function]}
-        open={false}
-        type="create"
-      />
-    </WithStyles(ForwardRef(Paper))>
+      Meetups Near You
+    </div>
     <div
       className="meetupsContainer"
       style={
@@ -273,7 +310,7 @@ exports[`Meetups tests renders without crashing 1`] = `
     >
       <WithStyles(ForwardRef(Grid))
         container={true}
-        spacing={1}
+        spacing={3}
       >
         <WithStyles(ForwardRef(Grid))
           item={true}
@@ -308,7 +345,7 @@ exports[`Meetups tests renders without crashing 1`] = `
                       "id": 1,
                       "last_name": "Lee",
                     },
-                    "date": "2020-05-01",
+                    "date": "2020-05-08",
                     "events": Object {},
                     "id": 1,
                     "isMeetupEventsInitialized": true,
@@ -384,7 +421,7 @@ exports[`Meetups tests renders without crashing 1`] = `
                       "id": 1,
                       "last_name": "Lee",
                     },
-                    "date": "2020-05-01",
+                    "date": "2020-05-08",
                     "events": Object {},
                     "id": 2,
                     "isMeetupEventsInitialized": true,
@@ -430,5 +467,10 @@ exports[`Meetups tests renders without crashing 1`] = `
       </WithStyles(ForwardRef(Grid))>
     </div>
   </div>
+  <Connect(ReduxForm)
+    handleClose={[Function]}
+    open={false}
+    type="create"
+  />
 </div>
 `;

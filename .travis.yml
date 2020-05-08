@@ -3,7 +3,8 @@ node_js: node
 cache: npm
 install:
   - (cd frontend && npm install)
-  - (cd backend && pip install -r requirements.txt)
+  # - (cd backend && pip install -r requirements.txt)
 script:
   - (cd frontend && npm test -- --coverage -u)
-  - (cd backend && python manage.py test meetup && pytest)
+  # - (cd backend && python manage.py test meetup && pytest)
+  
