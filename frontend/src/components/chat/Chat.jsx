@@ -55,12 +55,14 @@ class Chat extends Component {
     const token = AuthenticationService.retrieveToken();
     const path = `/ws/chat/${this.props.match.params.uri}/`;
     socket.connect(path, token);
-    this.setRoomInfo(uri);
+    this.getRoomInfo(uri);
   }
 
-  setRoomInfo(uri) {
-    this.props.setActiveRoom(uri);
-    this.props.getMessages(uri);
+  async getRoomInfo(uri) {
+    await Promise.all([
+      this.props.setActiveRoom(uri),
+      this.props.getMessages(uri)
+    ]);
   }
 
   handleChatMobileHide = () => {
