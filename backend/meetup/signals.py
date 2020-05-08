@@ -537,7 +537,7 @@ def post_save_chat_room(sender, instance, created, **kwargs):
 
         content = {
             "command": "update_room",
-            "message": {"room": {instance.uri: serializer.data}},
+            "message": {"room": {instance.uri: serializer.data}, "uri": instance.uri},
         }
 
         async_to_sync(channel_layer.group_send)(

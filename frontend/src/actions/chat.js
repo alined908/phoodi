@@ -26,7 +26,6 @@ export const getRooms = () => async (dispatch) => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    console.log(response.data);
     dispatch({ type: types.GET_ROOMS_SUCCESS, payload: response.data });
   } catch (e) {
     dispatch({

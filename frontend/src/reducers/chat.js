@@ -1,4 +1,5 @@
 import * as types from "../constants/action-types";
+import omit from 'lodash/omit'
 
 export const defaultState = {
   rooms: {},
@@ -64,9 +65,16 @@ export default function chatReducer(state = defaultState, action) {
         isMoreMessagesFetching: false,
       };
     case types.ADD_ROOM:
-      return { ...state, rooms: { ...state.rooms, ...action.payload } };
+      return { ...state, rooms: { ...state.rooms, ...action.payload }};
     case types.UPDATE_ROOM:
-      return { ...state, rooms: { ...action.payload.room, ...state.rooms } };
+      const exclude = omit({...state.rooms}, action.payload.uri)
+      return { 
+          ...state, 
+          rooms: { 
+              ...action.payload.room,
+              ...exclude
+            } 
+        };
     case types.SET_ACTIVE_ROOM:
       return {
         ...state,

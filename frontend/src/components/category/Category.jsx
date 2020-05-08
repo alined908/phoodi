@@ -145,7 +145,7 @@ class Category extends Component {
         <Helmet>
           <meta charSet="utf-8" />
           <meta name="description" content="Discover new categories." />
-          <title>{`Discover ${
+          <title>{`${
             category.label === undefined ? "" : category.label
           }`}</title>
         </Helmet>
