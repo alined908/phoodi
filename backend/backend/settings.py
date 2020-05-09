@@ -6,6 +6,7 @@ from datetime import timedelta
 load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = True
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]", "phoodie.me"]
@@ -128,7 +129,7 @@ DATABASES = {
         # "HOST": "localhost",
         'HOST': 'db',
         "PORT": 5432,
-        "TEST": {"NAME": os.environ.get("DB_TEST_NAME"),},
+        "TEST": {"NAME": "test_meetup_db",},
     }
 }
 
@@ -149,10 +150,10 @@ DOMAIN = "localhost:8003"
 SITE_NAME = "Phoodi"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_USE_TLS = True
-EMAIL_HOST = os.environ.get("EMAIL_HOST")
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST = "smtp.sendgrid.net"
+EMAIL_HOST_USER = "apikey"
 EMAIL_HOST_PASSWORD = os.getenv("SENDGRID_API_KEY")
-EMAIL_PORT = os.environ.get("EMAIL_PORT")
+EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = "team@phoodie.me"
 SERVER_EMAIL = "team@phoodie.me"
 

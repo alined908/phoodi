@@ -41,7 +41,8 @@ services:
         build: ./frontend
         volumes: 
             - ./frontend:/app
-            - ./frontend/node_modules:/app/node_modules
+            - node_modules:/app/node_modules
+        command: npm start
         ports: 
             - 8003:8003
         stdin_open: true

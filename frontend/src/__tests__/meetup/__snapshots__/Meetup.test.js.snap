@@ -34,7 +34,7 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
           "id": 1,
           "last_name": "Lee",
         },
-        "date": "2020-05-08",
+        "date": "2020-05-09",
         "events": Object {},
         "id": 1,
         "isMeetupEventsInitialized": true,
@@ -100,7 +100,7 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
           >
             <TodayIcon />
              
-            Friday, May 8
+            Saturday, May 9
           </div>
           <div
             aria-label="location"

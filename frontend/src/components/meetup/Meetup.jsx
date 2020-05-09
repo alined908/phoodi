@@ -231,7 +231,6 @@ class Meetup extends Component {
     const isUserCreator = this.determineIsUserCreator(this.props.user.id);
     const emailDisable = this.determineEmailDisable(meetup.events);
     const isPast = moment(meetup.date).isBefore(moment(), 'day')
-    console.log(isPast)
 
     const renderInformation = (name, date, location) => {
       return (
