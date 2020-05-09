@@ -2,7 +2,7 @@ sudo: required
 
 env:
   DOCKER_COMPOSE_VERSION: 1.25.4
-  COMPOSE_FILES: "-f docker-compose.yml"
+  COMPOSE_FILES: docker-compose.yml
 
 services:
   - docker
@@ -19,8 +19,10 @@ before_install:
   - docker-compose --version
 
 before_script:
-  - docker-compose ${COMPOSE_FILES} --build
-  - docker-compose ${COMPOSE_FILES} up -d
+  - touch .env
+  - docker-compose -f ${COMPOSE_FILES} build
+  - docker-compose -f ${COMPOSE_FILES} up -d --scale nginx=0
+  - docker ps
 
 script:
   - docker-compose exec backend python manage.py test meetup
