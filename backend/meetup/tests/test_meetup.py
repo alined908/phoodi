@@ -21,8 +21,10 @@ from django.test import TestCase
 from django.utils.timezone import now
 import datetime, json, jwt
 
-client = APIClient()
+yesterday = datetime.date.today() - datetime.timedelta(days=1)
+tomorrow = datetime.date.today() + datetime.timedelta(days=1)
 
+client = APIClient()
 
 class MeetupTest(TestCase):
     fixtures = ("2_categories.json",)
@@ -54,7 +56,7 @@ class MeetupTest(TestCase):
         client.force_authenticate(user=self.user)
 
     def test_MeetupListView_GET_private_meetups(self):
-        response = client.get("/api/meetups/", {"type": "private"})
+        response = client.get("/api/meetups/", {"type": "private", "start": yesterday, "end": tomorrow})
         meetups = self.user.meetups
         meetups_json = {}
 
@@ -78,12 +80,12 @@ class MeetupTest(TestCase):
             random=True,
         )
         response = client.get(
-            "/api/meetups/", {"type": "private", "categories": str(dessert.id)}
+            "/api/meetups/", {"type": "private", "categories": str(dessert.id), "start": yesterday, "end": tomorrow}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data["meetups"]), 1)
         response = client.get(
-            "/api/meetups/", {"type": "private", "categories": str(bento.id)}
+            "/api/meetups/", {"type": "private", "categories": str(bento.id), "start": yesterday, "end": tomorrow}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data["meetups"]), 0)
@@ -91,13 +93,13 @@ class MeetupTest(TestCase):
     def test_MeetupListView_GET_public_meetups(self):
         response = client.get(
             "/api/meetups/",
-            {"type": "public", "latitude": 34.228754, "longitude": -118.2351192},
+            {"type": "public", "latitude": 34.228754, "longitude": -118.2351192, "start": yesterday, "end": tomorrow},
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data["meetups"]), 1)
         response = client.get(
             "/api/meetups/",
-            {"type": "public", "latitude": 37.871853, "longitude": -122.258423},
+            {"type": "public", "latitude": 37.871853, "longitude": -122.258423, "start": yesterday, "end": tomorrow},
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data["meetups"]), 0)
@@ -122,6 +124,7 @@ class MeetupTest(TestCase):
                 "categories": str(dessert.id),
                 "latitude": 34.228754,
                 "longitude": -118.2351192,
+                "start": yesterday, "end": tomorrow
             },
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -133,6 +136,7 @@ class MeetupTest(TestCase):
                 "categories": str(bento.id),
                 "latitude": 34.228754,
                 "longitude": -118.2351192,
+                "start": yesterday, "end": tomorrow
             },
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -158,6 +162,7 @@ class MeetupTest(TestCase):
                 "categories": "desserts",
                 "latitude": 34.228754,
                 "longitude": -118.2351192,
+                "start": yesterday, "end": tomorrow
             },
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -169,6 +174,7 @@ class MeetupTest(TestCase):
                 "categories": "bento",
                 "latitude": 34.228754,
                 "longitude": -118.2351192,
+                "start": yesterday, "end": tomorrow
             },
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -236,12 +242,12 @@ class MeetupTest(TestCase):
         )
 
     def test_get_public_meetups_no_categories(self):
-        meetups = Meetup.get_public([], [34.228754, -118.2351192, 25], None)
+        meetups = Meetup.get_public([], [34.228754, -118.2351192, 25], None, yesterday, tomorrow)
         self.assertEqual(meetups.count(), 1)
         self.assertEqual(meetups.first(), self.public)
 
     def test_get_private_meetups_no_categories(self):
-        meetups = Meetup.get_private(self.user, [])
+        meetups = Meetup.get_private(self.user, [], yesterday, tomorrow)
         self.assertEqual(meetups.count(), 1)
         self.assertEqual(meetups.first(), self.private)
 
@@ -266,9 +272,10 @@ class MeetupEventTest(TestCase):
             name="meetup-1",
             date=datetime.date.today(),
             location="Berkeley",
-            longitude=-118.2351192,
-            latitude=34.228754,
+            longitude=-122.431297,
+            latitude=37.773972,
             public=True,
+            creator=self.user
         )
         self.member = MeetupMember.objects.create(meetup=self.meetup, user=self.user)
         self.member2 = MeetupMember.objects.create(meetup=self.meetup, user=self.user2)
@@ -285,8 +292,8 @@ class MeetupEventTest(TestCase):
         )
         self.option = self.event.options.first()
         self.valid_payload = {
-            "start": now(),
-            "end": now(),
+            "start": now().replace(hour=14),
+            "end": now().replace(hour=14),
             "title": "Hello",
             "distance": 20000,
             "price": "1, 2",
@@ -473,6 +480,7 @@ class MeetupMemberTest(TestCase):
             longitude=-118.2351192,
             latitude=34.228754,
             public=True,
+            creator=self.user
         )
         self.member = MeetupMember.objects.create(meetup=self.meetup, user=self.user)
         self.member = MeetupMember.objects.create(meetup=self.meetup, user=self.user3)
@@ -562,6 +570,7 @@ class MeetupEmailViewTest(TestCase):
             longitude=-118.2351192,
             latitude=34.228754,
             public=True,
+            creator=self.user
         )
         self.member = MeetupMember.objects.create(meetup=self.meetup, user=self.user)
         client.force_authenticate(user=self.user)

@@ -86,7 +86,7 @@ class Restaurant extends Component {
                 <div className="blockActionHeader">
                   Categories
                 </div>
-                <div className="blockActionContent">
+                <div className="blockActionContent" style={{flexWrap: "wrap"}}>
                   {rst.categories.map((item) => 
                       <span className="blockActionChip" style={{display: "flex", alignItems: "center"}}>
                           <Avatar

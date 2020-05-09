@@ -3,6 +3,7 @@ from meetup.serializers import (
     UserSerializer,
     UserSettingsSerializer,
     UserSerializerWithToken,
+    UserSerializerWithActivity,
     PreferenceSerializer,
     FriendshipSerializer,
 )
@@ -14,14 +15,14 @@ import json, jwt
 
 client = APIClient()
 
-
 class AuthTest(TestCase):
     def setUp(self):
         self.user = User.objects.create(
             email="test@gmail.com",
             last_name="Lee",
-            password=make_password("password"),
             first_name="Daniel",
+            password=make_password("password"),
+            is_active=True
         )
         self.payload = {"email": "test@gmail.com", "password": "password"}
 
@@ -101,7 +102,7 @@ class UserTest(TestCase):
 
     def test_UserView_GET_valid_pk(self):
         response = client.get("/api/users/" + str(self.user1.id) + "/")
-        serializer = UserSerializer(self.user1, context={"plain": True})
+        serializer = UserSerializerWithActivity(self.user1)
         self.assertEqual(serializer.data, response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -270,7 +271,8 @@ class UserFriendsTest(TestCase):
             data=json.dumps(payload, default=str),
             content_type="application/json",
         )
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, FriendshipSerializer(self.user.get_friends(), many=True, context={"user": self.user}).data)
         self.assertEqual(
             Friendship.objects.filter(creator=self.user, friend=self.user3).count(), 0
         )

@@ -94,23 +94,6 @@ const UserAutocomplete = (props) => {
                   ))}
                 </>
               }
-              secondary={
-                <>
-                  <Typography component="span" color="inherit" variant="body2">
-                    {partsEmail.map((part, index) => (
-                      <span
-                        key={index}
-                        style={{
-                          fontWeight: part.highlight ? 700 : 400,
-                          color: part.highlight ? "black" : "grey",
-                        }}
-                      >
-                        {part.text}
-                      </span>
-                    ))}
-                  </Typography>
-                </>
-              }
             ></ListItemText>
           </div>
         );
@@ -123,6 +106,7 @@ const UserAutocomplete = (props) => {
           onChange={props.handleType}
           InputProps={{
             ...params.InputProps,
+            disableUnderline: true,
             endAdornment: (
               <>
                 {loading ? (

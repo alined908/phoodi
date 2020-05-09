@@ -16,8 +16,7 @@ docker-compose up
 **1. Run tests for backend**
 ```
 cd backend
-coverage run --parallel-mode --source="." manage.py test meetup
-coverage run --parallel-mode -m pytest
+coverage run --parallel-mode --source="." manage.py test meetup && coverage run --parallel-mode -m pytest
 coverage combine
 coverage report
 ```
@@ -80,11 +79,11 @@ python manage.py loaddata meetup/fixtures/*.json
 
 * **Docker/AWS EC2** - Deployment
 * **Django** - Backend
-* **React/Redux** - Frontend
+* **React/Redux + Jest/Enzyme** - Frontend
 * **Postgres** - Database
 * **Nginx** - Web Server
-* **Redis** - Channel layer for django channels
-* **Yelp Api** - Generate food options
+* **Redis** - Channel layer for pub/sub
+* **Yelp Api** - Generate restaurants
 * **Material UI** - Design
 
 ## Author
@@ -92,7 +91,6 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Deploy
 - [ ] Separate dev and prod settings
-- [ ] Continuous integration
 - [ ] Django settings
 
 ---------------------------------------------------------------

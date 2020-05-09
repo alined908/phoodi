@@ -75,6 +75,11 @@ export const MuiTheme = {
         padding: "4px 8px"
       },
     },
+    MuiAutocomplete: {
+        root: {
+            boxShadow:"var(--shadow-0)"
+        }
+    },
     MuiFab : {
         root: {
             background: "rgba(10,10,10, .95) !important",
@@ -82,6 +87,9 @@ export const MuiTheme = {
             '&:hover': {
                 background: "black !important"
             }
+        },
+        extended: {
+            width: "100%"
         }
     },
     MuiAvatar: {
@@ -118,6 +126,7 @@ export const MuiTheme = {
         margin: ".25rem",
         letterSpacing: "0.02857em",
         textTransform: "capitalize",
+        boxShadow:"var(--shadow-0)"
       },
     },
     MuiFilledInput : {

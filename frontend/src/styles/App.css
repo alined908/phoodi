@@ -74,6 +74,7 @@ body {
   font-weight: 600;
   font-family: "Lato";
   background-color: var(--light-blue);
+  box-shadow: var(--shadow-0);
 }
 
 .elevate-0 {
@@ -275,6 +276,7 @@ body {
 /* Restaurant AutoComplete */
 .restauraunt-autocomplete {
   width: 100%;
+  box-shadow: none !important;
 }
 
 .restauraunt-autocomplete .MuiFilledInput-root,

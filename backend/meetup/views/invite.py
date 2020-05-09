@@ -83,7 +83,7 @@ class MeetupInviteView(APIView):
         user = request.user
         room_uri = kwargs["uri"]
         invite_uri = kwargs["invite_code"]
-        status = int(request.data["status"])
+        inv_status = int(request.data["status"])
 
         try:
             meetup = Meetup.objects.get(uri=room_uri)
@@ -104,13 +104,13 @@ class MeetupInviteView(APIView):
                 {"error": "Not your invite"}, status=status.HTTP_400_BAD_REQUEST
             )
 
-        invite.status = status
+        invite.status = inv_status
         invite.save()
         message = ""
 
-        if status == 2:
+        if inv_status == 2:
             message = "Successfully accepted meetup invite."
-        elif status == 3:
+        elif inv_status == 3:
             message = "Rejected meetup invite."
 
         return Response({"message": message})
@@ -163,7 +163,7 @@ class FriendInviteView(APIView):
     def patch(self, request, *args, **kwargs):
         user = request.user
         uri = kwargs["invite_code"]
-        status = int(request.data["status"])
+        inv_status = int(request.data["status"])
 
         try:
             invite = FriendInvite.objects.get(uri=uri)
@@ -177,13 +177,13 @@ class FriendInviteView(APIView):
                 {"error": "Not your invite"}, status=status.HTTP_400_BAD_REQUEST
             )
 
-        invite.status = status
+        invite.status = inv_status
         invite.save()
         message = ""
 
-        if status == 2:
+        if inv_status == 2:
             message = "Successfully accepted friend invite."
-        elif status == 3:
+        elif inv_status == 3:
             message = "Rejected friend invite."
 
         return Response({"message": message})

@@ -126,6 +126,7 @@ export default function RestaurauntAutocomplete(props) {
           InputProps={{
             ...params.InputProps,
             classes,
+            disableUnderline: true,
             endAdornment: (
               <React.Fragment>
                 {loading ? (
