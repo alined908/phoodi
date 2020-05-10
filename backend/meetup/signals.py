@@ -20,6 +20,9 @@ def get_user():
             break
         else:
             request = None
+            
+    if not request:
+        return None
 
     return request.user
 
@@ -27,7 +30,6 @@ def get_user():
 @receiver(pre_save, sender=Meetup)
 def set_notification_for_meetup(sender, instance, **kwargs):
     if instance.id:
-        print(instance.id)
         previous = Meetup.objects.get(pk=instance.id)
         potential_changes = []
 
@@ -83,7 +85,7 @@ def meetup_post_save(sender, instance, created, **kwargs):
         )
     else:
         # Get User Who Completed Action
-        user = get_user()
+        user = get_user() or instance.creator
         member = MeetupMember.objects.get(meetup=instance, user=user)
         room = ChatRoom.objects.get(uri=instance.uri)
 
@@ -150,8 +152,7 @@ def handle_delete_member(sender, instance, **kwargs):
 
     meetup = instance.meetup
     user = get_user()
-    print(user)
-
+  
     # Delete existing MeetupInvite
     try:
         invite = MeetupInvite.objects.get(meetup=meetup, receiver=instance.user)
@@ -323,7 +324,7 @@ def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
 
     # Create Meetup Chat Message --> Member did something to Something on Meetup
     if instance._meetup_notification != "chosen changed":
-        user = get_user()
+        user = get_user() or instance.creator.user
         room = ChatRoom.objects.get(uri=meetup.uri)
 
         for change in instance._meetup_notification:

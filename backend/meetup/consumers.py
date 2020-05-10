@@ -218,7 +218,7 @@ class MeetupConsumer(AsyncWebsocketConsumer):
         if event.random:
             event.generate_options()
 
-    @sync_to_async
+    @database_sync_to_async
     def handle_event_reload(self, event):
         for option in event.options.all():
             votes = option.event_votes

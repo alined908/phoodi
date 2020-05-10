@@ -37,6 +37,7 @@ class InviteTest(TestCase):
             longitude=-118.2351192,
             latitude=34.228754,
             public=True,
+            creator=self.user
         )
         self.member = MeetupMember.objects.create(meetup=self.meetup, user=self.user)
         self.meetup_invite = MeetupInvite.objects.create(

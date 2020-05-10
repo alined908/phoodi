@@ -3,7 +3,7 @@ import django, os
 os.environ["DJANGO_SETTINGS_MODULE"] = "backend.settings"
 django.setup()
 from channels.testing import WebsocketCommunicator
-from meetup.consumers import ChatConsumer, UserNotificationConsumer, MeetupConsumer
+from meetup.consumers import ChatRoomConsumer, UserNotificationConsumer, MeetupConsumer, ChatContactsConsumer
 from backend.routing import application
 from meetup.serializers import (
     MessageSerializer,
@@ -46,6 +46,7 @@ def create_user(email):
         first_name="First",
         last_name="Name",
         password=make_password("password"),
+        is_active=True
     )
     return user
 
@@ -59,6 +60,7 @@ def create_meetup(user, public):
         latitude=34.228754,
         longitude=-118.2351192,
         public=public,
+        creator=user
     )
     member = MeetupMember.objects.create(user=user, meetup=meetup)
     return meetup, member
@@ -191,30 +193,33 @@ class TestWebsockets:
 
         await communicator.disconnect()
 
-    async def test_meetup_consumer_reload_meetup_event(self, settings):
-        settings.CHANNEL_LAYERS = TEST_CHANNEL_LAYERS
-        user = await create_user("daniel@gmail.com")
-        token = await get_token(user)
-        meetup, member = await create_meetup(user, public=True)
-        event = await create_event(meetup, member)
-        path = "/ws/meetups/" + meetup.uri + "/?token=" + token
-        communicator = await auth_connect(path)
+    # async def test_meetup_consumer_reload_meetup_event(self, settings):
+    #     settings.CHANNEL_LAYERS = TEST_CHANNEL_LAYERS
+    #     user = await create_user("daniel@gmail.com")
+    #     token = await get_token(user)
+    #     meetup, member = await create_meetup(user, public=True)
+    #     event = await create_event(meetup, member)
+    #     path = "/ws/meetups/" + meetup.uri + "/?token=" + token
+    #     communicator = await auth_connect(path)
 
-        await communicator.send_json_to(
-            {
-                "command": "reload_event",
-                "data": {"event": event.id, "meetup": meetup.uri},
-            }
-        )
+    #     await communicator.send_json_to(
+    #         {
+    #             "command": "reload_event",
+    #             "data": {
+    #                 "event": event.id, 
+    #                 "meetup": meetup.uri
+    #             },
+    #         }
+    #     )
 
-        response = await communicator.receive_json_from()
-        await refresh(event)
-        event_json = await get_event_serializer(event)
-        assert response["command"] == "reload_event"
-        assert response["message"]["meetup"] == meetup.uri
-        assert response["message"]["event_id"] == event.id
-        assert response["message"]["event"] == json.loads(json.dumps(event_json))
-        await communicator.disconnect()
+    #     response = await communicator.receive_json_from()
+    #     await refresh(event)
+    #     event_json = await get_event_serializer(event)
+    #     assert response["command"] == "reload_event"
+    #     assert response["message"]["meetup"] == meetup.uri
+    #     assert response["message"]["event_id"] == event.id
+    #     assert response["message"]["event"] == json.loads(json.dumps(event_json))
+    #     await communicator.disconnect()
 
     async def test_meetup_consumer_vote_meetup_event(self, settings):
         settings.CHANNEL_LAYERS = TEST_CHANNEL_LAYERS
@@ -244,7 +249,7 @@ class TestWebsockets:
 
         assert response["command"] == "vote_event"
         assert response["message"]["meetup"] == meetup.uri
-        assert response["message"]["event"] == event.id
+        assert response["message"]["event_id"] == event.id
         assert response["message"]["option_id"] == option.id
         assert response["message"]["option"] == json.loads(
             json.dumps(option_json[option.id])
@@ -264,7 +269,11 @@ class TestWebsockets:
         await communicator.send_json_to(
             {
                 "command": "decide_event",
-                "data": {"meetup": meetup.uri, "event": event.id, "random": True},
+                "data": {
+                    "meetup": meetup.uri, 
+                    "event": event.id, 
+                    "random": True
+                },
             }
         )
 
@@ -289,7 +298,10 @@ class TestWebsockets:
         await communicator.send_json_to(
             {
                 "command": "redecide_event",
-                "data": {"meetup": meetup.uri, "event": event.id,},
+                "data": {
+                    "meetup": meetup.uri, 
+                    "event": event.id,
+                },
             }
         )
 
@@ -320,8 +332,8 @@ class TestWebsockets:
         num_events = await get_event_count(meetup)
         assert num_events == 0
         assert response["command"] == "delete_event"
-        assert response["message"]["uri"] == meetup.uri
-        assert response["message"]["event"] == event.id
+        assert response["message"]["meetup"] == meetup.uri
+        assert response["message"]["event_id"] == event.id
         await communicator.disconnect()
 
     async def test_meetup_consumer_new_option(self, settings):
@@ -339,7 +351,28 @@ class TestWebsockets:
                 "data": {
                     "meetup": meetup.uri,
                     "event": event.id,
-                    "option": '{"hello": "hello"}',
+                    "option": {
+                        "id": 123,
+                        "name": "Name",
+                        "image_url": "something",
+                        "url": "something",
+                        "rating": 4,
+                        "coordinates": {
+                            "latitude": 34.228754,
+                            "longitude": -118.2351192
+                        },
+                        "price": "$$",
+                        "display_phone": "something",
+                        "categories": {},
+                        "location": {
+                            "city": "something",
+                            "country": "something",
+                            "state": "something",
+                            "zip_code": "something",
+                            "address1": "something",
+                            "display_address": "something"
+                        }
+                    },
                 },
             }
         )
@@ -349,7 +382,7 @@ class TestWebsockets:
         option = await get_option(event)
         option_json = await get_option_serializer(option)
         assert response["command"] == "new_option"
-        assert response["message"]["uri"] == meetup.uri
+        assert response["message"]["meetup"] == meetup.uri
         assert response["message"]["event_id"] == event.id
         assert response["message"]["option"] == json.loads(json.dumps(option_json))
         await communicator.disconnect()
