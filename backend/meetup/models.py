@@ -636,7 +636,6 @@ class Review(BaseComment):
     )
     rating = models.IntegerField(choices=CHOICES)
 
-
 class Comment(BaseComment):
     user = models.ForeignKey(
         User, related_name="u_comments", on_delete=models.SET_NULL, null=True

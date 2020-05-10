@@ -285,26 +285,15 @@ class MeetupEvent extends Component {
           {keys.length > 0 ? (
             <Grid justify="center" container spacing={3}>
               {keys.map((key, index) => (
-                <Grid
-                  key={key}
-                  item
-                  id={`option-${key}`}
-                  container
-                  xs={12}
-                  lg={6}
-                  xl={4}
-                  className={styles.meetupEventOptionGrid}
-                >
-                  <MeetupEventOption
-                    socket={this.props.socket}
-                    full={true}
-                    isPast={this.props.isPast}
-                    isUserMember={this.props.isUserMember}
-                    event={this.props.event.id}
-                    meetup={this.props.uri}
-                    optionId={key}
-                  />
-                </Grid>
+                <MeetupEventOption
+                  socket={this.props.socket}
+                  full={true}
+                  isPast={this.props.isPast}
+                  isUserMember={this.props.isUserMember}
+                  event={this.props.event.id}
+                  meetup={this.props.uri}
+                  optionId={key}
+                />
               ))}
             </Grid>
           ) : (

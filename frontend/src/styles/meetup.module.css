@@ -159,6 +159,7 @@ background: var(--light-blue);
 .member {
     background-color: white;
     box-shadow: var(--shadow-0);
+    margin-bottom: .5rem !important;
 }
 
 .actions {
@@ -250,7 +251,7 @@ background: var(--light-blue);
 
 .foursquare {
   display: flex;
-  width: 85%;
+  width: 92.5%;
   margin: 2rem auto;
   justify-content: center;
 }
@@ -274,22 +275,13 @@ background: var(--light-blue);
     margin: 1rem;
 }
 
-.center {
-  display: flex;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-}
 
 .rstWrapper {
   display: flex;
   flex-direction: column;
-  width: 85%;
   min-width: 310px;
   max-width: 286px;
-  margin: 0 auto;
   background-color: white;
-  height: 100%;
   position: relative;
   transform: scale(0.875);
   border-radius: 0.25rem;
@@ -372,6 +364,7 @@ background: var(--light-blue);
   flex-direction: column;
   align-items: center;
   max-width: 300px;
+  min-width: 250px;
 }
 
 .rstHorzInfo {
@@ -518,6 +511,7 @@ background: var(--light-blue);
     border-left: 1px solid #e3e3e3;
     border-right: 0;
     padding: 1.25rem;
+    margin: 1.5rem 0;
 }
 
 .meetupChat {
@@ -530,6 +524,10 @@ background: var(--light-blue);
 
 .meetupChat .header {
   justify-content: flex-start;
+}
+
+.meetupChat .emojiPicker {
+    left: -100px;
 }
 
 /* MeetupTree */
@@ -714,7 +712,17 @@ background: var(--light-blue);
 
 .rating {
   display: flex;
-  padding: 0.5rem 1rem;
+  align-items: center;
+  padding: 0.5rem .25rem;
+  cursor: pointer
+}
+
+.rating:hover {
+    background-color: var(--light-blue);
+}
+
+.ratingSelected {
+    background-color: var(--light-blue);
 }
 
 .ratingScore {

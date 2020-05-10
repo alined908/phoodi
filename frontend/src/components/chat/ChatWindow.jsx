@@ -291,6 +291,7 @@ class ChatWindow extends Component {
               user={this.props.user}
               room={this.props.room}
               socket={this.props.socket}
+              isMeetup={this.props.isMeetup}
             />
           </div>
         ) : (

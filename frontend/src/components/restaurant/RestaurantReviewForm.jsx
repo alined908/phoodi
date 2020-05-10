@@ -7,13 +7,12 @@ import {
   CircularProgress,
   Button,
   Grid,
-  TextField,
 } from "@material-ui/core";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { axiosClient } from "../../accounts/axiosClient";
-import { renderTextField } from "../components";
+import { renderTextField, Rating } from "../components";
 import styles from "../../styles/meetup.module.css";
 
 const ratings = {
@@ -93,7 +92,7 @@ class RestaurantReviewForm extends Component {
                 <Field
                   required
                   name="text"
-                  label="text"
+                  label="Text"
                   component={renderTextField}
                   {...{
                     multiline: true,
@@ -107,11 +106,12 @@ class RestaurantReviewForm extends Component {
                 <div className={styles.ratings}>
                   {Object.keys(ratings).map((rating) => (
                     <div
-                      className={styles.rating}
+                      className={`${styles.rating} ${this.state.rating === rating ? styles.ratingSelected : ""}`}
                       onClick={() => this.decideRating(rating)}
                     >
-                      {this.state.rating === rating && "Selected"}
-                      <span className={styles.ratingScore}>{rating}</span>
+                      <span className={styles.ratingScore}>
+                        <Rating rating={rating}/>
+                      </span>
                       <span className={styles.ratingDescription}>
                         {ratings[rating]}
                       </span>

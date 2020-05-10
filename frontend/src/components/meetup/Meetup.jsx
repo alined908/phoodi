@@ -320,6 +320,7 @@ class Meetup extends Component {
                       <IconButton
                         aria-label="remove-member"
                         color="secondary"
+                        size="small"
                         onClick={(e) =>
                           this.handleLeaveMeetup(e, members[key].user.email)
                         }
@@ -332,6 +333,7 @@ class Meetup extends Component {
                   <Tooltip title="Add Friend">
                     <IconButton
                       color="primary"
+                      size="small"
                       onClick={(e) =>
                         this.addFriend(e, members[key].user.email)
                       }
@@ -400,19 +402,6 @@ class Meetup extends Component {
                             Join Meetup
                         </Button>
                     }
-                    {(isUserMember && !isUserCreator && !isPast) && 
-                        <Button
-                            color="secondary"
-                            variant="contained"
-                            aria-label="leave-meetup"
-                            size="small"
-                            onClick={(e) =>
-                              this.handleLeaveMeetup(e, this.props.user.email)
-                            }
-                        >
-                            Leave Meetup
-                        </Button>
-                    }
                     <IconButton aria-label="meetup-menu" style={{color: "rgba(10,10,10, .95)"}} edge="end" onClick={this.handleMenuClick}>
                         <MoreVertIcon/>
                     </IconButton>
@@ -423,15 +412,31 @@ class Meetup extends Component {
                       onClose={this.handleMenuClose}
                   >
                       {isUserMember && !this.state.showChat && (
-                          <MenuItem onClick={(e) => {this.toggleChat(); this.handleMenuClose(e);}}>
+                          <MenuItem aria-label="chat" onClick={(e) => {this.toggleChat(); this.handleMenuClose(e);}}>
                               <ListItemIcon>
-                                  <ChatIcon aria-label="chat" color="primary" fontSize="small" />
+                                  <ChatIcon  color="primary" fontSize="small" />
                               </ListItemIcon>
                               <Typography variant="body2" noWrap>
                                   Chat Window
                               </Typography>
                           </MenuItem>
                       )}
+                        {(isUserMember && !isUserCreator && !isPast) && 
+                          <MenuItem
+                              aria-label="leave-meetup"
+                              onClick={(e) =>{
+                                this.handleLeaveMeetup(e, this.props.user.email);
+                                this.handleMenuClose(e);
+                              }}
+                          >
+                            <ListItemIcon>
+                              <ExitToAppIcon color="secondary" fontSize="small"/>
+                            </ListItemIcon>
+                            <Typography variant="body2" noWrap>
+                              Leave Meetup
+                            </Typography>
+                          </MenuItem>
+                      }
                       {isUserCreator && (
                         <>  
                           <MenuItem 
@@ -549,6 +554,7 @@ class Meetup extends Component {
               <div className={styles.addEvent}>
                 <Tooltip title="Create Event">
                     <Fab
+                      color="primary"
                         aria-label="add-event"
                         size="medium"
                         onClick={this.openEventModal}
@@ -560,15 +566,15 @@ class Meetup extends Component {
             )
           }
         </div>
-        <div className="innerLeft" className={styles.meetupChatWrapper} style={this.state.showChat ? {} : {display: "none"}}>
-          {this.state.showChat && (
-            <MeetupChat
-              aria-label="meetup-chat"
-              meetup={meetup}
-              hideChat={this.toggleChat}
-            />
-          )}
-        </div>
+        {this.state.showChat && 
+          <div className="innerLeft" className={styles.meetupChatWrapper}>
+              <MeetupChat
+                aria-label="meetup-chat"
+                meetup={meetup}
+                hideChat={this.toggleChat}
+              />
+          </div>
+        }
         {this.state.editMeetupForm && (
             <MeetupForm
               type="edit"

@@ -175,7 +175,7 @@ class RegisterPage extends Component {
                       label="Password"
                     />
                   </Grid>
-                  {this.props.errorMessage && (
+                  {!this.props.successMessage && this.props.errorMessage && (
                     <Grid item xs={12}>
                       <div className={styles.error}>
                         {this.props.errorMessage}
@@ -190,15 +190,20 @@ class RegisterPage extends Component {
                     </Grid>
                   )}
                 </Grid>
-                <div className={styles.fab}>
+                <div className={`${styles.fab} ${styles.loading}`}>
                   <Fab
                     type="submit"
                     variant="extended"
                     color="primary"
                     aria-label="login"
+                    className={this.state.isSubmitting && styles.fabSubmitting}
+                    disabled={submitting || invalid || this.state.isSubmitting}
                   >
                     Register
                   </Fab>
+                  {this.state.isSubmitting && (
+                    <CircularProgress size={20} className={styles.progress} />
+                  )}
                 </div>
               </form>
               <div className={styles.bottom}>

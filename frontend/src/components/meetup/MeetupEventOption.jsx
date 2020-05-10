@@ -322,17 +322,16 @@ class MeetupEventOption extends Component {
     return (
       <>
         {this.props.full ? 
-          <div className={styles.center}>
-            <div
-              className={`${styles.rstWrapper} ${
-                banned ? styles.banned : ""
-              } ${this.state.hover ? "elevate-2" : "elevate"}`}
-            >
-              {this.renderRestauraunt(data, this.props.full)}
-            </div>
+          <div
+            className={`${styles.rstWrapper} ${
+              banned ? styles.banned : ""
+            } ${this.state.hover ? "elevate-2" : "elevate"}`}
+            id={`option-${this.props.optionId}`}
+          >
+            {this.renderRestauraunt(data, this.props.full)}
           </div>
           :
-          <div className={`${styles.rstHorz} ${this.state.hover ? "elevate-2" : "elevate"}`}>
+          <div className={`${styles.rstHorz} ${this.state.hover ? "elevate-2" : "elevate"}`} id={`option-${this.props.optionId}`}>
             {this.renderRestauraunt(data, this.props.full)}
             <div className={styles.restaurantHorzInfo}>
               <div className={styles.rstHorzInfoEntry}>

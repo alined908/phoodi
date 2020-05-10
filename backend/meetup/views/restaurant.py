@@ -50,7 +50,7 @@ class ReviewView(APIView):
     def get(self, request, *args, **kwargs):
         user, restaurant = request.user, Restaurant.objects.get(url=kwargs["uri"])
         serializer = ReviewSerializer(
-            restaurant.r_reviews.all(), many=True, context={"user": user}
+            restaurant.r_reviews.all().order_by("-vote_score"), many=True, context={"user": user}
         )
         return Response(serializer.data)
 

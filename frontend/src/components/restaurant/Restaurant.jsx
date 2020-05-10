@@ -139,10 +139,10 @@ class Restaurant extends Component {
           <div className="innerRightBlock">
             <div className="innerRightBlockHeader">
               <div className="hr">Reviews</div>
-                <RestaurantThread
-                  restaurant={rst}
-                  reviews={this.state.reviews}
-                />
+              <RestaurantThread
+                restaurant={rst}
+                reviews={this.state.reviews}
+              />
             </div>
           </div>
         </div>

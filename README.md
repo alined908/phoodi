@@ -92,11 +92,14 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Deploy
 - [ ] Separate dev and prod settings
+- [ ] Mobile View
 - [ ] Django settings
 
 ---------------------------------------------------------------
 
 ## Todo Next Iteration
+- [ ] Properly configure statistics for stuff (likes, options count)
+- [ ] Review Score for food and service and possible secondary factors (interior, location, etc)
 - [ ] Cdn for images
 - [ ] Validation for models
 - [ ] Finish writing tests for frontend
