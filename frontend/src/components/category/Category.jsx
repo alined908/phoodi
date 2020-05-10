@@ -141,7 +141,7 @@ class Category extends Component {
   render() {
     const category = this.state.category;
     return (
-      <div className={styles.category}>
+      <div className="innerWrap">
         <Helmet>
           <meta charSet="utf-8" />
           <meta name="description" content="Discover new categories." />
@@ -149,82 +149,78 @@ class Category extends Component {
             category.label === undefined ? "" : category.label
           }`}</title>
         </Helmet>
-        <div className={styles.header}>
-          <div className={styles.headerTop}> 
-            <div className={`${styles.headerAvatar} elevate-0`}>
-              <span className={styles.avatar}>
-                <Avatar
-                  variant="square"
-                  className={styles.categoryAvatar}
-                  src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`}
-                />
-              </span>
-              <span>{category.label}</span>
-              <div className={styles.actions}>
-                {this.state.liked ? (
-                  <Tooltip title="Remove Like">
-                    <IconButton
-                      color="secondary"
-                      onClick={() => this.handleLike(false)}
-                    >
-                      <FavoriteIcon/>
-                    </IconButton>
-                  </Tooltip>
-                ) : (
-                  <Tooltip title="Like">
-                    <IconButton onClick={() => this.handleLike(true)}>
-                      <FavoriteBorderIcon />
-                    </IconButton>
-                  </Tooltip>
-                )}
-              </div>
+        <div className="innerLeft">
+          <div className="innerLeftHeader">
+            <span className={styles.avatar}>
+              <Avatar
+                variant="square"
+                src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`}
+              />
+            </span>
+            <span>{category.label}</span>
+            <div className={styles.actions}>
+              {this.state.liked ? (
+                <Tooltip title="Remove Like">
+                  <IconButton
+                    color="secondary"
+                    onClick={() => this.handleLike(false)}
+                  >
+                    <FavoriteIcon/>
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                <Tooltip title="Like">
+                  <IconButton onClick={() => this.handleLike(true)}>
+                    <FavoriteBorderIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
             </div>
+          </div>
+          <div className="innerLeftHeaderBlock">
             <div className="hr">
                 Statistics
             </div>
             <div className={`${styles.categoryStats} elevate-0`}>
-              <span>Likes <span className={`${styles.numberChip} elevate-0`}>{this.state.numLiked}</span> </span>
-              <span>Events <span className={`${styles.numberChip} elevate-0`}>{this.state.numLiked}</span> </span>
-              <span>Restaurants <span className={`${styles.numberChip} elevate-0`}>{this.state.numLiked}</span> </span>
+              <span>Likes <span className="blockActionChip">{this.state.numLiked}</span> </span>
+              <span>Events <span className="blockActionChip">{this.state.numLiked}</span> </span>
+              <span>Restaurants <span className="blockActionChip">{this.state.numLiked}</span> </span>
             </div>
+          </div>
+          <div className="innerLeftHeaderBlock">
             <div className="hr">
                 Settings
             </div>
-            <div className={`${styles.categorySettings} elevate-0`}>
-              <div className={styles.categorySetting}>
-                <div className={styles.categorySettingHeader}>
-                  Radius
-                </div>
-                <div className={styles.categorySettingInner}>
-                    <Slider
-                      valueLabelDisplay="off"
-                      step={5}
-                      marks={marks}
-                      value={this.state.radius}
-                      min={5}
-                      max={25}
-                      onChange={(e, val) => this.setState({radius: val})}
-                      onChangeCommitted={(e, val) => this.handleSettingsChange()}
-                    />
-                  <div className={`${styles.categoryChip} elevate-0`}>
-                    {`${this.state.radius} miles`}
-                  </div>
+            <div className="innerLeftHeaderBlockAction">
+              <div className="blockActionHeader">
+                Radius
+              </div>
+              <div className="blockActionContent">
+                  <Slider
+                    valueLabelDisplay="off"
+                    step={5}
+                    marks={marks}
+                    value={this.state.radius}
+                    min={5}
+                    max={25}
+                    onChange={(e, val) => this.setState({radius: val})}
+                    onChangeCommitted={(e, val) => this.handleSettingsChange()}
+                  />
+                <div className="blockActionChip" style={{marginLeft: 10}}>
+                  {`${this.state.radius} miles`}
                 </div>
               </div>
             </div>
-            <div className={`${styles.categorySettings} elevate-0`}>
-              <div className={styles.categorySetting}>
-                <div className={styles.categorySettingHeader}>
+            <div className="innerLeftHeaderBlockAction">
+              <div className="blockActionHeader">
                   Price
-                </div>
-                
               </div>
             </div>
           </div>
-          <div className="hr">
-              Friends
-          </div>
-          <div className={styles.headerBottom}>
+          <div className="innerLeftHeaderBlock">
+            <div className="hr">
+                Friends
+            </div>
             <div className={`${styles.friends} elevate-0`}>
                 {this.props.friends.map((friend) => (
                   <Friend
@@ -236,10 +232,9 @@ class Category extends Component {
             </div>
           </div>
         </div>
-        <div className={styles.categoryActions}>
-          
-          <div className={styles.meetups}>
-            <div className={styles.headerTitle}>
+        <div className="innerRight">
+          <div className="innerRightBlock">
+            <div className="innerRightBlockHeader">
               <div className="hr" style={{fontSize: ".9rem"}}>
                   Restaurants Near You
               </div>
@@ -257,8 +252,8 @@ class Category extends Component {
               </Grid>
             }
           </div>
-          <div className={styles.meetups}>
-              <div className={styles.headerTitle}>
+          <div className="innerRightBlock">
+              <div className="innerRightBlockHeader">
                 <div className="hr" style={{fontSize: ".9rem"}}>
                   Meetups Near You
                 </div>

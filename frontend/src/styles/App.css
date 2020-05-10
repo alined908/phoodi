@@ -302,12 +302,13 @@ body {
 
 .innerLeft {
   display: flex;
-  padding: 1rem 0.5rem;
-  margin: 1.5rem;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
   font-size: 1.75rem;
   flex-direction: column;
-  width: 300px;
+  width: 330px;
   overflow: auto;
+  border-right: 1px solid #e3e3e3;
 }
 
 .innerLeft::-webkit-scrollbar{
@@ -321,7 +322,7 @@ body {
   font-size: 1.2rem;
   background-color: white;
   justify-content: space-between;
-  padding: 1rem;
+  padding: .75rem 1rem;
   box-shadow: var(--shadow-0);
 }
 
@@ -362,7 +363,7 @@ body {
   white-space:nowrap;
   box-shadow: var(--shadow-0);
   max-width: 180px;
-  min-width: 60px;
+  min-width: 50px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -382,12 +383,11 @@ body {
     display: flex;
     flex: 1;
     padding: 0 1.5rem;
-    border-left: 1px solid #e3e3e3;
     flex-direction: column;
-    overflow-y: auto;
+    position: relative;
 }
 
-.innerRight::-webkit-scrollbar{
+.innerRightBlock::-webkit-scrollbar{
   display: none;
 }
 
@@ -396,6 +396,7 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
+  overflow-y: auto;
 }
 
 .innerRightBlockHeader {

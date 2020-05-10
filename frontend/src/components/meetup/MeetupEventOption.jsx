@@ -61,7 +61,7 @@ class MeetupEventOption extends Component {
 
   handleClick = (status) => {
     //If vote is ban and option vote is not ban and option is not banned and already used ban
-    if (!this.props.isUserMember) {
+    if (!this.props.isUserMember || this.props.isPast) {
       return;
     }
     let check = true;

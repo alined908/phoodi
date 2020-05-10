@@ -1,4 +1,4 @@
-# Phoodi
+# Phoodi [![Build Status](https://travis-ci.com/alined908/phoodi.svg?token=PvKqjKHMMeoZSCY5YeNS&branch=master)](https://travis-ci.com/github/alined908/phoodi)
 **Prototype** @ https://phoodie.me
 
 The purpose of the application is to allow friend groups to schedule meetups and decide where to eat quickly.  We always run into the problem where no one knows what to eat, where to eat, and when to eat.  The hope is that this will simplify the process.  Eventually, the goal is to connect people with other nearby people that share common food interests and hobbies. Use cases of this includes college campuses, metropolitan cities, etc. The end goal is to recreate a more social Yelp.
@@ -85,6 +85,7 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Redis** - Channel layer for pub/sub
 * **Yelp Api** - Generate restaurants
 * **Material UI** - Design
+* **Travis** - CI
 
 ## Author
 * **Daniel Lee** 

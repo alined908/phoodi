@@ -289,11 +289,8 @@ class MeetupEvent extends Component {
                   key={key}
                   item
                   id={`option-${key}`}
-                  justify={index % 2 === 0 ? "flex-end" : "flex-start"}
                   container
                   xs={12}
-                  sm={6}
-                  md={4}
                   lg={6}
                   xl={4}
                   className={styles.meetupEventOptionGrid}
@@ -301,6 +298,7 @@ class MeetupEvent extends Component {
                   <MeetupEventOption
                     socket={this.props.socket}
                     full={true}
+                    isPast={this.props.isPast}
                     isUserMember={this.props.isUserMember}
                     event={this.props.event.id}
                     meetup={this.props.uri}
@@ -348,6 +346,7 @@ class MeetupEvent extends Component {
               socket={this.props.socket}
               isUserMember={this.props.isUserMember}
               full={false}
+              isPast={this.props.isPast}
               event={this.props.event.id}
               meetup={this.props.uri}
               optionId={chosen.id}

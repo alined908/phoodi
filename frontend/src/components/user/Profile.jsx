@@ -56,6 +56,9 @@ class Profile extends Component {
       this.props.getPreferences(this.props.match.params.id);
       this.getInformation();
     }
+    else if (JSON.stringify(this.props.user) !== JSON.stringify(prevProps.user)){
+      this.getInformation();
+    }
   }
 
   getInformation = async () => {

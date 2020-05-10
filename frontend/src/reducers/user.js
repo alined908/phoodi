@@ -21,7 +21,7 @@ export default function (state = userDefaultState, action) {
       // console.log("Done refreshing token reducer")
       return { ...state, freshTokenPromise: null };
     case types.EDIT_USER:
-      return { ...state, user: { ...action.payload } };
+      return { ...state, user: { ...action.payload,  settings: {...state.user.settings}} };
     case types.ADD_SETTINGS:
       return {
         ...state,
