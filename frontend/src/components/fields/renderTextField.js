@@ -8,11 +8,9 @@ export default ({
   meta: { touched, error, invalid, warning },
   ...custom
 }) => {
-  const customFont = { fontSize: 14, fontFamily: "Lato", fontWeight: "600" };
+  const customFont = { fontSize: 14};
   const customFontSmall = {
     fontSize: 11,
-    fontFamily: "Lato",
-    fontWeight: "600",
     height: 15,
   };
   var displayError = touched && error && error.length > 0;

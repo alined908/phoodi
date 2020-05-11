@@ -20,7 +20,7 @@ const useMeasure = () => {
   useEffect(() => {
     if (ref.current) ro.observe(ref.current);
     return () => ro.disconnect();
-  }, []);
+  }, [ro]);
   return [{ ref }, bounds];
 };
 
@@ -98,39 +98,35 @@ const TreeNode = memo(
 const MeetupTree = (props) => (
   <div className={styles.tree}>
     {props.initialized && props.meetup.events && (
-      <>
-        Outline
+      <TreeNode
+        meetup={props.meetup}
+        element={props.meetup}
+        type="meetup"
+        defaultOpen
+      >
         <TreeNode
           meetup={props.meetup}
-          element={props.meetup}
-          type="meetup"
+          element="Events"
+          type="section"
           defaultOpen
         >
-          <TreeNode meetup={props.meetup} element="Members" type="section" />
-          <TreeNode
-            meetup={props.meetup}
-            element="Events"
-            type="section"
-            defaultOpen
-          >
-            {props.sortEvents(props.meetup.events).map((event, index) => {
-              const eventObj = props.meetup.events[event];
-              const options = Object.keys(eventObj.options);
-              return (
-                <TreeNode meetup={props.meetup} element={eventObj} type="event">
-                  {options.map((key) => (
-                    <TreeNode
-                      type="option"
-                      meetup={props.meetup}
-                      element={eventObj.options[key]}
-                    />
-                  ))}
-                </TreeNode>
-              );
-            })}
-          </TreeNode>
+          {props.sortEvents(props.meetup.events).map((event, index) => {
+            const eventObj = props.meetup.events[event];
+            const options = Object.keys(eventObj.options);
+            return (
+              <TreeNode meetup={props.meetup} element={eventObj} type="event">
+                {options.map((key) => (
+                  <TreeNode
+                    type="option"
+                    meetup={props.meetup}
+                    element={eventObj.options[key]}
+                  />
+                ))}
+              </TreeNode>
+            );
+          })}
         </TreeNode>
-      </>
+      </TreeNode>
     )}
   </div>
 );

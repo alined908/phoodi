@@ -41,6 +41,10 @@ const useStyles = makeStyles((theme) => ({
   check: {
     color: green[500],
   },
+  listItem: {
+    boxShadow: "var(--shadow-0)",
+    backgroundColor: "white"
+  }
 }));
 
 const MeetupFriend = (props) => {
@@ -70,7 +74,7 @@ const MeetupFriend = (props) => {
 
   return (
     <Link to={`/profile/${props.friend.id}`}>
-      <ListItem>
+      <ListItem className={classes.listItem}>
         <ListItemAvatar>
           <Avatar src={props.friend.avatar}>
             {props.friend.first_name.charAt(0)}

@@ -30,8 +30,7 @@ before_script:
   - echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> .env
   - echo "AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}" >> .env
   - echo "YELP_API_KEY=${YELP_API_KEY}" >> .env
-  - echo "BASE_URL=${BASE_URL}" >> .env
-  - echo "BASE_DEV_URL=${BASE_DEV_URL}" >> .env
+  - echo "DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}" >> .env
   - cat .env
   - docker-compose build
   - docker-compose up -d --scale nginx=0

@@ -4,16 +4,14 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  CircularProgress,
   Button,
   Grid,
-  TextField,
 } from "@material-ui/core";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { axiosClient } from "../../accounts/axiosClient";
-import { renderTextField } from "../components";
+import { renderTextField, Rating } from "../components";
 import styles from "../../styles/meetup.module.css";
 
 const ratings = {
@@ -32,14 +30,14 @@ const ratings = {
 const validate = (values) => {
   const errors = {};
 
-  // if(!values.text){
-  //     errors.text = "Text is required."
-  // }
-  // else if (values.text.length > 1000){
-  //     errors.text =  "Max Character Limit is 1000. Be concise!"
-  // } else if (values.text.length < 50) {
-  //     errors.text =  "Min Character Limit is 50. Type some more!"
-  // }
+  if(!values.text){
+      errors.text = "Text is required."
+  }
+  else if (values.text.length > 1000){
+      errors.text =  "Max Character Limit is 1000. Be concise!"
+  } else if (values.text.length < 50) {
+      errors.text =  "Min Character Limit is 50. Type some more!"
+  }
 
   return errors;
 };
@@ -93,7 +91,7 @@ class RestaurantReviewForm extends Component {
                 <Field
                   required
                   name="text"
-                  label="text"
+                  label="Text"
                   component={renderTextField}
                   {...{
                     multiline: true,
@@ -107,11 +105,12 @@ class RestaurantReviewForm extends Component {
                 <div className={styles.ratings}>
                   {Object.keys(ratings).map((rating) => (
                     <div
-                      className={styles.rating}
+                      className={`${styles.rating} ${this.state.rating === rating ? styles.ratingSelected : ""}`}
                       onClick={() => this.decideRating(rating)}
                     >
-                      {this.state.rating === rating && "Selected"}
-                      <span className={styles.ratingScore}>{rating}</span>
+                      <span className={styles.ratingScore}>
+                        <Rating rating={rating}/>
+                      </span>
                       <span className={styles.ratingDescription}>
                         {ratings[rating]}
                       </span>
@@ -153,5 +152,6 @@ export default compose(
   connect(mapStateToProps),
   reduxForm({
     form: "review",
+    validate
   })
 )(RestaurantReviewForm);

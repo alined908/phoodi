@@ -11,12 +11,10 @@
 }
 
 .DateInput {
-    border-radius: 5px;
     overflow: hidden;
     -webkit-box-shadow: var(--shadow-0) !important;
     box-shadow: var(--shadow-0) !important;
 }
-
 
 .DateInput_input {
     text-align: center;

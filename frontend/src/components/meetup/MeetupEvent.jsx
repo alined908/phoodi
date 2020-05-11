@@ -29,7 +29,6 @@ import {
   MeetupEventOption,
   Map,
   RestaurauntAutocomplete,
-  ProgressIcon,
   MeetupEventForm,
 } from "../components";
 import { ReactComponent as Crown } from "../../assets/svgs/crown.svg";
@@ -285,28 +284,15 @@ class MeetupEvent extends Component {
           {keys.length > 0 ? (
             <Grid justify="center" container spacing={3}>
               {keys.map((key, index) => (
-                <Grid
-                  key={key}
-                  item
-                  id={`option-${key}`}
-                  justify={index % 2 === 0 ? "flex-end" : "flex-start"}
-                  container
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  lg={6}
-                  xl={4}
-                  className={styles.meetupEventOptionGrid}
-                >
-                  <MeetupEventOption
-                    socket={this.props.socket}
-                    full={true}
-                    isUserMember={this.props.isUserMember}
-                    event={this.props.event.id}
-                    meetup={this.props.uri}
-                    optionId={key}
-                  />
-                </Grid>
+                <MeetupEventOption
+                  socket={this.props.socket}
+                  full={true}
+                  isPast={this.props.isPast}
+                  isUserMember={this.props.isUserMember}
+                  event={this.props.event.id}
+                  meetup={this.props.uri}
+                  optionId={key}
+                />
               ))}
             </Grid>
           ) : (
@@ -348,6 +334,7 @@ class MeetupEvent extends Component {
               socket={this.props.socket}
               isUserMember={this.props.isUserMember}
               full={false}
+              isPast={this.props.isPast}
               event={this.props.event.id}
               meetup={this.props.uri}
               optionId={chosen.id}

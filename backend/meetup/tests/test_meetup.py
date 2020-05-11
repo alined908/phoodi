@@ -75,7 +75,7 @@ class MeetupTest(TestCase):
             title="Event",
             distance=20000,
             price="1, 2",
-            start=now().replace(hour=14),
+            start=now().replace(hour=1),
             entries={"desserts": True},
             random=True,
         )
@@ -113,7 +113,7 @@ class MeetupTest(TestCase):
             title="Event",
             distance=20000,
             price="1, 2",
-            start=now().replace(hour=14),
+            start=now().replace(hour=1),
             entries={"desserts": True},
             random=True,
         )
@@ -151,7 +151,7 @@ class MeetupTest(TestCase):
             title="Event",
             distance=20000,
             price="1, 2",
-            start=now().replace(hour=14),
+            start=now().replace(hour=1),
             entries={"desserts": True},
             random=True,
         )
@@ -286,14 +286,14 @@ class MeetupEventTest(TestCase):
             title="Event",
             distance=20000,
             price="1, 2",
-            start=now().replace(hour=14),
+            start=now().replace(hour=1),
             entries=self.entries,
             random=True,
         )
         self.option = self.event.options.first()
         self.valid_payload = {
-            "start": now().replace(hour=14),
-            "end": now().replace(hour=14),
+            "start": now().replace(hour=1),
+            "end": now().replace(hour=2),
             "title": "Hello",
             "distance": 20000,
             "price": "1, 2",

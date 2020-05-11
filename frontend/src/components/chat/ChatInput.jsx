@@ -99,7 +99,7 @@ class ChatInput extends Component {
             <div className={styles.emojiIcon} onClick={this.showEmojis}>
               {String.fromCodePoint(0x1f62d)}
             </div>
-            <div className={`${styles.emojiPicker} elevate`}>
+            <div className={`${styles.emojiPicker} elevate`} style={this.props.isMeetup ? {left: -170} : {}}>
               <Picker
                 ref={this.emojiPicker}
                 title="Pick your emoji…"

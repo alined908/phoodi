@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Avatar, IconButton, Tooltip, Paper } from "@material-ui/core";
+import { Avatar, IconButton, Tooltip} from "@material-ui/core";
 import { axiosClient } from "../../accounts/axiosClient";
 import {
   getPreferences,
@@ -12,7 +12,6 @@ import { Link } from "react-router-dom";
 import {
   Lock as LockIcon,
   LockOpen as LockOpenIcon,
-  Search as SearchIcon,
   Edit as EditIcon,
   PersonAdd as PersonAddIcon,
 } from "@material-ui/icons";
@@ -54,6 +53,9 @@ class Profile extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.match.params.id !== prevProps.match.params.id) {
       this.props.getPreferences(this.props.match.params.id);
+      this.getInformation();
+    }
+    else if (JSON.stringify(this.props.user) !== JSON.stringify(prevProps.user)){
       this.getInformation();
     }
   }

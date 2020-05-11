@@ -13,6 +13,7 @@ import {
   DialogActions,
   DialogTitle,
   DialogContent,
+  CircularProgress
 } from "@material-ui/core";
 import { ReactComponent as Together } from "../../assets/svgs/undraw_eattogether.svg";
 import { ReactComponent as Bamboo } from "../../assets/svgs/bamboo-dark.svg";
@@ -55,11 +56,13 @@ class RegisterPage extends Component {
     this.state = {
       image: null,
       imageURL: "",
+      isSubmitting: false
     };
     this.handleImageChange = this.handleImageChange.bind(this);
   }
 
-  onSubmit = (formProps) => {
+  onSubmit = async (formProps) => {
+    this.setState({isSubmitting: true})
     let data = new FormData();
     for (var key in formProps) {
       data.append(key.toString(), formProps[key]);
@@ -68,25 +71,27 @@ class RegisterPage extends Component {
       data.append("avatar", this.state.image, this.state.image.name);
     }
 
-    let redirect;
-    if (this.props.location.state && this.props.location.state.from) {
-      redirect = () => {
-        this.props.history.push(this.props.location.state.from);
-      };
-    } else {
-      redirect = () => {
-        this.props.history.push("/meetups");
-      };
-    }
+    
     if (this.props.type === "create") {
-      this.props.signup(data, redirect);
+      let redirect;
+      if (this.props.location && this.props.location.state && this.props.location.state.from) {
+        redirect = () => {
+          this.props.history.push(this.props.location.state.from);
+        };
+      } else {
+        redirect = () => {
+          this.props.history.push("/meetups");
+        };
+      }
+      await this.props.signup(data, redirect);
     }
 
     if (this.props.type === "edit") {
-      this.props.editUser(data, this.props.user.id, () =>
+      await this.props.editUser(data, this.props.user.id, () =>
         this.props.handleClose()
       );
     }
+    this.setState({isSubmitting: false})
   };
 
   componentWillUnmount() {
@@ -170,7 +175,7 @@ class RegisterPage extends Component {
                       label="Password"
                     />
                   </Grid>
-                  {this.props.errorMessage && (
+                  {!this.props.successMessage && this.props.errorMessage && (
                     <Grid item xs={12}>
                       <div className={styles.error}>
                         {this.props.errorMessage}
@@ -185,15 +190,20 @@ class RegisterPage extends Component {
                     </Grid>
                   )}
                 </Grid>
-                <div className={styles.fab}>
+                <div className={`${styles.fab} ${styles.loading}`}>
                   <Fab
                     type="submit"
                     variant="extended"
                     color="primary"
                     aria-label="login"
+                    className={this.state.isSubmitting && styles.fabSubmitting}
+                    disabled={submitting || invalid || this.state.isSubmitting}
                   >
                     Register
                   </Fab>
+                  {this.state.isSubmitting && (
+                    <CircularProgress size={20} className={styles.progress} />
+                  )}
                 </div>
               </form>
               <div className={styles.bottom}>
@@ -297,14 +307,19 @@ class RegisterPage extends Component {
                 >
                   Close
                 </Button>
-                <Button
-                  type="submit"
-                  color="primary"
-                  aria-label="add"
-                  disabled={invalid || submitting}
-                >
-                  Edit Profile
-                </Button>
+                <div className={styles.loading}>
+                  <Button
+                    type="submit"
+                    color="primary"
+                    aria-label="add"
+                    disabled={invalid || submitting}
+                  >
+                    Edit Profile
+                  </Button>
+                  {this.state.isSubmitting && (
+                    <CircularProgress size={20} className={styles.progress} />
+                  )}
+                </div>
               </DialogActions>
             </form>
           </Dialog>

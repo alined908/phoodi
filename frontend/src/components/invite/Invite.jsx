@@ -7,7 +7,6 @@ import {
   removeNotifs,
 } from "../../actions";
 import { inviteType, inviteStatus } from "../../constants/default-states";
-import { Paper } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { invitePropType } from "../../constants/prop-types";

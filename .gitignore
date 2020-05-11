@@ -5,3 +5,5 @@
 .coverage
 *.rdb
 nginx/certs
+.vscode/
+.pytest_cache/

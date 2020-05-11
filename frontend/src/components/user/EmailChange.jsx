@@ -8,13 +8,10 @@ import { axiosClient } from "../../accounts/axiosClient";
 import { addGlobalMessage } from "../../actions";
 
 class EmailChange extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+  
   handleEmailChange = async (values) => {
     try {
-      const response = await axiosClient.post(
+      await axiosClient.post(
         `/auth/users/set_email/`,
         values,
         {

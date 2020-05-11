@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
     marginRight: theme.spacing(2),
   },
+  autocomplete: {
+    boxShadow: "none"
+  }
 }));
 
 export default function Location(props) {
@@ -93,6 +96,7 @@ export default function Location(props) {
 
   return (
     <Autocomplete
+      className={classes.autocomplete}
       getOptionLabel={(option) =>
         typeof option === "string" ? option : option.description
       }

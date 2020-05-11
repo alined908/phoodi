@@ -44,7 +44,8 @@ class Meetups extends Component {
       entries: [],
       preferences: [],
       clickedPreferences: [],
-      radius: props.user.settings.radius
+      radius: props.user.settings.radius,
+      overflow: true
     };
   }
 
@@ -126,7 +127,8 @@ class Meetups extends Component {
   };
 
   onFocusChange = (focusedInput) => {
-    this.setState({ focusedInput });
+    const overflow = focusedInput ? false : true
+    this.setState({ focusedInput, overflow });
   };
 
   isOutsideRange = (day) => {
@@ -233,171 +235,171 @@ class Meetups extends Component {
     };
 
     return (
-      <div className={styles.meetups}>
+      <div className="innerWrap">
         <Helmet>
           <meta charSet="utf-8" />
           <meta name="description" content="Meetups near you!" />
           <title>Meetups</title>
         </Helmet>
-        <div className={styles.meetupsCategories}>
-          <div className={styles.meetupsCategoriesInner}>
-            <div className={`${styles.meetupsCategoriesTop} elevate-0`}>
-              <div>Meetups</div>
-              
-                <Button
-                  aria-label="add-meetup"
-                  onClick={this.openFormModal}
-                  color="primary"
-                  variant="contained"
-                  size="small"
-                >
-                  Create
-                </Button>
-              
+        <div className="innerLeft" style={this.state.overflow ? {overflow: "auto"} : {overflow: "visible"}}>
+          <div className="innerLeftHeader">
+            <div>Meetups</div>
+            <Button
+              aria-label="add-meetup"
+              onClick={this.openFormModal}
+              color="primary"
+              variant="contained"
+              size="small"
+            >
+              Create
+            </Button>
+          </div>
+          <div className="innerLeftHeaderBlock">
+            <div className="hr">
+              Settings
             </div>
-            <div className={styles.settingsWrapper}>
-              <div className="hr">
-                Settings
+            <div className="innerLeftHeaderBlockAction">
+              <div className="blockActionHeader">
+                Type
               </div>
-              <div className={`${styles.setting}  elevate-0`}>
-                <div className={styles.settingHeader}>
-                  Type
-                </div>
-                <div className={styles.settingInner}>
-                  <div className={styles.meetupTypes}>
-                    <div 
-                      className={`${styles.meetupType} ${this.state.public ? styles.meetupTypeActive : ""} elevate-0`} 
-                      onClick={() => this.handleMeetupsType("public")} 
-                      aria-label="public-meetups"
-                    >
-                      Public
-                    </div>
-                    <div 
-                      className={`${styles.meetupType} ${this.state.public ? "" : styles.meetupTypeActive} elevate-0`} 
-                      onClick={() => this.handleMeetupsType("private")} 
-                      aria-label="private-meetups"
-                    >
-                      Private
-                    </div>
+              <div className="blockActionContent">
+                <div className={styles.meetupTypes}>
+                  <div 
+                    className={`${styles.meetupType} ${this.state.public ? styles.meetupTypeActive : ""} elevate-0`} 
+                    onClick={() => this.handleMeetupsType("public")} 
+                    aria-label="public-meetups"
+                  >
+                    Public
+                  </div>
+                  <div 
+                    className={`${styles.meetupType} ${this.state.public ? "" : styles.meetupTypeActive} elevate-0`} 
+                    onClick={() => this.handleMeetupsType("private")} 
+                    aria-label="private-meetups"
+                  >
+                    Private
                   </div>
                 </div>
-              </div> 
-              <div className={`${styles.setting}  elevate-0`}>
-                <div className={styles.settingHeader}>
-                  Dates
-                </div>
-                <div className={`${styles.settingInner} ${styles.calendar}`}>
-                  <DateRangePicker
-                    onDatesChange={this.onDatesChange}
-                    onFocusChange={this.onFocusChange}
-                    focusedInput={this.state.focusedInput}
-                    startDate={this.state.startDate}
-                    startDateId="unique_start_date_id"
-                    endDate={this.state.endDate}
-                    endDateId="unique_end_date_id"
-                    keepOpenOnDateSelect
-                    hideKeyboardShortcutsPanel
-                    minimumNights={0}
-                    daySize={50}
-                    isOutsideRange={
-                      this.state.public ? this.isOutsideRange : () => false
-                    }
-                    noBorder  
-                    displayFormat="MMM DD"
-                    small
-                  />
-                </div>
-              </div>   
-              <div className={`${styles.setting}  elevate-0`}>
-                <div className={styles.settingHeader}>
-                  Radius
-                </div>
-                <div className={styles.settingInner}>
-                    <Slider
-                      disabled={!this.state.public}
-                      valueLabelDisplay="off"
-                      step={5}
-                      marks={marks}
-                      value={this.state.radius}
-                      min={5}
-                      max={25}
-                      onChange={(e, val) => this.setState({radius: val})}
-                      onChangeCommitted={(e, val) => this.determineGetMeetups(this.state.public, this.state.entries)}
-                    />
-                  <div className={`${styles.categoryChip} elevate-0`} style={{marginLeft: '10px'}}>
-                      {this.state.public ? 
-                        <>
-                          {`${this.state.radius} miles`}
-                        </>
-                       : 
-                        <>X miles</>
-                      }
-                  </div>
-                </div>
-              </div>
-             
-              <div className={`${styles.setting}  elevate-0`} style={{marginBottom: 0}}>
-                <div className={styles.settingHeader}>
-                  Categories
-                </div>
-                <div className={styles.settingInner}>
-                  <div className={`${styles.meetupsSearchBar} elevate-0`}>
-                    <CategoryAutocomplete
-                      fullWidth={true}
-                      size="small"
-                      entries={this.state.entries}
-                      handleClick={this.onTagsChange}
-                      label="Search Categories..."
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="hr">
-                Preferences
-              </div>
-              <div className={styles.preferences}>
-                  {renderPreset()}
               </div>
             </div> 
-          </div>   
-        </div>
-        <div className={styles.meetupsInnerWrap}>
-          <div className="hr">
-            Meetups Near You
-          </div>
-          <div
-            className={styles.meetupsContainer}
-            style={{
-              minHeight: this.props.isMeetupsFetching
-                ? "calc(100% - 60px)"
-                : "0",
-            }}
-          >
-            {this.props.isMeetupsFetching && (
-              <div className="loading" style={{ height: "auto" }}>
-                <CircularProgress size={30}/>
+            <div className="innerLeftHeaderBlockAction">
+              <div className="blockActionHeader">
+                Dates
               </div>
-            )}
-            {!this.props.isMeetupsFetching && this.props.isMeetupsInitialized && (
-              <Grid container spacing={3}>
-                {meetups.map((meetup, i) => (
-                  <Grid key={meetup.id} item xs={12} lg={6} xl={4}>
-                    <Grow in={true} timeout={Math.max((i + 1) * 50, 500)}>
-                      <div className="meetups-cardwrapper">
-                        <MeetupCard key={meetup.id} meetup={meetup} />
-                      </div>
-                    </Grow>
-                  </Grid>
-                ))}
-              </Grid>
-            )}
-          </div>
+              <div className={`blockActionContent ${styles.calendar}`}>
+                <DateRangePicker
+                  onDatesChange={this.onDatesChange}
+                  onFocusChange={this.onFocusChange}
+                  focusedInput={this.state.focusedInput}
+                  startDate={this.state.startDate}
+                  startDateId="unique_start_date_id"
+                  endDate={this.state.endDate}
+                  endDateId="unique_end_date_id"
+                  keepOpenOnDateSelect
+                  hideKeyboardShortcutsPanel
+                  minimumNights={0}
+                  daySize={45}
+                  isOutsideRange={
+                    this.state.public ? this.isOutsideRange : () => false
+                  }
+                  noBorder  
+                  displayFormat="MMM DD"
+                  small
+                />
+              </div>
+            </div>   
+            <div className="innerLeftHeaderBlockAction">
+              <div className="blockActionHeader">
+                Radius
+              </div>
+              <div className="blockActionContent">
+                  <Slider
+                    disabled={!this.state.public}
+                    valueLabelDisplay="off"
+                    step={5}
+                    marks={marks}
+                    value={this.state.radius}
+                    min={5}
+                    max={25}
+                    onChange={(e, val) => this.setState({radius: val})}
+                    onChangeCommitted={(e, val) => this.determineGetMeetups(this.state.public, this.state.entries)}
+                  />
+                <div className="blockActionChip" style={{marginLeft: '10px'}}>
+                    {this.state.public ? 
+                      <>
+                        {`${this.state.radius} miles`}
+                      </>
+                      : 
+                      <>X miles</>
+                    }
+                </div>
+              </div>
+            </div>
+            
+            <div className="innerLeftHeaderBlockAction" style={{marginBottom: 0}}>
+              <div className="blockActionHeader">
+                Categories
+              </div>
+              <div className="blockActionContent">
+                <div className={`${styles.meetupsSearchBar} elevate-0`}>
+                  <CategoryAutocomplete
+                    fullWidth={true}
+                    size="small"
+                    entries={this.state.entries}
+                    handleClick={this.onTagsChange}
+                    label="Search Categories..."
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="hr">
+              Preferences
+            </div>
+            <div className={styles.preferences}>
+                {renderPreset()}
+            </div>
+          </div>  
         </div>
-        <MeetupForm
-            type="create"
-            handleClose={this.openFormModal}
-            open={this.state.newMeetupForm}
-          />
+        <div className="innerRight">
+          <div className="innerRightBlock">
+            <div className="innerRightBlockHeader">
+              <div className="hr">
+                Meetups Near You
+              </div>
+            </div>
+            <div
+              className={styles.meetupsContainer}
+              style={{
+                minHeight: this.props.isMeetupsFetching
+                  ? "calc(100% - 60px)"
+                  : "0",
+              }}
+            >
+              {this.props.isMeetupsFetching && (
+                <div className="loading" style={{ height: "auto" }}>
+                  <CircularProgress size={30}/>
+                </div>
+              )}
+              {!this.props.isMeetupsFetching && this.props.isMeetupsInitialized && (
+                <Grid container spacing={3}>
+                  {meetups.map((meetup, i) => (
+                    <Grid key={meetup.id} item xs={12} lg={6} xl={4}>
+                      <Grow in={true} timeout={Math.max((i + 1) * 50, 500)}>
+                        <div className="meetups-cardwrapper">
+                          <MeetupCard key={meetup.id} meetup={meetup} />
+                        </div>
+                      </Grow>
+                    </Grid>
+                  ))}
+                </Grid>
+              )}
+            </div>
+          </div>
+          <MeetupForm
+              type="create"
+              handleClose={this.openFormModal}
+              open={this.state.newMeetupForm}
+            />
+        </div>
       </div>
     );
   }

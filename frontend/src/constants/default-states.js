@@ -82,8 +82,8 @@ export const MuiTheme = {
     },
     MuiFab : {
         root: {
-            background: "rgba(10,10,10, .95) !important",
-            color: "white !important",
+            background: "rgba(10,10,10, .95)",
+            color: "white",
             '&:hover': {
                 background: "black !important"
             }

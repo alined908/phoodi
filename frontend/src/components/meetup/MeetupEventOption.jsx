@@ -61,7 +61,7 @@ class MeetupEventOption extends Component {
 
   handleClick = (status) => {
     //If vote is ban and option vote is not ban and option is not banned and already used ban
-    if (!this.props.isUserMember) {
+    if (!this.props.isUserMember || this.props.isPast) {
       return;
     }
     let check = true;
@@ -229,7 +229,7 @@ class MeetupEventOption extends Component {
             onMouseLeave={() => this.setState({hover: false})}
         >
           <Link to={`/restaurants/${data.url}`}>
-            <img className={styles.rstImg} src={data.yelp_image} />
+            <img alt={data.name} className={styles.rstImg} src={data.yelp_image} />
           </Link>
         </div>
         <div className={styles.rstCardBottom}>
@@ -322,17 +322,16 @@ class MeetupEventOption extends Component {
     return (
       <>
         {this.props.full ? 
-          <div className={styles.center}>
-            <div
-              className={`${styles.rstWrapper} ${
-                banned ? styles.banned : ""
-              } ${this.state.hover ? "elevate-2" : "elevate"}`}
-            >
-              {this.renderRestauraunt(data, this.props.full)}
-            </div>
+          <div
+            className={`${styles.rstWrapper} ${
+              banned ? styles.banned : ""
+            } ${this.state.hover ? "elevate-2" : "elevate"}`}
+            id={`option-${this.props.optionId}`}
+          >
+            {this.renderRestauraunt(data, this.props.full)}
           </div>
           :
-          <div className={`${styles.rstHorz} ${this.state.hover ? "elevate-2" : "elevate"}`}>
+          <div className={`${styles.rstHorz} ${this.state.hover ? "elevate-2" : "elevate"}`} id={`option-${this.props.optionId}`}>
             {this.renderRestauraunt(data, this.props.full)}
             <div className={styles.restaurantHorzInfo}>
               <div className={styles.rstHorzInfoEntry}>
