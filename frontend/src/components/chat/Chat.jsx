@@ -18,7 +18,7 @@ class Chat extends Component {
     super(props);
     this.state = {
       socket: new WebSocketService(),
-      nonMobile: window.matchMedia("(min-width: 768px)").matches,
+      isMobile: window.matchMedia("(max-width: 768px)").matches,
       showChat: this.props.match.params.uri ? true : false,
     };
     this.state.socket.addChatCallbacks(
@@ -28,8 +28,8 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    const handler = (e) => this.setState({ nonMobile: e.matches });
-    window.matchMedia("(min-width: 768px)").addListener(handler);
+    const handler = (e) => this.setState({ isMobile: e.matches });
+    window.matchMedia("(max-width: 768px)").addListener(handler);
     this.props.getRooms();
     if ("uri" in this.props.match.params) {
       this.getRelevantInfo(this.props.match.params.uri);
@@ -76,7 +76,7 @@ class Chat extends Component {
     return (
       <div
         className={`${styles.chat} ${
-          this.state.nonMobile ? "" : styles.chatMobile
+          this.state.isMobile ? styles.chatMobile : "" 
         }`}
       >
         <Helmet>
@@ -91,13 +91,13 @@ class Chat extends Component {
               show={!this.state.showChat}
               onShow={this.handleChatMobileShow}
               rooms={this.props.rooms}
-              mobile={!this.state.nonMobile}
+              mobile={this.state.isMobile}
               activeRoom={this.props.activeRoom}
             />
             <ChatWindow
               show={this.state.showChat}
               onHide={this.handleChatMobileHide}
-              mobile={!this.state.nonMobile}
+              mobile={this.state.isMobile}
               socket={this.state.socket}
               messages={this.props.messages}
               activeRoom={this.props.activeRoom}
@@ -110,12 +110,12 @@ class Chat extends Component {
               show={!this.state.showChat}
               activeRoom={null}
               rooms={this.props.rooms}
-              mobile={!this.state.nonMobile}
+              mobile={this.state.isMobile}
               onShow={this.handleChatMobileShow}
             />
             <ChatWindow
               show={this.state.showChat}
-              mobile={!this.state.nonMobile}
+              mobile={this.state.isMobile}
               messages={[]}
               activeRoom={null}
               socket={this.state.socket}

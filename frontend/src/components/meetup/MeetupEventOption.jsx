@@ -277,7 +277,7 @@ class MeetupEventOption extends Component {
                             
                         </MenuItem>
                     </a>
-                    {(isNotChosen && this.props.isUserMember) &&
+                    {(isNotChosen && this.props.isUserMember && !this.props.isPast) &&
                         <MenuItem onClick={(e) => {this.handleDeleteOption(); this.handleMenuClose(e);}}>
                             <ListItemIcon>
                                 <CloseIcon color="secondary" fontSize="small" />

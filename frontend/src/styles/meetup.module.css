@@ -122,8 +122,6 @@
 .preset {
   width: 100%;
   padding: 0 .25rem;
-  max-height: 200px;
-  overflow-y: auto;
 }
 
 .presetCategory {
@@ -152,6 +150,12 @@ background: var(--light-blue);
 .presetCategory img {
   width: auto;
   height: 20px;
+}
+
+.meetupCardWrapper {
+    max-width: 500px;
+    padding: 1rem;
+    flex: 1;
 }
 
 /* Meetup */
@@ -274,7 +278,6 @@ background: var(--light-blue);
     background-color: white;
     margin: 1rem;
 }
-
 
 .rstWrapper {
   display: flex;
@@ -506,12 +509,10 @@ background: var(--light-blue);
 
 /* MeetupChat */
 .meetupChatWrapper{
-    display: flex;
     align-items: center;
     border-left: 1px solid #e3e3e3;
-    border-right: 0;
-    padding: 1.5rem;
-    margin: 1.5rem 0;
+    border-right: 0 !important;
+    padding: 1rem 1.25rem !important;
 }
 
 .meetupChat {
@@ -754,6 +755,9 @@ background: var(--light-blue);
 
 }
 
+/* Mobile */
+
+
 @media only screen and (max-width: 768px) {
 
     .foursquare {
@@ -767,5 +771,9 @@ background: var(--light-blue);
 
     .secondHeader {
         padding: 0.7rem 1rem;
+    }
+
+    .meetupsContainer {
+        padding: 1.25rem 1.5rem;
     }
 }

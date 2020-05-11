@@ -61,3 +61,11 @@
     background: var(--background) !important;
     color:black;
 }
+
+@media only screen and (max-width: 370px) {
+    .DateRangePicker_picker {
+        top: 25px !important;
+        left: -35px !important;
+        transform: scale(.9) !important;
+    }
+}

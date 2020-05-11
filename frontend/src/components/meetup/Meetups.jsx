@@ -8,8 +8,12 @@ import {
   Avatar,
   CircularProgress,
   Button,
-  Slider
+  Slider,
+  BottomNavigation,
+  BottomNavigationAction,
+  Fab
 } from "@material-ui/core";
+import {Settings as SettingsIcon, Event as EventIcon, Add as AddIcon} from '@material-ui/icons'
 import moment from "moment";
 import PropTypes from "prop-types";
 import {
@@ -45,11 +49,15 @@ class Meetups extends Component {
       preferences: [],
       clickedPreferences: [],
       radius: props.user.settings.radius,
-      overflow: true
+      overflow: true,
+      isMobile: window.matchMedia("(max-width: 768px)").matches,
+      mobileTabIndex: 0
     };
   }
 
   async componentDidMount() {
+    const handler = (e) => this.setState({ isMobile: e.matches });
+    window.matchMedia("(max-width: 768px)").addListener(handler);
     await Promise.all([
       //this.props.getMeetups(),
       this.props.getMeetups({
@@ -209,6 +217,10 @@ class Meetups extends Component {
     }
   };
 
+  handleMobileTabChange = (e, newValue) => {
+    this.setState({mobileTabIndex: newValue})
+  }
+
   render() {
     const meetups = this.props.meetups;
 
@@ -235,24 +247,30 @@ class Meetups extends Component {
     };
 
     return (
-      <div className="innerWrap">
+      <div className={`innerWrap  ${this.state.isMobile ? "innerWrap-mobile": ""}`}>
         <Helmet>
           <meta charSet="utf-8" />
           <meta name="description" content="Meetups near you!" />
           <title>Meetups</title>
         </Helmet>
-        <div className="innerLeft" style={this.state.overflow ? {overflow: "auto"} : {overflow: "visible"}}>
+        <div 
+          className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 0 ? "innerLeft-show" : ""}`} 
+          style={this.state.overflow ? {overflow: "auto"} : {overflow: "visible"}}
+        >
           <div className="innerLeftHeader">
             <div>Meetups</div>
-            <Button
-              aria-label="add-meetup"
-              onClick={this.openFormModal}
-              color="primary"
-              variant="contained"
-              size="small"
-            >
-              Create
-            </Button>
+            {!this.state.isMobile && 
+              <Button
+                aria-label="add-meetup"
+                onClick={this.openFormModal}
+                color="primary"
+                variant="contained"
+                size="small"
+              >
+                Create
+              </Button>
+            }
+            
           </div>
           <div className="innerLeftHeaderBlock">
             <div className="hr">
@@ -298,6 +316,7 @@ class Meetups extends Component {
                   hideKeyboardShortcutsPanel
                   minimumNights={0}
                   daySize={45}
+                  numberOfMonths={this.state.isMobile ? 1 : 2}
                   isOutsideRange={
                     this.state.public ? this.isOutsideRange : () => false
                   }
@@ -359,7 +378,7 @@ class Meetups extends Component {
             </div>
           </div>  
         </div>
-        <div className="innerRight">
+        <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 0 ? "" : "innerRight-show"}`}>
           <div className="innerRightBlock">
             <div className="innerRightBlockHeader">
               <div className="hr">
@@ -380,26 +399,41 @@ class Meetups extends Component {
                 </div>
               )}
               {!this.props.isMeetupsFetching && this.props.isMeetupsInitialized && (
-                <Grid container spacing={3}>
+                <Grid container justify="space-evenly" spacing={3}>
                   {meetups.map((meetup, i) => (
-                    <Grid key={meetup.id} item xs={12} lg={6} xl={4}>
-                      <Grow in={true} timeout={Math.max((i + 1) * 50, 500)}>
-                        <div className="meetups-cardwrapper">
-                          <MeetupCard key={meetup.id} meetup={meetup} />
-                        </div>
-                      </Grow>
-                    </Grid>
+                    <Grow in={true} timeout={Math.max((i + 1) * 50, 500)}>
+                      <div className={styles.meetupCardWrapper}>
+                        <MeetupCard key={meetup.id} meetup={meetup} />
+                      </div>
+                    </Grow>
                   ))}
                 </Grid>
               )}
             </div>
           </div>
-          <MeetupForm
-              type="create"
-              handleClose={this.openFormModal}
-              open={this.state.newMeetupForm}
-            />
         </div>
+        <MeetupForm
+          type="create"
+          handleClose={this.openFormModal}
+          open={this.state.newMeetupForm}
+          isMobile={this.state.isMobile}
+        />
+        {this.state.isMobile && 
+          <div className="innerWrap-mobileControl">
+            <BottomNavigation value={this.state.mobileTabIndex} onChange={this.handleMobileTabChange} showLabels>
+              <BottomNavigationAction label="Settings" icon={<SettingsIcon/>}/>
+              <Fab
+                className="mobileControl-Fab"
+                color="primary"
+                size="medium"
+                onClick={this.openFormModal}
+              >
+                  <AddIcon/>
+              </Fab>
+              <BottomNavigationAction label="Meetups" icon={<EventIcon/>}/>
+            </BottomNavigation>
+          </div>
+        }
       </div>
     );
   }
