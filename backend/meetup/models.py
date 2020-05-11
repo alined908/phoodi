@@ -422,6 +422,7 @@ class MeetupEvent(models.Model):
             "open_at": int(format(self.start, "U")),
         }
         response = requests.get(url=url, params=params, headers=headers)
+
         options = []
         if "businesses" in response.json():
             options = response.json()["businesses"]
