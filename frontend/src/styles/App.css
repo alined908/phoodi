@@ -456,6 +456,10 @@ body {
   .innerRightBlockHeader {
     padding: 0;
   }
+
+  .MuiSnackbar-root {
+    bottom: 65px !important;
+  }
 }
 
 @media only screen and (max-width: 600px) {
