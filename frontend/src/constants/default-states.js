@@ -179,6 +179,17 @@ export const MuiTheme = {
         item: {
             height: "100%;"
         }
+    },
+    MuiFormControl: {
+        root: {
+            width: "100%"
+        }
+    },
+    MuiSelect : {
+        selectMenu: {
+            display: "flex",
+            alignItems: "center"
+        }
     }
   },
 };

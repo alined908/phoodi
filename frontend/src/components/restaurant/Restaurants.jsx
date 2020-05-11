@@ -215,7 +215,7 @@ class Restaurants extends Component {
                                 </div>
                                 }
                             {!this.state.isRestaurantsFetching && 
-                                <Grid container justify="center" spacing={1}>
+                                <Grid container justify="space-evenly" spacing={1}>
                                     {this.state.restaurants.map((rst) => (
                                         <RestaurantCard data={rst}/>
                                     ))}

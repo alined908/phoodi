@@ -6,6 +6,9 @@ import {
   DialogActions,
   Button,
   Grid,
+  InputLabel,
+  FormControl,
+  Select, MenuItem, ListItemIcon, Typography
 } from "@material-ui/core";
 import { compose } from "redux";
 import { connect } from "react-redux";
@@ -46,7 +49,7 @@ class RestaurantReviewForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rating: null,
+      rating: null
     };
   }
 
@@ -71,15 +74,15 @@ class RestaurantReviewForm extends Component {
     this.props.handleClose();
   };
 
-  decideRating = (rating) => {
-    this.setState({ rating });
+  decideRating = (e) => {
+    this.setState({ rating : Number(e.target.value) || null});
   };
 
   render() {
     const { handleSubmit, submitting, invalid } = this.props;
 
     return (
-      <Dialog open={true} onClose={this.props.handleClose} maxWidth="md">
+      <Dialog open={true} onClose={this.props.handleClose} maxWidth="md" fullWidth={true}>
         <DialogTitle>Review - {this.props.restaurant.name}</DialogTitle>
         <form
           className={styles.reviewForm}
@@ -87,37 +90,36 @@ class RestaurantReviewForm extends Component {
         >
           <DialogContent dividers>
             <Grid container spacing={1}>
-              <Grid item xs={8}>
-                <Field
-                  required
-                  name="text"
-                  label="Text"
-                  component={renderTextField}
-                  {...{
-                    multiline: true,
-                    rows: 20,
-                    variant: "filled",
-                    fullWidth: true,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <div className={styles.ratings}>
-                  {Object.keys(ratings).map((rating) => (
-                    <div
-                      className={`${styles.rating} ${this.state.rating === rating ? styles.ratingSelected : ""}`}
-                      onClick={() => this.decideRating(rating)}
-                    >
-                      <span className={styles.ratingScore}>
-                        <Rating rating={rating}/>
-                      </span>
-                      <span className={styles.ratingDescription}>
-                        {ratings[rating]}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </Grid>
+              <div className={styles.ratings}>
+                <span style={{marginBottom: "1rem"}}>Food Score </span>
+                <FormControl variant="outlined" size="small">  
+                  <InputLabel>Rating</InputLabel>
+                  <Select value={this.state.rating} label="Rating" onChange={this.decideRating}>
+                    {Object.keys(ratings).reverse().map((rating) => (
+                      <MenuItem value={rating}>
+                        <ListItemIcon className={styles.ratingScore}>
+                          <Rating rating={rating}/>
+                        </ListItemIcon>
+                        <Typography variant="body2" noWrap>
+                          {ratings[rating]}
+                        </Typography>
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </div>
+              <Field
+                required
+                name="text"
+                label="Text"
+                component={renderTextField}
+                {...{
+                  multiline: true,
+                  rows: 20,
+                  variant: "filled",
+                  fullWidth: true,
+                }}
+              />
             </Grid>
           </DialogContent>
           <DialogActions>

@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { axiosClient } from "../../accounts/axiosClient";
 import { RestaurantThread, Map, Rating, RestaurantReviewForm } from "../components";
 import { history } from "../MeetupApp";
-import {Tooltip, Avatar, Button} from '@material-ui/core'
+import {Info as InfoIcon, Create as CreateIcon, Comment as CommentIcon} from '@material-ui/icons'
+import {Tooltip, Avatar, Button, BottomNavigation, BottomNavigationAction, Fab} from '@material-ui/core'
 import styles from "../../styles/meetup.module.css";
 
 class Restaurant extends Component {
@@ -11,11 +12,15 @@ class Restaurant extends Component {
     this.state = {
       restaurant: null,
       reviews: [],
-      showReviewForm: false
+      showReviewForm: false,
+      isMobile: window.matchMedia("(max-width: 768px)").matches,
+      mobileTabIndex: 0
     };
   }
 
   async componentDidMount() {
+    const handler = (e) => this.setState({ isMobile: e.matches });
+    window.matchMedia("(max-width: 768px)").addListener(handler);
     try {
       const [restaurant, reviews] = await Promise.all([
         axiosClient.get(
@@ -50,26 +55,32 @@ class Restaurant extends Component {
     this.setState({ reviewForm: !this.state.reviewForm });
   };
 
+  handleMobileTabChange = (e, newValue) => {
+    this.setState({mobileTabIndex: newValue})
+  }
+
   render() {
     const rst = this.state.restaurant;
-    console.log(this.state.reviews)
+ 
     return (
-      <div className="innerWrap">
-        {rst && <div className="innerLeft">
+      <div className={`innerWrap  ${this.state.isMobile ? "innerWrap-mobile": ""}`}>
+        {rst && <div className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 0 ? "innerLeft-show" : ""}`}>
           <div className="innerLeftHeader">
               {rst.name}
               <Rating rating={rst.rating}/>
             </div>
-            <div className="innerLeftHeaderBlock">
-              <div className="hr">Actions</div>
-              <div className="innerLeftHeaderBlockAction">
-                <div className="blockActionContent">
-                <Button onClick={this.openFormModal} color="primary" size="small" variant="contained">
-                  Add Review
-                </Button>
+            {!this.state.isMobile &&
+              <div className="innerLeftHeaderBlock">
+                <div className="hr">Actions</div>
+                <div className="innerLeftHeaderBlockAction">
+                  <div className="blockActionContent">
+                  <Button onClick={this.openFormModal} color="primary" size="small" variant="contained">
+                    Add Review
+                  </Button>
+                  </div>
                 </div>
-              </div>
-           </div>
+            </div>
+            }
             <div className="innerLeftHeaderBlock">
               <div className="hr">Statistics</div>
               <div className="innerLeftHeaderBlockAction">
@@ -123,7 +134,7 @@ class Restaurant extends Component {
                   </Tooltip>
                 </div>
               </div>
-              <div className={styles.rstMap}>
+              <div className={styles.rstMap} style={this.state.isMobile ? {height: 350} : {}}>
                   <Map
                     location={{
                       latitude: rst.latitude,
@@ -135,7 +146,7 @@ class Restaurant extends Component {
             </div>
         </div> 
         }
-        <div className="innerRight">
+        <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 0 ? "" : "innerRight-show"}`}>
           <div className="innerRightBlock">
             <div className="innerRightBlockHeader">
               <div className="hr">Reviews</div>
@@ -153,6 +164,22 @@ class Restaurant extends Component {
             handleClose={this.openFormModal}
           />
         )}
+        {this.state.isMobile && 
+          <div className="innerWrap-mobileControl">
+            <BottomNavigation value={this.state.mobileTabIndex} onChange={this.handleMobileTabChange} showLabels>
+                <BottomNavigationAction label="Info" icon={<InfoIcon/>}/>
+                <Fab
+                  className="mobileControl-Fab"
+                  color="primary"
+                  size="medium"
+                  onClick={this.openFormModal}
+                >
+                    <CreateIcon/>
+                </Fab>
+                <BottomNavigationAction label="Reviews" icon={<CommentIcon/>}/>
+            </BottomNavigation>
+          </div>
+        }
       </div>
     );
   }

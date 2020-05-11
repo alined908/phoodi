@@ -702,13 +702,15 @@ background: var(--light-blue);
 
 .reviewForm {
   width: 100%;
-  min-width: 700px;
 }
 
 .ratings {
   display: flex;
-  flex-direction: column-reverse;
-  padding: 0 1rem;
+  flex-direction: column;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  white-space: nowrap;
 }
 
 .rating {
