@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Tooltip, makeStyles, Badge } from "@material-ui/core";
+import { Avatar, Tooltip, makeStyles } from "@material-ui/core";
 import AvatarGroup from "@material-ui/lab/AvatarGroup";
 import { connect } from "react-redux";
 import { userPropType } from "../../constants/prop-types";
@@ -24,12 +24,12 @@ const GroupAvatars = (props) => {
   const classes = useStyles();
   const members = props.members;
   const user = props.user;
-  var userInMembers = false;
+  // let userInMembers = false;
 
-  for (var i = 0; i < members.length; i++) {
+  for (let i = 0; i < members.length; i++) {
     if (members[i].id === user.id) {
-      userInMembers = true;
-      var b = members[i];
+      // userInMembers = true;
+      let b = members[i];
       members[i] = members[0];
       members[0] = b;
       break;

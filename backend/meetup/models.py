@@ -4,7 +4,6 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.utils.timezone import now
-from backend.settings import YELP_API_KEY, BASE_URL, BASE_DEV_URL
 from django.utils.dateformat import format
 from uuid import uuid4
 from django.core.exceptions import ObjectDoesNotExist
@@ -24,8 +23,9 @@ from ipware import get_client_ip
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.template.loader import render_to_string
 
+BASE_URL = settings.BASE_URL
 url = "https://api.yelp.com/v3/businesses/search"
-headers = {"Authorization": "Bearer " + YELP_API_KEY}
+headers = {"Authorization": "Bearer " + settings.YELP_API_KEY}
 
 
 def generate_unique_uri():
@@ -422,6 +422,7 @@ class MeetupEvent(models.Model):
             "open_at": int(format(self.start, "U")),
         }
         response = requests.get(url=url, params=params, headers=headers)
+
         options = []
         if "businesses" in response.json():
             options = response.json()["businesses"]

@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
 import {
   Dialog,
-  Button,
   DialogContent,
-  Tooltip,
   Avatar,
-  Divider,
   makeStyles
 } from "@material-ui/core";
 import axios from "axios";
 import styles from "../../styles/meetup.module.css";
 import { Map, Rating  } from "../components";
 import PropTypes from "prop-types";
-import {Skeleton } from "@material-ui/lab";
+// import {Skeleton } from "@material-ui/lab";
 import moment from "moment";
 
 const useStyles = makeStyles({
@@ -70,7 +67,7 @@ const RestaurantPreview = (props) => {
             <div className={styles.rstPreviewInfo}>
               <div className={styles.photos}>
                 {info.photos.map((photo) => (
-                  <img className={styles.photo} src={photo} />
+                  <img alt={info.name} className={styles.photo} src={photo} />
                 ))}
               </div>
               <div className={styles.rstPreviewInfoBottom}>

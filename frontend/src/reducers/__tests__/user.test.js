@@ -74,8 +74,8 @@ describe("User Reducer", () => {
       type: types.EDIT_USER,
       payload: user,
     };
-    const newState = userReducer(userDefaultState, action);
-    const expectedState = { ...userDefaultState, user };
+    const newState = userReducer({...userDefaultState, user: {}}, action);
+    const expectedState = {...userDefaultState, user: {...user, settings: {}}};
     expect(newState).toEqual(expectedState);
   });
 

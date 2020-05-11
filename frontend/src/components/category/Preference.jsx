@@ -1,14 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import {
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
   Typography,
   Tooltip,
   Avatar,
-  IconButton,
-  makeStyles,
+  IconButton
 } from "@material-ui/core";
 import { Delete as DeleteIcon } from "@material-ui/icons";
 import { editPreference, deletePreference } from "../../actions";
@@ -16,18 +12,11 @@ import PropTypes from "prop-types";
 import { preferencePropType } from "../../constants/prop-types";
 import styles from "../../styles/category.module.css";
 
-const useStyles = makeStyles({
-  listItem: {
-    paddingTop: ".75rem",
-    paddingBottom: ".75rem",
-  },
-});
 
 const Preference = ({ pref, sortIndex, locked, isUser, user, ...props }) => {
   // const handleEdit = (pref) => {
   //     props.editPreference(user.id, pref.category.id)
   // }
-  const classes = useStyles();
   const handleDelete = (pref, user) => {
     props.deletePreference(user.id, pref.category.id);
   };

@@ -72,7 +72,7 @@ export default function (state = userDefaultState, action) {
           errorMessage: action.payload,
         },
       };
-    case types.GET_FRIEND_INVITES_REQUEST:
+    case types.GET_MEETUP_INVITES_REQUEST:
       return {
         ...state,
         invites: { ...state.invites, isMeetupInvitesFetching: true },
@@ -87,7 +87,7 @@ export default function (state = userDefaultState, action) {
           isMeetupInvitesInitialized: true,
         },
       };
-    case types.GET_FRIEND_INVITES_ERROR:
+    case types.GET_MEETUP_INVITES_ERROR:
       return {
         ...state,
         invites: {
