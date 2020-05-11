@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import {Helmet} from 'react-helmet'
 import styles from "../../styles/meetup.module.css"
-import {Slider, Avatar, CircularProgress, Grid} from '@material-ui/core'
+import {Slider, Avatar, CircularProgress, Grid, BottomNavigation, BottomNavigationAction,} from '@material-ui/core'
 import {CategoryAutocomplete, RestaurantCard} from '../components'
+import {Settings as SettingsIcon, RestaurantMenu as RestaurantMenuIcon, Add as AddIcon} from '@material-ui/icons'
 import { connect } from "react-redux";
 import { getPreferences } from "../../actions";
 import {axiosClient} from '../../accounts/axiosClient'
@@ -24,11 +25,15 @@ class Restaurants extends Component {
             clickedPreferences: [],
             isRestaurantsFetching: false,
             restaurants: [],
-            radius: props.user.settings.radius
+            radius: props.user.settings.radius,
+            isMobile: window.matchMedia("(max-width: 768px)").matches,
+            mobileTabIndex: 0
         }
     }
 
     async componentDidMount() {
+        const handler = (e) => this.setState({ isMobile: e.matches });
+        window.matchMedia("(max-width: 768px)").addListener(handler);
         await Promise.all ([
             this.handleGetRestaurants(),
             this.props.getPreferences(this.props.user.id) 
@@ -123,15 +128,19 @@ class Restaurants extends Component {
         this.setState({ entries: values, clickedPreferences: clickedPrefs }, () => this.handleGetRestaurants());
     };
 
+    handleMobileTabChange = (e, newValue) => {
+        this.setState({mobileTabIndex: newValue})
+    }
+
     render (){ 
         return (
-            <div className="innerWrap">
+            <div className={`innerWrap  ${this.state.isMobile ? "innerWrap-mobile": ""}`}>
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>Restaurants</title>
                     <meta name="description" content="Restaurants" />
                 </Helmet>
-                <div className="innerLeft">
+                <div className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 0 ? "innerLeft-show" : ""}`} >
                     <div className="innerLeftHeader">
                         Restaurants
                     </div>
@@ -196,7 +205,7 @@ class Restaurants extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="innerRight">
+                <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 0 ? "" : "innerRight-show"}`}>
                     <div className="innerRightBlock">
                         <div className="innerRightBlockHeader">
                             <div className="hr">Restaurants</div>
@@ -215,6 +224,14 @@ class Restaurants extends Component {
                         </div>
                     </div>
                 </div>
+                {this.state.isMobile && 
+                    <div className="innerWrap-mobileControl">
+                        <BottomNavigation value={this.state.mobileTabIndex} onChange={this.handleMobileTabChange} showLabels>
+                            <BottomNavigationAction label="Settings" icon={<SettingsIcon/>}/>
+                            <BottomNavigationAction label="Restaurants" icon={<RestaurantMenuIcon/>}/>
+                        </BottomNavigation>
+                    </div>
+                }
             </div>
         ) 
     }

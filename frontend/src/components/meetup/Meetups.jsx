@@ -259,18 +259,16 @@ class Meetups extends Component {
         >
           <div className="innerLeftHeader">
             <div>Meetups</div>
-            {!this.state.isMobile && 
-              <Button
-                aria-label="add-meetup"
-                onClick={this.openFormModal}
+            {!this.state.isMobile &&
+              <Fab
                 color="primary"
-                variant="contained"
-                size="small"
+                size="medium"
+                onClick={this.openFormModal}
+                aria-label="add-meetup"
               >
-                Create
-              </Button>
+                <AddIcon/>
+              </Fab>
             }
-            
           </div>
           <div className="innerLeftHeaderBlock">
             <div className="hr">

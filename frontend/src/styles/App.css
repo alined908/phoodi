@@ -322,11 +322,9 @@ body {
   display: flex;
   align-items: center;
   width: 100%;
-  font-size: 1.2rem;
-  background-color: white;
+  font-size: 1.5rem;
   justify-content: space-between;
-  padding: .75rem 1rem;
-  box-shadow: var(--shadow-0);
+  padding: .25rem .25rem;
 }
 
 .innerLeftHeaderBlock {
