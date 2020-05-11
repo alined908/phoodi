@@ -3,71 +3,89 @@
 exports[`MeetupWrapper tests should render without crashing 1`] = `
 <Fragment>
   <div
-    className="center"
+    className="rstWrapper  elevate"
+    id="option-undefined"
   >
     <div
-      className="rstWrapper  elevate"
+      className="rst"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+    >
+      <Link
+        to="/restaurants/undefined"
+      >
+        <img
+          className="rstImg"
+        />
+      </Link>
+    </div>
+    <div
+      className="rstCardBottom"
     >
       <div
-        className="rst"
-        onMouseEnter={[Function]}
-        onMouseLeave={[Function]}
-      >
-        <Link
-          to="/restaurants/undefined"
-        >
-          <img
-            className="rstImg"
-          />
-        </Link>
-      </div>
-      <div
-        className="rstCardBottom"
+        className="rstInfo"
       >
         <div
-          className="rstInfo"
+          className="rstInfoTop"
         >
-          <div
-            className="rstInfoTop"
+          <Rating />
+          <WithStyles(ForwardRef(Tooltip))
+            placement="top"
+            title="Go To Restaurant Page"
           >
-            <Rating />
-            <WithStyles(ForwardRef(Tooltip))
-              placement="top"
-              title="Go To Restaurant Page"
+            <Link
+              className="rstInfoName"
+              to="/restaurants/undefined"
             >
-              <Link
-                className="rstInfoName"
-                to="/restaurants/undefined"
-              >
-                <WithStyles(ForwardRef(Typography))
-                  noWrap={true}
-                  variant="h6"
-                />
-              </Link>
-            </WithStyles(ForwardRef(Tooltip))>
-          </div>
-          <div>
-            <WithStyles(ForwardRef(IconButton))
-              edge="end"
-              onClick={[Function]}
-              style={
-                Object {
-                  "color": "rgba(10,10,10, .95)",
-                }
+              <WithStyles(ForwardRef(Typography))
+                noWrap={true}
+                variant="h6"
+              />
+            </Link>
+          </WithStyles(ForwardRef(Tooltip))>
+        </div>
+        <div>
+          <WithStyles(ForwardRef(IconButton))
+            edge="end"
+            onClick={[Function]}
+            style={
+              Object {
+                "color": "rgba(10,10,10, .95)",
               }
+            }
+          >
+            <MoreVertIcon />
+          </WithStyles(ForwardRef(IconButton))>
+          <WithStyles(ForwardRef(Menu))
+            anchorEl={null}
+            onClose={[Function]}
+            open={null}
+          >
+            <WithStyles(ForwardRef(MenuItem))
+              onClick={[Function]}
             >
-              <MoreVertIcon />
-            </WithStyles(ForwardRef(IconButton))>
-            <WithStyles(ForwardRef(Menu))
-              anchorEl={null}
-              onClose={[Function]}
-              open={null}
+              <WithStyles(ForwardRef(ListItemIcon))>
+                <ZoomInIcon
+                  color="primary"
+                  fontSize="small"
+                />
+              </WithStyles(ForwardRef(ListItemIcon))>
+              <WithStyles(ForwardRef(Typography))
+                noWrap={true}
+                variant="body2"
+              >
+                Preview Option
+              </WithStyles(ForwardRef(Typography))>
+            </WithStyles(ForwardRef(MenuItem))>
+            <a
+              rel="noopener noreferrer"
+              target="_blank"
             >
               <WithStyles(ForwardRef(MenuItem))
                 onClick={[Function]}
               >
                 <WithStyles(ForwardRef(ListItemIcon))>
-                  <ZoomInIcon
+                  <LaunchIcon
                     color="primary"
                     fontSize="small"
                   />
@@ -76,138 +94,117 @@ exports[`MeetupWrapper tests should render without crashing 1`] = `
                   noWrap={true}
                   variant="body2"
                 >
-                  Preview Option
+                  Go to Yelp Page
                 </WithStyles(ForwardRef(Typography))>
               </WithStyles(ForwardRef(MenuItem))>
-              <a
-                rel="noopener noreferrer"
-                target="_blank"
+            </a>
+            <WithStyles(ForwardRef(MenuItem))
+              onClick={[Function]}
+            >
+              <WithStyles(ForwardRef(ListItemIcon))>
+                <CloseIcon
+                  color="secondary"
+                  fontSize="small"
+                />
+              </WithStyles(ForwardRef(ListItemIcon))>
+              <WithStyles(ForwardRef(Typography))
+                noWrap={true}
+                variant="body2"
               >
-                <WithStyles(ForwardRef(MenuItem))
-                  onClick={[Function]}
-                >
-                  <WithStyles(ForwardRef(ListItemIcon))>
-                    <LaunchIcon
-                      color="primary"
-                      fontSize="small"
-                    />
-                  </WithStyles(ForwardRef(ListItemIcon))>
-                  <WithStyles(ForwardRef(Typography))
-                    noWrap={true}
-                    variant="body2"
-                  >
-                    Go to Yelp Page
-                  </WithStyles(ForwardRef(Typography))>
-                </WithStyles(ForwardRef(MenuItem))>
-              </a>
-              <WithStyles(ForwardRef(MenuItem))
-                onClick={[Function]}
-              >
-                <WithStyles(ForwardRef(ListItemIcon))>
-                  <CloseIcon
-                    color="secondary"
-                    fontSize="small"
-                  />
-                </WithStyles(ForwardRef(ListItemIcon))>
-                <WithStyles(ForwardRef(Typography))
-                  noWrap={true}
-                  variant="body2"
-                >
-                  Delete Option
-                </WithStyles(ForwardRef(Typography))>
-              </WithStyles(ForwardRef(MenuItem))>
-            </WithStyles(ForwardRef(Menu))>
-          </div>
+                Delete Option
+              </WithStyles(ForwardRef(Typography))>
+            </WithStyles(ForwardRef(MenuItem))>
+          </WithStyles(ForwardRef(Menu))>
         </div>
+      </div>
+      <div
+        className="rstCategories"
+      >
+        $
+         •
         <div
-          className="rstCategories"
+          className="categoryChip"
+          key="1"
         >
-          $
-           •
-          <div
-            className="categoryChip"
-            key="1"
+          <WithStyles(ForwardRef(Avatar))
+            src="undefineddesserts.png"
+            style={
+              Object {
+                "height": 20,
+                "width": 20,
+              }
+            }
+            variant="square"
           >
-            <WithStyles(ForwardRef(Avatar))
-              src="undefineddesserts.png"
+            <img
+              alt="&#9787;"
+              src="https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png"
               style={
                 Object {
                   "height": 20,
                   "width": 20,
                 }
               }
-              variant="square"
-            >
-              <img
-                alt="&#9787;"
-                src="https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png"
-                style={
-                  Object {
-                    "height": 20,
-                    "width": 20,
-                  }
-                }
-              />
-            </WithStyles(ForwardRef(Avatar))>
-            Dessert
-          </div>
+            />
+          </WithStyles(ForwardRef(Avatar))>
+          Dessert
+        </div>
+      </div>
+      <div
+        className="rstActions"
+      >
+        <div
+          className="rstActionIcon "
+        >
+          <WithStyles(ForwardRef(Tooltip))
+            title="Like"
+          >
+            <ThumbUpOutlinedIcon
+              className="clickable"
+              disabled={false}
+              onClick={[Function]}
+            />
+          </WithStyles(ForwardRef(Tooltip))>
+          <span
+            className="rstActionScore"
+          >
+            0
+          </span>
         </div>
         <div
-          className="rstActions"
+          className="rstActionIcon "
         >
-          <div
-            className="rstActionIcon "
+          <WithStyles(ForwardRef(Tooltip))
+            title="Dislike"
           >
-            <WithStyles(ForwardRef(Tooltip))
-              title="Like"
-            >
-              <ThumbUpOutlinedIcon
-                className="clickable"
-                disabled={false}
-                onClick={[Function]}
-              />
-            </WithStyles(ForwardRef(Tooltip))>
-            <span
-              className="rstActionScore"
-            >
-              0
-            </span>
-          </div>
-          <div
-            className="rstActionIcon "
+            <ThumbDownOutlinedIcon
+              className="clickable"
+              disabled={false}
+              onClick={[Function]}
+            />
+          </WithStyles(ForwardRef(Tooltip))>
+          <span
+            className="rstActionScore"
           >
-            <WithStyles(ForwardRef(Tooltip))
-              title="Dislike"
-            >
-              <ThumbDownOutlinedIcon
-                className="clickable"
-                disabled={false}
-                onClick={[Function]}
-              />
-            </WithStyles(ForwardRef(Tooltip))>
-            <span
-              className="rstActionScore"
-            >
-              0
-            </span>
-          </div>
-          <div
-            className="rstActionIcon "
+            0
+          </span>
+        </div>
+        <div
+          className="rstActionIcon "
+        >
+          <WithStyles(ForwardRef(Tooltip))
+            title="Ban"
           >
-            <WithStyles(ForwardRef(Tooltip))
-              title="Ban"
-            >
-              <CancelOutlinedIcon
-                className="clickable"
-                onClick={[Function]}
-              />
-            </WithStyles(ForwardRef(Tooltip))>
-            <span
-              className="rstActionScore"
-            >
-              0
-            </span>
-          </div>
+            <CancelOutlinedIcon
+              className="clickable"
+              onClick={[Function]}
+            />
+          </WithStyles(ForwardRef(Tooltip))>
+          <span
+            className="rstActionScore"
+          >
+            0
+          </span>
         </div>
       </div>
     </div>

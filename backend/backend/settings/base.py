@@ -1,15 +1,9 @@
 import datetime
 import os
-from dotenv import load_dotenv
 from datetime import timedelta
 
-load_dotenv()
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SECRET_KEY = os.environ.get("SECRET_KEY")
-DEBUG = True
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]", "phoodie.me"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -27,16 +21,6 @@ INSTALLED_APPS = [
     "storages",
     "notifications",
 ]
-
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
-            # "hosts": [('redis', 6379)],
-        },
-    },
-}
 
 ASGI_APPLICATION = "backend.routing.application"
 
@@ -59,12 +43,6 @@ AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
 )
 
-CORS_ORIGIN_WHITELIST = (
-    "http://localhost:8003",
-    "http://localhost",
-    "https://phoodie.me",
-    "https://www.phoodie.me",
-)
 CORS_ALLOW_CREDENTIALS = True
 
 SIMPLE_JWT = {
@@ -120,20 +98,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "backend.wsgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("DB_NAME"),
-        "USER": os.environ.get("DB_USER"),
-        "PASSWORD": os.environ.get("DB_PASSWORD"),
-        "HOST": "localhost",
-        # 'HOST': 'db',
-        "PORT": 5432,
-        "TEST": {"NAME": "test_meetup_db",},
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -146,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
 ]
 
-DOMAIN = "localhost:8003"
+YELP_API_KEY = os.environ.get("YELP_API_KEY")
 SITE_NAME = "Phoodi"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_USE_TLS = True
@@ -186,9 +150,6 @@ AWS_S3_OBJECT_PARAMETERS = {
 }
 AWS_LOCATION = "static"
 
-YELP_API_KEY = os.environ.get("YELP_API_KEY")
-BASE_URL = os.environ.get("BASE_URL")
-BASE_DEV_URL = os.environ.get("BASE_DEV_URL")
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "meetup/static"),

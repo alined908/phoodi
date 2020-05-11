@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { CommentForm, Comments, Rating } from "../components";
-import { Button, IconButton, Avatar } from "@material-ui/core";
+import { Button, IconButton } from "@material-ui/core";
 import { axiosClient } from "../../accounts/axiosClient";
 import {
   ThumbUpOutlined as ThumbUpOutlinedIcon,

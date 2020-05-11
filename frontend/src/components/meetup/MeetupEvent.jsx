@@ -29,7 +29,6 @@ import {
   MeetupEventOption,
   Map,
   RestaurauntAutocomplete,
-  ProgressIcon,
   MeetupEventForm,
 } from "../components";
 import { ReactComponent as Crown } from "../../assets/svgs/crown.svg";

@@ -5,7 +5,6 @@ import {
   Avatar,
   ListItemAvatar,
   ListItemText,
-  Typography,
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { axiosClient } from "../../accounts/axiosClient";
@@ -56,12 +55,11 @@ const UserAutocomplete = (props) => {
       onChange={props.handleClick}
       loading={loading}
       renderOption={(option, { inputValue }) => {
-        const matchesEmail = match(option.email, inputValue);
+        // const matchesEmail = match(option.email, inputValue);
         const matchesName = match(
           option.first_name + " " + option.last_name,
           inputValue
         );
-        const partsEmail = parse(option.email, matchesEmail);
         const partsName = parse(
           option.first_name + " " + option.last_name,
           matchesName

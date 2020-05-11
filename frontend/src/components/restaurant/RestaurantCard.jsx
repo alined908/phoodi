@@ -36,7 +36,7 @@ class RestaurantCard extends Component {
                     onMouseLeave={() => this.setState({hover: false})}
                 >
                     <Link to={`/restaurants/${data.url}`}>
-                        <img className={styles.rstImg} src={data.yelp_image} />
+                        <img alt={data.name} className={styles.rstImg} src={data.yelp_image} />
                     </Link>
                 </div>
                 <div className={styles.rstCardBottom}>

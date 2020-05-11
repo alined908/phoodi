@@ -2,7 +2,7 @@
 
 exports[`Meetup tests general renders without crashing given props 1`] = `
 <div
-  className="meetupWrapper"
+  className="innerWrap"
 >
   <HelmetWrapper
     defer={true}
@@ -15,376 +15,376 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
       Meetup
     </title>
   </HelmetWrapper>
-  <MeetupTree
-    initialized={false}
-    meetup={
-      Object {
-        "categories": Array [
+  <div
+    className="innerLeft"
+  >
+    <div
+      className="innerLeftHeader"
+    >
+      <span>
+        Meetup
+      </span>
+      <span>
+        <WithStyles(ForwardRef(Button))
+          aria-label="join-meetup"
+          onClick={[Function]}
+          size="small"
+          style={
+            Object {
+              "background": "#45B649",
+              "color": "white",
+            }
+          }
+          variant="contained"
+        >
+          Join Meetup
+        </WithStyles(ForwardRef(Button))>
+        <WithStyles(ForwardRef(IconButton))
+          aria-label="meetup-menu"
+          edge="end"
+          onClick={[Function]}
+          style={
+            Object {
+              "color": "rgba(10,10,10, .95)",
+            }
+          }
+        >
+          <MoreVertIcon />
+        </WithStyles(ForwardRef(IconButton))>
+      </span>
+      <WithStyles(ForwardRef(Menu))
+        anchorEl={null}
+        onClose={[Function]}
+        open={null}
+      >
+        <WithStyles(ForwardRef(MenuItem))
+          aria-label="email"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <WithStyles(ForwardRef(ListItemIcon))>
+            <EmailIcon
+              fontSize="small"
+              style={
+                Object {
+                  "color": "black",
+                }
+              }
+            />
+          </WithStyles(ForwardRef(ListItemIcon))>
+          <WithStyles(ForwardRef(Typography))
+            noWrap={true}
+            variant="body2"
+          >
+            Send Email
+          </WithStyles(ForwardRef(Typography))>
+        </WithStyles(ForwardRef(MenuItem))>
+        <WithStyles(ForwardRef(MenuItem))
+          aria-label="edit"
+          onClick={[Function]}
+        >
+          <WithStyles(ForwardRef(ListItemIcon))>
+            <EditIcon
+              fontSize="small"
+              style={
+                Object {
+                  "color": "black",
+                }
+              }
+            />
+          </WithStyles(ForwardRef(ListItemIcon))>
+          <WithStyles(ForwardRef(Typography))
+            noWrap={true}
+            variant="body2"
+          >
+            Edit Meetup
+          </WithStyles(ForwardRef(Typography))>
+        </WithStyles(ForwardRef(MenuItem))>
+        <WithStyles(ForwardRef(MenuItem))
+          aria-label="delete"
+          onClick={[Function]}
+        >
+          <WithStyles(ForwardRef(ListItemIcon))>
+            <DeleteIcon
+              color="secondary"
+              fontSize="small"
+            />
+          </WithStyles(ForwardRef(ListItemIcon))>
+          <WithStyles(ForwardRef(Typography))
+            noWrap={true}
+            variant="body2"
+          >
+            Delete Meetup
+          </WithStyles(ForwardRef(Typography))>
+        </WithStyles(ForwardRef(MenuItem))>
+      </WithStyles(ForwardRef(Menu))>
+    </div>
+    <div
+      className="innerLeftHeaderBlock"
+    >
+      <div
+        className="hr"
+      >
+        Outline
+      </div>
+      <MeetupTree
+        initialized={false}
+        meetup={
           Object {
-            "api_label": "desserts",
-            "id": 1,
-            "image": null,
-            "label": "Dessert",
-          },
-        ],
-        "creator": Object {
-          "avatar": null,
-          "email": "daniel@gmail.com",
-          "first_name": "Daniel",
-          "id": 1,
-          "last_name": "Lee",
-        },
-        "date": "2020-05-09",
-        "events": Object {},
-        "id": 1,
-        "isMeetupEventsInitialized": true,
-        "latitude": 34.228754,
-        "location": "location",
-        "longitude": -118.2351192,
-        "members": Object {
-          "1": Object {
-            "admin": true,
-            "ban": false,
-            "id": 1,
-            "user": Object {
+            "categories": Array [
+              Object {
+                "api_label": "desserts",
+                "id": 1,
+                "image": null,
+                "label": "Dessert",
+              },
+            ],
+            "creator": Object {
               "avatar": null,
               "email": "daniel@gmail.com",
               "first_name": "Daniel",
               "id": 1,
               "last_name": "Lee",
             },
-          },
-          "2": Object {
-            "admin": false,
-            "ban": false,
-            "id": 2,
-            "user": Object {
-              "avatar": null,
-              "email": "example2@gmail.com",
-              "first_name": "Bob",
-              "id": 2,
-              "last_name": "Jim",
-            },
-          },
-        },
-        "name": "Meetup",
-        "notifs": 0,
-        "public": true,
-        "uri": "uri",
-      }
-    }
-    sortEvents={[Function]}
-  />
-  <div
-    className="meetupWrapperInner"
-    id="head"
-  >
-    <WithStyles(ForwardRef(Grid))
-      container={true}
-      spacing={3}
-    >
-      <WithStyles(ForwardRef(Grid))
-        item={true}
-        xs={12}
-      >
-        <div
-          className="header elevate"
-        >
-          <WithStyles(ForwardRef(Typography))
-            variant="h4"
-          >
-            Meetup
-          </WithStyles(ForwardRef(Typography))>
-          <div
-            className="headerIcons"
-          >
-            <TodayIcon />
-             
-            Saturday, May 9
-          </div>
-          <div
-            aria-label="location"
-            className="headerIcons"
-          >
-            <RoomIcon />
-             
-            location
-          </div>
-          <div
-            aria-label="meetup-type"
-            className="headerIcons"
-          >
-            <PublicIcon />
-             Public
-          </div>
-          <div
-            className="actions"
-          >
-            <WithStyles(ForwardRef(IconButton))
-              aria-label="meetup-menu"
-              edge="end"
-              onClick={[Function]}
-              style={
-                Object {
-                  "color": "rgba(10,10,10, .95)",
-                }
-              }
-            >
-              <MoreVertIcon />
-            </WithStyles(ForwardRef(IconButton))>
-            <WithStyles(ForwardRef(Menu))
-              anchorEl={null}
-              onClose={[Function]}
-              open={null}
-            >
-              <WithStyles(ForwardRef(MenuItem))
-                aria-label="email"
-                disabled={true}
-                onClick={[Function]}
-              >
-                <WithStyles(ForwardRef(ListItemIcon))>
-                  <EmailIcon
-                    fontSize="small"
-                    style={
-                      Object {
-                        "color": "black",
-                      }
-                    }
-                  />
-                </WithStyles(ForwardRef(ListItemIcon))>
-                <WithStyles(ForwardRef(Typography))
-                  noWrap={true}
-                  variant="body2"
-                >
-                  Send Email
-                </WithStyles(ForwardRef(Typography))>
-              </WithStyles(ForwardRef(MenuItem))>
-              <WithStyles(ForwardRef(MenuItem))
-                aria-label="edit"
-                onClick={[Function]}
-              >
-                <WithStyles(ForwardRef(ListItemIcon))>
-                  <EditIcon
-                    fontSize="small"
-                    style={
-                      Object {
-                        "color": "black",
-                      }
-                    }
-                  />
-                </WithStyles(ForwardRef(ListItemIcon))>
-                <WithStyles(ForwardRef(Typography))
-                  noWrap={true}
-                  variant="body2"
-                >
-                  Edit Meetup
-                </WithStyles(ForwardRef(Typography))>
-              </WithStyles(ForwardRef(MenuItem))>
-              <WithStyles(ForwardRef(MenuItem))
-                aria-label="delete"
-                onClick={[Function]}
-              >
-                <WithStyles(ForwardRef(ListItemIcon))>
-                  <DeleteIcon
-                    color="secondary"
-                    fontSize="small"
-                  />
-                </WithStyles(ForwardRef(ListItemIcon))>
-                <WithStyles(ForwardRef(Typography))
-                  noWrap={true}
-                  variant="body2"
-                >
-                  Delete Meetup
-                </WithStyles(ForwardRef(Typography))>
-              </WithStyles(ForwardRef(MenuItem))>
-            </WithStyles(ForwardRef(Menu))>
-          </div>
-        </div>
-      </WithStyles(ForwardRef(Grid))>
-      <WithStyles(ForwardRef(Grid))
-        id="Members"
-        item={true}
-        sm={6}
-        xs={12}
-      >
-        <div
-          className="headerIndented"
-        >
-          <div
-            className="header elevate"
-          >
-            <WithStyles(ForwardRef(Typography))
-              variant="h5"
-            >
-              Members
-            </WithStyles(ForwardRef(Typography))>
-            <WithStyles(ForwardRef(Button))
-              aria-label="join-meetup"
-              onClick={[Function]}
-              style={
-                Object {
-                  "background": "#45B649",
-                  "color": "white",
-                }
-              }
-              variant="contained"
-            >
-              Join Meetup
-            </WithStyles(ForwardRef(Button))>
-          </div>
-        </div>
-        <div
-          className="shell elevate"
-        >
-          <WithStyles(ForwardRef(List))
-            className="shellList"
-          >
-            <Link
-              key="1"
-              to="/profile/1"
-            >
-              <WithStyles(ForwardRef(ListItem))>
-                <WithStyles(ForwardRef(ListItemAvatar))>
-                  <WithStyles(ForwardRef(Avatar))
-                    src={null}
-                  >
-                    D
-                    L
-                  </WithStyles(ForwardRef(Avatar))>
-                </WithStyles(ForwardRef(ListItemAvatar))>
-                <WithStyles(ForwardRef(ListItemText))
-                  primary="Daniel"
-                  secondary={
-                    <React.Fragment>
-                      <ForwardRef(WithStyles)
-                        color="inherit"
-                        component="span"
-                        variant="body2"
-                      >
-                        daniel@gmail.com 
-                      </ForwardRef(WithStyles)>
-                    </React.Fragment>
-                  }
-                />
-                <WithStyles(ForwardRef(Tooltip))
-                  title="Meetup Creator"
-                >
-                  <Component
-                    height={24}
-                    width={24}
-                  />
-                </WithStyles(ForwardRef(Tooltip))>
-              </WithStyles(ForwardRef(ListItem))>
-            </Link>
-            <Link
-              key="2"
-              to="/profile/2"
-            >
-              <WithStyles(ForwardRef(ListItem))>
-                <WithStyles(ForwardRef(ListItemAvatar))>
-                  <WithStyles(ForwardRef(Avatar))
-                    src={null}
-                  >
-                    B
-                    J
-                  </WithStyles(ForwardRef(Avatar))>
-                </WithStyles(ForwardRef(ListItemAvatar))>
-                <WithStyles(ForwardRef(ListItemText))
-                  primary="Bob"
-                  secondary={
-                    <React.Fragment>
-                      <ForwardRef(WithStyles)
-                        color="inherit"
-                        component="span"
-                        variant="body2"
-                      >
-                        example2@gmail.com 
-                      </ForwardRef(WithStyles)>
-                    </React.Fragment>
-                  }
-                />
-              </WithStyles(ForwardRef(ListItem))>
-            </Link>
-          </WithStyles(ForwardRef(List))>
-        </div>
-      </WithStyles(ForwardRef(Grid))>
-      <WithStyles(ForwardRef(Grid))
-        item={true}
-        sm={6}
-        xs={12}
-      >
-        <div
-          className="headerIndented"
-        >
-          <div
-            className="header elevate"
-          >
-            <WithStyles(ForwardRef(Typography))
-              variant="h5"
-            >
-              Friends
-            </WithStyles(ForwardRef(Typography))>
-            <WithStyles(ForwardRef(Tooltip))
-              title="Refresh"
-            >
-              <WithStyles(ForwardRef(IconButton))
-                aria-label="refresh-friends"
-                onClick={[Function]}
-                style={
-                  Object {
-                    "color": "black",
-                  }
-                }
-              >
-                <RefreshIcon />
-              </WithStyles(ForwardRef(IconButton))>
-            </WithStyles(ForwardRef(Tooltip))>
-          </div>
-        </div>
-        <div
-          className="shell elevate"
-        >
-          <WithStyles(ForwardRef(List))
-            className="shellList"
-          >
-            <Connect(MeetupFriend)
-              friend={
-                Object {
+            "date": "2020-05-10",
+            "events": Object {},
+            "id": 1,
+            "isMeetupEventsInitialized": true,
+            "latitude": 34.228754,
+            "location": "location",
+            "longitude": -118.2351192,
+            "members": Object {
+              "1": Object {
+                "admin": true,
+                "ban": false,
+                "id": 1,
+                "user": Object {
+                  "avatar": null,
+                  "email": "daniel@gmail.com",
+                  "first_name": "Daniel",
+                  "id": 1,
+                  "last_name": "Lee",
+                },
+              },
+              "2": Object {
+                "admin": false,
+                "ban": false,
+                "id": 2,
+                "user": Object {
                   "avatar": null,
                   "email": "example2@gmail.com",
                   "first_name": "Bob",
                   "id": 2,
                   "last_name": "Jim",
-                }
-              }
-              isMember={true}
-              isPast={false}
-              key="1"
-              uri="uri"
-            />
-          </WithStyles(ForwardRef(List))>
+                },
+              },
+            },
+            "name": "Meetup",
+            "notifs": 0,
+            "public": true,
+            "uri": "uri",
+          }
+        }
+        sortEvents={[Function]}
+      />
+    </div>
+    <div
+      className="innerLeftHeaderBlock"
+    >
+      <div
+        className="hr"
+      >
+        Information
+      </div>
+      <div
+        className="innerLeftHeaderBlockAction"
+      >
+        <div
+          className="blockActionHeader"
+        >
+          Date
+          <span
+            className="blockActionChip"
+          >
+            Sunday, May 10
+          </span>
         </div>
-      </WithStyles(ForwardRef(Grid))>
-      <WithStyles(ForwardRef(Grid))
-        item={true}
-        xs={12}
+      </div>
+      <div
+        className="innerLeftHeaderBlockAction"
+      >
+        <div
+          aria-label="location"
+          className="blockActionHeader"
+        >
+          Location
+          <span
+            className="blockActionChip"
+          >
+            location
+          </span>
+        </div>
+      </div>
+      <div
+        className="innerLeftHeaderBlockAction"
+      >
+        <div
+          aria-label="meetup-type"
+          className="blockActionHeader"
+        >
+          Type
+          <span
+            className="blockActionChip"
+          >
+            Public
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="innerLeftHeaderBlock"
+    >
+      <div
+        className="hr"
+      >
+        Members
+      </div>
+      <WithStyles(ForwardRef(List))
+        className="shellList"
+      >
+        <Link
+          key="1"
+          to="/profile/1"
+        >
+          <WithStyles(ForwardRef(ListItem))
+            className="member"
+          >
+            <WithStyles(ForwardRef(ListItemAvatar))>
+              <WithStyles(ForwardRef(Avatar))
+                src={null}
+              >
+                D
+                L
+              </WithStyles(ForwardRef(Avatar))>
+            </WithStyles(ForwardRef(ListItemAvatar))>
+            <WithStyles(ForwardRef(ListItemText))
+              primary="Daniel"
+              secondary={
+                <React.Fragment>
+                  <ForwardRef(WithStyles)
+                    color="inherit"
+                    component="span"
+                    variant="body2"
+                  >
+                    daniel@gmail.com 
+                  </ForwardRef(WithStyles)>
+                </React.Fragment>
+              }
+            />
+            <WithStyles(ForwardRef(Tooltip))
+              title="Meetup Creator"
+            >
+              <Component
+                height={24}
+                width={24}
+              />
+            </WithStyles(ForwardRef(Tooltip))>
+          </WithStyles(ForwardRef(ListItem))>
+        </Link>
+        <Link
+          key="2"
+          to="/profile/2"
+        >
+          <WithStyles(ForwardRef(ListItem))
+            className="member"
+          >
+            <WithStyles(ForwardRef(ListItemAvatar))>
+              <WithStyles(ForwardRef(Avatar))
+                src={null}
+              >
+                B
+                J
+              </WithStyles(ForwardRef(Avatar))>
+            </WithStyles(ForwardRef(ListItemAvatar))>
+            <WithStyles(ForwardRef(ListItemText))
+              primary="Bob"
+              secondary={
+                <React.Fragment>
+                  <ForwardRef(WithStyles)
+                    color="inherit"
+                    component="span"
+                    variant="body2"
+                  >
+                    example2@gmail.com 
+                  </ForwardRef(WithStyles)>
+                </React.Fragment>
+              }
+            />
+          </WithStyles(ForwardRef(ListItem))>
+        </Link>
+      </WithStyles(ForwardRef(List))>
+    </div>
+    <div
+      className="innerLeftHeaderBlock"
+    >
+      <div
+        className="hr"
+      >
+        Friends
+        <WithStyles(ForwardRef(Tooltip))
+          title="Refresh"
+        >
+          <WithStyles(ForwardRef(IconButton))
+            aria-label="refresh-friends"
+            onClick={[Function]}
+            size="small"
+            style={
+              Object {
+                "color": "black",
+              }
+            }
+          >
+            <RefreshIcon />
+          </WithStyles(ForwardRef(IconButton))>
+        </WithStyles(ForwardRef(Tooltip))>
+      </div>
+      <WithStyles(ForwardRef(List))
+        className="shellList"
+      >
+        <Connect(MeetupFriend)
+          friend={
+            Object {
+              "avatar": null,
+              "email": "example2@gmail.com",
+              "first_name": "Bob",
+              "id": 2,
+              "last_name": "Jim",
+            }
+          }
+          isMember={true}
+          isPast={false}
+          key="1"
+          uri="uri"
+        />
+      </WithStyles(ForwardRef(List))>
+    </div>
+  </div>
+  <div
+    className="innerRight"
+    id="head"
+  >
+    <div
+      className="innerRightBlock"
+    >
+      <div
+        className="innerRightBlockHeader"
       >
         <div
           className="hr"
           id="Events"
-          style={
-            Object {
-              "fontSize": "1rem",
-            }
-          }
         >
           Events
         </div>
-      </WithStyles(ForwardRef(Grid))>
-      <WithStyles(ForwardRef(Grid))
-        item={true}
-        xs={12}
-      >
         <div
           className="loading"
         >
@@ -392,11 +392,8 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
             size={30}
           />
         </div>
-      </WithStyles(ForwardRef(Grid))>
-    </WithStyles(ForwardRef(Grid))>
+      </div>
+    </div>
   </div>
-  <div
-    className="addEvent"
-  />
 </div>
 `;

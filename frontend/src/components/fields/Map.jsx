@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ReactMapGL, {
   Marker,
   NavigationControl,
-  FlyToInterpolator,
+  // FlyToInterpolator,
 } from "react-map-gl";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 // import * as d3 from 'd3-ease'

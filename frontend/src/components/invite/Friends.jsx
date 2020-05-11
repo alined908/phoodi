@@ -7,12 +7,11 @@ import {
   removeNotifs,
 } from "../../actions";
 import { connect } from "react-redux";
-import { Button, Typography, Grid, CircularProgress } from "@material-ui/core";
+import { Button, Grid, CircularProgress } from "@material-ui/core";
 import { Friend, UserAutocomplete } from "../components";
 import PropTypes from "prop-types";
 import { friendPropType, userPropType } from "../../constants/prop-types";
 import { Helmet } from "react-helmet";
-import styles from "../../styles/friends.module.css";
 
 class Friends extends Component {
   constructor(props) {

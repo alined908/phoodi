@@ -4,7 +4,6 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Tooltip,
   Typography,
   Avatar,
   IconButton,

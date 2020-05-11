@@ -8,13 +8,10 @@ import { axiosClient } from "../../accounts/axiosClient";
 import { addGlobalMessage } from "../../actions";
 
 class PasswordChange extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   handlePasswordChange = async (values) => {
     try {
-      const response = await axiosClient.post(
+      await axiosClient.post(
         `/auth/users/set_password/`,
         values,
         {

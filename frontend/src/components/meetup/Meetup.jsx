@@ -499,7 +499,7 @@ class Meetup extends Component {
               </div>
             </div>
             <div className="innerLeftHeaderBlockAction">
-              <div className="blockActionHeader">
+              <div className="blockActionHeader" aria-label="location">
                 Location
                 <span className="blockActionChip">
                   {meetup.location}
@@ -507,7 +507,7 @@ class Meetup extends Component {
               </div>
             </div>
             <div className="innerLeftHeaderBlockAction">
-              <div className="blockActionHeader">
+              <div className="blockActionHeader" aria-label="meetup-type">
                 Type
                 <span className="blockActionChip">
                   {meetup.public ? "Public" : "Private"}
@@ -567,7 +567,7 @@ class Meetup extends Component {
           }
         </div>
         {this.state.showChat && 
-          <div className="innerLeft" className={styles.meetupChatWrapper}>
+          <div className={`innerLeft ${styles.meetupChatWrapper}`}  >
               <MeetupChat
                 aria-label="meetup-chat"
                 meetup={meetup}

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Avatar, IconButton, Tooltip, Paper } from "@material-ui/core";
+import { Avatar, IconButton, Tooltip} from "@material-ui/core";
 import { axiosClient } from "../../accounts/axiosClient";
 import {
   getPreferences,
@@ -12,7 +12,6 @@ import { Link } from "react-router-dom";
 import {
   Lock as LockIcon,
   LockOpen as LockOpenIcon,
-  Search as SearchIcon,
   Edit as EditIcon,
   PersonAdd as PersonAddIcon,
 } from "@material-ui/icons";

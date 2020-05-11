@@ -4,7 +4,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  CircularProgress,
   Button,
   Grid,
 } from "@material-ui/core";
@@ -18,14 +17,14 @@ import styles from "../../styles/meetup.module.css";
 const validate = (values) => {
   const errors = {};
 
-  // if(!values.text){
-  //     errors.text = "Text is required."
-  // }
-  // else if (values.text.length > 1000){
-  //     errors.text =  "Max Character Limit is 1000. Be concise!"
-  // } else if (values.text.length < 50) {
-  //     errors.text =  "Min Character Limit is 50. Type some more!"
-  // }
+  if(!values.text){
+      errors.text = "Text is required."
+  }
+  else if (values.text.length > 1000){
+      errors.text =  "Max Character Limit is 1000. Be concise!"
+  } else if (values.text.length < 50) {
+      errors.text =  "Min Character Limit is 50. Type some more!"
+  }
 
   return errors;
 };
@@ -116,5 +115,6 @@ export default compose(
   connect(mapStateToProps),
   reduxForm({
     form: "comment",
+    validate
   })
 )(CommentForm);
