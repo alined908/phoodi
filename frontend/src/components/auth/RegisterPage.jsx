@@ -16,7 +16,6 @@ import {
   CircularProgress
 } from "@material-ui/core";
 import { ReactComponent as Together } from "../../assets/svgs/undraw_eattogether.svg";
-import { ReactComponent as Bamboo } from "../../assets/svgs/bamboo-dark.svg";
 import { ReactComponent as Google } from "../../assets/svgs/google.svg";
 import { ReactComponent as Facebook } from "../../assets/svgs/facebook.svg";
 import { ReactComponent as Twitter } from "../../assets/svgs/twitter.svg";
@@ -129,13 +128,7 @@ class RegisterPage extends Component {
             </div>
             <div className={styles.right}>
               <div className={styles.formhead}>
-                <div className={styles.icon}>
-                  <Bamboo height="100%" width="100%" />
-                </div>
                 <span className={styles.header}>Register</span>
-                <div className={styles.icon}>
-                  <Bamboo height="100%" width="100%" />
-                </div>
               </div>
               <form
                 className={styles.form}
