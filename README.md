@@ -90,14 +90,9 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Author
 * **Daniel Lee** 
 
-## Todo Deploy
-- [ ] Separate dev and prod settings
-- [ ] Django settings
-
 ---------------------------------------------------------------
 
 ## Todo Next Iteration
-- [ ] Mobile View
 - [ ] Properly configure statistics for stuff (likes, options count)
 - [ ] Review Score for food and service and possible secondary factors (interior, location, etc)
 - [ ] Cdn for images

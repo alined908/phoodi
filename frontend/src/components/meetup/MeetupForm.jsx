@@ -125,7 +125,7 @@ class MeetupForm extends Component {
     const create = this.props.type === "create";
 
     return (
-      <Dialog open={this.props.open} onClose={this.props.handleClose}>
+      <Dialog open={this.props.open} onClose={this.props.handleClose} scroll={"body"}>
         <DialogTitle>{create ? "Create Meetup" : "Edit Meetup"}</DialogTitle>
         <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
           <DialogContent dividers>
@@ -185,8 +185,10 @@ class MeetupForm extends Component {
                     />
                   }
                 />
+                
+              </Grid>
+              <Grid item xs={12}>
                 <div className={styles.label}>
-                  -{" "}
                   {this.state.public
                     ? "Public meetups are joinable by anyone"
                     : "Private meetups can be joined only by those you invite."}

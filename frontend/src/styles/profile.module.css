@@ -18,6 +18,10 @@
   flex: 1 1 0;
 }
 
+.profileFriends {
+  border-left: 1px solid #e3e3e3;
+}
+
 .friend {
   margin: 1rem 0;
   box-shadow: var(--shadow-0);
@@ -56,6 +60,9 @@
 .pastactivity {
   display: flex;
   height: 90%;
+  width: 90%;
+  margin: 0 auto;
+  justify-content: center;
   flex-direction: column;
   align-items: center;
 }
@@ -69,7 +76,7 @@
   justify-content: space-between;
   font-size: 0.85rem;
   flex: 1;
-  min-width: 500px;
+  width: 100%;
   max-height: 60px;
 }
 

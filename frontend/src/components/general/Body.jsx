@@ -27,6 +27,7 @@ import AuthenticatedRoute from "../../accounts/AuthenticatedRoute";
 import UnAuthenticatedRoute from "../../accounts/UnAuthenticatedRoute";
 
 class Body extends Component {
+
   render() {
     return (
       <div className="c">

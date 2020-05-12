@@ -122,8 +122,6 @@
 .preset {
   width: 100%;
   padding: 0 .25rem;
-  max-height: 200px;
-  overflow-y: auto;
 }
 
 .presetCategory {
@@ -154,6 +152,13 @@ background: var(--light-blue);
   height: 20px;
 }
 
+.meetupCardWrapper {
+    max-height: 300px;
+    max-width: 500px;
+    padding: 1rem;
+    flex: 1;
+}
+
 /* Meetup */
 
 .member {
@@ -175,13 +180,13 @@ background: var(--light-blue);
 
 .addEvent{
     position: absolute;
-    bottom: 2rem;
-    right: 3rem;
+    bottom: 3rem;
+    right: 4rem;
 }
 
 .event {
-  padding: 0 1.25rem;
-    width: 100%;
+  padding: 0 .5rem;
+  width: 100%;
   margin: 0 auto 2rem auto;
 }
 
@@ -206,8 +211,8 @@ background: var(--light-blue);
   justify-content: space-between;
   align-items: center;
   background-color: white;
-  width: 90%;
-  padding: 0.7rem 2rem;
+  width: 92.5%;
+  padding: 0.7rem 1.5rem;
 }
 
 .secondHeaderLeft {
@@ -221,6 +226,7 @@ background: var(--light-blue);
   margin: 0 auto;
   align-items: center;
   justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
 .chosenMap {
@@ -274,7 +280,6 @@ background: var(--light-blue);
     background-color: white;
     margin: 1rem;
 }
-
 
 .rstWrapper {
   display: flex;
@@ -506,12 +511,10 @@ background: var(--light-blue);
 
 /* MeetupChat */
 .meetupChatWrapper{
-    display: flex;
     align-items: center;
     border-left: 1px solid #e3e3e3;
-    border-right: 0;
-    padding: 1.5rem;
-    margin: 1.5rem 0;
+    border-right: 0 !important;
+    padding: 1rem 1.25rem !important;
 }
 
 .meetupChat {
@@ -701,13 +704,15 @@ background: var(--light-blue);
 
 .reviewForm {
   width: 100%;
-  min-width: 700px;
 }
 
 .ratings {
   display: flex;
-  flex-direction: column-reverse;
-  padding: 0 1rem;
+  flex-direction: column;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  white-space: nowrap;
 }
 
 .rating {
@@ -739,12 +744,16 @@ background: var(--light-blue);
 
 
 @media only screen and (max-width: 900px) {
+    .header {
+        padding: 1.25rem 1rem;
+    }
+
     .headerIndented {
         width: 90%;
     }
 
     .event {
-        padding: 0 1.5rem;
+        padding: 0 .5rem;
         width: 100%;
     }
 
@@ -754,18 +763,25 @@ background: var(--light-blue);
 
 }
 
+/* Mobile */
+@media only screen and (max-width: 1400px) {
+    .secondHeader {
+        padding: 0.7rem 1rem;
+    }
+}
+
 @media only screen and (max-width: 768px) {
 
     .foursquare {
         margin: 1rem auto;
-        width: 90%;
-    }
-
-    .rstWrapper {
-        transform: scale(.75);
+        width: 100%;
     }
 
     .secondHeader {
         padding: 0.7rem 1rem;
+    }
+
+    .meetupsContainer {
+        padding: 1.25rem 1.5rem;
     }
 }

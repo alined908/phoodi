@@ -7,7 +7,8 @@ import {
   removeNotifs,
 } from "../../actions";
 import { connect } from "react-redux";
-import { Button, Grid, CircularProgress } from "@material-ui/core";
+import {People as PeopleIcon, PersonAdd as PersonAddIcon} from '@material-ui/icons'
+import { Button, Grid, CircularProgress, BottomNavigation, BottomNavigationAction } from "@material-ui/core";
 import { Friend, UserAutocomplete } from "../components";
 import PropTypes from "prop-types";
 import { friendPropType, userPropType } from "../../constants/prop-types";
@@ -18,12 +19,16 @@ class Friends extends Component {
     super(props);
     this.state = {
       email: "",
+      isMobile: window.matchMedia("(max-width: 768px)").matches,
+      mobileTabIndex: 0
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleType = this.handleType.bind(this);
   }
 
   componentDidMount() {
+    const handler = (e) => this.setState({ isMobile: e.matches });
+    window.matchMedia("(max-width: 768px)").addListener(handler);
     this.props.getFriends(this.props.user.id);
     if (this.props.notifs !== null && this.props.notifs > 0) {
       this.props.removeNotifs({ type: "friend" });
@@ -53,15 +58,19 @@ class Friends extends Component {
     this.setState({ email });
   };
 
+  handleMobileTabChange = (e, newValue) => {
+    this.setState({mobileTabIndex: newValue})
+  }
+
   render() {
     return (
-      <div className="innerWrap">
+      <div className={`innerWrap  ${this.state.isMobile ? "innerWrap-mobile": ""}`}>
         <Helmet>
           <meta charSet="utf-8" />
           <title>Friends</title>
           <meta name="description" content="Friends" />
         </Helmet>
-        <div className="innerLeft">
+        <div className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 0 ? "innerLeft-show" : ""}`}>
           <div className="innerLeftHeader">Friends</div>
           <div className="innerLeftHeaderBlock">
             <div className="hr">Actions</div>
@@ -89,7 +98,7 @@ class Friends extends Component {
             </div>
           </div>
         </div>
-        <div className="innerRight">
+        <div  className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 0 ? "" : "innerRight-show"}`}>
           <div className="innerRightBlock">
             <div className="innerRightBlockHeader">
               <div className="hr">Friends</div>
@@ -118,6 +127,14 @@ class Friends extends Component {
             
           </div>
         </div>
+        {this.state.isMobile && 
+          <div className="innerWrap-mobileControl">
+            <BottomNavigation value={this.state.mobileTabIndex} onChange={this.handleMobileTabChange} showLabels>
+                <BottomNavigationAction label="Add Friend" icon={<PersonAddIcon/>}/>
+                <BottomNavigationAction label="Friends" icon={<PeopleIcon/>}/>
+            </BottomNavigation>
+          </div>
+        }
       </div>
     );
   }

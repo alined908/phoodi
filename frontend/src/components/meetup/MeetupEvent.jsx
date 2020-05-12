@@ -11,7 +11,9 @@ import {
   Schedule as ScheduleIcon,
   Delete as DeleteIcon,
   Error as ErrorIcon,
-  MoreVert as MoreVertIcon
+  MoreVert as MoreVertIcon,
+  Check as CheckIcon,
+  Restore as RestoreIcon
 } from "@material-ui/icons";
 import {
   IconButton,
@@ -219,14 +221,48 @@ class MeetupEvent extends Component {
                 </MenuItem>
                 
                 {permission && 
-                    <MenuItem aria-label="delete" onClick={(e) => {this.handleDelete(); this.handleMenuClose(e);}}>
+                  <MenuItem aria-label="delete" onClick={(e) => {this.handleDelete(); this.handleMenuClose(e);}}>
+                      <ListItemIcon>
+                          <DeleteIcon color="secondary" fontSize="small" />
+                      </ListItemIcon>
+                      <Typography variant="body2" noWrap>
+                          Delete Event
+                      </Typography>
+                  </MenuItem>
+                }
+                {this.props.isMobile && 
+                  <>
+                    {!this.props.chosen && Object.keys(event.options).length > 0 &&
+                      <>
+                        <MenuItem aria-label="decide" onClick={(e) => {this.handleDecide(); this.handleMenuClose(e)}}>
+                          <ListItemIcon>
+                            <CheckIcon color="primary" fontSize="small" />
+                          </ListItemIcon>
+                          <Typography variant="body2" noWrap>
+                            Decide Options
+                          </Typography>
+                        </MenuItem>
+                        <MenuItem aria-label="random" onClick={(e) => {this.handleRandom(); this.handleMenuClose(e)}}>
+                          <ListItemIcon>
+                            <CheckIcon color="primary" fontSize="small" />
+                          </ListItemIcon>
+                          <Typography variant="body2" noWrap>
+                            Random Options
+                          </Typography>
+                        </MenuItem>
+                      </>
+                    }
+                    {this.props.chosen && 
+                      <MenuItem aria-label="redecide" onClick={(e) => {this.handleRedecide(); this.handleMenuClose(e)}}>
                         <ListItemIcon>
-                            <DeleteIcon color="secondary" fontSize="small" />
+                          <RestoreIcon color="primary" fontSize="small" />
                         </ListItemIcon>
                         <Typography variant="body2" noWrap>
-                            Delete Event
+                          Redecide Event
                         </Typography>
-                    </MenuItem>
+                      </MenuItem>
+                    } 
+                  </>
                 }
             </Menu>
         </div>
@@ -393,7 +429,7 @@ class MeetupEvent extends Component {
               {Math.round(event.distance * 0.000621371192).toFixed(2)}
             </span>
           </div>
-          {(this.props.isUserMember && !this.props.isPast) && renderFinalizeActions()}
+          {(this.props.isUserMember && !this.props.isPast && !this.props.isMobile) && renderFinalizeActions()}
         </div>
         {!this.props.chosen && (
           <>

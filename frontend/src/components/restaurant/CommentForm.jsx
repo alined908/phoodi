@@ -59,7 +59,7 @@ class CommentForm extends Component {
     const { handleSubmit, submitting, invalid } = this.props;
 
     return (
-      <Dialog open={true} onClose={this.props.handleClose} maxWidth="md">
+      <Dialog open={true} onClose={this.props.handleClose} maxWidth="md" fullWidth={true}>
         <DialogTitle>Comment</DialogTitle>
         <form
           className={styles.reviewForm}
@@ -67,7 +67,6 @@ class CommentForm extends Component {
         >
           <DialogContent dividers>
             <Grid container spacing={1}>
-              <Grid item xs={12}>
                 <Field
                   required
                   name="text"
@@ -80,7 +79,6 @@ class CommentForm extends Component {
                     fullWidth: true,
                   }}
                 />
-              </Grid>
             </Grid>
           </DialogContent>
           <DialogActions>

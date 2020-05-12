@@ -153,6 +153,44 @@ export const MuiTheme = {
                 }
             }
         }
+    },
+    MuiBottomNavigation : {
+        root :{
+            justifyContent: "space-evenly",
+            height: 50
+        }
+    },
+    MuiBottomNavigationAction : {
+        root : {
+            fontFamily: "Lato",
+            fontWeight: 600,
+            '&$selected' : {
+                color: "var(--bright-blue)"
+            },
+            padding: "6px"
+        },
+        label : {
+            '&$selected' : {
+                color: "black",
+                fontSize: ".75rem"
+            }
+        }
+    },
+    MuiGrid: {
+        item: {
+            height: "100%;"
+        }
+    },
+    MuiFormControl: {
+        root: {
+            width: "100%"
+        }
+    },
+    MuiSelect : {
+        selectMenu: {
+            display: "flex",
+            alignItems: "center"
+        }
     }
   },
 };

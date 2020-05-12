@@ -18,7 +18,7 @@ class MeetupApp extends Component {
             <NotificationWrapper />
             <LocationService />
             <Router history={history}>
-              <Navigation></Navigation>
+              <Navigation/>
             </Router>
           </Provider>
         </ThemeProvider>

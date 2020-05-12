@@ -6,16 +6,27 @@ import {
   respondFriendInvite,
   removeNotifs,
 } from "../../actions";
+import {Mail as MailIcon, Refresh as RefreshIcon} from '@material-ui/icons'
 import { inviteType } from "../../constants/default-states";
 import { connect } from "react-redux";
 import { Invite } from "../components";
-import { Grid, Button, CircularProgress } from "@material-ui/core";
+import { Grid, Button, CircularProgress, BottomNavigation, BottomNavigationAction } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { invitePropType } from "../../constants/prop-types";
 import { Helmet } from "react-helmet";
 
 class Invites extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isMobile: window.matchMedia("(max-width: 768px)").matches,
+      mobileTabIndex: 0
+    }
+  }
+
   async componentDidMount() {
+    const handler = (e) => this.setState({ isMobile: e.matches });
+    window.matchMedia("(max-width: 768px)").addListener(handler);
     await Promise.all([
       this.props.getUserMeetupInvites(),
       this.props.getUserFriendInvites(),
@@ -31,21 +42,27 @@ class Invites extends Component {
 
   refreshMeetupInvites = () => {
     this.props.getUserMeetupInvites();
+    this.handleMobileTabChange(null, 1)
   };
 
   refreshFriendInvites = () => {
     this.props.getUserFriendInvites();
+    this.handleMobileTabChange(null, 1)
   };
+
+  handleMobileTabChange = (e, newValue) => {
+    this.setState({mobileTabIndex: newValue})
+  }
 
   render() {
     return (
-      <div className="innerWrap">
+      <div className={`innerWrap  ${this.state.isMobile ? "innerWrap-mobile": ""}`}>
         <Helmet>
           <meta charSet="utf-8" />
           <title>Invites</title>
           <meta name="description" content="Invites" />
         </Helmet>
-        <div className="innerLeft">
+        <div className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 0 ? "innerLeft-show" : ""}`}>
           <div className="innerLeftHeader">
             Invites
           </div>
@@ -72,7 +89,7 @@ class Invites extends Component {
             </div>
           </div>
         </div>
-        <div className="innerRight">
+        <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 0 ? "" : "innerRight-show"}`}>
           <div className="innerRightBlock">
             <div className="innerRightBlockHeader">
               <div className="hr">Meetups</div>
@@ -120,6 +137,14 @@ class Invites extends Component {
             </div>
           </div>
         </div>
+        {this.state.isMobile && 
+            <div className="innerWrap-mobileControl">
+              <BottomNavigation value={this.state.mobileTabIndex} onChange={this.handleMobileTabChange} showLabels>
+                  <BottomNavigationAction label="Refresh" icon={<RefreshIcon/>}/>
+                  <BottomNavigationAction label="Invites" icon={<MailIcon/>}/>
+              </BottomNavigation>
+            </div>
+          }
       </div>
     );
   }

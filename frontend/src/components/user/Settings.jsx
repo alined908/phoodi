@@ -5,8 +5,11 @@ import {
   FormControl,
   InputLabel,
   Button,
-  Grid
+  Grid,
+  BottomNavigation, 
+  BottomNavigationAction
 } from "@material-ui/core";
+import {Edit as EditIcon, Settings as SettingsIcon} from '@material-ui/icons'
 import { Location, PasswordChange, EmailChange } from "../components";
 import Geocode from "react-geocode";
 import { connect } from "react-redux";
@@ -32,10 +35,17 @@ class Settings extends Component {
       location: props.settings.location,
       longitude: props.settings.longitude,
       latitude: props.settings.latitude,
-      activeForm: 0
+      activeForm: 0,
+      isMobile: window.matchMedia("(max-width: 768px)").matches,
+      mobileTabIndex: 0
     };
     this.handleClick = this.handleClick.bind(this);
     Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_API_KEY}`);
+  }
+
+  componentDidMount() {
+    const handler = (e) => this.setState({ isMobile: e.matches });
+    window.matchMedia("(max-width: 768px)").addListener(handler);
   }
 
   handleRadius = (e) => {
@@ -79,19 +89,23 @@ class Settings extends Component {
 
   handleFormChange = (index) => {
     if (index !== this.state.activeForm){
-      this.setState({activeForm: index})
+      this.setState({activeForm: index, mobileTabIndex: 1})
     }
+  }
+
+  handleMobileTabChange = (e, newValue) => {
+    this.setState({mobileTabIndex: newValue})
   }
 
   render() {
     return (
-        <div className="innerWrap">
+        <div className={`innerWrap  ${this.state.isMobile ? "innerWrap-mobile": ""}`}>
           <Helmet>
             <meta charSet="utf-8" />
             <title>Settings</title>
             <meta name="description" content="Settings" />
           </Helmet>
-            <div className="innerLeft">
+            <div className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 0 ? "innerLeft-show" : ""}`}>
               <div className="innerLeftHeader">
                 Settings
               </div>
@@ -142,8 +156,8 @@ class Settings extends Component {
                 </div>
               </div>
           </div>
-          <div className="innerRight">
-            <div className="innerRightBlock">
+          <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 0 ? "" : "innerRight-show"}`}>
+            <div className="innerRightBlock" style={{height: "100%"}}>
               <div className="innerRightBlockHeader" style={{"height": "100%"}}>
                 <div className="hr">Settings</div>
                 <div className={styles.form}>
@@ -195,7 +209,14 @@ class Settings extends Component {
               </div>
             </div>
           </div>
-          
+          {this.state.isMobile && 
+            <div className="innerWrap-mobileControl">
+              <BottomNavigation value={this.state.mobileTabIndex} onChange={this.handleMobileTabChange} showLabels>
+                  <BottomNavigationAction label="Settings" icon={<SettingsIcon/>}/>
+                  <BottomNavigationAction label="Edit" icon={<EditIcon/>}/>
+              </BottomNavigation>
+            </div>
+          }
         </div>
         
     );

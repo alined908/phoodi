@@ -460,3 +460,9 @@
     padding-top: 2rem;
   }
 }
+
+@media only screen and (max-width: 400px) {
+    .food-belt{
+        transform: scale(0.5);
+    }
+}   

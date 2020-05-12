@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { axiosClient } from "../../accounts/axiosClient";
-import { Avatar, Button, Grow } from "@material-ui/core";
+import { Avatar, Button, Grow, BottomNavigation, BottomNavigationAction } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { getPreferences } from "../../actions";
+import {Category as CategoryIcon, Info as InfoIcon} from '@material-ui/icons'
 import { Link } from "react-router-dom";
 import {connect} from 'react-redux'
 import { Helmet } from "react-helmet";
@@ -18,10 +19,14 @@ class Categories extends Component {
       random: [],
       popularCategoriesLoaded: false,
       randomCategoriesLoaded: false,
+      isMobile: window.matchMedia("(max-width: 768px)").matches,
+      mobileTabIndex: 0
     };
   }
 
   async componentDidMount() {
+    const handler = (e) => this.setState({ isMobile: e.matches });
+    window.matchMedia("(max-width: 768px)").addListener(handler);
     const [popular, random] = await Promise.all([
       axiosClient.get(`/api/categories/?type=popular`, {
         headers: {
@@ -58,6 +63,10 @@ class Categories extends Component {
     });
   };
 
+  handleMobileTabChange = (e, newValue) => {
+    this.setState({mobileTabIndex: newValue})
+  }
+
   render() {
 
     const renderPreset = () => {
@@ -82,13 +91,13 @@ class Categories extends Component {
     };
 
     return (
-      <div className="innerWrap">
+      <div className={`innerWrap  ${this.state.isMobile ? "innerWrap-mobile": ""}`}>
         <Helmet>
           <meta charSet="utf-8" />
           <meta name="description" content="Discover new categories." />
           <title>Categories</title>
         </Helmet>
-        <div className="innerLeft">
+        <div className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 0 ? "innerLeft-show" : ""}`}>
           <div className="innerLeftHeader">
             Categories
           </div>
@@ -111,7 +120,7 @@ class Categories extends Component {
             
           </div>
         </div>
-        <div className="innerRight">
+        <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 0 ? "" : "innerRight-show"}`}>
           <div className="innerRightBlock">
             <div className="innerRightBlockHeader">
               <div className="hr">Most Popular</div>
@@ -195,6 +204,14 @@ class Categories extends Component {
             </div>
           </div>
         </div>
+        {this.state.isMobile && 
+            <div className="innerWrap-mobileControl">
+              <BottomNavigation value={this.state.mobileTabIndex} onChange={this.handleMobileTabChange} showLabels>
+                  <BottomNavigationAction label="Info" icon={<InfoIcon/>}/>
+                  <BottomNavigationAction label="Categories" icon={<CategoryIcon/>}/>
+              </BottomNavigation>
+            </div>
+          }
       </div>
     );
   }

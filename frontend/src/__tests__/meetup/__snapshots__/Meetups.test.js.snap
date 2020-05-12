@@ -2,7 +2,7 @@
 
 exports[`Meetups tests renders without crashing 1`] = `
 <div
-  className="innerWrap"
+  className="innerWrap  "
 >
   <HelmetWrapper
     defer={true}
@@ -20,7 +20,7 @@ exports[`Meetups tests renders without crashing 1`] = `
     </title>
   </HelmetWrapper>
   <div
-    className="innerLeft"
+    className="innerLeft  innerLeft-show"
     style={
       Object {
         "overflow": "auto",
@@ -33,15 +33,14 @@ exports[`Meetups tests renders without crashing 1`] = `
       <div>
         Meetups
       </div>
-      <WithStyles(ForwardRef(Button))
+      <WithStyles(ForwardRef(Fab))
         aria-label="add-meetup"
         color="primary"
         onClick={[Function]}
-        size="small"
-        variant="contained"
+        size="medium"
       >
-        Create
-      </WithStyles(ForwardRef(Button))>
+        <AddIcon />
+      </WithStyles(ForwardRef(Fab))>
     </div>
     <div
       className="innerLeftHeaderBlock"
@@ -107,7 +106,7 @@ exports[`Meetups tests renders without crashing 1`] = `
             disabled={false}
             displayFormat="MMM DD"
             enableOutsideDays={false}
-            endDate={"2020-05-18T02:16:35.233Z"}
+            endDate={"2020-05-19T06:32:34.639Z"}
             endDateId="unique_end_date_id"
             endDatePlaceholderText="End Date"
             firstDayOfWeek={null}
@@ -187,7 +186,7 @@ exports[`Meetups tests renders without crashing 1`] = `
             showClearDates={false}
             showDefaultInputIcon={false}
             small={true}
-            startDate={"2020-05-11T02:16:35.233Z"}
+            startDate={"2020-05-12T06:32:34.639Z"}
             startDateId="unique_start_date_id"
             startDatePlaceholderText="Start Date"
             verticalHeight={null}
@@ -294,7 +293,7 @@ exports[`Meetups tests renders without crashing 1`] = `
     </div>
   </div>
   <div
-    className="innerRight"
+    className="innerRight  "
   >
     <div
       className="innerRightBlock"
@@ -318,168 +317,154 @@ exports[`Meetups tests renders without crashing 1`] = `
       >
         <WithStyles(ForwardRef(Grid))
           container={true}
+          justify="space-evenly"
           spacing={3}
         >
-          <WithStyles(ForwardRef(Grid))
-            item={true}
-            key="1"
-            lg={6}
-            xl={4}
-            xs={12}
+          <ForwardRef(Grow)
+            in={true}
+            timeout={500}
           >
-            <ForwardRef(Grow)
-              in={true}
-              timeout={500}
+            <div
+              className="meetupCardWrapper"
             >
-              <div
-                className="meetups-cardwrapper"
-              >
-                <MeetupCard
-                  key="1"
-                  meetup={
-                    Object {
-                      "categories": Array [
-                        Object {
-                          "api_label": "desserts",
-                          "id": 1,
-                          "image": null,
-                          "label": "Dessert",
-                        },
-                      ],
-                      "creator": Object {
-                        "avatar": null,
-                        "email": "daniel@gmail.com",
-                        "first_name": "Daniel",
+              <MeetupCard
+                key="1"
+                meetup={
+                  Object {
+                    "categories": Array [
+                      Object {
+                        "api_label": "desserts",
                         "id": 1,
-                        "last_name": "Lee",
+                        "image": null,
+                        "label": "Dessert",
                       },
-                      "date": "2020-05-10",
-                      "events": Object {},
+                    ],
+                    "creator": Object {
+                      "avatar": null,
+                      "email": "daniel@gmail.com",
+                      "first_name": "Daniel",
                       "id": 1,
-                      "isMeetupEventsInitialized": true,
-                      "latitude": 34.228754,
-                      "location": "location",
-                      "longitude": -118.2351192,
-                      "members": Object {
-                        "1": Object {
-                          "admin": true,
-                          "ban": false,
-                          "id": 1,
-                          "user": Object {
-                            "avatar": null,
-                            "email": "daniel@gmail.com",
-                            "first_name": "Daniel",
-                            "id": 1,
-                            "last_name": "Lee",
-                          },
-                        },
-                        "2": Object {
-                          "admin": false,
-                          "ban": false,
-                          "id": 2,
-                          "user": Object {
-                            "avatar": null,
-                            "email": "example2@gmail.com",
-                            "first_name": "Bob",
-                            "id": 2,
-                            "last_name": "Jim",
-                          },
-                        },
-                      },
-                      "name": "Meetup",
-                      "notifs": 0,
-                      "public": true,
-                      "uri": "uri",
-                    }
-                  }
-                />
-              </div>
-            </ForwardRef(Grow)>
-          </WithStyles(ForwardRef(Grid))>
-          <WithStyles(ForwardRef(Grid))
-            item={true}
-            key="2"
-            lg={6}
-            xl={4}
-            xs={12}
-          >
-            <ForwardRef(Grow)
-              in={true}
-              timeout={500}
-            >
-              <div
-                className="meetups-cardwrapper"
-              >
-                <MeetupCard
-                  key="2"
-                  meetup={
-                    Object {
-                      "categories": Array [
-                        Object {
-                          "api_label": "desserts",
-                          "id": 1,
-                          "image": null,
-                          "label": "Dessert",
-                        },
-                      ],
-                      "creator": Object {
-                        "avatar": null,
-                        "email": "daniel@gmail.com",
-                        "first_name": "Daniel",
+                      "last_name": "Lee",
+                    },
+                    "date": "2020-05-11",
+                    "events": Object {},
+                    "id": 1,
+                    "isMeetupEventsInitialized": true,
+                    "latitude": 34.228754,
+                    "location": "location",
+                    "longitude": -118.2351192,
+                    "members": Object {
+                      "1": Object {
+                        "admin": true,
+                        "ban": false,
                         "id": 1,
-                        "last_name": "Lee",
-                      },
-                      "date": "2020-05-10",
-                      "events": Object {},
-                      "id": 2,
-                      "isMeetupEventsInitialized": true,
-                      "latitude": 34.228754,
-                      "location": "location",
-                      "longitude": -118.2351192,
-                      "members": Object {
-                        "1": Object {
-                          "admin": true,
-                          "ban": false,
+                        "user": Object {
+                          "avatar": null,
+                          "email": "daniel@gmail.com",
+                          "first_name": "Daniel",
                           "id": 1,
-                          "user": Object {
-                            "avatar": null,
-                            "email": "daniel@gmail.com",
-                            "first_name": "Daniel",
-                            "id": 1,
-                            "last_name": "Lee",
-                          },
-                        },
-                        "2": Object {
-                          "admin": false,
-                          "ban": false,
-                          "id": 2,
-                          "user": Object {
-                            "avatar": null,
-                            "email": "example2@gmail.com",
-                            "first_name": "Bob",
-                            "id": 2,
-                            "last_name": "Jim",
-                          },
+                          "last_name": "Lee",
                         },
                       },
-                      "name": "Meetup",
-                      "notifs": 0,
-                      "public": false,
-                      "uri": "uri2",
-                    }
+                      "2": Object {
+                        "admin": false,
+                        "ban": false,
+                        "id": 2,
+                        "user": Object {
+                          "avatar": null,
+                          "email": "example2@gmail.com",
+                          "first_name": "Bob",
+                          "id": 2,
+                          "last_name": "Jim",
+                        },
+                      },
+                    },
+                    "name": "Meetup",
+                    "notifs": 0,
+                    "public": true,
+                    "uri": "uri",
                   }
-                />
-              </div>
-            </ForwardRef(Grow)>
-          </WithStyles(ForwardRef(Grid))>
+                }
+              />
+            </div>
+          </ForwardRef(Grow)>
+          <ForwardRef(Grow)
+            in={true}
+            timeout={500}
+          >
+            <div
+              className="meetupCardWrapper"
+            >
+              <MeetupCard
+                key="2"
+                meetup={
+                  Object {
+                    "categories": Array [
+                      Object {
+                        "api_label": "desserts",
+                        "id": 1,
+                        "image": null,
+                        "label": "Dessert",
+                      },
+                    ],
+                    "creator": Object {
+                      "avatar": null,
+                      "email": "daniel@gmail.com",
+                      "first_name": "Daniel",
+                      "id": 1,
+                      "last_name": "Lee",
+                    },
+                    "date": "2020-05-11",
+                    "events": Object {},
+                    "id": 2,
+                    "isMeetupEventsInitialized": true,
+                    "latitude": 34.228754,
+                    "location": "location",
+                    "longitude": -118.2351192,
+                    "members": Object {
+                      "1": Object {
+                        "admin": true,
+                        "ban": false,
+                        "id": 1,
+                        "user": Object {
+                          "avatar": null,
+                          "email": "daniel@gmail.com",
+                          "first_name": "Daniel",
+                          "id": 1,
+                          "last_name": "Lee",
+                        },
+                      },
+                      "2": Object {
+                        "admin": false,
+                        "ban": false,
+                        "id": 2,
+                        "user": Object {
+                          "avatar": null,
+                          "email": "example2@gmail.com",
+                          "first_name": "Bob",
+                          "id": 2,
+                          "last_name": "Jim",
+                        },
+                      },
+                    },
+                    "name": "Meetup",
+                    "notifs": 0,
+                    "public": false,
+                    "uri": "uri2",
+                  }
+                }
+              />
+            </div>
+          </ForwardRef(Grow)>
         </WithStyles(ForwardRef(Grid))>
       </div>
     </div>
-    <Connect(ReduxForm)
-      handleClose={[Function]}
-      open={false}
-      type="create"
-    />
   </div>
+  <Connect(ReduxForm)
+    handleClose={[Function]}
+    isMobile={false}
+    open={false}
+    type="create"
+  />
 </div>
 `;
