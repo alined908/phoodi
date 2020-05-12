@@ -185,8 +185,10 @@ class MeetupForm extends Component {
                     />
                   }
                 />
+                
+              </Grid>
+              <Grid item xs={12}>
                 <div className={styles.label}>
-                  -{" "}
                   {this.state.public
                     ? "Public meetups are joinable by anyone"
                     : "Private meetups can be joined only by those you invite."}

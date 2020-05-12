@@ -179,8 +179,8 @@ background: var(--light-blue);
 
 .addEvent{
     position: absolute;
-    bottom: 2rem;
-    right: 3rem;
+    bottom: 3rem;
+    right: 4rem;
 }
 
 .event {
@@ -225,6 +225,7 @@ background: var(--light-blue);
   margin: 0 auto;
   align-items: center;
   justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
 .chosenMap {
@@ -742,12 +743,16 @@ background: var(--light-blue);
 
 
 @media only screen and (max-width: 900px) {
+    .header {
+        padding: 1.25rem 1rem;
+    }
+
     .headerIndented {
         width: 90%;
     }
 
     .event {
-        padding: 0 1.5rem;
+        padding: 0 .5rem;
         width: 100%;
     }
 
@@ -758,17 +763,17 @@ background: var(--light-blue);
 }
 
 /* Mobile */
-
+@media only screen and (max-width: 1400px) {
+    .secondHeader {
+        padding: 0.7rem 1rem;
+    }
+}
 
 @media only screen and (max-width: 768px) {
 
     .foursquare {
         margin: 1rem auto;
-        width: 90%;
-    }
-
-    .rstWrapper {
-        transform: scale(.75);
+        width: 100%;
     }
 
     .secondHeader {

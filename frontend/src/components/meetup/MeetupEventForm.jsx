@@ -327,7 +327,7 @@ class MeetupEventForm extends Component {
                   </div>
                 </div>
               </Grid>
-              <Grid container item xs={12}>
+              <Grid container item xs={12} alignItems="center">
                 <FormControlLabel
                   label="Random"
                   control={
@@ -348,11 +348,12 @@ class MeetupEventForm extends Component {
                     />
                   }
                 />
-                <div className={styles.label}>
+                <span className={styles.label}>
                   {this.state.random
                     ? "Randomly generates options"
                     : "Members add options"}
-                </div>
+                </span>
+                
               </Grid>
             </Grid>
           </DialogContent>

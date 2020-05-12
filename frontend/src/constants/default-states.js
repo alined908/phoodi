@@ -166,7 +166,8 @@ export const MuiTheme = {
             fontWeight: 600,
             '&$selected' : {
                 color: "var(--bright-blue)"
-            }
+            },
+            padding: "6px"
         },
         label : {
             '&$selected' : {

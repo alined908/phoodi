@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { axiosClient } from "../../accounts/axiosClient";
-import { Avatar, Tooltip, IconButton, Grid, Grow, Slider, CircularProgress } from "@material-ui/core";
+import { Avatar, Tooltip, IconButton, Grid, Grow, Slider, CircularProgress,  BottomNavigation, BottomNavigationAction } from "@material-ui/core";
 import {
   getMeetups,
   getFriends,
@@ -11,6 +11,8 @@ import { Friend, MeetupCard, RestaurantCard } from "../components";
 import {
   FavoriteBorder as FavoriteBorderIcon,
   Favorite as FavoriteIcon,
+  People as PeopleIcon,
+  Info as InfoIcon,
 } from "@material-ui/icons";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -38,11 +40,15 @@ class Category extends Component {
       loadingError: false,
       liked: false,
       numLiked: 0,
-      radius: props.user.settings.radius
+      radius: props.user.settings.radius,
+      isMobile: window.matchMedia("(max-width: 768px)").matches,
+      mobileTabIndex: 0
     };
   }
 
   componentDidMount() {
+    const handler = (e) => this.setState({ isMobile: e.matches });
+    window.matchMedia("(max-width: 768px)").addListener(handler);
     //Get Information and redirect if invalid category
     this.getInformation();
   }
@@ -138,10 +144,14 @@ class Category extends Component {
     this.setState({isRestaurantsFetching: false})
   }
 
+  handleMobileTabChange = (e, newValue) => {
+    this.setState({mobileTabIndex: newValue})
+  }
+
   render() {
     const category = this.state.category;
     return (
-      <div className="innerWrap">
+      <div className={`innerWrap  ${this.state.isMobile ? "innerWrap-mobile": ""}`}>
         <Helmet>
           <meta charSet="utf-8" />
           <meta name="description" content="Discover new categories." />
@@ -149,7 +159,7 @@ class Category extends Component {
             category.label === undefined ? "" : category.label
           }`}</title>
         </Helmet>
-        <div className="innerLeft">
+        <div className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 0 ? "innerLeft-show" : ""}`}>
           <div className="innerLeftHeader">
             <span className={styles.avatar}>
               <Avatar
@@ -232,7 +242,7 @@ class Category extends Component {
             </div>
           </div>
         </div>
-        <div className="innerRight">
+        <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 0 ? "" : "innerRight-show"}`}>
           <div className="innerRightBlock">
             <div className="innerRightBlockHeader">
               <div className="hr" style={{fontSize: ".9rem"}}>
@@ -245,7 +255,7 @@ class Category extends Component {
               </div>
             }
             {!this.state.isRestaurantsFetching && 
-              <Grid container spacing={1}>
+              <Grid container justify="space-evenly" spacing={1}>
                 {this.state.restaurants.map((rst) => (
                   <RestaurantCard data={rst}/>
                 ))}
@@ -265,7 +275,7 @@ class Category extends Component {
               
               }
               {this.props.isMeetupsInitialized && 
-                <Grid container spacing={1}>
+                <Grid container justify="space-evenly" spacing={1}>
                   {Object.keys(this.props.meetups).map((uri, index) => (
                     <Grid key={this.props.meetups[uri].id} item xs={12} lg={4}>
                       <Grow in={true} timeout={Math.max((index + 1) * 200, 500)}>
@@ -281,6 +291,14 @@ class Category extends Component {
           <div>
         </div>
         </div>
+        {this.state.isMobile && 
+            <div className="innerWrap-mobileControl">
+              <BottomNavigation value={this.state.mobileTabIndex} onChange={this.handleMobileTabChange} showLabels>
+                  <BottomNavigationAction label="Info" icon={<InfoIcon/>}/>
+                  <BottomNavigationAction label="Activities" icon={<PeopleIcon/>}/>
+              </BottomNavigation>
+            </div>
+          }
       </div>
     );
   }

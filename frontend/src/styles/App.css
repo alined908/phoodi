@@ -399,6 +399,11 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
+  overflow-y: auto;
+}
+
+.innerRightBlock::-webkit-scrollbar{
+  display: none;
 }
 
 .innerRightBlockHeader {
@@ -420,6 +425,7 @@ body {
 
 .mobileControl-Fab{
   margin-top: -25px !important;
+  min-width: 48px !important;
 }
 
 .innerLeft-mobile{
@@ -431,6 +437,7 @@ body {
   border-right: 0;
   padding: .5rem;
   margin: .5rem 0;
+  border-left: 0;
 }
 
 .innerLeft-show {
