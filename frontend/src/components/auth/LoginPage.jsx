@@ -7,13 +7,25 @@ import { Paper, Grid, Fab } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { renderTextField } from "../components";
 import { ReactComponent as Fan } from "../../assets/svgs/fans.svg";
-import { ReactComponent as Bamboo } from "../../assets/svgs/bamboo-dark.svg";
 import { ReactComponent as Google } from "../../assets/svgs/google.svg";
 import { ReactComponent as Facebook } from "../../assets/svgs/facebook.svg";
 import { ReactComponent as Twitter } from "../../assets/svgs/twitter.svg";
 import styles from "../../styles/form.module.css";
 import { Helmet } from "react-helmet";
 import PropTypes from "prop-types";
+
+const validate = (values) => {
+  const errors = {};
+  if (!values.email) {
+    errors.email = "Email is required.";
+  }
+
+  if (!values.password) {
+    errors.password = "Password is required.";
+  }
+
+  return errors;
+};
 
 class LoginPage extends Component {
   onSubmit = (formProps) => {
@@ -31,7 +43,7 @@ class LoginPage extends Component {
   };
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, submitting, invalid } = this.props;
 
     return (
       <Paper className={styles.container} elevation={8}>
@@ -44,13 +56,7 @@ class LoginPage extends Component {
         </div>
         <div className={styles.right}>
           <div className={styles.formhead}>
-            <div className={styles.icon}>
-              <Bamboo height="100%" width="100%" />
-            </div>
             <span className={styles.header}>Login</span>
-            <div className={styles.icon}>
-              <Bamboo height="100%" width="100%" />
-            </div>
           </div>
           <form className={styles.form} onSubmit={handleSubmit(this.onSubmit)}>
             <Grid container spacing={2}>
@@ -77,6 +83,7 @@ class LoginPage extends Component {
                 type="submit"
                 variant="extended"
                 aria-label="login"
+                disabled={submitting || invalid}
               >
                 Login
               </Fab>
@@ -132,6 +139,7 @@ export default compose(
   connect(mapStatetoProps, mapDispatchToProps),
   reduxForm({
     form: "signin",
+    validate
   })
 )(LoginPage);
 
