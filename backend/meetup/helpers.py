@@ -3,6 +3,8 @@ from uuid import uuid4
 from django.utils.deconstruct import deconstructible
 from django.core.mail import get_connection, EmailMultiAlternatives
 
+def generate_unique_uri():
+    return str(uuid4()).replace("-", "")[:15]
 
 def send_mass_html_mail(
     datatuple, fail_silently=False, user=None, password=None, connection=None

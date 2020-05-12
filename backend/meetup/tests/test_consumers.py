@@ -1,6 +1,5 @@
-import django, os
-
-os.environ["DJANGO_SETTINGS_MODULE"] = "backend.settings"
+import os
+import django
 django.setup()
 from channels.testing import WebsocketCommunicator
 from meetup.consumers import ChatRoomConsumer, UserNotificationConsumer, MeetupConsumer, ChatContactsConsumer
