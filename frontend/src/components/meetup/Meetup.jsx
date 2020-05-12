@@ -84,7 +84,7 @@ class Meetup extends Component {
       newMeetupEventForm: false,
       showChat: props.isUserMember,
       anchor: null,
-      isMobile: window.matchMedia("(max-width: 768px)").matches,
+      isMobile: window.matchMedia("(max-width: 1100px)").matches,
       mobileTabIndex: 0
     };
 
@@ -557,7 +557,7 @@ class Meetup extends Component {
           </div>
         </div>
         <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 3 ? "innerRight-show" : ""}`} id="head">
-          <div className="innerRightBlock" style={{position: "relative"}}>
+          <div className="innerRightBlock" style={{overflowY:"auto"}}>
             <div className="innerRightBlockHeader">
               <div className="hr" id="Events">
                 Events

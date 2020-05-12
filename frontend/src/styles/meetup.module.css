@@ -153,6 +153,7 @@ background: var(--light-blue);
 }
 
 .meetupCardWrapper {
+    max-height: 300px;
     max-width: 500px;
     padding: 1rem;
     flex: 1;
@@ -184,8 +185,8 @@ background: var(--light-blue);
 }
 
 .event {
-  padding: 0 1.25rem;
-    width: 100%;
+  padding: 0 .5rem;
+  width: 100%;
   margin: 0 auto 2rem auto;
 }
 
@@ -210,8 +211,8 @@ background: var(--light-blue);
   justify-content: space-between;
   align-items: center;
   background-color: white;
-  width: 90%;
-  padding: 0.7rem 2rem;
+  width: 92.5%;
+  padding: 0.7rem 1.5rem;
 }
 
 .secondHeaderLeft {

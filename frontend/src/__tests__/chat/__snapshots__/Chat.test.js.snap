@@ -2,7 +2,7 @@
 
 exports[`Chat unit  renders without crashing given props 1`] = `
 <div
-  className="chat chatMobile"
+  className="chat "
 >
   <HelmetWrapper
     defer={true}
@@ -21,7 +21,7 @@ exports[`Chat unit  renders without crashing given props 1`] = `
   </HelmetWrapper>
   <Connect(ChatBar)
     activeRoom={null}
-    mobile={true}
+    mobile={false}
     onShow={[Function]}
     rooms={Array []}
     show={true}
@@ -29,7 +29,7 @@ exports[`Chat unit  renders without crashing given props 1`] = `
   <Connect(ChatWindow)
     activeRoom={null}
     messages={Array []}
-    mobile={true}
+    mobile={false}
     show={false}
     socket={
       Object {

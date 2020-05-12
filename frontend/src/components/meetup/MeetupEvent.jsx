@@ -239,7 +239,7 @@ class MeetupEvent extends Component {
                             <CheckIcon color="primary" fontSize="small" />
                           </ListItemIcon>
                           <Typography variant="body2" noWrap>
-                            Decide Event
+                            Decide Options
                           </Typography>
                         </MenuItem>
                         <MenuItem aria-label="random" onClick={(e) => {this.handleRandom(); this.handleMenuClose(e)}}>
@@ -247,7 +247,7 @@ class MeetupEvent extends Component {
                             <CheckIcon color="primary" fontSize="small" />
                           </ListItemIcon>
                           <Typography variant="body2" noWrap>
-                            Random Decide
+                            Random Options
                           </Typography>
                         </MenuItem>
                       </>
@@ -261,7 +261,7 @@ class MeetupEvent extends Component {
                           Redecide Event
                         </Typography>
                       </MenuItem>
-                    }
+                    } 
                   </>
                 }
             </Menu>

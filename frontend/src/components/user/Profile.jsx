@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Avatar, IconButton, Tooltip} from "@material-ui/core";
+import { Avatar, IconButton, Tooltip, BottomNavigation, BottomNavigationAction} from "@material-ui/core";
 import { axiosClient } from "../../accounts/axiosClient";
 import {
   getPreferences,
@@ -14,6 +14,9 @@ import {
   LockOpen as LockOpenIcon,
   Edit as EditIcon,
   PersonAdd as PersonAddIcon,
+  AccountBox as AccountBoxIcon,
+  Group as GroupIcon,
+  LineWeight as LineWeightIcon
 } from "@material-ui/icons";
 import {
   Friend,
@@ -42,10 +45,14 @@ class Profile extends Component {
         ? this.props.location.state.locked
         : true,
       editProfileForm: false,
+      isMobile: window.matchMedia("(max-width: 1200px)").matches,
+      mobileTabIndex: 0
     };
   }
 
   componentDidMount() {
+    const handler = (e) => this.setState({ isMobile: e.matches });
+    window.matchMedia("(max-width: 1200px)").addListener(handler);
     this.props.getPreferences(this.props.match.params.id);
     this.getInformation();
   }
@@ -116,6 +123,10 @@ class Profile extends Component {
 
     this.setState({ searchInput: filter, filteredFriends: newFriends });
   };
+
+  handleMobileTabChange = (e, newValue) => {
+    this.setState({mobileTabIndex: newValue})
+  }
 
   isUserFriend = () => {
     for (var i = 0; i < this.state.friends.length; i++) {
@@ -253,7 +264,7 @@ class Profile extends Component {
     };
 
     return (
-      <div className="innerWrap">
+      <div className={`innerWrap  ${this.state.isMobile ? "innerWrap-mobile": ""}`}>
         <Helmet>
           <meta charSet="utf-8" />
           <title>
@@ -270,7 +281,7 @@ class Profile extends Component {
           </title>
           <meta name="description" content="Phoodie Profile" />
         </Helmet>
-        <div className="innerLeft">
+        <div className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 0 ? "innerLeft-show" : ""}`}>
           <div className="innerLeftHeader" style={{padding: ".5rem .7rem"}}>
               <span className={styles.userInfo}>
                 <Avatar
@@ -343,7 +354,7 @@ class Profile extends Component {
             <Preferences locked={this.state.locked} isUser={isUser} />
           </div>
         </div>
-        <div className="innerRight" style={{borderRight: "1px solid #e3e3e3"}}>
+        <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 1 ? "innerRight-show" : ""}`}>
           <div className="innerRightBlock">
             <div className="innerRightBlockHeader">
               <div className="hr">Past Activity</div>
@@ -351,7 +362,7 @@ class Profile extends Component {
             </div>
           </div>
         </div>
-        <div className="innerLeft">
+        <div className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 2 ? "innerLeft-show" : ""} ${styles.profileFriends}`}>
           <div className="innerLeftHeaderBlock">
             <div className="hr">Friends</div>
             <div className="innerLeftHeaderBlockAction">
@@ -372,6 +383,15 @@ class Profile extends Component {
             {this.state.userLoaded && renderFriends()}
           </div>
         </div>
+        {this.state.isMobile && 
+          <div className="innerWrap-mobileControl">
+            <BottomNavigation value={this.state.mobileTabIndex} onChange={this.handleMobileTabChange} showLabels>
+                <BottomNavigationAction label="Profile" icon={<AccountBoxIcon/>}/>
+                <BottomNavigationAction label="Activity" icon={<LineWeightIcon/>}/>
+                <BottomNavigationAction label="Friends" icon={<GroupIcon/>}/>
+            </BottomNavigation>
+          </div>
+        }
         {this.state.editProfileForm && (
           <RegisterPage
             type="edit"

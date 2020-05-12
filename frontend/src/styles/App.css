@@ -368,6 +368,7 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  text-align: center;
 }
 
 .blockActionChip > div {
@@ -399,7 +400,6 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow-y: auto;
 }
 
 .innerRightBlock::-webkit-scrollbar{
