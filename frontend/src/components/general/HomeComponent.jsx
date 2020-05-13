@@ -65,92 +65,67 @@ class HomeComponent extends Component {
         <div className="middle">
           <div className="middle-header">
             <ClockIcon className={"svg"} width={50} height="100%" />
-            <Typography variant="h4">Get food with friends faster</Typography>
-            <Typography style={{ marginTop: ".5rem" }} variant="h6">
+            <div className="section-title">
+              Get food with friends faster
+            </div>
+            <div className="section-text">
               Schedule events. Choose from options. Meetup!
-            </Typography>
+            </div>
           </div>
           <div className="middle-entry left">
             <div className="middle-entry-img">
-              <HavingFunIcon width={600} height="100%" />
+              <HavingFunIcon width="100%" height="100%" />
             </div>
             <div className="middle-entry-text">
-              <Typography variant="h4">Find Food Friends</Typography>
-              <Typography variant="h6">
+              <div className="section-title">
+                Find Nearby Foodies
+              </div>
+              <div className="section-text">
                 Bond with friends and people with similar food tastes near you
-              </Typography>
+              </div>
             </div>
           </div>
           <div className="middle-entry right">
             <div className="middle-entry-text">
-              <Typography variant="h4">Schedule Group Meetups</Typography>
-              <Typography variant="h6">
+              <div className="section-title">
+                Schedule Group Meetups
+              </div>
+              <div className="section-text">
                 Create multiple events and instantly add them to your calendar
-              </Typography>
+              </div>
             </div>
             <div className="middle-entry-img">
-              <TastingIcon width={600} height="100%" />
+              <TastingIcon width="100%" height="100%" />
             </div>
           </div>
           <div className="middle-entry left">
             <div className="middle-entry-img">
-              <StreetFoodIcon width={700} height="100%" />
+              <StreetFoodIcon width="100%" height="100%" />
             </div>
             <div className="middle-entry-text">
-              <Typography variant="h4">Explore New Foods</Typography>
-              <Typography variant="h6">
+              <div className="section-title">
+                Explore New Foods
+              </div>
+              <div className="section-text">
                 See what tastes good in your area
-              </Typography>
+              </div>
             </div>
           </div>
           <div className="middle-entry right">
             <div className="middle-entry-text">
-              <Typography variant="h4">Chat With Friends</Typography>
-              <Typography variant="h6">
+              <div className="section-title">
+                Chat With Friends
+              </div>
+              <div className="section-text">
                 Talk about what you've been craving
-              </Typography>
+              </div>
             </div>
             <div className="middle-entry-img">
-              <OnlineFriendsIcon width={800} height="100%" />
-            </div>
-          </div>
-          <div className="middle-tri">
-            <div className="middle-tri-col">
-              <div className="middle-tri-col-img">
-                <BreakFastIcon height={200} width="100%" />
-              </div>
-              <div className="middle-tri-col-txt">
-                <Typography style={{ marginBottom: "1rem" }} variant="h5">
-                  Simplify Lunch
-                </Typography>
-              </div>
-            </div>
-            <div className="middle-tri-col">
-              <div className="middle-tri-col-img">
-                <HamburgerIcon height={200} width="100%" />
-              </div>
-              <div className="middle-tri-col-txt">
-                <Typography style={{ marginBottom: "1rem" }} variant="h5">
-                  Simplify Dinner
-                </Typography>
-              </div>
-            </div>
-            <div className="middle-tri-col">
-              <div className="middle-tri-col-img">
-                <DonutLoveIcon height={200} width="100%" />
-              </div>
-              <div className="middle-tri-col-txt">
-                <Typography style={{ marginBottom: "1rem" }} variant="h5">
-                  Simplify Dessert
-                </Typography>
-              </div>
+              <OnlineFriendsIcon width="100%" height="100%" />
             </div>
           </div>
         </div>
         <div className="bottom">
-          <Typography style={{ margin: "1rem" }} variant="h3">
-            Meet with Friends
-          </Typography>
           <div className="bottom-button">
             <Link to="/register">
               <Button

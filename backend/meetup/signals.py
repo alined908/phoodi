@@ -20,7 +20,7 @@ def get_user():
             break
         else:
             request = None
-            
+
     if not request:
         return None
 
@@ -370,6 +370,14 @@ def post_save_review(sender, instance, created, **kwargs):
         restaurant.review_count += 1
         restaurant.save()
 
+        notify.send(
+            sender=instance.user,
+            recipient=instance.user,
+            action_object=instance,
+            description="user_activity",
+            verb="review",
+            target=instance.restaurant
+        )
 
 @receiver(post_save, sender=Comment)
 def post_save_comment(sender, instance, created, **kwargs):

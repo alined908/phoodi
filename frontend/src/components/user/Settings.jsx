@@ -159,7 +159,6 @@ class Settings extends Component {
           <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 0 ? "" : "innerRight-show"}`}>
             <div className="innerRightBlock" style={{height: "100%"}}>
               <div className="innerRightBlockHeader" style={{"height": "100%"}}>
-                <div className="hr">Settings</div>
                 <div className={styles.form}>
                   {this.state.activeForm === 0 &&
                     <form className={styles.formInner}>

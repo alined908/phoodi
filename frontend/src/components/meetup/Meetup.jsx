@@ -558,13 +558,7 @@ class Meetup extends Component {
         </div>
         <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 3 ? "innerRight-show" : ""}`} id="head">
           <div className="innerRightBlock" style={{overflowY:"auto"}}>
-            <div className="innerRightBlockHeader">
-              <div className="hr" id="Events">
-                Events
-              </div>
-              {renderEvents(meetup.events)}
-            </div>
-            
+            {renderEvents(meetup.events)}
           </div>
           {(!isPast && isUserMember && !this.state.isMobile) &&
               <div className={styles.addEvent}>

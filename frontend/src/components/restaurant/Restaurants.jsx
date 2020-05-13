@@ -207,21 +207,20 @@ class Restaurants extends Component {
                 </div>
                 <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 0 ? "" : "innerRight-show"}`}>
                     <div className="innerRightBlock">
-                        <div className="innerRightBlockHeader">
-                            <div className="hr">Restaurants</div>
-                            {this.state.isRestaurantsFetching && 
-                                <div className="loading">
-                                    <CircularProgress size={30}/>
-                                </div>
-                                }
-                            {!this.state.isRestaurantsFetching && 
-                                <Grid container justify="space-evenly" spacing={1}>
-                                    {this.state.restaurants.map((rst) => (
-                                        <RestaurantCard data={rst}/>
-                                    ))}
-                                </Grid>
+
+                        {this.state.isRestaurantsFetching && 
+                            <div className="loading">
+                                <CircularProgress size={30}/>
+                            </div>
                             }
-                        </div>
+                        {!this.state.isRestaurantsFetching && 
+                            <Grid container justify="space-evenly" spacing={1}>
+                                {this.state.restaurants.map((rst) => (
+                                    <RestaurantCard data={rst}/>
+                                ))}
+                            </Grid>
+                        }
+
                     </div>
                 </div>
                 {this.state.isMobile && 

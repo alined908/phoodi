@@ -10,7 +10,6 @@ class BaseComment(models.Model):
     class Meta:
         abstract = True
 
-
 class Review(BaseComment):
     CHOICES = [(i, i) for i in range(1, 11)]
     user = models.ForeignKey(

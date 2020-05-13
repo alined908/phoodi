@@ -318,7 +318,7 @@ class MeetupEvent extends Component {
       return (
         <div className={styles.foursquare}>
           {keys.length > 0 ? (
-            <Grid justify="center" container spacing={3}>
+            <Grid justify="space-evenly" container spacing={2}>
               {keys.map((key, index) => (
                 <MeetupEventOption
                   socket={this.props.socket}

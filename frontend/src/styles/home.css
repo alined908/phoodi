@@ -21,7 +21,7 @@
   display: flex;
   width: 100%;
   margin: auto 0;
-  border-bottom: 2px solid #edf0f6;
+  border-bottom: 1px solid #edf0f6;
   background-color: #dff7e5;
   height: 100%;
   align-items: center;
@@ -35,15 +35,16 @@
 }
 
 .middle {
-  padding-bottom: 4rem;
+  padding-bottom: 2rem;
   background-color: rgba(255, 255, 255, 1) !important;
 }
 
 .middle-header {
-  width: 75%;
+  width: 80%;
   margin: 0 auto;
   padding: 6rem 0;
   text-align: center;
+  border-bottom: 1px solid #e3e3e3;
 }
 
 .middle-entry {
@@ -53,13 +54,32 @@
   margin: 0 auto;
   padding: 3rem 0;
   align-items: center;
+  border-bottom: 1px solid #e3e3e3;
 }
+
 
 .middle-entry-text {
   display: flex;
   height: 100%;
   flex-direction: column;
   justify-content: space-evenly;
+}
+
+.section-title {
+    font-size: 2rem;
+}
+
+.section-text {
+    margin-top: .75rem;
+    color: var(--grey-text);
+    font-size: .95rem;
+}
+
+.middle-entry-img {
+    display: flex;
+    justify-content: center;
+    width: 700px;
+    height: 500px;
 }
 
 .middle-tri {
@@ -81,7 +101,7 @@
 .bottom {
   display: flex;
   align-items: center;
-  padding: 4rem 0;
+  padding-bottom: 2rem;
   flex-direction: column;
   text-align: center;
   background-color: white;
@@ -96,93 +116,6 @@
 
 .middle-header:hover svg {
   animation: shake 1s linear infinite;
-}
-
-.claw {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-  margin-top: 30px;
-  transform: translate(346%, -1045%);
-}
-
-.base {
-  background-color: rgb(220, 220, 220);
-  width: 80px;
-  height: 20px;
-  border-radius: 0 0 10px 10px;
-}
-.claw-body {
-  display: flex;
-  width: 100%;
-}
-.claw-left {
-  height: 100%;
-}
-
-.left-top {
-  background: linear-gradient(to left, rgb(220, 220, 220) 30%, black 70%);
-  width: 40px;
-  height: 5px;
-  transform: rotate(-45deg);
-}
-
-.left-bot {
-  background-color: black;
-  width: 30px;
-  height: 5px;
-  transform: rotate(50deg) translate(60%, 200%);
-  animation: open-left 15s linear infinite;
-}
-
-@keyframes open-left {
-  0% {
-    transform: rotate(50deg) translate(60%, 200%);
-  }
-  5% {
-    transform: rotate(70deg) translate(60%, 200%);
-  }
-  10% {
-    transform: rotate(50deg) translate(60%, 200%);
-  }
-  100% {
-    transform: rotate(50deg) translate(60%, 200%);
-  }
-}
-
-.claw-right {
-  height: 100%;
-}
-
-.right-top {
-  background: linear-gradient(to right, rgb(220, 220, 220) 30%, black 70%);
-  width: 40px;
-  height: 5px;
-  transform: rotate(45deg);
-}
-
-.right-bot {
-  background-color: black;
-  width: 30px;
-  height: 5px;
-  transform: rotate(-50deg) translate(-30%, 380%);
-  animation: open-right 15s linear infinite;
-}
-
-@keyframes open-right {
-  0% {
-    transform: rotate(-50deg) translate(-30%, 380%);
-  }
-  5% {
-    transform: rotate(-70deg) translate(-50%, 380%);
-  }
-  10% {
-    transform: rotate(-50deg) translate(-30%, 380%);
-  }
-  100% {
-    transform: rotate(-50deg) translate(-30%, 380%);
-  }
 }
 
 .clock {
@@ -351,12 +284,9 @@
 
 @keyframes moveFood {
   0% {
-    transform: translate(700%, -550%);
+    transform: translate(700%, -900%);
   }
 
-  5% {
-    transform: translate(700%, -550%);
-  }
   10% {
     transform: translate(700%, 0%);
   }
@@ -368,7 +298,7 @@
     transform: rotate(-45deg) translateX(-200%);
   }
   100% {
-    transform: translate(-125%, 950%) rotate(720deg);
+    transform: translate(-125%, 1100%) rotate(720deg);
   }
 }
 
@@ -418,18 +348,26 @@
   }
 }
 
+@media only screen and (max-width: 768px){
+    .middle-entry-img {
+        transform: scale(.8);
+        width: 600px;
+        height: 400px;
+    }
+}
+
 @media only screen and (max-width: 600px) {
   .middle {
     padding-bottom: 0;
   }
 
   .middle-header {
-    padding: 3rem 0 0 0;
+    padding: 3rem 0 3rem 0;
     width: 85%;
   }
 
   .middle-tri {
-    margin-top: 4rem;
+    margin-top: 2rem;
     flex-direction: column;
   }
 
@@ -437,8 +375,14 @@
     margin: 2rem 0;
   }
 
+  .middle-entry {
+      padding: 2rem 0;
+  }
+
   .middle-entry-img {
-    transform: scale(0.45);
+    transform: scale(0.65);
+    width: 450px;
+    height: 250px;
   }
 
   .food-belt {
