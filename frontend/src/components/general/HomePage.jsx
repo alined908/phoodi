@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "../../styles/home.css";
-import { Typography, Button, IconButton } from "@material-ui/core";
+import { Button, IconButton } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { ReactComponent as IceCreamIcon } from "../../assets/svgs/ice-cream.svg";
 import { ReactComponent as CandyAppleIcon } from "../../assets/svgs/food-and-restaurant.svg";
@@ -10,16 +10,13 @@ import { ReactComponent as CupCakeIcon } from "../../assets/svgs/cupcake.svg";
 import { ReactComponent as ClockIcon } from "../../assets/svgs/clock.svg";
 import { ReactComponent as WheelIcon } from "../../assets/svgs/wheel.svg";
 import { ReactComponent as HavingFunIcon } from "../../assets/svgs/undraw_fun.svg";
-import { ReactComponent as HamburgerIcon } from "../../assets/svgs/undraw_hamburger.svg";
-import { ReactComponent as DonutLoveIcon } from "../../assets/svgs/undraw_cookie.svg";
 import { ReactComponent as StreetFoodIcon } from "../../assets/svgs/undraw_foodtruck.svg";
 import { ReactComponent as OnlineFriendsIcon } from "../../assets/svgs/undraw_chat.svg";
 import { ReactComponent as TastingIcon } from "../../assets/svgs/undraw_eattogether.svg";
-import { ReactComponent as BreakFastIcon } from "../../assets/svgs/undraw_tea.svg";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import { Helmet } from "react-helmet";
 
-class HomeComponent extends Component {
+class HomePage extends Component {
   handleScroll = () => {
     const middle = document.querySelector(".middle");
     middle.scrollIntoView({ behavior: "smooth" });
@@ -64,7 +61,7 @@ class HomeComponent extends Component {
         </div>
         <div className="middle">
           <div className="middle-header">
-            <ClockIcon className={"svg"} width={50} height="100%" />
+            <ClockIcon className="svg-shadow" width={50} height="100%" />
             <div className="section-title">
               Get food with friends faster
             </div>
@@ -74,7 +71,7 @@ class HomeComponent extends Component {
           </div>
           <div className="middle-entry left">
             <div className="middle-entry-img">
-              <HavingFunIcon width="100%" height="100%" />
+              <HavingFunIcon className="svg-shadow" width="100%" height="100%" />
             </div>
             <div className="middle-entry-text">
               <div className="section-title">
@@ -95,12 +92,12 @@ class HomeComponent extends Component {
               </div>
             </div>
             <div className="middle-entry-img">
-              <TastingIcon width="100%" height="100%" />
+              <TastingIcon className="svg-shadow" width="100%" height="100%" />
             </div>
           </div>
           <div className="middle-entry left">
             <div className="middle-entry-img">
-              <StreetFoodIcon width="100%" height="100%" />
+              <StreetFoodIcon className="svg-shadow" width="100%" height="100%" />
             </div>
             <div className="middle-entry-text">
               <div className="section-title">
@@ -121,7 +118,7 @@ class HomeComponent extends Component {
               </div>
             </div>
             <div className="middle-entry-img">
-              <OnlineFriendsIcon width="100%" height="100%" />
+              <OnlineFriendsIcon className="svg-shadow" width="100%" height="100%" />
             </div>
           </div>
         </div>
@@ -143,4 +140,4 @@ class HomeComponent extends Component {
   }
 }
 
-export default HomeComponent;
+export default HomePage;

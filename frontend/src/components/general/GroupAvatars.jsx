@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(3),
     height: theme.spacing(3),
     marginLeft: "-14px",
-    border: "1px solid #fafafa",
+    border: "0",
     fontSize: ".75rem",
     zIndex: 0
   },

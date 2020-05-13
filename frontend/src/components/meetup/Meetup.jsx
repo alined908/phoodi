@@ -122,6 +122,13 @@ class Meetup extends Component {
     }
   }
 
+  componentDidUpdate(prevProps){
+    if (prevProps.meetup.events && this.props.meetup.events && (Object.keys(this.props.meetup.events).length > Object.keys(prevProps.meetup.events).length)) {
+      const eventSection = document.getElementById("Events");
+      eventSection.scrollTo({top: eventSection.scrollHeight, behavior: "smooth"})
+    }
+  }
+
   componentWillUnmount() {
     this.state.meetupSocket.disconnect();
   }
@@ -556,8 +563,9 @@ class Meetup extends Component {
             {renderFriends()}
           </div>
         </div>
-        <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 3 ? "innerRight-show" : ""}`} id="head">
-          <div className="innerRightBlock" style={{overflowY:"auto"}}>
+        <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 3 ? "innerRight-show" : ""}`}>
+          <div id="events-wrapper"></div>
+          <div className="innerRightBlock" style={{overflowY:"auto"}} id="Events">
             {renderEvents(meetup.events)}
           </div>
           {(!isPast && isUserMember && !this.state.isMobile) &&
@@ -619,11 +627,11 @@ class Meetup extends Component {
           )}
         {this.state.newMeetupEventForm && (
             <MeetupEventForm
-                type="create"
-                uri={meetup.uri}
-                aria-label="add-event-form"
-                handleClose={this.openEventModal}
-                open={this.state.newMeetupEventForm}
+              type="create"
+              uri={meetup.uri}
+              aria-label="add-event-form"
+              handleClose={this.openEventModal}
+              open={this.state.newMeetupEventForm}
             />
         )}
       </div>

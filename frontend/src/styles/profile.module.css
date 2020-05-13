@@ -19,7 +19,7 @@
 }
 
 .profileFriends {
-  border-left: 1px solid #e3e3e3;
+  border-left: var(--border-separator);
 }
 
 .friend {

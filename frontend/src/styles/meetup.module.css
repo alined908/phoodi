@@ -186,7 +186,7 @@ background: var(--light-blue);
   padding: 1.25rem .5rem;
   width: 100%;
   margin: 0 auto 0 auto;
-  border-bottom: 1px solid #e3e3e3;
+  border-bottom: var(--border-separator);
 }
 
 .event:last-child{
@@ -230,6 +230,7 @@ background: var(--light-blue);
   align-items: center;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  padding-bottom: 1rem;
 }
 
 .chosenMap {
@@ -515,9 +516,8 @@ background: var(--light-blue);
 /* MeetupChat */
 .meetupChatWrapper{
     align-items: center;
-    border-left: 1px solid #e3e3e3;
+    border-left: var(--border-separator);
     border-right: 0 !important;
-    padding: 1rem 1.25rem !important;
 }
 
 .meetupChat {
@@ -759,6 +759,10 @@ background: var(--light-blue);
     .event {
         padding: 0 .5rem;
         width: 100%;
+    }
+
+    .event:not(:first-child){
+        padding-top: 1.5rem;
     }
 
     .secondHeader {

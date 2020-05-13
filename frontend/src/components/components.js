@@ -48,7 +48,7 @@ import Map from "./fields/Map";
 import Body from "./general/Body";
 import Rating from "./general/Rating";
 import GlobalMessage from "./general/GlobalMessage";
-import HomeComponent from "./general/HomeComponent";
+import HomePage from "./general/HomePage";
 import LiveUpdatingBadge from "./general/LiveUpdatingBadge";
 import Navigation from "./general/Navigation";
 import ProgressIcon from "./general/ProgressIcon";
@@ -141,7 +141,7 @@ export {
   Rating,
   GlobalMessage,
   GroupAvatars,
-  HomeComponent,
+  HomePage,
   LiveUpdatingBadge,
   Navigation,
   NotificationWrapper,

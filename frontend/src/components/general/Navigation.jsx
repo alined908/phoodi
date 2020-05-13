@@ -87,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 1.25rem",
     background: "inherit",
     boxShadow: "none",
-    borderBottom: "1px solid #e3e3e3"
+    borderBottom: "var(--border-separator)"
   },
   hide: {
     display: "none",

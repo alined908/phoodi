@@ -3,6 +3,7 @@
   --bg-color: white;
   --grey-text: rgba(0, 0, 0, 0.54);
   --border-color-grey: #edf0f6;
+  --border-separator: 1px solid #e3e3e3;
   --background: rgb(250, 250, 250);
   --bg-grey: #f0f0f0;
   --light-blue: #e5f0ff;
@@ -309,7 +310,7 @@ body {
   flex-direction: column;
   width: 330px;
   overflow: auto;
-  border-right: 1px solid #e3e3e3;
+  border-right: var(--border-separator);
 }
 
 .innerLeft::-webkit-scrollbar{

@@ -6,7 +6,7 @@ import {
   RegisterPage,
   Chat,
   Meetups,
-  HomeComponent,
+  HomePage,
   Categories,
   Calendar,
   Category,
@@ -32,7 +32,7 @@ class Body extends Component {
     return (
       <div className="c">
         <Switch>
-          <Route path="/" exact component={HomeComponent} />
+          <Route path="/" exact component={HomePage} />
           <UnAuthenticatedRoute
             path="/activate/:uid/:token"
             component={EmailActivationPage}

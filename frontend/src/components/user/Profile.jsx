@@ -144,7 +144,7 @@ class Profile extends Component {
   };
 
   formatActivity = (activity) => {
-    console.log(activity);
+
     const verb = activity.verb;
     let activityHTML;
 
