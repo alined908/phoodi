@@ -77,15 +77,17 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     height: "100%",
     backgroundColor: "var(--background)",
+    
   },
   appBar: {
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    padding: "0 1rem",
+    padding: "0 1.25rem",
     background: "inherit",
     boxShadow: "none",
+    borderBottom: "var(--border-separator)"
   },
   hide: {
     display: "none",
@@ -123,7 +125,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
     justifyContent: "flex-end",
-    minHeight: "50px !important",
   },
   content: {
     flexGrow: 1,
@@ -183,7 +184,7 @@ const Navigation = (props) => {
       <CssBaseline />
 
       <AppBar elevation={1} position="absolute" className={classes.appBar}>
-        <Toolbar>
+        <Toolbar disableGutters>
           {props.authenticated && (
             <IconButton
               aria-label="open drawer"
@@ -205,22 +206,14 @@ const Navigation = (props) => {
             </Link>
           </Typography>
           {!props.authenticated && (
-            <Link to="/login">
-              <Button
-                className={classes.actionButton}
-                startIcon={<ExitToApp />}
-              >
-                Sign in
-              </Button>
-            </Link>
-          )}
-          {!props.authenticated && (
             <Link to="/register">
               <Button
                 className={classes.actionButton}
-                startIcon={<Assignment />}
+                // startIcon={<Assignment />}
+                variant="contained"
+                color="primary"
               >
-                Sign Up
+                Signup
               </Button>
             </Link>
           )}

@@ -362,22 +362,7 @@ class MeetupEventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MeetupEvent
-        fields = (
-            "id",
-            "meetup",
-            "creator",
-            "title",
-            "start",
-            "end",
-            "chosen",
-            "categories",
-            "options",
-            "price",
-            "distance",
-            "entries",
-            "random",
-        )
-
+        fields = "__all__"
 
 class MeetupMemberSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField("_get_user")
@@ -526,6 +511,10 @@ class GenericNotificationRelatedField(serializers.RelatedField):
             serializer = FriendshipSerializer(value)
         elif isinstance(value, Preference):
             serializer = PreferenceSerializer(value)
+        elif isinstance(value, Review):
+            serializer = ReviewSerializer(value)
+        elif isinstance(value, Restaurant):
+            serializer = RestaurantSerializer(value)
         else:
             return None
 

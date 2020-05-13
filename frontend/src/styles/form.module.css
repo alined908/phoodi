@@ -196,4 +196,8 @@
     .right {
         width: 100%;
     }
+
+    .form {
+        padding: 1rem .5rem;
+    }
 }

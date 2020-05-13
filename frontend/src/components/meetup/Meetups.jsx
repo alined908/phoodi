@@ -378,11 +378,6 @@ class Meetups extends Component {
         </div>
         <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 0 ? "" : "innerRight-show"}`}>
           <div className="innerRightBlock">
-            <div className="innerRightBlockHeader">
-              <div className="hr">
-                Meetups Near You
-              </div>
-            </div>
             <div
               className={styles.meetupsContainer}
               style={{

@@ -19,7 +19,7 @@
 }
 
 .profileFriends {
-  border-left: 1px solid #e3e3e3;
+  border-left: var(--border-separator);
 }
 
 .friend {
@@ -59,7 +59,6 @@
 
 .pastactivity {
   display: flex;
-  height: 90%;
   width: 90%;
   margin: 0 auto;
   justify-content: center;

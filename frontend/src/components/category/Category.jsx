@@ -229,7 +229,7 @@ class Category extends Component {
           </div>
           <div className="innerLeftHeaderBlock">
             <div className="hr">
-                Friends
+                Mutual Friends
             </div>
             <div className={`${styles.friends} elevate-0`}>
                 {this.props.friends.map((friend) => (

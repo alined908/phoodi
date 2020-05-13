@@ -92,7 +92,7 @@ class ChatInput extends Component {
             onKeyPress={this.handleSubmit}
             value={this.state.textValue}
             placeholder="Type a message.."
-          ></input>
+          />
         </form>
         {this.state.showEmojis ? (
           <div className={styles.emojiPickerWrapper}>

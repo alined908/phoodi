@@ -1,7 +1,7 @@
 # Phoodi [![Build Status](https://travis-ci.com/alined908/phoodi.svg?token=PvKqjKHMMeoZSCY5YeNS&branch=master)](https://travis-ci.com/github/alined908/phoodi)
 **Prototype** @ https://phoodie.me
 
-The purpose of the application is to allow friend groups to schedule meetups and decide where to eat quickly.  We always run into the problem where no one knows what to eat, where to eat, and when to eat.  The hope is that this will simplify the process.  Eventually, the goal is to connect people with other nearby people that share common food interests and hobbies. Use cases of this includes college campuses, metropolitan cities, etc. The end goal is to recreate a more social Yelp.
+An app for foodies.
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [Deployment](#deployment) for notes on how to deploy the project on a live system.
@@ -90,41 +90,46 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Author
 * **Daniel Lee** 
 
----------------------------------------------------------------
-
-## Todo Next Iteration
-- [ ] Properly configure statistics for stuff (likes, options count)
-- [ ] Review Score for food and service and possible secondary factors (interior, location, etc)
-- [ ] Cdn for images
-- [ ] Validation for models
-- [ ] Finish writing tests for frontend
-- [ ] Add google, facebook, twitter social auth
-- [ ] Edit chat messages
-- [ ] Upload picture
-- [ ] Refactor code/database
-- [ ] Send invite through chat
-- [ ] Who's online
-- [ ] Detect if user is typing
-- [ ] Use httpOnly cookies for tokens
+## Todo General
+- [ ] CDN for images
 - [ ] Rewrite Database (Comments as Tree, scalable solution for voting)
+- [ ] Finish writing tests for frontend, backend, consumers
+- [ ] Validation for models
+- [ ] Elasticsearch - Search bar on top app nav bar, user autocomplete, restaurant autocomplete, etc
+- [ ] Properly document and refactor codebase
 - [ ] Set up caching system (redis)
 - [ ] Set up celery for asynchronous job processing (convert signals to create task for celery)
 - [ ] Notification Bar on Top right of navbar
+- [ ] Learn more about web application security (XSS, CSRF, SQL injection, MITM)
+
+## Todo Authentication
+- [ ] Add social authentication (google, facebook)
+- [ ] Use httpOnly cookies for tokens
+- [ ] Reconfigure frontend authentication logic (no signup needed to see content)
+- [ ] Websocket Authentication Flow
+
+## Todo Chat
+- [ ] Edit chat messages
+- [ ] Upload picture
+- [ ] Send invite through chat
+- [ ] Who's online in chat room
+- [ ] Detect if user is typing
+
+## Todo Features
+- [ ] Redesign reviews thread layout
+- [ ] Filter reviews by new/top/(top weighted by new) 
 - [ ] Add calendar of meetups
-- [ ] Elasticsearch - Search bar on top app nav bar, user autocomplete, restaurant autocomplete, etc
-- [ ] Properly document stuff
-- [ ] Position aware scrolling (meetup tree) (Panda is anchor, dashes are bamboo)
+- [ ] User Reputation system
+- [ ] Complete admin functionality for meetup member
+- [ ] Add capacity to meetup
+- [ ] Properly configure statistics for stuff (likes, options count)
+- [ ] Review Score for food and service and possible secondary factors (interior, location, etc)
+- [ ] User's top restaurants list (by city?, map with markers and fly functionality)
 
-## Todo Later/Nice Stuff
-- [ ] Skeleton loading where applicable (preferences)
+## Todo UI
+- [ ] Skeleton loading where applicable
+
+## Todo Other
 - [ ] Update user when email changes
-- [ ] Find people who have similar food taste near you?
 - [ ] Eliminate user_id from preferences api calls
-- [ ] Some sort of reputation system
-- [ ] Guest accounts
-- [ ] Admin functionality for meetup member
-- [ ] Change name of preference
-- [ ] Add capacity if wanted and adjust circles to meetups
-
-## Todo Bugs
-- [ ] Don't allow websocket to send event even after refresh token expire
+- [ ] Find people who have similar food taste near you?

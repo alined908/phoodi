@@ -148,13 +148,11 @@ class Restaurant extends Component {
         }
         <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 0 ? "" : "innerRight-show"}`}>
           <div className="innerRightBlock">
-            <div className="innerRightBlockHeader">
-              <div className="hr">Reviews</div>
+
               <RestaurantThread
                 restaurant={rst}
                 reviews={this.state.reviews}
               />
-            </div>
           </div>
         </div>
         {this.state.reviewForm && (

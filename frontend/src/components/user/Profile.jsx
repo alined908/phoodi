@@ -144,7 +144,7 @@ class Profile extends Component {
   };
 
   formatActivity = (activity) => {
-    console.log(activity);
+
     const verb = activity.verb;
     let activityHTML;
 
@@ -183,8 +183,7 @@ class Profile extends Component {
                 {activity.action_object.first_name.charAt(0)}
                 {activity.action_object.last_name.charAt(0)}
               </Avatar>
-              {activity.action_object.first_name}{" "}
-              {activity.action_object.last_name}
+              {`${activity.action_object.first_name} ${activity.action_object.last_name}`}
             </Link>
           </span>
           .
@@ -212,6 +211,22 @@ class Profile extends Component {
           .
         </>
       );
+    }
+      else if (verb === "review") {
+        activityHTML = (
+          <>
+            <span>gave a review on</span> 
+            <span className={styles.space}>
+              <Link
+                className={styles.link}
+                to={`/restaurants/${activity.target.url}`}
+              >
+                {activity.target.name}
+              </Link>
+            </span>
+          </>
+        )
+      
     } else {
       activityHTML = <></>;
     }
@@ -356,10 +371,9 @@ class Profile extends Component {
         </div>
         <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 1 ? "innerRight-show" : ""}`}>
           <div className="innerRightBlock">
-            <div className="innerRightBlockHeader">
-              <div className="hr">Past Activity</div>
+
               {this.state.userLoaded && renderPastActivity()}
-            </div>
+
           </div>
         </div>
         <div className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 2 ? "innerLeft-show" : ""} ${styles.profileFriends}`}>
