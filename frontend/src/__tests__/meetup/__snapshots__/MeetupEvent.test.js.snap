@@ -17,10 +17,10 @@ exports[`MeetupEvent tests general renders without crashing 1`] = `
       className="headerIcons"
     >
       <ScheduleIcon />
-      11:32 PM
+      8:42 PM
        -
        
-      11:32 PM
+      8:42 PM
     </div>
     <WithStyles(ForwardRef(Tooltip))
       title="Event Creator"

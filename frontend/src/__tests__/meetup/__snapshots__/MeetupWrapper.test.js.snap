@@ -22,7 +22,7 @@ exports[`MeetupWrapper tests should render without crashing 1`] = `
           "id": 1,
           "last_name": "Lee",
         },
-        "date": "2020-05-11",
+        "date": "2020-05-13",
         "events": Object {},
         "id": 1,
         "isMeetupEventsInitialized": true,
