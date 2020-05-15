@@ -150,71 +150,64 @@ class Profile extends Component {
 
     if (verb === "created" || verb === "joined") {
       activityHTML = (
-        <>
-          <span>{verb} a</span>
-          <span className={styles.space}>
-            {activity.action_object && activity.action_object.public ? "public" : "private"}
-          </span>
-          <span className={styles.space}>meetup named</span>
-          <span className={styles.space}>
+        <span>
+          {`${this.state.user.first_name} ${this.state.user.last_name} ${verb} a ${activity.action_object && activity.action_object.public ? "public" : "private"} meetup named `}
+          {
             <Link
               className={styles.link}
               to={`/meetups/${activity.action_object && activity.action_object.uri}`}
             >
               {activity.action_object && activity.action_object.name}
             </Link>
-          </span>
-          .
-        </>
+          }.
+        </span>
       );
     } else if (verb === "became friends with") {
       activityHTML = (
-        <>
-          <span>{verb}</span>
-          <span className={styles.space}>
+        <span>
+          {`${this.state.user.first_name} ${this.state.user.last_name} ${verb} `}
+          {
             <Link
               className={styles.link}
+              style={{display: "inline-flex"}}
               to={`/profile/${activity.action_object.id}`}
             >
               <Avatar
                 className={styles.useravatar}
                 src={activity.action_object.avatar}
+                style={{width: 20, height: 20}}
               >
                 {activity.action_object.first_name.charAt(0)}
                 {activity.action_object.last_name.charAt(0)}
               </Avatar>
-              {`${activity.action_object.first_name} ${activity.action_object.last_name}`}
+              {`${activity.action_object.first_name} ${activity.action_object.last_name}.`}
             </Link>
-          </span>
-          .
-        </>
+          }
+        </span>
       );
     } else if (verb === "added") {
       activityHTML = <></>;
     } else if (verb === "created event") {
       activityHTML = (
-        <>
-          <span>added</span>
-          <span className={styles.space}>
-            {activity.action_object
+        <span>
+          {`${this.state.user.first_name} ${this.state.user.last_name} added ${activity.action_object
               ? `an event named ${activity.action_object.title} to`
-              : "a DELETED event to"}
-          </span>
-          <span className={styles.space}>
+              : "a DELETED event to"}`}
+          {
             <Link
-              className={styles.link}
-              to={`/meetups/${activity.target.uri}`}
+            className={styles.link}
+            to={`/meetups/${activity.target.uri}`}
             >
               {activity.target.name}
             </Link>
-          </span>
-          .
-        </>
+          }.
+        </span>
       );
     }
       else if (verb === "review") {
         activityHTML = (
           <>
+            {this.state.user.first_name} {this.state.user.last_name}{" "}
             <span>gave a review on</span> 
             <span className={styles.space}>
               <Link
@@ -243,19 +236,15 @@ class Profile extends Component {
         <div className={styles.pastactivity}>
           {this.state.user.activity.map((activity) => (
             <div className={styles.activity}>
+              <Avatar
+                className={styles.useravatar}
+                src={this.state.user.avatar}
+              >
+                {this.state.user.first_name.charAt(0)}
+                {this.state.user.last_name.charAt(0)}
+              </Avatar>
               <div className={styles.activityinfo}>
-                <div className={styles.activityuser}>
-                  <Avatar
-                    className={styles.useravatar}
-                    src={this.state.user.avatar}
-                  >
-                    {this.state.user.first_name.charAt(0)}
-                    {this.state.user.last_name.charAt(0)}
-                  </Avatar>
-                </div>
-                {this.state.user.first_name} {this.state.user.last_name}{" "}
-                &nbsp;
-                {this.formatActivity(activity)}
+                  {this.formatActivity(activity)}
               </div>
               <div className={styles.activitydate}>
                 {moment(activity.timestamp).fromNow()}

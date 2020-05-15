@@ -140,7 +140,7 @@ class ChatWindow extends Component {
           this.props.mobile && this.props.activeRoom && this.props.show
             ? styles.showChat
             : ""
-        } ${this.props.isMeetup ? styles.meetupWindow : styles.window} elevate`}
+        } ${this.props.isMeetup ? styles.meetupWindow : styles.window}`}
         ref={this.chatsRef}
       >
         <div className={styles.header}>

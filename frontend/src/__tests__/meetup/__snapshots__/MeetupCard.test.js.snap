@@ -31,7 +31,7 @@ exports[`MeetupCard renders without crashing given props 1`] = `
           className="cardIcon"
         >
           <TodayIcon />
-          Wednesday, May 13
+          Friday, May 15
         </div>
       </div>
       <div

@@ -399,7 +399,7 @@ class MeetupEvent extends Component {
                 </span>
                 :
                 event.categories.map((category) => (
-                    <Link key={category.id} to={`/category/${category.api_label}`}>
+                    <Link key={category.id} to={`/categories/${category.api_label}`}>
                       <span
                         className={`${styles.categoryChip} ${styles.categoryChipHover}`}
                       >

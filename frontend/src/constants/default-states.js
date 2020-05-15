@@ -161,7 +161,10 @@ export const MuiTheme = {
     MuiBottomNavigation : {
         root :{
             justifyContent: "space-evenly",
-            height: 50
+            height: 50,
+            position: 'fixed',
+            bottom: 0,
+            width: "100%"
         }
     },
     MuiBottomNavigationAction : {

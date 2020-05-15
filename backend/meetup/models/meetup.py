@@ -94,7 +94,6 @@ class Meetup(models.Model):
             
             if client_ip:
                 if is_routable:
-                    print('routable')
                     geocode = geocoder.ip(client_ip)
                     location = geocode.latlng
                     lat, lng = location[0], location[1]

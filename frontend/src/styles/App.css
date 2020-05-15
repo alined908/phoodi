@@ -428,9 +428,9 @@ body {
 
 .innerLeft-mobile{
   display: none;
-  height: 85%;
+  height: 80%;
   position: fixed;
-  width: 95%;
+  width: 90%;
   min-width: 315px;
   border-right: 0;
   padding: .5rem;
@@ -448,7 +448,7 @@ body {
   position: fixed;
   width: 100%;
   min-width: 315px;
-  padding: .5rem;
+  padding: .5rem .5rem;
   margin: .5rem 0;
 }
 

@@ -77,7 +77,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     height: "100%",
     backgroundColor: "var(--background)",
-    
   },
   appBar: {
     transition: theme.transitions.create(["margin", "width"], {
@@ -87,7 +86,9 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 1.25rem",
     background: "inherit",
     boxShadow: "none",
-    borderBottom: "var(--border-separator)"
+    borderBottom: "var(--border-separator)",
+    position: "fixed",
+    top: 0
   },
   hide: {
     display: "none",

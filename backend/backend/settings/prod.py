@@ -1,6 +1,6 @@
 from backend.settings.base import *
 
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ["phoodie.me"]
 DOMAIN = "phoodie.me"
 BASE_URL = "https://phoodie.me/"
