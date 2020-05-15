@@ -1,7 +1,7 @@
 # Phoodi [![Build Status](https://travis-ci.com/alined908/phoodi.svg?token=PvKqjKHMMeoZSCY5YeNS&branch=master)](https://travis-ci.com/github/alined908/phoodi)
-**Prototype** @ https://phoodie.me
+An app for foodies - **Prototype** @ https://phoodie.me
 
-An app for foodies.
+![phoodie-meetup](https://user-images.githubusercontent.com/47507106/82004652-4fc65180-9618-11ea-9974-51c4066ec5d1.png)
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [Deployment](#deployment) for notes on how to deploy the project on a live system.
