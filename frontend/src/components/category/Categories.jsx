@@ -173,7 +173,7 @@ class Categories extends Component {
                         in={true}
                         timeout={Math.max((index + 1) * 70)}
                       >
-                        <Link to={`/category/${random.api_label}`}>
+                        <Link to={`/categories/${random.api_label}`}>
                           <div className={styles.entry}>
                             <Avatar
                               src={`${process.env.REACT_APP_S3_STATIC_URL}${random.api_label}.png`}

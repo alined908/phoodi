@@ -52,7 +52,7 @@ class LoginPage extends Component {
           <title>Login</title>
         </Helmet>
         <div className={styles.left}>
-          <Fan height="70%" width="70%" />
+          <Fan className="svg-shadow" height="70%" width="70%" />
         </div>
         <div className={styles.right}>
           <div className={styles.formhead}>

@@ -124,7 +124,7 @@ class RegisterPage extends Component {
               <title>Register</title>
             </Helmet>
             <div className={styles.left}>
-              <Together height="70%" width="70%" />
+              <Together className="svg-shadow" height="70%" width="70%" />
             </div>
             <div className={styles.right}>
               <div className={styles.formhead}>
