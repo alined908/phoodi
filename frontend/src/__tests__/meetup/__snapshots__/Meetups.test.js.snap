@@ -106,7 +106,7 @@ exports[`Meetups tests renders without crashing 1`] = `
             disabled={false}
             displayFormat="MMM DD"
             enableOutsideDays={false}
-            endDate={"2020-05-19T06:32:34.639Z"}
+            endDate={"2020-05-22T01:16:03.545Z"}
             endDateId="unique_end_date_id"
             endDatePlaceholderText="End Date"
             firstDayOfWeek={null}
@@ -186,7 +186,7 @@ exports[`Meetups tests renders without crashing 1`] = `
             showClearDates={false}
             showDefaultInputIcon={false}
             small={true}
-            startDate={"2020-05-12T06:32:34.639Z"}
+            startDate={"2020-05-15T01:16:03.545Z"}
             startDateId="unique_start_date_id"
             startDatePlaceholderText="Start Date"
             verticalHeight={null}
@@ -299,15 +299,6 @@ exports[`Meetups tests renders without crashing 1`] = `
       className="innerRightBlock"
     >
       <div
-        className="innerRightBlockHeader"
-      >
-        <div
-          className="hr"
-        >
-          Meetups Near You
-        </div>
-      </div>
-      <div
         className="meetupsContainer"
         style={
           Object {
@@ -346,7 +337,7 @@ exports[`Meetups tests renders without crashing 1`] = `
                       "id": 1,
                       "last_name": "Lee",
                     },
-                    "date": "2020-05-11",
+                    "date": "2020-05-15",
                     "events": Object {},
                     "id": 1,
                     "isMeetupEventsInitialized": true,
@@ -414,7 +405,7 @@ exports[`Meetups tests renders without crashing 1`] = `
                       "id": 1,
                       "last_name": "Lee",
                     },
-                    "date": "2020-05-11",
+                    "date": "2020-05-15",
                     "events": Object {},
                     "id": 2,
                     "isMeetupEventsInitialized": true,

@@ -87,9 +87,6 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Material UI** - Design
 * **Travis** - CI
 
-## Author
-* **Daniel Lee** 
-
 ## Todo General
 - [ ] CDN for images
 - [ ] Rewrite Database (Comments as Tree, scalable solution for voting)

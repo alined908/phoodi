@@ -91,7 +91,7 @@ class Meetup(models.Model):
 
         if request:
             client_ip, is_routable = get_client_ip(request)
-
+            
             if client_ip:
                 if is_routable:
                     geocode = geocoder.ip(client_ip)
@@ -99,7 +99,7 @@ class Meetup(models.Model):
                     lat, lng = location[0], location[1]
                 else:
                     lat, lng = None, None
-
+        
         latitude, longitude, radius = (
             coords[0] or lat,
             coords[1] or lng,
@@ -117,7 +117,7 @@ class Meetup(models.Model):
                     AS distance \
                     FROM meetup_meetup) \
                 AS distances \
-                WHERE distance < %s AND date >= %s \
+                WHERE distance < %s \
                 ORDER BY distance \
                 OFFSET 0 \
                 LIMIT %s",
@@ -126,11 +126,10 @@ class Meetup(models.Model):
                 longitude,
                 latitude,
                 radius,
-                datetime.datetime.now().date(),
                 num_results,
             ),
         )
-
+ 
         if not category_ids:
             meetups = Meetup.objects.filter(
                 public=True, id__in=distance_query, date__range=(start, end)

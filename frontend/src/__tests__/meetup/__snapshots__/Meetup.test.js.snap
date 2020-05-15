@@ -146,7 +146,7 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
               "id": 1,
               "last_name": "Lee",
             },
-            "date": "2020-05-11",
+            "date": "2020-05-15",
             "events": Object {},
             "id": 1,
             "isMeetupEventsInitialized": true,
@@ -206,7 +206,7 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
           <span
             className="blockActionChip"
           >
-            Monday, May 11
+            Friday, May 15
           </span>
         </div>
       </div>
@@ -371,10 +371,13 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
   </div>
   <div
     className="innerRight  "
-    id="head"
   >
     <div
+      id="events-wrapper"
+    />
+    <div
       className="innerRightBlock"
+      id="Events"
       style={
         Object {
           "overflowY": "auto",
@@ -382,21 +385,11 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
       }
     >
       <div
-        className="innerRightBlockHeader"
+        className="loading"
       >
-        <div
-          className="hr"
-          id="Events"
-        >
-          Events
-        </div>
-        <div
-          className="loading"
-        >
-          <WithStyles(ForwardRef(CircularProgress))
-            size={30}
-          />
-        </div>
+        <WithStyles(ForwardRef(CircularProgress))
+          size={30}
+        />
       </div>
     </div>
   </div>
