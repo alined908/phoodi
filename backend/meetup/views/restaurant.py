@@ -38,7 +38,14 @@ class RestaurantView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request, *args, **kwargs):
-        restaurant = Restaurant.objects.get(url=kwargs["uri"])
+        name = kwargs['uri']
+
+        if name == "challenge":
+            restaurants = Restaurant.objects.all()[:5]
+            serializer = RestaurantSerializer(restaurants, many=True)
+            return Response(serializer.data)
+
+        restaurant = Restaurant.objects.get(url=name)
         serializer = RestaurantSerializer(restaurant)
 
         return Response(serializer.data)

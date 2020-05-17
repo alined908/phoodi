@@ -7,6 +7,7 @@ from meetup.serializers import (
 from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.db.models.expressions import RawSQL
 from django.shortcuts import get_object_or_404
 
 class CategoryListView(APIView):
@@ -27,11 +28,23 @@ class CategoryListView(APIView):
 
 
 class CategoryView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request, *args, **kwargs):
         api_label = kwargs["api_label"]
 
+        if api_label == "challenge":
+            top_categories = ["desserts", "mexican", "korean", "indpak", "chinese"]
+            categories = Category.objects.filter(id__in=RawSQL(
+                "SELECT category.id \
+                FROM meetup_category as category\
+                WHERE category.api_label = ANY(%s)",
+                (top_categories,)
+            ))
+
+            serializer = CategorySerializer(categories, many=True)
+            return Response(serializer.data)
+            
         try:
             category = Category.objects.get(api_label=api_label)
             cat_serializer = CategoryVerboseSerializer(

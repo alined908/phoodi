@@ -23,6 +23,7 @@ import {
   PasswordResetConfirmPage,
   EmailActivationPage,
 } from "../components";
+import CodeChallenge from "../CodeChallenge"
 import AuthenticatedRoute from "../../accounts/AuthenticatedRoute";
 import UnAuthenticatedRoute from "../../accounts/UnAuthenticatedRoute";
 
@@ -33,6 +34,7 @@ class Body extends Component {
       <div className="c">
         <Switch>
           <Route path="/" exact component={HomePage} />
+          <Route path="/challenge" component={CodeChallenge}/>
           <UnAuthenticatedRoute
             path="/activate/:uid/:token"
             component={EmailActivationPage}
