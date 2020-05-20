@@ -5,6 +5,12 @@ ALLOWED_HOSTS = []
 DOMAIN = "localhost:8003"
 BASE_URL = "http://localhost:8003/"
 
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'localhost:9200'
+    }
+}
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",

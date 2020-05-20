@@ -5,6 +5,12 @@ ALLOWED_HOSTS = ["phoodie.me"]
 DOMAIN = "phoodie.me"
 BASE_URL = "https://phoodie.me/"
 
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'elasticsearch:9200'
+    }
+}
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
