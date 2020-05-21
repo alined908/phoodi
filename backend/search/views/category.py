@@ -1,41 +1,31 @@
-from django_elasticsearch_dsl_drf.constants import SUGGESTER_COMPLETION
-from django_elasticsearch_dsl_drf.filter_backends import (
-    SuggesterFilterBackend
-)
-from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 from ..documents import CategoryDocument
-from ..serializers import CategoryDocumentSerializer
+from meetup.models import Category
+from meetup.serializers import CategorySerializer
 from rest_framework import permissions, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from elasticsearch import Elasticsearch
+from elasticsearch_dsl import Search
 
-class CategoryDocumentView(DocumentViewSet):
+class CategoryDocumentView(APIView):
     permission_classes = [permissions.AllowAny]
-    serializer_class = CategoryDocumentSerializer
-    document = CategoryDocument
+    
+    def get(self, request, *args, **kwargs):
+        query = request.GET.get('q')
+        s = CategoryDocument.search()
+        
+        if query:
+            s = s.query("query_string", query=query, default_field="label")
+            s = s[0:100]
+        else:
+            s = s.source([])
+            s = s[0:200]
 
-    filter_backends = [
-        SuggesterFilterBackend,
-    ]
+        response = s.execute()
+        hits = response['hits']['hits']
+        categories = [hit['_source'].to_dict() for hit in hits]
+        
+        return Response(categories)
 
-    suggester_fields = {
-        'label_suggest': {
-            'field': 'label.suggest',
-            'suggesters': [
-                SUGGESTER_COMPLETION
-            ],
-            'options': {
-                'size': 20,
-                'skip_duplicates': True
-            }
-        },
-        'api_label_suggest': {
-            'field': 'api_label.suggest',
-            'suggesters': [
-                SUGGESTER_COMPLETION
-            ],
-            'options': {
-                'size': 20,
-                'skip_duplicates': True
-            }
-        }
-    }
+        
 

@@ -1,1 +1,1 @@
-from .category import CategoryDocumentView
+from .category import *

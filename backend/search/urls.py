@@ -1,11 +1,8 @@
-from django.conf.urls import url, include
-from rest_framework.routers import DefaultRouter
-from .views import CategoryDocumentView
+from django.urls import path
+from . import views
 
-router = DefaultRouter()
-
-router.register(r'categories', CategoryDocumentView, basename="categorydocument")
+app_name = "search"
 
 urlpatterns = [
-    url(r'^', include(router.urls))
+    path('categories/', views.CategoryDocumentView.as_view())
 ]
