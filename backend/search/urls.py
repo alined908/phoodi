@@ -4,5 +4,7 @@ from . import views
 app_name = "search"
 
 urlpatterns = [
-    path('categories/', views.CategoryDocumentView.as_view())
+    path('categories/', views.CategoryDocumentView.as_view()),
+    path('restaurants/', views.RestaurantDocumentView.as_view()),
+    path('users/', views.UserDocumentView.as_view())
 ]

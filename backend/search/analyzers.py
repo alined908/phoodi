@@ -12,7 +12,7 @@ html_strip = analyzer(
 edge_ngram_filter = analysis.token_filter(
     "edge_ngram_filter", 
     "edge_ngram", 
-    min_gram = 1, 
+    min_gram=2, 
     max_gram=10, 
     token_chars=["letter", "digit"]
 )

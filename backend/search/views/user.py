@@ -1,29 +1,24 @@
-from ..documents import CategoryDocument
+from ..documents import UserDocument
 from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search
 
-class CategoryDocumentView(APIView):
+class UserDocumentView(APIView):
     permission_classes = [permissions.AllowAny]
-    
+
     def get(self, request, *args, **kwargs):
+        
         query = request.GET.get('q')
-        s = CategoryDocument.search()
+        s = UserDocument.search()
         
         if query:
-            s = s.query("query_string", query=query, default_field="label")
-            s = s[0:100]
-        else:
-            s = s.source([])
-            s = s[0:200]
+            s = s.query("query_string", query=query, fields=["first_name", "last_name", "email"])
+            s = s[0:50]
 
         response = s.execute()
         hits = response['hits']['hits']
-        categories = [hit['_source'].to_dict() for hit in hits]
+        users = [hit['_source'].to_dict() for hit in hits]
 
-        return Response(categories)
-
-        
-
+        return Response(users)

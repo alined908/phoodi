@@ -1,7 +1,7 @@
 from django_elasticsearch_dsl import (Document, fields)
 from django_elasticsearch_dsl.registries import registry
 from meetup.models import Category
-from .analyzers import html_strip, autocomplete
+from search.analyzers import html_strip, autocomplete
 
 @registry.register_document
 class CategoryDocument(Document):

@@ -29,6 +29,18 @@ class Restaurant(models.Model):
     comment_count = models.IntegerField(default=0)
     objects = models.Manager()
 
+    @property
+    def location_indexing(self):
+        return {
+            "lat": self.latitude,
+            "lon": self.longitude    
+        }
+
+    @property
+    def categories_indexing(self):
+        categories = [r_category.category.label for r_category in self.r_categories.all()]
+        return categories
+
     @staticmethod
     def get_nearby(coords, request, categories, num_results=16):
         if categories:
