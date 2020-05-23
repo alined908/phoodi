@@ -43,6 +43,7 @@ import renderDateSimplePicker from "./fields/renderDateSimplePicker";
 import UserAutocomplete from "./fields/UserAutocomplete";
 import RestaurauntAutocomplete from "./fields/RestaurauntAutocomplete";
 import Map from "./fields/Map";
+import SearchBar from "./fields/SearchBar"
 
 //General
 import Body from "./general/Body";
@@ -114,6 +115,7 @@ export {
   CategoryAutocomplete,
   UserAutocomplete,
   Location,
+  SearchBar,
   renderTextField,
   renderDatePicker,
   renderDateSimplePicker,

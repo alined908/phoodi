@@ -1,6 +1,5 @@
 from django_elasticsearch_dsl import (Document, fields)
 from django_elasticsearch_dsl.registries import registry
-from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 from meetup.models import Restaurant
 from search.analyzers import html_strip, autocomplete
 
@@ -15,11 +14,11 @@ class RestaurantDocument(Document):
     price = fields.TextField(attr="price")
     address = fields.TextField(attr="location")
     location = fields.GeoPointField(attr="location_indexing")
-    categories = StringField(
+    categories = fields.TextField(
         attr="categories_indexing",
         analyzer=html_strip,
         fields={
-            'raw': StringField(analyzer="keyword", multi=True),
+            'raw': fields.TextField(analyzer="keyword", multi=True),
             'suggest': fields.CompletionField(multi=True)
         },
         multi=True

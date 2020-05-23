@@ -92,7 +92,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Rewrite Database (Comments as Tree, scalable solution for voting)
 - [ ] Finish writing tests for frontend, backend, consumers
 - [ ] Validation for models
-- [ ] Elasticsearch - Search bar on top app nav bar, user autocomplete, restaurant autocomplete, etc
+- [x] Elasticsearch - Search bar on top app nav bar, user autocomplete, restaurant autocomplete, etc
 - [ ] Properly document and refactor codebase
 - [ ] Set up caching system (redis)
 - [ ] Set up celery for asynchronous job processing (convert signals to create task for celery)

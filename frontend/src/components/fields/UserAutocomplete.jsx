@@ -92,7 +92,7 @@ const UserAutocomplete = (props) => {
                   ))}
                 </>
               }
-            ></ListItemText>
+            />
           </div>
         );
       }}

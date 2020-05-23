@@ -27,7 +27,6 @@ import {
   Settings as SettingsIcon,
   ChatOutlined as ChatOutlinedIcon,
   MailOutlined as MailOutlinedIcon,
-  Assignment,
   PermContactCalendar as PermContactCalendarIcon,
   ExitToApp,
   EventNote as EventNoteIcon,
@@ -36,122 +35,13 @@ import {
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { Body, LiveUpdatingBadge } from "../components";
+import { Body, LiveUpdatingBadge, SearchBar } from "../components";
 import PropTypes from "prop-types";
 import { userPropType, notifsPropType } from "../../constants/prop-types";
+import { navTheme, styledBadgeTheme} from "../../constants/themes";
 
-const drawerWidth = 240;
-
-const StyledBadge = withStyles((theme) => ({
-  badge: {
-    backgroundColor: "#44b700",
-    color: "#44b700",
-    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-    "&::after": {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      borderRadius: "50%",
-      animation: "$ripple 1.2s infinite ease-in-out",
-      border: "1px solid currentColor",
-      content: '""',
-    },
-    right: "28%",
-  },
-  "@keyframes ripple": {
-    "0%": {
-      transform: "scale(.8)",
-      opacity: 1,
-    },
-    "100%": {
-      transform: "scale(2.4)",
-      opacity: 0,
-    },
-  },
-}))(Badge);
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    height: "100%",
-    backgroundColor: "var(--background)",
-  },
-  appBar: {
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    padding: "0 1.25rem",
-    background: "inherit",
-    boxShadow: "none",
-    borderBottom: "var(--border-separator)",
-    position: "fixed",
-    top: 0
-  },
-  hide: {
-    display: "none",
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  title: {
-    color: "black",
-    flexGrow: 1,
-    marginLeft: ".5rem",
-  },
-  icon: {
-    color: "rgba(0, 0, 0, .75) ",
-  },
-  actionButton: {
-    marginRight: "1rem",
-  },
-  list : {
-    padding: ".4rem"
-  },
-  drawerText: {
-    fontSize: ".8rem",
-    fontFamily: "Roboto",
-    marginLeft: ".75rem",
-    color: "rgba(40,40,40,.90)"
-  },
-  drawerPaper: {
-    width: drawerWidth
-  },
-  drawerHeader: {
-    display: "flex",
-    alignItems: "center",
-    padding: theme.spacing(0, 1),
-    ...theme.mixins.toolbar,
-    justifyContent: "flex-end",
-  },
-  content: {
-    flexGrow: 1,
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: "100%",
-    height: "100%",
-  },
-  primary: {
-    fontSize: ".9rem",
-  },
-  self: {
-    marginTop: "auto",
-  },
-  secondary: {
-    fontSize: ".75rem",
-  },
-  ellipsis: {
-    width: 130,
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
-}));
+const StyledBadge = withStyles((theme) => styledBadgeTheme(theme))(Badge);
+const useStyles = makeStyles((theme) => navTheme(theme));
 
 const Navigation = (props) => {
   const classes = useStyles();
@@ -186,38 +76,45 @@ const Navigation = (props) => {
 
       <AppBar elevation={1} position="absolute" className={classes.appBar}>
         <Toolbar disableGutters>
-          {props.authenticated && (
-            <IconButton
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-            >
-              <Badge
-                color="secondary"
-                variant="dot"
-                invisible={!isNotifs(props.notifs)}
+          <div className={classes.meta}>
+            {props.authenticated && (
+              <IconButton
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
               >
-                <Menu />
-              </Badge>
-            </IconButton>
-          )}
-          <Typography className={classes.title} variant="h5" noWrap>
-            <Link onClick={handleDrawerClose} to="/">
-              Phoodi
-            </Link>
-          </Typography>
-          {!props.authenticated && (
-            <Link to="/register">
-              <Button
-                className={classes.actionButton}
-                // startIcon={<Assignment />}
-                variant="contained"
-                color="primary"
-              >
-                Signup
-              </Button>
-            </Link>
-          )}
+                <Badge
+                  color="secondary"
+                  variant="dot"
+                  invisible={!isNotifs(props.notifs)}
+                >
+                  <Menu />
+                </Badge>
+              </IconButton>
+            )}
+            <Typography className={classes.title} variant="h5" noWrap>
+              <Link onClick={handleDrawerClose} to="/">
+                Phoodi
+              </Link>
+            </Typography>
+          </div>
+          <div className={classes.search}>
+            <SearchBar/>
+          </div>
+          <div className={classes.user}>
+            {!props.authenticated && (
+              <Link to="/register">
+                <Button
+                  className={classes.actionButton}
+                  // startIcon={<Assignment />}
+                  variant="contained"
+                  color="primary"
+                >
+                  Signup
+                </Button>
+              </Link>
+            )}
+          </div>
         </Toolbar>
       </AppBar>
 

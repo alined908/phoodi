@@ -138,6 +138,11 @@ body {
   background-color: #f0f0f0;
 }
 
+.search-entry {
+  display: flex;
+  align-items: center;
+}
+
 /* No Entity */
 .no-entity {
   display: flex;

@@ -5,7 +5,7 @@ import { Navigation, NotificationWrapper, LocationService } from "./components";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { store } from "../store/index";
-import { MuiTheme } from "../constants/default-states";
+import { MuiTheme } from "../constants/themes";
 import { createBrowserHistory } from "history";
 export const history = createBrowserHistory();
 

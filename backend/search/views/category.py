@@ -14,7 +14,7 @@ class CategoryDocumentView(APIView):
         
         if query:
             s = s.query("query_string", query=query, default_field="label")
-            s = s[0:100]
+            s = s[0:10]
         else:
             s = s.source([])
             s = s[0:200]

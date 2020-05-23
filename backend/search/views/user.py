@@ -14,7 +14,7 @@ class UserDocumentView(APIView):
         s = UserDocument.search()
         
         if query:
-            s = s.query("query_string", query=query, fields=["first_name", "last_name", "email"])
+            s = s.query("query_string", query=query, fields=["*_name"])
             s = s[0:50]
 
         response = s.execute()

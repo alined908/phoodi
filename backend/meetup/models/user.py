@@ -116,10 +116,7 @@ class User(AbstractBaseUser):
 
     @property
     def avatar_index(self):
-        if self.avatar:
-            return self.avatar.url
-        else:
-            return None
+        return self.avatar.url if self.avatar else None
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
