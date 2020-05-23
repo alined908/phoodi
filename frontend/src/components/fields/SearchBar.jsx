@@ -87,7 +87,7 @@ class SearchBar extends Component {
             parts = parse(option._source.label, matches);
 
             row = (
-                <Link to={`/categories/${option._source.api_label}`}>
+                <Link to={`/categories/${option._source.api_label}`} style={{width: "100%"}}>
                     <div className="search-entry">
                         <ListItemAvatar>
                             <Avatar
@@ -102,7 +102,11 @@ class SearchBar extends Component {
                                 />
                             </Avatar>
                         </ListItemAvatar>
-                        <ListItemText>
+                        <ListItemText 
+                            primaryTypographyProps={
+                                {style: {fontSize: ".8rem"}}
+                            }
+                        >
                             {parts.map((part, index) => (
                                 <span
                                     key={index}
@@ -120,7 +124,7 @@ class SearchBar extends Component {
             parts = parse(option._source.name, matches);
 
             row = (
-                <Link to={`/restaurants/${option._source.url}`}>
+                <Link to={`/restaurants/${option._source.url}`} style={{width: "100%"}}>
                     <div className="search-entry">
                         <ListItemAvatar>
                             <Avatar style={{ width: 30, height: 30}} variant="square" src={option._source.yelp_image}>
@@ -134,17 +138,32 @@ class SearchBar extends Component {
                         <ListItemText 
                             primary={
                                 <>
-                                    {parts.map((part, index) => (
-                                        <span
-                                            key={index}
-                                            style={{ color: part.highlight ? "red" : "black" }}
-                                        >
-                                            {part.text}
-                                        </span>
-                                    ))}
+                                    <span>
+                                        {parts.map((part, index) => (
+                                            <span
+                                                key={index}
+                                                style={{ color: part.highlight ? "red" : "black" }}
+                                            >
+                                                {part.text}
+                                            </span>
+                                        ))}
+                                    </span>
+                                    <span>
+                                        {option._source.categories.slice(0,2).map((category) => 
+                                            <span className="blockActionChip searchChip" >
+                                                {category}
+                                            </span>
+                                        )}
+                                    </span>
                                 </>
                             }
+                            primaryTypographyProps={
+                                {style: {display: "flex", justifyContent: "space-between"}}
+                            }
                             secondary={option._source.address}
+                            secondaryTypographyProps={
+                                {style: {fontSize: ".7rem"}}
+                            }
                         >
                         </ListItemText>
                     </div>
@@ -169,8 +188,9 @@ class SearchBar extends Component {
     render () {
         return (
             <Autocomplete
+                debug
                 size="small"
-                style={{flex: 1}}
+                style={{flex: 1, boxShadow: "none", border: "var(--border-separator)"}}
                 getOptionLabel={(option) =>
                     this.handleLabel(option)
                 }
@@ -193,6 +213,7 @@ class SearchBar extends Component {
                         InputProps={{
                             ...params.InputProps,
                             disableUnderline: true,
+                            style: {background: "white", fontSize: ".8rem"},
                             endAdornment: (
                             <>
                                 {this.state.isLoading ? (

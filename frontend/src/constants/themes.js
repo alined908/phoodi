@@ -72,6 +72,17 @@ export const MuiTheme = {
               minWidth: 35
           }
       },
+      MuiListItemText : {
+        multiline: {
+            marginTop: 4,
+            marginBottom: 4
+        }
+      },
+      MuiListItemAvatar:{
+        root: {
+            minWidth: 45
+        }
+      },
       MuiTooltip: {
         tooltip: {
           backgroundColor: "rgba(16,16,16, .8)",
@@ -99,7 +110,7 @@ export const MuiTheme = {
       },
       MuiFilledInput : {
           root: {
-              backgroundColor: "var(--light-blue) !important",
+              backgroundColor: "var(--light-blue)",
           }
       },
       MuiSlider : {

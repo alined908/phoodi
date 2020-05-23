@@ -16,7 +16,7 @@ class RestaurantDocument(Document):
     location = fields.GeoPointField(attr="location_indexing")
     categories = fields.TextField(
         attr="categories_indexing",
-        analyzer=html_strip,
+        analyzer=autocomplete,
         fields={
             'raw': fields.TextField(analyzer="keyword", multi=True),
             'suggest': fields.CompletionField(multi=True)

@@ -375,6 +375,11 @@ body {
   text-align: center;
 }
 
+.searchChip {
+  box-shadow: none;
+  border: 0;
+}
+
 .blockActionChip > div {
   width: 20px !important;
   height: 20px !important;
