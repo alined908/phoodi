@@ -237,7 +237,7 @@ class Meetups extends Component {
             >
               <Avatar
                 variant="square"
-                src={`${process.env.REACT_APP_S3_STATIC_URL}${pref.category.api_label}.png`}
+                src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${pref.category.api_label}.png`}
               />
               <span>{pref.category.label}</span>
             </div>

@@ -164,7 +164,7 @@ class Category extends Component {
             <span className={styles.avatar}>
               <Avatar
                 variant="square"
-                src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`}
+                src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${category.api_label}.png`}
               />
             </span>
             <span>{category.label}</span>

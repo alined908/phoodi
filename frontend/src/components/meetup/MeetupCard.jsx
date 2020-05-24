@@ -77,7 +77,7 @@ const MeetupCard = ({ meetup }) => {
                     <Avatar
                         style={{ width: 28, height: 28 }}
                         variant="square"
-                        src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`}
+                        src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${category.api_label}.png`}
                     />
                     {category.label}
                     </div>

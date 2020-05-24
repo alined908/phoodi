@@ -297,12 +297,12 @@ class MeetupEventOption extends Component {
                 <Avatar
                   style={{ width: 20, height: 20 }}
                   variant="square"
-                  src={`${process.env.REACT_APP_S3_STATIC_URL}${rc.category.api_label}.png`}
+                  src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${rc.category.api_label}.png`}
                 >
                   <img
                     style={{ width: 20, height: 20 }}
                     alt={"&#9787;"}
-                    src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}
+                    src={`${process.env.REACT_APP_S3_STATIC_URL}/static/general/panda.png`}
                   />
                 </Avatar>
                 {rc.category.label}

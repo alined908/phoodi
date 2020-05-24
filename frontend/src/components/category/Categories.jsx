@@ -80,7 +80,7 @@ class Categories extends Component {
               >
                 <Avatar
                   variant="square"
-                  src={`${process.env.REACT_APP_S3_STATIC_URL}${pref.category.api_label}.png`}
+                  src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${pref.category.api_label}.png`}
                 />
                 <span>{pref.category.label}</span>
               </div>
@@ -135,7 +135,7 @@ class Categories extends Component {
                         <Link to={`/categories/${popular.api_label}`}>
                           <div className={styles.entry}>
                             <Avatar
-                              src={`${process.env.REACT_APP_S3_STATIC_URL}${popular.api_label}.png`}
+                              src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${popular.api_label}.png`}
                               variant="square"
                             />{" "}
                             {popular.label}
@@ -176,7 +176,7 @@ class Categories extends Component {
                         <Link to={`/categories/${random.api_label}`}>
                           <div className={styles.entry}>
                             <Avatar
-                              src={`${process.env.REACT_APP_S3_STATIC_URL}${random.api_label}.png`}
+                              src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${random.api_label}.png`}
                               variant="square"
                             />{" "}
                             {random.label}

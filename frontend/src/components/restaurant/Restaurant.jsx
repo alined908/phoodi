@@ -102,7 +102,7 @@ class Restaurant extends Component {
                       <span className="blockActionChip" style={{display: "flex", alignItems: "center"}}>
                           <Avatar
                             variant="square"
-                            src={`${process.env.REACT_APP_S3_STATIC_URL}${item.category.api_label}.png`}
+                            src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${item.category.api_label}.png`}
                           />
                           {item.category.label}
                       </span>

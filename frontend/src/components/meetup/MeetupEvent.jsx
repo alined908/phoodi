@@ -405,7 +405,7 @@ class MeetupEvent extends Component {
                       >
                         <Avatar
                           style={{ width: 20, height: 20 }}
-                          src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`}
+                          src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${category.api_label}.png`}
                           variant="square"
                         />
                         {category.label}
@@ -438,7 +438,7 @@ class MeetupEvent extends Component {
                 <img
                   style={{ width: 20, height: 20, marginLeft: 10 }}
                   alt={"&#9787;"}
-                  src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}
+                  src={`${process.env.REACT_APP_S3_STATIC_URL}/static/general/panda.png`}
                 />
                 <RestaurauntAutocomplete
                   coords={this.props.coords}
