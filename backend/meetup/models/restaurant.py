@@ -4,13 +4,14 @@ from ipware import get_client_ip
 from django.db.models.expressions import RawSQL
 import geocoder
 from django.db.models import Q
+from django.utils.text import slugify
 
 class Restaurant(models.Model):
     identifier = models.CharField(max_length=100)
     name = models.TextField()
     yelp_image = models.TextField()
     yelp_url = models.TextField()
-    url = models.TextField()
+    url = models.SlugField()
     rating = models.FloatField()
     latitude = models.FloatField()
     longitude = models.FloatField()
@@ -28,6 +29,23 @@ class Restaurant(models.Model):
     option_count = models.IntegerField(default=0)
     comment_count = models.IntegerField(default=0)
     objects = models.Manager()
+
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            self.url = "%s-%s" % (
+                slugify(self.name), 
+                slugify(self.city) 
+            )
+            num_same = Restaurant.objects.filter(city=self.city, name=self.name).count()
+
+            if num_same > 0:
+                self.url += "-%s" % (num_same + 1)
+
+        super(Restaurant, self).save(*args, **kwargs)
+
+    @property
+    def full_url(self):
+        return "%s/%s" % (self.id, self.url)
 
     @property
     def location_indexing(self):

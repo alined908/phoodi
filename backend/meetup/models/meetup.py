@@ -263,20 +263,6 @@ class MeetupEvent(models.Model):
                 "address1": option["location"]["address1"],
             }
 
-            same_name_same_city_restaurants = Restaurant.objects.filter(
-                name=info["name"], city=info["city"]
-            ).count()
-            urlify_name = re.sub(
-                "'", "", re.sub(r"[^\w']", "-", re.sub("&", "and", info["name"]))
-            ).lower()
-            urlify_city = re.sub("'", "", re.sub(r"[^\w']", "-", info["city"])).lower()
-            url = "%s-%s" % (urlify_name, urlify_city)
-
-            if same_name_same_city_restaurants > 0:
-                url += "-%s" % (same_name_same_city_restaurants + 1)
-
-            info["url"] = url
-
             restaurant = Restaurant.objects.create(**info)
 
             for category in option["categories"]:
@@ -351,6 +337,12 @@ class MeetupEventOption(models.Model):
     objects = models.Manager()
 
     conversion = {1: 1, 2: -1, 3: 0}
+
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            self.restaurant.option_count += 1
+            self.restaurant.save()
+        super(MeetupEventOption, self).save(*args, **kwargs)
 
     def handle_vote(self, status, member):
         # Check if user has voted already and delete vote

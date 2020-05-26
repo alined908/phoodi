@@ -1,6 +1,7 @@
 from django.db import models
 from io import BytesIO
 from PIL import Image
+from django.utils.timezone import now
 from django.core.mail import send_mail
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from meetup.helpers import path_and_rename_avatar
@@ -60,7 +61,9 @@ class User(AbstractBaseUser):
     staff = models.BooleanField(default=False)
     confirmed = models.BooleanField(default=False)
     avatar = models.ImageField(blank=True, null=True, upload_to=path_and_rename_avatar)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=now, editable=False)
+    review_karma = models.IntegerField(default=0)
+    comment_karma = models.IntegerField(default=0)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name", "avatar"]

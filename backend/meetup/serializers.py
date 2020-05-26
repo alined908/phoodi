@@ -228,16 +228,9 @@ class RestaurantSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class CommentVoteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CommentVote
-        fields = "__all__"
-
-
 class CommentSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField("_get_children")
     user = serializers.SerializerMethodField("_get_user")
-    vote = serializers.SerializerMethodField("_get_vote")
 
     def _get_user(self, obj):
         user = obj.user
@@ -248,29 +241,13 @@ class CommentSerializer(serializers.ModelSerializer):
         serializer = CommentSerializer(obj.children, many=True)
         return serializer.data
 
-    def _get_vote(self, obj):
-        user = self.context.get("user")
-        try:
-            vote = CommentVote.objects.get(comment=obj, user=user)
-            serializer = CommentVoteSerializer(vote)
-            return serializer.data
-        except ObjectDoesNotExist:
-            return None
-
     class Meta:
         model = Comment
         fields = "__all__"
 
 
-class ReviewVoteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ReviewVote
-        fields = "__all__"
-
-
 class ReviewSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField("_get_children")
-    vote = serializers.SerializerMethodField("_get_vote")
     user = serializers.SerializerMethodField("_get_user")
 
     def _get_user(self, obj):
@@ -279,18 +256,9 @@ class ReviewSerializer(serializers.ModelSerializer):
         return serializer.data
 
     def _get_children(self, obj):
-        top = Comment.objects.filter(review=obj, parent_comment=None)
+        top = Comment.objects.filter(review=obj, parent=None)
         serializer = CommentSerializer(top, many=True)
         return serializer.data
-
-    def _get_vote(self, obj):
-        user = self.context.get("user")
-        try:
-            vote = ReviewVote.objects.get(review=obj, user=user)
-            serializer = ReviewVoteSerializer(vote)
-            return serializer.data
-        except ObjectDoesNotExist:
-            return None
 
     class Meta:
         model = Review

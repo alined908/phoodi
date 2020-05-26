@@ -452,6 +452,8 @@ class MeetupEventTest(TestCase):
     def test_handle_decide_all_banned(self):
         pass
 
+    def test_increment_restaurant_option_count(self):
+        pass
 
 class MeetupMemberTest(TestCase):
     def setUp(self):
