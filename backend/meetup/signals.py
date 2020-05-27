@@ -193,17 +193,20 @@ def handle_delete_member(sender, instance, **kwargs):
             instance.user.last_name,
         )
 
-    room = ChatRoom.objects.get(uri=meetup.uri)
-    msg = ChatRoomMessage.objects.create(
-        sender=user, message=message, room=room, is_notif=True
-    )
+    try:
+        room = ChatRoom.objects.get(uri=meetup.uri)
+    except:
+        return
+        msg = ChatRoomMessage.objects.create(
+            sender=user, message=message, room=room, is_notif=True
+        )
 
-    # Send Meetup Activity To Meetup Channel
-    content = {"command": "new_message", "message": MessageSerializer(msg).data}
+        # Send Meetup Activity To Meetup Channel
+        content = {"command": "new_message", "message": MessageSerializer(msg).data}
 
-    async_to_sync(channel_layer.group_send)(
-        "chat_%s" % meetup.uri, {"type": "chat_message", "message": content}
-    )
+        async_to_sync(channel_layer.group_send)(
+            "chat_%s" % meetup.uri, {"type": "chat_message", "message": content}
+        )
 
 
 @receiver(pre_save, sender=MeetupEvent)

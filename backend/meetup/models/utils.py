@@ -20,9 +20,8 @@ class ContentTypeAware(Base):
     class Meta:
         abstract = True
 
-class Commentable(ContentTypeAware):
+class Votable(ContentTypeAware):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    text = models.CharField(max_length=1000)
     comment_count = models.IntegerField(default=0)
     vote_score = models.IntegerField(default=0)
     ups = models.IntegerField(default=0)

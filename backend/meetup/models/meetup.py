@@ -6,12 +6,14 @@ from .restaurant import Restaurant, RestaurantCategory
 from .category import Category
 from ipware import get_client_ip
 from django.template.loader import render_to_string
+from django.contrib.postgres.fields import ArrayField
 from django.conf import settings
 from django.db.models.expressions import RawSQL
 from django.utils.dateformat import format
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 import requests, random, json, geocoder, datetime, re
 from django.db.models import Q
+from enum import Enum
 
 BASE_URL = settings.BASE_URL
 url = "https://api.yelp.com/v3/businesses/search"
@@ -183,13 +185,34 @@ class MeetupMember(models.Model):
 
 
 class MeetupEvent(models.Model):
+    
+    PRICE_CHOICES = [
+        (1, '$'),
+        (2, '$$'),
+        (3, '$$$'),
+        (4, '$$$$')
+    ]
+
+    SERIALIZED_PRICE_CHOICES = {
+        '$': 1,
+        '$$': 2,
+        '$$$': 3,
+        '$$$$': 4
+    }
+
+    DESERIALIZED_PRICE_CHOICES = {
+        v:k for k,v in SERIALIZED_PRICE_CHOICES.items()
+    }
+
     meetup = models.ForeignKey(Meetup, related_name="events", on_delete=models.CASCADE)
     creator = models.ForeignKey(
         MeetupMember, related_name="created_events", on_delete=models.CASCADE
     )
     title = models.CharField(max_length=255)
     distance = models.IntegerField()
-    price = models.CharField(max_length=10)
+    price = ArrayField(
+        models.IntegerField(choices=PRICE_CHOICES)
+    )
     start = models.DateTimeField()
     end = models.DateTimeField(blank=True, null=True)
     chosen = models.IntegerField(blank=True, null=True)
@@ -204,7 +227,7 @@ class MeetupEvent(models.Model):
 
     def save(self, *args, **kwargs):
         self.full_clean(["entries"])
-        return super(MeetupEvent, self).save(*args, **kwargs)
+        super(MeetupEvent, self).save(*args, **kwargs)
 
     def convert_entries_to_string(self):
         categories = ""
@@ -252,7 +275,7 @@ class MeetupEvent(models.Model):
                 "rating": (option["rating"] * 2) - 1,
                 "latitude": option["coordinates"]["latitude"],
                 "longitude": option["coordinates"]["longitude"],
-                "price": option.get("price", "$$"),
+                "price": self.SERIALIZED_PRICE_CHOICES[option.get("price", "$$")],
                 "phone": option["display_phone"],
                 "location": " ".join(option["location"]["display_address"]),
                 "categories": json.dumps(option["categories"]),
@@ -271,7 +294,7 @@ class MeetupEvent(models.Model):
                     RestaurantCategory.objects.create(
                         category=category, restaurant=restaurant
                     )
-                except ObjectDoesNotExist:
+                except Category.DoesNotExist:
                     pass
                 
 
@@ -396,20 +419,29 @@ class MeetupEventOption(models.Model):
         member.save()
         self.save()
 
+class OptionVoteChoice(Enum):
+    LIKE = 1
+    DISLIKE = 2
+    BAN = 3
+
+    @classmethod
+    def choices(cls):
+        choices = []
+
+        for item in cls:
+            choices.append((item.name, item.value))
+
+        return tuple(choices)
+
 
 class MeetupEventOptionVote(models.Model):
-    class Vote(models.IntegerChoices):
-        LIKE = 1
-        DISLIKE = 2
-        BAN = 3
-
     option = models.ForeignKey(
         MeetupEventOption, related_name="event_votes", on_delete=models.CASCADE
     )
     member = models.ForeignKey(
         MeetupMember, related_name="member_votes", on_delete=models.CASCADE
     )
-    status = models.IntegerField(choices=Vote.choices)
+    status = models.IntegerField(choices=OptionVoteChoice.choices())
     objects = models.Manager()
 
 

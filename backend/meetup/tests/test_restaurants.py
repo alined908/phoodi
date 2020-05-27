@@ -10,6 +10,8 @@ client = APIClient()
 up = VoteChoice.UP.value
 down = VoteChoice.DOWN.value
 novote = VoteChoice.NOVOTE.value
+review_text = "Great restaurant. Awesome Place. Cool location. Dope place. Good. Yes."
+comment_text = "Great restaurant. Awesome Place. Cool location. Dope place. Good. Yes."
 
 class RestaurantTest(TestCase):
     fixtures = ("1_users.json", "3_restaurants.json")
@@ -19,13 +21,14 @@ class RestaurantTest(TestCase):
 
     def create_restaurant(self, name, city):
         data = {
+            "identifier": "something",
             "name": name,
             "yelp_image": "something",
             "yelp_url": "something",
             "rating": 8,
             "latitude": 30.0,
             "longitude": 30.0,
-            "price": "$",
+            "price": 1,
             "location": "somewhere",
             "address1": "somewhere",
             "city": city,
@@ -70,11 +73,11 @@ class ReviewTest(TestCase):
         self.user = User.objects.get(pk=1)
         client.force_authenticate(user=self.user)
 
-    def create_review(self, rating = 8):
+    def create_review(self, text, rating = 8):
         self.authenticate()
         response = client.post(
             '/api/restaurants/%s/reviews/' % self.restaurant.url, 
-            data=json.dumps({"text": "Awesome place", "rating": rating}, default=str),
+            data=json.dumps({"text": text, "rating": rating}, default=str),
             content_type="application/json"
         )
         return response
@@ -86,7 +89,7 @@ class ReviewTest(TestCase):
         self.assertEqual(response.data, serializer.data)
 
     def test_ReviewListView_POST(self):
-        response = self.create_review()
+        response = self.create_review(review_text)
         review = Review.objects.get(pk=2)
         serializer = ReviewSerializer(review)
         self.assertEqual(response.status_code, 200)
@@ -108,17 +111,27 @@ class ReviewTest(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.data, {"error": "Review does not exist."})
 
+    def test_text_must_be_50_characters(self):
+        response = self.create_review("too short")
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.data, {"errors": ["Review length must be more than 50 characters."]})
+
+    def test_rating_must_be_between_1_and_10(self):
+        response = self.create_review(review_text, 11)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.data, {"errors": ["Ensure this value is less than or equal to 10."]})
+
     def test_restaurant_review_count_increments(self):
-        self.create_review()
+        self.create_review(review_text)
         self.restaurant.refresh_from_db()
         self.assertEqual(self.restaurant.review_count, 1)
 
     def test_restaurant_rating_changes(self):
         self.assertEqual(self.restaurant.rating, 8)
-        self.create_review(6)
+        self.create_review(review_text, 6)
         self.restaurant.refresh_from_db()
         self.assertEqual(self.restaurant.rating, 6)
-        self.create_review(8)
+        self.create_review(review_text)
         self.restaurant.refresh_from_db()
         self.assertEqual(self.restaurant.rating, 7.0)
         
@@ -128,7 +141,7 @@ class CommentTest(TestCase):
     def setUp(self):
         self.restaurant = Restaurant.objects.get(pk=1)
         self.review = Review.objects.get(pk=1)
-        self.valid_comment = {"text": "I agree", "parent": None, "review_id": 1}
+        self.valid_comment = {"text": comment_text, "parent": None, "review_id": 1}
     
     def authenticate(self):
         self.user = User.objects.get(pk=1)
@@ -162,6 +175,12 @@ class CommentTest(TestCase):
         serializer = CommentSerializer(comment)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, serializer.data)
+
+    def test_text_must_be_50_characters(self):
+        self.valid_comment['text'] = "too short"
+        response = self.create_comment(self.valid_comment, self.review.id)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.data, {"errors": ["Comment length must be more than 50 characters."]})
     
     def test_increment_comment_counts(self):
         self.create_comment(self.valid_comment, self.review.id)
@@ -179,7 +198,7 @@ class VoteTest(TestCase):
         self.review = Review.objects.get(pk=1)
         self.user = User.objects.get(pk=1)
         self.valid_vote_review = {'value': 1, 'review': 1}
-        self.comment_payload = {"user": self.user, "review": self.review, "parent": None, "text": "great"}
+        self.comment_payload = {"user": self.user, "review": self.review, "parent": None, "text": comment_text}
         self.comment = Comment.objects.create(**self.comment_payload)
         self.valid_vote_comment = {"value": 1, "comment": self.comment.pk}
 
@@ -223,7 +242,10 @@ class VoteTest(TestCase):
         self.assertEqual(comment.vote_score, 1)
 
     def test_VoteView_POST_invalid(self):
-        pass
+        self.valid_vote_comment['value'] = 4
+        response = self.create_vote(self.valid_vote_comment)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.data, {"errors": ["Value 4 is not a valid choice."]})
 
     def test_handle_vote_upvote_and_upvote(self):
         self.handle_vote_helper(value=up, score=1, new_value=up, new_value_score=0)

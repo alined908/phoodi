@@ -16,7 +16,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
 from django.shortcuts import get_object_or_404
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 
 class RestaurantListView(APIView):
@@ -29,6 +29,7 @@ class RestaurantListView(APIView):
             request.GET.get("radius"),
         ], request.GET.get("categories", [])
         restaurants = Restaurant.get_nearby(coords, request, categories)
+
         serializer = RestaurantSerializer(restaurants, many=True)
         return Response(serializer.data)
 
@@ -45,7 +46,6 @@ class RestaurantView(APIView):
             return Response({"error": "Restaurant does not exist."}, status=404)
 
         serializer = RestaurantSerializer(restaurant)
-
         return Response(serializer.data)
 
 class ReviewListView(APIView):
@@ -73,15 +73,17 @@ class ReviewListView(APIView):
         except Restaurant.DoesNotExist:
             return Response({"error": "Restaurant does not exist."}, status=404)
 
-        review = Review.objects.create(
-            user=user, 
-            text= request.data["text"], 
-            rating=request.data["rating"], 
-            restaurant=restaurant
-        )
+        try:
+            review = Review.objects.create(
+                user=user, 
+                text= request.data["text"], 
+                rating=request.data["rating"], 
+                restaurant=restaurant
+            )
+        except ValidationError as e:
+            return Response({"errors": e.messages}, status=404)
 
         serializer = ReviewSerializer(review)
-
         return Response(serializer.data)
 
 class ReviewView(APIView):
@@ -111,8 +113,8 @@ class CommentListView(APIView):
     def post(self, request, *args, **kwargs):
 
         user = request.user
-
         review_id = kwargs['review_id']
+        text = request.data.get('text', '')
 
         try:
             review = Review.objects.get(pk=review_id)
@@ -122,19 +124,24 @@ class CommentListView(APIView):
         parent_id = request.data.get("parent")
 
         if parent_id:
-            parent = Comment.objects.get(pk=parent_id)
+            try:
+                parent = Comment.objects.get(pk=parent_id)
+            except Comment.DoesNotExist:
+                return Response({"error": "Parent comment does not exist."}, status=404)
         else:
             parent = None
 
-        comment = Comment.objects.create(
-            user=user,
-            text=request.data['text'],
-            review=review,
-            parent=parent,
-        )
-
+        try:
+            comment = Comment.objects.create(
+                user=user,
+                text=text,
+                review=review,
+                parent=parent,
+            )
+        except ValidationError as e:
+            return Response({"errors": e.messages}, status=404)
+    
         serializer = CommentSerializer(comment)
-
         return Response(serializer.data)
 
 class CommentView(APIView):
@@ -151,7 +158,6 @@ class CommentView(APIView):
             return Response({"error": "Comment does not exist."}, status=404)
 
         serializer = CommentSerializer(comment)
-
         return Response(serializer.data)
 
 
@@ -162,12 +168,15 @@ class VoteView(APIView):
         user = request.user
         value = request.data.get('value')
 
-        if request.data.get("review"):
-            review_id = request.data.get("review")
-            votable = Review.objects.get(pk=review_id)
-        else:
-            comment_id = request.data.get("comment")
-            votable = Comment.objects.get(pk=comment_id)
+        try:
+            if request.data.get("review"):
+                review_id = request.data.get("review")
+                votable = Review.objects.get(pk=review_id)
+            else:
+                comment_id = request.data.get("comment")
+                votable = Comment.objects.get(pk=comment_id)
+        except ObjectDoesNotExist:
+            return Response({"error": "Votable object does not exist."}, status=404)
 
         try:
             vote = Vote.objects.get(
@@ -177,6 +186,9 @@ class VoteView(APIView):
             )
             vote.handle_vote(value)
         except Vote.DoesNotExist:
-            vote = Vote.objects.create(user = user, content_object = votable, value = value)
+            try:
+                vote = Vote.objects.create(user = user, content_object = votable, value = value)
+            except ValidationError as e:
+                return Response({"errors": e.messages}, status=404)
 
         return Response(status=status.HTTP_204_NO_CONTENT)

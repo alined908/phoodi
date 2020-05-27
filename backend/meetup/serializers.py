@@ -104,7 +104,7 @@ class UserSettingsSerializer(serializers.ModelSerializer):
         fields = ("radius", "location", "latitude", "longitude")
 
 
-class PreferenceSerializer(serializers.ModelSerializer):
+class CategoryPreferenceSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField("_get_user")
     category = serializers.SerializerMethodField("_get_category")
 
@@ -117,8 +117,8 @@ class PreferenceSerializer(serializers.ModelSerializer):
         return serializer.data
 
     class Meta:
-        model = Preference
-        fields = ("id", "user", "category", "name", "ranking", "timestamp")
+        model = CategoryPreference
+        fields = ("id", "user", "category", "name", "ranking", "created_at")
 
 
 class FriendshipSerializer(serializers.ModelSerializer):
@@ -402,14 +402,14 @@ class CategoryVerboseSerializer(CategorySerializer):
 
     def _get_preference(self, obj):
         user = self.context.get("user")
-        preference = Preference.objects.filter(user=user, category=obj)
+        preference = CategoryPreference.objects.filter(user=user, category=obj)
         if preference.exists():
-            return PreferenceSerializer(preference[0]).data
+            return CategoryPreferenceSerializer(preference[0]).data
         else:
             return None
 
     def _get_numliked(self, obj):
-        count = Preference.objects.filter(category=obj).count()
+        count = CategoryPreference.objects.filter(category=obj).count()
         return count
 
     class Meta(CategorySerializer.Meta):
@@ -478,7 +478,7 @@ class GenericNotificationRelatedField(serializers.RelatedField):
         elif isinstance(value, Friendship):
             serializer = FriendshipSerializer(value)
         elif isinstance(value, Preference):
-            serializer = PreferenceSerializer(value)
+            serializer = CategoryPreferenceSerializer(value)
         elif isinstance(value, Review):
             serializer = ReviewSerializer(value)
         elif isinstance(value, Restaurant):

@@ -34,7 +34,7 @@ class Category(models.Model):
         categories = Category.objects.filter(
             id__in=RawSQL(
                 "SELECT p.id FROM (SELECT pref.category_id as id, COUNT(*) as num\
-                FROM meetup_preference as pref \
+                FROM meetup_categorypreference as pref \
                 GROUP BY pref.category_id \
                 ORDER BY COUNT(*) DESC) as p\
                 LIMIT 11",

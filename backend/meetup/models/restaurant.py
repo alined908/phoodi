@@ -2,20 +2,40 @@ from django.db import models
 from .category import Category
 from ipware import get_client_ip
 from django.db.models.expressions import RawSQL
+from django.core.validators import MaxValueValidator, MinValueValidator
 import geocoder
 from django.db.models import Q
 from django.utils.text import slugify
 
 class Restaurant(models.Model):
+
+    PRICE_CHOICES = [
+        (1, '$'),
+        (2, '$$'),
+        (3, '$$$'),
+        (4, '$$$$')
+    ]
+
+    SERIALIZED_PRICE_CHOICES = {
+        '$': 1,
+        '$$': 2,
+        '$$$': 3,
+        '$$$$': 4
+    }
+
+    DESERIALIZED_PRICE_CHOICES = {
+        v:k for k,v in SERIALIZED_PRICE_CHOICES.items()
+    }
+
     identifier = models.CharField(max_length=100)
     name = models.TextField()
     yelp_image = models.TextField()
     yelp_url = models.TextField()
-    url = models.SlugField()
-    rating = models.FloatField()
+    url = models.SlugField(max_length = 255, unique=True)
+    rating = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(10)])
     latitude = models.FloatField()
     longitude = models.FloatField()
-    price = models.CharField(max_length=10)
+    price = models.IntegerField(choices=PRICE_CHOICES)
     location = models.TextField()
     address1 = models.CharField(max_length=255, null=True, blank=True)
     address2 = models.CharField(max_length=255, blank=True)
@@ -41,10 +61,15 @@ class Restaurant(models.Model):
             if num_same > 0:
                 self.url += "-%s" % (num_same + 1)
 
+        self.full_clean()
+
         super(Restaurant, self).save(*args, **kwargs)
 
     @property
-    def full_url(self):
+    def price_label(self):
+        return DESERIALIZED_PRICE_CHOICES[self.price]
+
+    def get_absolute_url(self):
         return "%s/%s" % (self.id, self.url)
 
     @property

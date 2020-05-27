@@ -1,6 +1,6 @@
-from meetup.models import Preference, UserSettings, Category, User, Meetup, Friendship
+from meetup.models import CategoryPreference, UserSettings, Category, User, Meetup, Friendship
 from meetup.serializers import (
-    PreferenceSerializer,
+    CategoryPreferenceSerializer,
     MyTokenObtainPairSerializer,
     UserSettingsSerializer,
     UserSerializer,
@@ -179,8 +179,8 @@ class UserPreferenceListView(APIView):
     def get(self, request, *args, **kwargs):
         pk = kwargs["id"]
         user = User.objects.get(pk=pk)
-        preferences = Preference.objects.filter(user=user).order_by("ranking")
-        serializer = PreferenceSerializer(preferences, many=True)
+        preferences = CategoryPreference.objects.filter(user=user).order_by("ranking")
+        serializer = CategoryPreferenceSerializer(preferences, many=True)
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
@@ -188,16 +188,16 @@ class UserPreferenceListView(APIView):
         category_id = request.data["category_id"]
         category = Category.objects.get(pk=category_id)
 
-        if Preference.objects.filter(user=user, category=category).exists():
+        if CategoryPreference.objects.filter(user=user, category=category).exists():
             return Response(
                 {"error": "Already a preference"}, status=status.HTTP_400_BAD_REQUEST
             )
 
-        pref_count = user.preferences.all().count()
-        preference = Preference.objects.create(
+        pref_count = user.categorypreferences.all().count()
+        preference = CategoryPreference.objects.create(
             user=user, category=category, name=category.label, ranking=(pref_count + 1)
         )
-        serializer = PreferenceSerializer(preference)
+        serializer = CategoryPreferenceSerializer(preference)
         return Response(serializer.data)
 
     def patch(self, request, *args, **kwargs):
@@ -207,12 +207,12 @@ class UserPreferenceListView(APIView):
             request.data["newRanking"],
         )
         try:
-            moved_preference = Preference.objects.filter(
+            moved_preference = CategoryPreference.objects.filter(
                 user=user, ranking=old_ranking
             )[0]
             moved_preference.reorder_preferences(new_ranking)
-            preferences = Preference.objects.filter(user=user).order_by("ranking")
-            serializer = PreferenceSerializer(preferences, many=True)
+            preferences = CategoryPreference.objects.filter(user=user).order_by("ranking")
+            serializer = CategoryPreferenceSerializer(preferences, many=True)
             return Response(serializer.data)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -224,7 +224,7 @@ class UserPreferenceView(APIView):
     def get_preference(self, user_id, category_id):
         user = get_object_or_404(User, pk=user_id)
         category = get_object_or_404(Category, pk=category_id)
-        preference = get_object_or_404(Preference, user=user, category=category)
+        preference = get_object_or_404(CategoryPreference, user=user, category=category)
         return preference, user
 
     def patch(self, request, *args, **kwargs):
@@ -233,7 +233,7 @@ class UserPreferenceView(APIView):
         try:
             preference.name = name
             preference.save()
-            serializer = PreferenceSerializer(preference)
+            serializer = CategoryPreferenceSerializer(preference)
             return Response(serializer.data)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -243,7 +243,7 @@ class UserPreferenceView(APIView):
         try:
             preference.reorder_preferences_delete()
             preference.delete()
-            serializer = PreferenceSerializer(user.preferences, many=True)
+            serializer = CategoryPreferenceSerializer(user.categorypreferences, many=True)
             return Response(serializer.data)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)

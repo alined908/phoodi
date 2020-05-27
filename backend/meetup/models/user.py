@@ -136,13 +136,13 @@ class User(AbstractBaseUser):
             id__in=RawSQL(
                 "(SELECT a.id AS id \
             FROM meetup_friendship AS a \
-            INNER JOIN meetup_preference AS b \
+            INNER JOIN meetup_categorypreference AS b \
             ON a.friend_id=b.user_id \
             AND a.creator_id=%s AND b.category_id=%s) \
             UNION \
             (SELECT a.id AS id \
             FROM meetup_friendship AS a \
-            INNER JOIN meetup_preference AS b \
+            INNER JOIN meetup_categorypreference AS b \
             ON a.creator_id=b.user_id \
             AND a.friend_id=%s AND b.category_id=%s) \
             ",

@@ -1,8 +1,10 @@
 from django.db import models
+from django.core.validators import MinLengthValidator
 from django.utils import timezone
 from .user import User
 from .restaurant import Restaurant
-from .utils import Commentable, Base
+from .utils import Votable, Base
+from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from mptt.models import MPTTModel, TreeForeignKey
@@ -10,25 +12,29 @@ from enum import Enum
 
 REVIEW_CHOICES = [(i, i) for i in range(1, 11)]
 
-class Review(Commentable):
+class Review(Votable):
     restaurant = models.ForeignKey(Restaurant, related_name="reviews", on_delete=models.CASCADE)
     rating = models.IntegerField(choices=REVIEW_CHOICES)
+    text = models.CharField(max_length=1000, validators=[MinLengthValidator(50, "Review length must be more than 50 characters.")])
 
     def save(self, *args, **kwargs):
         if self.pk is None:
             self.restaurant.rating = (self.restaurant.rating * self.restaurant.review_count + float(self.rating)) / (self.restaurant.review_count + 1)
             self.restaurant.review_count += 1
             self.restaurant.save()
-            
-        super(Review, self).save(*args, **kwargs)
+
+        self.full_clean()
+
+        super().save(*args, **kwargs)
 
     @property
     def review_url(self):
         return '/restaurants/%s/reviews/%s' % (self.restaurant.url, self.id)
 
-class Comment(MPTTModel, Commentable):
+class Comment(MPTTModel, Votable):
     review = models.ForeignKey(Review, related_name="review_comments", on_delete=models.CASCADE)
     parent = TreeForeignKey("self", related_name="children", on_delete=models.SET_NULL, null=True, blank=True, db_index=True)
+    text = models.CharField(max_length=1000, validators=[MinLengthValidator(50, "Comment length must be more than 50 characters.")])
     
     class MPTTMeta:
         order_insertion_by = ['-vote_score']
@@ -42,8 +48,10 @@ class Comment(MPTTModel, Commentable):
             self.review.save()
             self.review.restaurant.comment_count += 1
             self.review.restaurant.save()
-    
-        super(Comment, self).save(*args, **kwargs)
+
+        self.full_clean()
+
+        super().save(*args, **kwargs)
 
 class VoteChoice(Enum):
     DOWN = -1
@@ -55,13 +63,13 @@ class VoteChoice(Enum):
         choices = []
 
         for item in cls:
-            choices.append((item.name, item.value))
+            choices.append((item.value, item.name))
 
-        return tuple(choices)
+        return choices
 
-class Vote(models.Model):
+class Vote(Base):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    value = models.IntegerField(default=VoteChoice.NOVOTE, choices=VoteChoice.choices())
+    value = models.IntegerField(choices=VoteChoice.choices())
     updated_at = models.DateTimeField(auto_now=True)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
@@ -84,7 +92,9 @@ class Vote(models.Model):
             self.content_object.save()
             self.content_object.user.save()
 
-        super(Vote, self).save(*args, **kwargs)
+        self.full_clean()
+
+        super().save(*args, **kwargs)
 
     def is_upvote(self, value = None):
         if value == None:
