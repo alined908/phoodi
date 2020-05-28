@@ -17,7 +17,6 @@ INSTALLED_APPS = [
     'django_elasticsearch_dsl_drf',
     "search",
     "djoser",
-    "social_django",
     "corsheaders",
     "channels",
     "meetup",
@@ -41,14 +40,12 @@ REST_FRAMEWORK = {
     'ORDERING_PARAM': 'ordering',
 }
 
-SOCIAL_AUTH_POSTGRES_JSONFIELD = True
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+GOOGLE_OAUTH2_KEY = os.environ.get("GOOGLE_OAUTH2_KEY")
+GOOGLE_OAUTH2_SECRET = os.environ.get("GOOGLE_OAUTH2_SECRET")
+FACEBOOK_OAUTH2_KEY = os.environ.get("FACEBOOK_OAUTH2_KEY")
+FACEBOOK_OAUTH2_SECRET = os.environ.get("FACEBOOK_OAUTH2_SECRET")
 
 AUTHENTICATION_BACKENDS = (
-    "social_core.backends.google.GoogleOAuth2",
-    "social_core.backends.twitter.TwitterOAuth",
-    "social_core.backends.facebook.FacebookOAuth2",
     "django.contrib.auth.backends.ModelBackend",
 )
 
@@ -81,7 +78,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "social_django.middleware.SocialAuthExceptionMiddleware",
 ]
 
 ROOT_URLCONF = "backend.urls"

@@ -90,20 +90,61 @@
   display: flex;
   justify-content: center;
   height: 100%;
+  flex-direction: column;
   align-items: center;
   width: 100%;
 }
 
+.socials > span {
+  width: 80%;
+}
+
 .social {
-  display: flex;
+  display:flex;
+  justify-content: center;
   align-items: center;
-  margin: 0 0.3rem;
-  width: 40px;
-  height: 40px;
+  width: 80%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  margin: 5px 0;
+  opacity: 0.85;
+  font-size: 17px;
+  line-height: 20px;
+  text-decoration: none;
+  box-shadow: none !important;
+  background-color: white;
+  border: var(--border-separator) !important;
+  color: black !important;
+  height: 50px;
 }
 
 .social:hover {
-  transform: scale(1.1, 1.1);
+  box-shadow: var(--shadow-0) !important;
+}
+
+.facebook {
+  cursor: pointer;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
+}
+
+.facebook svg {
+  margin-right: 5px;
+  fill: #0084FF;
+}
+
+.google {
+  display: flex;
+  justify-content: center;
+}
+
+.google > div {
+  margin-right: 5px;
+  padding:0 !important;
+  height: 18px;
 }
 
 .action {

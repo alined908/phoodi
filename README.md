@@ -141,6 +141,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Find people who have similar food taste near you?
 
 ## Todo Later
+- [ ] Social Auth Get Profile Pic and Save to database
 - [ ] Finish writing tests for frontend
 - [ ] Finish writing tests for consumers
 - [ ] Set up locust load test

@@ -25,6 +25,7 @@ DATABASES = {
 
 CORS_ORIGIN_WHITELIST = (
     "http://localhost:8003",
+    "https://localhost:8003",
     "http://localhost",
 )
 

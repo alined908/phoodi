@@ -19,7 +19,8 @@ from django.db import IntegrityError
 from django.conf import settings
 from django.db.models import Q
 from google.oauth2 import id_token
-from google.auth.transport import requests
+from google.auth.transport import requests as google_requests
+import requests
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
@@ -29,9 +30,9 @@ class GoogleOAuthView(APIView):
 
     def post(self, request):
     
-        client_id = settings.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY
+        client_id = settings.GOOGLE_OAUTH2_KEY
         token_id = request.data.get('tokenId')
-        id_info = id_token.verify_oauth2_token(token_id, requests.Request(), client_id)
+        id_info = id_token.verify_oauth2_token(token_id, google_requests.Request(), client_id)
 
         if id_info['aud'] != client_id or id_info['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
             return Response({"error": "Invalid authentication"}, status=404)
@@ -43,7 +44,41 @@ class GoogleOAuthView(APIView):
         except User.DoesNotExist:
             first_name = id_info['given_name']
             last_name = id_info['family_name']
-            user = User.objects.create_user(email=email, first_name=first_name, last_name=last_name)
+            user = User.objects.create_user(email=email, first_name=first_name, last_name=last_name, social=True)
+        
+        serializer = UserSerializerWithToken(user, context={"plain": True})
+        token = RefreshToken.for_user(user)
+        token["user"] = serializer.data
+        refresh, access = token, token.access_token
+        tokens = {"refresh": str(refresh), "access": str(access)}
+        return Response(tokens)
+
+class FacebookOAuthView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        access_token = request.data.get('accessToken')
+        client_id = settings.FACEBOOK_OAUTH2_KEY
+        client_secret = settings.FACEBOOK_OAUTH2_SECRET
+        
+        app_link = 'https://graph.facebook.com/oauth/access_token?client_id=' + client_id + '&client_secret=' + client_secret + '&grant_type=client_credentials'
+        app_token = requests.get(app_link).json()['access_token']
+
+        link = 'https://graph.facebook.com/debug_token?input_token=' + access_token + '&access_token=' + app_token
+        
+        try:
+            fb_user = requests.get(link).json()['data']['user_id']
+        except (ValueError, KeyError, TypeError) as error:
+            return Response({"error": "Invalid authentication credentials."}, status=404)
+
+        email = request.data.get('email')
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            name = request.data.get('name').split()
+            first_name, last_name = name[0], name[1]
+            user = User.objects.create_user(email=email, first_name=first_name, last_name=last_name, social=True)
         
         serializer = UserSerializerWithToken(user, context={"plain": True})
         token = RefreshToken.for_user(user)

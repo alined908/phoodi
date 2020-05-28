@@ -1,7 +1,7 @@
 from django.urls import path, include
 from django.contrib import admin
 from rest_framework_simplejwt.views import TokenRefreshView
-from meetup.views import MyTokenObtainPairView, GoogleOAuthView
+from meetup.views import MyTokenObtainPairView, GoogleOAuthView, FacebookOAuthView
 from .views import home
 
 urlpatterns = [
@@ -12,5 +12,6 @@ urlpatterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("auth/", include("djoser.urls")),
     path("auth/google/", GoogleOAuthView.as_view(), name="google_auth"),
+    path("auth/facebook/", FacebookOAuthView.as_view(), name="facebook_auth"),
     path("search/", include("search.urls"))
 ]

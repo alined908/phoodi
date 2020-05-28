@@ -4,15 +4,14 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { signin, signinHelper} from "../../actions";
 import { Paper, Grid, Fab } from "@material-ui/core";
+import FacebookIcon from '@material-ui/icons/Facebook';
 import { Link } from "react-router-dom";
 import { renderTextField } from "../components";
 import {axiosClient} from '../../accounts/axiosClient'
 import { ReactComponent as Fan } from "../../assets/svgs/fans.svg";
-import { ReactComponent as Google } from "../../assets/svgs/google.svg";
-import { ReactComponent as Facebook } from "../../assets/svgs/facebook.svg";
-import { ReactComponent as Twitter } from "../../assets/svgs/twitter.svg";
 import styles from "../../styles/form.module.css";
 import { GoogleLogin } from 'react-google-login';
+import FacebookLogin from 'react-facebook-login'
 import { Helmet } from "react-helmet";
 import PropTypes from "prop-types";
 
@@ -30,6 +29,19 @@ const validate = (values) => {
 };
 
 class LoginPage extends Component {
+  handleFacebookSocialAuth = async (res) => {
+    if (res.error) {
+      return;
+    }
+    console.log(res)
+    const response = await axiosClient.post(
+      '/auth/facebook/', {accessToken: res.accessToken, email: res.email, name: res.name}
+    )
+    console.log(response.data)
+    signinHelper(response.data, this.props.dispatch, () => this.props.history.push("/meetups"))
+  }
+
+
   handleGoogleSocialAuth = async (res) => {
     if (res.error){
       return;
@@ -106,10 +118,21 @@ class LoginPage extends Component {
             <div className={styles.socials}>
               <GoogleLogin
                 clientId={process.env.REACT_APP_GOOGLE_OAUTH2_KEY}
-                buttonText="Login with Google"
+                buttonText="Continue with Google"
                 onSuccess={this.handleGoogleSocialAuth}
                 onFailure={this.handleGoogleSocialAuth}
                 cookiePolicy={'single_host_origin'}
+                className={`${styles.social} ${styles.google}`}
+              />
+              <FacebookLogin
+                autoLoad={false}
+                reauthenticate={true}
+                appId={process.env.REACT_APP_FACEBOOK_OAUTH2_KEY}
+                callback={this.handleFacebookSocialAuth}
+                fields="name,email,picture"
+                icon={<FacebookIcon/>}
+                textButton="Continue with Facebook"
+                cssClass={`${styles.social} ${styles.facebook}`}
               />
             </div>
             <div className={styles.action}>
