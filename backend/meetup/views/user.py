@@ -16,11 +16,41 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db import IntegrityError
+from django.conf import settings
 from django.db.models import Q
+from google.oauth2 import id_token
+from google.auth.transport import requests
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
+class GoogleOAuthView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+    
+        client_id = settings.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY
+        token_id = request.data.get('tokenId')
+        id_info = id_token.verify_oauth2_token(token_id, requests.Request(), client_id)
+
+        if id_info['aud'] != client_id or id_info['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+            return Response({"error": "Invalid authentication"}, status=404)
+
+        email = id_info['email']
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            first_name = id_info['given_name']
+            last_name = id_info['family_name']
+            user = User.objects.create_user(email=email, first_name=first_name, last_name=last_name)
+        
+        serializer = UserSerializerWithToken(user, context={"plain": True})
+        token = RefreshToken.for_user(user)
+        token["user"] = serializer.data
+        refresh, access = token, token.access_token
+        tokens = {"refresh": str(refresh), "access": str(access)}
+        return Response(tokens)
 
 class UserListView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -41,9 +71,9 @@ class UserListView(APIView):
         if serializer.is_valid():
             try:
                 user = serializer.save()
-            except ValidationError:
+            except ValidationError as e:
                 return Response(
-                    {"error": "Email already exists"},
+                    {"error": e.messages},
                     status=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 )
         else:

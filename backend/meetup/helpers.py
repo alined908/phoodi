@@ -1,7 +1,85 @@
-import os.path
+import os.path, geocoder
 from uuid import uuid4
+from ipware import get_client_ip
+from meetup.models import Category
+from django.db.models.expressions import RawSQL
 from django.utils.deconstruct import deconstructible
 from django.core.mail import get_connection, EmailMultiAlternatives
+
+def convert_string_to_category_ids(categories):
+
+    if categories:
+        try:
+            category_ids = [int(x) for x in categories.split(",")]
+        except:
+            category = Category.objects.get(api_label=categories)
+            category_ids = [category.id]
+    else:
+        category_ids = []
+
+    return category_ids
+
+def get_user_coordinates(coords, request):
+    if request:
+        client_ip, is_routable = get_client_ip(request)
+
+        if client_ip:
+            if is_routable:
+                geocode = geocoder.ip(client_ip)
+                location = geocode.latlng
+                lat, lng = location[0], location[1]
+            else:
+                lat, lng = None, None
+
+    latitude, longitude, radius = (
+        coords[0] or lat,
+        coords[1] or lng,
+        coords[2] or 25,
+    )
+
+    return latitude, longitude, radius
+
+def nearby_public_entities(coords, request, categories, num_results, table):
+    
+    category_ids = convert_string_to_category_ids(categories)
+    latitude, longitude, radius = get_user_coordinates(coords, request)
+
+    if not latitude or not longitude:
+        return []
+
+    if table == "restaurant":
+        distance_query = RawSQL(
+            " SELECT id FROM \
+                (SELECT *, (3959 * acos(cos(radians(%s)) * cos(radians(latitude)) * \
+                                        cos(radians(longitude) - radians(%s)) + \
+                                        sin(radians(%s)) * sin(radians(latitude)))) \
+                    AS distance \
+                    FROM meetup_restaurant) \
+                AS distances \
+                WHERE distance < %s \
+                ORDER BY distance \
+                OFFSET 0 \
+                LIMIT %s",
+            (latitude, longitude, latitude, radius, num_results),
+        )
+    elif table == "meetup":
+        distance_query = RawSQL(
+            " SELECT id FROM \
+                (SELECT *, (3959 * acos(cos(radians(%s)) * cos(radians(latitude)) * \
+                                        cos(radians(longitude) - radians(%s)) + \
+                                        sin(radians(%s)) * sin(radians(latitude)))) \
+                    AS distance \
+                    FROM meetup_meetup) \
+                AS distances \
+                WHERE distance < %s \
+                ORDER BY distance \
+                OFFSET 0 \
+                LIMIT %s",
+            (latitude, longitude, latitude, radius, num_results),
+        )
+
+    return distance_query, category_ids
+
 
 def generate_unique_uri():
     return str(uuid4()).replace("-", "")[:15]

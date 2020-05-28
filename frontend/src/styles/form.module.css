@@ -100,12 +100,11 @@
   margin: 0 0.3rem;
   width: 40px;
   height: 40px;
-  opacity: .4;
 }
 
-/* .social:hover {
+.social:hover {
   transform: scale(1.1, 1.1);
-} */
+}
 
 .action {
   margin: 0.5rem 0;

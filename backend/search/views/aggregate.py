@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import MultiSearch, Search
+from meetup.helpers import get_user_coordinates
 
 class AggregateSearchView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -11,9 +12,8 @@ class AggregateSearchView(APIView):
     def get(self, request, *args, **kwargs):
         
         query = request.GET.get('q')
-        latitude = request.GET.get('latitude')
-        longitude = request.GET.get('longitude')      
-        radius = request.GET.get('radius', 25) 
+        coords = [request.GET.get('latitude'), request.GET.get('longitude'), request.GET.get('radius')]
+        latitude, longitude, radius = get_user_coordinates(coords, request)
         ms = MultiSearch(index=['restaurants', 'categories'])
         
         if query:

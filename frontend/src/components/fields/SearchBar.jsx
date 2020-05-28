@@ -38,6 +38,7 @@ class SearchBar extends Component {
     callSearch = async () => {
         const cachedResult = this.cachedResults[this.state.input]
         console.log(this.cachedResults)
+    
         if (cachedResult) {
             this.setState({results: cachedResult});
             return; 
@@ -48,9 +49,9 @@ class SearchBar extends Component {
             url: `/search/`,
             params: {
                 ...this.state.input && {q: this.state.input},
-                latitude: this.props.user.settings.latitude,
-                longitude: this.props.user.settings.longitude,
-                radius: this.props.user.settings.radius,
+                latitude: this.props.user ? this.props.user.settings.latitude : null,
+                longitude: this.props.user ? this.props.user.settings.longitude : null,
+                radius: this.props.user ? this.props.user.settings.radius: null,
             },
         })
 

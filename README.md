@@ -87,25 +87,33 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Material UI** - Design
 * **Travis** - CI
 
-## Todo General
+## Todo Completed
 - [x] CDN for images
 - [x] Elasticsearch - Search bar on top app nav bar, user autocomplete, restaurant autocomplete, etc
 - [x] Rewrite Database (Comments as Tree, scalable solution for voting)
 - [x] Properly configure statistics for stuff (likes, options count)
 - [x] Slugify restaurant url
-- [ ] Validation for models
-- [ ] Notification Bar on Top right of navbar
-- [ ] Finish writing tests for frontend, backend, consumers
-- [ ] Set up caching system (redis)
+- [x] Refactor get_nearby
+- [x] Validation for models
+- [x] Finish writing tests for backend
+- [x] Add social authentication (google, facebook)
+
+## Todo General
 - [ ] Properly document and refactor codebase
 - [ ] Set up celery for asynchronous job processing (convert signals to create task for celery)
 - [ ] Learn more about web application security (XSS, CSRF, SQL injection, MITM)
+- [ ] Notification Bar on Top right of navbar
+- [ ] Add Custom Notification Model
+- [ ] Move signals to inside models
 
 ## Todo Authentication
-- [ ] Add social authentication (google, facebook)
 - [ ] Use httpOnly cookies for tokens
 - [ ] Reconfigure frontend authentication logic (no signup needed to see content)
 - [ ] Websocket Authentication Flow
+
+## Todo Testing
+- [ ] Notifications
+- [ ] Search
 
 ## Todo Chat
 - [ ] Edit chat messages
@@ -131,3 +139,9 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Update user when email changes
 - [ ] Eliminate user_id from preferences api calls
 - [ ] Find people who have similar food taste near you?
+
+## Todo Later
+- [ ] Finish writing tests for frontend
+- [ ] Finish writing tests for consumers
+- [ ] Set up locust load test
+- [ ] Set up caching system/Optimize (redis)

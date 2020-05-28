@@ -37,17 +37,7 @@ export const signout = (redirectOnSuccess) => async (dispatch) => {
 export const signin = (formProps, redirectOnSuccess) => async (dispatch) => {
   try {
     const response = await axiosClient.post("/api/token/", formProps);
-    const decoded = parseJWT(response.data.access);
-    AuthenticationService.registerSuccessfulLogin(
-      response.data.access,
-      response.data.refresh
-    );
-    localStorage.setItem("user", JSON.stringify(decoded.user));
-    dispatch({
-      type: types.AUTH_USER,
-      payload: { access: response.data.access, user: decoded.user },
-    });
-    redirectOnSuccess();
+    signinHelper(response.data, dispatch, redirectOnSuccess)
   } catch (e) {
     console.log("error signin");
     dispatch({
@@ -56,6 +46,20 @@ export const signin = (formProps, redirectOnSuccess) => async (dispatch) => {
     });
   }
 };
+
+export const signinHelper = (tokens, dispatch, redirectOnSuccess) => {
+  const decoded = parseJWT(tokens.access);
+    AuthenticationService.registerSuccessfulLogin(
+      tokens.access,
+      tokens.refresh
+    );
+    localStorage.setItem("user", JSON.stringify(decoded.user));
+    dispatch({
+      type: types.AUTH_USER,
+      payload: { access: tokens.access, user: decoded.user },
+    });
+    redirectOnSuccess();
+}
 
 export const refreshToken = (dispatch) => {
   console.log("refresh token function reached");

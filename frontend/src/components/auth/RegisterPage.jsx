@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { reduxForm, Field } from "redux-form";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { signup, editUser, removeSuccessMessage } from "../../actions";
+import { signup, editUser, removeSuccessMessage, signinHelper} from "../../actions";
 import {
   Paper,
   Grid,
@@ -16,7 +16,8 @@ import {
   CircularProgress
 } from "@material-ui/core";
 import { ReactComponent as Together } from "../../assets/svgs/undraw_eattogether.svg";
-import { ReactComponent as Google } from "../../assets/svgs/google.svg";
+import { GoogleLogin } from 'react-google-login';
+import {axiosClient} from '../../accounts/axiosClient'
 import { ReactComponent as Facebook } from "../../assets/svgs/facebook.svg";
 import { ReactComponent as Twitter } from "../../assets/svgs/twitter.svg";
 import { renderTextField } from "../components";
@@ -95,6 +96,17 @@ class RegisterPage extends Component {
 
   componentWillUnmount() {
     this.props.removeSuccessMessage();
+  }
+
+  handleGoogleSocialAuth = async (res) => {
+    if (res.error){
+      return;
+    }
+    const response = await axiosClient.post(
+      '/auth/google/', {tokenId: res.tokenId}
+    )
+    console.log(response.data)
+    signinHelper(response.data, this.props.dispatch, () => this.props.history.push("/meetups"))
   }
 
   handleImageChange = (e) => {
@@ -201,15 +213,19 @@ class RegisterPage extends Component {
               </form>
               <div className={styles.bottom}>
                 <div className={styles.socials}>
-                  <div className={styles.social}>
-                    <Google width={40} height={40} />
-                  </div>
-                  <div className={styles.social}>
+                  <GoogleLogin
+                    clientId={process.env.REACT_APP_GOOGLE_OAUTH2_KEY}
+                    buttonText="Login with Google"
+                    onSuccess={this.handleGoogleSocialAuth}
+                    onFailure={this.handleGoogleSocialAuth}
+                    cookiePolicy={'single_host_origin'}
+                  />
+                  {/* <div className={styles.social}>
                     <Facebook width={40} height={40} />
                   </div>
                   <div className={styles.social}>
                     <Twitter width={40} height={40} />
-                  </div>
+                  </div> */}
                 </div>
                 <div className={styles.action}>
                   Already Have An Account?
