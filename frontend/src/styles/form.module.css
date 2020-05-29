@@ -11,10 +11,11 @@
 .formWrapper{
   display:flex;
   flex-direction: column;
-  max-width: 420px;
+  max-width: 410px;
   background-color: white;
   box-shadow: var(--shadow-0);
   border: var(--border-separator);
+  transform: scale(.9);
 }
 
 .form {
@@ -27,8 +28,8 @@
   justify-content: center;
   display: flex;
   align-items: center;
-  font-size: 2rem;
-  padding: 2rem 0;
+  font-size: 1.75rem;
+  padding: 1.5rem 0;
 }
 
 .header {

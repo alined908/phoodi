@@ -1,27 +1,25 @@
-import React from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import React, {Component} from "react";
 import {
   Button,
-  Drawer,
   CssBaseline,
-  withStyles,
-  AppBar,
-  Toolbar,
   Typography,
   Divider,
   IconButton,
   ListItemAvatar,
+  Popper,
+  ClickAwayListener,
   Avatar,
   List,
   ListItem,
   ListItemIcon,
-  Badge,
   ListItemText,
+  Fade,
+  Grow,
+  Menu,
+  MenuItem,
+  MenuList
 } from "@material-ui/core";
 import {
-  Menu,
-  ChevronLeft,
-  ChevronRight,
   People as PeopleIcon,
   Person as PersonIcon,
   Settings as SettingsIcon,
@@ -38,27 +36,41 @@ import { connect } from "react-redux";
 import { Body, LiveUpdatingBadge, SearchBar } from "../components";
 import PropTypes from "prop-types";
 import { userPropType, notifsPropType } from "../../constants/prop-types";
-import { navTheme, styledBadgeTheme} from "../../constants/themes";
+import styles from '../../styles/navigation.module.css'
 
-const StyledBadge = withStyles((theme) => styledBadgeTheme(theme))(Badge);
-const useStyles = makeStyles((theme) => navTheme(theme));
-
-const Navigation = (props) => {
-  const classes = useStyles();
-  const theme = useTheme();
+const Navigation = props => {
+  
   const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleDrawerClose = () => {
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
     setOpen(false);
   };
 
-  const isActive = (uri) => {
-    return window.location.pathname.indexOf(uri) > -1;
-  };
+  function handleListKeyDown(event) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpen(false);
+    }
+  }
+
+  // return focus to the button when we transitioned from !open -> open
+  const prevOpen = React.useRef(open);
+  React.useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current.focus();
+    }
+
+    prevOpen.current = open;
+  }, [open]);
 
   const isNotifs = (notifs) => {
     let count = 0;
@@ -70,42 +82,30 @@ const Navigation = (props) => {
     return count > 0;
   };
 
-  return (
-    <div className={classes.root}>
-      <CssBaseline />
+  const authenticated = props.authenticated
+  const user = props.user
+  const notifs = props.notifs
 
-      <AppBar elevation={1} position="absolute" className={classes.appBar}>
-        <Toolbar disableGutters>
-          <div className={classes.meta}>
-            {props.authenticated && (
-              <IconButton
-                aria-label="open drawer"
-                onClick={handleDrawerOpen}
-                edge="start"
-              >
-                <Badge
-                  color="secondary"
-                  variant="dot"
-                  invisible={!isNotifs(props.notifs)}
-                >
-                  <Menu />
-                </Badge>
-              </IconButton>
-            )}
-            <Typography className={classes.title} variant="h5" noWrap>
-              <Link onClick={handleDrawerClose} to="/">
+    return (
+      <div className={styles.root}>
+        <CssBaseline />
+
+        <div className={styles.appBar}>
+          <div className={styles.meta}>
+            <Typography className={styles.title} variant="h5" noWrap>
+              <Link to="/">
                 Phoodi
               </Link>
             </Typography>
           </div>
-          <div className={classes.search}>
+          <div className={styles.search}>
             <SearchBar/>
           </div>
-          <div className={classes.user}>
-            {!props.authenticated && (
+          <div className={styles.user}>
+            {!authenticated && (
               <Link to="/register">
                 <Button
-                  className={classes.actionButton}
+                  className={styles.actionButton}
                   // startIcon={<Assignment />}
                   variant="contained"
                   color="primary"
@@ -114,232 +114,199 @@ const Navigation = (props) => {
                 </Button>
               </Link>
             )}
+            {authenticated && (
+              <div ref={anchorRef} className={styles.dropDownControl} onClick={handleToggle}>
+                <Avatar src={user.avatar} >
+                  {user.first_name.charAt(0)}
+                  {user.last_name.charAt(0)}
+                </Avatar>
+                <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+                  {({ TransitionProps, placement }) => (
+                     <Grow
+                      {...TransitionProps}
+                      style={{ transformOrigin: 'center top' }}
+                    >
+                    <div className={styles.menu}>
+                    <ClickAwayListener onClickAway={handleClose}>
+                      <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                        <Link to={`/profile/${user.id}`} onClick={handleClose}>
+                          <ListItem className={styles.name}>
+                            <ListItemAvatar>
+                              <Avatar style={{width: 30, height: 30, fontSize: "1rem", marginRight: 8}} src={props.user.avatar}>
+                                {props.user.first_name.charAt(0)}
+                                {props.user.last_name.charAt(0)}
+                              </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText
+                              primaryTypographyProps={{
+                                className: `${styles.link} ${styles.bold}`,
+                              }}
+                              primary={`${user.first_name} ${user.last_name}`}
+                              secondary={
+                                <Typography
+                                  component="span"
+                                  variant="body2"
+                                  className={styles.email}
+                                >
+                                  {user.email}
+                                </Typography>
+                              }
+                            />
+                          </ListItem>
+                        </Link>
+                        <Divider/>
+                        <Link to={`/profile/${user.id}`} onClick={handleClose}>
+                          <ListItem button key="Profile">
+                            <ListItemIcon>
+                              <PersonIcon color="primary"/>
+                            </ListItemIcon>
+                            <ListItemText
+                              primary="Profile"
+                              primaryTypographyProps={{className: styles.link}}
+                            />
+                          </ListItem>
+                        </Link>
+                        <Link to="/meetups"  onClick={handleClose}>
+                          <ListItem button key="Meetups">
+                            <ListItemIcon>
+                              <LiveUpdatingBadge
+                                type={"meetup"}
+                                icon={<PeopleIcon color="primary"/>}
+                              />
+                            </ListItemIcon>
+                            <ListItemText
+                              primary="Meetups"
+                              primaryTypographyProps={{className: styles.link}}
+                            />
+                          </ListItem>
+                        </Link>
+                        <Divider/>
+                        <Link to="/friends" onClick={handleClose}>
+                          <ListItem button key="Friends">
+                            <ListItemIcon>
+                              <LiveUpdatingBadge
+                                type={"friend"}
+                                icon={<PermContactCalendarIcon color="primary"/>}
+                              />
+                            </ListItemIcon>
+                            <ListItemText
+                              primary="Friends"
+                              primaryTypographyProps={{className: styles.link}}
+                            />
+                          </ListItem>
+                        </Link>
+                        <Link to="/chat" onClick={handleClose}>
+                          <ListItem button key="Chat">
+                            <ListItemIcon>
+                              <LiveUpdatingBadge
+                                type={"chat"}
+                                icon={<ChatOutlinedIcon  color="primary"/>}
+                              />
+                            </ListItemIcon>
+                            <ListItemText
+                              primary="Chat"
+                              primaryTypographyProps={{className: styles.link}}
+                            />
+                          </ListItem>
+                        </Link>
+                        <Link to="/invites" onClick={handleClose}>
+                          <ListItem button key="Invites">
+                            <ListItemIcon>
+                              <LiveUpdatingBadge
+                                type={"invite"}
+                                icon={<MailOutlinedIcon color="primary"/>}
+                              />
+                            </ListItemIcon>
+                            <ListItemText
+                              primary="Invites"
+                              primaryTypographyProps={{className: styles.link}}
+                            />
+                          </ListItem>
+                        </Link>
+                        <Divider/>
+                        <Link to="/calendar" onClick={handleClose}>
+                          <ListItem button key="Calendar">
+                            <ListItemIcon>
+                              <EventNoteIcon color="primary"/>
+                            </ListItemIcon>
+                            <ListItemText
+                              primary="Calendar"
+                              primaryTypographyProps={{className: styles.link}}
+                            />
+                          </ListItem>
+                        </Link>
+                        <Link to="/settings" onClick={handleClose}>
+                          <ListItem button key="Settings">
+                            <ListItemIcon>
+                              <SettingsIcon  color="primary"/>
+                            </ListItemIcon>
+                            <ListItemText
+                              primary="Settings"
+                              primaryTypographyProps={{className: styles.link}}
+                            />
+                          </ListItem>
+                        </Link>
+                        <Link to="/logout" onClick={handleClose}>
+                          <ListItem button key="Logout">
+                            <ListItemIcon>
+                              <ExitToApp color="primary"/>
+                            </ListItemIcon>
+                            <ListItemText
+                              primary="Logout"
+                              primaryTypographyProps={{className: styles.link}}
+                            />
+                          </ListItem>
+                        </Link>
+                      </MenuList>
+                    </ClickAwayListener>
+                    </div>
+                  </Grow>
+                )}
+                </Popper>
+              </div>
+            )}
           </div>
-        </Toolbar>
-      </AppBar>
-
-      <Drawer
-        className={classes.drawer}
-        ModalProps={{ keepMounted: true }}
-        onClose={handleDrawerClose}
-        variant="temporary"
-        anchor="left"
-        open={open}
-        classes={{ paper: classes.drawerPaper }}
-      >
-        <div className={classes.drawerHeader}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? <ChevronLeft /> : <ChevronRight />}
-          </IconButton>
         </div>
-        <Divider />
-        <List>
-          {props.authenticated && (
-            <Link to={`/profile/${props.user.id}`}>
-              <ListItem className={classes.self}>
-                <ListItemAvatar>
-                  <StyledBadge
-                    overlap="circle"
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                    variant="dot"
-                  >
-                    <Avatar className={classes.avatar} src={props.user.avatar}>
-                      {props.user.first_name.charAt(0)}
-                      {props.user.last_name.charAt(0)}
-                    </Avatar>
-                  </StyledBadge>
-                </ListItemAvatar>
-                <ListItemText
-                  primaryTypographyProps={{
-                    className: `${classes.primary} ${classes.ellipsis}`,
-                  }}
-                  primary={props.user.first_name + " " + props.user.last_name}
-                  secondary={
-                    <>
-                      <Typography
-                        className={classes.secondary}
-                        component="span"
-                        color="inherit"
-                        variant="body2"
-                      >
-                        {props.user.email + " "}
-                      </Typography>
-                    </>
-                  }
-                  secondaryTypographyProps={{ className: classes.ellipsis }}
-                ></ListItemText>
-              </ListItem>
-            </Link>
-          )}
-        </List>
-        <Divider />
-        <List  className={classes.list}>
-          {props.authenticated && (
-            <Link to="/restaurants" onClick={handleDrawerClose}>
-              <ListItem
-                button
-                key="Restaurants"
-                selected={isActive("/restaurants")}
-              >
-                <ListItemIcon>
-                  <RestaurantIcon className={classes.icon} />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Restaurants"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
-            <Link to="/meetups" onClick={handleDrawerClose}>
-              <ListItem button key="Meetups" selected={isActive("/meetups")}>
-                <ListItemIcon>
-                  <LiveUpdatingBadge
-                    type={"meetup"}
-                    icon={<PeopleIcon className={classes.icon} />}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Meetups"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
-            <Link to="/categories" onClick={handleDrawerClose}>
-              <ListItem
-                button
-                key="Categories"
-                selected={isActive("/categories")}
-              >
-                <ListItemIcon>
-                  <CategoryIcon className={classes.icon} />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Categories"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
-            <Link to="/friends" onClick={handleDrawerClose}>
-              <ListItem button key="Friends" selected={isActive("/friends")}>
-                <ListItemIcon>
-                  <LiveUpdatingBadge
-                    type={"friend"}
-                    icon={<PermContactCalendarIcon className={classes.icon} />}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Friends"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
-            <Link to="/chat" onClick={handleDrawerClose}>
-              <ListItem button key="Chat" selected={isActive("/chat")}>
-                <ListItemIcon>
-                  <LiveUpdatingBadge
-                    type={"chat"}
-                    icon={<ChatOutlinedIcon className={classes.icon} />}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Chat"
-                />
-              </ListItem>
-            </Link>
-          )}
-        </List>
-        <Divider />
-        <List  className={classes.list}>
-          {props.authenticated && props.user && (
-            <Link to={`/profile/${props.user.id}`} onClick={handleDrawerClose}>
-              <ListItem button key="Profile" selected={isActive("/profile")}>
-                <ListItemIcon>
-                  <PersonIcon className={classes.icon} />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Profile"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
-            <Link to="/invites" onClick={handleDrawerClose}>
-              <ListItem button key="Invites" selected={isActive("/invites")}>
-                <ListItemIcon>
-                  <LiveUpdatingBadge
-                    type={"invite"}
-                    icon={<MailOutlinedIcon className={classes.icon} />}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Invites"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
-            <Link to="/calendar" onClick={handleDrawerClose}>
-              <ListItem button key="Calendar" selected={isActive("/calendar")}>
-                <ListItemIcon>
-                  <EventNoteIcon className={classes.icon} />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Calendar"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
-            <Link to="/settings" onClick={handleDrawerClose}>
-              <ListItem button key="Settings" selected={isActive("/settings")}>
-                <ListItemIcon>
-                  <SettingsIcon className={classes.icon} />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Settings"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
-            <Link onClick={handleDrawerClose} to="/logout">
-              <ListItem button key="Logout">
-                <ListItemIcon>
-                  <ExitToApp className={classes.icon} />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Logout"
-                />
-              </ListItem>
-            </Link>
-          )}
-        </List>
-        <Divider />
-      </Drawer>
-      <main className={classes.content}>
-        <div className={classes.drawerHeader} />
-        <Body />
-      </main>
+
+      {/* 
+        <Link to="/restaurants" onClick={handleDrawerClose}>
+          <ListItem
+            button
+            key="Restaurants"
+          >
+            <ListItemIcon>
+              <RestaurantIcon className={classes.icon} />
+            </ListItemIcon>
+            <ListItemText
+              classes={{ primary: classes.drawerText }}
+              primary="Restaurants"
+            />
+          </ListItem>
+        </Link>
+
+        <Link to="/categories" onClick={handleDrawerClose}>
+          <ListItem
+            button
+            key="Categories"
+          >
+            <ListItemIcon>
+              <CategoryIcon className={classes.icon} />
+            </ListItemIcon>
+            <ListItemText
+              classes={{ primary: classes.drawerText }}
+              primary="Categories"
+            />
+          </ListItem>
+        </Link>
+          
+      */}
+        <main className={styles.content}>
+          <Body />
+        </main>
     </div>
-  );
-};
+  )
+
+}
 
 Navigation.propTypes = {
   authenticated: PropTypes.string,

@@ -18,7 +18,7 @@ export const MuiTheme = {
       h5: { ...bold, fontSize: "1.15rem" },
       h6: { ...bold, fontSize: ".95rem" },
       body1: { ...bold, fontSize: ".85rem" },
-      body2: { ...bold, fontSize: ".8rem" },
+      body2: { ...bold, fontSize: ".75rem" },
       button: { ...bold, fontSize: ".75rem" },
     },
     palette: {
@@ -67,6 +67,12 @@ export const MuiTheme = {
             boxShadow: "none"
         }
       },
+      MuiList:{
+        padding: {
+            paddingTop: 0,
+            paddingBottom: 0
+        }
+      },
       MuiListItemIcon : {
           root: {
               minWidth: 35
@@ -75,12 +81,15 @@ export const MuiTheme = {
       MuiListItemText : {
         multiline: {
             marginTop: 4,
-            marginBottom: 4
+            marginBottom: 4,
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis"
         }
       },
       MuiListItemAvatar:{
         root: {
-            minWidth: 45
+            minWidth: 30
         }
       },
       MuiTooltip: {
@@ -192,137 +201,16 @@ export const MuiTheme = {
               display: "flex",
               alignItems: "center"
           }
+      },
+      MuiToolbar: {
+        dense: {
+            minHeight: 55
+        }
+      },
+      MuiPopover: {
+          paper: {
+              minWidth: 200
+          }
       }
     },
   };
-
-const drawerWidth = 240;
-
-export const navTheme = theme => {
-    return {
-        root: {
-            display: "flex",
-            height: "100%",
-            backgroundColor: "var(--background)",
-        },
-        appBar: {
-            transition: theme.transitions.create(["margin", "width"], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            padding: "0 1.25rem",
-            background: "inherit",
-            boxShadow: "none",
-            borderBottom: "var(--border-separator)",
-            position: "fixed",
-            top: 0,
-            backgroundColor:"white"
-        },
-        hide: {
-            display: "none",
-        },
-        drawer: {
-            width: drawerWidth,
-            flexShrink: 0,
-        },
-        meta: {
-            flex: 1,
-            display: "flex",
-            alignItems: "center"
-        },
-        title: {
-            color: "black",
-            marginLeft: ".5rem",
-        },
-        search : {
-            display: "flex",
-            flex: 1,
-        },
-        user : {
-            display: "flex",
-            alignItems: "center",
-            flex: 1
-        },
-        icon: {
-            color: "rgba(0, 0, 0, .75) ",
-        },
-        actionButton: {
-            marginRight: "1rem",
-        },
-        list : {
-            padding: ".4rem"
-        },
-            drawerText: {
-            fontSize: ".8rem",
-            fontFamily: "Roboto",
-            marginLeft: ".75rem",
-            color: "rgba(40,40,40,.90)"
-        },
-        drawerPaper: {
-            width: drawerWidth
-        },
-        drawerHeader: {
-            display: "flex",
-            alignItems: "center",
-            padding: theme.spacing(0, 1),
-            ...theme.mixins.toolbar,
-            justifyContent: "flex-end",
-        },
-        content: {
-            flexGrow: 1,
-            transition: theme.transitions.create("margin", {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            width: "100%",
-            height: "100%",
-        },
-        primary: {
-            fontSize: ".9rem",
-        },
-        self: {
-            marginTop: "auto",
-        },
-        secondary: {
-            fontSize: ".75rem",
-        },
-        ellipsis: {
-            width: 130,
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-        },
-    }
-}
-
-export const styledBadgeTheme = theme => {
-    return {
-        badge: {
-        backgroundColor: "#44b700",
-        color: "#44b700",
-        boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-        "&::after": {
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            borderRadius: "50%",
-            animation: "$ripple 1.2s infinite ease-in-out",
-            border: "1px solid currentColor",
-            content: '""',
-        },
-        right: "28%",
-        },
-        "@keyframes ripple": {
-        "0%": {
-            transform: "scale(.8)",
-            opacity: 1,
-        },
-        "100%": {
-            transform: "scale(2.4)",
-            opacity: 0,
-        },
-        },
-    }
-}

@@ -8,7 +8,6 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import { Link } from "react-router-dom";
 import { renderTextField } from "../components";
 import {axiosClient} from '../../accounts/axiosClient'
-import { ReactComponent as Fan } from "../../assets/svgs/fans.svg";
 import styles from "../../styles/form.module.css";
 import { GoogleLogin } from 'react-google-login';
 import FacebookLogin from 'react-facebook-login'

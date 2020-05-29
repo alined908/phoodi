@@ -96,7 +96,8 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Refactor get_nearby
 - [x] Validation for models
 - [x] Finish writing tests for backend
-- [x] Add social authentication (google, facebook)
+- [x] Add social authentication (google, facebook, twitter)
+- [x] Login and Register Form 
 
 ## Todo General
 - [ ] Properly document and refactor codebase
