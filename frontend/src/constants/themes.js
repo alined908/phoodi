@@ -110,8 +110,27 @@ export const MuiTheme = {
       },
       MuiFilledInput : {
           root: {
-              backgroundColor: "var(--light-blue)",
+              backgroundColor: "white",
+              border: "var(--border-separator)",
+              '&:hover': {
+                background: "var(--background)"
+              },
+              '&.Mui-focused':{
+                background: "var(--background)"
+              }
           }
+      },
+      MuiFormHelperText:{
+        root: {
+            fontWeight: 600,
+            fontSize: ".7rem",
+            marginDense:{
+                marginTop: 0
+            }
+        },
+        contained: {
+            marginLeft: 10
+        }
       },
       MuiSlider : {
           root: {
@@ -196,7 +215,8 @@ export const navTheme = theme => {
             boxShadow: "none",
             borderBottom: "var(--border-separator)",
             position: "fixed",
-            top: 0
+            top: 0,
+            backgroundColor:"white"
         },
         hide: {
             display: "none",

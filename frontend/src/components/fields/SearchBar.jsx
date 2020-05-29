@@ -191,7 +191,7 @@ class SearchBar extends Component {
             <Autocomplete
                 debug
                 size="small"
-                style={{flex: 1, boxShadow: "none", border: "var(--border-separator)"}}
+                style={{flex: 1, boxShadow: "none"}}
                 getOptionLabel={(option) =>
                     this.handleLabel(option)
                 }

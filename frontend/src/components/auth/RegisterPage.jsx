@@ -15,7 +15,6 @@ import {
   DialogContent,
   CircularProgress
 } from "@material-ui/core";
-import { ReactComponent as Together } from "../../assets/svgs/undraw_eattogether.svg";
 import { GoogleLogin } from 'react-google-login';
 import {axiosClient} from '../../accounts/axiosClient'
 import FacebookLogin from 'react-facebook-login';
@@ -142,34 +141,29 @@ class RegisterPage extends Component {
     return (
       <>
         {create ? (
-          <Paper className={styles.container} elevation={8}>
+          <div className={styles.container}>
             <Helmet>
               <meta charSet="utf-8" />
               <title>Register</title>
             </Helmet>
-            <div className={styles.left}>
-              <Together className="svg-shadow" height="70%" width="70%" />
-            </div>
-            <div className={styles.right}>
+            <div className={styles.formWrapper}>
               <div className={styles.formhead}>
-                <span className={styles.header}>Register</span>
+                <span className={styles.header}>Phoodi</span>
               </div>
               <form
                 className={styles.form}
                 onSubmit={handleSubmit(this.onSubmit)}
               >
                 <Grid container spacing={1}>
-                  <Grid item xs={12} sm={6} className={styles.indent}>
+                  <Grid item xs={12}>
                     <Field
-                      required
                       name="first_name"
                       component={renderTextField}
                       label="First Name"
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12}>
                     <Field
-                      required
                       name="last_name"
                       component={renderTextField}
                       label="Last Name"
@@ -177,7 +171,6 @@ class RegisterPage extends Component {
                   </Grid>
                   <Grid item xs={12}>
                     <Field
-                      required
                       name="email"
                       component={renderTextField}
                       label="Email"
@@ -185,7 +178,6 @@ class RegisterPage extends Component {
                   </Grid>
                   <Grid item xs={12}>
                     <Field
-                      required
                       name="password"
                       type="password"
                       component={renderTextField}
@@ -212,7 +204,7 @@ class RegisterPage extends Component {
                     type="submit"
                     variant="extended"
                     color="primary"
-                    aria-label="login"
+                    aria-label="register"
                     className={this.state.isSubmitting && styles.fabSubmitting}
                     disabled={submitting || invalid || this.state.isSubmitting}
                   >
@@ -252,7 +244,7 @@ class RegisterPage extends Component {
                 </div>
               </div>
             </div>
-          </Paper>
+          </div>
         ) : (
           <Dialog open={this.props.open} onClose={this.props.handleClose}>
             <DialogTitle>Edit Profile</DialogTitle>
@@ -283,9 +275,6 @@ class RegisterPage extends Component {
                       label="Email"
                     />
                   </Grid>
-                  {/* <Grid item xs={12}>
-                                        <Field required name="password" type="password" component={renderTextField} label="Password"/>
-                                    </Grid>  */}
                   <Grid item xs={12}>
                     <div className={styles.avatarlabel}>Avatar</div>
                     <div className={styles.avatar}>

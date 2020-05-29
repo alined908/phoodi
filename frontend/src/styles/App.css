@@ -3,13 +3,13 @@
   --bg-color: white;
   --grey-text: rgba(0, 0, 0, 0.54);
   --border-color-grey: #edf0f6;
-  --border-separator: 1px solid #e3e3e3;
-  --background: rgb(250, 250, 250);
+  --border-separator: 1px solid #eeeeee;
+  --background: radial-gradient(closest-side at 50% 135%, #ffffff 50%, #eceff1 100%);
   --bg-grey: #f0f0f0;
   --light-blue: #e5f0ff;
   --bright-blue: #0099FA;
   --purple: #7E5068;
-  --shadow-0: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-0: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 ::-webkit-scrollbar {
@@ -131,7 +131,7 @@ body {
   justify-content: center;
   height: calc(100% - 64px);
   width: 100%;
-  background-color: var(--background);
+  background: radial-gradient(closest-side at 50% 135%, #ffffff 50%, #eceff1 100%);
 }
 
 .MuiListItem-root:hover {
