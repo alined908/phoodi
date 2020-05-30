@@ -43,6 +43,7 @@ body,
 
 body {
   overflow-x: hidden;
+  font-size: .8rem !important;
 }
 
 .loading {
@@ -254,9 +255,8 @@ body {
 .search {
   display: flex;
   align-items: center;
-  padding: 0.5rem 1rem;
-  height: 60px;
   width: 100%;
+  max-width: 450px;
   min-width: 300px;
   background-color: var(--bg-color);
   justify-content: center;

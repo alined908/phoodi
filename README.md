@@ -97,7 +97,8 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Validation for models
 - [x] Finish writing tests for backend
 - [x] Add social authentication (google, facebook, twitter)
-- [x] Login and Register Form 
+- [x] Login and Register Form
+- [x] Move drawer to top right dropdown menu
 
 ## Todo General
 - [ ] Properly document and refactor codebase
@@ -106,6 +107,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Notification Bar on Top right of navbar
 - [ ] Add Custom Notification Model
 - [ ] Move signals to inside models
+- [ ] Adopt Doordash/Yelp Frontpage
 
 ## Todo Authentication
 - [ ] Use httpOnly cookies for tokens
@@ -140,6 +142,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Update user when email changes
 - [ ] Eliminate user_id from preferences api calls
 - [ ] Find people who have similar food taste near you?
+- [ ] populate local storage with recent searches
 
 ## Todo Later
 - [ ] Social Auth Get Profile Pic and Save to database

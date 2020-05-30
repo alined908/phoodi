@@ -35,7 +35,7 @@ class GoogleOAuthView(APIView):
         id_info = id_token.verify_oauth2_token(token_id, google_requests.Request(), client_id)
 
         if id_info['aud'] != client_id or id_info['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
-            return Response({"error": "Invalid authentication"}, status=404)
+            return Response({"error": "Invalid authentication credentials."}, status=404)
 
         email = id_info['email']
 
