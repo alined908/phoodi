@@ -102,7 +102,7 @@ class HomePage extends Component {
             </div>
           </div>
         </div>
-        <div className="bottom">
+        {!this.props.authenticated && <div className="bottom">
           <div className="bottom-button">
             <Link to="/register">
               <Button
@@ -115,6 +115,7 @@ class HomePage extends Component {
             </Link>
           </div>
         </div>
+        }
       </div>
     );
   }

@@ -32,7 +32,7 @@ class Body extends Component {
     return (
       <div className="c">
         <Switch>
-          <Route path="/" exact component={HomePage} />
+          <Route path="/" exact render={(props) => <HomePage {...props} authenticated={this.props.authenticated}/>} />
           <UnAuthenticatedRoute
             path="/activate/:uid/:token"
             component={EmailActivationPage}
@@ -49,7 +49,7 @@ class Body extends Component {
           <UnAuthenticatedRoute path="/login" component={LoginPage} />
           <UnAuthenticatedRoute
             path="/register"
-            component={(props) => <RegisterPage {...props} type={"create"} />}
+            render={(props) => <RegisterPage {...props} type={"create"} />}
           />
           <AuthenticatedRoute path="/logout" component={LogoutPage} />
           <AuthenticatedRoute path="/meetups/:uri" component={MeetupWrapper} />

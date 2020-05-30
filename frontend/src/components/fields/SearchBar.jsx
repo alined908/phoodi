@@ -24,7 +24,8 @@ class SearchBar extends Component {
             isLoaded: false,
             isOpen: false,
             isLoading: false,
-            results: []
+            results: [],
+            cachedSearches: []
         }
         this.searchDebounced = debounce(this.callSearch, 500);
         this.searchThrottled = throttle(this.callSearch, 500);
@@ -32,7 +33,12 @@ class SearchBar extends Component {
     }
 
     componentDidMount() {
-        this.callSearch()
+        const cachedSearches = localStorage.getItem("searchSuggestionHistory")
+
+        if (cachedSearches !== null) {
+            const results = JSON.parse(cachedSearches).suggestions
+            this.setState({results, cachedSearches: results})
+        }
     }
 
     callSearch = async () => {
@@ -61,13 +67,39 @@ class SearchBar extends Component {
         this.setState({results})
     }
 
+    persistSearchToStorage = (option) => {
+        const cached = localStorage.getItem("searchSuggestionHistory")
+        let suggestions;
+
+        if (cached === null){
+            suggestions = [option]
+        } else {
+            let parsed = JSON.parse(cached)
+            
+            for (let i = 0; i < parsed.suggestions.length; i ++) {
+                if (option._id === parsed.suggestions[i]._id){
+                    parsed.suggestions.splice(i, 1)
+                    break;
+                }
+            }
+
+            suggestions = [option].concat(parsed.suggestions).slice(0, 5)
+        }
+
+        const newCached = {id: this.props.user.id, suggestions}
+        localStorage.setItem('searchSuggestionHistory', JSON.stringify(newCached))
+    }
+
     handleOpen = (isOpen) => {
         this.setState({isOpen})
     }
 
     handleSearch = (e) => {
         this.setState({input: e.target.value}, () => {
-            if (this.state.input.endsWith(" ")) {
+            if (this.state.input.length === 0) {
+                this.setState({results: this.state.cachedSearches})
+            }
+            else if (this.state.input.endsWith(" ")) {
                 return;
             }
             else if (this.state.input.length < 5) {
@@ -88,7 +120,7 @@ class SearchBar extends Component {
             parts = parse(option._source.label, matches);
 
             row = (
-                <Link to={`/categories/${option._source.api_label}`} style={{width: "100%"}}>
+                <Link onClick={() => this.persistSearchToStorage(option)} to={`/categories/${option._source.api_label}`} style={{width: "100%"}}>
                     <div className="search-entry">
                         <ListItemAvatar>
                             <Avatar
@@ -125,7 +157,7 @@ class SearchBar extends Component {
             parts = parse(option._source.name, matches);
 
             row = (
-                <Link to={`/restaurants/${option._source.url}`} style={{width: "100%"}}>
+                <Link onClick={() => this.persistSearchToStorage(option)} to={`/restaurants/${option._source.url}`} style={{width: "100%"}}>
                     <div className="search-entry">
                         <ListItemAvatar>
                             <Avatar style={{ width: 30, height: 30}} variant="square" src={option._source.yelp_image}>
@@ -187,7 +219,9 @@ class SearchBar extends Component {
     }
 
     render () {
+        console.log(this.state.results)
         return (
+            
             <Autocomplete
                 debug
                 size="small"

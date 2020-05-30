@@ -309,7 +309,7 @@ const Navigation = props => {
         
     */}
       <main className={`${styles.content} ${isHomePage ? styles.contentHome : ""}`}>
-        <Body />
+        <Body authenticated={authenticated}/>
       </main>
   </div>
   )
