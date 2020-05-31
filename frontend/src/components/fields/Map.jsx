@@ -18,7 +18,7 @@ class Map extends Component {
       viewport: {
         latitude: this.props.location.latitude,
         longitude: this.props.location.longitude,
-        zoom: 14.75,
+        zoom: this.props.zoom ? this.props.zoom : 14.75,
         bearing: 0,
         pitch: 0,
       },

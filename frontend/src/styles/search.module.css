@@ -1,0 +1,265 @@
+.searchPage {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.chip {
+    display: flex;
+    padding: 3px 8px;
+    font-size: 0.6rem;
+    border-radius: 4px;
+    text-transform: capitalize;
+    margin: 0.25rem 0.15rem;
+    background-color: var(--light-blue);
+    border: 1px solid #eeeeef;
+    white-space:nowrap;
+    max-width: 180px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    align-items: center;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.chip > div {
+    width: 15px;
+    height: 15px;
+}
+
+/* Filters */
+.searchConfig {
+    flex: 1;
+    height: 100%;
+    padding: 1.5rem 1rem 1.5rem 2rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.filterTracker {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+
+.filter {
+    border-top: var(--border-separator);
+    padding: .8rem 0;
+}
+
+
+.filterTitle {
+    display: flex;
+    align-items: center;
+    font-size: .9rem;
+    font-family: "Open Sans", sans-serif;
+    padding-bottom: .8rem;
+}
+
+.priceFilter {
+    display: flex;
+}
+
+/* Results */
+
+.resultsWrapper {
+    overflow-y: auto;
+    flex: 3;
+    height: 100%;
+    padding-right: 2rem;
+    padding-left: 1rem;
+}
+
+.resultsWrapper::-webkit-scrollbar{
+    display: none;
+}
+
+.resultsTop{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+    font-family: "Roboto", sans-serif;
+}
+
+.resultsName {
+    font-size: 1.4rem;
+    font-family: "Roboto";
+    font-weight: 600;
+}
+
+.resultsSortWrapper {
+    display: flex;
+    color: var(--grey-text);
+    font-weight: 500;
+    font-family: "Roboto", sans-serif;
+    font-size: .75rem;
+}
+
+.resultsSort {
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+    font-weight: 700;
+    color: black;
+}
+
+.resultsSort:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.cardWrapper {
+    display: flex;
+    width: 100%;
+    border: var(--border-separator);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: all .3s ease;
+    font-family: 'Open Sans', sans-serif;
+    min-width: 600px;
+    color: var(--grey-text);
+    font-weight: 500;
+}
+
+.cardWrapper:hover{
+    box-shadow:0 0 15px rgba(0,0,0,.1);
+    border: 1px solid transparent;
+    cursor:pointer
+}
+
+.rst {
+    width: 160px;
+    height: 160px;
+}
+
+.rstImg {
+    height: 100%;
+    border-radius: 4px;
+    width: 100%;
+    background-size: cover;
+    background-position: 50%;
+}
+
+.rstCardTop{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding-left: 1.25rem;
+    justify-content: space-between;
+}
+
+.rstTop{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.rstName{
+    display: flex;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 26px;
+    color: black;
+    font-family: "Roboto", sans-serif;
+}
+
+.rstName:hover{
+    text-decoration: underline;
+}
+
+.rstRating {
+    display: flex;
+    font-size: .75rem;
+    align-items: center;
+}
+
+.rstImportant{
+    display: flex;
+    font-size: 1.2rem;
+    flex-direction: column;
+}
+
+.rstCardBottom {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.rstStats {
+    display: flex;
+    align-items: flex-end;
+    margin-top: .5rem;
+}
+
+.rstStat {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+}
+
+.rstInfo{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: .7rem;
+}
+
+.rstCategories{
+    display: flex;
+    margin-top: 1rem; 
+    align-items: center;
+}
+
+.rstCategory {
+    display: flex;
+    align-items: center;
+    color: black;
+    font-weight: 600;
+}
+
+/* Preset */
+.preset {
+    width: 100%;
+    font-size: .75rem;
+  }
+  
+  .presetCategory {
+    display: flex;
+    align-items: center;
+    background: white;
+    height: calc(2rem + 5px);
+    margin: 0.5rem 0;
+    padding: 0 .5rem;
+    cursor: pointer;
+    border: var(--border-separator);
+  }
+  
+  .presetCategory:first-child{
+      margin-top: 0;
+  }
+  
+  .presetCategory:hover{
+      background: var(--light-blue);
+      box-shadow: var(--shadow-0);
+  }
+  
+  .active {
+    background: var(--light-blue);
+    border-radius: 4px;
+  }
+  
+  .presetCategory img {
+    width: auto;
+    height: 18px;
+  }
+
+/* Map */
+.searchMap {
+    box-shadow: var(--shadow-0);
+    flex: 2.5;
+    height: 100%;
+}

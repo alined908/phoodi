@@ -123,11 +123,10 @@ class MeetupEventForm extends Component {
 
   onSubmit = async (formProps) => {
     this.setState({ isSubmitting: true });
-    const indices = this.state.prices.reduce(
+    const prices = this.state.prices.reduce(
       (out, bool, index) => (bool ? out.concat(index + 1) : out),
       []
     );
-    const prices = indices.join(", ");
     const meetup = this.props.meetup;
 
     if (this.props.type === "create") {

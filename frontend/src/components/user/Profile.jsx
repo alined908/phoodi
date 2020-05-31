@@ -244,7 +244,7 @@ class Profile extends Component {
                 {this.state.user.last_name.charAt(0)}
               </Avatar>
               <div className={styles.activityinfo}>
-                  {this.formatActivity(activity)}
+                  {/* {this.formatActivity(activity)} */}
               </div>
               <div className={styles.activitydate}>
                 {moment(activity.timestamp).fromNow()}

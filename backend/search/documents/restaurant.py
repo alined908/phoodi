@@ -9,20 +9,21 @@ class RestaurantDocument(Document):
     id = fields.IntegerField(attr='id')
     name = fields.TextField(analyzer=autocomplete, attr='name')
     yelp_image = fields.TextField(attr="yelp_image")
+    yelp_url = fields.TextField(attr="yelp_url")
     url = fields.TextField(attr="url")
     rating = fields.FloatField(attr="rating")
-    price = fields.TextField(attr="price")
+    price = fields.IntegerField(attr="price")
     address = fields.TextField(attr="location")
     location = fields.GeoPointField(attr="location_indexing")
-    categories = fields.TextField(
+    categories = fields.NestedField(
         attr="categories_indexing",
-        analyzer=autocomplete,
-        fields={
-            'raw': fields.TextField(analyzer="keyword", multi=True),
-            'suggest': fields.CompletionField(multi=True)
+        properties={
+            'label': fields.TextField(analyzer="keyword"),
         },
         multi=True
     )
+    reviews = fields.IntegerField(attr='review_count')
+    options = fields.IntegerField(attr='option_count')
 
     class Django:
         model = Restaurant

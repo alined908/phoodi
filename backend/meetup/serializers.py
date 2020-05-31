@@ -218,10 +218,14 @@ class RestaurantCategorySerializer(serializers.ModelSerializer):
 
 class RestaurantSerializer(serializers.ModelSerializer):
     categories = serializers.SerializerMethodField("_get_categories")
+    hours = serializers.SerializerMethodField("_get_hours")
 
     def _get_categories(self, obj):
         serializer = RestaurantCategorySerializer(obj.r_categories, many=True)
         return serializer.data
+
+    def _get_hours(self, obj):
+        return {}
 
     class Meta:
         model = Restaurant

@@ -65,7 +65,6 @@ import PasswordChange from "./user/PasswordChange";
 import EmailChange from "./user/EmailChange";
 
 //Category
-import Categories from "./category/Categories";
 import Category from "./category/Category";
 import Preferences from "./category/Preferences";
 import Preference from "./category/Preference";
@@ -73,7 +72,6 @@ import Preference from "./category/Preference";
 //Restaurant
 import Restaurant from "./restaurant/Restaurant";
 import RestaurantCard from "./restaurant/RestaurantCard"
-import Restaurants from "./restaurant/Restaurants"
 import RestaurantPreview from "./restaurant/RestaurantPreview";
 import RestaurantThread from "./restaurant/RestaurantThread";
 import RestaurantReviewForm from "./restaurant/RestaurantReviewForm";
@@ -81,6 +79,9 @@ import RestaurantReview from "./restaurant/RestaurantReview";
 import CommentForm from "./restaurant/CommentForm";
 import Comments from "./restaurant/Comments";
 import Comment from "./restaurant/Comment";
+
+//Search
+import SearchPage from './search/SearchPage'
 
 export {
   ErrorPage,
@@ -120,13 +121,11 @@ export {
   renderDatePicker,
   renderDateSimplePicker,
   Map,
-  Categories,
   Category,
   Preferences,
   Preference,
   Restaurant,
   RestaurantCard,
-  Restaurants,
   RestaurantPreview,
   RestaurantThread,
   RestaurantReviewForm,
@@ -149,4 +148,5 @@ export {
   NotificationWrapper,
   Calendar,
   ProgressIcon,
+  SearchPage
 };

@@ -90,8 +90,8 @@ class MeetupEvent extends Component {
   };
 
   handlePriceChips = (prices) => {
-    var priceList = prices.replace(/\s/g, "").split(",");
-    for (var i = 0; i < priceList.length; i++) {
+    var priceList = prices;
+    for (var i = 0; i < prices.length; i++) {
       priceList[i] = "$".repeat(parseInt(priceList[i]));
     }
     return priceList;

@@ -118,7 +118,7 @@ const Navigation = props => {
           )}
           {authenticated && (
             <div ref={anchorRef} className={styles.dropDownControl} onClick={handleToggle}>
-              <Avatar src={user.avatar} >
+              <Avatar src={user.avatar} style={{cursor:"pointer"}}>
                 {user.first_name.charAt(0)}
                 {user.last_name.charAt(0)}
               </Avatar>
@@ -275,39 +275,6 @@ const Navigation = props => {
           )}
         </div>
       </div>
-
-    {/* 
-      <Link to="/restaurants" onClick={handleDrawerClose}>
-        <ListItem
-          button
-          key="Restaurants"
-        >
-          <ListItemIcon>
-            <RestaurantIcon className={classes.icon} />
-          </ListItemIcon>
-          <ListItemText
-            classes={{ primary: classes.drawerText }}
-            primary="Restaurants"
-          />
-        </ListItem>
-      </Link>
-
-      <Link to="/categories" onClick={handleDrawerClose}>
-        <ListItem
-          button
-          key="Categories"
-        >
-          <ListItemIcon>
-            <CategoryIcon className={classes.icon} />
-          </ListItemIcon>
-          <ListItemText
-            classes={{ primary: classes.drawerText }}
-            primary="Categories"
-          />
-        </ListItem>
-      </Link>
-        
-    */}
       <main className={`${styles.content} ${isHomePage ? styles.contentHome : ""}`}>
         <Body authenticated={authenticated}/>
       </main>

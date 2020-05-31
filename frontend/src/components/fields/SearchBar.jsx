@@ -6,6 +6,7 @@ import {
     ListItemAvatar,
     ListItemText,
   } from "@material-ui/core";
+import {Location} from '../components'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {axiosClient} from '../../accounts/axiosClient'
@@ -14,6 +15,8 @@ import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 import throttle from "lodash/throttle";
 import debounce from "lodash/debounce";
+import Geocode from "react-geocode";
+import SearchIcon from '@material-ui/icons/Search';
 
 class SearchBar extends Component {
 
@@ -25,7 +28,10 @@ class SearchBar extends Component {
             isOpen: false,
             isLoading: false,
             results: [],
-            cachedSearches: []
+            cachedSearches: [],
+            location: "",
+            longitude: null,
+            latitude: null
         }
         this.searchDebounced = debounce(this.callSearch, 500);
         this.searchThrottled = throttle(this.callSearch, 500);
@@ -33,6 +39,7 @@ class SearchBar extends Component {
     }
 
     componentDidMount() {
+        Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_API_KEY}`);
         const cachedSearches = localStorage.getItem("searchSuggestionHistory")
 
         if (cachedSearches !== null) {
@@ -109,6 +116,29 @@ class SearchBar extends Component {
             }            
         })
     }
+
+    handleClick = (e, value) => {
+        let location;
+        if (value === null) {
+          location = "";
+        } else {
+          location = value.description;
+          Geocode.fromAddress(location).then(
+            (response) => {
+              const geolocation = response.results[0].geometry.location;
+              console.log(geolocation)
+              this.setState({
+                longitude: geolocation.lng,
+                latitude: geolocation.lat,
+              });
+            },
+            (error) => {
+              console.error(error);
+            }
+          );
+        }
+        this.setState({ location });
+      };
 
     handleRender = (option) => {
         let row;
@@ -219,48 +249,62 @@ class SearchBar extends Component {
     }
 
     render () {
-        console.log(this.state.results)
+        
+        const searchLink = `/search?q=${this.state.input}&latitude=${this.state.latitude}&longitude=${this.state.longitude}`
+
         return (
-            
-            <Autocomplete
-                debug
-                size="small"
-                style={{flex: 1, boxShadow: "none"}}
-                getOptionLabel={(option) =>
-                    this.handleLabel(option)
-                }
-                filterOptions={(x) => x}
-                loading={this.state.isLoading}
-                open={this.state.isOpen}
-                onOpen={() => this.handleOpen(true)}
-                onClose={() => this.handleOpen(false)}
-                options={this.state.results}
-                loading={this.state.isLoading}
-                renderOption={(option, { inputValue }) => 
-                    this.handleRender(option)
-                }
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        label="Search restaurants, categories, ..."
-                        variant="filled"
-                        onChange={this.handleSearch}
-                        InputProps={{
-                            ...params.InputProps,
-                            disableUnderline: true,
-                            style: {background: "white", fontSize: ".8rem"},
-                            endAdornment: (
-                            <>
-                                {this.state.isLoading ? (
-                                <CircularProgress color="inherit" size={20} />
-                                ) : null}
-                                {params.InputProps.endAdornment}
-                            </>
-                            ),
-                        }}
-                    />
-                )}
-            />
+            <>
+                <Autocomplete
+                    freeSolo
+                    size="small"
+                    style={{flex: 1, boxShadow: "none"}}
+                    getOptionLabel={(option) =>
+                        this.handleLabel(option)
+                    }
+                    filterOptions={(x) => x}
+                    loading={this.state.isLoading}
+                    open={this.state.isOpen}
+                    onOpen={() => this.handleOpen(true)}
+                    onClose={() => this.handleOpen(false)}
+                    options={this.state.results}
+                    loading={this.state.isLoading}
+                    renderOption={(option, { inputValue }) => 
+                        this.handleRender(option)
+                    }
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="Search restaurants, categories, ..."
+                            variant="filled"
+                            onChange={this.handleSearch}
+                            InputProps={{
+                                ...params.InputProps,
+                                disableUnderline: true,
+                                style: {background: "white", fontSize: ".8rem"},
+                                endAdornment: (
+                                <>
+                                    {this.state.isLoading ? (
+                                    <CircularProgress color="inherit" size={20} />
+                                    ) : null}
+                                    {params.InputProps.endAdornment}
+                                </>
+                                ),
+                            }}
+                        />
+                    )}
+                />
+                <Location
+                    required={false}
+                    label="Location"
+                    handleClick={this.handleClick}
+                    textValue={this.state.location}
+                />
+                <Link to={searchLink}>
+                    <div className="search-button">
+                        <SearchIcon />
+                    </div>
+                </Link>
+            </>
         )
     }
 }

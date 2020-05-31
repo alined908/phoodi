@@ -220,7 +220,7 @@ class MeetupEvent(models.Model):
         identifier = option["id"]
         try:
             restaurant = Restaurant.objects.get(identifier=identifier)
-        except ObjectDoesNotExist:
+        except Restaurant.DoesNotExist:
             info = {
                 "identifier": identifier,
                 "name": option["name"],
@@ -241,7 +241,7 @@ class MeetupEvent(models.Model):
             }
 
             restaurant = Restaurant.objects.create(**info)
-
+            
             for category in option["categories"]:
                 try:
                     category = Category.objects.get(api_label=category["alias"])

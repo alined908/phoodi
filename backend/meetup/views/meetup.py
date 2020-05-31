@@ -132,33 +132,30 @@ class MeetupEventsListView(APIView):
         uri = kwargs["uri"]
         meetup = get_object_or_404(Meetup, uri=uri)
         creator = get_object_or_404(MeetupMember, meetup=meetup, user=user)
-
-        try:
-            start, end, title = (
-                request.data["start"],
-                request.data["end"],
-                request.data["title"],
-            )
-            distance, price, entries, random = (
-                request.data["distance"],
-                request.data["price"],
-                request.data["entries"],
-                request.data["random"],
-            )
-            event = MeetupEvent.objects.create(
-                creator=creator,
-                meetup=meetup,
-                start=start,
-                end=end,
-                title=title,
-                entries=entries,
-                distance=distance,
-                price=price,
-                random=random,
-            )
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
+        
+        start, end, title = (
+            request.data["start"],
+            request.data["end"],
+            request.data["title"],
+        )
+        distance, price, entries, random = (
+            request.data["distance"],
+            request.data["price"],
+            request.data["entries"],
+            request.data["random"],
+        )
+        event = MeetupEvent.objects.create(
+            creator=creator,
+            meetup=meetup,
+            start=start,
+            end=end,
+            title=title,
+            entries=entries,
+            distance=distance,
+            price=price,
+            random=random,
+        )
+        
         serializer = MeetupEventSerializer(event)
 
         return Response({"meetup": uri, "event": {event.id: serializer.data}})

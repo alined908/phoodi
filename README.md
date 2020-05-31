@@ -99,17 +99,16 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Add social authentication (google, facebook, twitter)
 - [x] Login and Register Form
 - [x] Move drawer to top right dropdown menu
-- [x] Redesign home page
+- [x] Adopt Doordash/Yelp Frontpage
 - [x] Populate local storage with recent searches
+- [x] Add location search bar to food search
 
 ## Todo General
 - [ ] Properly document and refactor codebase
-- [ ] Set up celery for asynchronous job processing (convert signals to create task for celery)
-- [ ] Learn more about web application security (XSS, CSRF, SQL injection, MITM)
 - [ ] Notification Bar on Top right of navbar
 - [ ] Add Custom Notification Model
-- [ ] Move signals to inside models
-- [ ] Adopt Doordash/Yelp Frontpage
+- [ ] Move signals to inside models or Set up celery for asynchronous job processing (convert signals to create task for celery)
+- [ ] Handle Restaurant Hours logic
 
 ## Todo Authentication
 - [ ] Use httpOnly cookies for tokens
@@ -120,21 +119,12 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Notifications
 - [ ] Search
 
-## Todo Chat
-- [ ] Edit chat messages
-- [ ] Upload picture
-- [ ] Send invite through chat
-- [ ] Who's online in chat room
-- [ ] Detect if user is typing
-
 ## Todo Features
 - [ ] Redesign reviews thread layout
 - [ ] Filter reviews by new/top/(top weighted by new) 
 - [ ] Add calendar of meetups
-- [ ] User Reputation system
 - [ ] Complete admin functionality for meetup member
 - [ ] Add capacity to meetup
-- [ ] Review Score for food and service and possible secondary factors (interior, location, etc)
 - [ ] User's top restaurants list (by city?, map with markers and fly functionality)
 
 ## Todo UI
@@ -143,11 +133,22 @@ python manage.py loaddata meetup/fixtures/*.json
 ## Todo Other
 - [ ] Update user when email changes
 - [ ] Eliminate user_id from preferences api calls
-- [ ] Find people who have similar food taste near you?
+
+-------------------------------------------------------
 
 ## Todo Later
+- [ ] Review Score for food and service and possible secondary factors (interior, location, etc)
 - [ ] Social Auth Get Profile Pic and Save to database
 - [ ] Finish writing tests for frontend
 - [ ] Finish writing tests for consumers
 - [ ] Set up locust load test
 - [ ] Set up caching system/Optimize (redis)
+- [ ] Learn more about web application security (XSS, CSRF, SQL injection, MITM)
+- [ ] User Reputation system
+
+## Todo Later (Chat)
+- [ ] Edit chat messages
+- [ ] Upload picture
+- [ ] Send invite through chat
+- [ ] Who's online in chat room
+- [ ] Detect if user is typing

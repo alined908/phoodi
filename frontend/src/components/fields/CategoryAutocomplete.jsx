@@ -64,14 +64,16 @@ const CategoryAutocomplete = (props) => {
       onClose={() => {
         setOpen(false);
       }}
-      getOptionSelected={(option, value) =>
-        option.api_label === value.api_label
+      getOptionSelected={(option, value) => 
+        option.api_label === value.api_label || option.label === value
       }
-      getOptionLabel={(option) => option.label}
+      getOptionLabel={(option) => option.label ? option.label : option}
       onChange={props.handleClick}
       options={options}
       loading={loading}
       renderOption={(option, { inputValue }) => {
+        console.log(option)
+        console.log(inputValue)
         const matches = match(option.label, inputValue);
         const parts = parse(option.label, matches);
 

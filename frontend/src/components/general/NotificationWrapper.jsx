@@ -23,8 +23,8 @@ class NotificationWrapper extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log(this.props.authenticated)
-    console.log(prevProps.authenticated)
+    // console.log(this.props.authenticated)
+    // console.log(prevProps.authenticated)
     if ( this.props.authenticated !== prevProps.authenticated) {
      
       // Connecting through login/signup

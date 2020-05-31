@@ -2,6 +2,7 @@ from django.db import models
 from .category import Category
 from ..helpers import nearby_public_entities
 from django.db.models.expressions import RawSQL
+from django.contrib.postgres.fields import JSONField
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models import Q
 from django.utils.text import slugify
@@ -72,6 +73,20 @@ class Restaurant(models.Model):
         return "%s/%s" % (self.id, self.url)
 
     @property
+    def hours(self):
+        hours = self.hours().all()
+        output = {}
+
+        for entry in hours:
+            day = RestaurantHours.DESERIALIZED_DAY_CHOICES[entry.day]
+            output[day] = {
+                'start': entry.open_time,
+                'end': entry.close_time
+            }
+
+        return output
+
+    @property
     def location_indexing(self):
         return {
             "lat": self.latitude,
@@ -80,30 +95,45 @@ class Restaurant(models.Model):
 
     @property
     def categories_indexing(self):
-        categories = [r_category.category.label for r_category in self.r_categories.all()]
-        return categories
+        from meetup.serializers import CategorySerializer
+        rst_categories = self.r_categories.all().values_list('category_id', flat=True)
+        categories = Category.objects.filter(id__in=rst_categories)
+        serializer = CategorySerializer(categories, many=True)
+        return serializer.data
 
-    @staticmethod
-    def get_nearby(coords, request, categories, num_results=16):
-        
-        distance_query, category_ids = nearby_public_entities(coords, request, categories, num_results, 'restaurant')
 
-        if not category_ids:
-            restaurants = Restaurant.objects.filter(id__in=distance_query).order_by("-rating")
-        else:
-            restaurants = Restaurant.objects.filter(
-                Q(
-                    id__in=RawSQL(
-                        "SELECT DISTINCT category.restaurant_id \
-                        FROM meetup_restaurantcategory as category \
-                        WHERE category_id = ANY(%s)",
-                        (category_ids,),
-                    )
-                )
-                & Q(id__in=distance_query)
-            ).order_by("-rating")
-  
-        return restaurants
+class RestaurantHours(models.Model):
+
+    DAY_CHOICES = [
+        (1, "Monday"),
+        (2, "Tuesday"),
+        (3, "Wednesday"),
+        (4, "Thursday"),
+        (5, "Friday"),
+        (6, "Saturday"),
+        (7, "Sunday")
+    ]
+
+    SERIALIZED_DAY_CHOICES = {
+        'Monday': 1,
+        'Tuesday': 2,
+        'Wednesday': 3,
+        'Thursday': 4,
+        'Friday': 5,
+        'Saturday': 6,
+        'Sunday': 7
+    }
+
+    DESERIALIZED_DAY_CHOICES = {
+        v:k for k,v in SERIALIZED_DAY_CHOICES.items()
+    }
+
+    restaurant = models.ForeignKey(
+        Restaurant, related_name='hours', on_delete=models.CASCADE
+    )
+    day = models.IntegerField(choices=DAY_CHOICES)
+    open_time = models.TimeField()
+    close_time = models.TimeField()
 
 class RestaurantCategory(models.Model):
     restaurant = models.ForeignKey(

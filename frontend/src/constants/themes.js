@@ -39,11 +39,6 @@ export const MuiTheme = {
           padding: "4px 8px"
         },
       },
-      MuiAutocomplete: {
-          root: {
-              boxShadow:"var(--shadow-0)"
-          }
-      },
       MuiFab : {
           root: {
               background: "rgba(10,10,10, .95)",

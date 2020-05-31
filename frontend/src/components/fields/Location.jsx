@@ -6,14 +6,6 @@ import parse from "autosuggest-highlight/parse";
 import throttle from "lodash/throttle";
 import PropTypes from "prop-types";
 
-const customFont = { fontSize: 14, fontFamily: "Lato", fontWeight: "600" };
-const customFontSmall = {
-  fontSize: 11,
-  fontFamily: "Lato",
-  fontWeight: "600",
-  height: 15,
-};
-
 function loadScript(src, position, id) {
   if (!position) {
     return;
@@ -34,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   autocomplete: {
-    boxShadow: "none"
+    boxShadow: "none",
+    flex: 1
   }
 }));
 
@@ -96,6 +89,7 @@ export default function Location(props) {
 
   return (
     <Autocomplete
+      size="small"
       className={classes.autocomplete}
       getOptionLabel={(option) =>
         typeof option === "string" ? option : option.description
@@ -114,10 +108,13 @@ export default function Location(props) {
             required={props.required || false}
             error={props.textValue && props.textValue.length === 0}
             label={props.label}
+            variant="filled"
             fullWidth
-            inputProps={{ ...params.inputProps, style: customFont }}
-            InputLabelProps={{ style: customFont }}
-            FormHelperTextProps={{ style: customFontSmall }}
+            InputProps={{
+              ...params.InputProps,
+              disableUnderline: true,
+              style: {background: "white", fontSize: ".8rem"},
+            }}
             onChange={handleChange}
             helperText={
               props.textValue && props.textValue.length === 0
