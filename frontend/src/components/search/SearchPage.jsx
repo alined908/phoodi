@@ -4,7 +4,7 @@ import styles from '../../styles/search.module.css'
 import {Button, ButtonGroup, Slider, Avatar, Checkbox, FormControlLabel, Menu, MenuItem} from '@material-ui/core'
 import {Map, RestaurantCard, CategoryAutocomplete, Rating} from '../components'
 import {ExpandMore as ExpandMoreIcon} from '@material-ui/icons'
-import {Pagination} from '@material-ui/lab'
+import {Pagination, Skeleton} from '@material-ui/lab'
 import Geocode from "react-geocode";
 import {connect} from 'react-redux'
 import { getPreferences } from "../../actions";
@@ -15,7 +15,17 @@ const marks = [
     { value: 15 },
     { value: 20 },
     { value: 25 },
-  ];
+];
+
+const defaultFilters = {
+    prices: [false, false, false, false],
+    categories: [],
+    radius: 25,
+    rating: null,
+    openNow: false,
+    sort: 'rating',
+    start: 0
+}
 
 const priceLabel = ["< $10", "$11 - $30", "$31 - $60", "> $60"];
 
@@ -119,14 +129,50 @@ class Prices extends Component {
     }
 }
 
-const defaultFilters = {
-    prices: [false, false, false, false],
-    categories: [],
-    radius: 25,
-    rating: null,
-    openNow: false,
-    sort: 'rating',
-    start: 0
+class SkeletonRestaurant extends Component {
+    render() {
+        return (
+            <div className={styles.skeletonRestaurant}>
+                <div className={styles.skeletonImage}>
+                    <Skeleton animation="wave" variant="rect" height='100%'/>
+                </div>
+                <div className={styles.skeletonSide}>
+                    <div className={styles.skeletonTop}>
+                        <div className={styles.skeletonInfo}>
+                            <div className={styles.skeletonName}>
+                                <Skeleton animation="wave" variant="rect" height='100%'/>
+                            </div>
+                            <div className={styles.skeletonRating}>
+                                <Skeleton animation="wave" variant="rect" height='100%'/>
+                            </div>
+                        </div>
+                        <div className={styles.skeletonContact}>
+                            <div className={styles.skeletonPhone}>
+                                <Skeleton animation="wave" variant="rect" height='100%'/>
+                            </div>
+                            <div className={styles.skeletonAddress}>
+                                <Skeleton animation="wave" variant="rect" height='100%'/>
+                            </div>
+                            <div className={styles.skeletonCity}>
+                                <Skeleton animation="wave" variant="rect" height='100%'/>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={styles.skeletonMiddle}>
+                        <Skeleton animation="wave" variant="rect" height='100%'/>
+                    </div>
+                    <div className={styles.skeletonBottom}>
+                        <div className={styles.skeletonCategories}>
+                            <Skeleton animation="wave" variant="rect" height='100%'/>
+                        </div>
+                        <div className={styles.skeletonStats}>
+                            <Skeleton animation="wave" variant="rect" height='100%'/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 }
 
 class SearchPage extends Component {
@@ -153,6 +199,7 @@ class SearchPage extends Component {
                 sort: this.params.sort ? this.params.sort : "rating",
                 start: this.params.start ? parseInt(this.params.start) : 0
             },
+            loading: true,
             anchorEl: null,
             isMobile: window.matchMedia("(max-width: 768px)").matches,
             mobileTabIndex: 0
@@ -211,6 +258,7 @@ class SearchPage extends Component {
     }
 
     callSearch = async () => {
+        this.setState({loading: true})
         const urlParams = new URLSearchParams(this.props.location.search)
         const params = Object.fromEntries(urlParams)
         console.log(params)
@@ -225,6 +273,7 @@ class SearchPage extends Component {
             totalCount: response.data.count,
             results: response.data.hits
         })
+        setTimeout(() => this.setState({loading: false}), 300)
     }
 
     handleFilterChange = async () => {
@@ -366,7 +415,7 @@ class SearchPage extends Component {
                         }
                         {params.hasOwnProperty('prices') &&
                             <span className={styles.chip}>
-                                {this.state.filters.prices} 
+                                {generatePriceLabel(this.state.filters.prices)}
                             </span>
                         }
                         {this.state.filters.categories.map((category) => 
@@ -526,7 +575,9 @@ class SearchPage extends Component {
                     </div>
                     <div className={styles.results}>
                         {this.state.results.map((result, index) => 
-                            <RestaurantCard data={result._source} index={index + this.state.filters.start}/>
+                            this.state.loading ? 
+                                <SkeletonRestaurant/> :
+                                <RestaurantCard data={result._source} index={index + this.state.filters.start}/> 
                         )}
                         <div className={styles.resultsPagination}>
                             <Pagination 
@@ -547,7 +598,7 @@ class SearchPage extends Component {
                     <Map 
                         indexOffset={this.state.filters.start}
                         markers={this.state.results}
-                        zoom={11}
+                        zoom={10.5}
                         location={location}
                         radius={this.state.filters.radius}
                     />

@@ -20,7 +20,7 @@
     white-space: nowrap;
     align-items: center;
     text-align: center;
-    margin-left: 10px;
+    margin-left: 5px;
 }
 
 .chip > div, .chip img {
@@ -241,6 +241,89 @@
     font-weight: 600;
 }
 
+/* Skeleton  Restaurant*/
+.skeletonRestaurant {
+    display: flex;
+    width: 100%;
+    min-width: 600px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    border: var(--border-separator);
+}
+
+.skeletonImage{
+    width: 160px;
+    height: 160px;
+}
+
+.skeletonSide {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1;
+    padding-left: 1.25rem;
+    justify-content: space-between;
+}
+
+.skeletonTop{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.skeletonName{
+    height: 20px;
+    width: 200px;
+    margin-bottom: .25rem;
+}
+
+.skeletonRating {
+    width: 100px;
+    height: 15px;
+}
+
+.skeletonContact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.skeletonPhone{
+    width: 80px;
+    height: 10px;
+    margin-bottom: .2rem;
+}
+
+.skeletonAddress {
+    width: 70px;
+    height: 10px;
+    margin-bottom: .2rem;
+}
+
+.skeletonCity  {
+    width: 60px;
+    height: 10px;
+}
+
+.skeletonMiddle {
+    height: 40px;
+}
+
+.skeletonBottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.skeletonCategories{
+    width: 150px;
+    height: 20px;
+}
+
+.skeletonStats {
+    width: 100px;
+    height: 20px;
+}
+
 /* Preset */
 .preset {
     width: 100%;
@@ -280,7 +363,6 @@
 /* Map */
 .marker{
     width:0; height:0;
-    position: absolute;
 }
 
 .position{
@@ -311,9 +393,9 @@
 
 .text {
     transform: rotateZ(135deg);
-    filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7));
     font-size: .7rem;
     color: white;
+    filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7));
 }
 
 .searchMap {

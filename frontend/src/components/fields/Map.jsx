@@ -5,12 +5,12 @@ import ReactMapGL, {
   Popup,
   Source,
   Layer,
-  GeolocateControl
-  // FlyToInterpolator,
+  GeolocateControl,
+  FlyToInterpolator
 } from "react-map-gl";
 import {Avatar} from '@material-ui/core'
-import LocationOnIcon from "@material-ui/icons/LocationOn";
-// import * as d3 from 'd3-ease'
+import {Link} from 'react-router-dom'
+import * as d3 from 'd3-ease'
 import PropTypes from "prop-types";
 import {Rating} from '../components'
 import styles from '../../styles/search.module.css'
@@ -25,6 +25,13 @@ const geolocateStyle = {
   margin: 10
 };
 
+const radiusToZoom = {
+  5: 11.3,
+  10: 10.3,
+  15: 9.8,
+  20: 9.4,
+  25: 8.85
+}
 
 const geojson = (center, radius) => {
   let options ={
@@ -62,9 +69,11 @@ class RestaurantPin extends Component {
           className={styles.marker}
           offsetLeft={-20}
         >
-          <span className={styles.position}>
-            <span className={styles.text}>{number + 1}</span>
-          </span>
+          <Link to={`/restaurants/${restaurant.url}`}>
+            <span className={styles.position}>
+              <span className={styles.text}>{number + 1}</span>
+            </span>
+          </Link>
         </Marker>
         {this.state.hover &&
           <Popup 
@@ -150,9 +159,12 @@ class Map extends Component {
       viewport: {
         latitude: this.props.location.latitude,
         longitude: this.props.location.longitude,
-        zoom: this.props.zoom ? this.props.zoom : 14.75,
+        zoom: this.props.zoom ? this.props.zoom : 11,
         bearing: 0,
         pitch: 0,
+        transitionDuration: 3000,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: d3.easeSin
       },
       circle: geojson([props.location.longitude, props.location.latitude], this.props.radius)
     };
@@ -164,22 +176,27 @@ class Map extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.radius !== this.props.radius){
-      this.setState({circle: geojson([this.props.location.longitude, this.props.location.latitude], this.props.radius)})
+      const viewport = {
+          ...this.state.viewport,
+          zoom: radiusToZoom[this.props.radius],
+      }
+
+      this.setState({
+        circle: geojson([this.props.location.longitude, this.props.location.latitude], this.props.radius),
+        viewport: viewport
+      })
     }
   }
 
-  // onLoad = () => {
-  //     const viewport = {
-  //         ...this.state.viewport,
-  //         zoom: 15,
-  //         transitionDuration: 3000,
-  //         transitionInterpolator: new FlyToInterpolator(),
-  //         transitionEasing: d3.easeSin
-  //     }
-  //     if (this._isMounted){
-  //       this.setState({viewport})
-  //     }
-  // }
+  onLoad = () => {
+      const viewport = {
+          ...this.state.viewport,
+          zoom: radiusToZoom[this.props.radius]
+      }
+      if (this._isMounted){
+        this.setState({viewport})
+      }
+  }
 
   componentWillUnmount() {
     this._isMounted = false;
@@ -198,7 +215,7 @@ class Map extends Component {
         height="100%"
         mapStyle="mapbox://styles/mapbox/streets-v11"
         onViewportChange={this._updateViewport}
-        // onLoad={this.props.notLoad ? undefined : this.onLoad }
+        onLoad={ this.onLoad }
         mapboxApiAccessToken={token}
       >
         <Source type='geojson' data={this.state.circle}>
@@ -226,7 +243,9 @@ class Map extends Component {
           longitude={this.props.location.longitude}
         />
         <div style={{ position: "absolute", right: 10, top: 10 }}>
-          <NavigationControl showCompass={false} />
+          <NavigationControl 
+            showCompass={false} 
+          />
         </div>
       </ReactMapGL>
     );

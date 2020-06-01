@@ -50,18 +50,18 @@ class RestaurantCard extends Component {
                             <div className={styles.rstCategories}>
                                 {convertPriceToChips(data.price)} &#8226;
                                 {data.categories.map((rc) => (
-                                <div key={rc.id} className={`${styles.rstCategory} blockActionChip`}>
-                                    <Avatar
-                                        variant="square"
-                                        src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${rc.api_label}.png`}
-                                    >
-                                    <img
-                                        alt={"&#9787;"}
-                                        src={`${process.env.REACT_APP_S3_STATIC_URL}/static/general/panda.png`}
-                                    />
-                                    </Avatar>
-                                    {rc.label}
-                                </div>
+                                    <div key={rc.id} className={`${styles.rstCategory} blockActionChip`}>
+                                        <Avatar
+                                            variant="square"
+                                            src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${rc.api_label}.png`}
+                                        >
+                                        <img
+                                            alt={"&#9787;"}
+                                            src={`${process.env.REACT_APP_S3_STATIC_URL}/static/general/panda.png`}
+                                        />
+                                        </Avatar>
+                                        {rc.label}
+                                    </div>
                                 ))}
                             </div>
                             <div className={styles.rstStats}>
