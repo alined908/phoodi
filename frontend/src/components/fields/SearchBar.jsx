@@ -214,7 +214,7 @@ class SearchBar extends Component {
                                     <span>
                                         {option._source.categories.slice(0,2).map((category) => 
                                             <span className="blockActionChip searchChip" >
-                                                {category}
+                                                {category.label}
                                             </span>
                                         )}
                                     </span>

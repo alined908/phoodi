@@ -15,15 +15,22 @@ class RestaurantDocument(Document):
     price = fields.IntegerField(attr="price")
     address = fields.TextField(attr="location")
     location = fields.GeoPointField(attr="location_indexing")
+    address1 = fields.TextField(attr='address1')
+    phone = fields.TextField(attr='phone')
+    city = fields.TextField(attr='city')
+    state = fields.TextField(attr='state')
     categories = fields.NestedField(
         attr="categories_indexing",
         properties={
+            'id' : fields.IntegerField(),
             'label': fields.TextField(analyzer="keyword"),
+            'api_label': fields.TextField(analyzer="keyword")
         },
         multi=True
     )
-    reviews = fields.IntegerField(attr='review_count')
-    options = fields.IntegerField(attr='option_count')
+    review_count = fields.IntegerField(attr='review_count')
+    option_count = fields.IntegerField(attr='option_count')
+    comment_count = fields.IntegerField(attr='comment_count')
 
     class Django:
         model = Restaurant

@@ -118,7 +118,7 @@ const Navigation = props => {
           )}
           {authenticated && (
             <div ref={anchorRef} className={styles.dropDownControl} onClick={handleToggle}>
-              <Avatar src={user.avatar} style={{cursor:"pointer"}}>
+              <Avatar className={styles.userProfile} src={user.avatar} >
                 {user.first_name.charAt(0)}
                 {user.last_name.charAt(0)}
               </Avatar>

@@ -21,6 +21,7 @@ class RestaurantDocumentView(APIView):
         rating = request.GET.get('rating')
         categories = request.GET.get('categories')
         sort = request.GET.get('sort', 'rating')
+        start = request.GET.get('start', 0)
         prices_array = [int(price) for price in prices.split(',')] if prices else []
         categories_array = [category for category in categories.split(',')] if categories else []
         s = RestaurantDocument.search()
@@ -44,16 +45,20 @@ class RestaurantDocumentView(APIView):
         if sort == 'rating':
             s = s.sort('-rating')
         else:
-            s = s.sort('-reviews', '-rating')
-            
-        s = s[0:20]
+            s = s.sort('-review_count', '-rating')
+        
+        count = s.count()
+
+        s = s[int(start): int(start) + 10]
 
         response = s.execute()
-        hits = response['hits']['hits']
+        hits = response['hits'].to_dict()
 
-        ids = [hit['_source']['id'] for hit in hits]
-        preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(ids)])
-        restaurants = Restaurant.objects.filter(id__in=ids).order_by(preserved)
+        return Response({'count': count, 'hits': hits['hits']})
 
-        serializer = RestaurantSerializer(restaurants, many=True)
-        return Response(serializer.data)
+        # ids = [hit['_source']['id'] for hit in hits]
+        # preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(ids)])
+        # restaurants = Restaurant.objects.filter(id__in=ids).order_by(preserved)
+
+        # serializer = RestaurantSerializer(restaurants, many=True)
+        # return Response(serializer.data)

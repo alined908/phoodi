@@ -141,7 +141,7 @@
 }
 
 .active {
-background: var(--light-blue);
+  background: var(--light-blue);
   border-radius: 4px;
 }
 

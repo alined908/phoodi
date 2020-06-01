@@ -4,6 +4,7 @@ import styles from '../../styles/search.module.css'
 import {Button, ButtonGroup, Slider, Avatar, Checkbox, FormControlLabel, Menu, MenuItem} from '@material-ui/core'
 import {Map, RestaurantCard, CategoryAutocomplete, Rating} from '../components'
 import {ExpandMore as ExpandMoreIcon} from '@material-ui/icons'
+import {Pagination} from '@material-ui/lab'
 import Geocode from "react-geocode";
 import {connect} from 'react-redux'
 import { getPreferences } from "../../actions";
@@ -118,6 +119,16 @@ class Prices extends Component {
     }
 }
 
+const defaultFilters = {
+    prices: [false, false, false, false],
+    categories: [],
+    radius: 25,
+    rating: null,
+    openNow: false,
+    sort: 'rating',
+    start: 0
+}
+
 class SearchPage extends Component {
     
     constructor(props){
@@ -125,11 +136,11 @@ class SearchPage extends Component {
         this.params = parseURL(props.location.search)
         Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_API_KEY}`);
         this.state = {
-            anchorEl: null,
             input: this.params.q ? this.params.q : "",
             latitude: this.params.latitude,
             longitude: this.params.longitude,
             location: "",
+            totalCount: null,
             results: [],
             preferences: [],
             clickedPreferences: [],
@@ -139,8 +150,10 @@ class SearchPage extends Component {
                 radius: this.params.radius ? this.params.radius : 25,
                 rating: this.params.rating ? this.params.rating : null,
                 openNow: this.params.open ? this.params.open : false,
-                sort: this.params.sort ? this.params.sort : "rating"
+                sort: this.params.sort ? this.params.sort : "rating",
+                start: this.params.start ? parseInt(this.params.start) : 0
             },
+            anchorEl: null,
             isMobile: window.matchMedia("(max-width: 768px)").matches,
             mobileTabIndex: 0
         }
@@ -209,7 +222,8 @@ class SearchPage extends Component {
         console.log(response.data)
 
         this.setState({
-            results: response.data
+            totalCount: response.data.count,
+            results: response.data.hits
         })
     }
 
@@ -223,6 +237,7 @@ class SearchPage extends Component {
             ...(this.state.filters.openNow && {open: true}),
             ...(this.state.filters.prices.includes(true) && {prices: formatPrices(this.state.filters.prices)}),
             ...(this.state.filters.categories.length > 0 && {categories: formatCategories(this.state.filters.categories)}),
+            ...(this.state.filters.start !== 0 && {start: this.state.filters.start}),
             sort: this.state.filters.sort
         }
 
@@ -232,6 +247,16 @@ class SearchPage extends Component {
 
     handleSort = (sort) => {
         this.setState({filters: {...this.state.filters, sort}}, () => this.handleFilterChange())
+    }
+
+    handlePagination = (e, page) => {
+        console.log(page)
+        this.setState({filters: {...this.state.filters, start: 10 * (page - 1)}}, () => this.handleFilterChange())
+    }
+
+    handleClearFilters = () => {
+        let newFilters = {q: this.state.input, latitude: this.state.latitude, longitude: this.state.longitude}
+        this.setState({filters: {...defaultFilters, ...newFilters}}, () => this.handleFilterChange())
     }
 
     handleMenuClick = (e) => {
@@ -358,6 +383,11 @@ class SearchPage extends Component {
                                 {category.label}
                             </span>
                         )}
+                        <div className={styles.clearFilters} onClick={this.handleClearFilters}>
+                            {this.countFilters(params) > 0 && 
+                                "Clear Filters"
+                            }
+                        </div>
                     </div>
                     <div className={styles.filter}>
                         <div className={styles.filterTitle}>
@@ -496,14 +526,30 @@ class SearchPage extends Component {
                     </div>
                     <div className={styles.results}>
                         {this.state.results.map((result, index) => 
-                            <RestaurantCard data={result} index={index}/>
+                            <RestaurantCard data={result._source} index={index + this.state.filters.start}/>
                         )}
+                        <div className={styles.resultsPagination}>
+                            <Pagination 
+                                page={this.state.filters.start/10 + 1}
+                                onChange={this.handlePagination}
+                                count={Math.ceil(this.state.totalCount/10)}
+                                shape="rounded"
+                            />
+                            <div className={styles.resultsCount}>
+                                {this.state.filters.start + 1} - {Math.min(this.state.filters.start + 11, this.state.totalCount)} of {this.state.totalCount} entries
+                            </div>
+                        </div>
+                        
+
                     </div>
                 </div>
-                <div className={`${styles.searchMap} elevate`}>
+                <div className={styles.searchMap}>
                     <Map 
-                        zoom={10}
+                        indexOffset={this.state.filters.start}
+                        markers={this.state.results}
+                        zoom={11}
                         location={location}
+                        radius={this.state.filters.radius}
                     />
                 </div>
             </div>
