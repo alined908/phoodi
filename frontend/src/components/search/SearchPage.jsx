@@ -200,6 +200,7 @@ class SearchPage extends Component {
                 start: this.params.start ? parseInt(this.params.start) : 0
             },
             loading: true,
+            hoveredIndex: null,
             anchorEl: null,
             isMobile: window.matchMedia("(max-width: 768px)").matches,
             mobileTabIndex: 0
@@ -373,6 +374,10 @@ class SearchPage extends Component {
         this.setState({clickedPreferences: clickedPrefs,  filters: {...this.state.filters, categories: values}}, () => this.handleFilterChange());
     };
 
+    handleHover = (index) => {
+        this.setState({hoveredIndex: index})
+    }
+
     handleMobileTabChange = (e, newValue) => {
         this.setState({mobileTabIndex: newValue})
     }
@@ -397,7 +402,7 @@ class SearchPage extends Component {
         }
         const params = parseURL(this.props.location.search)
         const authenticated = this.props.user.authenticated
-        
+    
         return (
             <div className={styles.searchPage}>
                 <div className={styles.searchConfig}>
@@ -577,7 +582,11 @@ class SearchPage extends Component {
                         {this.state.results.map((result, index) => 
                             this.state.loading ? 
                                 <SkeletonRestaurant/> :
-                                <RestaurantCard data={result._source} index={index + this.state.filters.start}/> 
+                                <RestaurantCard 
+                                    onHover={this.handleHover}
+                                    data={result._source} 
+                                    index={index + this.state.filters.start}
+                                /> 
                         )}
                         <div className={styles.resultsPagination}>
                             <Pagination 
@@ -601,6 +610,7 @@ class SearchPage extends Component {
                         zoom={10.5}
                         location={location}
                         radius={this.state.filters.radius}
+                        hoveredIndex={this.state.hoveredIndex}
                     />
                 </div>
             </div>

@@ -102,6 +102,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Adopt Doordash/Yelp Frontpage
 - [x] Populate local storage with recent searches
 - [x] Add location search bar to food search
+- [x] Search page design + flow
 
 ## Todo General
 - [ ] Properly document and refactor codebase

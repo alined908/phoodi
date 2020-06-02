@@ -95,7 +95,7 @@ export default function Location(props) {
         typeof option === "string" ? option : option.description
       }
       filterOptions={(x) => x}
-      value={props.textValue}
+      value={props.value}
       options={options}
       autoComplete
       autoHighlight

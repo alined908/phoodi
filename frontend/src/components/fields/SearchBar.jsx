@@ -119,6 +119,7 @@ class SearchBar extends Component {
 
     handleClick = (e, value) => {
         let location;
+        console.log(value)
         if (value === null) {
           location = "";
         } else {
@@ -137,7 +138,7 @@ class SearchBar extends Component {
             }
           );
         }
-        this.setState({ location });
+        this.setState({ location: value });
       };
 
     handleRender = (option) => {
@@ -297,7 +298,7 @@ class SearchBar extends Component {
                     required={false}
                     label="Location"
                     handleClick={this.handleClick}
-                    textValue={this.state.location}
+                    value={this.state.location}
                 />
                 <Link to={searchLink}>
                     <div className="search-button">

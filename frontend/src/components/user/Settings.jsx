@@ -55,7 +55,7 @@ class Settings extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     let data = {
-      location: this.state.location,
+      location: this.state.location.description,
       radius: this.state.radius,
       longitude: this.state.longitude,
       latitude: this.state.latitude,
@@ -84,7 +84,7 @@ class Settings extends Component {
         }
       );
     }
-    this.setState({ location });
+    this.setState({ location: value });
   };
 
   handleFormChange = (index) => {
@@ -182,7 +182,7 @@ class Settings extends Component {
                             <Location
                               label="Location"
                               handleClick={this.handleClick}
-                              textValue={this.state.location}
+                              value={this.state.location}
                             />
                           </div>        
                         </Grid>

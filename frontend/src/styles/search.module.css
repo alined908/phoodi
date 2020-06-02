@@ -382,12 +382,12 @@
   transform: rotateZ(-135deg);
 }
 
-.position:hover{
+.position:hover, .hovered{
     color: black;
     background: white;
 }
 
-.position:hover .text{
+.position:hover .text, .hovered .text{
     color: black;
 }
 

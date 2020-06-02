@@ -10,6 +10,10 @@ const convertPriceToChips = price => {
 }
 
 class RestaurantCard extends Component {
+
+    handleHover = (index) => {
+        this.props.onHover(index)
+    }
   
     render () {
         const data = this.props.data
@@ -17,6 +21,8 @@ class RestaurantCard extends Component {
             <Link to={`/restaurants/${data.url}`}>
                 <div 
                     className={`${styles.cardWrapper}`}
+                    onMouseEnter={() => this.handleHover(this.props.index + 1)}
+                    onMouseLeave={() => this.handleHover(null)}
                 >
                     <div className={styles.rst} >
                         <div className={styles.rstImg} style={{backgroundImage: `url(${data.yelp_image})`}}>

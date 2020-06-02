@@ -70,8 +70,8 @@ class RestaurantPin extends Component {
           offsetLeft={-20}
         >
           <Link to={`/restaurants/${restaurant.url}`}>
-            <span className={styles.position}>
-              <span className={styles.text}>{number + 1}</span>
+            <span className={`${styles.position} ${this.props.hovered ? styles.hovered : ""}`}>
+              <span className={styles.text}>{number}</span>
             </span>
           </Link>
         </Marker>
@@ -139,12 +139,13 @@ class SelfPin extends Component {
 
 class RestaurantPins extends PureComponent {
   render () {
-    const {data, offset} = this.props;
+    const {data, offset, hoveredIndex} = this.props;
 
     return data.map((restaurant, index) => 
       <RestaurantPin 
-        number={offset + index}
+        number={offset + index + 1}
         identifier={`pin-${index}`} 
+        hovered={hoveredIndex === offset + index + 1}
         data={restaurant}
       />
     )
@@ -237,6 +238,7 @@ class Map extends Component {
         <RestaurantPins 
           data={this.props.markers} 
           offset={this.props.indexOffset}
+          hoveredIndex={this.props.hoveredIndex}
         />
         <SelfPin
           latitude={this.props.location.latitude}
