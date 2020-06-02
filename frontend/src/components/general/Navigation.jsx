@@ -99,11 +99,10 @@ const Navigation = props => {
             </Link>
           </Typography>
         </div>
-        {!isHomePage && 
-          <div className={styles.search}>
-            <SearchBar/>
-          </div>
-        }
+        <div className={`${styles.search} ${isHomePage && styles.searchHide}`}>
+          <SearchBar/>
+        </div>
+  
         <div className={styles.user}>
           {!authenticated && (
             <Link to="/register">

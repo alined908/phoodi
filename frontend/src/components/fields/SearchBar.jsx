@@ -6,41 +6,60 @@ import {
     ListItemAvatar,
     ListItemText,
   } from "@material-ui/core";
+import {compose} from 'redux'
 import {Location} from '../components'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {axiosClient} from '../../accounts/axiosClient'
+import {setSearchValue, setSearchLocation, removeSearchValue, removeSearchLocation, setSearchedLast, removeSearchedLast, setSearchLocationManual, removeSearchedLocationLast} from '../../actions'
+import { withRouter } from 'react-router-dom';
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 import throttle from "lodash/throttle";
 import debounce from "lodash/debounce";
 import Geocode from "react-geocode";
+import { history } from "../MeetupApp";
 import SearchIcon from '@material-ui/icons/Search';
+
+const parseURL = path => {
+    let params = new URLSearchParams(path)
+    params = Object.fromEntries(params)
+    return params
+}
 
 class SearchBar extends Component {
 
     constructor(props){
         super(props)
+        Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_API_KEY}`);
         this.state = {
-            input: "",
             isLoaded: false,
             isOpen: false,
             isLoading: false,
             results: [],
             cachedSearches: [],
-            location: "",
             longitude: null,
             latitude: null
         }
         this.searchDebounced = debounce(this.callSearch, 500);
         this.searchThrottled = throttle(this.callSearch, 500);
         this.cachedResults = {};
+        this.handleLocation = this.handleLocation.bind(this);
     }
 
     componentDidMount() {
-        Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_API_KEY}`);
+
         const cachedSearches = localStorage.getItem("searchSuggestionHistory")
+        const params = parseURL(this.props.location.search)
+
+        if (params.q) {
+            this.props.setSearchValue(params.q)
+        }
+
+        if (params.location){
+            this.props.setSearchLocationManual(params.location)
+        }
 
         if (cachedSearches !== null) {
             const results = JSON.parse(cachedSearches).suggestions
@@ -48,9 +67,9 @@ class SearchBar extends Component {
         }
     }
 
-    callSearch = async () => {
-        const cachedResult = this.cachedResults[this.state.input]
-        console.log(this.cachedResults)
+
+    callSearch = async (input) => {
+        const cachedResult = this.cachedResults[input]
     
         if (cachedResult) {
             this.setState({results: cachedResult});
@@ -61,7 +80,7 @@ class SearchBar extends Component {
             method: "GET",
             url: `/search/`,
             params: {
-                ...this.state.input && {q: this.state.input},
+                ...input && {q: input},
                 latitude: this.props.user ? this.props.user.settings.latitude : null,
                 longitude: this.props.user ? this.props.user.settings.longitude : null,
                 radius: this.props.user ? this.props.user.settings.radius: null,
@@ -70,7 +89,7 @@ class SearchBar extends Component {
 
         console.log(response.data)
         const results = response.data
-        this.cachedResults[this.state.input] = results
+        this.cachedResults[input] = results
         this.setState({results})
     }
 
@@ -102,44 +121,43 @@ class SearchBar extends Component {
     }
 
     handleSearch = (e) => {
-        this.setState({input: e.target.value}, () => {
-            if (this.state.input.length === 0) {
-                this.setState({results: this.state.cachedSearches})
-            }
-            else if (this.state.input.endsWith(" ")) {
-                return;
-            }
-            else if (this.state.input.length < 5) {
-                this.searchThrottled()
-            } else{
-                this.searchDebounced()
-            }            
-        })
+    
+        const newValue = e.target.value
+        this.props.setSearchValue(newValue)
+
+        if (newValue.length === 0) {
+            this.setState({results: this.state.cachedSearches})
+        }
+        else if (newValue.endsWith(" ")) {
+            return;
+        }
+        else if (newValue < 5) {
+            this.searchThrottled(newValue)
+        } else{
+            this.searchDebounced(newValue)
+        }            
+        
     }
 
     handleClick = (e, value) => {
-        let location;
-        console.log(value)
-        if (value === null) {
-          location = "";
-        } else {
-          location = value.description;
-          Geocode.fromAddress(location).then(
-            (response) => {
+
+        if (value !== null) {
+          Geocode.fromAddress(value.description).then((response) => {
               const geolocation = response.results[0].geometry.location;
               console.log(geolocation)
-              this.setState({
-                longitude: geolocation.lng,
-                latitude: geolocation.lat,
-              });
+              this.props.setSearchLocation(
+                  value, {
+                    latitude: geolocation.lat, 
+                    longitude: geolocation.lng
+                  }
+              )
             },
             (error) => {
               console.error(error);
             }
           );
         }
-        this.setState({ location: value });
-      };
+    };
 
     handleRender = (option) => {
         let row;
@@ -147,7 +165,7 @@ class SearchBar extends Component {
         let parts;
         
         if (option._index === "categories"){
-            matches = match(option._source.label, this.state.input);
+            matches = match(option._source.label, this.props.input);
             parts = parse(option._source.label, matches);
 
             row = (
@@ -183,8 +201,8 @@ class SearchBar extends Component {
                     </div>
                 </Link>
             )
-        } else {
-            matches = match(option._source.name, this.state.input);
+        } else if (option._index === 'restaurants') {
+            matches = match(option._source.name, this.props.input);
             parts = parse(option._source.name, matches);
 
             row = (
@@ -233,6 +251,8 @@ class SearchBar extends Component {
                     </div>
                 </Link>
             )
+        } else {
+            return <div></div>
         }
 
         return row
@@ -249,9 +269,39 @@ class SearchBar extends Component {
         return label
     }
 
-    render () {
+    handleValueClear = (e, value, reason) => {
+        if (this.props.lastSearched) {
+            this.props.removeSearchedLast()
+        }
+
+        if (reason === 'clear'){
+            this.props.removeSearchValue()
+        }
+    }
+
+    handleLocation = (e, value, reason) => {
+
+        if (this.props.lastSearchedLocation){
+            this.props.removeSearchedLocationLast()
+        }
+
+        if (reason === 'clear'){
+            this.props.removeSearchLocation()
+        } 
         
-        const searchLink = `/search?q=${this.state.input}&latitude=${this.state.latitude}&longitude=${this.state.longitude}`
+        if (reason === 'input'){
+            this.props.setSearchLocationManual(value)
+        }
+    }
+
+    handleRedirectSearch = () => {
+        this.props.setSearchedLast(this.props.input, this.props.inputLocation.input)
+        history.push(
+            `/search?q=${this.props.input}&location=${this.props.inputLocation.input}`
+        )
+    }
+
+    render () {
 
         return (
             <>
@@ -262,11 +312,13 @@ class SearchBar extends Component {
                     getOptionLabel={(option) =>
                         this.handleLabel(option)
                     }
+                    inputValue={this.props.input}
                     filterOptions={(x) => x}
                     loading={this.state.isLoading}
                     open={this.state.isOpen}
                     onOpen={() => this.handleOpen(true)}
                     onClose={() => this.handleOpen(false)}
+                    onInputChange={this.handleValueClear}
                     options={this.state.results}
                     loading={this.state.isLoading}
                     renderOption={(option, { inputValue }) => 
@@ -294,17 +346,17 @@ class SearchBar extends Component {
                         />
                     )}
                 />
+                
                 <Location
                     required={false}
                     label="Location"
                     handleClick={this.handleClick}
-                    value={this.state.location}
+                    handleInputChange={this.handleLocation}
+                    textValue={this.props.inputLocation ? this.props.inputLocation.input : ""}
                 />
-                <Link to={searchLink}>
-                    <div className="search-button">
-                        <SearchIcon />
-                    </div>
-                </Link>
+                <div className="search-button" onClick={this.handleRedirectSearch}>
+                    <SearchIcon fontSize="inherit"/>
+                </div>
             </>
         )
     }
@@ -312,8 +364,22 @@ class SearchBar extends Component {
 
 const mapStateToProps = state => {
     return {
-        user: state.user.user
+        user: state.user.user,
+        input: state.search.q,
+        inputLocation: state.search.location,
+        lastSearched: state.search.lastSearched
     }
 }
 
-export default connect(mapStateToProps)(SearchBar)
+const mapDispatchToProps = {
+    setSearchValue,
+    setSearchLocation,
+    removeSearchValue,
+    removeSearchLocation,
+    setSearchedLast,
+    removeSearchedLast,
+    setSearchLocationManual,
+    removeSearchedLocationLast
+}
+
+export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(SearchBar)

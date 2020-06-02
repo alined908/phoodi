@@ -5,3 +5,4 @@ export * from "./invite";
 export * from "./meetup";
 export * from "./notifications";
 export * from "./user";
+export * from './search'

@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Location(props) {
   const classes = useStyles();
-  const [inputValue, setInputValue] = React.useState("");
+  const [inputValue, setInputValue] = React.useState(props.textValue || "");
   const [options, setOptions] = React.useState([]);
   const loaded = React.useRef(false);
 
@@ -85,26 +85,30 @@ export default function Location(props) {
     return () => {
       active = false;
     };
-  }, [inputValue, fetch]);
-
+  }, [inputValue, fetch, props.textValue]);
+  
   return (
     <Autocomplete
+      freeSolo
       size="small"
       className={classes.autocomplete}
       getOptionLabel={(option) =>
         typeof option === "string" ? option : option.description
       }
       filterOptions={(x) => x}
-      value={props.value}
+      inputValue={props.textValue}
       options={options}
       autoComplete
       autoHighlight
       onChange={props.handleClick}
+      onInputChange={props.handleInputChange}
       includeInputInList
       renderInput={(params) => {
+        const newParams = {...params, inputProps: {...params.inputProps, value: props.textValue}}
+
         return (
           <TextField
-            {...params}
+            {...newParams}
             required={props.required || false}
             error={props.textValue && props.textValue.length === 0}
             label={props.label}

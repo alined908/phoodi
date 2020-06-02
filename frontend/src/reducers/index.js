@@ -4,6 +4,7 @@ import chatReducer from "./chat";
 import { reducer as formReducer } from "redux-form";
 import meetupReducer from "./meetup";
 import notifReducer from "./notifs";
+import searchReducer from './search'
 import globalMessagesReducer from "./globalMessages";
 
 const appReducer = combineReducers({
@@ -12,6 +13,7 @@ const appReducer = combineReducers({
   chat: chatReducer,
   meetup: meetupReducer,
   notifs: notifReducer,
+  search: searchReducer,
   globalMessages: globalMessagesReducer,
 });
 

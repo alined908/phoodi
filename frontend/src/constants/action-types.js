@@ -81,3 +81,13 @@ export const ADD_PREFERENCE = "add_preference";
 export const EDIT_PREFERENCE = "edit_preference";
 export const DELETE_PREFERENCE = "delete_preference";
 export const REORDER_PREFERENCES = "reorder_preference";
+
+//Search
+export const SET_SEARCH_VALUE = 'set_search_value';
+export const SET_SEARCH_LOCATION = 'set_search_location';
+export const SET_SEARCH_LOCATION_MANUAL = 'set_search_location_manual';
+export const SET_SEARCH_LAST = 'set_search_last'
+export const REMOVE_SEARCH_VALUE = 'remove_search_value';
+export const REMOVE_SEARCH_LOCATION = 'remove_search_location'
+export const REMOVE_SEARCH_LAST = 'remove_search_last'
+export const REMOVE_SEARCH_LOCATION_LAST = 'remove_search_location_last';

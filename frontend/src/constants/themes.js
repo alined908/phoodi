@@ -121,7 +121,8 @@ export const MuiTheme = {
               },
               '&.Mui-focused':{
                 background: "var(--background)"
-              }
+              },
+              borderRadius: "0 !important"
           }
       },
       MuiFormHelperText:{

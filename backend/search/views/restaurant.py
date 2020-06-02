@@ -16,7 +16,7 @@ class RestaurantDocumentView(APIView):
         query = request.GET.get('q')
         latitude = request.GET.get('latitude')
         longitude = request.GET.get('longitude')      
-        radius = request.GET.get('radius', 25)
+        radius = request.GET.get('radius', 5)
         prices = request.GET.get('prices')
         rating = request.GET.get('rating')
         categories = request.GET.get('categories')

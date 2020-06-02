@@ -48,8 +48,6 @@ const generatePriceLabel = (prices) => {
 const parseURL = path => {
     let params = new URLSearchParams(path)
     params = Object.fromEntries(params)
-    params.latitude = parseFloat(params.latitude)
-    params.longitude = parseFloat(params.longitude)
     return params
 }
 
@@ -179,25 +177,25 @@ class SearchPage extends Component {
     
     constructor(props){
         super(props)
-        this.params = parseURL(props.location.search)
         Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_API_KEY}`);
+        const params = parseURL(props.location.search)
         this.state = {
-            input: this.params.q ? this.params.q : "",
-            latitude: this.params.latitude,
-            longitude: this.params.longitude,
+            input: params.q ? params.q : "",
+            latitude: null,
+            longitude: null,
             location: "",
             totalCount: null,
             results: [],
             preferences: [],
             clickedPreferences: [],
             filters: {
-                prices: this.params.prices ? convertPrices(this.params.prices): [false, false, false, false],
-                categories: this.params.categories ? this.params.categories.split(',') : [],
-                radius: this.params.radius ? this.params.radius : 25,
-                rating: this.params.rating ? this.params.rating : null,
-                openNow: this.params.open ? this.params.open : false,
-                sort: this.params.sort ? this.params.sort : "rating",
-                start: this.params.start ? parseInt(this.params.start) : 0
+                prices: params.prices ? convertPrices(params.prices): [false, false, false, false],
+                categories: params.categories ? params.categories.split(',') : [],
+                radius: params.radius ? params.radius : 5,
+                rating: params.rating ? params.rating : null,
+                openNow: params.open ? params.open : false,
+                sort: params.sort ? params.sort : "rating",
+                start: params.start ? parseInt(params.start) : 0
             },
             loading: true,
             hoveredIndex: null,
@@ -208,12 +206,23 @@ class SearchPage extends Component {
     }
 
     async componentDidMount(){
-
+        
         const handler = (e) => this.setState({ isMobile: e.matches });
         window.matchMedia("(max-width: 768px)").addListener(handler);
+        
+        let params = parseURL(this.props.location.search)
 
-        await this.callSearch()
-        this.coordinatesToAddress()
+        const response = await axiosClient.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${params.location}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`)
+        const result = response.data.results[0]
+   
+        this.setState(
+            {
+                location: result.formatted_address,
+                latitude: result.geometry.location.lat,
+                longitude: result.geometry.location.lng
+            }, 
+            () => this.callSearch(params)
+        )
 
         if (this.props.user.authenticated) {
             this.props.getPreferences(this.props.user.user.id)
@@ -221,67 +230,55 @@ class SearchPage extends Component {
     }
 
     async componentDidUpdate(prevProps) {
+        
         if (this.props.user.preferences !== this.state.preferences) {
           this.setState({
             preferences: this.props.user.preferences,
           });
         }
-        if (this.props.location !== prevProps.location){
-            await this.callSearch()
-        }   
-    }
 
-    coordinatesToAddress = () => {
-        Geocode.fromLatLng(this.state.latitude, this.state.longitude).then(
-            response => {
-                const options = response.results[0].address_components;
-                let city;
-                let state;
-
-                for (let i = 0; i < options.length; i++){
-                    let option = options[i]
-                    if (option.types.includes('locality')){
-                        city = option.long_name
-                    }
-                    if (option.types.includes('administrative_area_level_1')){
-                        state = option.short_name
-                    }
-                }
-
-                this.setState({
-                    location: `${city}, ${state}`
-                })
-            },
-            error => {
-                console.error(error);
+        if (prevProps.location !== this.props.location){
+            const pastParams = parseURL(prevProps.location.search)
+            const newParams = parseURL(this.props.location.search)
+            if (pastParams.location !== newParams.location){
+                const response = await axiosClient.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${newParams.location}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`)
+                const result = response.data.results[0]
+                this.setState(
+                    {
+                        location: result.formatted_address,
+                        latitude: result.geometry.location.lat,
+                        longitude: result.geometry.location.lng
+                    }, 
+                    () => this.callSearch(newParams)
+                )
+            } else {
+                await this.callSearch(newParams)
             }
-        )
+        }
     }
 
-    callSearch = async () => {
+    callSearch = async (params) => {
         this.setState({loading: true})
-        const urlParams = new URLSearchParams(this.props.location.search)
-        const params = Object.fromEntries(urlParams)
-        console.log(params)
+       
         const response = await axiosClient.request({
             method: 'get',
             url: '/search/restaurants/',
-            params
+            params: {...params, latitude: this.state.latitude, longitude: this.state.longitude}
         })
-        console.log(response.data)
 
         this.setState({
             totalCount: response.data.count,
             results: response.data.hits
         })
+
         setTimeout(() => this.setState({loading: false}), 300)
     }
 
     handleFilterChange = async () => {
+        const urlParams = parseURL(this.props.location.search)
         const params = {
-            latitude: this.state.latitude, 
-            longitude: this.state.longitude, 
             q: this.state.input,
+            location: urlParams.location,
             ...(this.state.filters.rating && {rating: this.state.filters.rating}),
             ...(this.state.filters.radius !== 25 && {radius: this.state.filters.radius}),
             ...(this.state.filters.openNow && {open: true}),
@@ -300,7 +297,6 @@ class SearchPage extends Component {
     }
 
     handlePagination = (e, page) => {
-        console.log(page)
         this.setState({filters: {...this.state.filters, start: 10 * (page - 1)}}, () => this.handleFilterChange())
     }
 
@@ -386,7 +382,7 @@ class SearchPage extends Component {
         
         let count = 0;
         for(let key in params){
-            if (key === 'q' || key === 'latitude' || key==='longitude' || key ==='sort'){
+            if (key === 'q' || key === 'location' || key ==='sort'){
                 continue;
             }
             count += 1
@@ -396,12 +392,11 @@ class SearchPage extends Component {
     }
 
     render () {
-        const location = {
-            latitude: this.state.latitude,
-            longitude: this.state.longitude,
-        }
+        const coordinates = {latitude: this.state.latitude, longitude: this.state.longitude}
         const params = parseURL(this.props.location.search)
         const authenticated = this.props.user.authenticated
+        const searchName = this.props.currentSearch ? this.props.currentSearch : (params.q ? params.q : "Food")
+        const locationName = this.props.currentSearchLocation ? this.props.currentSearchLocation : "Me"
     
         return (
             <div className={styles.searchPage}>
@@ -543,12 +538,11 @@ class SearchPage extends Component {
                             </div>
                         </div>
                     }
-                    
                 </div>
                 <div className={styles.resultsWrapper}>
                     <div className={styles.resultsTop}>
                         <div className={styles.resultsName}>
-                            Best {this.params.q ? this.params.q : "Food"} Near {this.state.location}
+                            Best {searchName} Near {this.state.location}
                         </div>
                         <div className={styles.resultsSortWrapper}>
                             Sort:&nbsp;
@@ -579,15 +573,19 @@ class SearchPage extends Component {
                         </Menu>
                     </div>
                     <div className={styles.results}>
-                        {this.state.results.map((result, index) => 
-                            this.state.loading ? 
-                                <SkeletonRestaurant/> :
+                        {this.state.loading ?
+                            [...Array(10).keys()].map((num) => 
+                                <SkeletonRestaurant/>
+                            )
+                            :
+                            this.state.results.map((result, index) => 
                                 <RestaurantCard 
                                     onHover={this.handleHover}
                                     data={result._source} 
                                     index={index + this.state.filters.start}
                                 /> 
-                        )}
+                            )
+                        }
                         <div className={styles.resultsPagination}>
                             <Pagination 
                                 page={this.state.filters.start/10 + 1}
@@ -604,14 +602,17 @@ class SearchPage extends Component {
                     </div>
                 </div>
                 <div className={styles.searchMap}>
-                    <Map 
-                        indexOffset={this.state.filters.start}
-                        markers={this.state.results}
-                        zoom={10.5}
-                        location={location}
-                        radius={this.state.filters.radius}
-                        hoveredIndex={this.state.hoveredIndex}
-                    />
+                    {this.state.latitude && 
+                        <Map 
+                            indexOffset={this.state.filters.start}
+                            markers={this.state.results}
+                            zoom={11}
+                            location={coordinates}
+                            radius={this.state.filters.radius}
+                            hoveredIndex={this.state.hoveredIndex}
+                        />
+                    }
+                    
                 </div>
             </div>
         )
@@ -620,7 +621,9 @@ class SearchPage extends Component {
 
 const mapStateToProps = state => {
     return {
-        user: state.user
+        user: state.user,
+        currentSearch: state.search.lastSearched,
+        currentSearchLocation: state.search.lastSearchedLocation
     }
 }
 

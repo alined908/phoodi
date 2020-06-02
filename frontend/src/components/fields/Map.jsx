@@ -161,8 +161,6 @@ class Map extends Component {
         latitude: this.props.location.latitude,
         longitude: this.props.location.longitude,
         zoom: this.props.zoom ? this.props.zoom : 11,
-        bearing: 0,
-        pitch: 0,
         transitionDuration: 3000,
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: d3.easeSin
@@ -176,10 +174,25 @@ class Map extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    
     if (prevProps.radius !== this.props.radius){
       const viewport = {
           ...this.state.viewport,
           zoom: radiusToZoom[this.props.radius],
+      }
+
+      this.setState({
+        circle: geojson([this.props.location.longitude, this.props.location.latitude], this.props.radius),
+        viewport: viewport
+      })
+    }
+
+    if (prevProps.location.latitude !== this.props.location.latitude || prevProps.location.longitude !== this.props.location.longitude) {
+      console.log(prevProps.location)
+      console.log(this.props.location)
+      const viewport = {
+        ...this.state.viewport,
+        zoom: radiusToZoom[this.props.radius],
       }
 
       this.setState({
@@ -207,7 +220,8 @@ class Map extends Component {
     this.setState({viewport});
   };
 
-  render() {
+  render() { 
+    console.log(this.state.viewport)
 
     return (
       <ReactMapGL

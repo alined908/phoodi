@@ -42,6 +42,10 @@
     min-width: 800px;
 }
 
+.searchHide {
+    display: none;
+}
+
 .user {
     display: flex;
     align-items: center;
