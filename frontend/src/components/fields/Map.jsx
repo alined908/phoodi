@@ -161,19 +161,20 @@ class Map extends Component {
         latitude: this.props.location.latitude,
         longitude: this.props.location.longitude,
         zoom: this.props.zoom ? this.props.zoom : 11,
-        transitionDuration: 3000,
+        transitionDuration: 5000,
         transitionInterpolator: new FlyToInterpolator(),
-        transitionEasing: d3.easeSin
+        transitionEasing: d3.easeCubic
       },
       circle: geojson([props.location.longitude, props.location.latitude], this.props.radius)
     };
   }
 
   componentDidMount() {
+    console.log('mounts ')
     this._isMounted = true;
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     
     if (prevProps.radius !== this.props.radius){
       const viewport = {
@@ -187,12 +188,21 @@ class Map extends Component {
       })
     }
 
-    if (prevProps.location.latitude !== this.props.location.latitude || prevProps.location.longitude !== this.props.location.longitude) {
-      console.log(prevProps.location)
-      console.log(this.props.location)
+    if (
+      prevProps.location.latitude !== this.props.location.latitude || 
+      prevProps.location.longitude !== this.props.location.longitude || 
+      this.state.latitude !== prevState.latitude || 
+      this.state.longitude !== prevState.longitude
+    ) {
+
       const viewport = {
         ...this.state.viewport,
+        latitude: this.props.location.latitude,
+        longitude: this.props.location.longitude,
         zoom: radiusToZoom[this.props.radius],
+        transitionDuration: 5000,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: d3.easeCubic
       }
 
       this.setState({
@@ -217,11 +227,11 @@ class Map extends Component {
   }
 
   _updateViewport = viewport => {
+    console.log(viewport)
     this.setState({viewport});
   };
 
   render() { 
-    console.log(this.state.viewport)
 
     return (
       <ReactMapGL

@@ -302,7 +302,7 @@ class SearchPage extends Component {
 
     handleClearFilters = () => {
         let newFilters = {q: this.state.input, latitude: this.state.latitude, longitude: this.state.longitude}
-        this.setState({filters: {...defaultFilters, ...newFilters}}, () => this.handleFilterChange())
+        this.setState({filters: {...defaultFilters}, ...newFilters}, () => this.handleFilterChange())
     }
 
     handleMenuClick = (e) => {
@@ -602,7 +602,7 @@ class SearchPage extends Component {
                     </div>
                 </div>
                 <div className={styles.searchMap}>
-                    {this.state.latitude && 
+                    {coordinates.latitude !== null && 
                         <Map 
                             indexOffset={this.state.filters.start}
                             markers={this.state.results}
