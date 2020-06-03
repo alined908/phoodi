@@ -6,6 +6,7 @@ from django.contrib.postgres.fields import JSONField
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models import Q
 from django.utils.text import slugify
+from datetime import time
 
 class Restaurant(models.Model):
 
@@ -101,6 +102,18 @@ class Restaurant(models.Model):
         serializer = CategorySerializer(categories, many=True)
         return serializer.data
 
+    @property
+    def hours_indexing(self):
+        hours_set = self.hours.all().order_by('day')
+        mapping = []
+
+        for hours in hours_set:
+            base = RestaurantHours.SEARCH_DAY_TO_BASE_UNIT[hours.day]
+            open_conversion = base + hours.open_time.hour * 60 + hours.open_time.minute
+            close_conversion = base + hours.close_time.hour * 60 + hours.close_time.minute
+            mapping.append({'open': open_conversion, 'close': close_conversion})
+
+        return mapping
 
 class RestaurantHours(models.Model):
 
@@ -126,6 +139,16 @@ class RestaurantHours(models.Model):
 
     DESERIALIZED_DAY_CHOICES = {
         v:k for k,v in SERIALIZED_DAY_CHOICES.items()
+    }
+
+    SEARCH_DAY_TO_BASE_UNIT = {
+        1: 0,
+        2: 2000,
+        3: 4000,
+        4: 6000,
+        5: 8000,
+        6: 10000,
+        7: 12000
     }
 
     restaurant = models.ForeignKey(

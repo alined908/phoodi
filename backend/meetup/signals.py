@@ -7,6 +7,7 @@ from asgiref.sync import async_to_sync
 from notifications.signals import notify
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
+from datetime import time
 import inspect
 
 channel_layer = get_channel_layer()
@@ -527,3 +528,14 @@ def create_notif_chat_message(sender, instance, created, **kwargs):
                     "notif_room_for_user_%d" % member.user.id,
                     {"type": "notifications", "message": content},
                 )
+
+@receiver(post_save, sender=Restaurant)
+def restaurant_hours(sender, instance, created, **kwargs):
+    if created:
+        days = RestaurantHours.DAY_CHOICES
+        start = datetime.time(hour=8, minute=0)
+        end = datetime.time(hour=20, minute=0)
+
+        for day in days:
+            number, name = day
+            RestaurantHours.objects.create(restaurant=instance, day= number, open_time=start, close_time=end)

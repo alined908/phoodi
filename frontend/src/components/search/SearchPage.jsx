@@ -193,7 +193,7 @@ class SearchPage extends Component {
                 categories: params.categories ? params.categories.split(',') : [],
                 radius: params.radius ? params.radius : 5,
                 rating: params.rating ? params.rating : null,
-                openNow: params.open ? params.open : false,
+                open_now: params.open_now ? params.open_now : false,
                 sort: params.sort ? params.sort : "rating",
                 start: params.start ? parseInt(params.start) : 0
             },
@@ -277,11 +277,11 @@ class SearchPage extends Component {
     handleFilterChange = async () => {
         const urlParams = parseURL(this.props.location.search)
         const params = {
-            q: this.state.input,
+            q: urlParams.q,
             location: urlParams.location,
             ...(this.state.filters.rating && {rating: this.state.filters.rating}),
             ...(this.state.filters.radius !== 25 && {radius: this.state.filters.radius}),
-            ...(this.state.filters.openNow && {open: true}),
+            ...(this.state.filters.open_now && {open_now: true}),
             ...(this.state.filters.prices.includes(true) && {prices: formatPrices(this.state.filters.prices)}),
             ...(this.state.filters.categories.length > 0 && {categories: formatCategories(this.state.filters.categories)}),
             ...(this.state.filters.start !== 0 && {start: this.state.filters.start}),
@@ -325,6 +325,10 @@ class SearchPage extends Component {
 
     handleRatingClick = (e, rating) => {
         this.setState({filters: {...this.state.filters, rating: rating * 2}},() => this.handleFilterChange())
+    }
+
+    handleOpenNowClick = (e) => {
+        this.setState({filters: {...this.state.filters, open_now: e.target.checked}}, () => this.handleFilterChange())
     }
 
     handlePreferenceClick = (index) => {
@@ -382,7 +386,7 @@ class SearchPage extends Component {
         
         let count = 0;
         for(let key in params){
-            if (key === 'q' || key === 'location' || key ==='sort'){
+            if (key === 'q' || key === 'location' || key ==='sort' || key === 'start'){
                 continue;
             }
             count += 1
@@ -397,12 +401,13 @@ class SearchPage extends Component {
         const authenticated = this.props.user.authenticated
         const searchName = this.props.currentSearch ? this.props.currentSearch : (params.q ? params.q : "Food")
         const locationName = this.props.currentSearchLocation ? this.props.currentSearchLocation : "Me"
+        const numFilters = this.countFilters(params)
     
         return (
             <div className={styles.searchPage}>
                 <div className={styles.searchConfig}>
                     <div className={styles.filterTracker}>
-                        {`${this.countFilters(params)} Filters`}
+                        {`${numFilters === 0 ? "No" : numFilters} Filters`}
                         {params.hasOwnProperty('radius') &&
                             <span className={styles.chip}>
                                 {this.state.filters.radius} miles
@@ -443,7 +448,17 @@ class SearchPage extends Component {
                             Hours
                         </div>
                         <div className={styles.filterSetting}>
-                            <FormControlLabel control={<Checkbox name="checkedC" />} label="Open Now" />
+                            <FormControlLabel 
+                                className={styles.filterCustoms}
+                                control={
+                                    <Checkbox 
+                                        size="small"
+                                        checked={this.state.filters.open_now}
+                                        onChange={this.handleOpenNowClick}
+                                    />
+                                } 
+                                label="Open Now" 
+                            />
                         </div>
                     </div>
                     <div className={styles.filter}>

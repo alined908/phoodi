@@ -192,6 +192,11 @@ export const MuiTheme = {
               width: "100%"
           }
       },
+      MuiFormControlLabel:{
+        label:{
+            fontSize: ".75rem"
+        }
+      },
       MuiSelect : {
           selectMenu: {
               display: "flex",

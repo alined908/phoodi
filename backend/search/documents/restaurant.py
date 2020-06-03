@@ -31,6 +31,14 @@ class RestaurantDocument(Document):
     review_count = fields.IntegerField(attr='review_count')
     option_count = fields.IntegerField(attr='option_count')
     comment_count = fields.IntegerField(attr='comment_count')
+    open_hours = fields.NestedField(
+        attr='hours_indexing',
+        properties= {
+            'open': fields.IntegerField(),
+            'close': fields.IntegerField()
+        },
+        multi=True
+    )
 
     class Django:
         model = Restaurant

@@ -2,11 +2,12 @@ from ..documents import RestaurantDocument
 from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, TransportError
 from elasticsearch_dsl import Search, Q
 from meetup.serializers import RestaurantSerializer
 from meetup.models import Restaurant
-from django.db.models import Case, When
+import datetime
+
 
 class RestaurantDocumentView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -21,6 +22,7 @@ class RestaurantDocumentView(APIView):
         rating = request.GET.get('rating')
         categories = request.GET.get('categories')
         sort = request.GET.get('sort', 'rating')
+        open_now = request.GET.get('open_now')
         start = request.GET.get('start', 0)
         prices_array = [int(price) for price in prices.split(',')] if prices else []
         categories_array = [category for category in categories.split(',')] if categories else []
@@ -46,14 +48,17 @@ class RestaurantDocumentView(APIView):
             s = s.sort('-rating')
         else:
             s = s.sort('-review_count', '-rating')
-        
-        count = s.count()
 
+        if open_now:
+            date = datetime.datetime.now()
+            open_now = 2000 * date.weekday() + date.hour * 60 + date.minute
+            s = s.query('nested', path='open_hours', query=Q('range', open_hours__open={'lte': open_now}) & Q('range', open_hours__close={'gte': open_now}))        
+
+        count = s.count()
         s = s[int(start): int(start) + 10]
 
         response = s.execute()
         hits = response['hits'].to_dict()
-
         return Response({'count': count, 'hits': hits['hits']})
 
         # ids = [hit['_source']['id'] for hit in hits]
