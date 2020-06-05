@@ -239,7 +239,7 @@ class UserFriendsView(APIView):
 
 
 class UserPreferenceListView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, *args, **kwargs):
         pk = kwargs["id"]
@@ -250,6 +250,11 @@ class UserPreferenceListView(APIView):
 
     def post(self, request, *args, **kwargs):
         user = request.user
+        pk = kwargs["id"]
+     
+        if user.id != int(pk):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         category_id = request.data["category_id"]
         category = Category.objects.get(pk=category_id)
 
@@ -266,6 +271,12 @@ class UserPreferenceListView(APIView):
         return Response(serializer.data)
 
     def patch(self, request, *args, **kwargs):
+        user = request.user
+        pk = kwargs["id"]
+        
+        if user.id != int(pk):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         user, old_ranking, new_ranking = (
             request.user,
             request.data["oldRanking"],
@@ -293,6 +304,11 @@ class UserPreferenceView(APIView):
         return preference, user
 
     def patch(self, request, *args, **kwargs):
+        user = request.user
+        pk = kwargs["id"]
+        if user.id != int(pk):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         name = request.data["name"]
         preference, user = self.get_preference(kwargs["id"], kwargs["category_id"])
         try:
@@ -304,6 +320,11 @@ class UserPreferenceView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, *args, **kwargs):
+        user = request.user
+        pk = kwargs["id"]
+        if user.id != int(pk):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         preference, user = self.get_preference(kwargs["id"], kwargs["category_id"])
         try:
             preference.reorder_preferences_delete()

@@ -8,6 +8,7 @@ export const EDIT_USER = "edit_user";
 export const ADD_SETTINGS = "add_settings";
 export const REFRESHING_TOKEN = "refreshing_token";
 export const DONE_REFRESHING_TOKEN = "done_refreshing_token";
+export const CHANGE_EMAIL = 'change_email';
 
 //Chat
 export const GET_ROOMS_REQUEST = "get_rooms_request";

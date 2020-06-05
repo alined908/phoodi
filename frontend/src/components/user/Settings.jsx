@@ -161,7 +161,7 @@ class Settings extends Component {
               <div className="innerRightBlockHeader" style={{"height": "100%"}}>
                 <div className={styles.form}>
                   {this.state.activeForm === 0 &&
-                    <form className={styles.formInner}>
+                    <form style={{minWidth: 500}}>
                       <Grid container spacing={2}>
                         <Grid item xs={12}>
                           <FormControl className={styles.settingsFormControl}>

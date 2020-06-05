@@ -22,7 +22,7 @@ class Rating extends Component {
   render() {
     return (
         <StyledRating 
-          size="small"
+          size={this.props.size ? this.props.size : "small"}
           value={this.props.rating/2}
           precision={0.5}
           readOnly={this.props.readOnly}

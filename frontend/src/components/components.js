@@ -42,8 +42,12 @@ import renderDatePicker from "./fields/renderDatePicker";
 import renderDateSimplePicker from "./fields/renderDateSimplePicker";
 import UserAutocomplete from "./fields/UserAutocomplete";
 import RestaurauntAutocomplete from "./fields/RestaurauntAutocomplete";
-import Map from "./fields/Map";
-import SearchBar from "./fields/SearchBar"
+
+//Map
+import SearchMap from "./map/SearchMap";
+import StaticMap from './map/StaticMap';
+import SelfPin from './map/SelfPin';
+import RestaurantPins from './map/RestaurantPins'
 
 //General
 import Body from "./general/Body";
@@ -81,7 +85,8 @@ import Comments from "./restaurant/Comments";
 import Comment from "./restaurant/Comment";
 
 //Search
-import SearchPage from './search/SearchPage'
+import SearchPage from './search/SearchPage';
+import SearchBar from "./search/SearchBar";
 
 export {
   ErrorPage,
@@ -120,7 +125,10 @@ export {
   renderTextField,
   renderDatePicker,
   renderDateSimplePicker,
-  Map,
+  SelfPin,
+  RestaurantPins,
+  SearchMap,
+  StaticMap,
   Category,
   Preferences,
   Preference,

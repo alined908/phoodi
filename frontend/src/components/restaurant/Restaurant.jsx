@@ -1,10 +1,18 @@
 import React, { Component } from "react";
 import { axiosClient } from "../../accounts/axiosClient";
-import { RestaurantThread, Map, Rating, RestaurantReviewForm } from "../components";
+import { RestaurantThread, StaticMap, Rating, RestaurantReviewForm } from "../components";
 import { history } from "../MeetupApp";
 import {Info as InfoIcon, Create as CreateIcon, Comment as CommentIcon} from '@material-ui/icons'
 import {Tooltip, Avatar, Button, BottomNavigation, BottomNavigationAction, Fab} from '@material-ui/core'
-import styles from "../../styles/meetup.module.css";
+import styles from '../../styles/restaurant.module.css';
+import {connect} from 'react-redux'
+
+const prices = {
+  1: '$',
+  2: '$$',
+  3: '$$$',
+  4: '$$$$'
+}
 
 class Restaurant extends Component {
   constructor(props) {
@@ -40,7 +48,7 @@ class Restaurant extends Component {
           }
         )
       ])
-
+      console.log(restaurant.data)
       this.setState({ restaurant: restaurant.data, reviews: reviews.data });
     } catch (e) {
       history.push("/404");
@@ -61,101 +69,98 @@ class Restaurant extends Component {
 
   render() {
     const rst = this.state.restaurant;
- 
+
     return (
-      <div className={`innerWrap  ${this.state.isMobile ? "innerWrap-mobile": ""}`}>
-        {rst && <div className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 0 ? "innerLeft-show" : ""}`}>
-          <div className="innerLeftHeader">
-              {rst.name}
-              <Rating rating={rst.rating}/>
+      <div className={styles.rstWrapper}>
+        {rst &&
+          <div className={styles.rstImageShowcase}>
+            <div className={styles.rstImageWrapper}>
+              <div
+                className={styles.rstImage}
+                style={{backgroundImage: `url(${rst.yelp_image})`}}
+              />
             </div>
-            {!this.state.isMobile &&
-              <div className="innerLeftHeaderBlock">
-                <div className="hr">Actions</div>
-                <div className="innerLeftHeaderBlockAction">
-                  <div className="blockActionContent">
-                  <Button onClick={this.openFormModal} color="primary" size="small" variant="contained">
-                    Add Review
-                  </Button>
-                  </div>
-                </div>
+            <div className={styles.rstImageWrapper}>
+              <div
+                className={styles.rstImage}
+                style={{backgroundImage: `url(${rst.yelp_image})`}}
+              />
             </div>
-            }
-            <div className="innerLeftHeaderBlock">
-              <div className="hr">Statistics</div>
-              <div className="innerLeftHeaderBlockAction">
-                <div className="blockActionContent" style={{justifyContent: "space-around"}}>
-                  <span>Likes <span className="blockActionChip">{rst.option_count}</span> </span>
-                  <span>Options <span className="blockActionChip">{rst.option_count}</span> </span>
-                  <span>Reviews <span className="blockActionChip">{rst.review_count}</span> </span>
-                </div>
-              </div>
-           </div>
-            <div className="innerLeftHeaderBlock">
-              <div className="hr">Information</div>
-              <div className="innerLeftHeaderBlockAction">
-                <div className="blockActionHeader">
-                  Categories
-                </div>
-                <div className="blockActionContent" style={{flexWrap: "wrap"}}>
-                  {rst.categories.map((item) => 
-                      <span className="blockActionChip" style={{display: "flex", alignItems: "center"}}>
-                          <Avatar
-                            variant="square"
-                            src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${item.category.api_label}.png`}
-                          />
-                          {item.category.label}
-                      </span>
-                  )}
-                </div>
-              </div>
-              <div className="innerLeftHeaderBlockAction">
-                <div className="blockActionHeader">
-                  Price
-                  <span className="blockActionChip" style={{minWidth: 0}}>
-                    {rst.price}
-                  </span>
-                </div>
-              </div>
-              <div className="innerLeftHeaderBlockAction">
-                <div className="blockActionHeader">
-                  Phone 
-                  <span className="blockActionChip">
-                    {rst.phone}
-                  </span>
-                </div>
-              </div>
-              <div className="innerLeftHeaderBlockAction">
-                <div className="blockActionHeader">
-                  Location 
-                  <Tooltip title={rst.location}>
-                    <span className="blockActionChip">
-                      {rst.location}
-                    </span>
-                  </Tooltip>
-                </div>
-              </div>
-              <div className={styles.rstMap} style={this.state.isMobile ? {height: 350} : {}}>
-                  <Map
-                    location={{
-                      latitude: rst.latitude,
-                      longitude: rst.longitude,
-                    }}
-                    notLoad
+            <div className={styles.rstImageWrapper}>
+              <div
+                className={styles.rstImage}
+                style={{backgroundImage: `url(${rst.yelp_image})`}}
+              />
+            </div>
+          </div>
+        }
+        {rst ? 
+          <div className={styles.rstInnerWrapper}>
+            <div className={styles.rstInner}> 
+              <div className={styles.rstInfo}>
+                <div className={styles.rstName}>
+                  {rst.name}
+                  <Rating 
+                    size="large"
+                    rating={rst.rating}
+                    readOnly={true}
                   />
                 </div>
-            </div>
-        </div> 
-        }
-        <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 0 ? "" : "innerRight-show"}`}>
-          <div className="innerRightBlock">
+                <div className={styles.rstContact}>
+                  <div>
+                    {rst.phone}
+                  </div>
+                  <div>
+                    {rst.location}
+                  </div>
+                </div>   
+                <div className={styles.rstStats}>
+                  <span>Likes {rst.option_count}</span> 
+                  <span>Options {rst.option_count}</span> 
+                </div>        
+                {rst.categories && rst.categories.map((item) => 
+                  <span className={styles.rstCategory} style={{display: "flex", alignItems: "center"}}>
+                      <Avatar
+                        variant="square"
+                        src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${item.category.api_label}.png`}
+                      />
+                      {item.category.label}
+                  </span>
+                )}
+                <span >
+                  {prices[rst.price]}
+                </span>
 
+                <div className={styles.rstMap} style={this.state.isMobile ? {height: 350} : {}}>
+                    {rst.latitude && <StaticMap
+                      location={{
+                        latitude: rst.latitude,
+                        longitude: rst.longitude,
+                      }}
+                      notLoad
+                    />
+                    }
+                </div>
+              </div>
+            </div>
+            <div className={styles.rstReviewsSection}>
+              <div className={styles.rstReviewsHeader}>
+                Reviews({rst.review_count})
+                <Button onClick={this.openFormModal} color="primary" variant="contained">
+                  Add Review
+                </Button>
+              </div>
               <RestaurantThread
+                authenticated={this.props.authenticated}
                 restaurant={rst}
                 reviews={this.state.reviews}
               />
+            </div>
           </div>
-        </div>
+          :
+          <div>
+          </div>
+        }
         {this.state.reviewForm && (
           <RestaurantReviewForm
             restaurant={rst}
@@ -180,8 +185,14 @@ class Restaurant extends Component {
           </div>
         }
       </div>
-    );
+    )
   }
 }
 
-export default Restaurant;
+const mapStateToProps = state => {
+  return {
+    authenticated: state.user.authenticated
+  }
+}
+
+export default connect(mapStateToProps)(Restaurant);

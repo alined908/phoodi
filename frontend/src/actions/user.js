@@ -93,6 +93,41 @@ export const refreshToken = (dispatch) => {
   return freshTokenPromise;
 };
 
+export const handleEmailChange = (values) => async dispatch =>{
+  try {
+    const response = await axiosClient.post(
+      `/auth/users/set_email/`,
+      values,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    const oldUser = JSON.parse(localStorage.getItem('user'))
+    const newUser = {...oldUser, email: values.new_email}
+    localStorage.setItem('user', JSON.stringify(newUser))
+
+    return Promise.all([
+      dispatch({type: types.CHANGE_EMAIL, payload: values.new_email}),
+      dispatch({type: types.ADD_GLOBAL_MESSAGE,payload: { type: "success", message: "Successfully saved email." }})
+    ])
+    
+  } catch(e) {
+    console.log(e.response);
+    let message;
+
+    if (e.response.data.new_email) {
+      message = e.response.data.new_email[0];
+    } else if (e.response.data.non_field_errors) {
+      message = e.response.data.non_field_errors[0];
+    } else {
+      message = "Something went wrong.";
+    }
+    dispatch({type: types.ADD_GLOBAL_MESSAGE,payload: { type: "error", message}})
+  }
+}
+
 export const removeSuccessMessage = () => {
   return {
     type: types.SIGNUP_SUCCESS,

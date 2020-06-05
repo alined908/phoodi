@@ -29,7 +29,7 @@ import {
 import { compose } from "redux";
 import {
   MeetupEventOption,
-  Map,
+  StaticMap,
   RestaurauntAutocomplete,
   MeetupEventForm,
 } from "../components";
@@ -378,7 +378,7 @@ class MeetupEvent extends Component {
           </div>
           <div className={`${styles.chosenMap} elevate`}>
             <div className={styles.mapWrapper}>
-              <Map location={position} />
+              <StaticMap location={position} />
             </div>
           </div>
         </div>

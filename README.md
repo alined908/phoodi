@@ -104,31 +104,28 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Add location search bar to food search
 - [x] Search page design + flow + logic
 - [x] Handle Restaurant Hours logic
-
-## Todo Authentication
-- [ ] Reconfigure frontend authentication logic (no signup needed to see content)
-- [ ] Websocket Authentication Flow
+- [x] Reconfigure frontend authentication logic (no signup needed to see content)
+- [x] Redesign reviews thread layout
+- [x] profile private meetup, meetup public
+- [x] Update user when email changes
+- [ ] Adopt nicer design of display rating
+- [ ] Filter reviews by new/top/(top weighted by new) 
 
 ## Todo Features
-- [ ] Redesign reviews thread layout
-- [ ] Filter reviews by new/top/(top weighted by new) 
 - [ ] Complete admin functionality for meetup member
-- [ ] User's top restaurants list (by city?, map with markers and fly functionality)
-
-## Todo Other
-- [ ] Test Notifications + search
-- [ ] Fix preferences swapping lag
-- [ ] Update user when email changes
-- [ ] Eliminate user_id from preferences api calls
 
 ## Todo General
+- [ ] Websocket Authentication Flow
+- [ ] Test Notifications + search
 - [ ] Skeleton loading where applicable
-- [ ] Properly document and refactor codebase
+- [ ] Swagger API
 - [ ] Move signals to inside models or Set up celery for asynchronous job processing (convert signals to create task for celery)
 
 -------------------------------------------------------
 
 ## Todo Later
+- [ ] Properly document and refactor codebase
+- [ ] User's top restaurants list (by city?, map with markers and fly functionality)
 - [ ] Add calendar of meetups
 - [ ] Use httpOnly cookies for tokens
 - [ ] Notification Bar on Top right of navbar
@@ -142,6 +139,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] Learn more about web application security (XSS, CSRF, SQL injection, MITM)
 - [ ] User Reputation system
 - [ ] Add capacity to meetup
+- [ ] Fix preferences swapping lag
 
 ## Todo Later (Chat)
 - [ ] Edit chat messages

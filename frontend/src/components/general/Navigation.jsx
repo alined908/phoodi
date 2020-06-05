@@ -1,22 +1,17 @@
-import React, {Component} from "react";
+import React from "react";
 import {
   Button,
   CssBaseline,
   Typography,
   Divider,
-  IconButton,
   ListItemAvatar,
   Popper,
   ClickAwayListener,
   Avatar,
-  List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Fade,
   Grow,
-  Menu,
-  MenuItem,
   MenuList
 } from "@material-ui/core";
 import {
@@ -28,8 +23,6 @@ import {
   PermContactCalendar as PermContactCalendarIcon,
   ExitToApp,
   EventNote as EventNoteIcon,
-  Category as CategoryIcon,
-  Restaurant as RestaurantIcon,
 } from "@material-ui/icons";
 import { Link, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
@@ -115,6 +108,15 @@ const Navigation = props => {
               </Button>
             </Link>
           )}
+          <span style={{marginRight: "2rem"}}>
+            {authenticated &&
+              <Link to="/meetups">
+                <Button color="primary">
+                  Find Meetups
+                </Button>
+              </Link>
+            }
+          </span>
           {authenticated && (
             <div ref={anchorRef} className={styles.dropDownControl} onClick={handleToggle}>
               <Avatar className={styles.userProfile} src={user.avatar} >
@@ -173,7 +175,7 @@ const Navigation = props => {
                           />
                         </ListItem>
                       </Link>
-                      <Link to="/meetups"  onClick={handleClose}>
+                      <Link to="/meetups?type=private"  onClick={handleClose}>
                         <ListItem button key="Meetups">
                           <ListItemIcon>
                             <LiveUpdatingBadge

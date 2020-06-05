@@ -1,60 +1,90 @@
 .thread {
     display:flex;
     justify-content: center;
-    padding: 1rem;
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
     flex-direction: column;
+}
 
+.reviewWrapper {
+    border-bottom: var(--border-separator);
+}
+
+.review {
+    display: flex;
+    background-color: white;
+    padding: 1rem 1rem;
 }
 
 .comment {
+    display: flex;
     background-color: white;
-    margin: 1rem 0;
-    padding: .5rem 1rem;
-    box-shadow: var(--shadow-0);
+    padding: 1rem 1rem;
 }
 
-.commentTop {
+.commentLeft {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    margin-right: .3rem;
 }
 
-.commentTopLeft {
-    display: flex;
-    align-items: center;
+.commentRight {
+    margin-left: auto;
 }
 
-.commentUser {
-    margin-left: 15px;
+.reviewRating {
+    margin-top: .25rem;
+}
+
+.commentUser{
     display: flex;
     align-items: center;
+    margin-bottom: .25rem;
+}
+
+.commentName{
+    margin-right: 5px;
 }
 
 .commentDate {
-    display: flex;
-    align-items: center;
-    margin-left: 10px;
+    font-family: "Open Sans", sans-serif;
     color: var(--grey-text);
     font-size: .7rem;
+    font-weight: 500;
+}
+
+.commentLikes {
+    margin-left: .5rem;
+    font-family: "Open Sans", sans-serif;
+    color: var(--grey-text);
+    font-size: .7rem;
+}
+.commentActions{
+    display: flex;
+    align-items: center;
+}
+
+.commentActionButton {
+    font-family: "Open Sans", sans-serif !important;
+    color: var(--grey-text) !important;
+    font-size: .65rem !important;
 }
 
 .commentVote{ 
     margin-left: .25rem;
     display: flex;
-    flex-direction: column;
     align-items: center;
 }
 
 .commentMiddle {
-    padding-top: .5rem;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    padding-right: 1rem;
 }
 
 .commentText {
-    margin-left: 15px;
+    word-break: break-all;
     font-weight: 400;
     font-family: "Roboto"
 }

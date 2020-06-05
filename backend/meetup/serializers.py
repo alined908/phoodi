@@ -250,9 +250,15 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class VoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vote
+        fields = "__all__"
+
 class ReviewSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField("_get_children")
     user = serializers.SerializerMethodField("_get_user")
+    vote = serializers.SerializerMethodField("_get_vote")
 
     def _get_user(self, obj):
         user = obj.user
@@ -263,6 +269,18 @@ class ReviewSerializer(serializers.ModelSerializer):
         top = Comment.objects.filter(review=obj, parent=None)
         serializer = CommentSerializer(top, many=True)
         return serializer.data
+
+    def _get_vote(self, obj):
+        user = self.context.get("user")
+        try:
+            vote = Vote.objects.get(
+                user = user, 
+                content_type = obj.get_content_type(), 
+                object_id = obj.id
+            )
+            return vote.value
+        except ObjectDoesNotExist:
+            return None
 
     class Meta:
         model = Review

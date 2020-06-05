@@ -50,21 +50,14 @@ class Body extends Component {
             path="/register"
             render={(props) => <RegisterPage {...props} type={"create"} />}
           />
-          <Route
-            path="/search"
-            component={SearchPage}
-          />
+          <Route path="/search" component={SearchPage}/>
+          <Route path="/restaurants/:uri" component={Restaurant} />
+          <Route path="/meetups" exact component={Meetups} />
           <AuthenticatedRoute path="/logout" component={LogoutPage} />
           <AuthenticatedRoute path="/meetups/:uri" component={MeetupWrapper} />
-          <Route path="/meetups" exact component={Meetups} />
           <AuthenticatedRoute path="/chat/:uri" component={Chat} />
           <AuthenticatedRoute path="/chat" exact component={Chat} />
-          <AuthenticatedRoute
-            path="/categories/:api_label"
-            component={Category}
-          />
           <AuthenticatedRoute path="/calendar" exact component={Calendar} />
-          <Route path="/restaurants/:uri" component={Restaurant} />
           <AuthenticatedRoute path="/friends" component={Friends} />
           <AuthenticatedRoute path="/invites" component={Invites} />
           <AuthenticatedRoute path="/settings" component={Settings} />

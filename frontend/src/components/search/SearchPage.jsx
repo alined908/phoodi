@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {axiosClient} from '../../accounts/axiosClient'
 import styles from '../../styles/search.module.css'
 import {Button, ButtonGroup, Slider, Avatar, Checkbox, FormControlLabel, Menu, MenuItem} from '@material-ui/core'
-import {Map, RestaurantCard, CategoryAutocomplete, Rating} from '../components'
+import {SearchMap, RestaurantCard, CategoryAutocomplete, Rating} from '../components'
 import {ExpandMore as ExpandMoreIcon} from '@material-ui/icons'
 import {Pagination, Skeleton} from '@material-ui/lab'
 import Geocode from "react-geocode";
@@ -618,7 +618,7 @@ class SearchPage extends Component {
                 </div>
                 <div className={styles.searchMap}>
                     {coordinates.latitude !== null && 
-                        <Map 
+                        <SearchMap 
                             indexOffset={this.state.filters.start}
                             markers={this.state.results}
                             zoom={11}

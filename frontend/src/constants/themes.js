@@ -56,11 +56,17 @@ export const MuiTheme = {
           fontFamily: "Lato",
           fontSize: "1.15rem",
           marginRight: 5,
-          boxShadow: "rgba(0, 0, 0, 0.2) 0px 3px 5px -1px, rgba(0, 0, 0, 0.14) 0px 6px 10px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;"
+          boxShadow: "var(--circular-shadow)"
         },
         square :{
             boxShadow: "none"
         }
+      },
+      MuiInputLabel:{
+          root: {
+              color: "var(--grey-text)",
+              fontSize: ".8rem",
+          }
       },
       MuiList:{
         padding: {
@@ -97,6 +103,11 @@ export const MuiTheme = {
         colorPrimary: {
           color: "black",
         }
+      },
+      MuiRating: {
+          icon: {
+            filter:  "drop-shadow( 1px 1px 1px rgba(0, 0, 0, .5))"
+          }
       },
       MuiChip: {
         root: {

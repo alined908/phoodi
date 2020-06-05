@@ -36,14 +36,22 @@ const marks = [
   { value: 25 },
 ];
 
+const parseURL = path => {
+  let params = new URLSearchParams(path)
+  params = Object.fromEntries(params)
+  return params
+}
+
 class Meetups extends Component {
+  
   constructor(props) {
     super(props);
+    const params = parseURL(props.location.search)
     this.state = {
       focusedInput: null,
       startDate: moment(),
       endDate: moment().add("7", "d"),
-      public: true,
+      public: params.type ? params.type === 'public' : true,
       newMeetupForm: false,
       entries: [],
       preferences: [],
@@ -73,7 +81,7 @@ class Meetups extends Component {
     ]);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     if (this.props.preferences !== this.state.preferences) {
       this.setState({
         preferences: this.props.preferences,
@@ -351,22 +359,14 @@ class Meetups extends Component {
                 </div>
               </div>
             </div>
-            
-            <div className="innerLeftHeaderBlockAction" style={{marginBottom: 0}}>
-              <div className="blockActionHeader">
-                Categories
-              </div>
-              <div className="blockActionContent">
-                <div className={`${styles.meetupsSearchBar} elevate-0`}>
-                  <CategoryAutocomplete
-                    fullWidth={true}
-                    size="small"
-                    entries={this.state.entries}
-                    handleClick={this.onTagsChange}
-                    label="Search Categories..."
-                  />
-                </div>
-              </div>
+            <div className={`${styles.meetupsSearchBar} elevate-0`}>
+              <CategoryAutocomplete
+                fullWidth={true}
+                size="small"
+                entries={this.state.entries}
+                handleClick={this.onTagsChange}
+                label="Search Categories..."
+              />
             </div>
             <div className="hr">
               Preferences
