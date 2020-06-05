@@ -10,6 +10,10 @@
     border-bottom: var(--border-separator);
 }
 
+.reviewWrapper:last-child{
+    border-bottom: 0;
+}
+
 .review {
     display: flex;
     background-color: white;

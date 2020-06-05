@@ -3,7 +3,7 @@ import { axiosClient } from "../../accounts/axiosClient";
 import { RestaurantThread, StaticMap, Rating, RestaurantReviewForm } from "../components";
 import { history } from "../MeetupApp";
 import {Info as InfoIcon, Create as CreateIcon, Comment as CommentIcon} from '@material-ui/icons'
-import {Tooltip, Avatar, Button, BottomNavigation, BottomNavigationAction, Fab} from '@material-ui/core'
+import {Tooltip, Avatar, Button, BottomNavigation, BottomNavigationAction, Fab, CircularProgress} from '@material-ui/core'
 import styles from '../../styles/restaurant.module.css';
 import {connect} from 'react-redux'
 
@@ -13,6 +13,8 @@ const prices = {
   3: '$$$',
   4: '$$$$'
 }
+
+const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 class Restaurant extends Component {
   constructor(props) {
@@ -29,6 +31,17 @@ class Restaurant extends Component {
   async componentDidMount() {
     const handler = (e) => this.setState({ isMobile: e.matches });
     window.matchMedia("(max-width: 768px)").addListener(handler);
+    this.callApi()
+  }
+
+  componentDidUpdate(prevProps){
+    if (prevProps.match.params.uri !== this.props.match.params.uri){
+      this.setState({restaurant: null})
+      this.callApi()
+    }
+  }
+
+  callApi = async () => {
     try {
       const [restaurant, reviews] = await Promise.all([
         axiosClient.get(
@@ -106,45 +119,84 @@ class Restaurant extends Component {
                     readOnly={true}
                   />
                 </div>
-                <div className={styles.rstContact}>
-                  <div>
-                    {rst.phone}
+                <div className={styles.rstSecondHeader}>
+                  <div className={styles.rstCategories}>       
+                    {rst.categories && rst.categories.map((item) => 
+                      <span className={styles.rstCategory} style={{display: "flex", alignItems: "center"}}>
+                          <Avatar
+                            className={styles.rstCategoryAvatar}
+                            variant="square"
+                            src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${item.category.api_label}.png`}
+                          />
+                          {item.category.label}
+                      </span>
+                    )}
+                    <span className={styles.rstPrice}>
+                      {prices[rst.price]}
+                    </span>
                   </div>
-                  <div>
-                    {rst.location}
-                  </div>
-                </div>   
-                <div className={styles.rstStats}>
-                  <span>Likes {rst.option_count}</span> 
-                  <span>Options {rst.option_count}</span> 
-                </div>        
-                {rst.categories && rst.categories.map((item) => 
-                  <span className={styles.rstCategory} style={{display: "flex", alignItems: "center"}}>
-                      <Avatar
-                        variant="square"
-                        src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${item.category.api_label}.png`}
-                      />
-                      {item.category.label}
-                  </span>
-                )}
-                <span >
-                  {prices[rst.price]}
-                </span>
-
-                <div className={styles.rstMap} style={this.state.isMobile ? {height: 350} : {}}>
-                    {rst.latitude && <StaticMap
+                  <div className={styles.rstStats}>
+                    <span className={styles.rstStat}>{rst.review_count} Reviews</span>
+                    <span className={styles.rstStat}>{rst.option_count} Likes </span> 
+                    <span className={styles.rstStat}>{rst.option_count} Meetups </span> 
+                  </div> 
+                </div>
+              </div>
+            </div>
+            <div className={styles.section}>
+              <div className={styles.sectionHeader}>
+                {`Contact & Hours`}
+              </div>
+              <div className={styles.rstMeta}>
+                <div className={styles.rstMap}>
+                  <StaticMap
                       location={{
                         latitude: rst.latitude,
                         longitude: rst.longitude,
                       }}
                       notLoad
                     />
-                    }
+                </div>
+                <div className={styles.rstContact}>
+                  <div>
+                    <div className={styles.subHeader}>
+                      Hours
+                    </div>
+                    <div className={styles.rstHours}>
+                      {days.map((day) => 
+                        <span className={styles.rstHour}>
+                          <span className={styles.rstDay}>{day} </span>
+                          {rst.hours[day].map((block) => 
+                            <span>
+                              {block}
+                            </span>
+                          )}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <div className={styles.subHeader}>
+                      Location
+                    </div>
+                    <div className={styles.rstLocation}>
+                      <div>{rst.address1}</div> 
+                      <div>{rst.city}, {rst.state}</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className={styles.subHeader}>
+                      Phone
+                    </div>
+                    <div>
+                      {rst.phone}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className={styles.rstReviewsSection}>
-              <div className={styles.rstReviewsHeader}>
+            <div className={styles.section}>
+              <div className={styles.sectionHeader}>
                 Reviews({rst.review_count})
                 <Button onClick={this.openFormModal} color="primary" variant="contained">
                   Add Review
@@ -158,7 +210,8 @@ class Restaurant extends Component {
             </div>
           </div>
           :
-          <div>
+          <div className="loading">
+            <CircularProgress size={30}/>
           </div>
         }
         {this.state.reviewForm && (

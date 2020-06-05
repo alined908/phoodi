@@ -108,8 +108,8 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Redesign reviews thread layout
 - [x] profile private meetup, meetup public
 - [x] Update user when email changes
-- [ ] Adopt nicer design of display rating
 - [ ] Filter reviews by new/top/(top weighted by new) 
+- [ ] Adopt nicer design of display rating
 
 ## Todo Features
 - [ ] Complete admin functionality for meetup member

@@ -20,7 +20,7 @@
     height: 300px; /* or other desired height */
     overflow: hidden;
     position: relative;
-    box-shadow: var(--shadow-2);
+    box-shadow: var(--shadow-0);
 }
 
 .rstImage{
@@ -36,13 +36,15 @@
 .rstInnerWrapper{
     display: flex;
     width: 100%;
+    flex-direction: column;
     justify-content: space-between;
+    max-width: 800px;
+    padding: 2rem 0;
 }
 
 .rstInner{
     display: flex;
     justify-content: center;
-    padding: 2rem 0;
     flex: 4;
 }
 
@@ -51,7 +53,8 @@
     flex-direction: column;
     align-self: flex-end;
     height: 100%;
-    width: 80%;
+    width: 100%;
+    padding-bottom: 2rem;
 }
 
 .rstName {
@@ -59,8 +62,13 @@
     justify-content: space-between;
     align-items: center;
     font-family: "Roboto";
-    font-size: 2rem;
-    margin-bottom: 1rem;
+    font-size: 2.3rem;
+}
+
+.rstSecondHeader {
+    display: flex;
+    margin-top: .25rem;
+    justify-content: space-between;
 }
 
 .rstContact, .rstStats {
@@ -69,23 +77,123 @@
     color: var(--grey-text);
 }
 
-.rstCategory{
+.rstStats{
+    display: flex;
+    font-size: .75rem;
+}
 
+.rstStat::after{
+    content: "\00a0•\00a0";
+    color: black;
+}
+
+.rstStat:last-child::after{
+    content: none;
+    color: black;
+}
+
+.section {
+    padding: 2rem 0;
+    border-top: var(--border-separator);
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    font-family: "Roboto", sans-serif;
+}
+
+.rstMeta{
+    display: flex;
+    width: 100%;
+}
+
+.rstMap{
+    width: 60%;
+    height: 330px;
+    box-shadow: var(--shadow-0);
+}
+
+.rstContact {
+    display: flex;
+    flex-direction: column;
+    margin-left: 2rem;
+    justify-content: space-between;
+}
+
+.rstHours{
+    display: flex;
+    flex-direction: column;
+}
+
+.rstHour {
+    display: flex;
+    justify-content: space-between;
+    min-width: 200px;
+    font-weight: 400;
+    padding-bottom: .15rem;
+    color: var(--grey-text);
+    font-size: .8rem;
+}
+
+.rstDay {
+    font-size: .8rem;
+    font-weight: 600;
+    color: black;
+}
+
+.subHeader{
+    color: black;
+    font-size: 1rem;
+    border-bottom: var(--border-separator);
+    margin-bottom: .25rem;
+}
+
+.rstCategories {
+    display: flex;
+    align-items: center;
+}
+
+.rstCategories .rstPrice:before{
+    content: "\00a0•\00a0";
+    color: black;
+}
+
+.rstPrice{
+    color: grey;
+    font-size: .8rem;
+    font-weight: 500;
+}
+
+.rstCategory {
+    display: flex;
+    padding: 2px 5px;
+  font-size: 0.65rem;
+  border-radius: 4px;
+  text-transform: capitalize;
+  margin: 0.15rem 0.15rem;
+  background-color: var(--light-blue);
+  border: 1px solid #eeeeef;
+  white-space:nowrap;
+  max-width: 180px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+  color: rgba(0,0,0,.9) ;
+}
+
+.rstCategoryAvatar{
+    width: 20px !important;
+    height: 20px !important;
 }
 
 .rstReviewsSection {
     display: flex;
     flex-direction: column;
-    border-left: var(--border-separator);
+    border-top: var(--border-separator);
     margin-top: 2rem;
-    max-width: 650px;
-    padding: 0 2rem;
-}
-
-.rstReviewsHeader {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 1rem;
-    font-size: 1.1rem;
-    border-bottom: var(--border-separator);
+    padding-top: 1rem;
 }

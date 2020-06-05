@@ -225,7 +225,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
         return serializer.data
 
     def _get_hours(self, obj):
-        return {}
+        return obj.hours_json
 
     class Meta:
         model = Restaurant

@@ -115,6 +115,23 @@ class Restaurant(models.Model):
 
         return mapping
 
+    @property
+    def hours_json(self):
+        hours_set = self.hours.all().order_by('day')
+        mapping = {}
+
+        for hours in hours_set:
+            day = RestaurantHours.DESERIALIZED_DAY_CHOICES[hours.day]
+            hours_representation = '%s - %s' % (hours.open_time.strftime('%I:%M %p'), hours.close_time.strftime('%I:%M %p'))
+
+            if day in mapping:
+                mapping[day].append(hours_representation)
+            else:
+                
+                mapping[day] = [hours_representation]
+
+        return mapping
+
 class RestaurantHours(models.Model):
 
     DAY_CHOICES = [
