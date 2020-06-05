@@ -108,22 +108,20 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] Redesign reviews thread layout
 - [x] profile private meetup, meetup public
 - [x] Update user when email changes
-- [ ] Filter reviews by new/top/(top weighted by new) 
+- [x] Filter reviews by new/top/(top weighted by new) 
 - [ ] Adopt nicer design of display rating
 
-## Todo Features
-- [ ] Complete admin functionality for meetup member
-
 ## Todo General
+- [ ] Swagger API
 - [ ] Websocket Authentication Flow
 - [ ] Test Notifications + search
 - [ ] Skeleton loading where applicable
-- [ ] Swagger API
 - [ ] Move signals to inside models or Set up celery for asynchronous job processing (convert signals to create task for celery)
 
 -------------------------------------------------------
 
 ## Todo Later
+- [ ] Complete admin functionality for meetup member
 - [ ] Properly document and refactor codebase
 - [ ] User's top restaurants list (by city?, map with markers and fly functionality)
 - [ ] Add calendar of meetups

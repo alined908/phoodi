@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { axiosClient } from "../../accounts/axiosClient";
 import { RestaurantThread, StaticMap, Rating, RestaurantReviewForm } from "../components";
 import { history } from "../MeetupApp";
-import {Info as InfoIcon, Create as CreateIcon, Comment as CommentIcon} from '@material-ui/icons'
-import {Tooltip, Avatar, Button, BottomNavigation, BottomNavigationAction, Fab, CircularProgress} from '@material-ui/core'
+import {Info as InfoIcon, Create as CreateIcon, Comment as CommentIcon, ExpandMore as ExpandMoreIcon} from '@material-ui/icons'
+import {Tooltip, Avatar, Button, BottomNavigation, Menu, MenuItem, BottomNavigationAction, Fab, CircularProgress} from '@material-ui/core'
 import styles from '../../styles/restaurant.module.css';
 import {connect} from 'react-redux'
 
@@ -14,17 +14,31 @@ const prices = {
   4: '$$$$'
 }
 
+const sorts = {
+  'vote_score': 'Score',
+  'created_at': 'Newest First'
+}
+
+const parseURL = path => {
+  let params = new URLSearchParams(path)
+  params = Object.fromEntries(params)
+  return params
+}
+
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 class Restaurant extends Component {
   constructor(props) {
     super(props);
+    const params = parseURL(props.location.search)
     this.state = {
       restaurant: null,
       reviews: [],
       showReviewForm: false,
       isMobile: window.matchMedia("(max-width: 768px)").matches,
-      mobileTabIndex: 0
+      mobileTabIndex: 0,
+      reviewSort: params.sort ? params.sort : 'vote_score',
+      anchorEl: null
     };
   }
 
@@ -35,8 +49,14 @@ class Restaurant extends Component {
   }
 
   componentDidUpdate(prevProps){
+    console.log(prevProps)
+    console.log(this.props)
     if (prevProps.match.params.uri !== this.props.match.params.uri){
       this.setState({restaurant: null})
+      this.callApi()
+    }
+
+    if(prevProps.location.search !== this.props.location.search){
       this.callApi()
     }
   }
@@ -53,7 +73,7 @@ class Restaurant extends Component {
           }
         ),
         axiosClient.get(
-          `/api/restaurants/${this.props.match.params.uri}/reviews/`,
+          `/api/restaurants/${this.props.match.params.uri}/reviews/?sort=${this.state.reviewSort}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -75,6 +95,30 @@ class Restaurant extends Component {
   openFormModal = () => {
     this.setState({ reviewForm: !this.state.reviewForm });
   };
+
+  handleFilterChange = () => {
+    const params = {
+      sort: this.state.reviewSort
+    }
+    const urlify = new URLSearchParams(params).toString()
+    this.props.history.push(`/restaurants/${this.state.restaurant.url}?${urlify}`)
+  }
+
+  handleMenuClick = (e) => {
+      this.setState({
+          anchorEl: e.currentTarget
+      })
+  }
+
+  handleMenuClose = (e) => {
+    this.setState({
+        anchorEl: null
+    })
+  }
+
+  handleSort = (sort) => {
+      this.setState({reviewSort: sort}, () => this.handleFilterChange())
+  }
 
   handleMobileTabChange = (e, newValue) => {
     this.setState({mobileTabIndex: newValue})
@@ -158,23 +202,25 @@ class Restaurant extends Component {
                     />
                 </div>
                 <div className={styles.rstContact}>
-                  <div>
-                    <div className={styles.subHeader}>
-                      Hours
+                  {Object.keys(rst.hours).length > 0 && 
+                    <div>
+                      <div className={styles.subHeader}>
+                        Hours
+                      </div>
+                      <div className={styles.rstHours}>
+                        {days.map((day) => 
+                          <span className={styles.rstHour}>
+                            <span className={styles.rstDay}>{day} </span>
+                            {rst.hours[day].map((block) => 
+                              <span>
+                                {block}
+                              </span>
+                            )}
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    <div className={styles.rstHours}>
-                      {days.map((day) => 
-                        <span className={styles.rstHour}>
-                          <span className={styles.rstDay}>{day} </span>
-                          {rst.hours[day].map((block) => 
-                            <span>
-                              {block}
-                            </span>
-                          )}
-                        </span>
-                      )}
-                    </div>
-                  </div>
+                  }
                   <div>
                     <div className={styles.subHeader}>
                       Location
@@ -197,10 +243,41 @@ class Restaurant extends Component {
             </div>
             <div className={styles.section}>
               <div className={styles.sectionHeader}>
-                Reviews({rst.review_count})
-                <Button onClick={this.openFormModal} color="primary" variant="contained">
-                  Add Review
-                </Button>
+                <div className={styles.sort}>
+                  <div className={styles.reviewHeader}>
+                    Reviews
+                    <Button onClick={this.openFormModal} color="primary" variant="contained">
+                      Add Review
+                    </Button>
+                  </div>
+                  <span className={styles.rstReviewSort}>
+                    Sort:&nbsp;
+                    <span onClick={this.handleMenuClick} className={styles.sortMenu}>
+                      {sorts[this.state.reviewSort]} <ExpandMoreIcon fontSize="inherit" color="primary"/>
+                    </span>
+                  </span>
+                  <Menu
+                    anchorEl={this.state.anchorEl}
+                    open={Boolean(this.state.anchorEl)}
+                    onClose={this.handleMenuClose}
+                    getContentAnchorEl={null}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                  >
+                    <MenuItem onClick={(e) => {this.handleSort("vote_score");this.handleMenuClose(e)}}>
+                        Highest Score
+                    </MenuItem>
+                    <MenuItem onClick={(e) => {this.handleSort("created_at");this.handleMenuClose(e)}}>
+                        Newest First
+                    </MenuItem>
+                  </Menu>
+                </div>
               </div>
               <RestaurantThread
                 authenticated={this.props.authenticated}

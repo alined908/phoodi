@@ -53,6 +53,7 @@ class ReviewListView(APIView):
 
     def get(self, request, *args, **kwargs):
         restaurant_url = kwargs['uri']
+        sort = request.GET.get('sort', 'vote_score')
         user = request.user
 
         try:
@@ -61,7 +62,7 @@ class ReviewListView(APIView):
             return Response({"error": "Restaurant does not exist."}, status=404)
 
         serializer = ReviewSerializer(
-            restaurant.reviews.all().order_by("-vote_score"), many=True, context={"user": user}
+            restaurant.reviews.all().order_by("-%s" % sort), many=True, context={"user": user}
         )
         return Response(serializer.data)
 
