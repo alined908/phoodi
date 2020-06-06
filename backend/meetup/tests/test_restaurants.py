@@ -5,6 +5,7 @@ from rest_framework.test import APIClient
 from django.contrib.auth.hashers import make_password
 from django.test import TestCase
 import json
+from notifications.models import Notification
 
 client = APIClient()
 up = VoteChoice.UP.value
@@ -110,6 +111,14 @@ class ReviewTest(TestCase):
         response = client.get("/api/restaurants/%s/reviews/%s/" % (self.restaurant.url, 100))
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.data, {"error": "Review does not exist."})
+
+    def test_review_creates_user_activity(self):
+        user = User.objects.get(pk=1)
+        notifications = Notification.objects.filter(actor_object_id=user.id, description="user_activity")
+        self.assertEqual(notifications.count(), 1)
+        self.create_review(review_text)
+        notifications = Notification.objects.filter(actor_object_id=self.user.id, description="user_activity")
+        self.assertEqual(notifications.count(), 2)
 
     def test_text_must_be_50_characters(self):
         response = self.create_review("too short")

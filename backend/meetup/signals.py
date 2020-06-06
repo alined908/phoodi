@@ -1,6 +1,7 @@
 from meetup.models import *
 from notifications.models import Notification
 from channels.layers import get_channel_layer
+from django.db import IntegrityError
 from django.db.models.signals import post_save, pre_save, pre_delete
 from django.dispatch import receiver
 from asgiref.sync import async_to_sync
@@ -176,16 +177,8 @@ def handle_delete_member(sender, instance, **kwargs):
         "meetup_%s" % meetup.uri, {"type": "meetup_event", "meetup_event": content}
     )
 
-    # Create User Activity --> Ex. User Left Meetuo
     # Create Meetup Activity --> Ex.User Left Meetup or Member Kicked Member
     if user == instance.user:
-        notify.send(
-            sender=user,
-            recipient=user,
-            action_object=meetup,
-            description="user_activity",
-            verb="left",
-        )
         message = "left the meetup."
     else:
         member = MeetupMember.objects.get(user=user, meetup=meetup)
@@ -194,21 +187,16 @@ def handle_delete_member(sender, instance, **kwargs):
             instance.user.last_name,
         )
 
-    try:
-        room = ChatRoom.objects.get(uri=meetup.uri)
-    except:
-        return
-        msg = ChatRoomMessage.objects.create(
-            sender=user, message=message, room=room, is_notif=True
-        )
-
-        # Send Meetup Activity To Meetup Channel
-        content = {"command": "new_message", "message": MessageSerializer(msg).data}
-
-        async_to_sync(channel_layer.group_send)(
-            "chat_%s" % meetup.uri, {"type": "chat_message", "message": content}
-        )
-
+    room = ChatRoom.objects.get(uri=meetup.uri)
+    msg = ChatRoomMessage.objects.create(
+        sender=user, message=message, room=room, is_notif=True
+    )
+    
+    #Send Meetup Activity To Meetup Channel
+    content = {"command": "new_message", "message": MessageSerializer(msg).data}
+    async_to_sync(channel_layer.group_send)(
+        "chat_%s" % meetup.uri, {"type": "chat_message", "message": content}
+    )
 
 @receiver(pre_save, sender=MeetupEvent)
 def handle_generate_options_on_meetup_event_field_change(sender, instance, **kwargs):

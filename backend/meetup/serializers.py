@@ -34,7 +34,7 @@ class UserSerializerWithActivity(serializers.ModelSerializer):
     def _get_activity(self, obj):
         notifications = Notification.objects.filter(
             actor_object_id=obj.id, description="user_activity"
-        ).exclude()[:25]
+        )[:25]
         serializer = NotificationSerializer(notifications, many=True)
         return serializer.data
 

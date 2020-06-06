@@ -9,7 +9,7 @@ class ChatRoom(models.Model):
     friendship = models.ForeignKey(
         Friendship, null=True, blank=True, on_delete=models.CASCADE
     )
-    meetup = models.ForeignKey(Meetup, null=True, blank=True, on_delete=models.CASCADE)
+    meetup = models.ForeignKey(Meetup, null=True, blank=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=200, null=True, blank=True)
     uri = models.URLField(default=generate_unique_uri)
     timestamp = models.DateTimeField(auto_now_add=True)

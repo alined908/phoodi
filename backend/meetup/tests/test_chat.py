@@ -4,6 +4,7 @@ from meetup.serializers import (
     ChatRoomMemberSerializer,
     MessageSerializer,
 )
+from notifications.models import Notification
 from django.test import TestCase
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
@@ -102,3 +103,14 @@ class ChatTest(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(self.room.messages.count(), 1)
+
+    def test_ChatRoomMessage_create_push_notification(self):
+        valid_payload = {"message": "hello"}
+        client.post(
+            "/api/chats/" + self.room.uri + "/messages/",
+            data=json.dumps(valid_payload, default=str),
+            content_type="application/json",
+        )
+
+        notifications = self.user2.notifications.filter(description="chat_message")
+        self.assertEqual(notifications.count(), 1)

@@ -16,7 +16,7 @@ from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 
 class MeetupListView(APIView):
@@ -144,22 +144,23 @@ class MeetupEventsListView(APIView):
             request.data["entries"],
             request.data["random"],
         )
-        event = MeetupEvent.objects.create(
-            creator=creator,
-            meetup=meetup,
-            start=start,
-            end=end,
-            title=title,
-            entries=entries,
-            distance=distance,
-            price=price,
-            random=random,
-        )
+        try:
+            event = MeetupEvent.objects.create(
+                creator=creator,
+                meetup=meetup,
+                start=start,
+                end=end,
+                title=title,
+                entries=entries,
+                distance=distance,
+                price=price,
+                random=random,
+            )
+            serializer = MeetupEventSerializer(event)
+            return Response({"meetup": uri, "event": {event.id: serializer.data}})
+        except ValidationError as e:
+            return Response({"errors": e.messages}, status=404)
         
-        serializer = MeetupEventSerializer(event)
-
-        return Response({"meetup": uri, "event": {event.id: serializer.data}})
-
 
 class MeetupEventsView(APIView):
     permissions = [permissions.IsAuthenticated]

@@ -230,7 +230,7 @@ class MeetupEvent(models.Model):
                 "latitude": option["coordinates"]["latitude"],
                 "longitude": option["coordinates"]["longitude"],
                 "price": self.SERIALIZED_PRICE_CHOICES[option.get("price", "$$")],
-                "phone": option["display_phone"],
+                "phone": option.get('display_phone', '818-240-4200'),
                 "location": " ".join(option["location"]["display_address"]),
                 "categories": json.dumps(option["categories"]),
                 "city": option["location"]["city"],

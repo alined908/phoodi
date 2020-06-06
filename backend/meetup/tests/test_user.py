@@ -1,4 +1,4 @@
-from meetup.models import User, UserSettings, Category, Friendship, CategoryPreference
+from meetup.models import User, UserSettings, Category, Friendship, CategoryPreference, ChatRoom
 from meetup.serializers import (
     UserSerializer,
     UserSettingsSerializer,
@@ -7,6 +7,7 @@ from meetup.serializers import (
     CategoryPreferenceSerializer,
     FriendshipSerializer,
 )
+from notifications.models import Notification
 from rest_framework import status
 from rest_framework.test import APIClient
 from django.contrib.auth.hashers import make_password
@@ -139,7 +140,7 @@ class UserTest(TestCase):
             },
         )
         self.assertEqual(response.status_code, status.HTTP_422_UNPROCESSABLE_ENTITY)
-        self.assertEqual(response.data, {"error": "Email already exists"})
+        self.assertEqual(response.data, {"error": ['User with this Email already exists.']})
 
     def test_UserView_PATCH_valid_payload(self):
         response = client.patch(
@@ -222,6 +223,7 @@ class UserFriendsTest(TestCase):
         self.friendship13 = Friendship.objects.create(
             creator=self.user, friend=self.user3
         )
+        self.valid_payload = {"email": "test3@gmail.com"}
         client.force_authenticate(user=self.user)
 
     def test_UserFriendsView_GET(self):
@@ -245,11 +247,10 @@ class UserFriendsTest(TestCase):
         self.assertEqual(response.data, serializer.data)
 
     def test_UserFriendsView_POST_valid(self):
-        valid_payload = {"email": "test3@gmail.com"}
         client.force_authenticate(user=self.user2)
         response = client.post(
             "/api/users/" + str(self.user2.id) + "/friends/",
-            data=json.dumps(valid_payload, default=str),
+            data=json.dumps(self.valid_payload, default=str),
             content_type="application/json",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -276,6 +277,24 @@ class UserFriendsTest(TestCase):
         self.assertEqual(
             Friendship.objects.filter(creator=self.user, friend=self.user3).count(), 0
         )
+
+    def test_Friendship_create_chatroom(self):
+        self.assertEqual(ChatRoom.objects.all().count(), 2)
+        last_room = ChatRoom.objects.last()
+        members = [member.user for member in last_room.members.all()]
+        self.assertIn(self.user, members)
+        self.assertIn(self.user3, members)
+
+    def test_Friendship_create_user_activity_and_push_notification(self):
+        notifications_1 = self.user.notifications.filter(description="user_activity")
+        notifications_2 = self.user2.notifications.filter(description="user_activity")
+        self.assertEqual(notifications_1.count(), 2)
+        self.assertEqual(notifications_2.count(), 1)
+
+        push_notifs_1 = self.user.notifications.filter(description="friend")
+        push_notifs_2 = self.user2.notifications.filter(description="friend")
+        self.assertEqual(push_notifs_1.count(), 2)
+        self.assertEqual(push_notifs_2.count(), 1)
 
     def test_get_friends_by_category(self):
         friends_by_category = self.user.get_friends_by_category(self.dessert)
