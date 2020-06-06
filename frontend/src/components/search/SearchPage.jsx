@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import {axiosClient} from '../../accounts/axiosClient'
 import styles from '../../styles/search.module.css'
-import {Button, ButtonGroup, Slider, Avatar, Checkbox, FormControlLabel, Menu, MenuItem} from '@material-ui/core'
-import {SearchMap, RestaurantCard, CategoryAutocomplete, Rating} from '../components'
+import {Slider, Avatar, Checkbox, FormControlLabel, Menu, MenuItem} from '@material-ui/core'
+import {SearchMap, RestaurantCard, CategoryAutocomplete, Rating, SkeletonRestaurant, Prices} from '../components'
 import {ExpandMore as ExpandMoreIcon} from '@material-ui/icons'
-import {Pagination, Skeleton} from '@material-ui/lab'
+import {Pagination} from '@material-ui/lab'
 import Geocode from "react-geocode";
 import {connect} from 'react-redux'
 import { getPreferences } from "../../actions";
@@ -81,96 +81,6 @@ const convertPrices = (prices) => {
     }
 
     return priceBools
-}
-
-class Prices extends Component {
-
-    render () {
-        return (
-            <div className={styles.priceFilter}>
-                <ButtonGroup color="primary">
-                    <Button
-                        variant={
-                            this.props.prices[0] ? "contained" : "outlined"
-                        }
-                        onClick={() => this.props.onClick(0)}
-                    >
-                        $
-                    </Button>
-                    <Button
-                        variant={
-                            this.props.prices[1] ? "contained" : "outlined"
-                        }
-                        onClick={() => this.props.onClick(1)}
-                    >
-                        $$
-                    </Button>
-                    <Button
-                        variant={
-                            this.props.prices[2] ? "contained" : "outlined"
-                        }
-                        onClick={() => this.props.onClick(2)}
-                    >
-                        $$$
-                    </Button>
-                    <Button
-                        variant={
-                            this.props.prices[3] ? "contained" : "outlined"
-                        }
-                        onClick={() => this.props.onClick(3)}
-                    >
-                        $$$$
-                    </Button>
-                </ButtonGroup>
-            </div>
-        )
-    }
-}
-
-class SkeletonRestaurant extends Component {
-    render() {
-        return (
-            <div className={styles.skeletonRestaurant}>
-                <div className={styles.skeletonImage}>
-                    <Skeleton animation="wave" variant="rect" height='100%'/>
-                </div>
-                <div className={styles.skeletonSide}>
-                    <div className={styles.skeletonTop}>
-                        <div className={styles.skeletonInfo}>
-                            <div className={styles.skeletonName}>
-                                <Skeleton animation="wave" variant="rect" height='100%'/>
-                            </div>
-                            <div className={styles.skeletonRating}>
-                                <Skeleton animation="wave" variant="rect" height='100%'/>
-                            </div>
-                        </div>
-                        <div className={styles.skeletonContact}>
-                            <div className={styles.skeletonPhone}>
-                                <Skeleton animation="wave" variant="rect" height='100%'/>
-                            </div>
-                            <div className={styles.skeletonAddress}>
-                                <Skeleton animation="wave" variant="rect" height='100%'/>
-                            </div>
-                            <div className={styles.skeletonCity}>
-                                <Skeleton animation="wave" variant="rect" height='100%'/>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={styles.skeletonMiddle}>
-                        <Skeleton animation="wave" variant="rect" height='100%'/>
-                    </div>
-                    <div className={styles.skeletonBottom}>
-                        <div className={styles.skeletonCategories}>
-                            <Skeleton animation="wave" variant="rect" height='100%'/>
-                        </div>
-                        <div className={styles.skeletonStats}>
-                            <Skeleton animation="wave" variant="rect" height='100%'/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
 }
 
 class SearchPage extends Component {

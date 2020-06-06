@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { axiosClient } from "../../accounts/axiosClient";
-import { RestaurantThread, StaticMap, Rating, RestaurantReviewForm } from "../components";
+import { RestaurantThread, StaticMap, Rating, RestaurantReviewForm, DisplayRating } from "../components";
 import { history } from "../MeetupApp";
 import {Info as InfoIcon, Create as CreateIcon, Comment as CommentIcon, ExpandMore as ExpandMoreIcon} from '@material-ui/icons'
 import {Tooltip, Avatar, Button, BottomNavigation, Menu, MenuItem, BottomNavigationAction, Fab, CircularProgress} from '@material-ui/core'
@@ -157,10 +157,8 @@ class Restaurant extends Component {
               <div className={styles.rstInfo}>
                 <div className={styles.rstName}>
                   {rst.name}
-                  <Rating 
-                    size="large"
-                    rating={rst.rating}
-                    readOnly={true}
+                  <DisplayRating 
+                    score={rst.rating}
                   />
                 </div>
                 <div className={styles.rstSecondHeader}>

@@ -109,18 +109,20 @@ python manage.py loaddata meetup/fixtures/*.json
 - [x] profile private meetup, meetup public
 - [x] Update user when email changes
 - [x] Filter reviews by new/top/(top weighted by new) 
-- [ ] Adopt nicer design of display rating
+- [x] Notification Display
+- [x] Adopt nicer design of display rating
+- [ ] Test Notifications + search
+- [ ] Websocket Authentication Flow
 
 ## Todo General
 - [ ] Swagger API
-- [ ] Websocket Authentication Flow
-- [ ] Test Notifications + search
-- [ ] Skeleton loading where applicable
 - [ ] Move signals to inside models or Set up celery for asynchronous job processing (convert signals to create task for celery)
 
 -------------------------------------------------------
 
 ## Todo Later
+- [ ] Activity Feed of Friends
+- [ ] Skeleton loading where applicable
 - [ ] Complete admin functionality for meetup member
 - [ ] Properly document and refactor codebase
 - [ ] User's top restaurants list (by city?, map with markers and fly functionality)

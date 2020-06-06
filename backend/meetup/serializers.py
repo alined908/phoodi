@@ -34,7 +34,7 @@ class UserSerializerWithActivity(serializers.ModelSerializer):
     def _get_activity(self, obj):
         notifications = Notification.objects.filter(
             actor_object_id=obj.id, description="user_activity"
-        )
+        ).exclude()[:25]
         serializer = NotificationSerializer(notifications, many=True)
         return serializer.data
 
@@ -502,7 +502,7 @@ class GenericNotificationRelatedField(serializers.RelatedField):
         elif isinstance(value, Preference):
             serializer = CategoryPreferenceSerializer(value)
         elif isinstance(value, Review):
-            serializer = ReviewSerializer(value)
+            serializer = ReviewSerializer(value, context={'restaurant': True})
         elif isinstance(value, Restaurant):
             serializer = RestaurantSerializer(value)
         else:
