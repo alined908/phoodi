@@ -13,7 +13,7 @@ edge_ngram_filter = analysis.token_filter(
     "edge_ngram_filter", 
     "edge_ngram", 
     min_gram=2, 
-    max_gram=10, 
+    max_gram=20, 
     token_chars=["letter", "digit"]
 )
 

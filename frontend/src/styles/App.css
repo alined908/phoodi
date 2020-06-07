@@ -484,6 +484,12 @@ body {
   display: flex;
 }
 
+@media only screen and (max-width: 1000px){
+  .search {
+    display: none;
+  }
+}
+
 /* Explicit Media Queries*/
 @media only screen and (max-width: 768px){
   .innerRightBlockHeader {
@@ -503,7 +509,6 @@ body {
   }
 
   .c {
-    height: calc(100% - 56px);
     min-height: 400px;
   }
 

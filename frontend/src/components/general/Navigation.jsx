@@ -12,7 +12,10 @@ import {
   ListItemIcon,
   ListItemText,
   Grow,
-  MenuList
+  MenuList,
+  Badge,
+  Dialog,
+  DialogContent
 } from "@material-ui/core";
 import {
   People as PeopleIcon,
@@ -22,6 +25,7 @@ import {
   MailOutlined as MailOutlinedIcon,
   PermContactCalendar as PermContactCalendarIcon,
   ExitToApp,
+  Search as SearchIcon,
   EventNote as EventNoteIcon,
 } from "@material-ui/icons";
 import { Link, useLocation } from "react-router-dom";
@@ -35,6 +39,9 @@ const Navigation = props => {
   const location = useLocation()
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
+  const mobileHandler = React.useMemo(() => window.matchMedia("(max-width: 1000px)"), [])
+  const [isMobile, setMatches] = React.useState(mobileHandler.matches)
+  const [mobileSearch, setMobileSearch] = React.useState(false)
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -44,11 +51,18 @@ const Navigation = props => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
-
     setOpen(false);
   };
 
-  function handleListKeyDown(event) {
+  const handleMobileSearchOpen = () => {
+    setMobileSearch(true);
+  };
+
+  const handleMobileSearchClose = () => {
+    setMobileSearch(false);
+  };
+
+  const handleListKeyDown = event => {
     if (event.key === 'Tab') {
       event.preventDefault();
       setOpen(false);
@@ -58,26 +72,36 @@ const Navigation = props => {
   // return focus to the button when we transitioned from !open -> open
   const prevOpen = React.useRef(open);
   React.useEffect(() => {
+    const listener = event => {
+      setMatches(event.matches);
+    }
+
+    mobileHandler.addEventListener('change', listener)
+
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
     }
 
     prevOpen.current = open;
+
+    return () => {
+      mobileHandler.removeEventListener('change', listener)
+    }
   }, [open]);
 
-  const isNotifs = (notifs) => {
+  const numNotifs = (notifs) => {
     let count = 0;
 
     for (let value of Object.values(notifs)) {
       count += value;
     }
 
-    return count > 0;
+    return count;
   };
 
   const authenticated = props.authenticated
   const user = props.user
-  const notifs = props.notifs
+  const notifsCount = numNotifs(props.notifs)
   const isHomePage = location.pathname === '/'
 
   return (
@@ -92,11 +116,20 @@ const Navigation = props => {
             </Link>
           </Typography>
         </div>
-        <div className={`${styles.search} ${isHomePage && styles.searchHide}`}>
-          <SearchBar/>
+        <div className={`${styles.search} ${(isHomePage || isMobile) && styles.searchHide}`}>
+          <SearchBar isMobile={false}/>
         </div>
-  
+        <Dialog open={mobileSearch} maxWidth='sm' fullWidth={true} onClose={handleMobileSearchClose}>
+          <div className={styles.mobileSearchBar}>
+            <SearchBar isMobile={true} onClose={handleMobileSearchClose}/>  
+          </div>
+        </Dialog>
         <div className={styles.user}>
+          {isMobile &&
+            <div className={styles.searchMobile} onClick={handleMobileSearchOpen}>
+              <SearchIcon color="primary" fontSize="inherit"/>
+            </div>
+          }
           {!authenticated && (
             <Link to="/register">
               <Button
@@ -108,21 +141,30 @@ const Navigation = props => {
               </Button>
             </Link>
           )}
-          <span style={{marginRight: "2rem"}}>
-            {authenticated &&
+          {/* <span style={{marginRight: "2rem"}}>
+            {authenticated && !isHomePage &&
               <Link to="/meetups">
                 <Button color="primary">
                   Find Meetups
                 </Button>
               </Link>
             }
-          </span>
+          </span> */}
           {authenticated && (
             <div ref={anchorRef} className={styles.dropDownControl} onClick={handleToggle}>
-              <Avatar className={styles.userProfile} src={user.avatar} >
-                {user.first_name.charAt(0)}
-                {user.last_name.charAt(0)}
-              </Avatar>
+              {notifsCount > 0 ?
+                <Badge color="secondary" overlap="circle" badgeContent={notifsCount}>
+                  <Avatar className={styles.userProfile} src={user.avatar} >
+                    {user.first_name.charAt(0)}
+                    {user.last_name.charAt(0)}
+                  </Avatar>
+                </Badge>
+                :
+                <Avatar className={styles.userProfile} src={user.avatar} >
+                  {user.first_name.charAt(0)}
+                  {user.last_name.charAt(0)}
+                </Avatar>
+              }
               <Popper 
                 open={open} 
                 anchorEl={anchorRef.current} 
@@ -233,7 +275,7 @@ const Navigation = props => {
                         </ListItem>
                       </Link>
                       <Divider/>
-                      <Link to="/calendar" onClick={handleClose}>
+                      {/* <Link to="/calendar" onClick={handleClose}>
                         <ListItem button key="Calendar">
                           <ListItemIcon>
                             <EventNoteIcon color="primary"/>
@@ -243,7 +285,7 @@ const Navigation = props => {
                             primaryTypographyProps={{className: styles.link}}
                           />
                         </ListItem>
-                      </Link>
+                      </Link> */}
                       <Link to="/settings" onClick={handleClose}>
                         <ListItem button key="Settings">
                           <ListItemIcon>

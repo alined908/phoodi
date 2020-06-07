@@ -42,6 +42,10 @@
     padding: 2rem 0;
 }
 
+.rstMobile {
+    padding: 2rem;
+}
+
 .rstInner{
     display: flex;
     justify-content: center;
@@ -95,6 +99,10 @@
 .section {
     padding: 2rem 0;
     border-top: var(--border-separator);
+}
+
+.mobileHide{
+    display: none
 }
 
 .sectionHeader {

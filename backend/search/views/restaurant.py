@@ -6,8 +6,8 @@ from elasticsearch import Elasticsearch, TransportError
 from elasticsearch_dsl import Search, Q
 from meetup.serializers import RestaurantSerializer
 from meetup.models import Restaurant
+from meetup.helpers import get_user_coordinates
 import datetime
-
 
 class RestaurantDocumentView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -25,14 +25,16 @@ class RestaurantDocumentView(APIView):
         open_now = request.GET.get('open_now')
         start = request.GET.get('start', 0)
         prices_array = [int(price) for price in prices.split(',')] if prices else []
-        categories_array = [category for category in categories.split(',')] if categories else []
+        categories_array = [category.split("+")[0].lower() for category in categories.split(',')] if categories else []
         s = RestaurantDocument.search()
+        coords = [latitude, longitude, radius]
+        latitude, longitude, radius = get_user_coordinates(coords, request)
 
         if not query:
             s = s.source([])
         else:
             q = Q('query_string', query=query, default_field='name') 
-            q |= Q('nested', path='categories', query=Q('query_string', query=query, default_field='categories.label'))
+            q |= Q('nested', path='categories', query=Q('query_string', query=query, fields=['categories.label', 'categories.api_label']))
             s = s.query(q)
 
         s = s.filter('geo_distance', distance='%smi' % radius, location={"lat": latitude, "lon": longitude})

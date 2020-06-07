@@ -40,7 +40,7 @@ class SearchBar extends Component {
             results: [],
             cachedSearches: [],
             longitude: null,
-            latitude: null
+            latitude: null,
         }
         this.searchDebounced = debounce(this.callSearch, 500);
         this.searchThrottled = throttle(this.callSearch, 500);
@@ -49,7 +49,7 @@ class SearchBar extends Component {
     }
 
     componentDidMount() {
-
+        
         const cachedSearches = localStorage.getItem("searchSuggestionHistory")
         const params = parseURL(this.props.location.search)
 
@@ -169,7 +169,7 @@ class SearchBar extends Component {
             parts = parse(option._source.label, matches);
 
             row = (
-                <Link onClick={() => this.persistSearchToStorage(option)} to={`/categories/${option._source.api_label}`} style={{width: "100%"}}>
+                <Link onClick={() => this.persistSearchToStorage(option)} to={`/search/?categories=${option._source.label}`} style={{width: "100%"}}>
                     <div className="search-entry">
                         <ListItemAvatar>
                             <Avatar
@@ -295,10 +295,19 @@ class SearchBar extends Component {
     }
 
     handleRedirectSearch = () => {
+        
         this.props.setSearchedLast(this.props.input, this.props.inputLocation.input)
+        const params = {
+            q: this.props.input,
+            ...(this.props.inputLocation.input && {location: this.props.inputLocation.input})
+        }
+        const urlify = new URLSearchParams(params).toString()
         history.push(
-            `/search?q=${this.props.input}&location=${this.props.inputLocation.input}`
+            `/search?${urlify}`
         )
+        if (this.props.isMobile){
+            this.props.onClose()
+        }
     }
 
     render () {
@@ -346,13 +355,12 @@ class SearchBar extends Component {
                         />
                     )}
                 />
-                
                 <Location
                     required={false}
                     label="Location"
                     handleClick={this.handleClick}
                     handleInputChange={this.handleLocation}
-                    textValue={this.props.inputLocation ? this.props.inputLocation.input : ""}
+                    textValue={this.props.inputLocation.input ? this.props.inputLocation.input : ""}
                 />
                 <div className="search-button" onClick={this.handleRedirectSearch}>
                     <SearchIcon fontSize="inherit"/>

@@ -112,7 +112,6 @@ class SearchMap extends Component {
   }
 
   _updateViewport = viewport => {
-    console.log(viewport)
     this.setState({viewport});
   };
 

@@ -49,6 +49,15 @@ class SearchUnitTest(UnitTestControl):
         rst = response[0]
         self.assertEqual(rst.name, self.dessert_rst.name)
 
+    def test_restaurant_search_by_category_multiple_words(self):
+        italian = Category.objects.create(api_label="italian", label="Italian Food")
+        RestaurantCategory.objects.create(restaurant=self.dessert_rst, category=italian)
+        s = RestaurantDocument.search()
+        q = Q('nested', path='categories', query=Q('query_string', query="italian", default_field='categories.label'))
+        s = s.query(q)
+        self.assertEqual(s.count(), 1)
+        multiple = RestaurantDocument.search()
+
     def test_category_search(self):
         s = CategoryDocument.search()
         s = s.query("query_string", query='de', default_field="label")

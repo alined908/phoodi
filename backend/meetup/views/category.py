@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
 class CategoryListView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, *args, **kwargs):
         specified = request.GET.get("type")
@@ -27,7 +27,7 @@ class CategoryListView(APIView):
 
 
 class CategoryView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, *args, **kwargs):
         api_label = kwargs["api_label"]

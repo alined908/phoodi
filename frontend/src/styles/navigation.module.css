@@ -8,19 +8,20 @@
     display: flex;
     width: 100%;
     padding: 0 3rem;
-    border-bottom: var(--border-separator);
     position: fixed;
     top: 0;
-    height: 100px;
+    height: 80px;
     align-items: center;
     background: white;
     z-index: 1;
+    box-shadow: var(--shadow-1);
 }
 
 .appBarHome{
     border-bottom: none;
     background: transparent;
     height: 60px;
+    box-shadow: none;
 }
 
 .meta {
@@ -39,7 +40,32 @@
     display: flex;
     flex: 1;
     box-shadow: 0 2px 18px rgba(0,0,0,.15);
-    min-width: 800px;
+    min-width: 750px;
+}
+
+.searchMobile {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    font-size: 1.75rem;
+    filter: drop-shadow( 1px 1px 1px rgba(0, 0, 0, .65));
+}
+
+.searchMobile:hover{
+    font-size: 2rem;
+    cursor:pointer;
+}
+
+.mobileSearchBar{
+    padding: 1rem;
+}
+
+.mobileSearchBar > div {
+    width: 100%;
+}
+
+.mobileSearchBar > div:not(:last-child) {
+    margin-bottom: 1rem;
 }
 
 .searchHide {
@@ -80,7 +106,7 @@
     flex-grow: 1;
     width: 100%;
     height: 100%;
-    padding-top: 100px;
+    padding-top: 80px;
 }
 
 .contentHome {

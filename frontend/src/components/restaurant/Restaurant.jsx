@@ -49,8 +49,7 @@ class Restaurant extends Component {
   }
 
   componentDidUpdate(prevProps){
-    console.log(prevProps)
-    console.log(this.props)
+
     if (prevProps.match.params.uri !== this.props.match.params.uri){
       this.setState({restaurant: null})
       this.callApi()
@@ -152,7 +151,7 @@ class Restaurant extends Component {
           </div>
         }
         {rst ? 
-          <div className={styles.rstInnerWrapper}>
+          <div className={`${styles.rstInnerWrapper} ${this.state.isMobile && styles.rstMobile}`}>
             <div className={styles.rstInner}> 
               <div className={styles.rstInfo}>
                 <div className={styles.rstName}>
@@ -185,7 +184,7 @@ class Restaurant extends Component {
                 </div>
               </div>
             </div>
-            <div className={styles.section}>
+            <div className={`${styles.section} ${(this.state.isMobile && this.state.mobileTabIndex !== 0) ? styles.mobileHide : ""}`}>
               <div className={styles.sectionHeader}>
                 {`Contact & Hours`}
               </div>
@@ -239,7 +238,7 @@ class Restaurant extends Component {
                 </div>
               </div>
             </div>
-            <div className={styles.section}>
+            <div className={`${styles.section} ${(this.state.isMobile && this.state.mobileTabIndex !== 2) ? styles.mobileHide: ""}`}>
               <div className={styles.sectionHeader}>
                 <div className={styles.sort}>
                   <div className={styles.reviewHeader}>

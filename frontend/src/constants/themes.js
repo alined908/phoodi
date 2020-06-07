@@ -174,7 +174,9 @@ export const MuiTheme = {
               height: 50,
               position: 'fixed',
               bottom: 0,
-              width: "100%"
+              width: "100%",
+              borderTop: "var(--border-separator)",
+              boxShadow: 'var(--shadow-1)'
           }
       },
       MuiBottomNavigationAction : {

@@ -81,6 +81,7 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Django** - Backend
 * **React/Redux + Jest/Enzyme** - Frontend
 * **Postgres** - Database
+* **Elasticsearch** - Search entities
 * **Nginx** - Web Server
 * **Redis** - Channel layer for pub/sub
 * **Yelp Api** - Generate restaurants
@@ -88,46 +89,21 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Travis** - CI
 
 ## Todo Completed
-- [x] CDN for images
-- [x] Elasticsearch - Search bar on top app nav bar, user autocomplete, restaurant autocomplete, etc
-- [x] Rewrite Database (Comments as Tree, scalable solution for voting)
-- [x] Properly configure statistics for stuff (likes, options count)
-- [x] Slugify restaurant url
-- [x] Refactor get_nearby
-- [x] Validation for models
-- [x] Finish writing tests for backend
-- [x] Add social authentication (google, facebook, twitter)
-- [x] Login and Register Form
-- [x] Move drawer to top right dropdown menu
-- [x] Adopt Doordash/Yelp Frontpage
-- [x] Populate local storage with recent searches
-- [x] Add location search bar to food search
-- [x] Search page design + flow + logic
-- [x] Handle Restaurant Hours logic
-- [x] Reconfigure frontend authentication logic (no signup needed to see content)
-- [x] Redesign reviews thread layout
-- [x] profile private meetup, meetup public
-- [x] Update user when email changes
-- [x] Filter reviews by new/top/(top weighted by new) 
-- [x] Notification Display
-- [x] Adopt nicer design of display rating
-- [ ] Test Notifications + search
 - [ ] Websocket Authentication Flow
 
 ## Todo General
-- [ ] Swagger API
 - [ ] Move signals to inside models or Set up celery for asynchronous job processing (convert signals to create task for celery)
 
 -------------------------------------------------------
 
-## Todo Later
+## Todo Next Iteration
+- [ ] Use httpOnly cookies for tokens
 - [ ] Activity Feed of Friends
 - [ ] Skeleton loading where applicable
 - [ ] Complete admin functionality for meetup member
 - [ ] Properly document and refactor codebase
 - [ ] User's top restaurants list (by city?, map with markers and fly functionality)
 - [ ] Add calendar of meetups
-- [ ] Use httpOnly cookies for tokens
 - [ ] Notification Bar on Top right of navbar
 - [ ] Add Custom Notification Model
 - [ ] Review Score for food and service and possible secondary factors (interior, location, etc)

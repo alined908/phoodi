@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import {axiosClient} from '../../accounts/axiosClient'
 import styles from '../../styles/search.module.css'
-import {Slider, Avatar, Checkbox, FormControlLabel, Menu, MenuItem} from '@material-ui/core'
+import {Slider, Avatar, Checkbox, FormControlLabel, Menu, MenuItem, BottomNavigation, BottomNavigationAction} from '@material-ui/core'
 import {SearchMap, RestaurantCard, CategoryAutocomplete, Rating, SkeletonRestaurant, Prices} from '../components'
-import {ExpandMore as ExpandMoreIcon} from '@material-ui/icons'
+import {ExpandMore as ExpandMoreIcon, Restaurant as RestaurantIcon, Settings as SettingsIcon, Map as MapIcon} from '@material-ui/icons'
 import {Pagination} from '@material-ui/lab'
 import Geocode from "react-geocode";
 import {connect} from 'react-redux'
@@ -110,30 +110,33 @@ class SearchPage extends Component {
             loading: true,
             hoveredIndex: null,
             anchorEl: null,
-            isMobile: window.matchMedia("(max-width: 768px)").matches,
-            mobileTabIndex: 0
+            isMobile: window.matchMedia("(max-width: 1100px)").matches,
+            mobileTabIndex: 1
         }
     }
 
     async componentDidMount(){
         
         const handler = (e) => this.setState({ isMobile: e.matches });
-        window.matchMedia("(max-width: 768px)").addListener(handler);
+        window.matchMedia("(max-width: 1100px)").addListener(handler);
         
         let params = parseURL(this.props.location.search)
-
-        const response = await axiosClient.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${params.location}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`)
-        const result = response.data.results[0]
-   
-        this.setState(
-            {
-                location: result.formatted_address,
-                latitude: result.geometry.location.lat,
-                longitude: result.geometry.location.lng
-            }, 
-            () => this.callSearch(params)
-        )
-
+        
+        if (params.location || (this.props.locationInput.input && this.props.locationInput.input.length > 0)) {
+            const response = await axiosClient.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${params.location || this.props.locationInput.input}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`)
+            const result = response.data.results[0]
+            this.setState(
+                {
+                    location: result.formatted_address,
+                    latitude: result.geometry.location.lat,
+                    longitude: result.geometry.location.lng
+                }, 
+                () => this.callSearch(params)
+            )
+        } else {
+            this.callSearch(params)
+        }
+        
         if (this.props.user.authenticated) {
             this.props.getPreferences(this.props.user.user.id)
         }
@@ -187,8 +190,8 @@ class SearchPage extends Component {
     handleFilterChange = async () => {
         const urlParams = parseURL(this.props.location.search)
         const params = {
-            q: urlParams.q,
-            location: urlParams.location,
+            ...(urlParams.q && {q: urlParams.q}),
+            ...(urlParams.location && {location: urlParams.location}),
             ...(this.state.filters.rating && {rating: this.state.filters.rating}),
             ...(this.state.filters.radius !== 25 && {radius: this.state.filters.radius}),
             ...(this.state.filters.open_now && {open_now: true}),
@@ -211,7 +214,11 @@ class SearchPage extends Component {
     }
 
     handleClearFilters = () => {
-        let newFilters = {q: this.state.input, latitude: this.state.latitude, longitude: this.state.longitude}
+        let newFilters = {
+            ...(this.state.input && {q: this.state.input}), 
+            ...(this.state.latitude && {latitude: this.state.latitude}), 
+            ...(this.state.longitude && {longitude: this.state.longitude})
+        }
         this.setState({filters: {...defaultFilters}, ...newFilters}, () => this.handleFilterChange())
     }
 
@@ -314,8 +321,8 @@ class SearchPage extends Component {
         const numFilters = this.countFilters(params)
     
         return (
-            <div className={styles.searchPage}>
-                <div className={styles.searchConfig}>
+            <div className={`${styles.searchPage} ${this.state.isMobile ? styles.mobileSearch :""}`}>
+                <div className={`${styles.searchConfig} ${this.state.isMobile ? (this.state.mobileTabIndex === 0 ? styles.mobileShow : styles.mobileHide) : ""}`}>
                     <div className={styles.filterTracker}>
                         {`${numFilters === 0 ? "No" : numFilters} Filters`}
                         {params.hasOwnProperty('radius') &&
@@ -464,10 +471,10 @@ class SearchPage extends Component {
                         </div>
                     }
                 </div>
-                <div className={styles.resultsWrapper}>
+                <div className={`${styles.resultsWrapper} ${this.state.isMobile ? (this.state.mobileTabIndex === 1 ? styles.mobileShow : styles.mobileHide) : ""}`}>
                     <div className={styles.resultsTop}>
                         <div className={styles.resultsName}>
-                            Best {searchName} Near {this.state.location}
+                            Best {searchName} Near {locationName}
                         </div>
                         <div className={styles.resultsSortWrapper}>
                             Sort:&nbsp;
@@ -526,7 +533,7 @@ class SearchPage extends Component {
 
                     </div>
                 </div>
-                <div className={styles.searchMap}>
+                <div className={`${styles.searchMap} ${this.state.isMobile ? (this.state.mobileTabIndex === 2 ? styles.mobileShow : styles.mobileHide) : ""}`}>
                     {coordinates.latitude !== null && 
                         <SearchMap 
                             indexOffset={this.state.filters.start}
@@ -537,8 +544,16 @@ class SearchPage extends Component {
                             hoveredIndex={this.state.hoveredIndex}
                         />
                     }
-                    
                 </div>
+                {this.state.isMobile && 
+                    <div className="innerWrap-mobileControl">
+                        <BottomNavigation value={this.state.mobileTabIndex} onChange={this.handleMobileTabChange} showLabels>
+                            <BottomNavigationAction label="Filters" icon={<SettingsIcon/>}/>
+                            <BottomNavigationAction label="Restaurants" icon={<RestaurantIcon/>}/>
+                            <BottomNavigationAction label="Map" icon={<MapIcon/>}/>
+                        </BottomNavigation>
+                    </div>
+                }
             </div>
         )
     }
@@ -547,6 +562,7 @@ class SearchPage extends Component {
 const mapStateToProps = state => {
     return {
         user: state.user,
+        locationInput: state.search.location,
         currentSearch: state.search.lastSearched,
         currentSearchLocation: state.search.lastSearchedLocation
     }
