@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'django_elasticsearch_dsl_drf',
     "search",
     "djoser",
+    'drf_yasg',
     "corsheaders",
     "channels",
     "meetup",
@@ -79,6 +80,10 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False
+}
 
 ROOT_URLCONF = "backend.urls"
 
