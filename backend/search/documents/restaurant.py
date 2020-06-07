@@ -1,6 +1,6 @@
 from django_elasticsearch_dsl import (Document, fields)
 from django_elasticsearch_dsl.registries import registry
-from meetup.models import Restaurant
+from meetup.models import Restaurant, RestaurantCategory
 from search.analyzers import html_strip, autocomplete
 
 @registry.register_document
@@ -23,8 +23,8 @@ class RestaurantDocument(Document):
         attr="categories_indexing",
         properties={
             'id' : fields.IntegerField(),
-            'label': fields.TextField(analyzer="keyword"),
-            'api_label': fields.TextField(analyzer="keyword")
+            'label': fields.TextField(analyzer=autocomplete),
+            'api_label': fields.TextField(analyzer=autocomplete)
         },
         multi=True
     )
@@ -40,12 +40,17 @@ class RestaurantDocument(Document):
         multi=True
     )
 
-    class Django:
-        model = Restaurant
-
     class Index:
         name = 'restaurants'
         settings = {
             "number_of_shards": 1,
             "number_of_replicas": 1
         }
+
+    class Django:
+        model = Restaurant
+        related_models = [RestaurantCategory]
+
+    def get_instances_from_related(self, related_instance):
+        if isinstance(related_instance, RestaurantCategory):
+            return related_instance.restaurant

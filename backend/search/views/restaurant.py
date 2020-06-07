@@ -31,8 +31,10 @@ class RestaurantDocumentView(APIView):
         if not query:
             s = s.source([])
         else:
-            s = s.query("query_string", query=query, fields=["name", "categories"])
-        
+            q = Q('query_string', query=query, default_field='name') 
+            q |= Q('nested', path='categories', query=Q('query_string', query=query, default_field='categories.label'))
+            s = s.query(q)
+
         s = s.filter('geo_distance', distance='%smi' % radius, location={"lat": latitude, "lon": longitude})
         
         if prices_array:
@@ -53,7 +55,7 @@ class RestaurantDocumentView(APIView):
             date = datetime.datetime.now()
             open_now = 2000 * date.weekday() + date.hour * 60 + date.minute
             s = s.query('nested', path='open_hours', query=Q('range', open_hours__open={'lte': open_now}) & Q('range', open_hours__close={'gte': open_now}))        
-
+        
         count = s.count()
         s = s[int(start): int(start) + 10]
 
