@@ -42,7 +42,7 @@ class Restaurant(models.Model):
     address2 = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=255)
     state = models.CharField(max_length=255)
-    zipcode = models.CharField(max_length=255)
+    zipcode = models.CharField(max_length=255, null=True, blank=True)
     country = models.CharField(max_length=255)
     phone = models.CharField(max_length=20)
     categories = models.TextField()

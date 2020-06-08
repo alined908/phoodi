@@ -326,7 +326,7 @@ class Profile extends Component {
                             : ""
                         }`}
           </title>
-          <meta name="description" content="Phoodie Profile" />
+          <meta name="description" content="Phoodi Profile" />
         </Helmet>
         <div className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 0 ? "innerLeft-show" : ""}`}>
           <div className="innerLeftHeader" style={{padding: ".5rem .7rem"}}>

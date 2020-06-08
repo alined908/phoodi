@@ -8,7 +8,7 @@ class Calendar extends Component {
         <Helmet>
           <meta charSet="utf-8" />
           <title>Calendar</title>
-          <meta name="description" content="Phoodie Calendar" />
+          <meta name="description" content="Phoodi Calendar" />
         </Helmet>
         Coming Soon...
       </div>

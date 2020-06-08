@@ -1,0 +1,2970 @@
+[
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 377,
+    "fields": {
+        "restaurant": 185,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 378,
+    "fields": {
+        "restaurant": 185,
+        "category": 63
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 379,
+    "fields": {
+        "restaurant": 186,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 380,
+    "fields": {
+        "restaurant": 186,
+        "category": 63
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 381,
+    "fields": {
+        "restaurant": 187,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 382,
+    "fields": {
+        "restaurant": 188,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 383,
+    "fields": {
+        "restaurant": 188,
+        "category": 110
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 384,
+    "fields": {
+        "restaurant": 188,
+        "category": 111
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 385,
+    "fields": {
+        "restaurant": 189,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 386,
+    "fields": {
+        "restaurant": 189,
+        "category": 76
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 387,
+    "fields": {
+        "restaurant": 190,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 388,
+    "fields": {
+        "restaurant": 190,
+        "category": 63
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 389,
+    "fields": {
+        "restaurant": 190,
+        "category": 93
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 390,
+    "fields": {
+        "restaurant": 191,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 391,
+    "fields": {
+        "restaurant": 191,
+        "category": 63
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 392,
+    "fields": {
+        "restaurant": 192,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 393,
+    "fields": {
+        "restaurant": 193,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 394,
+    "fields": {
+        "restaurant": 193,
+        "category": 63
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 395,
+    "fields": {
+        "restaurant": 193,
+        "category": 93
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 396,
+    "fields": {
+        "restaurant": 194,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 397,
+    "fields": {
+        "restaurant": 194,
+        "category": 93
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 398,
+    "fields": {
+        "restaurant": 195,
+        "category": 63
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 399,
+    "fields": {
+        "restaurant": 195,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 400,
+    "fields": {
+        "restaurant": 195,
+        "category": 17
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 401,
+    "fields": {
+        "restaurant": 196,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 402,
+    "fields": {
+        "restaurant": 196,
+        "category": 55
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 403,
+    "fields": {
+        "restaurant": 196,
+        "category": 29
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 404,
+    "fields": {
+        "restaurant": 197,
+        "category": 84
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 405,
+    "fields": {
+        "restaurant": 197,
+        "category": 101
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 406,
+    "fields": {
+        "restaurant": 197,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 407,
+    "fields": {
+        "restaurant": 198,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 408,
+    "fields": {
+        "restaurant": 198,
+        "category": 56
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 409,
+    "fields": {
+        "restaurant": 198,
+        "category": 64
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 410,
+    "fields": {
+        "restaurant": 199,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 411,
+    "fields": {
+        "restaurant": 199,
+        "category": 109
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 412,
+    "fields": {
+        "restaurant": 200,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 413,
+    "fields": {
+        "restaurant": 200,
+        "category": 61
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 414,
+    "fields": {
+        "restaurant": 201,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 415,
+    "fields": {
+        "restaurant": 202,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 416,
+    "fields": {
+        "restaurant": 202,
+        "category": 93
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 417,
+    "fields": {
+        "restaurant": 202,
+        "category": 63
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 418,
+    "fields": {
+        "restaurant": 203,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 419,
+    "fields": {
+        "restaurant": 203,
+        "category": 39
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 420,
+    "fields": {
+        "restaurant": 204,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 421,
+    "fields": {
+        "restaurant": 206,
+        "category": 47
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 422,
+    "fields": {
+        "restaurant": 208,
+        "category": 47
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 423,
+    "fields": {
+        "restaurant": 210,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 424,
+    "fields": {
+        "restaurant": 210,
+        "category": 98
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 425,
+    "fields": {
+        "restaurant": 210,
+        "category": 76
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 426,
+    "fields": {
+        "restaurant": 211,
+        "category": 47
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 427,
+    "fields": {
+        "restaurant": 211,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 428,
+    "fields": {
+        "restaurant": 214,
+        "category": 47
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 429,
+    "fields": {
+        "restaurant": 214,
+        "category": 58
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 430,
+    "fields": {
+        "restaurant": 216,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 431,
+    "fields": {
+        "restaurant": 216,
+        "category": 94
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 432,
+    "fields": {
+        "restaurant": 216,
+        "category": 29
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 433,
+    "fields": {
+        "restaurant": 217,
+        "category": 110
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 434,
+    "fields": {
+        "restaurant": 218,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 435,
+    "fields": {
+        "restaurant": 219,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 436,
+    "fields": {
+        "restaurant": 220,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 437,
+    "fields": {
+        "restaurant": 220,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 438,
+    "fields": {
+        "restaurant": 220,
+        "category": 22
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 439,
+    "fields": {
+        "restaurant": 222,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 440,
+    "fields": {
+        "restaurant": 223,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 441,
+    "fields": {
+        "restaurant": 224,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 442,
+    "fields": {
+        "restaurant": 227,
+        "category": 11
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 443,
+    "fields": {
+        "restaurant": 229,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 444,
+    "fields": {
+        "restaurant": 229,
+        "category": 24
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 445,
+    "fields": {
+        "restaurant": 230,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 446,
+    "fields": {
+        "restaurant": 231,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 447,
+    "fields": {
+        "restaurant": 231,
+        "category": 35
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 448,
+    "fields": {
+        "restaurant": 232,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 449,
+    "fields": {
+        "restaurant": 233,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 450,
+    "fields": {
+        "restaurant": 233,
+        "category": 22
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 451,
+    "fields": {
+        "restaurant": 234,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 452,
+    "fields": {
+        "restaurant": 234,
+        "category": 73
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 453,
+    "fields": {
+        "restaurant": 238,
+        "category": 21
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 454,
+    "fields": {
+        "restaurant": 238,
+        "category": 17
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 455,
+    "fields": {
+        "restaurant": 240,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 456,
+    "fields": {
+        "restaurant": 240,
+        "category": 57
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 457,
+    "fields": {
+        "restaurant": 241,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 458,
+    "fields": {
+        "restaurant": 241,
+        "category": 4
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 459,
+    "fields": {
+        "restaurant": 242,
+        "category": 96
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 460,
+    "fields": {
+        "restaurant": 242,
+        "category": 47
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 461,
+    "fields": {
+        "restaurant": 243,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 462,
+    "fields": {
+        "restaurant": 243,
+        "category": 39
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 463,
+    "fields": {
+        "restaurant": 243,
+        "category": 69
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 464,
+    "fields": {
+        "restaurant": 244,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 465,
+    "fields": {
+        "restaurant": 245,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 466,
+    "fields": {
+        "restaurant": 246,
+        "category": 94
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 467,
+    "fields": {
+        "restaurant": 247,
+        "category": 11
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 468,
+    "fields": {
+        "restaurant": 248,
+        "category": 10
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 469,
+    "fields": {
+        "restaurant": 248,
+        "category": 47
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 470,
+    "fields": {
+        "restaurant": 248,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 471,
+    "fields": {
+        "restaurant": 249,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 472,
+    "fields": {
+        "restaurant": 250,
+        "category": 47
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 473,
+    "fields": {
+        "restaurant": 250,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 474,
+    "fields": {
+        "restaurant": 251,
+        "category": 47
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 475,
+    "fields": {
+        "restaurant": 251,
+        "category": 58
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 476,
+    "fields": {
+        "restaurant": 252,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 477,
+    "fields": {
+        "restaurant": 253,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 478,
+    "fields": {
+        "restaurant": 254,
+        "category": 10
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 479,
+    "fields": {
+        "restaurant": 255,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 480,
+    "fields": {
+        "restaurant": 256,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 481,
+    "fields": {
+        "restaurant": 258,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 482,
+    "fields": {
+        "restaurant": 259,
+        "category": 93
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 483,
+    "fields": {
+        "restaurant": 259,
+        "category": 35
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 484,
+    "fields": {
+        "restaurant": 259,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 485,
+    "fields": {
+        "restaurant": 260,
+        "category": 110
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 486,
+    "fields": {
+        "restaurant": 260,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 487,
+    "fields": {
+        "restaurant": 260,
+        "category": 47
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 488,
+    "fields": {
+        "restaurant": 261,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 489,
+    "fields": {
+        "restaurant": 261,
+        "category": 92
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 490,
+    "fields": {
+        "restaurant": 262,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 491,
+    "fields": {
+        "restaurant": 262,
+        "category": 17
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 492,
+    "fields": {
+        "restaurant": 262,
+        "category": 93
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 493,
+    "fields": {
+        "restaurant": 263,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 494,
+    "fields": {
+        "restaurant": 263,
+        "category": 95
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 495,
+    "fields": {
+        "restaurant": 264,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 496,
+    "fields": {
+        "restaurant": 264,
+        "category": 29
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 497,
+    "fields": {
+        "restaurant": 265,
+        "category": 39
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 498,
+    "fields": {
+        "restaurant": 266,
+        "category": 35
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 499,
+    "fields": {
+        "restaurant": 267,
+        "category": 29
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 500,
+    "fields": {
+        "restaurant": 267,
+        "category": 35
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 501,
+    "fields": {
+        "restaurant": 267,
+        "category": 62
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 502,
+    "fields": {
+        "restaurant": 268,
+        "category": 73
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 503,
+    "fields": {
+        "restaurant": 268,
+        "category": 106
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 504,
+    "fields": {
+        "restaurant": 269,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 505,
+    "fields": {
+        "restaurant": 270,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 506,
+    "fields": {
+        "restaurant": 270,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 507,
+    "fields": {
+        "restaurant": 271,
+        "category": 61
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 508,
+    "fields": {
+        "restaurant": 271,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 509,
+    "fields": {
+        "restaurant": 272,
+        "category": 65
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 510,
+    "fields": {
+        "restaurant": 272,
+        "category": 61
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 511,
+    "fields": {
+        "restaurant": 272,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 512,
+    "fields": {
+        "restaurant": 273,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 513,
+    "fields": {
+        "restaurant": 274,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 514,
+    "fields": {
+        "restaurant": 274,
+        "category": 10
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 515,
+    "fields": {
+        "restaurant": 275,
+        "category": 61
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 516,
+    "fields": {
+        "restaurant": 275,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 517,
+    "fields": {
+        "restaurant": 276,
+        "category": 41
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 518,
+    "fields": {
+        "restaurant": 277,
+        "category": 95
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 519,
+    "fields": {
+        "restaurant": 277,
+        "category": 47
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 520,
+    "fields": {
+        "restaurant": 278,
+        "category": 51
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 521,
+    "fields": {
+        "restaurant": 278,
+        "category": 61
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 522,
+    "fields": {
+        "restaurant": 279,
+        "category": 10
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 523,
+    "fields": {
+        "restaurant": 280,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 524,
+    "fields": {
+        "restaurant": 282,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 525,
+    "fields": {
+        "restaurant": 286,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 526,
+    "fields": {
+        "restaurant": 286,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 527,
+    "fields": {
+        "restaurant": 288,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 528,
+    "fields": {
+        "restaurant": 289,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 529,
+    "fields": {
+        "restaurant": 291,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 530,
+    "fields": {
+        "restaurant": 291,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 531,
+    "fields": {
+        "restaurant": 292,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 532,
+    "fields": {
+        "restaurant": 292,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 533,
+    "fields": {
+        "restaurant": 293,
+        "category": 35
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 534,
+    "fields": {
+        "restaurant": 294,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 535,
+    "fields": {
+        "restaurant": 294,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 536,
+    "fields": {
+        "restaurant": 295,
+        "category": 23
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 537,
+    "fields": {
+        "restaurant": 296,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 538,
+    "fields": {
+        "restaurant": 296,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 539,
+    "fields": {
+        "restaurant": 297,
+        "category": 47
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 540,
+    "fields": {
+        "restaurant": 298,
+        "category": 47
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 541,
+    "fields": {
+        "restaurant": 298,
+        "category": 73
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 542,
+    "fields": {
+        "restaurant": 299,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 543,
+    "fields": {
+        "restaurant": 299,
+        "category": 72
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 544,
+    "fields": {
+        "restaurant": 300,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 545,
+    "fields": {
+        "restaurant": 300,
+        "category": 64
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 546,
+    "fields": {
+        "restaurant": 302,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 547,
+    "fields": {
+        "restaurant": 303,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 548,
+    "fields": {
+        "restaurant": 303,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 549,
+    "fields": {
+        "restaurant": 305,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 550,
+    "fields": {
+        "restaurant": 305,
+        "category": 35
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 551,
+    "fields": {
+        "restaurant": 307,
+        "category": 109
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 552,
+    "fields": {
+        "restaurant": 307,
+        "category": 94
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 553,
+    "fields": {
+        "restaurant": 307,
+        "category": 100
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 554,
+    "fields": {
+        "restaurant": 309,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 555,
+    "fields": {
+        "restaurant": 309,
+        "category": 10
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 556,
+    "fields": {
+        "restaurant": 309,
+        "category": 4
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 557,
+    "fields": {
+        "restaurant": 311,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 558,
+    "fields": {
+        "restaurant": 314,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 559,
+    "fields": {
+        "restaurant": 315,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 560,
+    "fields": {
+        "restaurant": 315,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 561,
+    "fields": {
+        "restaurant": 315,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 562,
+    "fields": {
+        "restaurant": 317,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 563,
+    "fields": {
+        "restaurant": 321,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 564,
+    "fields": {
+        "restaurant": 321,
+        "category": 95
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 565,
+    "fields": {
+        "restaurant": 321,
+        "category": 61
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 566,
+    "fields": {
+        "restaurant": 322,
+        "category": 58
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 567,
+    "fields": {
+        "restaurant": 323,
+        "category": 64
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 568,
+    "fields": {
+        "restaurant": 324,
+        "category": 73
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 569,
+    "fields": {
+        "restaurant": 325,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 570,
+    "fields": {
+        "restaurant": 326,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 571,
+    "fields": {
+        "restaurant": 326,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 572,
+    "fields": {
+        "restaurant": 326,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 573,
+    "fields": {
+        "restaurant": 327,
+        "category": 23
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 574,
+    "fields": {
+        "restaurant": 327,
+        "category": 17
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 575,
+    "fields": {
+        "restaurant": 328,
+        "category": 39
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 576,
+    "fields": {
+        "restaurant": 328,
+        "category": 93
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 577,
+    "fields": {
+        "restaurant": 329,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 578,
+    "fields": {
+        "restaurant": 330,
+        "category": 35
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 579,
+    "fields": {
+        "restaurant": 331,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 580,
+    "fields": {
+        "restaurant": 332,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 581,
+    "fields": {
+        "restaurant": 332,
+        "category": 61
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 582,
+    "fields": {
+        "restaurant": 333,
+        "category": 94
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 583,
+    "fields": {
+        "restaurant": 333,
+        "category": 97
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 584,
+    "fields": {
+        "restaurant": 333,
+        "category": 93
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 585,
+    "fields": {
+        "restaurant": 334,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 586,
+    "fields": {
+        "restaurant": 334,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 587,
+    "fields": {
+        "restaurant": 336,
+        "category": 49
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 588,
+    "fields": {
+        "restaurant": 336,
+        "category": 17
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 589,
+    "fields": {
+        "restaurant": 336,
+        "category": 23
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 590,
+    "fields": {
+        "restaurant": 337,
+        "category": 92
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 591,
+    "fields": {
+        "restaurant": 337,
+        "category": 97
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 592,
+    "fields": {
+        "restaurant": 337,
+        "category": 114
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 593,
+    "fields": {
+        "restaurant": 339,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 594,
+    "fields": {
+        "restaurant": 340,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 595,
+    "fields": {
+        "restaurant": 340,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 596,
+    "fields": {
+        "restaurant": 341,
+        "category": 72
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 597,
+    "fields": {
+        "restaurant": 341,
+        "category": 54
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 598,
+    "fields": {
+        "restaurant": 341,
+        "category": 66
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 599,
+    "fields": {
+        "restaurant": 342,
+        "category": 62
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 600,
+    "fields": {
+        "restaurant": 342,
+        "category": 111
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 601,
+    "fields": {
+        "restaurant": 343,
+        "category": 96
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 602,
+    "fields": {
+        "restaurant": 343,
+        "category": 98
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 603,
+    "fields": {
+        "restaurant": 344,
+        "category": 73
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 604,
+    "fields": {
+        "restaurant": 345,
+        "category": 11
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 605,
+    "fields": {
+        "restaurant": 346,
+        "category": 11
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 606,
+    "fields": {
+        "restaurant": 347,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 607,
+    "fields": {
+        "restaurant": 347,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 608,
+    "fields": {
+        "restaurant": 347,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 609,
+    "fields": {
+        "restaurant": 348,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 610,
+    "fields": {
+        "restaurant": 349,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 611,
+    "fields": {
+        "restaurant": 349,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 612,
+    "fields": {
+        "restaurant": 350,
+        "category": 50
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 613,
+    "fields": {
+        "restaurant": 350,
+        "category": 76
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 614,
+    "fields": {
+        "restaurant": 351,
+        "category": 76
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 615,
+    "fields": {
+        "restaurant": 351,
+        "category": 50
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 616,
+    "fields": {
+        "restaurant": 352,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 617,
+    "fields": {
+        "restaurant": 353,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 618,
+    "fields": {
+        "restaurant": 353,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 619,
+    "fields": {
+        "restaurant": 354,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 620,
+    "fields": {
+        "restaurant": 354,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 621,
+    "fields": {
+        "restaurant": 355,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 622,
+    "fields": {
+        "restaurant": 357,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 623,
+    "fields": {
+        "restaurant": 358,
+        "category": 23
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 624,
+    "fields": {
+        "restaurant": 358,
+        "category": 109
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 625,
+    "fields": {
+        "restaurant": 359,
+        "category": 35
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 626,
+    "fields": {
+        "restaurant": 360,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 627,
+    "fields": {
+        "restaurant": 362,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 628,
+    "fields": {
+        "restaurant": 364,
+        "category": 109
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 629,
+    "fields": {
+        "restaurant": 364,
+        "category": 17
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 630,
+    "fields": {
+        "restaurant": 364,
+        "category": 65
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 631,
+    "fields": {
+        "restaurant": 365,
+        "category": 35
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 632,
+    "fields": {
+        "restaurant": 366,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 633,
+    "fields": {
+        "restaurant": 366,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 634,
+    "fields": {
+        "restaurant": 366,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 635,
+    "fields": {
+        "restaurant": 367,
+        "category": 68
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 636,
+    "fields": {
+        "restaurant": 367,
+        "category": 10
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 637,
+    "fields": {
+        "restaurant": 368,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 638,
+    "fields": {
+        "restaurant": 368,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 639,
+    "fields": {
+        "restaurant": 369,
+        "category": 47
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 640,
+    "fields": {
+        "restaurant": 370,
+        "category": 59
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 641,
+    "fields": {
+        "restaurant": 370,
+        "category": 22
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 642,
+    "fields": {
+        "restaurant": 371,
+        "category": 109
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 643,
+    "fields": {
+        "restaurant": 372,
+        "category": 65
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 644,
+    "fields": {
+        "restaurant": 373,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 645,
+    "fields": {
+        "restaurant": 373,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 646,
+    "fields": {
+        "restaurant": 374,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 647,
+    "fields": {
+        "restaurant": 374,
+        "category": 73
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 648,
+    "fields": {
+        "restaurant": 375,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 649,
+    "fields": {
+        "restaurant": 375,
+        "category": 29
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 650,
+    "fields": {
+        "restaurant": 376,
+        "category": 73
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 651,
+    "fields": {
+        "restaurant": 378,
+        "category": 64
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 652,
+    "fields": {
+        "restaurant": 378,
+        "category": 101
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 653,
+    "fields": {
+        "restaurant": 378,
+        "category": 111
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 654,
+    "fields": {
+        "restaurant": 379,
+        "category": 27
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 655,
+    "fields": {
+        "restaurant": 379,
+        "category": 103
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 656,
+    "fields": {
+        "restaurant": 380,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 657,
+    "fields": {
+        "restaurant": 380,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 658,
+    "fields": {
+        "restaurant": 381,
+        "category": 65
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 659,
+    "fields": {
+        "restaurant": 381,
+        "category": 110
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 660,
+    "fields": {
+        "restaurant": 382,
+        "category": 61
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 661,
+    "fields": {
+        "restaurant": 382,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 662,
+    "fields": {
+        "restaurant": 385,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 663,
+    "fields": {
+        "restaurant": 386,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 664,
+    "fields": {
+        "restaurant": 387,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 665,
+    "fields": {
+        "restaurant": 388,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 666,
+    "fields": {
+        "restaurant": 390,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 667,
+    "fields": {
+        "restaurant": 390,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 668,
+    "fields": {
+        "restaurant": 391,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 669,
+    "fields": {
+        "restaurant": 391,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 670,
+    "fields": {
+        "restaurant": 392,
+        "category": 94
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 671,
+    "fields": {
+        "restaurant": 392,
+        "category": 45
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 672,
+    "fields": {
+        "restaurant": 393,
+        "category": 95
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 673,
+    "fields": {
+        "restaurant": 393,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 674,
+    "fields": {
+        "restaurant": 394,
+        "category": 35
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 675,
+    "fields": {
+        "restaurant": 395,
+        "category": 95
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 676,
+    "fields": {
+        "restaurant": 395,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 677,
+    "fields": {
+        "restaurant": 396,
+        "category": 59
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 678,
+    "fields": {
+        "restaurant": 396,
+        "category": 22
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 679,
+    "fields": {
+        "restaurant": 398,
+        "category": 17
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 680,
+    "fields": {
+        "restaurant": 398,
+        "category": 23
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 681,
+    "fields": {
+        "restaurant": 401,
+        "category": 11
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 682,
+    "fields": {
+        "restaurant": 401,
+        "category": 50
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 683,
+    "fields": {
+        "restaurant": 402,
+        "category": 35
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 684,
+    "fields": {
+        "restaurant": 402,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 685,
+    "fields": {
+        "restaurant": 403,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 686,
+    "fields": {
+        "restaurant": 404,
+        "category": 38
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 687,
+    "fields": {
+        "restaurant": 404,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 688,
+    "fields": {
+        "restaurant": 406,
+        "category": 41
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 689,
+    "fields": {
+        "restaurant": 406,
+        "category": 35
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 690,
+    "fields": {
+        "restaurant": 406,
+        "category": 93
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 691,
+    "fields": {
+        "restaurant": 408,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 692,
+    "fields": {
+        "restaurant": 408,
+        "category": 10
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 693,
+    "fields": {
+        "restaurant": 409,
+        "category": 98
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 694,
+    "fields": {
+        "restaurant": 410,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 695,
+    "fields": {
+        "restaurant": 412,
+        "category": 61
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 696,
+    "fields": {
+        "restaurant": 412,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 697,
+    "fields": {
+        "restaurant": 412,
+        "category": 95
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 698,
+    "fields": {
+        "restaurant": 413,
+        "category": 22
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 699,
+    "fields": {
+        "restaurant": 413,
+        "category": 93
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 700,
+    "fields": {
+        "restaurant": 413,
+        "category": 92
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 701,
+    "fields": {
+        "restaurant": 414,
+        "category": 92
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 702,
+    "fields": {
+        "restaurant": 414,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 703,
+    "fields": {
+        "restaurant": 415,
+        "category": 94
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 704,
+    "fields": {
+        "restaurant": 415,
+        "category": 24
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 705,
+    "fields": {
+        "restaurant": 416,
+        "category": 59
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 706,
+    "fields": {
+        "restaurant": 416,
+        "category": 4
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 707,
+    "fields": {
+        "restaurant": 417,
+        "category": 73
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 708,
+    "fields": {
+        "restaurant": 417,
+        "category": 59
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 709,
+    "fields": {
+        "restaurant": 418,
+        "category": 101
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 710,
+    "fields": {
+        "restaurant": 419,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 711,
+    "fields": {
+        "restaurant": 420,
+        "category": 93
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 712,
+    "fields": {
+        "restaurant": 421,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 713,
+    "fields": {
+        "restaurant": 422,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 714,
+    "fields": {
+        "restaurant": 423,
+        "category": 61
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 715,
+    "fields": {
+        "restaurant": 425,
+        "category": 22
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 716,
+    "fields": {
+        "restaurant": 425,
+        "category": 93
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 717,
+    "fields": {
+        "restaurant": 425,
+        "category": 66
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 718,
+    "fields": {
+        "restaurant": 426,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 719,
+    "fields": {
+        "restaurant": 427,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 720,
+    "fields": {
+        "restaurant": 427,
+        "category": 53
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 721,
+    "fields": {
+        "restaurant": 428,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 722,
+    "fields": {
+        "restaurant": 430,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 723,
+    "fields": {
+        "restaurant": 431,
+        "category": 17
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 724,
+    "fields": {
+        "restaurant": 431,
+        "category": 76
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 725,
+    "fields": {
+        "restaurant": 432,
+        "category": 63
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 726,
+    "fields": {
+        "restaurant": 432,
+        "category": 92
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 727,
+    "fields": {
+        "restaurant": 433,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 728,
+    "fields": {
+        "restaurant": 434,
+        "category": 8
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 729,
+    "fields": {
+        "restaurant": 436,
+        "category": 41
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 730,
+    "fields": {
+        "restaurant": 436,
+        "category": 35
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 731,
+    "fields": {
+        "restaurant": 436,
+        "category": 93
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 732,
+    "fields": {
+        "restaurant": 437,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 733,
+    "fields": {
+        "restaurant": 439,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 734,
+    "fields": {
+        "restaurant": 439,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 735,
+    "fields": {
+        "restaurant": 440,
+        "category": 40
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 736,
+    "fields": {
+        "restaurant": 442,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 737,
+    "fields": {
+        "restaurant": 442,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 738,
+    "fields": {
+        "restaurant": 443,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 739,
+    "fields": {
+        "restaurant": 443,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 740,
+    "fields": {
+        "restaurant": 444,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 741,
+    "fields": {
+        "restaurant": 444,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 742,
+    "fields": {
+        "restaurant": 445,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 743,
+    "fields": {
+        "restaurant": 445,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 744,
+    "fields": {
+        "restaurant": 446,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 745,
+    "fields": {
+        "restaurant": 446,
+        "category": 83
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 746,
+    "fields": {
+        "restaurant": 447,
+        "category": 48
+    }
+},
+{
+    "model": "meetup.restaurantcategory",
+    "pk": 747,
+    "fields": {
+        "restaurant": 447,
+        "category": 83
+    }
+}
+]

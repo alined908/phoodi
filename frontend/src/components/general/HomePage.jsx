@@ -24,8 +24,8 @@ class HomePage extends Component {
       <div className="home">
         <Helmet>
           <meta charSet="utf-8" />
-          <title>Phoodie</title>
-          <meta name="description" content="Phoodie Home Page" />
+          <title>Phoodi</title>
+          <meta name="description" content="Phoodi Home Page" />
         </Helmet>
         <div className="top">
           <div className="hero-image" style={{backgroundImage: `url(${image})`}}>

@@ -88,10 +88,8 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Material UI** - Design
 * **Travis** - CI
 
-## Todo Completed
+## Todo
 - [ ] Set up celery for asynchronous job processing (convert signals to create task for celery)
-
--------------------------------------------------------
 
 ## Todo Next Iteration
 - [ ] Websocket Authentication Flow
