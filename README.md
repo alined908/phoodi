@@ -23,7 +23,7 @@ coverage report
 **2. Run tests for frontend**
 ```
 cd frontend
-npm test -- --coverage
+npm test -- --coverage -u
 ```
 
 ## Deployment (For AWS EC2, Amazon Linux 2)
@@ -88,9 +88,6 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Material UI** - Design
 * **Travis** - CI
 
-## Todo
-- [ ] Set up celery for asynchronous job processing (convert signals to create task for celery)
-
 ## Todo Next Iteration
 - [ ] Websocket Authentication Flow
 - [ ] Use httpOnly cookies for tokens
@@ -112,6 +109,7 @@ python manage.py loaddata meetup/fixtures/*.json
 - [ ] User Reputation system
 - [ ] Add capacity to meetup
 - [ ] Fix preferences swapping lag
+- [ ] Set up celery for asynchronous job processing (convert signals to create task for celery)
 
 ## Todo Later (Chat)
 - [ ] Edit chat messages
