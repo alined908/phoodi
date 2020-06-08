@@ -125,7 +125,7 @@ class UserListView(APIView):
 
 
 class UserView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_object(self, pk):
         user = get_object_or_404(User, pk=pk)
@@ -184,7 +184,7 @@ class UserSettingsView(APIView):
 
 
 class UserFriendsView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, *args, **kwargs):
         """
@@ -295,7 +295,7 @@ class UserPreferenceListView(APIView):
 
 
 class UserPreferenceView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_preference(self, user_id, category_id):
         user = get_object_or_404(User, pk=user_id)

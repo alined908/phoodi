@@ -23,7 +23,8 @@ import {
   CategoryAutocomplete,
   Preferences,
   RegisterPage,
-  DisplayRating
+  DisplayRating,
+  AuthWrapper
 } from "../components";
 import PropTypes from "prop-types";
 import { userPropType } from "../../constants/prop-types";
@@ -71,16 +72,8 @@ class Profile extends Component {
   getInformation = async () => {
     try {
       const [profile, friends] = await Promise.all([
-        axiosClient.get(`/api/users/${this.props.match.params.id}/`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }),
-        axiosClient.get(`/api/users/${this.props.match.params.id}/friends/`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }),
+        axiosClient.get(`/api/users/${this.props.match.params.id}/`),
+        axiosClient.get(`/api/users/${this.props.match.params.id}/friends/`),
       ]);
       this.setState({
         user: profile.data,
@@ -287,7 +280,7 @@ class Profile extends Component {
   };
 
   render() {
-    const isUser = this.props.user.id.toString() === this.props.match.params.id;
+    const isUser = this.props.user && this.props.user.id && this.props.user.id.toString() === this.props.match.params.id;
     const isUserFriend = !isUser && !this.isUserFriend();
 
     const renderPastActivity = () => {
@@ -349,9 +342,11 @@ class Profile extends Component {
               </span>
               {isUserFriend && (
                   <Tooltip title="Add Friend">
-                    <IconButton color="primary" size="small" onClick={this.addFriend}>
-                      <PersonAddIcon />
-                    </IconButton>
+                    <AuthWrapper authenticated={this.props.authenticated}>
+                      <IconButton color="primary" size="small" onClick={this.addFriend}>
+                        <PersonAddIcon />
+                      </IconButton>
+                    </AuthWrapper>
                   </Tooltip>
                 )}
                 {isUser && (
@@ -410,9 +405,7 @@ class Profile extends Component {
         </div>
         <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 1 ? "innerRight-show" : ""}`}>
           <div className="innerRightBlock">
-
               {this.state.userLoaded && renderPastActivity()}
-
           </div>
         </div>
         <div className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 2 ? "innerLeft-show" : ""} ${styles.profileFriends}`}>
@@ -468,6 +461,7 @@ Profile.propTypes = {
 function mapStateToProps(state) {
   return {
     user: state.user.user,
+    authenticated: state.user.authenticated
   };
 }
 

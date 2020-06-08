@@ -31,7 +31,7 @@ exports[`MeetupCard renders without crashing given props 1`] = `
           className="cardIcon"
         >
           <TodayIcon />
-          Friday, May 15
+          Monday, June 8
         </div>
       </div>
       <div
@@ -50,7 +50,7 @@ exports[`MeetupCard renders without crashing given props 1`] = `
             key="1"
           >
             <WithStyles(ForwardRef(Avatar))
-              src="undefineddesserts.png"
+              src="undefined/static/category/desserts.png"
               style={
                 Object {
                   "height": 28,

@@ -106,7 +106,7 @@ exports[`Meetups tests renders without crashing 1`] = `
             disabled={false}
             displayFormat="MMM DD"
             enableOutsideDays={false}
-            endDate={"2020-05-22T01:16:03.545Z"}
+            endDate={"2020-06-15T11:29:49.803Z"}
             endDateId="unique_end_date_id"
             endDatePlaceholderText="End Date"
             firstDayOfWeek={null}
@@ -186,7 +186,7 @@ exports[`Meetups tests renders without crashing 1`] = `
             showClearDates={false}
             showDefaultInputIcon={false}
             small={true}
-            startDate={"2020-05-15T01:16:03.545Z"}
+            startDate={"2020-06-08T11:29:49.803Z"}
             startDateId="unique_start_date_id"
             startDatePlaceholderText="Start Date"
             verticalHeight={null}
@@ -250,33 +250,15 @@ exports[`Meetups tests renders without crashing 1`] = `
         </div>
       </div>
       <div
-        className="innerLeftHeaderBlockAction"
-        style={
-          Object {
-            "marginBottom": 0,
-          }
-        }
+        className="meetupsSearchBar elevate-0"
       >
-        <div
-          className="blockActionHeader"
-        >
-          Categories
-        </div>
-        <div
-          className="blockActionContent"
-        >
-          <div
-            className="meetupsSearchBar elevate-0"
-          >
-            <CategoryAutocomplete
-              entries={Array []}
-              fullWidth={true}
-              handleClick={[Function]}
-              label="Search Categories..."
-              size="small"
-            />
-          </div>
-        </div>
+        <CategoryAutocomplete
+          entries={Array []}
+          fullWidth={true}
+          handleClick={[Function]}
+          label="Search Categories..."
+          size="small"
+        />
       </div>
       <div
         className="hr"
@@ -337,7 +319,7 @@ exports[`Meetups tests renders without crashing 1`] = `
                       "id": 1,
                       "last_name": "Lee",
                     },
-                    "date": "2020-05-15",
+                    "date": "2020-06-08",
                     "events": Object {},
                     "id": 1,
                     "isMeetupEventsInitialized": true,
@@ -405,7 +387,7 @@ exports[`Meetups tests renders without crashing 1`] = `
                       "id": 1,
                       "last_name": "Lee",
                     },
-                    "date": "2020-05-15",
+                    "date": "2020-06-08",
                     "events": Object {},
                     "id": 2,
                     "isMeetupEventsInitialized": true,

@@ -39,6 +39,13 @@ import PropTypes from "prop-types";
 import { meetupEventPropType } from "../../constants/prop-types";
 import styles from "../../styles/meetup.module.css";
 
+const numToPrices = {
+  1: '$',
+  2: '$$',
+  3: '$$$',
+  4: '$$$$'
+}
+
 class MeetupEvent extends Component {
   constructor(props) {
     super(props);
@@ -87,14 +94,6 @@ class MeetupEvent extends Component {
       meetup: this.props.uri,
       event: this.props.event.id,
     });
-  };
-
-  handlePriceChips = (prices) => {
-    var priceList = prices;
-    for (var i = 0; i < prices.length; i++) {
-      priceList[i] = "$".repeat(parseInt(priceList[i]));
-    }
-    return priceList;
   };
 
   handleSearchOption = () => {
@@ -417,9 +416,10 @@ class MeetupEvent extends Component {
           </div>
           <div className={styles.secondHeaderLeft}>
             Price
-            {this.handlePriceChips(event.price).map((price, index) => (
+            {console.log(event.price)}
+            {event.price.map((price, index) => (
               <span key={index} className={styles.categoryChip}>
-                {price}
+                {numToPrices[price]}
               </span>
             ))}
           </div>

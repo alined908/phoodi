@@ -36,22 +36,22 @@ const marks = [
   { value: 25 },
 ];
 
-const parseURL = path => {
-  let params = new URLSearchParams(path)
-  params = Object.fromEntries(params)
-  return params
-}
+// const parseURL = path => {
+//   let params = new URLSearchParams(path)
+//   params = Object.fromEntries(params)
+//   return params
+// }
 
 class Meetups extends Component {
   
   constructor(props) {
     super(props);
-    const params = parseURL(props.location.search)
+    // const params = parseURL(props.location.search)
     this.state = {
       focusedInput: null,
       startDate: moment(),
       endDate: moment().add("7", "d"),
-      public: params.type ? params.type === 'public' : true,
+      public: true,
       newMeetupForm: false,
       entries: [],
       preferences: [],

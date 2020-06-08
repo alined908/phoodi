@@ -43,7 +43,8 @@ const useStyles = makeStyles((theme) => ({
   },
   listItem: {
     boxShadow: "var(--shadow-0)",
-    backgroundColor: "white"
+    backgroundColor: "white",
+    marginBottom: '1rem'
   }
 }));
 

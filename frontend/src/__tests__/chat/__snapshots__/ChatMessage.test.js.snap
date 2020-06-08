@@ -2,8 +2,12 @@
 
 exports[`ChatMessage Should render chat message without errors 1`] = `
 <div
-  className="messageWrapper"
+  className="
+          messageWrapper 
+          "
   id="1"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
 >
   <WithStyles(ForwardRef(Avatar))
     className="messageAvatar"
@@ -28,7 +32,7 @@ exports[`ChatMessage Should render chat message without errors 1`] = `
       <div
         className="messageTime"
       >
-        Today at 1:16 AM
+        Today at 4:29 AM
       </div>
     </div>
     <div
@@ -37,5 +41,8 @@ exports[`ChatMessage Should render chat message without errors 1`] = `
       hello
     </div>
   </div>
+  <ChatMessageTools
+    hover={false}
+  />
 </div>
 `;

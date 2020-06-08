@@ -89,12 +89,12 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Travis** - CI
 
 ## Todo Completed
-- [ ] Websocket Authentication Flow
 - [ ] Set up celery for asynchronous job processing (convert signals to create task for celery)
 
 -------------------------------------------------------
 
 ## Todo Next Iteration
+- [ ] Websocket Authentication Flow
 - [ ] Use httpOnly cookies for tokens
 - [ ] Activity Feed of Friends
 - [ ] Skeleton loading where applicable
