@@ -112,7 +112,7 @@ class SearchBar extends Component {
             suggestions = [option].concat(parsed.suggestions).slice(0, 5)
         }
 
-        const newCached = {id: this.props.user.id, suggestions}
+        const newCached = {suggestions}
         localStorage.setItem('searchSuggestionHistory', JSON.stringify(newCached))
     }
 

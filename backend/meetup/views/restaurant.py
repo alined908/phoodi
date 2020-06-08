@@ -20,7 +20,7 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 
 class RestaurantListView(APIView):
-    permission_clases = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, *args, **kwargs):
         coords, categories = [

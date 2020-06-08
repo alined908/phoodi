@@ -6,6 +6,7 @@ import RegisterPage from "./auth/RegisterPage";
 import PasswordResetPage from "./auth/PasswordResetPage";
 import PasswordResetConfirmPage from "./auth/PasswordResetConfirmPage";
 import EmailActivationPage from "./auth/EmailActivationPage";
+import AuthWrapper from './auth/AuthWrapper';
 
 //Chat
 import ChatBar from "./chat/ChatBar";
@@ -101,6 +102,7 @@ export {
   PasswordResetPage,
   PasswordResetConfirmPage,
   EmailActivationPage,
+  AuthWrapper,
   ChatBar,
   Chat,
   ChatMessage,

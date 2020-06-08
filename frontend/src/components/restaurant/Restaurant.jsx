@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { axiosClient } from "../../accounts/axiosClient";
-import { RestaurantThread, StaticMap, Rating, RestaurantReviewForm, DisplayRating } from "../components";
+import { RestaurantThread, StaticMap, Rating, RestaurantReviewForm, DisplayRating, AuthWrapper } from "../components";
 import { history } from "../MeetupApp";
 import {Info as InfoIcon, Create as CreateIcon, Comment as CommentIcon, ExpandMore as ExpandMoreIcon} from '@material-ui/icons'
 import {Tooltip, Avatar, Button, BottomNavigation, Menu, MenuItem, BottomNavigationAction, Fab, CircularProgress} from '@material-ui/core'
@@ -63,22 +63,8 @@ class Restaurant extends Component {
   callApi = async () => {
     try {
       const [restaurant, reviews] = await Promise.all([
-        axiosClient.get(
-        `/api/restaurants/${this.props.match.params.uri}/`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`, 
-            },
-          }
-        ),
-        axiosClient.get(
-          `/api/restaurants/${this.props.match.params.uri}/reviews/?sort=${this.state.reviewSort}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        )
+        axiosClient.get(`/api/restaurants/${this.props.match.params.uri}/`),
+        axiosClient.get(`/api/restaurants/${this.props.match.params.uri}/reviews/?sort=${this.state.reviewSort}`)
       ])
       console.log(restaurant.data)
       this.setState({ restaurant: restaurant.data, reviews: reviews.data });
@@ -243,9 +229,11 @@ class Restaurant extends Component {
                 <div className={styles.sort}>
                   <div className={styles.reviewHeader}>
                     Reviews
-                    <Button onClick={this.openFormModal} color="primary" variant="contained">
-                      Add Review
-                    </Button>
+                    <AuthWrapper authenticated={this.props.authenticated}>
+                      <Button onClick={this.openFormModal} color="primary" variant="contained">
+                        Add Review
+                      </Button>
+                    </AuthWrapper>
                   </div>
                   <span className={styles.rstReviewSort}>
                     Sort:&nbsp;

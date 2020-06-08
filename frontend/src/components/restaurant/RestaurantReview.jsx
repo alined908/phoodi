@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { CommentForm, Comments, Rating} from "../components";
+import { CommentForm, Comments, Rating, AuthWrapper} from "../components";
 import { Button, IconButton, Avatar} from "@material-ui/core";
 import { axiosClient } from "../../accounts/axiosClient";
 import {
@@ -85,10 +85,11 @@ class RestaurantReview extends Component {
               <span className={styles.commentLikes}>
                 {this.state.score} Likes
               </span>
-              
-              <Button className={styles.commentActionButton} color="primary" onClick={this.openCommentForm} size="small" >
-                Reply
-              </Button>
+              <AuthWrapper authenticated={this.props.authenticated}>
+                <Button className={styles.commentActionButton} color="primary" onClick={this.openCommentForm} size="small" >
+                  Reply
+                </Button>
+              </AuthWrapper>
               {this.props.review.comment_count > 0 && !this.state.showChildren &&
                 <Button className={styles.commentActionButton} onClick={this.showChildren}  size="small" color="primary">
                   View {this.props.review.comment_count} replies
@@ -102,25 +103,27 @@ class RestaurantReview extends Component {
             </div>
           </div>
           <div className={styles.commentRight}>
-            {this.state.vote === 1 ? (
-                <IconButton size="small" onClick={() => this.voteComment(1)} color="secondary">
-                  <LikeIcon />
-                </IconButton>
-              ) : (
-                <IconButton size="small" onClick={() => this.voteComment(1)} color="secondary">
-                  <LikeBorderIcon />
-                </IconButton>
-              )}
-              
-              {/* {this.state.vote && this.state.vote.vote === -1 ? (
-                <IconButton size="small" onClick={() => this.voteComment(0)} color="primary">
-                  <ThumbDownIcon />
-                </IconButton>
-              ) : (
-                <IconButton size="small" onClick={() => this.voteComment(-1)}>
-                  <ThumbDownOutlinedIcon />
-                </IconButton>
-              )} */}
+            <AuthWrapper authenticated={this.props.authenticated}>
+                {this.state.vote === 1 ? (
+                    <IconButton size="small" onClick={() => this.voteComment(1)} color="secondary">
+                      <LikeIcon />
+                    </IconButton>
+                ) : (
+                  <IconButton size="small" onClick={() => this.voteComment(1)} color="secondary">
+                    <LikeBorderIcon />
+                  </IconButton>
+                )}
+                
+                {/* {this.state.vote && this.state.vote.vote === -1 ? (
+                  <IconButton size="small" onClick={() => this.voteComment(0)} color="primary">
+                    <ThumbDownIcon />
+                  </IconButton>
+                ) : (
+                  <IconButton size="small" onClick={() => this.voteComment(-1)}>
+                    <ThumbDownOutlinedIcon />
+                  </IconButton>
+                )} */}
+              </AuthWrapper>
           </div>
         </div>
         {this.state.showChildren &&

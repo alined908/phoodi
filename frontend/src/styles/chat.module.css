@@ -19,7 +19,7 @@
 
 .chatMobile .window,
 .chatMobile .bar {
-  height: 90%;
+  height: 85%;
   position: fixed;
   width: 90%;
   min-width: 300px;

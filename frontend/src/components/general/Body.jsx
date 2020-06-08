@@ -52,7 +52,7 @@ class Body extends Component {
           />
           <Route path="/search" component={SearchPage}/>
           <Route path="/restaurants/:uri" component={Restaurant} />
-          <Route path="/meetups" exact component={Meetups} />
+          <AuthenticatedRoute path="/meetups" exact component={Meetups} />
           <AuthenticatedRoute path="/logout" component={LogoutPage} />
           <AuthenticatedRoute path="/meetups/:uri" component={MeetupWrapper} />
           <AuthenticatedRoute path="/chat/:uri" component={Chat} />

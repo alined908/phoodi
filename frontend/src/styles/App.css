@@ -145,6 +145,24 @@ body {
   align-items: center;
 }
 
+.auth-wrapper{
+  cursor:pointer;
+}
+
+.auth-alert .MuiPaper-root{
+  background-color: transparent !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+}
+
+.allow {
+
+}
+
+.block {
+  pointer-events: none;
+}
+
 /* No Entity */
 .no-entity {
   display: flex;

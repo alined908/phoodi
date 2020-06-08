@@ -90,9 +90,7 @@ python manage.py loaddata meetup/fixtures/*.json
 
 ## Todo Completed
 - [ ] Websocket Authentication Flow
-
-## Todo General
-- [ ] Move signals to inside models or Set up celery for asynchronous job processing (convert signals to create task for celery)
+- [ ] Set up celery for asynchronous job processing (convert signals to create task for celery)
 
 -------------------------------------------------------
 

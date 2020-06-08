@@ -272,14 +272,18 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     def _get_vote(self, obj):
         user = self.context.get("user")
-        try:
-            vote = Vote.objects.get(
-                user = user, 
-                content_type = obj.get_content_type(), 
-                object_id = obj.id
-            )
-            return vote.value
-        except ObjectDoesNotExist:
+
+        if not user.is_anonymous:
+            try:
+                vote = Vote.objects.get(
+                    user = user, 
+                    content_type = obj.get_content_type(), 
+                    object_id = obj.id
+                )
+                return vote.value
+            except ObjectDoesNotExist:
+                return None
+        else:
             return None
 
     class Meta:
