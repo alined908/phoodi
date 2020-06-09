@@ -5,6 +5,11 @@ ALLOWED_HOSTS = ["phoodie.me"]
 DOMAIN = "phoodie.me"
 BASE_URL = "https://phoodie.me/"
 
+CORS_ORIGIN_WHITELIST = (
+    "https://phoodie.me",
+    "https://www.phoodie.me",
+)
+
 ELASTICSEARCH_DSL = {
     'default': {
         'hosts': 'elasticsearch:9200'
@@ -22,11 +27,6 @@ DATABASES = {
         "TEST": {"NAME": "test_meetup_db",},
     }
 }
-
-CORS_ORIGIN_WHITELIST = (
-    "https://phoodie.me",
-    "https://www.phoodie.me",
-)
 
 CHANNEL_LAYERS = {
     "default": {

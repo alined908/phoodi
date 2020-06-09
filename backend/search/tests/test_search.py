@@ -1,6 +1,6 @@
 from django.core.management import call_command
 from meetup.models import User, Restaurant, Category, RestaurantCategory
-from ..documents import CategoryDocument, RestaurantDocument
+from search.documents import CategoryDocument, RestaurantDocument
 from django.core.management import call_command
 from elasticsearch_dsl import Search, Q
 from rest_framework import status
@@ -19,6 +19,7 @@ class SearchUnitTest(UnitTestControl):
     fixtures = ("1_users.json","3_restaurants.json",)
 
     def setUp(self):
+        print('hello')
         self.rebuild_index()
         self.user = User.objects.get(pk=1)
         self.pizza_rst = Restaurant.objects.get(pk=1)

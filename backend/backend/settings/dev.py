@@ -5,6 +5,12 @@ ALLOWED_HOSTS = []
 DOMAIN = "localhost:8003"
 BASE_URL = "http://localhost:8003/"
 
+CORS_ORIGIN_WHITELIST = (
+    "http://localhost:8003",
+    "https://localhost:8003",
+    "http://localhost",
+)
+
 ELASTICSEARCH_DSL = {
     'default': {
         'hosts': 'localhost:9200'
@@ -22,12 +28,6 @@ DATABASES = {
         "TEST": {"NAME": "test_meetup_db",},
     }
 }
-
-CORS_ORIGIN_WHITELIST = (
-    "http://localhost:8003",
-    "https://localhost:8003",
-    "http://localhost",
-)
 
 CHANNEL_LAYERS = {
     "default": {
