@@ -146,7 +146,7 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
               "id": 1,
               "last_name": "Lee",
             },
-            "date": "2020-05-15",
+            "date": "2020-06-08",
             "events": Object {},
             "id": 1,
             "isMeetupEventsInitialized": true,
@@ -206,7 +206,7 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
           <span
             className="blockActionChip"
           >
-            Friday, May 15
+            Monday, June 8
           </span>
         </div>
       </div>

@@ -7,7 +7,7 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import styles from "../../styles/meetup.module.css";
-import { Map, Rating  } from "../components";
+import { StaticMap, Rating  } from "../components";
 import PropTypes from "prop-types";
 // import {Skeleton } from "@material-ui/lab";
 import moment from "moment";
@@ -117,7 +117,7 @@ const RestaurantPreview = (props) => {
               </div>
           </div>
           <div className={styles.rstMapWrapper}>
-            <Map
+            <StaticMap
               location={{
                 latitude: info.coordinates.latitude,
                 longitude: info.coordinates.longitude,

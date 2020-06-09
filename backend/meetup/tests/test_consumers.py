@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 import os
 import django
 django.setup()
@@ -78,7 +80,7 @@ def create_event(meetup, member, random=True):
         creator=member,
         title="event",
         distance=10000,
-        price="1,2",
+        price=[1,2],
         start=now(),
         end=now(),
         random=random,

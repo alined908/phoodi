@@ -11,9 +11,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'mptt',
     "rest_framework",
+    "django_elasticsearch_dsl",
+    'django_elasticsearch_dsl_drf',
+    "search",
     "djoser",
-    "social_django",
+    'drf_yasg',
     "corsheaders",
     "channels",
     "meetup",
@@ -31,14 +35,18 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.BasicAuthentication",
     ),
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100,
+    'ORDERING_PARAM': 'ordering',
 }
 
-SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+GOOGLE_OAUTH2_KEY = os.environ.get("GOOGLE_OAUTH2_KEY")
+GOOGLE_OAUTH2_SECRET = os.environ.get("GOOGLE_OAUTH2_SECRET")
+FACEBOOK_OAUTH2_KEY = os.environ.get("FACEBOOK_OAUTH2_KEY")
+FACEBOOK_OAUTH2_SECRET = os.environ.get("FACEBOOK_OAUTH2_SECRET")
 
 AUTHENTICATION_BACKENDS = (
-    "social_core.backends.google.GoogleOAuth2",
-    "social_core.backends.twitter.TwitterOAuth",
-    "social_core.backends.facebook.FacebookOAuth2",
     "django.contrib.auth.backends.ModelBackend",
 )
 
@@ -71,8 +79,11 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "social_django.middleware.SocialAuthExceptionMiddleware",
 ]
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False
+}
 
 ROOT_URLCONF = "backend.urls"
 
@@ -124,15 +135,10 @@ SERVER_EMAIL = "team@phoodie.me"
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -140,20 +146,19 @@ USE_TZ = True
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
+STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+DEFAULT_FILE_STORAGE = "backend.storage_backends.MediaStorage"
+
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
-AWS_S3_CUSTOM_DOMAIN = "%s.s3.amazonaws.com" % AWS_STORAGE_BUCKET_NAME
+AWS_S3_CUSTOM_DOMAIN = "cdn.phoodie.me"
 AWS_S3_OBJECT_PARAMETERS = {
     "CacheControl": "max-age=86400",
 }
 AWS_LOCATION = "static"
 
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "meetup/static"),
 ]
 STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-
-DEFAULT_FILE_STORAGE = "backend.storage_backends.MediaStorage"

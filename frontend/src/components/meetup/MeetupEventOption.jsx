@@ -28,6 +28,13 @@ import {
 } from "../../constants/prop-types";
 import styles from "../../styles/meetup.module.css";
 
+const numToPrice = {
+  1: '$',
+  2: '$$',
+  3: '$$$',
+  4: '$$$$'
+}
+
 class MeetupEventOption extends Component {
   constructor(props) {
     super(props);
@@ -235,7 +242,6 @@ class MeetupEventOption extends Component {
         <div className={styles.rstCardBottom}>
           <div className={styles.rstInfo}>
             <div className={styles.rstInfoTop}>
-                <Rating rating={data.rating} />
                 <Tooltip title="Go To Restaurant Page" placement="top">
                     <Link to={`/restaurants/${data.url}`} className={styles.rstInfoName}>
                       <Typography variant="h6" noWrap>
@@ -243,6 +249,10 @@ class MeetupEventOption extends Component {
                       </Typography>
                     </Link>
                 </Tooltip>
+                <Rating 
+                  rating={data.rating} 
+                  readOnly={true}
+                />
             </div>  
             <div>
                 <IconButton style={{color: "rgba(10,10,10, .95)"}} edge="end" onClick={this.handleMenuClick}>
@@ -291,18 +301,18 @@ class MeetupEventOption extends Component {
             </div>
           </div>
           <div className={styles.rstCategories}>
-            {data.price} &#8226;
+            {numToPrice[data.price]} &#8226;
             {data.categories.map((rc) => (
               <div key={rc.category.id} className={styles.categoryChip}>
                 <Avatar
                   style={{ width: 20, height: 20 }}
                   variant="square"
-                  src={`${process.env.REACT_APP_S3_STATIC_URL}${rc.category.api_label}.png`}
+                  src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${rc.category.api_label}.png`}
                 >
                   <img
                     style={{ width: 20, height: 20 }}
                     alt={"&#9787;"}
-                    src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}
+                    src={`${process.env.REACT_APP_S3_STATIC_URL}/static/general/panda.png`}
                   />
                 </Avatar>
                 {rc.category.label}

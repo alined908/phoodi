@@ -30,7 +30,7 @@ const Preference = ({ pref, sortIndex, locked, isUser, user, ...props }) => {
             <Avatar
               variant="square"
               className={styles.preferenceAvatar}
-              src={`${process.env.REACT_APP_S3_STATIC_URL}${pref.category.api_label}.png`}
+              src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${pref.category.api_label}.png`}
             />
             <Typography variant="body2">{pref.category.label}</Typography>
           </div>

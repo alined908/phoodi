@@ -98,7 +98,10 @@ class RestaurantReviewForm extends Component {
                     {Object.keys(ratings).reverse().map((rating) => (
                       <MenuItem value={rating}>
                         <ListItemIcon className={styles.ratingScore}>
-                          <Rating rating={rating}/>
+                          <Rating 
+                            readOnly={true}
+                            rating={rating}
+                          />
                         </ListItemIcon>
                         <Typography variant="body2" noWrap>
                           {ratings[rating]}

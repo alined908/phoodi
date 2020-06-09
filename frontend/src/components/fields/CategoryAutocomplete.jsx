@@ -64,14 +64,16 @@ const CategoryAutocomplete = (props) => {
       onClose={() => {
         setOpen(false);
       }}
-      getOptionSelected={(option, value) =>
-        option.api_label === value.api_label
+      getOptionSelected={(option, value) => 
+        option.api_label === value.api_label || option.label === value
       }
-      getOptionLabel={(option) => option.label}
+      getOptionLabel={(option) => option.label ? option.label : option}
       onChange={props.handleClick}
       options={options}
       loading={loading}
       renderOption={(option, { inputValue }) => {
+        console.log(option)
+        console.log(inputValue)
         const matches = match(option.label, inputValue);
         const parts = parse(option.label, matches);
 
@@ -87,12 +89,12 @@ const CategoryAutocomplete = (props) => {
             <Avatar
               style={{ width: 20, height: 20, marginRight: 15 }}
               variant="square"
-              src={`${process.env.REACT_APP_S3_STATIC_URL}${option.api_label}.png`}
+              src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${option.api_label}.png`}
             >
               <img
                 style={{ width: 20, height: 20 }}
                 alt={"&#9787;"}
-                src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}
+                src={`${process.env.REACT_APP_S3_STATIC_URL}/static/general/panda.png`}
               />
             </Avatar>
             {parts.map((part, index) => (

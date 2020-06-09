@@ -1,0 +1,18 @@
+.displayRating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(0, 0, 0, .9);
+    color: white;
+    min-width: 50px;
+    height: 30px;
+    border-radius: 4px;
+    box-shadow: var(--shadow-1);
+    font-size: .8rem;
+    padding: .1rem;
+}
+
+.star {
+    font-size: .7rem;
+    margin-right: 5px;
+}

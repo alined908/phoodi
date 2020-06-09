@@ -153,7 +153,7 @@ describe("MeetupEvent tests chosen", () => {
 
   it("should render option and map", () => {
     const wrapper = shallow(<UnderlyingMeetupEvent {...newProps} />);
-    expect(wrapper.find("Map")).toHaveLength(1);
+    expect(wrapper.find("StaticMap")).toHaveLength(1);
     expect(wrapper.find("Connect(MeetupEventOption)")).toHaveLength(1);
   });
 

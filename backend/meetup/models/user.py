@@ -1,6 +1,7 @@
 from django.db import models
 from io import BytesIO
 from PIL import Image
+from django.utils.timezone import now
 from django.core.mail import send_mail
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from meetup.helpers import path_and_rename_avatar
@@ -17,6 +18,7 @@ class UserManager(BaseUserManager):
         first_name,
         last_name,
         avatar=None,
+        social=False,
         is_staff=False,
         is_admin=False,
         password=None,
@@ -24,8 +26,6 @@ class UserManager(BaseUserManager):
     ):
         if not email:
             raise ValueError("Users must have an email address")
-        if not password:
-            raise ValueError("User must have a password")
         user = self.model(email=self.normalize_email(email))
         user.set_password(password)
         user.first_name = first_name
@@ -33,6 +33,8 @@ class UserManager(BaseUserManager):
         user.avatar = avatar
         user.staff = is_staff
         user.admin = is_admin
+        user.is_active = social
+
         user.save(using=self._db)
         return user
 
@@ -60,7 +62,9 @@ class User(AbstractBaseUser):
     staff = models.BooleanField(default=False)
     confirmed = models.BooleanField(default=False)
     avatar = models.ImageField(blank=True, null=True, upload_to=path_and_rename_avatar)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=now, editable=False)
+    review_karma = models.IntegerField(default=0)
+    comment_karma = models.IntegerField(default=0)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name", "avatar"]
@@ -114,6 +118,10 @@ class User(AbstractBaseUser):
     def is_staff(self):
         return self.staff
 
+    @property
+    def avatar_index(self):
+        return self.avatar.url if self.avatar else None
+
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
@@ -129,13 +137,13 @@ class User(AbstractBaseUser):
             id__in=RawSQL(
                 "(SELECT a.id AS id \
             FROM meetup_friendship AS a \
-            INNER JOIN meetup_preference AS b \
+            INNER JOIN meetup_categorypreference AS b \
             ON a.friend_id=b.user_id \
             AND a.creator_id=%s AND b.category_id=%s) \
             UNION \
             (SELECT a.id AS id \
             FROM meetup_friendship AS a \
-            INNER JOIN meetup_preference AS b \
+            INNER JOIN meetup_categorypreference AS b \
             ON a.creator_id=b.user_id \
             AND a.friend_id=%s AND b.category_id=%s) \
             ",

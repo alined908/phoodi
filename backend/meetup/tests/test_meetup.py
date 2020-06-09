@@ -1,6 +1,7 @@
 from meetup.models import (
     User,
     Category,
+    ChatRoomMessage,
     Meetup,
     MeetupMember,
     MeetupEvent,
@@ -13,6 +14,7 @@ from meetup.serializers import (
     MeetupEventSerializer,
     MeetupMemberSerializer,
 )
+from notifications.models import Notification
 from rest_framework import status
 from rest_framework.test import APIClient
 from django.contrib.auth.hashers import make_password
@@ -46,7 +48,7 @@ class MeetupTest(TestCase):
         }
         self.private = Meetup.objects.create(public=False, **meetup_info)
         self.public = Meetup.objects.create(public=True, **meetup_info)
-        self.valid_payload = {"public": False, **meetup_info}
+        self.valid_payload = {"public": True, **meetup_info}
         self.member = MeetupMember.objects.create(meetup=self.private, user=self.user)
         self.invalid_payload = {
             "name": "",
@@ -74,8 +76,8 @@ class MeetupTest(TestCase):
             meetup=self.private,
             title="Event",
             distance=20000,
-            price="1, 2",
-            start=now().replace(hour=1),
+            price=[1, 2],
+            start=now().replace(hour=20),
             entries={"desserts": True},
             random=True,
         )
@@ -112,8 +114,8 @@ class MeetupTest(TestCase):
             meetup=self.public,
             title="Event",
             distance=20000,
-            price="1, 2",
-            start=now().replace(hour=1),
+            price=[1,2],
+            start=now().replace(hour=20),
             entries={"desserts": True},
             random=True,
         )
@@ -150,8 +152,8 @@ class MeetupTest(TestCase):
             meetup=self.public,
             title="Event",
             distance=20000,
-            price="1, 2",
-            start=now().replace(hour=1),
+            price=[1,2],
+            start=now().replace(hour=20),
             entries={"desserts": True},
             random=True,
         )
@@ -217,6 +219,8 @@ class MeetupTest(TestCase):
             content_type="application/json",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        message = ChatRoomMessage.objects.last()
+        self.assertEqual(message.message, 'changed meetup from private to public')
 
     def test_MeetupView_PATCH_invalid(self):
         response = client.patch(
@@ -233,6 +237,27 @@ class MeetupTest(TestCase):
     def test_MeetupView_DELETE_invalid(self):
         response = client.delete("/api/meetups/" + "wdwadawdaw" + "/")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_Meetup_creation_user_activity(self):
+        notifications = Notification.objects.filter(actor_object_id=self.user.id, description="user_activity")
+        self.assertEqual(notifications.count(), 2)
+        client.post(
+            "/api/meetups/",
+            data=json.dumps(self.valid_payload, default=str),
+            content_type="application/json",
+        )
+        notifications = Notification.objects.filter(actor_object_id=self.user.id, description="user_activity")
+        self.assertEqual(notifications.count(), 3)
+
+    def test_Meetup_creation_chat_activity(self):
+        client.post(
+            "/api/meetups/",
+            data=json.dumps(self.valid_payload, default=str),
+            content_type="application/json",
+        )
+        meetup = Meetup.objects.last()
+        message = ChatRoomMessage.objects.last()
+        self.assertEqual(message.message, 'created meetup named %s' % meetup.name)
 
     def test_email(self):
         self.private.send_email()
@@ -285,18 +310,18 @@ class MeetupEventTest(TestCase):
             meetup=self.meetup,
             title="Event",
             distance=20000,
-            price="1, 2",
-            start=now().replace(hour=1),
+            price=[1, 2],
+            start=now().replace(hour=20),
             entries=self.entries,
             random=True,
         )
         self.option = self.event.options.first()
         self.valid_payload = {
-            "start": now().replace(hour=1),
-            "end": now().replace(hour=2),
+            "start": now().replace(hour=20),
+            "end": now().replace(hour=21),
             "title": "Hello",
             "distance": 20000,
-            "price": "1, 2",
+            "price": [1, 2],
             "entries": self.entries,
             "random": True,
         }
@@ -305,8 +330,9 @@ class MeetupEventTest(TestCase):
             "end": now(),
             "title": "",
             "distance": 20000,
-            "price": "1, 2",
+            "price": [1, 2],
             "entries": self.entries,
+            'random': True
         }
         client.force_authenticate(user=self.user)
 
@@ -334,7 +360,7 @@ class MeetupEventTest(TestCase):
             data=json.dumps(self.invalid_payload, default=str),
             content_type="application/json",
         )
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, 404)
 
     def test_MeetupEventsView_PATCH_valid(self):
         response = client.patch(
@@ -363,6 +389,30 @@ class MeetupEventTest(TestCase):
             "/api/meetups/" + self.meetup.uri + "/events/" + str(100) + "/"
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_MeetupEvent_create_user_and_chat_activity(self):
+        notifications = Notification.objects.filter(actor_object_id=self.user.id, description="user_activity")
+        self.assertEqual(notifications.count(), 2)
+        client.post(
+            "/api/meetups/" + self.meetup.uri + "/events/",
+            data=json.dumps(self.valid_payload, default=str),
+            content_type="application/json",
+        )
+        message = ChatRoomMessage.objects.last()
+        self.assertEqual(message.message, 'created an event named %s' % self.valid_payload['title'])
+        notifications = Notification.objects.filter(actor_object_id=self.user.id, description="user_activity")
+        self.assertEqual(notifications.count(), 3)
+
+    def test_MeetupEvent_create_push_notification(self):
+        user_notifs = self.user2.notifications.unread().filter(description="meetup")
+        self.assertEqual(user_notifs.count(), 1)
+        client.post(
+            "/api/meetups/" + self.meetup.uri + "/events/",
+            data=json.dumps(self.valid_payload, default=str),
+            content_type="application/json",
+        )
+        user_notifs = self.user2.notifications.unread().filter(description="meetup")
+        self.assertEqual(user_notifs.count(), 2)
 
     def test_convert_entries_to_string(self):
         categories = self.event.convert_entries_to_string()
@@ -407,7 +457,7 @@ class MeetupEventTest(TestCase):
             meetup=self.meetup,
             title="Event",
             distance=20000,
-            price="1, 2",
+            price=[1, 2],
             start=now(),
             entries=self.entries,
             random=True,
@@ -451,7 +501,6 @@ class MeetupEventTest(TestCase):
 
     def test_handle_decide_all_banned(self):
         pass
-
 
 class MeetupMemberTest(TestCase):
     def setUp(self):
@@ -554,6 +603,35 @@ class MeetupMemberTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, {"error": "User does not exist"})
 
+    def test_MeetupMember_create_user_and_chat_activity(self):
+        response = client.post(
+            "/api/meetups/" + self.meetup.uri + "/members/",
+            data=json.dumps(self.valid_payload, default=str),
+            content_type="application/json",
+        )
+        message = ChatRoomMessage.objects.last()
+        self.assertEqual(message.message, "joined the meetup.")
+        notifications = Notification.objects.filter(actor_object_id=self.user3.id, description="user_activity")
+        self.assertEqual(notifications.count(), 1)
+
+    def test_MeetupMember_delete_chat_activity(self):
+        response = client.delete(
+            "/api/meetups/" + self.meetup.uri + "/members/",
+            data=json.dumps(self.valid_payload, default=str),
+            content_type="application/json",
+        )
+        message = ChatRoomMessage.objects.last()
+        self.assertEqual(message.message, 'removed %s %s from the meetup.' % (self.user3.first_name, self.user3.last_name))
+
+    def test_MeetupMember_leave_chat_activity(self):
+        client.force_authenticate(user=self.user3)
+        response = client.delete(
+            "/api/meetups/" + self.meetup.uri + "/members/",
+            data=json.dumps(self.valid_payload, default=str),
+            content_type="application/json",
+        )
+        message = ChatRoomMessage.objects.last()
+        self.assertEqual(message.message, 'left the meetup.')
 
 class MeetupEmailViewTest(TestCase):
     def setUp(self):

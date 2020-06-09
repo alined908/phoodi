@@ -22,6 +22,8 @@ export default function (state = userDefaultState, action) {
       return { ...state, freshTokenPromise: null };
     case types.EDIT_USER:
       return { ...state, user: { ...action.payload,  settings: {...state.user.settings}} };
+    case types.CHANGE_EMAIL:
+      return {...state, user: {...state.user, email: action.payload}}
     case types.ADD_SETTINGS:
       return {
         ...state,

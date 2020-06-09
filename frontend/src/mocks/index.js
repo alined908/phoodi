@@ -215,7 +215,7 @@ export const event = {
     chosen: null,
     categories: [category],
     options: {},
-    price: "1, 2",
+    price: [1, 2],
     distance: 16000,
     entries: {},
     random: true,

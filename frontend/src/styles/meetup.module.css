@@ -141,7 +141,7 @@
 }
 
 .active {
-background: var(--light-blue);
+  background: var(--light-blue);
   border-radius: 4px;
 }
 
@@ -238,7 +238,6 @@ background: var(--light-blue);
 }
 
 .chosenRestaurant {
-  border: 1px solid #eeeeef;
   border-radius: 5px;
   margin: 1.5rem;
   background-color: white;
@@ -357,7 +356,8 @@ background: var(--light-blue);
 
 .rstInfoTop{
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    width: 100%;
 }
 
 .rstInfoTop > div:first-child{
@@ -365,7 +365,7 @@ background: var(--light-blue);
 }
 
 .rstInfoName {
-    max-width: 180px;
+    max-width: 220px;
 }
 
 .rstHorz {

@@ -10,6 +10,7 @@ class RestaurantThread extends Component {
       <div className={styles.thread}>
         {reviews.map((review) => (
           <RestaurantReview
+            authenticated={this.props.authenticated}
             key={review.id}
             review={review}
             restaurant={this.props.restaurant}

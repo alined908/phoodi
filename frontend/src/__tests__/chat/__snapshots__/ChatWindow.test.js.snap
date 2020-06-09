@@ -46,7 +46,7 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
       <div
         className="messagesDate"
       >
-        May 15, 2020
+        June 8, 2020
       </div>
       <ChatMessage
         hideNotif={false}
@@ -82,7 +82,7 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
               "id": 1,
               "last_name": "Lee",
             },
-            "timestamp": "2020-05-15T01:16:06+00:00",
+            "timestamp": "2020-06-08T06:23:36-07:00",
           }
         }
         user={
@@ -129,7 +129,7 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
               "id": 1,
               "last_name": "Lee",
             },
-            "timestamp": "2020-05-15T01:16:06+00:00",
+            "timestamp": "2020-06-08T06:23:36-07:00",
           }
         }
         user={
@@ -172,7 +172,7 @@ exports[`ChatWindow unit  renders without crashing given props 1`] = `
           },
           "name": "Friend",
           "notifs": 0,
-          "timestamp": "2020-05-15T01:16:06+00:00",
+          "timestamp": "2020-06-08T06:23:36-07:00",
           "uri": "abc",
         }
       }

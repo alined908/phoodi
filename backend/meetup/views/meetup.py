@@ -16,7 +16,7 @@ from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 
 class MeetupListView(APIView):
@@ -132,19 +132,19 @@ class MeetupEventsListView(APIView):
         uri = kwargs["uri"]
         meetup = get_object_or_404(Meetup, uri=uri)
         creator = get_object_or_404(MeetupMember, meetup=meetup, user=user)
-
+        
+        start, end, title = (
+            request.data["start"],
+            request.data["end"],
+            request.data["title"],
+        )
+        distance, price, entries, random = (
+            request.data["distance"],
+            request.data["price"],
+            request.data["entries"],
+            request.data["random"],
+        )
         try:
-            start, end, title = (
-                request.data["start"],
-                request.data["end"],
-                request.data["title"],
-            )
-            distance, price, entries, random = (
-                request.data["distance"],
-                request.data["price"],
-                request.data["entries"],
-                request.data["random"],
-            )
             event = MeetupEvent.objects.create(
                 creator=creator,
                 meetup=meetup,
@@ -156,13 +156,11 @@ class MeetupEventsListView(APIView):
                 price=price,
                 random=random,
             )
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        serializer = MeetupEventSerializer(event)
-
-        return Response({"meetup": uri, "event": {event.id: serializer.data}})
-
+            serializer = MeetupEventSerializer(event)
+            return Response({"meetup": uri, "event": {event.id: serializer.data}})
+        except ValidationError as e:
+            return Response({"errors": e.messages}, status=404)
+        
 
 class MeetupEventsView(APIView):
     permissions = [permissions.IsAuthenticated]

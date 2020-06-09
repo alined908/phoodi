@@ -15,6 +15,7 @@ const props = {
   isMeetupsInitialized: true,
   getMeetups: jest.fn(),
   getPreferences: jest.fn(),
+  location: {}
 };
 
 describe("Meetups tests", () => {

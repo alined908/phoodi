@@ -17,10 +17,10 @@ exports[`MeetupEvent tests general renders without crashing 1`] = `
       className="headerIcons"
     >
       <ScheduleIcon />
-      1:15 AM
+      6:23 AM
        -
        
-      1:15 AM
+      6:23 AM
     </div>
     <WithStyles(ForwardRef(Tooltip))
       title="Event Creator"
@@ -149,7 +149,7 @@ exports[`MeetupEvent tests general renders without crashing 1`] = `
           className="categoryChip categoryChipHover"
         >
           <WithStyles(ForwardRef(Avatar))
-            src="undefineddesserts.png"
+            src="undefined/static/category/desserts.png"
             style={
               Object {
                 "height": 20,

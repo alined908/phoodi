@@ -23,7 +23,7 @@ coverage report
 **2. Run tests for frontend**
 ```
 cd frontend
-npm test -- --coverage
+npm test -- --coverage -u
 ```
 
 ## Deployment (For AWS EC2, Amazon Linux 2)
@@ -81,52 +81,39 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Django** - Backend
 * **React/Redux + Jest/Enzyme** - Frontend
 * **Postgres** - Database
+* **Elasticsearch** - Search entities
 * **Nginx** - Web Server
 * **Redis** - Channel layer for pub/sub
 * **Yelp Api** - Generate restaurants
 * **Material UI** - Design
 * **Travis** - CI
 
-## Todo General
-- [ ] CDN for images
-- [ ] Rewrite Database (Comments as Tree, scalable solution for voting)
-- [ ] Finish writing tests for frontend, backend, consumers
-- [ ] Validation for models
-- [ ] Elasticsearch - Search bar on top app nav bar, user autocomplete, restaurant autocomplete, etc
-- [ ] Properly document and refactor codebase
-- [ ] Set up caching system (redis)
-- [ ] Set up celery for asynchronous job processing (convert signals to create task for celery)
-- [ ] Notification Bar on Top right of navbar
-- [ ] Learn more about web application security (XSS, CSRF, SQL injection, MITM)
-
-## Todo Authentication
-- [ ] Add social authentication (google, facebook)
-- [ ] Use httpOnly cookies for tokens
-- [ ] Reconfigure frontend authentication logic (no signup needed to see content)
+## Todo Next Iteration
 - [ ] Websocket Authentication Flow
+- [ ] Use httpOnly cookies for tokens
+- [ ] Activity Feed of Friends
+- [ ] Skeleton loading where applicable
+- [ ] Complete admin functionality for meetup member
+- [ ] Properly document and refactor codebase
+- [ ] User's top restaurants list (by city?, map with markers and fly functionality)
+- [ ] Add calendar of meetups
+- [ ] Notification Bar on Top right of navbar
+- [ ] Add Custom Notification Model
+- [ ] Review Score for food and service and possible secondary factors (interior, location, etc)
+- [ ] Social Auth Get Profile Pic and Save to database
+- [ ] Finish writing tests for frontend
+- [ ] Finish writing tests for consumers
+- [ ] Set up locust load test
+- [ ] Set up caching system/Optimize (redis)
+- [ ] Learn more about web application security (XSS, CSRF, SQL injection, MITM)
+- [ ] User Reputation system
+- [ ] Add capacity to meetup
+- [ ] Fix preferences swapping lag
+- [ ] Set up celery for asynchronous job processing (convert signals to create task for celery)
 
-## Todo Chat
+## Todo Later (Chat)
 - [ ] Edit chat messages
 - [ ] Upload picture
 - [ ] Send invite through chat
 - [ ] Who's online in chat room
 - [ ] Detect if user is typing
-
-## Todo Features
-- [ ] Redesign reviews thread layout
-- [ ] Filter reviews by new/top/(top weighted by new) 
-- [ ] Add calendar of meetups
-- [ ] User Reputation system
-- [ ] Complete admin functionality for meetup member
-- [ ] Add capacity to meetup
-- [ ] Properly configure statistics for stuff (likes, options count)
-- [ ] Review Score for food and service and possible secondary factors (interior, location, etc)
-- [ ] User's top restaurants list (by city?, map with markers and fly functionality)
-
-## Todo UI
-- [ ] Skeleton loading where applicable
-
-## Todo Other
-- [ ] Update user when email changes
-- [ ] Eliminate user_id from preferences api calls
-- [ ] Find people who have similar food taste near you?

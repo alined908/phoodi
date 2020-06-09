@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Comments, CommentForm } from "../components";
 import { Button, IconButton, Avatar } from "@material-ui/core";
 import {
-  ThumbUpOutlined as ThumbUpOutlinedIcon,
+  FavoriteBorderOutlined as LikeBorderIcon,
   ThumbDownOutlined as ThumbDownOutlinedIcon,
-  ThumbUp as ThumbUpIcon,
+  FavoriteOutlined as LikeIcon,
   ThumbDown as ThumbDownIcon,
 } from "@material-ui/icons";
 import { axiosClient } from "../../accounts/axiosClient";
@@ -19,7 +19,12 @@ class Comment extends Component {
       score: props.comment.vote_score,
       vote: props.comment.vote,
       comments: props.comment.children,
+      showChildren: false
     };
+  }
+
+  showChildren = () => {
+    this.setState({showChildren: !this.state.showChildren})
   }
 
   openCommentForm = () => {
@@ -30,68 +35,78 @@ class Comment extends Component {
     this.setState({ comments: [...this.state.comments, comment] });
   };
 
-  voteComment = async (direction) => {
+  voteComment = (value) => {
     let data = {
-      direction,
-      review: this.props.review.id,
+      value,
+      comment: this.props.comment.id,
     };
+    
+    let newScore = (value === this.state.vote ? this.state.score - 1: this.state.score + 1)
+    let newValue = (value === this.state.vote ? 0 : 1)
 
-    try {
-      const response = await axiosClient.post("/api/vote/", data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      let newVote = response.data;
-      let oldVote = this.state.vote;
-      let newScore = this.state.score;
-      newScore -= oldVote ? oldVote.vote : 0;
-      newScore += newVote.vote;
-
-      this.setState({
-        vote: newVote,
-        score: newScore,
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    this.setState({
+      vote: newValue,
+      score: newScore
+    })
+    
+    axiosClient.post("/api/vote/", data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
   };
 
   render() {
     return (
       <div className={styles.commentWrapper}>
         <div className={styles.comment}>
-          <div className={styles.commentTop}>
-            <div className={styles.commentTopLeft}>
-              <span className={styles.commentUser} style={{marginLeft: 0}}>
-                <Avatar  src={this.props.comment.user.avatar}>
-                  {this.props.comment.user.first_name.charAt(0)} {this.props.comment.user.last_name.charAt(0)}
-                </Avatar>
+          <div className={styles.commentLeft}>
+            <Avatar src={this.props.comment.user.avatar}>
+              {this.props.comment.user.first_name.charAt(0)} {this.props.comment.user.last_name.charAt(0)}
+            </Avatar>
+          </div>
+          <div className={styles.commentMiddle}>
+            <span className={styles.commentUser}>
+              <span className={styles.commentName}>
                 {this.props.comment.user.first_name} {this.props.comment.user.last_name}
               </span>
+            </span>
+            <span className={styles.commentText}>
+              {this.props.comment.text}
+            </span>
+            <div className={styles.commentActions}>
               <span className={styles.commentDate}>
                 {moment(this.props.comment.timestamp).fromNow()}
               </span>
-            </div>
-            <div className={styles.commentTopRight}>
-              <Button color="primary" onClick={this.openCommentForm} size="small" variant="contained">
+              <span className={styles.commentLikes}>
+                {this.state.score} Likes
+              </span>
+              <Button className={styles.commentActionButton} color="primary" onClick={this.openCommentForm} size="small">
                 Reply
               </Button>
+              {this.props.comment.comment_count > 0 && !this.state.showChildren &&
+                <Button className={styles.commentActionButton} onClick={this.showChildren}  size="small" color="primary">
+                  View {this.props.comment.comment_count} replies
+                </Button>
+              }
+              {this.state.showChildren && 
+                <Button className={styles.commentActionButton} onClick={this.showChildren} size="small" color="primary">
+                  Hide replies
+                </Button>
+              }
             </div>
           </div>
-          <div className={styles.commentMiddle}>
-            <div className={styles.commentVote}>
+          <div className={styles.commentRight}>
               {this.state.vote && this.state.vote.vote === 1 ? (
-                <IconButton size="small" onClick={() => this.voteComment(0)} color="primary">
-                  <ThumbUpIcon />
+                <IconButton size="small" onClick={() => this.voteComment(0)} color="secondary">
+                  <LikeIcon />
                 </IconButton>
               ) : (
-                <IconButton size="small" onClick={() => this.voteComment(1)}>
-                  <ThumbUpOutlinedIcon />
+                <IconButton size="small" onClick={() => this.voteComment(1)} color="secondary">
+                  <LikeBorderIcon />
                 </IconButton>
               )}
-              {this.state.score}
-              {this.state.vote && this.state.vote.vote === -1 ? (
+              {/* {this.state.vote && this.state.vote.vote === -1 ? (
                 <IconButton size="small" onClick={() => this.voteComment(0)} color="primary">
                   <ThumbDownIcon />
                 </IconButton>
@@ -99,17 +114,18 @@ class Comment extends Component {
                 <IconButton size="small" onClick={() => this.voteComment(-1)}>
                   <ThumbDownOutlinedIcon />
                 </IconButton>
-              )}
-            </div>
-            <span className={styles.commentText}>{this.props.comment.text}</span>
+              )} */}
+            
             
           </div>
         </div>
-        <Comments
-          comments={this.state.comments}
-          review={this.props.review}
-          restaurant={this.props.restaurant}
-        />
+        {this.state.showChildren &&
+          <Comments
+            comments={this.state.comments}
+            review={this.props.review}
+            restaurant={this.props.restaurant}
+          />
+        }
         {this.state.commentForm && (
           <CommentForm
             review={this.props.review}
@@ -120,35 +136,6 @@ class Comment extends Component {
           />
         )}
       </div>
-      // <div>
-      //   <div className={styles.comment}>
-      //     {this.props.comment.text}
-      //     <div>
-      //       {this.state.vote && this.state.vote.vote === 1 ? (
-      //         <IconButton onClick={() => this.voteComment(0)}>
-      //           <ThumbUpIcon />
-      //         </IconButton>
-      //       ) : (
-      //         <IconButton onClick={() => this.voteComment(1)}>
-      //           <ThumbUpOutlinedIcon />
-      //         </IconButton>
-      //       )}
-      //       {this.state.score}
-      //       {this.state.vote && this.state.vote.vote === -1 ? (
-      //         <IconButton onClick={() => this.voteComment(0)}>
-      //           <ThumbDownIcon />
-      //         </IconButton>
-      //       ) : (
-      //         <IconButton onClick={() => this.voteComment(-1)}>
-      //           <ThumbDownOutlinedIcon />
-      //         </IconButton>
-      //       )}
-      //     </div>
-      //     <Button color="primary" onClick={this.openCommentForm}>
-      //       Reply
-      //     </Button>
-      //   </div>
-      // </div>
     );
   }
 }

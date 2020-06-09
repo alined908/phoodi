@@ -1,9 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`LoginPage renders without crashing given props 1`] = `
-<WithStyles(ForwardRef(Paper))
+<div
   className="container"
-  elevation={8}
 >
   <HelmetWrapper
     defer={true}
@@ -17,16 +16,7 @@ exports[`LoginPage renders without crashing given props 1`] = `
     </title>
   </HelmetWrapper>
   <div
-    className="left"
-  >
-    <Component
-      className="svg-shadow"
-      height="70%"
-      width="70%"
-    />
-  </div>
-  <div
-    className="right"
+    className="formWrapper"
   >
     <div
       className="formhead"
@@ -85,30 +75,41 @@ exports[`LoginPage renders without crashing given props 1`] = `
       <div
         className="socials"
       >
-        <div
-          className="social"
-        >
-          <Component
-            height={40}
-            width={40}
-          />
-        </div>
-        <div
-          className="social"
-        >
-          <Component
-            height={40}
-            width={40}
-          />
-        </div>
-        <div
-          className="social"
-        >
-          <Component
-            height={40}
-            width={40}
-          />
-        </div>
+        <y
+          accessType="online"
+          buttonText="Continue with Google"
+          className="social google"
+          cookiePolicy="single_host_origin"
+          disabledStyle={
+            Object {
+              "opacity": 0.6,
+            }
+          }
+          fetchBasicProfile={true}
+          icon={true}
+          isSignedIn={false}
+          onFailure={[Function]}
+          onRequest={[Function]}
+          onSuccess={[Function]}
+          prompt=""
+          scope="profile email"
+          tag="button"
+          theme="light"
+          type="button"
+          uxMode="popup"
+        />
+        <t
+          autoLoad={false}
+          callback={[Function]}
+          cssClass="social facebook"
+          fields="name,email,picture"
+          icon={<UNDEFINED />}
+          reauthenticate={true}
+          size="metro"
+          tag="button"
+          textButton="Continue with Facebook"
+          typeButton="button"
+        />
       </div>
       <div
         className="action"
@@ -140,5 +141,5 @@ exports[`LoginPage renders without crashing given props 1`] = `
       </div>
     </div>
   </div>
-</WithStyles(ForwardRef(Paper))>
+</div>
 `;

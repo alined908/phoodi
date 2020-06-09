@@ -7,9 +7,7 @@ import PropTypes from "prop-types";
 class LocationService extends Component {
   constructor(props) {
     super(props);
-    if (props.user && !props.user.settings) {
-      this.getUserLocation();
-    }
+    this.getUserLocation();
   }
 
   getUserLocation = () => {

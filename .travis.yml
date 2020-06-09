@@ -16,6 +16,7 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
   - docker --version
   - docker-compose --version
+  - chmod +x backend/wait-for-elasticsearch.sh
 
 before_script:
   - printenv
@@ -31,9 +32,13 @@ before_script:
   - echo "AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}" >> .env
   - echo "YELP_API_KEY=${YELP_API_KEY}" >> .env
   - echo "DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}" >> .env
+  - echo "GOOGLE_OAUTH2_KEY=${GOOGLE_OAUTH2_KEY}" >> .env
+  - echo "GOOGLE_OAUTH2_SECRET=${GOOGLE_OAUTH2_SECRET}" >> .env
+  - echo "FACEBOOK_OAUTH2_KEY=${FACEBOOK_OAUTH2_KEY}" >> .env
+  - echo "FACEBOOK_OAUTH2_SECRET=${FACEBOOK_OAUTH2_SECRET}" >> .env
   - cat .env
   - docker-compose build
-  - docker-compose up -d --scale nginx=0
+  - docker-compose up --scale nginx=0 -d
   - docker ps
 
 script:
@@ -41,6 +46,7 @@ script:
   - docker ps
   - docker-compose exec backend python manage.py migrate
   - docker-compose exec backend python manage.py test meetup
+  - docker-compose exec backend python manage.py test search.tests.test_search
   - docker-compose exec backend pytest
   - docker-compose exec frontend npm test -- --coverage -u
 

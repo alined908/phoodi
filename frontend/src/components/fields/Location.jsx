@@ -6,14 +6,6 @@ import parse from "autosuggest-highlight/parse";
 import throttle from "lodash/throttle";
 import PropTypes from "prop-types";
 
-const customFont = { fontSize: 14, fontFamily: "Lato", fontWeight: "600" };
-const customFontSmall = {
-  fontSize: 11,
-  fontFamily: "Lato",
-  fontWeight: "600",
-  height: 15,
-};
-
 function loadScript(src, position, id) {
   if (!position) {
     return;
@@ -34,13 +26,14 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   autocomplete: {
-    boxShadow: "none"
+    boxShadow: "none",
+    flex: 1
   }
 }));
 
 export default function Location(props) {
   const classes = useStyles();
-  const [inputValue, setInputValue] = React.useState("");
+  const [inputValue, setInputValue] = React.useState(props.textValue || "");
   const [options, setOptions] = React.useState([]);
   const loaded = React.useRef(false);
 
@@ -92,32 +85,40 @@ export default function Location(props) {
     return () => {
       active = false;
     };
-  }, [inputValue, fetch]);
-
+  }, [inputValue, fetch, props.textValue]);
+  
   return (
     <Autocomplete
+      freeSolo
+      size="small"
       className={classes.autocomplete}
       getOptionLabel={(option) =>
         typeof option === "string" ? option : option.description
       }
       filterOptions={(x) => x}
-      value={props.textValue}
+      inputValue={props.textValue}
       options={options}
       autoComplete
       autoHighlight
       onChange={props.handleClick}
+      onInputChange={props.handleInputChange}
       includeInputInList
       renderInput={(params) => {
+        const newParams = {...params, inputProps: {...params.inputProps, value: props.textValue}}
+
         return (
           <TextField
-            {...params}
+            {...newParams}
             required={props.required || false}
             error={props.textValue && props.textValue.length === 0}
             label={props.label}
+            variant="filled"
             fullWidth
-            inputProps={{ ...params.inputProps, style: customFont }}
-            InputLabelProps={{ style: customFont }}
-            FormHelperTextProps={{ style: customFontSmall }}
+            InputProps={{
+              ...params.InputProps,
+              disableUnderline: true,
+              style: {background: "white", fontSize: ".8rem"},
+            }}
             onChange={handleChange}
             helperText={
               props.textValue && props.textValue.length === 0

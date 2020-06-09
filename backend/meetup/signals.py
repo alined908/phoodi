@@ -1,12 +1,14 @@
 from meetup.models import *
 from notifications.models import Notification
 from channels.layers import get_channel_layer
+from django.db import IntegrityError
 from django.db.models.signals import post_save, pre_save, pre_delete
 from django.dispatch import receiver
 from asgiref.sync import async_to_sync
 from notifications.signals import notify
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
+from datetime import time
 import inspect
 
 channel_layer = get_channel_layer()
@@ -175,16 +177,8 @@ def handle_delete_member(sender, instance, **kwargs):
         "meetup_%s" % meetup.uri, {"type": "meetup_event", "meetup_event": content}
     )
 
-    # Create User Activity --> Ex. User Left Meetuo
     # Create Meetup Activity --> Ex.User Left Meetup or Member Kicked Member
     if user == instance.user:
-        notify.send(
-            sender=user,
-            recipient=user,
-            action_object=meetup,
-            description="user_activity",
-            verb="left",
-        )
         message = "left the meetup."
     else:
         member = MeetupMember.objects.get(user=user, meetup=meetup)
@@ -197,14 +191,12 @@ def handle_delete_member(sender, instance, **kwargs):
     msg = ChatRoomMessage.objects.create(
         sender=user, message=message, room=room, is_notif=True
     )
-
-    # Send Meetup Activity To Meetup Channel
+    
+    #Send Meetup Activity To Meetup Channel
     content = {"command": "new_message", "message": MessageSerializer(msg).data}
-
     async_to_sync(channel_layer.group_send)(
         "chat_%s" % meetup.uri, {"type": "chat_message", "message": content}
     )
-
 
 @receiver(pre_save, sender=MeetupEvent)
 def handle_generate_options_on_meetup_event_field_change(sender, instance, **kwargs):
@@ -351,25 +343,9 @@ def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
         "meetup_%s" % meetup.uri, {"type": "meetup_event", "meetup_event": content}
     )
 
-
-@receiver(post_save, sender=MeetupEventOption)
-def post_save_meetup_option(sender, instance, created, **kwargs):
-    if created:
-        restaurant = instance.restaurant
-        restaurant.option_count += 1
-        restaurant.save()
-
-
 @receiver(post_save, sender=Review)
 def post_save_review(sender, instance, created, **kwargs):
     if created:
-        restaurant = instance.restaurant
-        restaurant.rating = (
-            (restaurant.rating * restaurant.review_count) + float(instance.rating)
-        ) / (restaurant.review_count + 1)
-        restaurant.review_count += 1
-        restaurant.save()
-
         notify.send(
             sender=instance.user,
             recipient=instance.user,
@@ -378,50 +354,6 @@ def post_save_review(sender, instance, created, **kwargs):
             verb="review",
             target=instance.restaurant
         )
-
-@receiver(post_save, sender=Comment)
-def post_save_comment(sender, instance, created, **kwargs):
-    if created:
-        restaurant = instance.restaurant
-        restaurant.comment_count += 1
-        restaurant.save()
-
-
-@receiver(pre_save, sender=ReviewVote)
-def pre_save_review_vote(sender, instance, **kwargs):
-    if instance.id:
-        previous = ReviewVote.objects.get(pk=instance.id)
-        instance._old_vote = previous.vote
-
-
-@receiver(pre_save, sender=CommentVote)
-def pre_save_comment_vote(sender, instance, **kwargs):
-    if instance.id:
-        previous = CommentVote.objects.get(pk=instance.id)
-        instance._old_vote = previous.vote
-
-
-@receiver(post_save, sender=ReviewVote)
-def post_save_review_vote(sender, instance, created, **kwargs):
-    review = instance.review
-
-    if not created:
-        review.vote_score -= instance._old_vote
-
-    review.vote_score += instance.vote
-    review.save()
-
-
-@receiver(post_save, sender=CommentVote)
-def post_save_comment_vote(sender, instance, created, **kwargs):
-    comment = instance.comment
-
-    if not created:
-        comment.vote_score -= instance._old_vote
-
-    comment.vote_score += instance.vote
-    comment.save()
-
 
 @receiver(post_save, sender=MeetupInvite)
 def create_notif_meetup_inv(sender, instance, created, **kwargs):
@@ -584,3 +516,14 @@ def create_notif_chat_message(sender, instance, created, **kwargs):
                     "notif_room_for_user_%d" % member.user.id,
                     {"type": "notifications", "message": content},
                 )
+
+@receiver(post_save, sender=Restaurant)
+def restaurant_hours(sender, instance, created, **kwargs):
+    if created:
+        days = RestaurantHours.DAY_CHOICES
+        start = datetime.time(hour=8, minute=0)
+        end = datetime.time(hour=20, minute=0)
+
+        for day in days:
+            number, name = day
+            RestaurantHours.objects.create(restaurant=instance, day= number, open_time=start, close_time=end)

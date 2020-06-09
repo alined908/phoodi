@@ -4,14 +4,16 @@ from django.contrib.postgres.fields import JSONField
 from .user import User
 from .restaurant import Restaurant, RestaurantCategory
 from .category import Category
-from ipware import get_client_ip
+from ..helpers import nearby_public_entities
 from django.template.loader import render_to_string
+from django.contrib.postgres.fields import ArrayField
 from django.conf import settings
 from django.db.models.expressions import RawSQL
 from django.utils.dateformat import format
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
-import requests, random, json, geocoder, datetime, re
+import requests, random, json, datetime, re
 from django.db.models import Q
+from enum import Enum
 
 BASE_URL = settings.BASE_URL
 url = "https://api.yelp.com/v3/businesses/search"
@@ -80,60 +82,14 @@ class Meetup(models.Model):
 
     @staticmethod
     def get_public(categories, coords, request, start, end, num_results=25):
-        if categories:
-            try:
-                category_ids = [int(x) for x in categories.split(",")]
-            except:
-                category = Category.objects.get(api_label=categories)
-                category_ids = [category.id]
-        else:
-            category_ids = []
 
-        if request:
-            client_ip, is_routable = get_client_ip(request)
-            
-            if client_ip:
-                if is_routable:
-                    geocode = geocoder.ip(client_ip)
-                    location = geocode.latlng
-                    lat, lng = location[0], location[1]
-                else:
-                    lat, lng = None, None
-        
-        latitude, longitude, radius = (
-            coords[0] or lat,
-            coords[1] or lng,
-            coords[2] or 25,
-        )
-
-        if not latitude or not longitude:
-            return []
-
-        distance_query = RawSQL(
-            " SELECT id FROM \
-                (SELECT *, (3959 * acos(cos(radians(%s)) * cos(radians(latitude)) * \
-                                        cos(radians(longitude) - radians(%s)) + \
-                                        sin(radians(%s)) * sin(radians(latitude)))) \
-                    AS distance \
-                    FROM meetup_meetup) \
-                AS distances \
-                WHERE distance < %s \
-                ORDER BY distance \
-                OFFSET 0 \
-                LIMIT %s",
-            (
-                latitude,
-                longitude,
-                latitude,
-                radius,
-                num_results,
-            ),
-        )
- 
+        distance_query, category_ids = nearby_public_entities(coords, request, categories, num_results, 'meetup')
+       
         if not category_ids:
             meetups = Meetup.objects.filter(
                 public=True, id__in=distance_query, date__range=(start, end)
             ).order_by("date")
+            
         else:
             meetups = Meetup.objects.filter(
                 Q(public=True)
@@ -183,13 +139,34 @@ class MeetupMember(models.Model):
 
 
 class MeetupEvent(models.Model):
+    
+    PRICE_CHOICES = [
+        (1, '$'),
+        (2, '$$'),
+        (3, '$$$'),
+        (4, '$$$$')
+    ]
+
+    SERIALIZED_PRICE_CHOICES = {
+        '$': 1,
+        '$$': 2,
+        '$$$': 3,
+        '$$$$': 4
+    }
+
+    DESERIALIZED_PRICE_CHOICES = {
+        v:k for k,v in SERIALIZED_PRICE_CHOICES.items()
+    }
+
     meetup = models.ForeignKey(Meetup, related_name="events", on_delete=models.CASCADE)
     creator = models.ForeignKey(
         MeetupMember, related_name="created_events", on_delete=models.CASCADE
     )
     title = models.CharField(max_length=255)
     distance = models.IntegerField()
-    price = models.CharField(max_length=10)
+    price = ArrayField(
+        models.IntegerField(choices=PRICE_CHOICES)
+    )
     start = models.DateTimeField()
     end = models.DateTimeField(blank=True, null=True)
     chosen = models.IntegerField(blank=True, null=True)
@@ -204,7 +181,7 @@ class MeetupEvent(models.Model):
 
     def save(self, *args, **kwargs):
         self.full_clean(["entries"])
-        return super(MeetupEvent, self).save(*args, **kwargs)
+        super(MeetupEvent, self).save(*args, **kwargs)
 
     def convert_entries_to_string(self):
         categories = ""
@@ -243,7 +220,7 @@ class MeetupEvent(models.Model):
         identifier = option["id"]
         try:
             restaurant = Restaurant.objects.get(identifier=identifier)
-        except ObjectDoesNotExist:
+        except Restaurant.DoesNotExist:
             info = {
                 "identifier": identifier,
                 "name": option["name"],
@@ -252,8 +229,8 @@ class MeetupEvent(models.Model):
                 "rating": (option["rating"] * 2) - 1,
                 "latitude": option["coordinates"]["latitude"],
                 "longitude": option["coordinates"]["longitude"],
-                "price": option.get("price", "$$"),
-                "phone": option["display_phone"],
+                "price": self.SERIALIZED_PRICE_CHOICES[option.get("price", "$$")],
+                "phone": option.get('display_phone', '818-240-4200'),
                 "location": " ".join(option["location"]["display_address"]),
                 "categories": json.dumps(option["categories"]),
                 "city": option["location"]["city"],
@@ -263,29 +240,15 @@ class MeetupEvent(models.Model):
                 "address1": option["location"]["address1"],
             }
 
-            same_name_same_city_restaurants = Restaurant.objects.filter(
-                name=info["name"], city=info["city"]
-            ).count()
-            urlify_name = re.sub(
-                "'", "", re.sub(r"[^\w']", "-", re.sub("&", "and", info["name"]))
-            ).lower()
-            urlify_city = re.sub("'", "", re.sub(r"[^\w']", "-", info["city"])).lower()
-            url = "%s-%s" % (urlify_name, urlify_city)
-
-            if same_name_same_city_restaurants > 0:
-                url += "-%s" % (same_name_same_city_restaurants + 1)
-
-            info["url"] = url
-
             restaurant = Restaurant.objects.create(**info)
-
+            
             for category in option["categories"]:
                 try:
                     category = Category.objects.get(api_label=category["alias"])
                     RestaurantCategory.objects.create(
                         category=category, restaurant=restaurant
                     )
-                except ObjectDoesNotExist:
+                except Category.DoesNotExist:
                     pass
                 
 
@@ -352,6 +315,12 @@ class MeetupEventOption(models.Model):
 
     conversion = {1: 1, 2: -1, 3: 0}
 
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            self.restaurant.option_count += 1
+            self.restaurant.save()
+        super(MeetupEventOption, self).save(*args, **kwargs)
+
     def handle_vote(self, status, member):
         # Check if user has voted already and delete vote
         used_ban = member.used_ban()
@@ -404,20 +373,29 @@ class MeetupEventOption(models.Model):
         member.save()
         self.save()
 
+class OptionVoteChoice(Enum):
+    LIKE = 1
+    DISLIKE = 2
+    BAN = 3
+
+    @classmethod
+    def choices(cls):
+        choices = []
+
+        for item in cls:
+            choices.append((item.name, item.value))
+
+        return tuple(choices)
+
 
 class MeetupEventOptionVote(models.Model):
-    class Vote(models.IntegerChoices):
-        LIKE = 1
-        DISLIKE = 2
-        BAN = 3
-
     option = models.ForeignKey(
         MeetupEventOption, related_name="event_votes", on_delete=models.CASCADE
     )
     member = models.ForeignKey(
         MeetupMember, related_name="member_votes", on_delete=models.CASCADE
     )
-    status = models.IntegerField(choices=Vote.choices)
+    status = models.IntegerField(choices=OptionVoteChoice.choices())
     objects = models.Manager()
 
 

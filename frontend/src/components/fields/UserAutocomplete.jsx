@@ -5,6 +5,7 @@ import {
   Avatar,
   ListItemAvatar,
   ListItemText,
+  makeStyles
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { axiosClient } from "../../accounts/axiosClient";
@@ -12,7 +13,14 @@ import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 import PropTypes from "prop-types";
 
+const useStyles = makeStyles({
+  avatar: {
+    boxShadow: "none"
+  }
+})
+
 const UserAutocomplete = (props) => {
+  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [loaded, setLoaded] = React.useState(false);
   const [options, setOptions] = React.useState([]);
@@ -74,7 +82,7 @@ const UserAutocomplete = (props) => {
             }}
           >
             <ListItemAvatar>
-              <Avatar src={option.avatar}>
+              <Avatar className={classes.avatar} src={option.avatar}>
                 {option.first_name.charAt(0)}
                 {option.last_name.charAt(0)}
               </Avatar>
@@ -92,7 +100,7 @@ const UserAutocomplete = (props) => {
                   ))}
                 </>
               }
-            ></ListItemText>
+            />
           </div>
         );
       }}

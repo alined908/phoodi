@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { reduxForm, Field } from "redux-form";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { signup, editUser, removeSuccessMessage } from "../../actions";
+import { signup, editUser, removeSuccessMessage, signinHelper} from "../../actions";
 import {
   Paper,
   Grid,
@@ -15,11 +15,11 @@ import {
   DialogContent,
   CircularProgress
 } from "@material-ui/core";
-import { ReactComponent as Together } from "../../assets/svgs/undraw_eattogether.svg";
-import { ReactComponent as Google } from "../../assets/svgs/google.svg";
-import { ReactComponent as Facebook } from "../../assets/svgs/facebook.svg";
-import { ReactComponent as Twitter } from "../../assets/svgs/twitter.svg";
+import { GoogleLogin } from 'react-google-login';
+import {axiosClient} from '../../accounts/axiosClient'
+import FacebookLogin from 'react-facebook-login';
 import { renderTextField } from "../components";
+import FacebookIcon from '@material-ui/icons/Facebook';
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { userPropType } from "../../constants/prop-types";
@@ -97,6 +97,29 @@ class RegisterPage extends Component {
     this.props.removeSuccessMessage();
   }
 
+  handleGoogleSocialAuth = async (res) => {
+    if (res.error){
+      return;
+    }
+    const response = await axiosClient.post(
+      '/auth/google/', {tokenId: res.tokenId}
+    )
+    console.log(response.data)
+    signinHelper(response.data, this.props.dispatch, () => this.props.history.push("/meetups"))
+  }
+
+  handleFacebookSocialAuth = async (res) => {
+    if (res.error) {
+      return;
+    }
+    console.log(res)
+    const response = await axiosClient.post(
+      '/auth/facebook/', {accessToken: res.accessToken, email: res.email, name: res.name}
+    )
+    console.log(response.data)
+    signinHelper(response.data, this.props.dispatch, () => this.props.history.push("/meetups"))
+  }
+
   handleImageChange = (e) => {
     var reader = new FileReader();
     let file = e.target.files[0];
@@ -118,34 +141,29 @@ class RegisterPage extends Component {
     return (
       <>
         {create ? (
-          <Paper className={styles.container} elevation={8}>
+          <div className={styles.container}>
             <Helmet>
               <meta charSet="utf-8" />
               <title>Register</title>
             </Helmet>
-            <div className={styles.left}>
-              <Together className="svg-shadow" height="70%" width="70%" />
-            </div>
-            <div className={styles.right}>
+            <div className={styles.formWrapper}>
               <div className={styles.formhead}>
-                <span className={styles.header}>Register</span>
+                <span className={styles.header}>Phoodi</span>
               </div>
               <form
                 className={styles.form}
                 onSubmit={handleSubmit(this.onSubmit)}
               >
                 <Grid container spacing={1}>
-                  <Grid item xs={12} sm={6} className={styles.indent}>
+                  <Grid item xs={12}>
                     <Field
-                      required
                       name="first_name"
                       component={renderTextField}
                       label="First Name"
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12}>
                     <Field
-                      required
                       name="last_name"
                       component={renderTextField}
                       label="Last Name"
@@ -153,7 +171,6 @@ class RegisterPage extends Component {
                   </Grid>
                   <Grid item xs={12}>
                     <Field
-                      required
                       name="email"
                       component={renderTextField}
                       label="Email"
@@ -161,7 +178,6 @@ class RegisterPage extends Component {
                   </Grid>
                   <Grid item xs={12}>
                     <Field
-                      required
                       name="password"
                       type="password"
                       component={renderTextField}
@@ -188,7 +204,7 @@ class RegisterPage extends Component {
                     type="submit"
                     variant="extended"
                     color="primary"
-                    aria-label="login"
+                    aria-label="register"
                     className={this.state.isSubmitting && styles.fabSubmitting}
                     disabled={submitting || invalid || this.state.isSubmitting}
                   >
@@ -201,15 +217,24 @@ class RegisterPage extends Component {
               </form>
               <div className={styles.bottom}>
                 <div className={styles.socials}>
-                  <div className={styles.social}>
-                    <Google width={40} height={40} />
-                  </div>
-                  <div className={styles.social}>
-                    <Facebook width={40} height={40} />
-                  </div>
-                  <div className={styles.social}>
-                    <Twitter width={40} height={40} />
-                  </div>
+                  <GoogleLogin
+                    clientId={process.env.REACT_APP_GOOGLE_OAUTH2_KEY}
+                    buttonText="Continue with Google"
+                    onSuccess={this.handleGoogleSocialAuth}
+                    onFailure={this.handleGoogleSocialAuth}
+                    cookiePolicy={'single_host_origin'}
+                    className={`${styles.social} ${styles.google}`}
+                  />
+                  <FacebookLogin
+                    autoLoad={false}
+                    reauthenticate={true}
+                    appId={process.env.REACT_APP_FACEBOOK_OAUTH2_KEY}
+                    callback={this.handleFacebookSocialAuth}
+                    fields="name,email,picture"
+                    icon={<FacebookIcon/>}
+                    textButton="Continue with Facebook"
+                    cssClass={`${styles.social} ${styles.facebook}`}
+                  />
                 </div>
                 <div className={styles.action}>
                   Already Have An Account?
@@ -219,7 +244,7 @@ class RegisterPage extends Component {
                 </div>
               </div>
             </div>
-          </Paper>
+          </div>
         ) : (
           <Dialog open={this.props.open} onClose={this.props.handleClose}>
             <DialogTitle>Edit Profile</DialogTitle>
@@ -250,9 +275,6 @@ class RegisterPage extends Component {
                       label="Email"
                     />
                   </Grid>
-                  {/* <Grid item xs={12}>
-                                        <Field required name="password" type="password" component={renderTextField} label="Password"/>
-                                    </Grid>  */}
                   <Grid item xs={12}>
                     <div className={styles.avatarlabel}>Avatar</div>
                     <div className={styles.avatar}>

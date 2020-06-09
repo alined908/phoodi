@@ -4,44 +4,19 @@ import { Grid, Button } from "@material-ui/core";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { renderTextField } from "../components";
-import { axiosClient } from "../../accounts/axiosClient";
-import { addGlobalMessage } from "../../actions";
+import { addGlobalMessage, handleEmailChange } from "../../actions";
 
 class EmailChange extends Component {
   
-  handleEmailChange = async (values) => {
-    try {
-      await axiosClient.post(
-        `/auth/users/set_email/`,
-        values,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      this.props.addGlobalMessage("success", "Successfully changed email.");
-    } catch (e) {
-      console.log(e.response);
-      var message;
-
-      if (e.response.data.new_email) {
-        message = e.response.data.new_email[0];
-      } else if (e.response.data.non_field_errors) {
-        message = e.response.data.non_field_errors[0];
-      } else {
-        message = "Something went wrong.";
-      }
-
-      this.props.addGlobalMessage("error", message);
-    }
+  handleClick = values => {
+    this.props.handleEmailChange(values)
   };
 
   render() {
     const { handleSubmit } = this.props;
 
     return (
-      <form onSubmit={handleSubmit(this.handleEmailChange)}>
+      <form onSubmit={handleSubmit(this.handleClick)}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Field
@@ -87,6 +62,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   addGlobalMessage,
+  handleEmailChange
 };
 
 export default compose(

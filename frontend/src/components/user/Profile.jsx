@@ -23,6 +23,8 @@ import {
   CategoryAutocomplete,
   Preferences,
   RegisterPage,
+  DisplayRating,
+  AuthWrapper
 } from "../components";
 import PropTypes from "prop-types";
 import { userPropType } from "../../constants/prop-types";
@@ -70,16 +72,8 @@ class Profile extends Component {
   getInformation = async () => {
     try {
       const [profile, friends] = await Promise.all([
-        axiosClient.get(`/api/users/${this.props.match.params.id}/`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }),
-        axiosClient.get(`/api/users/${this.props.match.params.id}/friends/`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }),
+        axiosClient.get(`/api/users/${this.props.match.params.id}/`),
+        axiosClient.get(`/api/users/${this.props.match.params.id}/friends/`),
       ]);
       this.setState({
         user: profile.data,
@@ -144,80 +138,138 @@ class Profile extends Component {
   };
 
   formatActivity = (activity) => {
-
+    console.log(activity)
     const verb = activity.verb;
     let activityHTML;
 
     if (verb === "created" || verb === "joined") {
       activityHTML = (
-        <span>
-          {`${this.state.user.first_name} ${this.state.user.last_name} ${verb} a ${activity.action_object && activity.action_object.public ? "public" : "private"} meetup named `}
-          {
-            <Link
-              className={styles.link}
-              to={`/meetups/${activity.action_object && activity.action_object.uri}`}
-            >
-              {activity.action_object && activity.action_object.name}
-            </Link>
-          }.
-        </span>
+        <Link
+            className={styles.link}
+            to={`/meetups/${activity.action_object && activity.action_object.uri}`}
+          >
+            <div className={styles.activityinfo}>
+                <Avatar
+                  className={styles.useravatar}
+                  src={this.state.user.avatar}
+                >
+                  {this.state.user.first_name.charAt(0)}
+                  {this.state.user.last_name.charAt(0)}
+                </Avatar>
+                <div className={styles.infoAll}>
+                  <div>
+                    <div className={styles.infoName}>
+                      {this.state.user.first_name} {this.state.user.last_name}
+                    </div>
+                    <div className={styles.infoActivity}>
+                      <span>
+                        {`${verb} a ${activity.action_object && activity.action_object.public ? "public" : "private"} meetup named `}
+                        {activity.action_object && activity.action_object.name}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+            </div>
+        </Link>
       );
     } else if (verb === "became friends with") {
       activityHTML = (
-        <span>
-          {`${this.state.user.first_name} ${this.state.user.last_name} ${verb} `}
-          {
-            <Link
-              className={styles.link}
-              style={{display: "inline-flex"}}
-              to={`/profile/${activity.action_object.id}`}
+        <Link
+          className={styles.link}
+          style={{display: "inline-flex"}}
+          to={`/profile/${activity.action_object.id}`}
+        >
+          <div className={styles.activityinfo}>
+            <Avatar
+              className={styles.useravatar}
+              src={this.state.user.avatar}
             >
-              <Avatar
-                className={styles.useravatar}
-                src={activity.action_object.avatar}
-                style={{width: 20, height: 20}}
-              >
-                {activity.action_object.first_name.charAt(0)}
-                {activity.action_object.last_name.charAt(0)}
-              </Avatar>
-              {`${activity.action_object.first_name} ${activity.action_object.last_name}.`}
-            </Link>
-          }
-        </span>
+              {this.state.user.first_name.charAt(0)}
+              {this.state.user.last_name.charAt(0)}
+            </Avatar>
+            <div className={styles.infoAll}>
+              <div>
+                <div className={styles.infoName}>
+                  {this.state.user.first_name} {this.state.user.last_name}
+                </div>
+                <div className={styles.infoActivity}>
+                  <span>
+                    {verb} {`${activity.action_object.first_name} ${activity.action_object.last_name}.`}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Link>
       );
-    } else if (verb === "added") {
-      activityHTML = <></>;
     } else if (verb === "created event") {
       activityHTML = (
-        <span>
-          {`${this.state.user.first_name} ${this.state.user.last_name} added ${activity.action_object
-              ? `an event named ${activity.action_object.title} to`
-              : "a DELETED event to"}`}
-          {
-            <Link
-            className={styles.link}
-            to={`/meetups/${activity.target.uri}`}
-            >
-              {activity.target.name}
-            </Link>
-          }.
-        </span>
+        <Link
+          className={styles.link}
+          to={`/meetups/${activity.target.uri}`}
+        >
+          <div className={styles.activityinfo}>
+              <Avatar
+                className={styles.useravatar}
+                src={this.state.user.avatar}
+              >
+                {this.state.user.first_name.charAt(0)}
+                {this.state.user.last_name.charAt(0)}
+              </Avatar>
+              <div className={styles.infoAll}>
+                <div>
+                  <div className={styles.infoName}>
+                    {this.state.user.first_name} {this.state.user.last_name}
+                  </div>
+                  <div className={styles.infoActivity}>
+                    <span>
+                      {` added ${activity.action_object
+                      ? `an event named ${activity.action_object.title} to`
+                      : "a DELETED event to"}`} {activity.target.name}
+                    </span>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </Link>
       );
     }
       else if (verb === "review") {
         activityHTML = (
-          <>
-            {this.state.user.first_name} {this.state.user.last_name}{" "}
-            <span>gave a review on</span> 
-            <span className={styles.space}>
-              <Link
-                className={styles.link}
-                to={`/restaurants/${activity.target.url}`}
+          <Link
+            className={styles.link}
+            to={`/restaurants/${activity.target.url}`}
+          >
+            <div className={styles.imageWrapper}>
+              <div className={styles.image} style={{backgroundImage: `url(${activity.target.yelp_image})`}}/>
+            </div>
+            <div className={styles.activityinfo}>
+              <Avatar
+                className={styles.useravatar}
+                src={this.state.user.avatar}
               >
-                {activity.target.name}
-              </Link>
-            </span>
-          </>
+                {this.state.user.first_name.charAt(0)}
+                {this.state.user.last_name.charAt(0)}
+              </Avatar>
+              <div className={styles.infoAll}>
+                <div>
+                  <div className={styles.infoName}>
+                    {this.state.user.first_name} {this.state.user.last_name}
+                  </div>
+                  <div className={styles.infoActivity}>
+                    <span>
+                      reviewed {activity.target.name}
+                    </span>
+                  </div>
+                </div>
+                <DisplayRating score={activity.action_object.rating}/>
+              </div>
+            </div>
+            <div className={styles.activityContent}>
+                {activity.action_object.text}
+            </div>
+          </Link>
         )
       
     } else {
@@ -228,7 +280,7 @@ class Profile extends Component {
   };
 
   render() {
-    const isUser = this.props.user.id.toString() === this.props.match.params.id;
+    const isUser = this.props.user && this.props.user.id && this.props.user.id.toString() === this.props.match.params.id;
     const isUserFriend = !isUser && !this.isUserFriend();
 
     const renderPastActivity = () => {
@@ -236,16 +288,7 @@ class Profile extends Component {
         <div className={styles.pastactivity}>
           {this.state.user.activity.map((activity) => (
             <div className={styles.activity}>
-              <Avatar
-                className={styles.useravatar}
-                src={this.state.user.avatar}
-              >
-                {this.state.user.first_name.charAt(0)}
-                {this.state.user.last_name.charAt(0)}
-              </Avatar>
-              <div className={styles.activityinfo}>
-                  {this.formatActivity(activity)}
-              </div>
+              {this.formatActivity(activity)}
               <div className={styles.activitydate}>
                 {moment(activity.timestamp).fromNow()}
               </div>
@@ -283,7 +326,7 @@ class Profile extends Component {
                             : ""
                         }`}
           </title>
-          <meta name="description" content="Phoodie Profile" />
+          <meta name="description" content="Phoodi Profile" />
         </Helmet>
         <div className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 0 ? "innerLeft-show" : ""}`}>
           <div className="innerLeftHeader" style={{padding: ".5rem .7rem"}}>
@@ -299,9 +342,11 @@ class Profile extends Component {
               </span>
               {isUserFriend && (
                   <Tooltip title="Add Friend">
-                    <IconButton color="primary" size="small" onClick={this.addFriend}>
-                      <PersonAddIcon />
-                    </IconButton>
+                    <AuthWrapper authenticated={this.props.authenticated}>
+                      <IconButton color="primary" size="small" onClick={this.addFriend}>
+                        <PersonAddIcon />
+                      </IconButton>
+                    </AuthWrapper>
                   </Tooltip>
                 )}
                 {isUser && (
@@ -360,9 +405,7 @@ class Profile extends Component {
         </div>
         <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 1 ? "innerRight-show" : ""}`}>
           <div className="innerRightBlock">
-
               {this.state.userLoaded && renderPastActivity()}
-
           </div>
         </div>
         <div className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 2 ? "innerLeft-show" : ""} ${styles.profileFriends}`}>
@@ -418,6 +461,7 @@ Profile.propTypes = {
 function mapStateToProps(state) {
   return {
     user: state.user.user,
+    authenticated: state.user.authenticated
   };
 }
 

@@ -29,7 +29,7 @@ import {
 import { compose } from "redux";
 import {
   MeetupEventOption,
-  Map,
+  StaticMap,
   RestaurauntAutocomplete,
   MeetupEventForm,
 } from "../components";
@@ -38,6 +38,13 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { meetupEventPropType } from "../../constants/prop-types";
 import styles from "../../styles/meetup.module.css";
+
+const numToPrices = {
+  1: '$',
+  2: '$$',
+  3: '$$$',
+  4: '$$$$'
+}
 
 class MeetupEvent extends Component {
   constructor(props) {
@@ -87,14 +94,6 @@ class MeetupEvent extends Component {
       meetup: this.props.uri,
       event: this.props.event.id,
     });
-  };
-
-  handlePriceChips = (prices) => {
-    var priceList = prices.replace(/\s/g, "").split(",");
-    for (var i = 0; i < priceList.length; i++) {
-      priceList[i] = "$".repeat(parseInt(priceList[i]));
-    }
-    return priceList;
   };
 
   handleSearchOption = () => {
@@ -378,7 +377,7 @@ class MeetupEvent extends Component {
           </div>
           <div className={`${styles.chosenMap} elevate`}>
             <div className={styles.mapWrapper}>
-              <Map location={position} />
+              <StaticMap location={position} />
             </div>
           </div>
         </div>
@@ -405,7 +404,7 @@ class MeetupEvent extends Component {
                       >
                         <Avatar
                           style={{ width: 20, height: 20 }}
-                          src={`${process.env.REACT_APP_S3_STATIC_URL}${category.api_label}.png`}
+                          src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${category.api_label}.png`}
                           variant="square"
                         />
                         {category.label}
@@ -417,9 +416,10 @@ class MeetupEvent extends Component {
           </div>
           <div className={styles.secondHeaderLeft}>
             Price
-            {this.handlePriceChips(event.price).map((price, index) => (
+            {console.log(event.price)}
+            {event.price.map((price, index) => (
               <span key={index} className={styles.categoryChip}>
-                {price}
+                {numToPrices[price]}
               </span>
             ))}
           </div>
@@ -438,7 +438,7 @@ class MeetupEvent extends Component {
                 <img
                   style={{ width: 20, height: 20, marginLeft: 10 }}
                   alt={"&#9787;"}
-                  src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}
+                  src={`${process.env.REACT_APP_S3_STATIC_URL}/static/general/panda.png`}
                 />
                 <RestaurauntAutocomplete
                   coords={this.props.coords}

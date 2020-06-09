@@ -37,17 +37,7 @@ export const signout = (redirectOnSuccess) => async (dispatch) => {
 export const signin = (formProps, redirectOnSuccess) => async (dispatch) => {
   try {
     const response = await axiosClient.post("/api/token/", formProps);
-    const decoded = parseJWT(response.data.access);
-    AuthenticationService.registerSuccessfulLogin(
-      response.data.access,
-      response.data.refresh
-    );
-    localStorage.setItem("user", JSON.stringify(decoded.user));
-    dispatch({
-      type: types.AUTH_USER,
-      payload: { access: response.data.access, user: decoded.user },
-    });
-    redirectOnSuccess();
+    signinHelper(response.data, dispatch, redirectOnSuccess)
   } catch (e) {
     console.log("error signin");
     dispatch({
@@ -56,6 +46,20 @@ export const signin = (formProps, redirectOnSuccess) => async (dispatch) => {
     });
   }
 };
+
+export const signinHelper = (tokens, dispatch, redirectOnSuccess) => {
+  const decoded = parseJWT(tokens.access);
+    AuthenticationService.registerSuccessfulLogin(
+      tokens.access,
+      tokens.refresh
+    );
+    localStorage.setItem("user", JSON.stringify(decoded.user));
+    dispatch({
+      type: types.AUTH_USER,
+      payload: { access: tokens.access, user: decoded.user },
+    });
+    redirectOnSuccess();
+}
 
 export const refreshToken = (dispatch) => {
   console.log("refresh token function reached");
@@ -88,6 +92,41 @@ export const refreshToken = (dispatch) => {
 
   return freshTokenPromise;
 };
+
+export const handleEmailChange = (values) => async dispatch =>{
+  try {
+    const response = await axiosClient.post(
+      `/auth/users/set_email/`,
+      values,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    const oldUser = JSON.parse(localStorage.getItem('user'))
+    const newUser = {...oldUser, email: values.new_email}
+    localStorage.setItem('user', JSON.stringify(newUser))
+
+    return Promise.all([
+      dispatch({type: types.CHANGE_EMAIL, payload: values.new_email}),
+      dispatch({type: types.ADD_GLOBAL_MESSAGE,payload: { type: "success", message: "Successfully saved email." }})
+    ])
+    
+  } catch(e) {
+    console.log(e.response);
+    let message;
+
+    if (e.response.data.new_email) {
+      message = e.response.data.new_email[0];
+    } else if (e.response.data.non_field_errors) {
+      message = e.response.data.non_field_errors[0];
+    } else {
+      message = "Something went wrong.";
+    }
+    dispatch({type: types.ADD_GLOBAL_MESSAGE,payload: { type: "error", message}})
+  }
+}
 
 export const removeSuccessMessage = () => {
   return {

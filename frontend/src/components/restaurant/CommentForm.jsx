@@ -39,7 +39,7 @@ class CommentForm extends Component {
 
     try {
       const response = await axiosClient.post(
-        `/api/restaurants/${this.props.restaurant.url}/comments/`,
+        `/api/reviews/${this.props.review.id}/comments/`,
         data,
         {
           headers: {

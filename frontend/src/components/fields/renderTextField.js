@@ -8,13 +8,8 @@ export default ({
   meta: { touched, error, invalid, warning },
   ...custom
 }) => {
-  const customFont = { fontSize: 14};
-  const customFontSmall = {
-    fontSize: 11,
-    height: 15,
-  };
-  var displayError = touched && error && error.length > 0;
-  var displayText = touched ? error : "";
+  let displayError = touched && error && error.length > 0;
+  let displayText = touched ? error : "";
 
   if ("datePicker" in custom && custom.datePicker) {
     displayText =
@@ -24,14 +19,17 @@ export default ({
 
   return (
     <TextField
+      variant="filled"
+      size="small"
       fullWidth={true}
       autoComplete="off"
-      inputProps={{ style: customFont }}
+      // inputProps={{ style: customFont }}
       InputProps={
-        icon && { startAdornment: <InputAdornment>{icon}</InputAdornment> }
+        icon && { startAdornment: <InputAdornment>{icon}</InputAdornment> },
+        {disableUnderline: true}
       }
-      InputLabelProps={{ style: customFont }}
-      FormHelperTextProps={{ style: customFontSmall }}
+      // InputLabelProps={{ style: customFont }}
+      // FormHelperTextProps={{ style: customFontSmall }}
       label={label}
       error={displayError}
       {...input}

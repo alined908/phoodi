@@ -2,19 +2,14 @@ import React, { Component } from "react";
 import "../../styles/home.css";
 import { Button, IconButton } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { ReactComponent as IceCreamIcon } from "../../assets/svgs/ice-cream.svg";
-import { ReactComponent as CandyAppleIcon } from "../../assets/svgs/food-and-restaurant.svg";
-import { ReactComponent as PuddingIcon } from "../../assets/svgs/chocolate.svg";
-import { ReactComponent as ChocolateIcon } from "../../assets/svgs/chocolate2.svg";
-import { ReactComponent as CupCakeIcon } from "../../assets/svgs/cupcake.svg";
 import { ReactComponent as ClockIcon } from "../../assets/svgs/clock.svg";
-import { ReactComponent as WheelIcon } from "../../assets/svgs/wheel.svg";
 import { ReactComponent as HavingFunIcon } from "../../assets/svgs/undraw_fun.svg";
 import { ReactComponent as StreetFoodIcon } from "../../assets/svgs/undraw_foodtruck.svg";
 import { ReactComponent as OnlineFriendsIcon } from "../../assets/svgs/undraw_chat.svg";
 import { ReactComponent as TastingIcon } from "../../assets/svgs/undraw_eattogether.svg";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import { Helmet } from "react-helmet";
+import {SearchBar} from '../components'
 
 class HomePage extends Component {
   handleScroll = () => {
@@ -23,36 +18,21 @@ class HomePage extends Component {
   };
 
   render() {
-    const food = () => {
-      return (
-        <div className="food-belt">
-          <div className="food">
-            <IceCreamIcon className={"cupcake svg-1"} height={50} width={50} />
-            <CandyAppleIcon
-              className={"cupcake svg-2"}
-              height={50}
-              width={50}
-            />
-            <PuddingIcon className={"cupcake svg-3"} height={50} width={50} />
-            <ChocolateIcon className={"cupcake svg-4"} height={50} width={50} />
-            <CupCakeIcon className={"cupcake svg-5"} height={50} width={50} />
-          </div>
-          <div className="belt">
-            <WheelIcon className={"wheel"}></WheelIcon>
-          </div>
-        </div>
-      );
-    };
+    const image = `https://images.unsplash.com/photo-1541544741938-0af808871cc0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1349&q=100`
 
     return (
       <div className="home">
         <Helmet>
           <meta charSet="utf-8" />
-          <title>Phoodie</title>
-          <meta name="description" content="Phoodie Home Page" />
+          <title>Phoodi</title>
+          <meta name="description" content="Phoodi Home Page" />
         </Helmet>
         <div className="top">
-          {food()}
+          <div className="hero-image" style={{backgroundImage: `url(${image})`}}>
+            <div className="search elevate">
+              <SearchBar/>
+            </div>
+          </div>
           <div className="scrollbot" onClick={this.handleScroll}>
             <IconButton>
               <KeyboardArrowDownIcon color="inherit" size="large" />
@@ -122,7 +102,7 @@ class HomePage extends Component {
             </div>
           </div>
         </div>
-        <div className="bottom">
+        {!this.props.authenticated && <div className="bottom">
           <div className="bottom-button">
             <Link to="/register">
               <Button
@@ -135,6 +115,7 @@ class HomePage extends Component {
             </Link>
           </div>
         </div>
+        }
       </div>
     );
   }

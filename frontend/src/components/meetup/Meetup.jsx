@@ -311,7 +311,7 @@ class Meetup extends Component {
                     <img
                       style={{ width: 20, height: 20, marginLeft: 10 }}
                       alt={"&#9787;"}
-                      src={`https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png`}
+                      src={`${process.env.REACT_APP_S3_STATIC_URL}/static/general/panda.png`}
                     />
                   </Tooltip>
                 }

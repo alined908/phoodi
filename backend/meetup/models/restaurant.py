@@ -1,26 +1,48 @@
 from django.db import models
 from .category import Category
-from ipware import get_client_ip
+from ..helpers import nearby_public_entities
 from django.db.models.expressions import RawSQL
-import geocoder
+from django.contrib.postgres.fields import JSONField
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models import Q
+from django.utils.text import slugify
+from datetime import time
 
 class Restaurant(models.Model):
+
+    PRICE_CHOICES = [
+        (1, '$'),
+        (2, '$$'),
+        (3, '$$$'),
+        (4, '$$$$')
+    ]
+
+    SERIALIZED_PRICE_CHOICES = {
+        '$': 1,
+        '$$': 2,
+        '$$$': 3,
+        '$$$$': 4
+    }
+
+    DESERIALIZED_PRICE_CHOICES = {
+        v:k for k,v in SERIALIZED_PRICE_CHOICES.items()
+    }
+
     identifier = models.CharField(max_length=100)
     name = models.TextField()
     yelp_image = models.TextField()
     yelp_url = models.TextField()
-    url = models.TextField()
-    rating = models.FloatField()
+    url = models.SlugField(max_length = 255, unique=True)
+    rating = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(10)])
     latitude = models.FloatField()
     longitude = models.FloatField()
-    price = models.CharField(max_length=10)
+    price = models.IntegerField(choices=PRICE_CHOICES)
     location = models.TextField()
     address1 = models.CharField(max_length=255, null=True, blank=True)
     address2 = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=255)
     state = models.CharField(max_length=255)
-    zipcode = models.CharField(max_length=255)
+    zipcode = models.CharField(max_length=255, null=True, blank=True)
     country = models.CharField(max_length=255)
     phone = models.CharField(max_length=20)
     categories = models.TextField()
@@ -29,68 +51,129 @@ class Restaurant(models.Model):
     comment_count = models.IntegerField(default=0)
     objects = models.Manager()
 
-    @staticmethod
-    def get_nearby(coords, request, categories, num_results=16):
-        if categories:
-            try:
-                category_ids = [int(x) for x in categories.split(",")]
-            except:
-                category = Category.objects.get(api_label=categories)
-                category_ids = [category.id]
-        else:
-            category_ids = []
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            self.url = "%s-%s" % (
+                slugify(self.name), 
+                slugify(self.city) 
+            )
+            num_same = Restaurant.objects.filter(city=self.city, name=self.name).count()
 
-        if request:
-            client_ip, is_routable = get_client_ip(request)
+            if num_same > 0:
+                self.url += "-%s" % (num_same + 1)
 
-            if client_ip:
-                if is_routable:
-                    geocode = geocoder.ip(client_ip)
-                    location = geocode.latlng
-                    lat, lng = location[0], location[1]
-                else:
-                    lat, lng = None, None
+        self.full_clean()
 
-        latitude, longitude, radius = (
-            coords[0] or lat,
-            coords[1] or lng,
-            coords[2] or 25,
-        )
+        super(Restaurant, self).save(*args, **kwargs)
 
-        if not latitude or not longitude:
-            return []
+    @property
+    def price_label(self):
+        return DESERIALIZED_PRICE_CHOICES[self.price]
 
-        distance_query = RawSQL(
-            " SELECT id FROM \
-                (SELECT *, (3959 * acos(cos(radians(%s)) * cos(radians(latitude)) * \
-                                        cos(radians(longitude) - radians(%s)) + \
-                                        sin(radians(%s)) * sin(radians(latitude)))) \
-                    AS distance \
-                    FROM meetup_restaurant) \
-                AS distances \
-                WHERE distance < %s \
-                ORDER BY distance \
-                OFFSET 0 \
-                LIMIT %s",
-            (latitude, longitude, latitude, radius, num_results),
-        )
+    def get_absolute_url(self):
+        return "%s/%s" % (self.id, self.url)
 
-        if not category_ids:
-            restaurants = Restaurant.objects.filter(id__in=distance_query).order_by("-rating")
-        else:
-            restaurants = Restaurant.objects.filter(
-                Q(
-                    id__in=RawSQL(
-                        "SELECT DISTINCT category.restaurant_id \
-                        FROM meetup_restaurantcategory as category \
-                        WHERE category_id = ANY(%s)",
-                        (category_ids,),
-                    )
-                )
-                & Q(id__in=distance_query)
-            ).order_by("-rating")
-  
-        return restaurants
+    @property
+    def hours(self):
+        hours = self.hours().all()
+        output = {}
+
+        for entry in hours:
+            day = RestaurantHours.DESERIALIZED_DAY_CHOICES[entry.day]
+            output[day] = {
+                'start': entry.open_time,
+                'end': entry.close_time
+            }
+
+        return output
+
+    @property
+    def location_indexing(self):
+        return {
+            "lat": self.latitude,
+            "lon": self.longitude    
+        }
+
+    @property
+    def categories_indexing(self):
+        from meetup.serializers import CategorySerializer
+        rst_categories = self.r_categories.all().values_list('category_id', flat=True)
+        categories = Category.objects.filter(id__in=rst_categories)
+        serializer = CategorySerializer(categories, many=True)
+        return serializer.data
+
+    @property
+    def hours_indexing(self):
+        hours_set = self.hours.all().order_by('day')
+        mapping = []
+
+        for hours in hours_set:
+            base = RestaurantHours.SEARCH_DAY_TO_BASE_UNIT[hours.day]
+            open_conversion = base + hours.open_time.hour * 60 + hours.open_time.minute
+            close_conversion = base + hours.close_time.hour * 60 + hours.close_time.minute
+            mapping.append({'open': open_conversion, 'close': close_conversion})
+
+        return mapping
+
+    @property
+    def hours_json(self):
+        hours_set = self.hours.all().order_by('day')
+        mapping = {}
+
+        for hours in hours_set:
+            day = RestaurantHours.DESERIALIZED_DAY_CHOICES[hours.day]
+            hours_representation = '%s - %s' % (hours.open_time.strftime('%I:%M %p'), hours.close_time.strftime('%I:%M %p'))
+
+            if day in mapping:
+                mapping[day].append(hours_representation)
+            else:
+                
+                mapping[day] = [hours_representation]
+
+        return mapping
+
+class RestaurantHours(models.Model):
+
+    DAY_CHOICES = [
+        (1, "Monday"),
+        (2, "Tuesday"),
+        (3, "Wednesday"),
+        (4, "Thursday"),
+        (5, "Friday"),
+        (6, "Saturday"),
+        (7, "Sunday")
+    ]
+
+    SERIALIZED_DAY_CHOICES = {
+        'Monday': 1,
+        'Tuesday': 2,
+        'Wednesday': 3,
+        'Thursday': 4,
+        'Friday': 5,
+        'Saturday': 6,
+        'Sunday': 7
+    }
+
+    DESERIALIZED_DAY_CHOICES = {
+        v:k for k,v in SERIALIZED_DAY_CHOICES.items()
+    }
+
+    SEARCH_DAY_TO_BASE_UNIT = {
+        1: 0,
+        2: 2000,
+        3: 4000,
+        4: 6000,
+        5: 8000,
+        6: 10000,
+        7: 12000
+    }
+
+    restaurant = models.ForeignKey(
+        Restaurant, related_name='hours', on_delete=models.CASCADE
+    )
+    day = models.IntegerField(choices=DAY_CHOICES)
+    open_time = models.TimeField()
+    close_time = models.TimeField()
 
 class RestaurantCategory(models.Model):
     restaurant = models.ForeignKey(

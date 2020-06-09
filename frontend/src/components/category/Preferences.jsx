@@ -70,7 +70,7 @@ class Preferences extends Component {
                   locked={this.props.locked}
                   sortIndex={index}
                   user={this.props.user}
-                ></Preference>
+                />
               );
             })}
           </>

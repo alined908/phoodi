@@ -6,6 +6,7 @@ import RegisterPage from "./auth/RegisterPage";
 import PasswordResetPage from "./auth/PasswordResetPage";
 import PasswordResetConfirmPage from "./auth/PasswordResetConfirmPage";
 import EmailActivationPage from "./auth/EmailActivationPage";
+import AuthWrapper from './auth/AuthWrapper';
 
 //Chat
 import ChatBar from "./chat/ChatBar";
@@ -42,7 +43,13 @@ import renderDatePicker from "./fields/renderDatePicker";
 import renderDateSimplePicker from "./fields/renderDateSimplePicker";
 import UserAutocomplete from "./fields/UserAutocomplete";
 import RestaurauntAutocomplete from "./fields/RestaurauntAutocomplete";
-import Map from "./fields/Map";
+import Prices from './fields/Prices'
+
+//Map
+import SearchMap from "./map/SearchMap";
+import StaticMap from './map/StaticMap';
+import SelfPin from './map/SelfPin';
+import RestaurantPins from './map/RestaurantPins'
 
 //General
 import Body from "./general/Body";
@@ -55,6 +62,7 @@ import ProgressIcon from "./general/ProgressIcon";
 import GroupAvatars from "./general/GroupAvatars";
 import NotificationWrapper from "./general/NotificationWrapper";
 import Calendar from "./general/Calendar";
+import DisplayRating from './general/DisplayRating'
 
 //User
 import Settings from "./user/Settings";
@@ -64,7 +72,6 @@ import PasswordChange from "./user/PasswordChange";
 import EmailChange from "./user/EmailChange";
 
 //Category
-import Categories from "./category/Categories";
 import Category from "./category/Category";
 import Preferences from "./category/Preferences";
 import Preference from "./category/Preference";
@@ -72,7 +79,6 @@ import Preference from "./category/Preference";
 //Restaurant
 import Restaurant from "./restaurant/Restaurant";
 import RestaurantCard from "./restaurant/RestaurantCard"
-import Restaurants from "./restaurant/Restaurants"
 import RestaurantPreview from "./restaurant/RestaurantPreview";
 import RestaurantThread from "./restaurant/RestaurantThread";
 import RestaurantReviewForm from "./restaurant/RestaurantReviewForm";
@@ -80,6 +86,13 @@ import RestaurantReview from "./restaurant/RestaurantReview";
 import CommentForm from "./restaurant/CommentForm";
 import Comments from "./restaurant/Comments";
 import Comment from "./restaurant/Comment";
+
+//Search
+import SearchPage from './search/SearchPage';
+import SearchBar from "./search/SearchBar";
+
+//Skeletons
+import SkeletonRestaurant from './skeleton/SkeletonRestaurant'
 
 export {
   ErrorPage,
@@ -89,6 +102,7 @@ export {
   PasswordResetPage,
   PasswordResetConfirmPage,
   EmailActivationPage,
+  AuthWrapper,
   ChatBar,
   Chat,
   ChatMessage,
@@ -114,17 +128,19 @@ export {
   CategoryAutocomplete,
   UserAutocomplete,
   Location,
+  SearchBar,
   renderTextField,
   renderDatePicker,
   renderDateSimplePicker,
-  Map,
-  Categories,
+  SelfPin,
+  RestaurantPins,
+  SearchMap,
+  StaticMap,
   Category,
   Preferences,
   Preference,
   Restaurant,
   RestaurantCard,
-  Restaurants,
   RestaurantPreview,
   RestaurantThread,
   RestaurantReviewForm,
@@ -147,4 +163,8 @@ export {
   NotificationWrapper,
   Calendar,
   ProgressIcon,
+  SearchPage,
+  SkeletonRestaurant,
+  Prices,
+  DisplayRating
 };

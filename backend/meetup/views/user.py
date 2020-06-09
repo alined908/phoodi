@@ -1,6 +1,6 @@
-from meetup.models import Preference, UserSettings, Category, User, Meetup, Friendship
+from meetup.models import CategoryPreference, UserSettings, Category, User, Meetup, Friendship
 from meetup.serializers import (
-    PreferenceSerializer,
+    CategoryPreferenceSerializer,
     MyTokenObtainPairSerializer,
     UserSettingsSerializer,
     UserSerializer,
@@ -16,11 +16,76 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db import IntegrityError
+from django.conf import settings
 from django.db.models import Q
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+import requests
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
+class GoogleOAuthView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+    
+        client_id = settings.GOOGLE_OAUTH2_KEY
+        token_id = request.data.get('tokenId')
+        id_info = id_token.verify_oauth2_token(token_id, google_requests.Request(), client_id)
+
+        if id_info['aud'] != client_id or id_info['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+            return Response({"error": "Invalid authentication credentials."}, status=404)
+
+        email = id_info['email']
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            first_name = id_info['given_name']
+            last_name = id_info['family_name']
+            user = User.objects.create_user(email=email, first_name=first_name, last_name=last_name, social=True)
+        
+        serializer = UserSerializerWithToken(user, context={"plain": True})
+        token = RefreshToken.for_user(user)
+        token["user"] = serializer.data
+        refresh, access = token, token.access_token
+        tokens = {"refresh": str(refresh), "access": str(access)}
+        return Response(tokens)
+
+class FacebookOAuthView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        access_token = request.data.get('accessToken')
+        client_id = settings.FACEBOOK_OAUTH2_KEY
+        client_secret = settings.FACEBOOK_OAUTH2_SECRET
+        
+        app_link = 'https://graph.facebook.com/oauth/access_token?client_id=' + client_id + '&client_secret=' + client_secret + '&grant_type=client_credentials'
+        app_token = requests.get(app_link).json()['access_token']
+
+        link = 'https://graph.facebook.com/debug_token?input_token=' + access_token + '&access_token=' + app_token
+        
+        try:
+            fb_user = requests.get(link).json()['data']['user_id']
+        except (ValueError, KeyError, TypeError) as error:
+            return Response({"error": "Invalid authentication credentials."}, status=404)
+
+        email = request.data.get('email')
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            name = request.data.get('name').split()
+            first_name, last_name = name[0], name[1]
+            user = User.objects.create_user(email=email, first_name=first_name, last_name=last_name, social=True)
+        
+        serializer = UserSerializerWithToken(user, context={"plain": True})
+        token = RefreshToken.for_user(user)
+        token["user"] = serializer.data
+        refresh, access = token, token.access_token
+        tokens = {"refresh": str(refresh), "access": str(access)}
+        return Response(tokens)
 
 class UserListView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -41,9 +106,9 @@ class UserListView(APIView):
         if serializer.is_valid():
             try:
                 user = serializer.save()
-            except ValidationError:
+            except ValidationError as e:
                 return Response(
-                    {"error": "Email already exists"},
+                    {"error": e.messages},
                     status=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 )
         else:
@@ -60,7 +125,7 @@ class UserListView(APIView):
 
 
 class UserView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_object(self, pk):
         user = get_object_or_404(User, pk=pk)
@@ -119,7 +184,7 @@ class UserSettingsView(APIView):
 
 
 class UserFriendsView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, *args, **kwargs):
         """
@@ -174,76 +239,97 @@ class UserFriendsView(APIView):
 
 
 class UserPreferenceListView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, *args, **kwargs):
         pk = kwargs["id"]
         user = User.objects.get(pk=pk)
-        preferences = Preference.objects.filter(user=user).order_by("ranking")
-        serializer = PreferenceSerializer(preferences, many=True)
+        preferences = CategoryPreference.objects.filter(user=user).order_by("ranking")
+        serializer = CategoryPreferenceSerializer(preferences, many=True)
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
         user = request.user
+        pk = kwargs["id"]
+     
+        if user.id != int(pk):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         category_id = request.data["category_id"]
         category = Category.objects.get(pk=category_id)
 
-        if Preference.objects.filter(user=user, category=category).exists():
+        if CategoryPreference.objects.filter(user=user, category=category).exists():
             return Response(
                 {"error": "Already a preference"}, status=status.HTTP_400_BAD_REQUEST
             )
 
-        pref_count = user.preferences.all().count()
-        preference = Preference.objects.create(
+        pref_count = user.categorypreferences.all().count()
+        preference = CategoryPreference.objects.create(
             user=user, category=category, name=category.label, ranking=(pref_count + 1)
         )
-        serializer = PreferenceSerializer(preference)
+        serializer = CategoryPreferenceSerializer(preference)
         return Response(serializer.data)
 
     def patch(self, request, *args, **kwargs):
+        user = request.user
+        pk = kwargs["id"]
+        
+        if user.id != int(pk):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         user, old_ranking, new_ranking = (
             request.user,
             request.data["oldRanking"],
             request.data["newRanking"],
         )
         try:
-            moved_preference = Preference.objects.filter(
+            moved_preference = CategoryPreference.objects.filter(
                 user=user, ranking=old_ranking
             )[0]
             moved_preference.reorder_preferences(new_ranking)
-            preferences = Preference.objects.filter(user=user).order_by("ranking")
-            serializer = PreferenceSerializer(preferences, many=True)
+            preferences = CategoryPreference.objects.filter(user=user).order_by("ranking")
+            serializer = CategoryPreferenceSerializer(preferences, many=True)
             return Response(serializer.data)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserPreferenceView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_preference(self, user_id, category_id):
         user = get_object_or_404(User, pk=user_id)
         category = get_object_or_404(Category, pk=category_id)
-        preference = get_object_or_404(Preference, user=user, category=category)
+        preference = get_object_or_404(CategoryPreference, user=user, category=category)
         return preference, user
 
     def patch(self, request, *args, **kwargs):
+        user = request.user
+        pk = kwargs["id"]
+        if user.id != int(pk):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         name = request.data["name"]
         preference, user = self.get_preference(kwargs["id"], kwargs["category_id"])
         try:
             preference.name = name
             preference.save()
-            serializer = PreferenceSerializer(preference)
+            serializer = CategoryPreferenceSerializer(preference)
             return Response(serializer.data)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, *args, **kwargs):
+        user = request.user
+        pk = kwargs["id"]
+        if user.id != int(pk):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         preference, user = self.get_preference(kwargs["id"], kwargs["category_id"])
         try:
             preference.reorder_preferences_delete()
             preference.delete()
-            serializer = PreferenceSerializer(user.preferences, many=True)
+            serializer = CategoryPreferenceSerializer(user.categorypreferences, many=True)
             return Response(serializer.data)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)

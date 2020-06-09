@@ -75,7 +75,7 @@ class MeetupForm extends Component {
     this.setState({ isSubmitting: true });
     let data = {
       ...formProps,
-      location: this.state.location,
+      location: this.state.location.description,
       public: this.state.public,
       longitude: this.state.longitude,
       latitude: this.state.latitude,
@@ -113,7 +113,7 @@ class MeetupForm extends Component {
         }
       );
     }
-    this.setState({ location });
+    this.setState({ location: value });
   };
 
   handlePublicClick = (type) => {
@@ -157,7 +157,7 @@ class MeetupForm extends Component {
                   required={true}
                   label="Location"
                   handleClick={this.handleClick}
-                  textValue={this.state.location}
+                  value={this.state.location}
                 />
               </Grid>
               <Grid container item xs={12} className={styles.control}>

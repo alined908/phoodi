@@ -28,7 +28,6 @@ exports[`MeetupWrapper tests should render without crashing 1`] = `
         <div
           className="rstInfoTop"
         >
-          <Rating />
           <WithStyles(ForwardRef(Tooltip))
             placement="top"
             title="Go To Restaurant Page"
@@ -43,6 +42,9 @@ exports[`MeetupWrapper tests should render without crashing 1`] = `
               />
             </Link>
           </WithStyles(ForwardRef(Tooltip))>
+          <Rating
+            readOnly={true}
+          />
         </div>
         <div>
           <WithStyles(ForwardRef(IconButton))
@@ -120,14 +122,13 @@ exports[`MeetupWrapper tests should render without crashing 1`] = `
       <div
         className="rstCategories"
       >
-        $
          •
         <div
           className="categoryChip"
           key="1"
         >
           <WithStyles(ForwardRef(Avatar))
-            src="undefineddesserts.png"
+            src="undefined/static/category/desserts.png"
             style={
               Object {
                 "height": 20,
@@ -138,7 +139,7 @@ exports[`MeetupWrapper tests should render without crashing 1`] = `
           >
             <img
               alt="&#9787;"
-              src="https://meetup-static.s3-us-west-1.amazonaws.com/static/general/panda.png"
+              src="undefined/static/general/panda.png"
               style={
                 Object {
                   "height": 20,

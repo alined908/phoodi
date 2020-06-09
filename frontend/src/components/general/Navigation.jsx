@@ -1,448 +1,330 @@
 import React from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
   Button,
-  Drawer,
   CssBaseline,
-  withStyles,
-  AppBar,
-  Toolbar,
   Typography,
   Divider,
-  IconButton,
   ListItemAvatar,
+  Popper,
+  ClickAwayListener,
   Avatar,
-  List,
   ListItem,
   ListItemIcon,
-  Badge,
   ListItemText,
+  Grow,
+  MenuList,
+  Badge,
+  Dialog,
+  DialogContent
 } from "@material-ui/core";
 import {
-  Menu,
-  ChevronLeft,
-  ChevronRight,
   People as PeopleIcon,
   Person as PersonIcon,
   Settings as SettingsIcon,
   ChatOutlined as ChatOutlinedIcon,
   MailOutlined as MailOutlinedIcon,
-  Assignment,
   PermContactCalendar as PermContactCalendarIcon,
   ExitToApp,
+  Search as SearchIcon,
   EventNote as EventNoteIcon,
-  Category as CategoryIcon,
-  Restaurant as RestaurantIcon,
 } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
-import { Body, LiveUpdatingBadge } from "../components";
+import { Body, LiveUpdatingBadge, SearchBar } from "../components";
 import PropTypes from "prop-types";
 import { userPropType, notifsPropType } from "../../constants/prop-types";
+import styles from '../../styles/navigation.module.css'
 
-const drawerWidth = 240;
-
-const StyledBadge = withStyles((theme) => ({
-  badge: {
-    backgroundColor: "#44b700",
-    color: "#44b700",
-    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-    "&::after": {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      borderRadius: "50%",
-      animation: "$ripple 1.2s infinite ease-in-out",
-      border: "1px solid currentColor",
-      content: '""',
-    },
-    right: "28%",
-  },
-  "@keyframes ripple": {
-    "0%": {
-      transform: "scale(.8)",
-      opacity: 1,
-    },
-    "100%": {
-      transform: "scale(2.4)",
-      opacity: 0,
-    },
-  },
-}))(Badge);
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    height: "100%",
-    backgroundColor: "var(--background)",
-  },
-  appBar: {
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    padding: "0 1.25rem",
-    background: "inherit",
-    boxShadow: "none",
-    borderBottom: "var(--border-separator)",
-    position: "fixed",
-    top: 0
-  },
-  hide: {
-    display: "none",
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  title: {
-    color: "black",
-    flexGrow: 1,
-    marginLeft: ".5rem",
-  },
-  icon: {
-    color: "rgba(0, 0, 0, .75) ",
-  },
-  actionButton: {
-    marginRight: "1rem",
-  },
-  list : {
-    padding: ".4rem"
-  },
-  drawerText: {
-    fontSize: ".8rem",
-    fontFamily: "Roboto",
-    marginLeft: ".75rem",
-    color: "rgba(40,40,40,.90)"
-  },
-  drawerPaper: {
-    width: drawerWidth
-  },
-  drawerHeader: {
-    display: "flex",
-    alignItems: "center",
-    padding: theme.spacing(0, 1),
-    ...theme.mixins.toolbar,
-    justifyContent: "flex-end",
-  },
-  content: {
-    flexGrow: 1,
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: "100%",
-    height: "100%",
-  },
-  primary: {
-    fontSize: ".9rem",
-  },
-  self: {
-    marginTop: "auto",
-  },
-  secondary: {
-    fontSize: ".75rem",
-  },
-  ellipsis: {
-    width: 130,
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
-}));
-
-const Navigation = (props) => {
-  const classes = useStyles();
-  const theme = useTheme();
+const Navigation = props => {
+  const location = useLocation()
   const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
+  const mobileHandler = React.useMemo(() => window.matchMedia("(max-width: 1000px)"), [])
+  const [isMobile, setMatches] = React.useState(mobileHandler.matches)
+  const [mobileSearch, setMobileSearch] = React.useState(false)
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleDrawerClose = () => {
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
     setOpen(false);
   };
 
-  const isActive = (uri) => {
-    return window.location.pathname.indexOf(uri) > -1;
+  const handleMobileSearchOpen = () => {
+    setMobileSearch(true);
   };
 
-  const isNotifs = (notifs) => {
+  const handleMobileSearchClose = () => {
+    setMobileSearch(false);
+  };
+
+  const handleListKeyDown = event => {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpen(false);
+    }
+  }
+
+  // return focus to the button when we transitioned from !open -> open
+  const prevOpen = React.useRef(open);
+  React.useEffect(() => {
+    const listener = event => {
+      setMatches(event.matches);
+    }
+
+    mobileHandler.addEventListener('change', listener)
+
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current.focus();
+    }
+
+    prevOpen.current = open;
+
+    return () => {
+      mobileHandler.removeEventListener('change', listener)
+    }
+  }, [open]);
+
+  const numNotifs = (notifs) => {
     let count = 0;
 
     for (let value of Object.values(notifs)) {
       count += value;
     }
 
-    return count > 0;
+    return count;
   };
 
+  const authenticated = props.authenticated
+  const user = props.user
+  const notifsCount = numNotifs(props.notifs)
+  const isHomePage = location.pathname === '/'
+
   return (
-    <div className={classes.root}>
+    <div className={styles.root}>
       <CssBaseline />
 
-      <AppBar elevation={1} position="absolute" className={classes.appBar}>
-        <Toolbar disableGutters>
-          {props.authenticated && (
-            <IconButton
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-            >
-              <Badge
-                color="secondary"
-                variant="dot"
-                invisible={!isNotifs(props.notifs)}
-              >
-                <Menu />
-              </Badge>
-            </IconButton>
-          )}
-          <Typography className={classes.title} variant="h5" noWrap>
-            <Link onClick={handleDrawerClose} to="/">
+      <div className={`${styles.appBar} ${isHomePage ? styles.appBarHome : ""}`}>
+        <div className={styles.meta}>
+          <Typography className={styles.title} variant="h5" noWrap>
+            <Link to="/">
               Phoodi
             </Link>
           </Typography>
-          {!props.authenticated && (
+        </div>
+        <div className={`${styles.search} ${(isHomePage || isMobile) && styles.searchHide}`}>
+          <SearchBar isMobile={false}/>
+        </div>
+        <Dialog open={mobileSearch} maxWidth='sm' fullWidth={true} onClose={handleMobileSearchClose}>
+          <div className={styles.mobileSearchBar}>
+            <SearchBar isMobile={true} onClose={handleMobileSearchClose}/>  
+          </div>
+        </Dialog>
+        <div className={styles.user}>
+          {isMobile &&
+            <div className={styles.searchMobile} onClick={handleMobileSearchOpen}>
+              <SearchIcon color="primary" fontSize="inherit"/>
+            </div>
+          }
+          {!authenticated && (
             <Link to="/register">
               <Button
-                className={classes.actionButton}
+                className={styles.actionButton}
                 // startIcon={<Assignment />}
-                variant="contained"
                 color="primary"
               >
                 Signup
               </Button>
             </Link>
           )}
-        </Toolbar>
-      </AppBar>
-
-      <Drawer
-        className={classes.drawer}
-        ModalProps={{ keepMounted: true }}
-        onClose={handleDrawerClose}
-        variant="temporary"
-        anchor="left"
-        open={open}
-        classes={{ paper: classes.drawerPaper }}
-      >
-        <div className={classes.drawerHeader}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? <ChevronLeft /> : <ChevronRight />}
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
-          {props.authenticated && (
-            <Link to={`/profile/${props.user.id}`}>
-              <ListItem className={classes.self}>
-                <ListItemAvatar>
-                  <StyledBadge
-                    overlap="circle"
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                    variant="dot"
+          {/* <span style={{marginRight: "2rem"}}>
+            {authenticated && !isHomePage &&
+              <Link to="/meetups">
+                <Button color="primary">
+                  Find Meetups
+                </Button>
+              </Link>
+            }
+          </span> */}
+          {authenticated && (
+            <div ref={anchorRef} className={styles.dropDownControl} onClick={handleToggle}>
+              {notifsCount > 0 ?
+                <Badge color="secondary" overlap="circle" badgeContent={notifsCount}>
+                  <Avatar className={styles.userProfile} src={user.avatar} >
+                    {user.first_name.charAt(0)}
+                    {user.last_name.charAt(0)}
+                  </Avatar>
+                </Badge>
+                :
+                <Avatar className={styles.userProfile} src={user.avatar} >
+                  {user.first_name.charAt(0)}
+                  {user.last_name.charAt(0)}
+                </Avatar>
+              }
+              <Popper 
+                open={open} 
+                anchorEl={anchorRef.current} 
+                role={undefined} 
+                transition 
+                disablePortal
+              >
+                {({ TransitionProps, placement }) => (
+                    <Grow
+                    {...TransitionProps}
+                    style={{ transformOrigin: 'center top' }}
                   >
-                    <Avatar className={classes.avatar} src={props.user.avatar}>
-                      {props.user.first_name.charAt(0)}
-                      {props.user.last_name.charAt(0)}
-                    </Avatar>
-                  </StyledBadge>
-                </ListItemAvatar>
-                <ListItemText
-                  primaryTypographyProps={{
-                    className: `${classes.primary} ${classes.ellipsis}`,
-                  }}
-                  primary={props.user.first_name + " " + props.user.last_name}
-                  secondary={
-                    <>
-                      <Typography
-                        className={classes.secondary}
-                        component="span"
-                        color="inherit"
-                        variant="body2"
-                      >
-                        {props.user.email + " "}
-                      </Typography>
-                    </>
-                  }
-                  secondaryTypographyProps={{ className: classes.ellipsis }}
-                ></ListItemText>
-              </ListItem>
-            </Link>
+                  <div className={styles.menu}>
+                  <ClickAwayListener onClickAway={handleClose}>
+                    <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                      <Link to={`/profile/${user.id}`} onClick={handleClose}>
+                        <ListItem className={styles.name}>
+                          <ListItemAvatar>
+                            <Avatar style={{width: 30, height: 30, fontSize: "1rem", marginRight: 8}} src={props.user.avatar}>
+                              {props.user.first_name.charAt(0)}
+                              {props.user.last_name.charAt(0)}
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText
+                            primaryTypographyProps={{
+                              className: `${styles.link} ${styles.bold}`,
+                            }}
+                            primary={`${user.first_name} ${user.last_name}`}
+                            secondary={
+                              <Typography
+                                component="span"
+                                variant="body2"
+                                className={styles.email}
+                              >
+                                {user.email}
+                              </Typography>
+                            }
+                          />
+                        </ListItem>
+                      </Link>
+                      <Divider/>
+                      <Link to={`/profile/${user.id}`} onClick={handleClose}>
+                        <ListItem button key="Profile">
+                          <ListItemIcon>
+                            <PersonIcon color="primary"/>
+                          </ListItemIcon>
+                          <ListItemText
+                            primary="Profile"
+                            primaryTypographyProps={{className: styles.link}}
+                          />
+                        </ListItem>
+                      </Link>
+                      <Link to="/meetups?type=private"  onClick={handleClose}>
+                        <ListItem button key="Meetups">
+                          <ListItemIcon>
+                            <LiveUpdatingBadge
+                              type={"meetup"}
+                              icon={<PeopleIcon color="primary"/>}
+                            />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary="Meetups"
+                            primaryTypographyProps={{className: styles.link}}
+                          />
+                        </ListItem>
+                      </Link>
+                      <Divider/>
+                      <Link to="/friends" onClick={handleClose}>
+                        <ListItem button key="Friends">
+                          <ListItemIcon>
+                            <LiveUpdatingBadge
+                              type={"friend"}
+                              icon={<PermContactCalendarIcon color="primary"/>}
+                            />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary="Friends"
+                            primaryTypographyProps={{className: styles.link}}
+                          />
+                        </ListItem>
+                      </Link>
+                      <Link to="/chat" onClick={handleClose}>
+                        <ListItem button key="Chat">
+                          <ListItemIcon>
+                            <LiveUpdatingBadge
+                              type={"chat"}
+                              icon={<ChatOutlinedIcon  color="primary"/>}
+                            />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary="Chat"
+                            primaryTypographyProps={{className: styles.link}}
+                          />
+                        </ListItem>
+                      </Link>
+                      <Link to="/invites" onClick={handleClose}>
+                        <ListItem button key="Invites">
+                          <ListItemIcon>
+                            <LiveUpdatingBadge
+                              type={"invite"}
+                              icon={<MailOutlinedIcon color="primary"/>}
+                            />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary="Invites"
+                            primaryTypographyProps={{className: styles.link}}
+                          />
+                        </ListItem>
+                      </Link>
+                      <Divider/>
+                      {/* <Link to="/calendar" onClick={handleClose}>
+                        <ListItem button key="Calendar">
+                          <ListItemIcon>
+                            <EventNoteIcon color="primary"/>
+                          </ListItemIcon>
+                          <ListItemText
+                            primary="Calendar"
+                            primaryTypographyProps={{className: styles.link}}
+                          />
+                        </ListItem>
+                      </Link> */}
+                      <Link to="/settings" onClick={handleClose}>
+                        <ListItem button key="Settings">
+                          <ListItemIcon>
+                            <SettingsIcon  color="primary"/>
+                          </ListItemIcon>
+                          <ListItemText
+                            primary="Settings"
+                            primaryTypographyProps={{className: styles.link}}
+                          />
+                        </ListItem>
+                      </Link>
+                      <Link to="/logout" onClick={handleClose}>
+                        <ListItem button key="Logout">
+                          <ListItemIcon>
+                            <ExitToApp color="primary"/>
+                          </ListItemIcon>
+                          <ListItemText
+                            primary="Logout"
+                            primaryTypographyProps={{className: styles.link}}
+                          />
+                        </ListItem>
+                      </Link>
+                    </MenuList>
+                  </ClickAwayListener>
+                  </div>
+                </Grow>
+              )}
+              </Popper>
+            </div>
           )}
-        </List>
-        <Divider />
-        <List  className={classes.list}>
-          {props.authenticated && (
-            <Link to="/restaurants" onClick={handleDrawerClose}>
-              <ListItem
-                button
-                key="Restaurants"
-                selected={isActive("/restaurants")}
-              >
-                <ListItemIcon>
-                  <RestaurantIcon className={classes.icon} />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Restaurants"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
-            <Link to="/meetups" onClick={handleDrawerClose}>
-              <ListItem button key="Meetups" selected={isActive("/meetups")}>
-                <ListItemIcon>
-                  <LiveUpdatingBadge
-                    type={"meetup"}
-                    icon={<PeopleIcon className={classes.icon} />}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Meetups"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
-            <Link to="/categories" onClick={handleDrawerClose}>
-              <ListItem
-                button
-                key="Categories"
-                selected={isActive("/categories")}
-              >
-                <ListItemIcon>
-                  <CategoryIcon className={classes.icon} />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Categories"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
-            <Link to="/friends" onClick={handleDrawerClose}>
-              <ListItem button key="Friends" selected={isActive("/friends")}>
-                <ListItemIcon>
-                  <LiveUpdatingBadge
-                    type={"friend"}
-                    icon={<PermContactCalendarIcon className={classes.icon} />}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Friends"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
-            <Link to="/chat" onClick={handleDrawerClose}>
-              <ListItem button key="Chat" selected={isActive("/chat")}>
-                <ListItemIcon>
-                  <LiveUpdatingBadge
-                    type={"chat"}
-                    icon={<ChatOutlinedIcon className={classes.icon} />}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Chat"
-                />
-              </ListItem>
-            </Link>
-          )}
-        </List>
-        <Divider />
-        <List  className={classes.list}>
-          {props.authenticated && props.user && (
-            <Link to={`/profile/${props.user.id}`} onClick={handleDrawerClose}>
-              <ListItem button key="Profile" selected={isActive("/profile")}>
-                <ListItemIcon>
-                  <PersonIcon className={classes.icon} />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Profile"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
-            <Link to="/invites" onClick={handleDrawerClose}>
-              <ListItem button key="Invites" selected={isActive("/invites")}>
-                <ListItemIcon>
-                  <LiveUpdatingBadge
-                    type={"invite"}
-                    icon={<MailOutlinedIcon className={classes.icon} />}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Invites"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
-            <Link to="/calendar" onClick={handleDrawerClose}>
-              <ListItem button key="Calendar" selected={isActive("/calendar")}>
-                <ListItemIcon>
-                  <EventNoteIcon className={classes.icon} />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Calendar"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
-            <Link to="/settings" onClick={handleDrawerClose}>
-              <ListItem button key="Settings" selected={isActive("/settings")}>
-                <ListItemIcon>
-                  <SettingsIcon className={classes.icon} />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Settings"
-                />
-              </ListItem>
-            </Link>
-          )}
-          {props.authenticated && (
-            <Link onClick={handleDrawerClose} to="/logout">
-              <ListItem button key="Logout">
-                <ListItemIcon>
-                  <ExitToApp className={classes.icon} />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.drawerText }}
-                  primary="Logout"
-                />
-              </ListItem>
-            </Link>
-          )}
-        </List>
-        <Divider />
-      </Drawer>
-      <main className={classes.content}>
-        <div className={classes.drawerHeader} />
-        <Body />
+        </div>
+      </div>
+      <main className={`${styles.content} ${isHomePage ? styles.contentHome : ""}`}>
+        <Body authenticated={authenticated}/>
       </main>
-    </div>
-  );
-};
+  </div>
+  )
+
+}
 
 Navigation.propTypes = {
   authenticated: PropTypes.string,

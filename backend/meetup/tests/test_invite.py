@@ -6,6 +6,7 @@ from meetup.models import (
     MeetupMember,
     Friendship,
 )
+from notifications.models import Notification
 from meetup.serializers import FriendInviteSerializer, MeetupInviteSerializer
 from rest_framework import status
 from rest_framework.test import APIClient
@@ -133,6 +134,15 @@ class InviteTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.json()["error"], "Not your invite")
 
+    def test_MeetupInvite_create_push_notification(self):
+        client.post(
+            "/api/meetups/" + self.meetup.uri + "/invite/",
+            data=json.dumps(self.valid_payload, default=str),
+            content_type="application/json",
+        )
+        notifications = self.user2.notifications.filter(description='meetup_inv')
+        self.assertEqual(notifications.count(), 1)
+
     def test_GET_friendinvite_valid(self):
         client.force_authenticate(user=self.user2)
         response = client.get("/api/friends/invite/")
@@ -191,6 +201,15 @@ class InviteTest(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.json()["error"], "Not your invite")
+
+    def test_FriendInvite_create_push_notification(self):
+        client.post(
+            "/api/friends/invite/",
+            data=json.dumps(self.valid_payload, default=str),
+            content_type="application/json",
+        )
+        notifications = self.user2.notifications.filter(description="friend_inv")
+        self.assertEqual(notifications.count(), 1)
 
     # def test_unable_to_inv_self(self):
     #     pass

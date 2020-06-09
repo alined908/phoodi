@@ -36,9 +36,17 @@ const marks = [
   { value: 25 },
 ];
 
+// const parseURL = path => {
+//   let params = new URLSearchParams(path)
+//   params = Object.fromEntries(params)
+//   return params
+// }
+
 class Meetups extends Component {
+  
   constructor(props) {
     super(props);
+    // const params = parseURL(props.location.search)
     this.state = {
       focusedInput: null,
       startDate: moment(),
@@ -73,7 +81,7 @@ class Meetups extends Component {
     ]);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     if (this.props.preferences !== this.state.preferences) {
       this.setState({
         preferences: this.props.preferences,
@@ -237,7 +245,7 @@ class Meetups extends Component {
             >
               <Avatar
                 variant="square"
-                src={`${process.env.REACT_APP_S3_STATIC_URL}${pref.category.api_label}.png`}
+                src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${pref.category.api_label}.png`}
               />
               <span>{pref.category.label}</span>
             </div>
@@ -351,22 +359,14 @@ class Meetups extends Component {
                 </div>
               </div>
             </div>
-            
-            <div className="innerLeftHeaderBlockAction" style={{marginBottom: 0}}>
-              <div className="blockActionHeader">
-                Categories
-              </div>
-              <div className="blockActionContent">
-                <div className={`${styles.meetupsSearchBar} elevate-0`}>
-                  <CategoryAutocomplete
-                    fullWidth={true}
-                    size="small"
-                    entries={this.state.entries}
-                    handleClick={this.onTagsChange}
-                    label="Search Categories..."
-                  />
-                </div>
-              </div>
+            <div className={`${styles.meetupsSearchBar} elevate-0`}>
+              <CategoryAutocomplete
+                fullWidth={true}
+                size="small"
+                entries={this.state.entries}
+                handleClick={this.onTagsChange}
+                label="Search Categories..."
+              />
             </div>
             <div className="hr">
               Preferences
