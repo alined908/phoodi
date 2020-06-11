@@ -15,8 +15,8 @@ class RestaurantDocumentView(APIView):
     def get(self, request, *args, **kwargs):
         
         query = request.GET.get('q')
-        latitude = request.GET.get('latitude')
-        longitude = request.GET.get('longitude')      
+        latitude = request.GET.get('latitude', 34.052235)
+        longitude = request.GET.get('longitude', -118.243683)      
         radius = request.GET.get('radius', 5)
         prices = request.GET.get('prices')
         rating = request.GET.get('rating')
@@ -63,7 +63,14 @@ class RestaurantDocumentView(APIView):
 
         response = s.execute()
         hits = response['hits'].to_dict()
-        return Response({'count': count, 'hits': hits['hits']})
+        return Response({
+            'count': count, 
+            'hits': hits['hits'], 
+            'coords': {
+                'latitude': float(latitude), 
+                'longitude': float(longitude)
+            }
+        })
 
         # ids = [hit['_source']['id'] for hit in hits]
         # preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(ids)])
