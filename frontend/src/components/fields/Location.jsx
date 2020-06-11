@@ -89,7 +89,7 @@ export default function Location(props) {
   
   return (
     <Autocomplete
-      freeSolo
+      freeSolo={props.freeSolo}
       size="small"
       className={classes.autocomplete}
       getOptionLabel={(option) =>

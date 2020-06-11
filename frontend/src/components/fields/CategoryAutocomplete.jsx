@@ -34,14 +34,16 @@ const CategoryAutocomplete = (props) => {
     if (!loading) {
       return undefined;
     }
-
+    const token = localStorage.getItem("token")
     if (!loaded) {
       (async () => {
-        const response = await axiosClient.get("/api/categories/", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axiosClient.get("/api/categories/", 
+          {
+            ...token && {headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }}
+        );
         // await sleep(1e3);
         setOptions(response.data.categories);
         setLoaded(true);

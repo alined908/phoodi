@@ -1,3 +1,5 @@
 network.host: 0.0.0.0
 http.port: 9200
 discovery.seed_hosts: ["127.0.0.1"]
+transport.host: localhost
+transport.tcp.port: 9300

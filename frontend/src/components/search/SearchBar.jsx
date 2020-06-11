@@ -303,7 +303,7 @@ class SearchBar extends Component {
         }
         const urlify = new URLSearchParams(params).toString()
         history.push(
-            `/search?${urlify}`
+            `/r/search?${urlify}`
         )
         if (this.props.isMobile){
             this.props.onClose()
@@ -356,6 +356,7 @@ class SearchBar extends Component {
                     )}
                 />
                 <Location
+                    freeSolo={true}
                     required={false}
                     label="Location"
                     handleClick={this.handleClick}

@@ -75,7 +75,7 @@ class MeetupForm extends Component {
     this.setState({ isSubmitting: true });
     let data = {
       ...formProps,
-      location: this.state.location.description,
+      location: this.state.location,
       public: this.state.public,
       longitude: this.state.longitude,
       latitude: this.state.latitude,
@@ -95,26 +95,30 @@ class MeetupForm extends Component {
   };
 
   handleClick = (e, value) => {
-    let location;
-    if (value === null) {
-      location = "";
-    } else {
-      location = value.description;
-      Geocode.fromAddress(location).then(
-        (response) => {
+    console.log(value);
+    if (value !== null) {
+      Geocode.fromAddress(value.description).then((response) => {
           const geolocation = response.results[0].geometry.location;
+          console.log(geolocation)
           this.setState({
+            latitude: geolocation.lat, 
             longitude: geolocation.lng,
-            latitude: geolocation.lat,
-          });
+            location: value.description
+          })
         },
         (error) => {
           console.error(error);
         }
       );
     }
-    this.setState({ location: value });
   };
+
+  handleLocation = (e, value, reason) => {
+    console.log(e, value, reason)
+    this.setState({
+      location: value
+    })
+  }
 
   handlePublicClick = (type) => {
     this.setState({ ...this.state, public: type });
@@ -154,10 +158,12 @@ class MeetupForm extends Component {
               </Grid>
               <Grid item xs={12}>
                 <Location
+                  freeSolo={false}
                   required={true}
                   label="Location"
+                  handleInputChange={this.handleLocation}
                   handleClick={this.handleClick}
-                  value={this.state.location}
+                  textValue={this.state.location}
                 />
               </Grid>
               <Grid container item xs={12} className={styles.control}>

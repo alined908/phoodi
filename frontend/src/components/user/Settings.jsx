@@ -55,7 +55,7 @@ class Settings extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     let data = {
-      location: this.state.location.description,
+      location: this.state.location,
       radius: this.state.radius,
       longitude: this.state.longitude,
       latitude: this.state.latitude,
@@ -65,27 +65,29 @@ class Settings extends Component {
 
   handleClick = (e, value) => {
     console.log(value);
-    let location;
-    if (value === null) {
-      location = "";
-    } else {
-      location = value.description;
-      Geocode.fromAddress(location).then(
-        (response) => {
+    if (value !== null) {
+      Geocode.fromAddress(value.description).then((response) => {
           const geolocation = response.results[0].geometry.location;
-          console.log(geolocation);
+          console.log(geolocation)
           this.setState({
+            latitude: geolocation.lat, 
             longitude: geolocation.lng,
-            latitude: geolocation.lat,
-          });
+            location: value.description
+          })
         },
         (error) => {
           console.error(error);
         }
       );
     }
-    this.setState({ location: value });
   };
+
+  handleLocation = (e, value, reason) => {
+    console.log(e, value, reason)
+    this.setState({
+      location: value
+    })
+  }
 
   handleFormChange = (index) => {
     if (index !== this.state.activeForm){
@@ -179,10 +181,13 @@ class Settings extends Component {
                         </Grid>
                         <Grid item xs={12}>
                           <div className={styles.settingsLocation}>
+                            {console.log(this.state.location)}
                             <Location
+                              freeSolo={false}
                               label="Location"
                               handleClick={this.handleClick}
-                              value={this.state.location}
+                              handleInputChange={this.handleLocation}
+                              textValue={this.state.location}
                             />
                           </div>        
                         </Grid>

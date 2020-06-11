@@ -1,7 +1,7 @@
 # Phoodi [![Build Status](https://travis-ci.com/alined908/phoodi.svg?token=PvKqjKHMMeoZSCY5YeNS&branch=master)](https://travis-ci.com/github/alined908/phoodi)
-An app for foodies - **Prototype** @ https://phoodie.me
+A work in progress app for foodies - **Prototype** @ https://phoodie.me
 
-![phoodie-meetup](https://user-images.githubusercontent.com/47507106/82004652-4fc65180-9618-11ea-9974-51c4066ec5d1.png)
+[![phoodie-meetup](https://i9.ytimg.com/vi/TxC_xeaN2mY/mq3.jpg?sqp=CJiShvcF&rs=AOn4CLDOgsuOnpdTWjn4gWQcrIAtvREZew)](https://www.youtube.com/watch?v=TxC_xeaN2mY)
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [Deployment](#deployment) for notes on how to deploy the project on a live system.
@@ -68,11 +68,10 @@ npm install
 ```
 **10. Run Docker**
 ```
-docker-compose build
-docker-compose up
-docker exec -i -t <container_id> bash
-python manage.py migrate
-python manage.py loaddata meetup/fixtures/*.json
+sudo docker-compose build
+docker-compose up --scale frontend=0 -d
+docker exec -i -t <backend_container_id> bash
+python manage.py search_index --rebuild
 ```
 
 ## Built With
@@ -89,6 +88,7 @@ python manage.py loaddata meetup/fixtures/*.json
 * **Travis** - CI
 
 ## Todo Next Iteration
+- [ ] Google api calendar for meetups
 - [ ] Websocket Authentication Flow
 - [ ] Use httpOnly cookies for tokens
 - [ ] Activity Feed of Friends
