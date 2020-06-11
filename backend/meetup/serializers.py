@@ -272,8 +272,8 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     def _get_vote(self, obj):
         user = self.context.get("user")
-
-        if not user or user.is_anonymous:
+   
+        if user and not user.is_anonymous:
             try:
                 vote = Vote.objects.get(
                     user = user, 

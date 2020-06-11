@@ -181,7 +181,9 @@ class SearchPage extends Component {
 
         this.setState({
             totalCount: response.data.count,
-            results: response.data.hits
+            results: response.data.hits,
+            latitude: response.data.coords.latitude,
+            longitude: response.data.coords.longitude
         })
 
         setTimeout(() => this.setState({loading: false}), 300)
@@ -202,7 +204,7 @@ class SearchPage extends Component {
         }
 
         const urlify = new URLSearchParams(params).toString()
-        this.props.history.push(`/search?${urlify}`)
+        this.props.history.push(`/r/search?${urlify}`)
     }
 
     handleSort = (sort) => {

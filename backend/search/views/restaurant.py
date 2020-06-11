@@ -63,7 +63,14 @@ class RestaurantDocumentView(APIView):
 
         response = s.execute()
         hits = response['hits'].to_dict()
-        return Response({'count': count, 'hits': hits['hits']})
+        return Response({
+            'count': count, 
+            'hits': hits['hits'], 
+            'coords': {
+                'latitude': float(latitude), 
+                'longitude': float(longitude)
+            }
+        })
 
         # ids = [hit['_source']['id'] for hit in hits]
         # preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(ids)])

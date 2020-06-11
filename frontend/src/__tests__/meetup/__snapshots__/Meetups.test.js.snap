@@ -106,7 +106,7 @@ exports[`Meetups tests renders without crashing 1`] = `
             disabled={false}
             displayFormat="MMM DD"
             enableOutsideDays={false}
-            endDate={"2020-06-15T13:23:36.433Z"}
+            endDate={"2020-06-18T01:38:05.211Z"}
             endDateId="unique_end_date_id"
             endDatePlaceholderText="End Date"
             firstDayOfWeek={null}
@@ -186,7 +186,7 @@ exports[`Meetups tests renders without crashing 1`] = `
             showClearDates={false}
             showDefaultInputIcon={false}
             small={true}
-            startDate={"2020-06-08T13:23:36.433Z"}
+            startDate={"2020-06-11T01:38:05.211Z"}
             startDateId="unique_start_date_id"
             startDatePlaceholderText="Start Date"
             verticalHeight={null}
@@ -319,7 +319,7 @@ exports[`Meetups tests renders without crashing 1`] = `
                       "id": 1,
                       "last_name": "Lee",
                     },
-                    "date": "2020-06-08",
+                    "date": "2020-06-10",
                     "events": Object {},
                     "id": 1,
                     "isMeetupEventsInitialized": true,
@@ -387,7 +387,7 @@ exports[`Meetups tests renders without crashing 1`] = `
                       "id": 1,
                       "last_name": "Lee",
                     },
-                    "date": "2020-06-08",
+                    "date": "2020-06-10",
                     "events": Object {},
                     "id": 2,
                     "isMeetupEventsInitialized": true,

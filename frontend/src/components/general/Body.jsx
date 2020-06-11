@@ -50,7 +50,7 @@ class Body extends Component {
             path="/register"
             render={(props) => <RegisterPage {...props} type={"create"} />}
           />
-          <Route path="/search" component={SearchPage}/>
+          <Route path="/r/search" component={SearchPage}/>
           <Route path="/restaurants/:uri" component={Restaurant} />
           <AuthenticatedRoute path="/meetups" exact component={Meetups} />
           <AuthenticatedRoute path="/logout" component={LogoutPage} />

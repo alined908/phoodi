@@ -61,10 +61,18 @@ class Restaurant extends Component {
   }
 
   callApi = async () => {
+    const token = localStorage.getItem("token")
+
     try {
       const [restaurant, reviews] = await Promise.all([
         axiosClient.get(`/api/restaurants/${this.props.match.params.uri}/`),
-        axiosClient.get(`/api/restaurants/${this.props.match.params.uri}/reviews/?sort=${this.state.reviewSort}`)
+        axiosClient.get(`/api/restaurants/${this.props.match.params.uri}/reviews/?sort=${this.state.reviewSort}`,
+          {
+            ...token && {headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }}
+        )
       ])
       console.log(restaurant.data)
       this.setState({ restaurant: restaurant.data, reviews: reviews.data });
