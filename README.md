@@ -1,7 +1,32 @@
 # Phoodi [![Build Status](https://travis-ci.com/alined908/phoodi.svg?token=PvKqjKHMMeoZSCY5YeNS&branch=master)](https://travis-ci.com/github/alined908/phoodi)
 A work in progress app for foodies - **Prototype** @ https://phoodie.me
 
-[![phoodie-meetup](https://i9.ytimg.com/vi/TxC_xeaN2mY/mq3.jpg?sqp=CJiShvcF&rs=AOn4CLDOgsuOnpdTWjn4gWQcrIAtvREZew)](https://www.youtube.com/watch?v=TxC_xeaN2mY)
+[![](https://i1.wp.com/9to5google.com/wp-content/uploads/sites/4/2018/09/youtube_logo_dark.jpg?w=2000&quality=82&strip=all&ssl=1)](https://www.youtube.com/watch?v=TxC_xeaN2mY)
+
+## Features
+- Search restaurants near specified location
+- Find restaurant info and leave reviews
+- Create or join public/private meetups and explore options for restaurants to eat at
+- Chat application
+- Social system with friends/invites
+- Real time notifications
+- User activity stream
+- Mapbox Api integration to display entities/geospatial data
+- Social authentication with Google/Facebook
+
+## Tools
+- Django + Django Rest Framework for backend, Integration and unit tests
+- Postgres as relational database storage and Elasticsearch to enable fast search of entities
+- Websocket integration with Redis as messaging system 
+- React for frontend components, Redux to manage some parts of application state
+- Jest and Enzyme to test frontend
+- Material UI for some design philosophy and components
+- Docker for containerization and ease of deployment
+- Nginx as webserver and reverse proxy
+- Amazon Cloudfront CDN + S3 for static assets
+- Amazon Route 53 for DNS
+- Deployed to Amazon EC2 linux instance 
+- Travis CI to validate quality of builds
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [Deployment](#deployment) for notes on how to deploy the project on a live system.
@@ -73,20 +98,6 @@ docker-compose up --scale frontend=0 -d
 docker exec -i -t <backend_container_id> bash
 python manage.py search_index --rebuild
 ```
-
-## Built With
-
-* **Docker/AWS EC2** - Deployment
-* **Django** - Backend
-* **React/Redux + Jest/Enzyme** - Frontend
-* **Postgres** - Database
-* **Elasticsearch** - Search entities
-* **Nginx** - Web Server
-* **Redis** - Channel layer for pub/sub
-* **Yelp Api** - Generate restaurants
-* **Material UI** - Design
-* **Travis** - CI
-
 ## Todo Next Iteration
 - [ ] Google api calendar for meetups
 - [ ] Websocket Authentication Flow
@@ -110,8 +121,6 @@ python manage.py search_index --rebuild
 - [ ] Add capacity to meetup
 - [ ] Fix preferences swapping lag
 - [ ] Set up celery for asynchronous job processing (convert signals to create task for celery)
-
-## Todo Later (Chat)
 - [ ] Edit chat messages
 - [ ] Upload picture
 - [ ] Send invite through chat
