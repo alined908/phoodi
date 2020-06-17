@@ -99,10 +99,11 @@ docker exec -i -t <backend_container_id> bash
 python manage.py search_index --rebuild
 ```
 ## Todo Next Iteration
+- [ ] Better loading of resources (lighthouse images)
+- [ ] Activity Feed of Friends
 - [ ] Google api calendar for meetups
 - [ ] Websocket Authentication Flow
 - [ ] Use httpOnly cookies for tokens
-- [ ] Activity Feed of Friends
 - [ ] Skeleton loading where applicable
 - [ ] Complete admin functionality for meetup member
 - [ ] Properly document and refactor codebase

@@ -64,8 +64,8 @@ export const MuiTheme = {
       },
       MuiInputLabel:{
           root: {
-              color: "var(--grey-text)",
-              fontSize: ".8rem",
+              fontWeight: '600',
+              fontSize: ".8rem"
           }
       },
       MuiList:{

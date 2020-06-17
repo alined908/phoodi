@@ -8,32 +8,87 @@ import { ReactComponent as StreetFoodIcon } from "../../assets/svgs/undraw_foodt
 import { ReactComponent as OnlineFriendsIcon } from "../../assets/svgs/undraw_chat.svg";
 import { ReactComponent as TastingIcon } from "../../assets/svgs/undraw_eattogether.svg";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import throttle from "lodash/throttle";
 import { Helmet } from "react-helmet";
 import {SearchBar} from '../components'
 
 class HomePage extends Component {
-  handleScroll = () => {
+
+  constructor(props){
+    super(props);
+    this.topRef = React.createRef()
+    this.handleScrollWrapper = this.handleScrollWrapper.bind(this);
+    this.delayedCallback = throttle(this.handleScroll, 200);
+  }
+
+  componentDidMount(){
+    let navBar = document.getElementById('nav')
+    navBar.style.transition = 'none'
+    navBar.style.boxShadow = "none"
+    navBar.style.color = "white"
+    navBar.style.background = 'transparent'
+  }
+
+  componentWillUnmount(){
+    let navBar = document.getElementById('nav')
+    navBar.style.transition = 'none'
+    navBar.style.boxShadow = "var(--shadow-1)"
+    navBar.style.color = "black"
+    navBar.style.background = 'white'
+  }
+
+  handleScroll(e) {
+    const top = e.target.children[0]
+    const bounding = top.getBoundingClientRect()
+    let navBar = document.getElementById('nav')
+
+    // If bottom of home not visible
+    if (Math.abs(bounding.top) >= bounding.height) {
+      navBar.style.boxShadow = "var(--shadow-1)"
+      navBar.style.color = "black"
+      navBar.style.background = 'white'
+      navBar.style.transition = 'all .2s ease'
+    } else{
+      navBar.style.boxShadow = "none"
+      navBar.style.color = "white"
+      navBar.style.background = 'transparent'
+      navBar.style.transition = 'all .2s ease'
+    }
+  }
+
+  handleScrollWrapper = (event) => {
+    event.persist();
+    this.delayedCallback(event);
+  };
+
+  handleFastScroll = () => {
     const middle = document.querySelector(".middle");
     middle.scrollIntoView({ behavior: "smooth" });
   };
 
   render() {
-    const image = `https://images.unsplash.com/photo-1541544741938-0af808871cc0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1349&q=100`
+    const image = `${process.env.REACT_APP_S3_STATIC_URL}/static/general/home.jpg`
 
     return (
-      <div className="home">
+      <div className="home" ref={this.topRef} onScroll={this.handleScrollWrapper}>
         <Helmet>
           <meta charSet="utf-8" />
           <title>Phoodi</title>
           <meta name="description" content="Phoodi Home Page" />
         </Helmet>
         <div className="top">
-          <div className="hero-image" style={{backgroundImage: `url(${image})`}}>
-            <div className="search elevate">
+          <div className="hero-image" style={{backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${image})`}}>
+            <div className="hero-text">
+              Phoodi
+              <div className="hero-text-small">
+                Focusing on the foodie experience.
+              </div>
+            </div>
+            <div className="search">
               <SearchBar/>
             </div>
           </div>
-          <div className="scrollbot" onClick={this.handleScroll}>
+          <div className="scrollbot" onClick={this.handleFastScroll}>
             <IconButton>
               <KeyboardArrowDownIcon color="inherit" size="large" />
             </IconButton>

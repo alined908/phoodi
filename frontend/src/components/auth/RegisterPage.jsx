@@ -148,7 +148,7 @@ class RegisterPage extends Component {
             </Helmet>
             <div className={styles.formWrapper}>
               <div className={styles.formhead}>
-                <span className={styles.header}>Phoodi</span>
+                <span className={styles.header}>Register</span>
               </div>
               <form
                 className={styles.form}

@@ -10,6 +10,7 @@
   --light-blue: #e5f0ff;
   --bright-blue: #0099FA;
   --purple: #7E5068;
+  --black-hover: #1A1A1A;
   --shadow-0: 0 0 10px rgba(0,0,0,.1);
   --shadow-1: 0 0 15px rgba(0,0,0,.1);
   --shadow-2: 0 0 25px rgba(0,0,0,.1);
@@ -279,6 +280,7 @@ body {
   max-width: 800px;
   min-width: 300px;
   justify-content: center;
+  box-shadow: var(--shadow-2);
 }
 
 .search-button {
@@ -286,13 +288,20 @@ body {
   align-items: center;
   justify-content: center;
   background-color: black;
+  font-weight: 500;
   color: white;
-  height: 46.19px;
-  width: 60px;
+  height: 47.14px;
   cursor: pointer;
   border-radius: 0 4px 4px 0;
+  padding: 0 1rem;
+  font-family: "Roboto";
   box-shadow: 0 2px 18px rgba(0,0,0,.15);
-  font-size: 1.75rem;
+  font-size: 1rem;
+}
+
+.search-button:hover{
+  background-color: var(--black-hover);
+  transition: all .15s ease;
 }
 
 .search .MuiFormGroup-root {

@@ -16,7 +16,7 @@ class MeetupApp extends Component {
         <ThemeProvider theme={createMuiTheme({ ...MuiTheme })}>
           <Provider store={store}>
             <NotificationWrapper />
-            <LocationService />
+            {/* <LocationService /> */}
             <Router history={history}>
               <Navigation/>
             </Router>

@@ -13,8 +13,10 @@
     height: 80px;
     align-items: center;
     background: white;
+    color: black;
     z-index: 1;
     box-shadow: var(--shadow-1);
+    transition: all .2s ease;
 }
 
 .appBarHome{
@@ -22,6 +24,8 @@
     background: transparent;
     height: 60px;
     box-shadow: none;
+    color: white;
+    transition: none;
 }
 
 .meta {
@@ -31,14 +35,15 @@
 }
 
 .title {
-    color: black;
     margin-left: .5rem;
+    font-weight: 600;
     font-size: 1.3rem !important;
 }
 
 .search {
     display: flex;
     flex: 1;
+    color: white;
     box-shadow: 0 2px 18px rgba(0,0,0,.15);
     min-width: 750px;
 }
@@ -47,12 +52,13 @@
     display: flex;
     align-items: center;
     margin-right: 20px;
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     filter: drop-shadow( 1px 1px 1px rgba(0, 0, 0, .65));
+    transition: all .2s ease;
 }
 
 .searchMobile:hover{
-    font-size: 2rem;
+    font-size: 1.75rem;
     cursor:pointer;
 }
 
@@ -100,7 +106,12 @@
 
 .actionButton {
     margin-right: 1rem;
-    font-size: .85rem !important;
+    border-radius: 0 !important;
+    font-size: .8rem !important;
+}
+
+.actionButton:hover{
+    border-bottom: 1px solid yellow !important;
 }
 
 .content {

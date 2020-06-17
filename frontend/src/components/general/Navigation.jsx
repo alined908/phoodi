@@ -108,13 +108,13 @@ const Navigation = props => {
     <div className={styles.root}>
       <CssBaseline />
 
-      <div className={`${styles.appBar} ${isHomePage ? styles.appBarHome : ""}`}>
+      <div className={`${styles.appBar} ${isHomePage ? styles.appBarHome : ""}`} id="nav">
         <div className={styles.meta}>
-          <Typography className={styles.title} variant="h5" noWrap>
+          <div className={styles.title}>
             <Link to="/">
               Phoodi
             </Link>
-          </Typography>
+          </div>
         </div>
         <div className={`${styles.search} ${(isHomePage || isMobile) && styles.searchHide}`}>
           <SearchBar isMobile={false}/>
@@ -127,19 +127,30 @@ const Navigation = props => {
         <div className={styles.user}>
           {isMobile &&
             <div className={styles.searchMobile} onClick={handleMobileSearchOpen}>
-              <SearchIcon color="primary" fontSize="inherit"/>
+              <SearchIcon color="inherit" fontSize="inherit"/>
             </div>
           }
           {!authenticated && (
-            <Link to="/register">
-              <Button
-                className={styles.actionButton}
-                // startIcon={<Assignment />}
-                color="primary"
-              >
-                Signup
-              </Button>
-            </Link>
+            <>
+              <Link to="/login">
+                <Button
+                  className={styles.actionButton}
+                  // startIcon={<Assignment />}
+                  color="inherit"
+                >
+                  Login
+                </Button>
+              </Link>
+              <Link to="/register">
+                <Button
+                  className={styles.actionButton}
+                  // startIcon={<Assignment />}
+                  color="inherit"
+                >
+                  Signup
+                </Button>
+              </Link>
+            </>
           )}
           {/* <span style={{marginRight: "2rem"}}>
             {authenticated && !isHomePage &&

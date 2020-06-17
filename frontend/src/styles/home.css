@@ -1,6 +1,7 @@
 .home {
   width: 100%;
   height: 100%;
+  overflow-y: auto;
 }
 
 .svg-shadow{
@@ -13,14 +14,32 @@
   bottom: 0;
 }
 
+.home-nav-end{
+  transition: none;
+}
+
+.home-nav-enter{
+  box-shadow: var(--shadow-1);
+  color: black;
+  background: white;
+  transition: all .2s ease;
+}
+
+.home-nav-exit {
+  box-shadow: none;
+  color: white;
+  background: transparent;
+  transition: all .2s ease;
+}
+
 .top {
   display: flex;
   width: 100%;
-  border-bottom: 1px solid #edf0f6;
   background-color: white;
-  height: 70vh;
+  height: 100vh;
   align-items: center;
   position: relative;
+  box-shadow: var(--shadow-1);
   justify-content: center;
 }
 
@@ -30,9 +49,28 @@
   align-items: center;
   height: 100%;
   width: 100%;
+  position: relative;
   background-size: cover;
   background-position: 50%;
-  filter: grayscale(5%);
+}
+
+.hero-text {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: absolute;
+  font-size: 3.5rem;
+  top: 37.5%;  
+  left: 50%; 
+  transform: translate(-50%, -50%);
+  color: white;
+  font-family: "Roboto";
+  font-weight: 500;
+}
+
+.hero-text-small{
+
+  font-size: 1.2rem;
 }
 
 .home-search{
