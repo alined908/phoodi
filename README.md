@@ -99,6 +99,7 @@ docker exec -i -t <backend_container_id> bash
 python manage.py search_index --rebuild
 ```
 ## Todo Next Iteration
+- [ ] Change user settings to onetoone
 - [ ] Better loading of resources (lighthouse images)
 - [ ] Activity Feed of Friends
 - [ ] Google api calendar for meetups

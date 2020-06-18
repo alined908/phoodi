@@ -364,7 +364,7 @@ class SearchBar extends Component {
                     textValue={this.props.inputLocation.input ? this.props.inputLocation.input : ""}
                 />
                 <div className="search-button" onClick={this.handleRedirectSearch}>
-                    Search
+                    <SearchIcon fontSize="inherit"/>
                 </div>
             </>
         )

@@ -62,7 +62,8 @@ import ProgressIcon from "./general/ProgressIcon";
 import GroupAvatars from "./general/GroupAvatars";
 import NotificationWrapper from "./general/NotificationWrapper";
 import Calendar from "./general/Calendar";
-import DisplayRating from './general/DisplayRating'
+import DisplayRating from './general/DisplayRating';
+import FeedPage from './general/FeedPage';
 
 //User
 import Settings from "./user/Settings";
@@ -166,5 +167,6 @@ export {
   SearchPage,
   SkeletonRestaurant,
   Prices,
-  DisplayRating
+  DisplayRating,
+  FeedPage
 };

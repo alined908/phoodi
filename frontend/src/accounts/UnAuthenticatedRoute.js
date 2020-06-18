@@ -9,7 +9,7 @@ class UnAuthenticatedRoute extends Component {
         <Route {...this.props} other={this.props.location.pathname}></Route>
       );
     } else {
-      return <Redirect to="/"></Redirect>;
+      return <Redirect to="/feed"></Redirect>;
     }
   }
 }

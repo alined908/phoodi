@@ -111,7 +111,7 @@ const Navigation = props => {
       <div className={`${styles.appBar} ${isHomePage ? styles.appBarHome : ""}`} id="nav">
         <div className={styles.meta}>
           <div className={styles.title}>
-            <Link to="/">
+            <Link to={!authenticated ? "/" : "/feed"}>
               Phoodi
             </Link>
           </div>
