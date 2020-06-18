@@ -39,6 +39,11 @@ class RestaurantView(APIView):
 
     def get(self, request, *args, **kwargs):
         restaurant_url = kwargs['uri']
+        
+        if restaurant_url == "challenge":
+            restaurants = Restaurant.objects.all()[:5]
+            serializer = RestaurantSerializer(restaurants, many=True)
+            return Response(serializer.data)
 
         try:
             restaurant = Restaurant.objects.get(url=restaurant_url)

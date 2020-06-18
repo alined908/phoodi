@@ -6,6 +6,7 @@ import meetupReducer from "./meetup";
 import notifReducer from "./notifs";
 import searchReducer from './search'
 import globalMessagesReducer from "./globalMessages";
+import challengeReducer from "./challenge";
 
 const appReducer = combineReducers({
   user: userReducer,
@@ -14,6 +15,7 @@ const appReducer = combineReducers({
   meetup: meetupReducer,
   notifs: notifReducer,
   search: searchReducer,
+  challenge: challengeReducer,
   globalMessages: globalMessagesReducer,
 });
 

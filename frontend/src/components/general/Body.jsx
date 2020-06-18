@@ -22,6 +22,7 @@ import {
   EmailActivationPage,
   SearchPage
 } from "../components";
+import Challenge from "../../challenge/Challenge"
 import AuthenticatedRoute from "../../accounts/AuthenticatedRoute";
 import UnAuthenticatedRoute from "../../accounts/UnAuthenticatedRoute";
 
@@ -32,6 +33,7 @@ class Body extends Component {
       <div className="c">
         <Switch>
           <Route path="/" exact render={(props) => <HomePage {...props} authenticated={this.props.authenticated}/>} />
+          <Route path="/challenge" component={Challenge}/>
           <UnAuthenticatedRoute
             path="/activate/:uid/:token"
             component={EmailActivationPage}

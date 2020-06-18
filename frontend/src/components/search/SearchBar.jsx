@@ -169,7 +169,7 @@ class SearchBar extends Component {
             parts = parse(option._source.label, matches);
 
             row = (
-                <Link onClick={() => this.persistSearchToStorage(option)} to={`/search/?categories=${option._source.label}`} style={{width: "100%"}}>
+                <Link onClick={() => this.persistSearchToStorage(option)} to={`/r/search/?categories=${option._source.label}`} style={{width: "100%"}}>
                     <div className="search-entry">
                         <ListItemAvatar>
                             <Avatar

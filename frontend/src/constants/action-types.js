@@ -92,3 +92,15 @@ export const REMOVE_SEARCH_VALUE = 'remove_search_value';
 export const REMOVE_SEARCH_LOCATION = 'remove_search_location'
 export const REMOVE_SEARCH_LAST = 'remove_search_last'
 export const REMOVE_SEARCH_LOCATION_LAST = 'remove_search_location_last';
+
+//Challenge
+export const GET_RESTAURANTS_REQUEST = 'get_restaurants_request'
+export const GET_RESTAURANTS_SUCCESS = 'get_restaurants_success'
+export const GET_RESTAURANTS_ERROR = 'get_restaurants_error'
+export const GET_CATEGORIES_REQUEST = 'get_categories_request'
+export const GET_CATEGORIES_SUCCESS = 'get_categories_success'
+export const GET_CATEGORIES_ERROR = 'get_categories_error'
+export const CONSTRUCT_MATRIX = 'construct_matrix'
+export const RECONSTRUCT_MATRIX = 'reconstruct_matrix'
+export const UNDO_MATRIX = 'undo_matrix'
+export const REDO_MATRIX = 'redo_matrix'
