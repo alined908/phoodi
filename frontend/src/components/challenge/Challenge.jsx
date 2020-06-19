@@ -1,14 +1,13 @@
 import React, {Component} from 'react'
-import {axiosClient} from '../accounts/axiosClient'
-import styles from "../styles/challenge.module.css"
+import styles from "../../styles/challenge.module.css"
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd'
 import {CircularProgress, Button, IconButton} from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close';
 import {connect} from 'react-redux'
 import {isEqual} from 'lodash'
-import {addGlobalMessage} from '../actions'
+import {addGlobalMessage} from '../../actions'
 import {Undo as UndoIcon, Redo as RedoIcon} from '@material-ui/icons'
-import {getRestaurants, getCategories, constructMatrix, reconstructMatrix, undoMatrix, redoMatrix} from '../actions/challenge.js'
+import {getRestaurants, getCategories, constructMatrix, reconstructMatrix, undoMatrix, redoMatrix} from '../../actions/challenge.js'
 
 const getStyle = (style, snapshot) => {
     if (!snapshot.isDragging) return {};
@@ -19,9 +18,33 @@ const getStyle = (style, snapshot) => {
       ...style,
       transitionDuration: `0.001s`,
     };
-  }
+}
 
-class Card extends Component {
+const copy = (filled, source, destination, numCategories) => {
+
+    const restaurantID = Number(source.droppableId.split("-")[1])
+    const column = Number(destination.droppableId.split("-")[1]) % numCategories
+
+    let oldRow = [...filled[restaurantID]]
+    oldRow[column] = true
+
+    return {...filled, [restaurantID]: [...oldRow]}
+}
+
+const move = (filled, source, destination, numCategories) => {
+    const sourceCategory = Number(source.droppableId.split("-")[1])
+    const restaurantID = Math.floor(sourceCategory / numCategories)
+    const oldColumn = sourceCategory % numCategories
+    const newColumn = Number(destination.droppableId.split("-")[1]) % numCategories
+
+    let oldRow = [...filled[restaurantID]]
+    oldRow[oldColumn] = false
+    oldRow[newColumn] = true
+
+    return {...filled, [restaurantID]: [...oldRow]}
+}   
+
+export class Card extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -63,7 +86,7 @@ class Card extends Component {
     }
 }
 
-class Restaurant extends Component {
+export class Restaurant extends Component {
 
     render () {
         const restaurant = this.props.restaurant
@@ -104,42 +127,17 @@ class Restaurant extends Component {
     }
 }
 
-
-const copy = (filled, source, destination, numCategories) => {
-
-    const restaurantID = Number(source.droppableId.split("-")[1])
-    const column = Number(destination.droppableId.split("-")[1]) % numCategories
-
-    let oldRow = [...filled[restaurantID]]
-    oldRow[column] = true
-
-    return {...filled, [restaurantID]: [...oldRow]}
-}
-
-const move = (filled, source, destination, numCategories) => {
-    const sourceCategory = Number(source.droppableId.split("-")[1])
-    const restaurantID = Math.floor(sourceCategory / numCategories)
-    const oldColumn = sourceCategory % numCategories
-    const newColumn = Number(destination.droppableId.split("-")[1]) % numCategories
-
-    let oldRow = [...filled[restaurantID]]
-    oldRow[oldColumn] = false
-    oldRow[newColumn] = true
-
-    return {...filled, [restaurantID]: [...oldRow]}
-}   
-
-class RestaurantGrid extends Component {
+export class RestaurantGrid extends Component {
 
     handleDelete = (restaurant, column) => {
         let oldRow = [...this.props.matrix[restaurant]]
         oldRow[column] = false
         this.props.reconstructMatrix({ ...this.props.matrix, [restaurant]: [...oldRow]})
-        console.log({ ...this.props.matrix, [restaurant]: [...oldRow]})
     }
 
     onDragEnd = result => {
         const {source, destination} = result;
+
         if (!destination){
             return;
         }  
@@ -212,7 +210,7 @@ class RestaurantGrid extends Component {
     }
 }
 
-class Challenge extends Component {
+export class Challenge extends Component {
 
 
     async componentDidMount() {
@@ -252,10 +250,10 @@ class Challenge extends Component {
                             <div className={styles.categoriesWrapper}>
                                 <div className={styles.header}>
                                     <div>
-                                        <IconButton color="primary" onClick={this.props.undoMatrix} disabled={!this.props.canUndo}>
+                                        <IconButton color="primary" onClick={this.props.undoMatrix} disabled={!this.props.canUndo} data-testid="undo">
                                             <UndoIcon/>
                                         </IconButton>
-                                        <IconButton color="primary" onClick={this.props.redoMatrix} disabled={!this.props.canRedo}>
+                                        <IconButton color="primary" onClick={this.props.redoMatrix} disabled={!this.props.canRedo} data-testid="redo">
                                             <RedoIcon/>
                                         </IconButton>
                                     </div>
@@ -266,7 +264,7 @@ class Challenge extends Component {
                                         <Button variant='contained' color="primary" onClick={this.saveMatrix} className={styles.save}> 
                                             Save
                                         </Button>
-                                        <Button variant='contained' color="primary" onClick={this.loadMatrix}> 
+                                        <Button variant='contained' color="primary" onClick={this.loadMatrix} className="load"> 
                                             Load
                                         </Button>
                                     </div>
@@ -291,10 +289,8 @@ class Challenge extends Component {
                                 <RestaurantGrid 
                                     restaurants={this.props.restaurants} 
                                     categories={this.props.categories}
-                                    constructMatrix={this.props.constructMatrix}
                                     reconstructMatrix={this.props.reconstructMatrix}
                                     matrix={this.props.matrix}
-                                    matrixHistory={this.props.matrixHistory}
                                 />
                             </div>
                         </div>

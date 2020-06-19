@@ -22,7 +22,7 @@ import {
   EmailActivationPage,
   SearchPage
 } from "../components";
-import Challenge from "../../challenge/Challenge"
+import Challenge from "../challenge/Challenge"
 import AuthenticatedRoute from "../../accounts/AuthenticatedRoute";
 import UnAuthenticatedRoute from "../../accounts/UnAuthenticatedRoute";
 

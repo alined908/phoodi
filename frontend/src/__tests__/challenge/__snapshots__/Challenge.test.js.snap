@@ -1,0 +1,576 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Card renders without crashing given props 1`] = `
+<div
+  className="rstCard "
+>
+  <CloseIcon
+    className="closeIcon"
+    color="secondary"
+    onClick={[MockFunction]}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+    size="small"
+  />
+  <div
+    className="rstCardTop"
+  >
+    <img
+      className="rstImg"
+    />
+  </div>
+  <div
+    className="rstCardBottom"
+  >
+    <span>
+      Pizza place
+    </span>
+    <div
+      className="rstCardCategories"
+    />
+  </div>
+</div>
+`;
+
+exports[`Challenge renders without crashing given props 1`] = `
+<Fragment>
+  <div
+    className="outerWrapper"
+  >
+    <div
+      className="topWrapper"
+    >
+      <div
+        className="restaurantsWrapper"
+      >
+        <div
+          className="header"
+        >
+          Restaurants
+        </div>
+        <div
+          className="restaurantIndent"
+        />
+      </div>
+      <div
+        className="categoriesWrapper"
+      >
+        <div
+          className="header"
+        >
+          <div>
+            <WithStyles(ForwardRef(IconButton))
+              color="primary"
+              data-testid="undo"
+              disabled={true}
+              onClick={[MockFunction]}
+            >
+              <UndoIcon />
+            </WithStyles(ForwardRef(IconButton))>
+            <WithStyles(ForwardRef(IconButton))
+              color="primary"
+              data-testid="redo"
+              disabled={true}
+              onClick={[MockFunction]}
+            >
+              <RedoIcon />
+            </WithStyles(ForwardRef(IconButton))>
+          </div>
+          <div>
+            Categories
+          </div>
+          <div>
+            <WithStyles(ForwardRef(Button))
+              className="save"
+              color="primary"
+              onClick={[Function]}
+              variant="contained"
+            >
+              Save
+            </WithStyles(ForwardRef(Button))>
+            <WithStyles(ForwardRef(Button))
+              className="load"
+              color="primary"
+              onClick={[Function]}
+              variant="contained"
+            >
+              Load
+            </WithStyles(ForwardRef(Button))>
+          </div>
+        </div>
+        <div
+          className="categories"
+        >
+          <div
+            className="categoryHeaderWrapper"
+            key="0"
+          >
+            <div
+              className="categoryHeader"
+            >
+              <img
+                className="categoryPicture"
+                src="undefined/static/category/dessert.png"
+              />
+              Dessert
+            </div>
+          </div>
+          <div
+            className="categoryHeaderWrapper"
+            key="1"
+          >
+            <div
+              className="categoryHeader"
+            >
+              <img
+                className="categoryPicture"
+                src="undefined/static/category/pizza.png"
+              />
+              Pizza
+            </div>
+          </div>
+          <div
+            className="categoryHeaderWrapper"
+            key="2"
+          >
+            <div
+              className="categoryHeader"
+            >
+              <img
+                className="categoryPicture"
+                src="undefined/static/category/chinese.png"
+              />
+              Chinese
+            </div>
+          </div>
+          <div
+            className="categoryHeaderWrapper"
+            key="3"
+          >
+            <div
+              className="categoryHeader"
+            >
+              <img
+                className="categoryPicture"
+                src="undefined/static/category/korean.png"
+              />
+              Korean
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="bottomWrapper"
+    >
+      <div
+        className="restaurants"
+      >
+        <RestaurantGrid
+          categories={
+            Array [
+              Object {
+                "api_label": "dessert",
+                "id": 1,
+                "label": "Dessert",
+              },
+              Object {
+                "api_label": "pizza",
+                "id": 2,
+                "label": "Pizza",
+              },
+              Object {
+                "api_label": "chinese",
+                "id": 3,
+                "label": "Chinese",
+              },
+              Object {
+                "api_label": "korean",
+                "id": 4,
+                "label": "Korean",
+              },
+            ]
+          }
+          matrix={
+            Object {
+              "1": Array [
+                false,
+                false,
+                false,
+                false,
+              ],
+              "2": Array [
+                false,
+                false,
+                false,
+                false,
+              ],
+              "3": Array [
+                false,
+                false,
+                false,
+                false,
+              ],
+              "4": Array [
+                false,
+                false,
+                false,
+                false,
+              ],
+            }
+          }
+          reconstructMatrix={[MockFunction]}
+          restaurants={
+            Array [
+              Object {
+                "id": 1,
+                "name": "Pizza place",
+              },
+              Object {
+                "id": 2,
+                "name": "Dessert place",
+              },
+              Object {
+                "id": 3,
+                "name": "Chinese place",
+              },
+              Object {
+                "id": 4,
+                "name": "Korean place",
+              },
+            ]
+          }
+        />
+      </div>
+    </div>
+  </div>
+</Fragment>
+`;
+
+exports[`Restaurant renders without crashing given props 1`] = `
+<PublicDraggable
+  draggableId="category-0"
+  index={0}
+>
+  <Component />
+</PublicDraggable>
+`;
+
+exports[`RestaurantGrid renders without crashing given props 1`] = `
+<DragDropContext
+  onDragEnd={[Function]}
+>
+  <div
+    className="restaurantRow"
+    key="1"
+  >
+    <Connect(Droppable)
+      direction="vertical"
+      droppableId="restaurant-1"
+      getContainerForClone={[Function]}
+      ignoreContainerClipping={false}
+      isCombineEnabled={false}
+      isDropDisabled={true}
+      mode="standard"
+      renderClone={null}
+      type="DEFAULT"
+    >
+      <Component />
+    </Connect(Droppable)>
+    <div
+      className="columns"
+    >
+      <Connect(Droppable)
+        direction="vertical"
+        droppableId="category-4"
+        getContainerForClone={[Function]}
+        ignoreContainerClipping={false}
+        isCombineEnabled={false}
+        isDropDisabled={false}
+        key="1"
+        mode="standard"
+        renderClone={null}
+        type="DEFAULT"
+      >
+        <Component />
+      </Connect(Droppable)>
+      <Connect(Droppable)
+        direction="vertical"
+        droppableId="category-5"
+        getContainerForClone={[Function]}
+        ignoreContainerClipping={false}
+        isCombineEnabled={false}
+        isDropDisabled={false}
+        key="2"
+        mode="standard"
+        renderClone={null}
+        type="DEFAULT"
+      >
+        <Component />
+      </Connect(Droppable)>
+      <Connect(Droppable)
+        direction="vertical"
+        droppableId="category-6"
+        getContainerForClone={[Function]}
+        ignoreContainerClipping={false}
+        isCombineEnabled={false}
+        isDropDisabled={false}
+        key="3"
+        mode="standard"
+        renderClone={null}
+        type="DEFAULT"
+      >
+        <Component />
+      </Connect(Droppable)>
+      <Connect(Droppable)
+        direction="vertical"
+        droppableId="category-7"
+        getContainerForClone={[Function]}
+        ignoreContainerClipping={false}
+        isCombineEnabled={false}
+        isDropDisabled={false}
+        key="4"
+        mode="standard"
+        renderClone={null}
+        type="DEFAULT"
+      >
+        <Component />
+      </Connect(Droppable)>
+    </div>
+  </div>
+  <div
+    className="restaurantRow"
+    key="2"
+  >
+    <Connect(Droppable)
+      direction="vertical"
+      droppableId="restaurant-2"
+      getContainerForClone={[Function]}
+      ignoreContainerClipping={false}
+      isCombineEnabled={false}
+      isDropDisabled={true}
+      mode="standard"
+      renderClone={null}
+      type="DEFAULT"
+    >
+      <Component />
+    </Connect(Droppable)>
+    <div
+      className="columns"
+    >
+      <Connect(Droppable)
+        direction="vertical"
+        droppableId="category-8"
+        getContainerForClone={[Function]}
+        ignoreContainerClipping={false}
+        isCombineEnabled={false}
+        isDropDisabled={false}
+        key="1"
+        mode="standard"
+        renderClone={null}
+        type="DEFAULT"
+      >
+        <Component />
+      </Connect(Droppable)>
+      <Connect(Droppable)
+        direction="vertical"
+        droppableId="category-9"
+        getContainerForClone={[Function]}
+        ignoreContainerClipping={false}
+        isCombineEnabled={false}
+        isDropDisabled={false}
+        key="2"
+        mode="standard"
+        renderClone={null}
+        type="DEFAULT"
+      >
+        <Component />
+      </Connect(Droppable)>
+      <Connect(Droppable)
+        direction="vertical"
+        droppableId="category-10"
+        getContainerForClone={[Function]}
+        ignoreContainerClipping={false}
+        isCombineEnabled={false}
+        isDropDisabled={false}
+        key="3"
+        mode="standard"
+        renderClone={null}
+        type="DEFAULT"
+      >
+        <Component />
+      </Connect(Droppable)>
+      <Connect(Droppable)
+        direction="vertical"
+        droppableId="category-11"
+        getContainerForClone={[Function]}
+        ignoreContainerClipping={false}
+        isCombineEnabled={false}
+        isDropDisabled={false}
+        key="4"
+        mode="standard"
+        renderClone={null}
+        type="DEFAULT"
+      >
+        <Component />
+      </Connect(Droppable)>
+    </div>
+  </div>
+  <div
+    className="restaurantRow"
+    key="3"
+  >
+    <Connect(Droppable)
+      direction="vertical"
+      droppableId="restaurant-3"
+      getContainerForClone={[Function]}
+      ignoreContainerClipping={false}
+      isCombineEnabled={false}
+      isDropDisabled={true}
+      mode="standard"
+      renderClone={null}
+      type="DEFAULT"
+    >
+      <Component />
+    </Connect(Droppable)>
+    <div
+      className="columns"
+    >
+      <Connect(Droppable)
+        direction="vertical"
+        droppableId="category-12"
+        getContainerForClone={[Function]}
+        ignoreContainerClipping={false}
+        isCombineEnabled={false}
+        isDropDisabled={false}
+        key="1"
+        mode="standard"
+        renderClone={null}
+        type="DEFAULT"
+      >
+        <Component />
+      </Connect(Droppable)>
+      <Connect(Droppable)
+        direction="vertical"
+        droppableId="category-13"
+        getContainerForClone={[Function]}
+        ignoreContainerClipping={false}
+        isCombineEnabled={false}
+        isDropDisabled={false}
+        key="2"
+        mode="standard"
+        renderClone={null}
+        type="DEFAULT"
+      >
+        <Component />
+      </Connect(Droppable)>
+      <Connect(Droppable)
+        direction="vertical"
+        droppableId="category-14"
+        getContainerForClone={[Function]}
+        ignoreContainerClipping={false}
+        isCombineEnabled={false}
+        isDropDisabled={false}
+        key="3"
+        mode="standard"
+        renderClone={null}
+        type="DEFAULT"
+      >
+        <Component />
+      </Connect(Droppable)>
+      <Connect(Droppable)
+        direction="vertical"
+        droppableId="category-15"
+        getContainerForClone={[Function]}
+        ignoreContainerClipping={false}
+        isCombineEnabled={false}
+        isDropDisabled={false}
+        key="4"
+        mode="standard"
+        renderClone={null}
+        type="DEFAULT"
+      >
+        <Component />
+      </Connect(Droppable)>
+    </div>
+  </div>
+  <div
+    className="restaurantRow"
+    key="4"
+  >
+    <Connect(Droppable)
+      direction="vertical"
+      droppableId="restaurant-4"
+      getContainerForClone={[Function]}
+      ignoreContainerClipping={false}
+      isCombineEnabled={false}
+      isDropDisabled={true}
+      mode="standard"
+      renderClone={null}
+      type="DEFAULT"
+    >
+      <Component />
+    </Connect(Droppable)>
+    <div
+      className="columns"
+    >
+      <Connect(Droppable)
+        direction="vertical"
+        droppableId="category-16"
+        getContainerForClone={[Function]}
+        ignoreContainerClipping={false}
+        isCombineEnabled={false}
+        isDropDisabled={false}
+        key="1"
+        mode="standard"
+        renderClone={null}
+        type="DEFAULT"
+      >
+        <Component />
+      </Connect(Droppable)>
+      <Connect(Droppable)
+        direction="vertical"
+        droppableId="category-17"
+        getContainerForClone={[Function]}
+        ignoreContainerClipping={false}
+        isCombineEnabled={false}
+        isDropDisabled={false}
+        key="2"
+        mode="standard"
+        renderClone={null}
+        type="DEFAULT"
+      >
+        <Component />
+      </Connect(Droppable)>
+      <Connect(Droppable)
+        direction="vertical"
+        droppableId="category-18"
+        getContainerForClone={[Function]}
+        ignoreContainerClipping={false}
+        isCombineEnabled={false}
+        isDropDisabled={false}
+        key="3"
+        mode="standard"
+        renderClone={null}
+        type="DEFAULT"
+      >
+        <Component />
+      </Connect(Droppable)>
+      <Connect(Droppable)
+        direction="vertical"
+        droppableId="category-19"
+        getContainerForClone={[Function]}
+        ignoreContainerClipping={false}
+        isCombineEnabled={false}
+        isDropDisabled={false}
+        key="4"
+        mode="standard"
+        renderClone={null}
+        type="DEFAULT"
+      >
+        <Component />
+      </Connect(Droppable)>
+    </div>
+  </div>
+</DragDropContext>
+`;

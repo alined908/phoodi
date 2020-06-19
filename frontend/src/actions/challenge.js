@@ -26,7 +26,7 @@ export const constructMatrix = (restaurants, numCategories) => {
     restaurants.map((entity) => {
         matrix[entity.id] = Array(numCategories).fill(false)
     })
-    console.log(matrix)
+
     return {
         type: types.CONSTRUCT_MATRIX,
         payload: matrix

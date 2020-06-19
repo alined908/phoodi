@@ -10,7 +10,7 @@ export const defaultState = {
 }
 
 export default function challengeReducer(state=defaultState, action){
-    console.log(action.type)
+
     switch(action.type){
         case types.GET_RESTAURANTS_REQUEST:
             return {...state, isRestaurantsFetching: true}
