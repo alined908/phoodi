@@ -4,7 +4,6 @@ import {
   respondMeetupInvite,
   getUserFriendInvites,
   respondFriendInvite,
-  removeNotifs,
 } from "../../actions";
 import {Mail as MailIcon, Refresh as RefreshIcon} from '@material-ui/icons'
 import { inviteType } from "../../constants/default-states";
@@ -31,13 +30,6 @@ class Invites extends Component {
       this.props.getUserMeetupInvites(),
       this.props.getUserFriendInvites(),
     ]);
-
-    if (this.props.meetupInvites && this.props.meetupInvites.length > 0){
-        this.props.removeNotifs({type: "meetup_inv"})
-    }
-    if (this.props.friendInvites && this.props.friendInvites.length > 0){
-        this.props.removeNotifs({type: "friend_inv"})
-    }
   }
 
   refreshMeetupInvites = () => {
@@ -177,7 +169,6 @@ const mapDispatchToProps = {
   respondMeetupInvite,
   getUserMeetupInvites,
   getUserFriendInvites,
-  removeNotifs,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Invites);

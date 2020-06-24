@@ -2,10 +2,10 @@ from django.db import models
 from .user import User
 from .restaurant import Restaurant
 from .category import Category
-from .utils import Base
+from .utils import Timestamps
 from django.db.models import F
 
-class Preference(Base):
+class Preference(Timestamps):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(class)ss")
     name = models.CharField(max_length=255)
     ranking = models.PositiveSmallIntegerField()

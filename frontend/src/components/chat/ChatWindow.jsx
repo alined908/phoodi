@@ -18,7 +18,7 @@ import {
   ArrowBackIos as ArrowBackIosIcon,
   NotificationsActive as NotificationsActiveIcon
 } from "@material-ui/icons";
-import { getMoreMessages, removeNotifs } from "../../actions";
+import { getMoreMessages} from "../../actions";
 import { chatMessagePropType } from "../../constants/prop-types";
 import styles from "../../styles/chat.module.css";
 
@@ -307,7 +307,6 @@ ChatWindow.propTypes = {
   isMessagesInitialized: PropTypes.bool,
   activeRoom: PropTypes.string,
   messages: PropTypes.arrayOf(chatMessagePropType),
-  removeNotifs: PropTypes.func,
   getMoreMessages: PropTypes.func,
   isMessagesFetching: PropTypes.bool,
   isMoreMessagesFetching: PropTypes.bool,
@@ -333,7 +332,6 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  removeNotifs,
   getMoreMessages,
 };
 

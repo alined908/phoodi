@@ -21,7 +21,6 @@ import {
   reloadMeetupEvent,
   voteMeetupEvent,
   decideMeetupEvent,
-  removeNotifs,
   getFriends,
   addGlobalMessage,
   sendFriendInvite,
@@ -117,9 +116,9 @@ class Meetup extends Component {
       this.props.getFriends(this.props.user.id);
     }
 
-    if (this.props.meetup.notifs > 0) {
-      this.props.removeNotifs({ type: "meetup", id: this.props.meetup.id });
-    }
+    // if (this.props.meetup.notifs > 0) {
+    //   this.props.removeNotifs({ type: "meetup", id: this.props.meetup.id });
+    // }
   }
 
   componentDidUpdate(prevProps){
@@ -684,7 +683,6 @@ const mapDispatchToProps = {
   decideMeetupEvent,
   deleteMeetupEvent,
   sendMeetupEmails,
-  removeNotifs,
   addMeetupMember,
   addGlobalMessage,
   addEventOption,

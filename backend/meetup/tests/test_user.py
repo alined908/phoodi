@@ -7,7 +7,7 @@ from meetup.serializers import (
     CategoryPreferenceSerializer,
     FriendshipSerializer,
 )
-from notifications.models import Notification
+from social.models import Notification
 from rest_framework import status
 from rest_framework.test import APIClient
 from django.contrib.auth.hashers import make_password
@@ -169,8 +169,8 @@ class UserTest(TestCase):
         self.assertEqual(user.email, "test4@gmail.com")
 
     def test_get_full_name(self):
-        user1_full = self.user1.get_full_name()
-        user2_full = self.user2.get_full_name()
+        user1_full = self.user1.full_name
+        user2_full = self.user2.full_name
         self.assertEqual(user1_full, "Daniel Lee")
         self.assertEqual(user2_full, "Daniel Kim")
 
@@ -286,15 +286,15 @@ class UserFriendsTest(TestCase):
         self.assertIn(self.user3, members)
 
     def test_Friendship_create_user_activity_and_push_notification(self):
-        notifications_1 = self.user.notifications.filter(description="user_activity")
-        notifications_2 = self.user2.notifications.filter(description="user_activity")
-        self.assertEqual(notifications_1.count(), 2)
-        self.assertEqual(notifications_2.count(), 1)
+        activities_1 = self.user.activities(only_self=True).filter(description="friendship")
+        activities_2 = self.user2.activities(only_self=True).filter(description="friendship")
+        self.assertEqual(activities_1.count(), 2)
+        self.assertEqual(activities_2.count(), 1)
 
-        push_notifs_1 = self.user.notifications.filter(description="friend")
-        push_notifs_2 = self.user2.notifications.filter(description="friend")
-        self.assertEqual(push_notifs_1.count(), 2)
-        self.assertEqual(push_notifs_2.count(), 1)
+        notifs_1 = self.user.notifications.filter(description="friendship")
+        notifs_2 = self.user2.notifications.filter(description="friendship")
+        self.assertEqual(notifs_1.count(), 2)
+        self.assertEqual(notifs_2.count(), 1)
 
     def test_get_friends_by_category(self):
         friends_by_category = self.user.get_friends_by_category(self.dessert)
@@ -481,37 +481,3 @@ class UserPreferencesTest(TestCase):
         self.preference2.refresh_from_db()
         self.assertEqual(preference3.ranking, 2)
         self.assertEqual(self.preference2.ranking, 1)
-
-
-class NotificationViewTest(TestCase):
-    def setUp(self):
-        self.user = User.objects.create(
-            email="test@gmail.com",
-            password=make_password("password"),
-            first_name="Daniel",
-            last_name="Lee",
-        )
-        self.user2 = User.objects.create(
-            email="test2@gmail.com",
-            password=make_password("password"),
-            first_name="Daniel",
-            last_name="Lee",
-        )
-        self.friendship12 = Friendship.objects.create(
-            creator=self.user, friend=self.user2
-        )
-        client.force_authenticate(user=self.user2)
-
-    def test_DELETE_notifications(self):
-        notifs = self.user2.notifications.filter(description="friend").unread().count()
-        self.assertEqual(notifs, 1)
-        valid_payload = {"type": "friend"}
-        response = client.delete(
-            "/api/notifs/",
-            data=json.dumps(valid_payload, default=str),
-            content_type="application/json",
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            self.user2.notifications.filter(description="friend").unread().count(), 0
-        )

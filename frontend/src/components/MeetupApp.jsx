@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Router } from "react-router";
 import { Provider } from "react-redux";
-import { Navigation, NotificationWrapper, LocationService } from "./components";
+import { Navigation} from "./components";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { store } from "../store/index";
@@ -15,8 +15,6 @@ class MeetupApp extends Component {
       <div className="MeetupApp">
         <ThemeProvider theme={createMuiTheme({ ...MuiTheme })}>
           <Provider store={store}>
-            <NotificationWrapper />
-            {/* <LocationService /> */}
             <Router history={history}>
               <Navigation/>
             </Router>

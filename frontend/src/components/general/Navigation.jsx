@@ -14,8 +14,7 @@ import {
   Grow,
   MenuList,
   Badge,
-  Dialog,
-  DialogContent
+  Dialog
 } from "@material-ui/core";
 import {
   People as PeopleIcon,
@@ -30,7 +29,7 @@ import {
 } from "@material-ui/icons";
 import { Link, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
-import { Body, LiveUpdatingBadge, SearchBar } from "../components";
+import { Body, LiveUpdatingBadge, SearchBar, Notifications } from "../components";
 import PropTypes from "prop-types";
 import { userPropType, notifsPropType } from "../../constants/prop-types";
 import styles from '../../styles/navigation.module.css'
@@ -129,6 +128,9 @@ const Navigation = props => {
             <div className={styles.searchMobile} onClick={handleMobileSearchOpen}>
               <SearchIcon color="inherit" fontSize="inherit"/>
             </div>
+          }
+          {authenticated &&
+            <Notifications user={user}/>
           }
           {!authenticated && (
             <>

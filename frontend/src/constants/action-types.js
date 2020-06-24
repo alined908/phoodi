@@ -69,8 +69,10 @@ export const GET_FRIEND_INVITES_ERROR = "get_friend_invites_error";
 export const RESPOND_FRIEND_INVITE = "respond_friend_invite";
 
 //Notifications
-export const GET_NOTIFS = "get_notifs";
-export const REMOVE_NOTIFS = "remove_chat_notifs";
+export const GET_NOTIFS = 'get_notifs'
+export const CREATE_NOTIF = "create_notifs";
+export const READ_NOTIF = "read_notif";
+export const READ_ALL_NOTIFS = 'read_all_notifs';
 
 //Errors
 export const ADD_GLOBAL_MESSAGE = "add_global_message";

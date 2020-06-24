@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Avatar, Badge } from "@material-ui/core";
-import { removeNotifs } from "../../actions";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { GroupAvatars } from "../components";
 import moment from "moment";
@@ -22,14 +21,14 @@ class Contact extends Component {
    * Remove notifications alert when clicked.
    * @param {number} id - Id of room
    */
-  handleClick = (id) => {
-    this.props.onShow();
-    if (this.state.notifs > 0) {
-      this.setState({ notifs: 0 }, () =>
-        this.props.removeNotifs({ type: "chat_message", id: id })
-      );
-    }
-  };
+  // handleClick = (id) => {
+  //   this.props.onShow();
+  //   if (this.state.notifs > 0) {
+  //     this.setState({ notifs: 0 }, () =>
+  //       this.props.removeNotifs({ type: "chat_message", id: id })
+  //     );
+  //   }
+  // };
 
   render() {
     const room = this.props.room;
@@ -110,13 +109,8 @@ class Contact extends Component {
 Contact.propTypes = {
   room: chatRoomPropType,
   user: userPropType,
-  currentRoom: PropTypes.string,
-  removeNotifs: PropTypes.func,
+  currentRoom: PropTypes.string
 };
 
-const mapDispatchToProps = {
-  removeNotifs,
-};
-
-export default connect(null, mapDispatchToProps)(Contact);
+export default Contact;
 export { Contact as UnderlyingContact };

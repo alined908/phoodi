@@ -16,13 +16,12 @@ INSTALLED_APPS = [
     "django_elasticsearch_dsl",
     'django_elasticsearch_dsl_drf',
     "search",
+    'social',
     "djoser",
-    'drf_yasg',
     "corsheaders",
     "channels",
     "meetup",
-    "storages",
-    "notifications",
+    "storages"
 ]
 
 ASGI_APPLICATION = "backend.routing.application"

@@ -3,19 +3,24 @@ from django.core.validators import MinLengthValidator
 from django.utils import timezone
 from .user import User
 from .restaurant import Restaurant
-from .utils import Votable, Base
+from .utils import Votable, Timestamps, Commentable
 from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from mptt.models import MPTTModel, TreeForeignKey
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+from django.db.models.signals import pre_save, post_save
+from django.dispatch import receiver
 from enum import Enum
+
+channel_layer= get_channel_layer()
 
 REVIEW_CHOICES = [(i, i) for i in range(1, 11)]
 
 class Review(Votable):
     restaurant = models.ForeignKey(Restaurant, related_name="reviews", on_delete=models.CASCADE)
     rating = models.IntegerField(choices=REVIEW_CHOICES)
-    text = models.CharField(max_length=1000, validators=[MinLengthValidator(50, "Review length must be more than 50 characters.")])
+    text = models.CharField(max_length=1000, validators=[MinLengthValidator(10, "Review length must be more than 10 characters.")])
 
     def save(self, *args, **kwargs):
         if self.pk is None:
@@ -31,17 +36,12 @@ class Review(Votable):
     def review_url(self):
         return '/restaurants/%s/reviews/%s' % (self.restaurant.url, self.id)
 
-class Comment(MPTTModel, Votable):
+class ReviewComment(Commentable):
     review = models.ForeignKey(Review, related_name="review_comments", on_delete=models.CASCADE)
-    parent = TreeForeignKey("self", related_name="children", on_delete=models.SET_NULL, null=True, blank=True, db_index=True)
-    text = models.CharField(max_length=1000, validators=[MinLengthValidator(50, "Comment length must be more than 50 characters.")])
-    
-    class MPTTMeta:
-        order_insertion_by = ['-vote_score']
 
     def save(self, *args, **kwargs):
         if self.pk is None:
-            if isinstance(self.parent, Comment):
+            if isinstance(self.parent, ReviewComment):
                 self.parent.comment_count += 1
 
             self.review.comment_count += 1
@@ -67,7 +67,7 @@ class VoteChoice(Enum):
 
         return choices
 
-class Vote(Base):
+class Vote(Timestamps):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     value = models.IntegerField(choices=VoteChoice.choices())
     updated_at = models.DateTimeField(auto_now=True)
@@ -78,9 +78,9 @@ class Vote(Base):
     def save(self, *args, **kwargs):
         if self.pk is None:
             if isinstance(self.content_object, Review):
-                self.content_object.user.review_karma += self.value
-            else:
-                self.content_object.user.comment_karma += self.value
+                self.content_object.user.profile.review_karma += self.value
+            elif isinstance(self.content_object, ReviewComment):
+                self.content_object.user.profile.comment_karma += self.value
 
             self.content_object.vote_score += self.value
 
@@ -90,7 +90,7 @@ class Vote(Base):
                 self.content_object.downs += 1
 
             self.content_object.save()
-            self.content_object.user.save()
+            self.content_object.user.profile.save()
 
         self.full_clean()
 
@@ -141,11 +141,53 @@ class Vote(Base):
             return None
 
         if isinstance(self.content_object, Review):
-            self.content_object.user.review_karma += karma
-        else:
-            self.content_object.user.comment_karma += karma
+            self.content_object.user.profile.review_karma += karma
+        elif isinstance(self.content_object, ReviewComment):
+            self.content_object.user.profile.comment_karma += karma
 
         self.value = new_value
         self.content_object.save()
-        self.content_object.user.save()
+        self.content_object.user.profile.save()
         self.save()
+
+@receiver(post_save, sender=Review)
+def post_save_review(sender, instance, created, **kwargs):
+    from social.models import Activity
+
+    if created:
+        Activity.objects.create(
+            actor = instance.user,
+            action_object=instance,
+            target=instance.restaurant,
+            description="review",
+            verb="created"
+        )
+
+@receiver(post_save, sender=ReviewComment)
+def post_save_review_comment(sender, instance, created, **kwargs):
+    from social.models import Notification
+    from social.serializers import NotificationSerializer
+
+    if created:
+        if not instance.parent:
+            notification = Notification.objects.create(
+                recipient=instance.review.user,
+                actor=instance.user,
+                verb="commented on",
+                action_object=instance.review,
+                target= instance.review.restaurant,
+                description="review"
+            )
+
+            content = {
+                "command": "create_notif", 
+                "message": NotificationSerializer(notification).data
+            }
+
+            async_to_sync(channel_layer.group_send)(
+                "notif_room_for_user_%d" % instance.review.user.id,
+                {
+                    "type": "notifications", 
+                    "message": content
+                }
+            )

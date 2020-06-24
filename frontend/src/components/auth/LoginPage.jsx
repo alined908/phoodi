@@ -63,6 +63,7 @@ class LoginPage extends Component {
         this.props.history.push("/feed");
       };
     }
+    formProps.email = formProps.email.toLowerCase()
     this.props.signin(formProps, redirect);
   };
 

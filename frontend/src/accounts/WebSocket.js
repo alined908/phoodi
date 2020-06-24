@@ -242,7 +242,7 @@ export default class WebSocketService {
     this.callbacks["delete_option"] = deleteOptionCallback;
   }
 
-  addNotifCallbacks(notifsCallback) {
-    this.callbacks["fetch_notifs"] = notifsCallback;
+  addNotifCallbacks(addNotifCallback) {
+    this.callbacks['create_notif'] = addNotifCallback
   }
 }

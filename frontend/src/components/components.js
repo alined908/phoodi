@@ -88,6 +88,9 @@ import CommentForm from "./restaurant/CommentForm";
 import Comments from "./restaurant/Comments";
 import Comment from "./restaurant/Comment";
 
+//Notifications
+import Notifications from "./notifications/Notifications"
+
 //Search
 import SearchPage from './search/SearchPage';
 import SearchBar from "./search/SearchBar";
@@ -168,5 +171,6 @@ export {
   SkeletonRestaurant,
   Prices,
   DisplayRating,
-  FeedPage
+  FeedPage,
+  Notifications
 };

@@ -1,9 +1,16 @@
 from django.db import models
 from django.conf import settings
 from meetup.helpers import generate_unique_uri
+from django.utils import timezone
+from django.db.models.signals import post_save, pre_save, pre_delete
+from django.dispatch import receiver
 from .friend import Friendship
 from .meetup import Meetup
 from .user import User
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
+channel_layer = get_channel_layer()
 
 class ChatRoom(models.Model):
     friendship = models.ForeignKey(
@@ -18,7 +25,6 @@ class ChatRoom(models.Model):
 
     def __str__(self):
         return self.uri
-
 
 class ChatRoomMessage(models.Model):
     sender = models.ForeignKey(
@@ -47,3 +53,64 @@ class ChatRoomMember(models.Model):
     room = models.ForeignKey(ChatRoom, related_name="members", on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name="rooms", on_delete=models.CASCADE)
     objects = models.Manager()
+
+
+@receiver(post_save, sender=ChatRoom)
+def post_save_chat_room(sender, instance, created, **kwargs):
+    from ..serializers import ChatRoomSerializer
+
+    for member in instance.members.all():
+        serializer = ChatRoomSerializer(instance, context={"user": member.user})
+
+        content = {
+            "command": "update_room",
+            "message": {
+                "room": {
+                    instance.uri: serializer.data
+                }, 
+                "uri": instance.uri
+            }
+        }
+
+        async_to_sync(channel_layer.group_send)(
+            "chat_contacts_for_user_%d" % member.user.id,
+            {
+                "type": "chat_rooms", 
+                "message": content
+            }
+        )
+
+
+@receiver(post_save, sender=ChatRoomMessage)
+def create_notif_chat_message(sender, instance, created, **kwargs):
+    from social.models import Notification
+    from social.serializers import NotificationSerializer
+
+    if created:
+        room = instance.room
+        room.last_updated = timezone.now()
+        room.save()
+
+        for member in instance.room.members.all():
+            if member.user != instance.sender:
+                notification = Notification.objects.create(
+                    recipient=member.user,
+                    actor=instance.sender,
+                    action_object=instance.room,
+                    description="chat_message",
+                    verb="%s sent chat message to %s"
+                    % (instance.sender.email, member.user.email),
+                )
+        
+                content = {
+                    "command": "create_notif",
+                    "message": NotificationSerializer(notification).data
+                }
+
+                async_to_sync(channel_layer.group_send)(
+                    "notif_room_for_user_%d" % member.user.id,
+                    {
+                        "type": "notifications", 
+                        "message": content
+                    }
+                )

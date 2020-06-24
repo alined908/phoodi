@@ -14,7 +14,7 @@ from meetup.serializers import (
     MeetupEventSerializer,
     MeetupMemberSerializer,
 )
-from notifications.models import Notification
+from social.models import Notification, Activity
 from rest_framework import status
 from rest_framework.test import APIClient
 from django.contrib.auth.hashers import make_password
@@ -239,15 +239,23 @@ class MeetupTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_Meetup_creation_user_activity(self):
-        notifications = Notification.objects.filter(actor_object_id=self.user.id, description="user_activity")
-        self.assertEqual(notifications.count(), 2)
+        activities = Activity.objects.filter(
+            actor_object_id=self.user.id, 
+            description="meetup", 
+            verb="created"
+        )
+        self.assertEqual(activities.count(), 2)
         client.post(
             "/api/meetups/",
             data=json.dumps(self.valid_payload, default=str),
             content_type="application/json",
         )
-        notifications = Notification.objects.filter(actor_object_id=self.user.id, description="user_activity")
-        self.assertEqual(notifications.count(), 3)
+        activities = Activity.objects.filter(
+            actor_object_id=self.user.id, 
+            description="meetup", 
+            verb="created"
+        )
+        self.assertEqual(activities.count(), 3)
 
     def test_Meetup_creation_chat_activity(self):
         client.post(
@@ -391,8 +399,12 @@ class MeetupEventTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_MeetupEvent_create_user_and_chat_activity(self):
-        notifications = Notification.objects.filter(actor_object_id=self.user.id, description="user_activity")
-        self.assertEqual(notifications.count(), 2)
+        activities = Activity.objects.filter(
+            actor_object_id=self.user.id, 
+            description="meetup",
+            verb="created event"
+        )
+        self.assertEqual(activities.count(), 1)
         client.post(
             "/api/meetups/" + self.meetup.uri + "/events/",
             data=json.dumps(self.valid_payload, default=str),
@@ -400,18 +412,22 @@ class MeetupEventTest(TestCase):
         )
         message = ChatRoomMessage.objects.last()
         self.assertEqual(message.message, 'created an event named %s' % self.valid_payload['title'])
-        notifications = Notification.objects.filter(actor_object_id=self.user.id, description="user_activity")
-        self.assertEqual(notifications.count(), 3)
+        activities = Activity.objects.filter(
+            actor_object_id=self.user.id, 
+            description="meetup",
+            verb="created event"
+        )
+        self.assertEqual(activities.count(), 2)
 
     def test_MeetupEvent_create_push_notification(self):
-        user_notifs = self.user2.notifications.unread().filter(description="meetup")
+        user_notifs = self.user2.notifications.filter(description="meetup")
         self.assertEqual(user_notifs.count(), 1)
         client.post(
             "/api/meetups/" + self.meetup.uri + "/events/",
             data=json.dumps(self.valid_payload, default=str),
             content_type="application/json",
         )
-        user_notifs = self.user2.notifications.unread().filter(description="meetup")
+        user_notifs = self.user2.notifications.filter(description="meetup")
         self.assertEqual(user_notifs.count(), 2)
 
     def test_convert_entries_to_string(self):
@@ -611,8 +627,8 @@ class MeetupMemberTest(TestCase):
         )
         message = ChatRoomMessage.objects.last()
         self.assertEqual(message.message, "joined the meetup.")
-        notifications = Notification.objects.filter(actor_object_id=self.user3.id, description="user_activity")
-        self.assertEqual(notifications.count(), 1)
+        activities = Activity.objects.filter(actor_object_id=self.user3.id, description="meetup", verb='joined')
+        self.assertEqual(activities.count(), 1)
 
     def test_MeetupMember_delete_chat_activity(self):
         response = client.delete(
