@@ -23,29 +23,49 @@ export const MuiTheme = {
     },
     palette: {
       primary : {
-          main: "rgba(0,0,0,.9)"
+          main: "rgb(0,0,0,.9)"
       },
       secondary : {
-          main: "rgb(220,0,0)"
+          main: "#ff4949"
       },
     },
     overrides: {
       MuiButton: {
         root: {
-          padding: "6px 10px"
+          padding: "6px 10px",
+          textTransform: "none",
+          fontSize: ".8rem",
+          fontFamily: "Roboto",
+          minWidth: '55px'
         },
         sizeSmall: {
-          fontSize: ".65rem",
-          padding: "4px 8px"
+          fontSize: ".7rem",
+          padding: "4px 6px"
         },
+        containedSecondary:{
+          backgroundColor: "var(--secondary)",
+          boxShadow: "var(--secondary-shadow)",
+          '&:hover': {
+            backgroundColor: "var(--secondary-hover-background)",
+          }
+        }
       },
       MuiFab : {
           root: {
               background: "rgba(10,10,10, .95)",
               color: "white",
               '&:hover': {
-                  background: "black !important"
+                  background: "black"
               }
+          },
+          secondary: {
+            backgroundColor: "var(--secondary)",
+            boxShadow: "var(--secondary-shadow-circular)",
+            transition: "all .2s ease",
+            '&:hover': {
+              backgroundColor: "var(--secondary-hover-background)",
+              transform: "scale(1.05)"
+            }
           },
           extended: {
               width: "100%"
@@ -55,8 +75,7 @@ export const MuiTheme = {
         root: {
           fontFamily: "Lato",
           fontSize: "1.15rem",
-          marginRight: 5,
-          boxShadow: "var(--circular-shadow)"
+          marginRight: 5
         },
         square :{
             boxShadow: "none"
@@ -74,7 +93,7 @@ export const MuiTheme = {
             paddingBottom: 0
         }
       },
-      MuiListItemIcon : {
+      MuiListItem  : {
           root: {
               minWidth: 35
           }
@@ -125,24 +144,22 @@ export const MuiTheme = {
       },
       MuiFilledInput : {
           root: {
-              backgroundColor: "white",
+              backgroundColor: "var(--bg-grey)",
               border: "var(--border-separator)",
               '&:hover': {
-                background: "var(--background)"
+                backgroundColor: "white"
               },
               '&.Mui-focused':{
-                background: "var(--background)"
+                background: "white"
               },
-              borderRadius: "0 !important"
+              borderRadius: "4px !important"
           }
       },
       MuiFormHelperText:{
         root: {
             fontWeight: 600,
             fontSize: ".7rem",
-            marginDense:{
-                marginTop: 0
-            }
+            marginTop: '0 !important'
         },
         contained: {
             marginLeft: 10
@@ -225,6 +242,27 @@ export const MuiTheme = {
           paper: {
               minWidth: 200
           }
+      },
+      MuiCardHeader:{
+        root:{
+          padding: "10px 15px"
+        },
+        avatar:{
+          marginRight: 10
+        },
+        title: {
+          fontSize: '.85rem'
+        },
+        action: {
+          alignSelf: 'none',
+          marginTop: 0,
+          marginRight: 0
+        }
+      },
+      MuiCardActions: {
+        root:{
+          padding: "0 8px"
+        }
       }
     },
   };

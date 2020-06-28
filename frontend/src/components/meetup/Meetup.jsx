@@ -571,10 +571,10 @@ class Meetup extends Component {
               <div className={styles.addEvent}>
                 <Tooltip title="Create Event">
                     <Fab
-                      color="primary"
-                        aria-label="add-event"
-                        size="medium"
-                        onClick={this.openEventModal}
+                      color="secondary"
+                      aria-label="add-event"
+                      size="medium"
+                      onClick={this.openEventModal}
                     >
                         <AddIcon />
                     </Fab>

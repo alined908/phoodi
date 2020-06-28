@@ -11,7 +11,7 @@ class GenericActivityRelatedField(serializers.RelatedField):
         elif isinstance(value, Post):
             serializer = PostSerializer(value)
         elif isinstance(value, Meetup):
-            serializer = MeetupSimpleSerializer(value)
+            serializer = MeetupSerializer(value)
         elif isinstance(value, MeetupEvent):
             serializer = MeetupEventSerializer(value)
         elif isinstance(value, MeetupMember):

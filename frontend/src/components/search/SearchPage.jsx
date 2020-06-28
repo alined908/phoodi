@@ -176,7 +176,11 @@ class SearchPage extends Component {
         const response = await axiosClient.request({
             method: 'get',
             url: '/search/restaurants/',
-            params: {...params, latitude: this.state.latitude, longitude: this.state.longitude}
+            params: {
+                ...params, 
+                latitude: this.state.latitude, 
+                longitude: this.state.longitude
+            }
         })
 
         this.setState({
@@ -186,7 +190,7 @@ class SearchPage extends Component {
             longitude: response.data.coords.longitude
         })
 
-        setTimeout(() => this.setState({loading: false}), 300)
+        setTimeout(() => this.setState({loading: false}), 200)
     }
 
     handleFilterChange = async () => {
@@ -441,6 +445,7 @@ class SearchPage extends Component {
                                 size="small"
                                 handleClick={this.onTagsChange}
                                 label="Search Categories..."
+                                background="#fff"
                             />
                         </div>
                     </div>
@@ -531,8 +536,6 @@ class SearchPage extends Component {
                                 {this.state.filters.start + 1} - {Math.min(this.state.filters.start + 11, this.state.totalCount)} of {this.state.totalCount} entries
                             </div>
                         </div>
-                        
-
                     </div>
                 </div>
                 <div className={`${styles.searchMap} ${this.state.isMobile ? (this.state.mobileTabIndex === 2 ? styles.mobileShow : styles.mobileHide) : ""}`}>
@@ -541,6 +544,7 @@ class SearchPage extends Component {
                             indexOffset={this.state.filters.start}
                             markers={this.state.results}
                             zoom={11}
+                            type="restaurants"
                             location={coordinates}
                             radius={this.state.filters.radius}
                             hoveredIndex={this.state.hoveredIndex}

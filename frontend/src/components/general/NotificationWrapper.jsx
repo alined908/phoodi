@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import AuthenticationService from "../../accounts/AuthenticationService";
 import WebSocketService from "../../accounts/WebSocket";
-import { getNumberNotifs, createNotif } from "../../actions";
+import { createNotif } from "../../actions";
 import PropTypes from "prop-types";
 import { userPropType } from "../../constants/prop-types";
 

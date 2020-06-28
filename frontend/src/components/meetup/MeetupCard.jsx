@@ -18,12 +18,6 @@ import { meetupPropType } from "../../constants/prop-types";
 import styles from "../../styles/meetup.module.css";
 
 const useStyles = makeStyles({
-  paper: {
-    width: "100%",
-    height: "100%",
-    minWidth: "320px",
-    background: "white"
-  },
   middle: {
     height: "150px",
     margin: "1rem 0",
@@ -38,7 +32,7 @@ const MeetupCard = ({ meetup }) => {
 
   return (
     <Link to={`/meetups/${meetup.uri}`}>
-      <div className={`${classes.paper} elevate`}>
+      <div className={styles.card}>
         <div className={styles.cardInner}>
             <div className={styles.cardTop}>
             <div className={`${styles.cardIcon} ${styles.flexClip2}`}>

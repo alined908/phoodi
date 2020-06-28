@@ -74,6 +74,9 @@ export const CREATE_NOTIF = "create_notifs";
 export const READ_NOTIF = "read_notif";
 export const READ_ALL_NOTIFS = 'read_all_notifs';
 
+//Feed
+export const GET_ACTIVITIES = 'get_activities'
+
 //Errors
 export const ADD_GLOBAL_MESSAGE = "add_global_message";
 export const REMOVE_GLOBAL_MESSAGE = "remove_global_message";

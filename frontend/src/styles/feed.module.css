@@ -1,0 +1,97 @@
+/* Feed */
+.feedWrapper{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+.feedLeft, .feedRight {
+    flex: 3;
+    position: sticky;
+    top: 0;
+}
+
+.feed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 4;
+    padding: 2rem 0;
+}
+
+.feedActivities {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.activityWrapper{
+    margin: 1rem 0;
+    max-width: 550px;
+    width: 100%;
+}
+
+.cardMedia{
+    height: 300px;
+    transition: all .3s ease;
+}
+
+.cardMedia:hover{
+    transform: scale(1.03);
+    box-shadow: var(--shadow-1);
+}
+
+.contentDisplay {
+    width: 100%;
+    height: 100%;
+    padding: 1.5rem;
+    background: var(--bg-grey);
+}
+
+/*FeedForm */
+.feedFormWrapper {
+    width: 100%;
+}
+
+.feedForm{
+    padding: .5rem 1rem;
+}
+
+.feedFormTop{
+    display: flex;
+    align-items: center;
+}
+
+.feedFormInput{
+    width: 100%;
+}
+
+/* Activity */
+.comments {
+
+}
+
+.commentForm{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .5rem 1rem .75rem 1rem;
+}
+
+.comment {
+    display: flex;
+    padding: .5rem 1rem 0 1rem;
+}
+
+.commentInner{
+    background: var(--background);
+    border-radius: 20px;
+    padding: .4rem .75rem;
+}
+
+.commentText{
+    font-family: "roboto";
+    font-weight: 500;
+    color: var(--grey-text);
+}

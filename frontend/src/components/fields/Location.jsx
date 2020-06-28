@@ -116,8 +116,8 @@ export default function Location(props) {
             fullWidth
             InputProps={{
               ...params.InputProps,
-              disableUnderline: true,
-              style: {background: "white"},
+              style: {background: `${props.background}`},
+              disableUnderline: true
             }}
             onChange={handleChange}
             helperText={

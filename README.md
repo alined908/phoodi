@@ -100,9 +100,11 @@ python manage.py search_index --rebuild
 ```
 ## Todo Next Iteration
 - [x] Change user settings to onetoone
-- [ ] Activity Feed of Friends
+- [x] Activity Feed of Friends
 - [x] Add Custom Notification Model
-- [ ] Notification Bar on Top right of navbar
+- [x] Notification Bar on Top right of navbar
+- [x] MeetupPage to Restaurant Esque
+- [x] Profile Activity Feed
 - [ ] User Reputation system
 - [ ] Separate into different apps
 

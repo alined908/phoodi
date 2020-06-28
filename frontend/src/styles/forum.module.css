@@ -17,13 +17,14 @@
 .review {
     display: flex;
     background-color: white;
-    padding: 1rem 1rem;
+    padding: .75rem 1rem;
 }
 
 .comment {
     display: flex;
     background-color: white;
-    padding: 1rem 1rem;
+    padding: .5rem 1rem;
+    margin-top: .5rem;
 }
 
 .commentLeft {

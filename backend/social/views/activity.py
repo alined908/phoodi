@@ -11,7 +11,7 @@ class ActivityFeedView(APIView):
 
     def get(self, request, *args, **kwargs):
         user = request.user
-        serializer = ActivitySerializer(user.activities(), many=True)
+        serializer = ActivitySerializer(user.activities(), many=True, context={"user": user})
 
         return Response(serializer.data)
 

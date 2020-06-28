@@ -317,7 +317,7 @@ class SearchBar extends Component {
                 <Autocomplete
                     freeSolo
                     size="small"
-                    style={{flex: 1, boxShadow: "none"}}
+                    style={{flex: 1, boxShadow: "none", marginRight:"2px"}}
                     getOptionLabel={(option) =>
                         this.handleLabel(option)
                     }
@@ -342,7 +342,6 @@ class SearchBar extends Component {
                             InputProps={{
                                 ...params.InputProps,
                                 disableUnderline: true,
-                                style: {background: "white"},
                                 endAdornment: (
                                 <>
                                     {this.state.isLoading ? (

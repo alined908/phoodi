@@ -3,15 +3,18 @@
 }
 
 .icon {
-    filter: drop-shadow( 1px 1px 1px rgba(0, 0, 0, .3));
+    filter: drop-shadow( 1px 1px 1px rgba(0, 0, 0, .25));
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     padding: 1rem;
-    background: var(--light-blue);
+    background: rgba(0, 0, 0, .9);
+    color: white;
     border-bottom: var(--border-separator);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
 .headerMeta{
@@ -42,6 +45,7 @@
 }
 
 .display {
+    border-radius: 5px;
     font-family: "Roboto";
     font-weight: 400;
     position: absolute;

@@ -49,7 +49,9 @@ import Prices from './fields/Prices'
 import SearchMap from "./map/SearchMap";
 import StaticMap from './map/StaticMap';
 import SelfPin from './map/SelfPin';
-import RestaurantPins from './map/RestaurantPins'
+import EntityPins from './map/EntityPins'
+import RestaurantPin from './map/RestaurantPin'
+import MeetupPin from './map/MeetupPin'
 
 //General
 import Body from "./general/Body";
@@ -63,7 +65,6 @@ import GroupAvatars from "./general/GroupAvatars";
 import NotificationWrapper from "./general/NotificationWrapper";
 import Calendar from "./general/Calendar";
 import DisplayRating from './general/DisplayRating';
-import FeedPage from './general/FeedPage';
 
 //User
 import Settings from "./user/Settings";
@@ -94,6 +95,15 @@ import Notifications from "./notifications/Notifications"
 //Search
 import SearchPage from './search/SearchPage';
 import SearchBar from "./search/SearchBar";
+
+//Feed
+import FeedPage from './feed/FeedPage';
+import FeedForm from './feed/FeedForm';
+import FeedActivities from './feed/FeedActivities';
+import FeedActivity from './feed/FeedActivity'
+import ActivityComments from './feed/ActivityComments';
+import ActivityComment from './feed/ActivityComment';
+import ActivityCommentForm from './feed/ActivityCommentForm';
 
 //Skeletons
 import SkeletonRestaurant from './skeleton/SkeletonRestaurant'
@@ -137,9 +147,11 @@ export {
   renderDatePicker,
   renderDateSimplePicker,
   SelfPin,
-  RestaurantPins,
+  EntityPins,
   SearchMap,
   StaticMap,
+  RestaurantPin,
+  MeetupPin,
   Category,
   Preferences,
   Preference,
@@ -172,5 +184,11 @@ export {
   Prices,
   DisplayRating,
   FeedPage,
-  Notifications
+  Notifications,
+  FeedActivities,
+  FeedActivity,
+  FeedForm,
+  ActivityComment,
+  ActivityCommentForm,
+  ActivityComments
 };

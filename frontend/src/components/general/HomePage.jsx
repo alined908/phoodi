@@ -23,17 +23,21 @@ class HomePage extends Component {
 
   componentDidMount(){
     let navBar = document.getElementById('nav')
+    let title = document.getElementById('title')
     navBar.style.transition = 'none'
     navBar.style.boxShadow = "none"
     navBar.style.color = "white"
+    title.style.color = "white"
     navBar.style.background = 'transparent'
   }
 
   componentWillUnmount(){
     let navBar = document.getElementById('nav')
+    let title = document.getElementById('title')
     navBar.style.transition = 'none'
     navBar.style.boxShadow = "var(--shadow-1)"
     navBar.style.color = "black"
+    title.style.color = "black"
     navBar.style.background = 'white'
   }
 
@@ -41,15 +45,18 @@ class HomePage extends Component {
     const top = e.target.children[0]
     const bounding = top.getBoundingClientRect()
     let navBar = document.getElementById('nav')
+    let title = document.getElementById('title')
 
     // If bottom of home not visible
     if (Math.abs(bounding.top) >= bounding.height) {
       navBar.style.boxShadow = "var(--shadow-1)"
-      navBar.style.color = "black"
       navBar.style.background = 'white'
       navBar.style.transition = 'all .2s ease'
+      title.style.color = "black"
+      navBar.style.color = "black"
     } else{
       navBar.style.boxShadow = "none"
+      title.style.color = "white"
       navBar.style.color = "white"
       navBar.style.background = 'transparent'
       navBar.style.transition = 'all .2s ease'
@@ -161,9 +168,9 @@ class HomePage extends Component {
           <div className="bottom-button">
             <Link to="/register">
               <Button
-                style={{ padding: "1rem" }}
+                style={{ padding: "1rem", fontSize: "1.1rem" }}
                 variant="contained"
-                color="primary"
+                color="secondary"
               >
                 Start Exploring
               </Button>

@@ -52,36 +52,34 @@ class Meetup(models.Model):
         super(Meetup, self).save(*args, **kwargs)
 
     @staticmethod
-    def get_private(user, categories, start, end):
-        category_ids = [int(x) for x in categories.split(",")] if categories else []
+    def get_private(categories, coords, request, start, end, num_results=25):
+        
+        distance_query, category_ids = nearby_public_entities(coords, request, categories, num_results, 'meetup')
+
+        member_query = RawSQL(
+            "SELECT member.meetup_id as id FROM meetup_meetupmember as member WHERE user_id = %s",
+            (request.user.id,),
+        )
 
         if not category_ids:
             meetups = Meetup.objects.filter(
-                id__in=RawSQL(
-                    "SELECT member.meetup_id as id FROM meetup_meetupmember as member WHERE user_id = %s",
-                    (user.id,),
-                ),
-                date__range=(start, end),
+                Q(id__in=distance_query) &
+                Q(id__in=member_query) &
+                Q(date__range=(start, end))
             ).order_by("date")
         else:
-            meetups = Meetup.objects.filter(
-                Q(
-                    id__in=RawSQL(
-                        "SELECT DISTINCT category.meetup_id \
+            category_query = RawSQL(
+                "SELECT DISTINCT category.meetup_id \
                 FROM meetup_meetupcategory as category \
                 WHERE category_id = ANY(%s)",
-                        (category_ids,),
-                    )
-                )
-                & Q(
-                    id__in=RawSQL(
-                        "SELECT member.meetup_id as id \
-                    FROM meetup_meetupmember as member \
-                    WHERE user_id = %s",
-                        (user.id,),
-                    )
-                )
-                & Q(date__range=(start, end))
+                (category_ids,),
+            )
+
+            meetups = Meetup.objects.filter(
+                Q(id__in=category_query) &
+                Q(id__in=distance_query) &
+                Q(id__in=member_query) &
+                Q(date__range=(start, end))
             ).order_by("date")
 
         return meetups
@@ -93,22 +91,24 @@ class Meetup(models.Model):
        
         if not category_ids:
             meetups = Meetup.objects.filter(
-                public=True, id__in=distance_query, date__range=(start, end)
+                public=public, 
+                id__in=distance_query, 
+                date__range=(start, end)
             ).order_by("date")
             
         else:
-            meetups = Meetup.objects.filter(
-                Q(public=True)
-                & Q(
-                    id__in=RawSQL(
-                        "SELECT DISTINCT category.meetup_id \
+            category_query = RawSQL(
+                "SELECT DISTINCT category.meetup_id \
                 FROM meetup_meetupcategory as category \
                 WHERE category_id = ANY(%s)",
-                        (category_ids,),
-                    )
-                )
-                & Q(id__in=distance_query)
-                & Q(date__range=(start, end))
+                (category_ids,),
+            )
+
+            meetups = Meetup.objects.filter(
+                Q(public=True) & 
+                Q(id__in=category_query) & 
+                Q(id__in=distance_query) & 
+                Q(date__range=(start, end))
             ).order_by("date")
 
         return meetups
@@ -465,13 +465,14 @@ def meetup_post_save(sender, instance, created, **kwargs):
             room=room, sender=creator, is_notif=True, message=message
         )
 
-        # Create User Activity --> Ex. User created Meetup x days ago
-        Activity.objects.create(
-            actor=creator,
-            verb="created",
-            action_object=instance,
-            description="meetup",
-        )
+        if instance.public:
+            # Create User Activity --> Ex. User created Meetup x days ago
+            Activity.objects.create(
+                actor=creator,
+                verb="created",
+                action_object=instance,
+                description="meetup",
+            )
     else:
         # Get User Who Completed Action
         user = get_user() or instance.creator
@@ -511,18 +512,19 @@ def meetup_member_post_save(sender, instance, created, **kwargs):
         room = ChatRoom.objects.get(uri=meetup.uri)
         ChatRoomMember.objects.create(room=room, user=user)
 
+        if meetup.public:
+            # Create User Activity --> Ex. User joined Meetup
+            Activity.objects.create(
+                actor = user,
+                action_object = meetup,
+                description="meetup",
+                verb="joined"
+            )
+
         # Create Meetup Activity --> Ex. Member joined Meetup
         message = "joined the meetup."
         msg = ChatRoomMessage.objects.create(
             sender=user, room=room, is_notif=True, message=message
-        )
-
-        # Create User Activity --> Ex. User joined Meetup
-        Activity.objects.create(
-            actor = user,
-            action_object = meetup,
-            description="meetup",
-            verb="joined"
         )
 
         # Send Meetup Activity To Meetup Channel
@@ -713,41 +715,43 @@ def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
         else:
             instance.convert_entries_to_string()
 
-        # Create User Activity --> Ex. User created Event
-        Activity.objects.create(
-            actor = instance.creator.user,
-            action_object = instance,
-            target = meetup,
-            description="meetup",
-            verb="created event"
-        )
+        if meetup.public:
 
-        # Send User Notification To All Members of Meetup If Event Created
-        for member in meetup.members.all():
-            if member != instance.creator:
-                user = member.user
+            # Create User Activity --> Ex. User created Event
+            Activity.objects.create(
+                actor = instance.creator.user,
+                action_object = instance,
+                target = meetup,
+                description="meetup",
+                verb="created event"
+            )
 
-                notification = Notification.objects.create(
-                    recipient = user,
-                    actor = instance.creator,
-                    description="meetup",
-                    verb=instance._meetup_notification[0],
-                    target=meetup,
-                    action_object=instance
-                )
+            # Send User Notification To All Members of Meetup If Event Created
+            for member in meetup.members.all():
+                if member != instance.creator:
+                    user = member.user
 
-                content = {
-                    "command": "create_notif", 
-                    "message": NotificationSerializer(notification).data
-                }
+                    notification = Notification.objects.create(
+                        recipient = user,
+                        actor = instance.creator,
+                        description="meetup",
+                        verb=instance._meetup_notification[0],
+                        target=meetup,
+                        action_object=instance
+                    )
 
-                async_to_sync(channel_layer.group_send)(
-                    "notif_room_for_user_%d" % user.id,
-                    {
-                        "type": "notifications", 
-                        "message": content
+                    content = {
+                        "command": "create_notif", 
+                        "message": NotificationSerializer(notification).data
                     }
-                )
+
+                    async_to_sync(channel_layer.group_send)(
+                        "notif_room_for_user_%d" % user.id,
+                        {
+                            "type": "notifications", 
+                            "message": content
+                        }
+                    )
 
     # Create Meetup Chat Message --> Member did something to Something on Meetup
     if instance._meetup_notification != "chosen changed":

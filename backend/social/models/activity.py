@@ -83,14 +83,16 @@ class ActivityLike(Timestamps):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked_activities')
     status = models.IntegerField(default = ActivityLikeChoices.LIKE.value, choices=ActivityLikeChoices.choices)
 
-    _original_status = ActivityLikeChoices.LIKE.value
+    def __init__(self, *args, **kwargs):
+        super(ActivityLike, self).__init__(*args, **kwargs)
+        self._original_status = self.status
 
     def save(self, *args, **kwargs):
         if self.pk is None:
             self.activity.likes_count += 1
         else:
             if self._original_status != self.status:
-                if self.status == ActivityLikeChoices.UNLIKE.value:
+                if self.status == self.ActivityLikeChoices.UNLIKE.value:
                     self.activity.likes_count -= 1
                 else:
                     self.activity.likes_count += 1
@@ -100,6 +102,7 @@ class ActivityLike(Timestamps):
 
         super().save(*args, **kwargs)
         self._original_status = self.status
+        
 
 @receiver(post_save, sender=ActivityComment)
 def post_save_review_comment(sender, instance, created, **kwargs):

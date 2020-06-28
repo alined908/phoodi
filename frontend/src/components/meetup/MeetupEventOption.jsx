@@ -154,7 +154,7 @@ class MeetupEventOption extends Component {
           {!like ? (
             <Tooltip title="Like">
               <ThumbUpOutlinedIcon
-                disabled={banned}
+                disabled={banned || this.props.isPast}
                 className={styles.clickable}
                 onClick={() => this.handleClick(voteStatus.like)}
               />
@@ -162,7 +162,7 @@ class MeetupEventOption extends Component {
           ) : (
             <Tooltip title="Undo Like">
               <ThumbUpIcon
-                disabled={banned}
+                disabled={banned || this.props.isPast}
                 className={styles.clickable}
                 color="primary"
                 onClick={() => this.handleClick(voteStatus.like)}
@@ -179,7 +179,7 @@ class MeetupEventOption extends Component {
           {!dislike ? (
             <Tooltip title="Dislike">
               <ThumbDownOutlinedIcon
-                disabled={banned}
+                disabled={banned || this.props.isPast}
                 className={styles.clickable}
                 onClick={() => this.handleClick(voteStatus.dislike)}
               />
@@ -187,7 +187,7 @@ class MeetupEventOption extends Component {
           ) : (
             <Tooltip title="Undo Dislike">
               <ThumbDownIcon
-                disabled={banned}
+                disabled={banned || this.props.isPast}
                 className={styles.clickable}
                 onClick={() => this.handleClick(voteStatus.dislike)}
               />
@@ -201,6 +201,7 @@ class MeetupEventOption extends Component {
           {!banned ? (
             <Tooltip title="Ban">
               <CancelOutlinedIcon
+                disabled={this.props.isPast}
                 className={styles.clickable}
                 onClick={() => this.handleClick(voteStatus.ban)}
               />
@@ -208,7 +209,7 @@ class MeetupEventOption extends Component {
           ) : (
             <Tooltip title="Undo Ban">
               <CancelIcon
-                disabled={!ban}
+                disabled={!ban || this.props.isPast}
                 className={styles.clickable}
                 color="secondary"
                 onClick={() => this.handleClick(voteStatus.ban)}

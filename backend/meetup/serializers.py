@@ -27,9 +27,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserSerializerWithActivity(serializers.ModelSerializer):
-    activity = serializers.SerializerMethodField("_get_activity")
+    activities = serializers.SerializerMethodField("_get_activities")
 
-    def _get_activity(self, obj):
+    def _get_activities(self, obj):
         from social.serializers import ActivitySerializer
 
         serializer = ActivitySerializer(obj.activities(only_self=True), many=True)
@@ -37,7 +37,7 @@ class UserSerializerWithActivity(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("id", "email", "first_name", "last_name", "avatar", "created_at", "activity")
+        fields = ("id", "email", "first_name", "last_name", "avatar", "created_at", "activities")
 
 
 class UserSerializerWithToken(serializers.ModelSerializer):

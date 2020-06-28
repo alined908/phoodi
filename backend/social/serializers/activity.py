@@ -18,7 +18,7 @@ class ActivitySerializer(serializers.ModelSerializer):
     
     def _get_like(self, obj):
         user = self.context.get("user")
-   
+
         if user and not user.is_anonymous:
             try:
                 like = ActivityLike.objects.get(
@@ -62,4 +62,4 @@ class ActivityCommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ActivityComment
-        fields = "__all__"
+        fields = ('id', 'activity', 'children', 'user', 'text', 'vote_score', 'created_at', 'updated_at')
