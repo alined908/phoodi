@@ -34,6 +34,9 @@ import Meetups from "./meetup/Meetups";
 import MeetupEventOption from "./meetup/MeetupEventOption";
 import MeetupTree from "./meetup/MeetupTree";
 import MeetupChat from "./meetup/MeetupChat";
+import MeetupFriends from './meetup/MeetupFriends'
+import MeetupMembers from './meetup/MeetupMembers'
+import MeetupEvents from './meetup/MeetupEvents'
 
 //fields
 import CategoryAutocomplete from "./fields/CategoryAutocomplete";
@@ -133,6 +136,9 @@ export {
   MeetupEvent,
   MeetupEventForm,
   MeetupFriend,
+  MeetupFriends,
+  MeetupMembers,
+  MeetupEvents,
   MeetupForm,
   MeetupWrapper,
   Meetups,

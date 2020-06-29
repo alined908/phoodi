@@ -64,6 +64,7 @@ export const MuiTheme = {
             transition: "all .2s ease",
             '&:hover': {
               backgroundColor: "var(--secondary-hover-background)",
+
               transform: "scale(1.05)"
             }
           },
@@ -105,6 +106,11 @@ export const MuiTheme = {
             overflow: "hidden",
             whiteSpace: "nowrap",
             textOverflow: "ellipsis"
+        }
+      },
+      MuiListItemIcon : {
+        root: {
+          minWidth: '40px'
         }
       },
       MuiListItemAvatar:{

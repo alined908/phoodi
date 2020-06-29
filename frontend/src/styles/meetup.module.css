@@ -60,6 +60,11 @@
     margin: 0 auto;
 }
 
+.avatar {
+  margin-right: 15px !important;
+  box-shadow: var(--circular-shadow);
+}
+
 /* Meetups */
 
 .calendar{
@@ -160,9 +165,13 @@
 /* Meetup */
 
 .member {
-    background-color: white;
-    box-shadow: var(--shadow-0);
-    margin-bottom: .5rem !important;
+  transition: all .2s ease;
+  margin-bottom: .5rem !important;
+}
+
+.member:hover{
+  background-color: transparent !important;
+  transform: scale(1.05);
 }
 
 .actions {

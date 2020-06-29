@@ -24,15 +24,24 @@ const useStyles = makeStyles({
   },
 });
 
-const MeetupCard = ({ meetup }) => {
+const MeetupCard = ({ meetup, onHover, index }) => {
   const classes = useStyles();
   const members = Object.values(meetup.members);
   const users = [];
+  console.log(onHover)
   members.map((member) => users.push(member.user));
+
+  const handleHover = (index) => {
+      onHover(index)
+  }
 
   return (
     <Link to={`/meetups/${meetup.uri}`}>
-      <div className={styles.card}>
+      <div 
+        className={styles.card}
+        onMouseEnter={onHover ? () => handleHover(index + 1) : null}
+        onMouseLeave={onHover ? () => handleHover(null) : null}
+      >
         <div className={styles.cardInner}>
             <div className={styles.cardTop}>
             <div className={`${styles.cardIcon} ${styles.flexClip2}`}>

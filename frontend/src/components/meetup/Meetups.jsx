@@ -40,6 +40,14 @@ const marks = [
   { value: 25 },
 ];
 
+const defaultFilters = {
+  startDate: moment(),
+  endDate: moment().add("7", "d"),
+  radius: 10,
+  start: 0,
+  type: "public"
+}
+
 const parseURL = path => {
   let params = new URLSearchParams(path)
   params = Object.fromEntries(params)
@@ -63,6 +71,19 @@ const isOutsideRange = (day) => {
   );
 };
 
+const countFilters = params => {
+  console.log(params)
+  let count = 0;
+    for(let key in params){
+        if (key === 'location' || key ==='type'){
+            continue;
+        }
+        count += 1
+    }
+
+    return count;
+}
+
 class Meetups extends Component {
   
   constructor(props) {
@@ -81,6 +102,7 @@ class Meetups extends Component {
       preferences: [],
       clickedPreferences: [],
       meetups: [],
+      hoveredIndex: null,
       filters: {
         startDate: moment(),
         endDate: moment().add("7", "d"),
@@ -177,8 +199,8 @@ class Meetups extends Component {
       ...(this.state.filters.radius !== 25 && {radius: this.state.filters.radius}),
       ...(this.state.entries.length > 0 && {categories: formatCategories(this.state.entries)}),
       ...(this.state.filters.start !== 0 && {start: this.state.filters.start}),
-      startDate: this.state.filters.startDate.format("YYYY-MM-DD"),
-      endDate: this.state.filters.endDate.format("YYYY-MM-DD"),
+      ...(this.state.filters.startDate.format("YYYY-MM-DD") !== moment().format("YYYY-MM-DD") && {startDate: this.state.filters.startDate.format("YYYY-MM-DD")}),
+      ...(this.state.filters.endDate.format("YYYY-MM-DD") !== moment().add("7", "d").format("YYYY-MM-DD") && {endDate: this.state.filters.endDate.format("YYYY-MM-DD")}),
       type: this.state.filters.type
     }
 
@@ -219,6 +241,15 @@ class Meetups extends Component {
       () => this.handleFilterChange()
     )
   }
+
+  handleHover = (index) => {
+    this.setState({hoveredIndex: index})
+  }
+
+  handleClearFilters = () => {
+    this.props.history.push(`/meetups?type=${this.state.filters.type}`)
+  }
+  
 
   /**
    * Get public meetups or private meetups
@@ -320,6 +351,9 @@ class Meetups extends Component {
     const coordinates = {latitude: this.state.latitude, longitude: this.state.longitude}
     const meetups = this.state.meetups;
     const locationName = this.state.location ? this.state.location : "Me"
+    const params = parseURL(this.props.location.search)
+    const numFilters = countFilters(params)
+    console.log(numFilters)
 
     const renderPreset = () => {
       return (
@@ -352,17 +386,55 @@ class Meetups extends Component {
         </Helmet>
         <div className={`${styles.searchConfig} ${this.state.isMobile ? (this.state.mobileTabIndex === 0 ? styles.mobileShow : styles.mobileHide) : ""}`}>
           <div className={styles.header}>
-            Meetups
-            {!this.state.isMobile &&
-              <Fab
-                color="secondary"
-                size="medium"
-                onClick={this.openFormModal}
-                aria-label="add-meetup"
-              >
-                <AddIcon/>
-              </Fab>
-            }
+            <div>
+              {`${numFilters === 0 ? "No" : numFilters} Filters`}
+              {params.hasOwnProperty('startDate') &&
+                  <span className={styles.chip}>
+                      Start - {this.state.filters.startDate.format("YYYY-MM-DD")}
+                  </span>
+              }
+              {params.hasOwnProperty('endDate') &&
+                  <span className={styles.chip}>
+                      End - {this.state.filters.endDate.format("YYYY-MM-DD")} 
+                  </span>
+              }
+              {params.hasOwnProperty('radius') &&
+                  <span className={styles.chip}>
+                      Radius - {this.state.filters.radius} miles
+                  </span>
+              }
+              {this.state.entries.map((category) => 
+                  <span className={styles.chip}>
+                      <Avatar
+                          variant="square"
+                          src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${category.api_label}.png`}
+                      >
+                      <img
+                          alt={"&#9787;"}
+                          src={`${process.env.REACT_APP_S3_STATIC_URL}/static/general/panda.png`}
+                      />
+                      </Avatar>
+                      {category.label}
+                  </span>
+              )}
+              <div className={styles.clearFilters} onClick={this.handleClearFilters}>
+                  {numFilters > 0 && 
+                      "Clear Filters"
+                  }
+              </div>
+            </div>
+            <div>
+              {!this.state.isMobile &&
+                <Fab
+                  color="secondary"
+                  size="medium"
+                  onClick={this.openFormModal}
+                  aria-label="add-meetup"
+                >
+                  <AddIcon/>
+                </Fab>
+              }
+            </div>
           </div>
           <div className={styles.filter}>
             <div className={styles.filterTitle}>
@@ -493,10 +565,15 @@ class Meetups extends Component {
                     <SkeletonRestaurant/>
                 )
                 :
-                meetups.map((meetup, i) => (
-                  <Grow in={true} timeout={Math.max((i + 1) * 50, 500)}>
+                meetups.map((meetup, index) => (
+                  <Grow in={true} timeout={Math.max((index + 1) * 50, 500)}>
                     <div className={styles.resultWrapper}>
-                      <MeetupCard key={meetup.id} meetup={meetup} />
+                      <MeetupCard 
+                        key={meetup.id} 
+                        onHover={this.handleHover}
+                        meetup={meetup} 
+                        index={index + this.state.filters.start}
+                      />
                     </div>
                   </Grow>
                 ))

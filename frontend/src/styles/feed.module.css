@@ -7,15 +7,17 @@
 }
 .feedLeft, .feedRight {
     flex: 3;
-    position: sticky;
+    position: fixed;
     top: 0;
+    height: calc(100% - 60px);
 }
 
 .feed {
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 4;
+    flex: 1;
+    max-width: 700px;
     padding: 2rem 0;
 }
 
@@ -47,6 +49,66 @@
     height: 100%;
     padding: 1.5rem;
     background: var(--bg-grey);
+}
+
+/* FeedSection */
+.feedSection{
+    padding: 1rem 0;
+}
+
+.feedSectionTitle{
+    font-size: 1rem;
+    font-family: "Roboto";
+    margin-bottom: 1rem;
+}
+
+/* FeedBar */
+.feedRight {
+    top: 60px;
+    position: fixed;
+    padding: 2rem 2.5rem;
+    min-width: 300px;
+    right: 0;
+}
+
+.feedLeft {
+    top: 60px;
+    position: fixed;
+    padding: 2rem 2.5rem;
+    left: 0;
+    min-width: 300px;
+}
+
+.barWrapper{
+    max-width: 300px;
+}
+
+.barAvatar{
+    box-shadow: var(--circular-shadow);
+}
+
+.barAvatarWrapper{
+    margin-right: 10px !important;
+    filter: none !important;
+}
+
+.barEntry{
+    display: flex;
+    align-items: center;
+    font-size: .95rem;
+    margin-bottom: 1.75rem;
+    transition: all .2s ease;
+}
+
+.barEntry:hover{
+    transform: scale(1.05);
+}
+
+.barIcon {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    filter: drop-shadow( 1px 1px 1px rgba(0, 0, 0, .25));
 }
 
 /*FeedForm */

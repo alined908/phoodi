@@ -20,7 +20,7 @@ const marks = [
 const defaultFilters = {
     prices: [false, false, false, false],
     categories: [],
-    radius: 25,
+    radius: 10,
     rating: null,
     openNow: false,
     sort: 'rating',
@@ -59,6 +59,19 @@ const formatCategories = (entries) => {
 
     return ids
 };
+
+const countFilters = (params) => {
+        
+    let count = 0;
+    for(let key in params){
+        if (key === 'q' || key === 'location' || key ==='sort' || key === 'start'){
+            continue;
+        }
+        count += 1
+    }
+
+    return count;
+}
 
 const formatPrices = (prices) => {
     let priceVals = []
@@ -305,26 +318,13 @@ class SearchPage extends Component {
         this.setState({mobileTabIndex: newValue})
     }
 
-    countFilters = (params) => {
-        
-        let count = 0;
-        for(let key in params){
-            if (key === 'q' || key === 'location' || key ==='sort' || key === 'start'){
-                continue;
-            }
-            count += 1
-        }
-
-        return count;
-    }
-
     render () {
         const coordinates = {latitude: this.state.latitude, longitude: this.state.longitude}
         const params = parseURL(this.props.location.search)
         const authenticated = this.props.user.authenticated
         const searchName = this.props.currentSearch ? this.props.currentSearch : (params.q ? params.q : "Food")
         const locationName = this.props.currentSearchLocation ? this.props.currentSearchLocation : "Me"
-        const numFilters = this.countFilters(params)
+        const numFilters = countFilters(params)
     
         return (
             <div className={`${styles.searchPage} ${this.state.isMobile ? styles.mobileSearch :""}`}>
@@ -361,7 +361,7 @@ class SearchPage extends Component {
                             </span>
                         )}
                         <div className={styles.clearFilters} onClick={this.handleClearFilters}>
-                            {this.countFilters(params) > 0 && 
+                            {numFilters > 0 && 
                                 "Clear Filters"
                             }
                         </div>
@@ -519,6 +519,7 @@ class SearchPage extends Component {
                             :
                             this.state.results.map((result, index) => 
                                 <RestaurantCard 
+                                    key={result.id}
                                     onHover={this.handleHover}
                                     data={result._source} 
                                     index={index + this.state.filters.start}

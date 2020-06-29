@@ -91,7 +91,7 @@ class Meetup(models.Model):
        
         if not category_ids:
             meetups = Meetup.objects.filter(
-                public=public, 
+                public=True, 
                 id__in=distance_query, 
                 date__range=(start, end)
             ).order_by("date")

@@ -20,7 +20,7 @@ class RestaurantCard extends Component {
         return (
             <Link to={`/restaurants/${data.url}`}>
                 <div 
-                    className={`${styles.cardWrapper}`}
+                    className={styles.cardWrapper}
                     onMouseEnter={() => this.handleHover(this.props.index + 1)}
                     onMouseLeave={() => this.handleHover(null)}
                 >

@@ -8,8 +8,6 @@
 .header{
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    font-size: 1.5rem;
     margin-bottom: 1rem;
 }
 
@@ -504,4 +502,20 @@
 .mapChip{
     margin-left: 0;
     margin-right: 5px;
+}
+
+.mapMeetupName {
+    font-size: 1.1rem;
+    padding-bottom: .5rem;
+    border-bottom: var(--border-separator);
+    margin-bottom: .5rem;
+}
+
+.mapMeetupEntry{
+    display: flex;
+    align-items: center;
+}
+
+.mapMeetupInfo{
+    margin-left: 5px;
 }

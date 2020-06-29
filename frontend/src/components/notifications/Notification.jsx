@@ -142,6 +142,30 @@ class CommentNotification extends Component {
     }
 }
 
+class ActivityNotification extends Component {
+    render() {
+        const notification = this.props.notification
+        return (
+            <Link onClick={this.props.onClose}>
+                <div className={styles.notification}>
+                    <div className={styles.notifType} style={{color:"black"}}>
+                        <RateReviewIcon color='inherit'/>
+                    </div>
+                    <div>
+                        <div className={styles.notifContent}>
+                            {notification.actor.first_name} {notification.actor.last_name} commented on your activity
+                        </div>
+                        <div className={styles.notifDate}>
+                            {moment(notification.created_at).format('MMMM Do h:mm a')}
+                        </div>
+                    </div>
+                    
+                </div>
+            </Link>
+        )
+    }
+}
+
 class ChatNotification extends Component {
     render() {
         const notification = this.props.notification
@@ -179,7 +203,9 @@ class Notification extends Component {
         const description = notification.description;
         let type;
         
-        if (description === "friend_invite"){
+        if (description === "activity"){
+            type = <ActivityNotification notification={notification} onClose={this.props.onClose}/>
+        } else if (description === "friend_invite"){
             type = <FriendInviteNotification notification={notification} onClose={this.props.onClose}/>
         } else if (description === 'meetup_invite'){
             type = <MeetupInviteNotification notification={notification} onClose={this.props.onClose}/>
