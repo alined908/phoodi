@@ -162,7 +162,6 @@ exports[`MeetupWrapper tests should render without crashing 1`] = `
           >
             <ThumbUpOutlinedIcon
               className="clickable"
-              disabled={false}
               onClick={[Function]}
             />
           </WithStyles(ForwardRef(Tooltip))>
@@ -180,7 +179,6 @@ exports[`MeetupWrapper tests should render without crashing 1`] = `
           >
             <ThumbDownOutlinedIcon
               className="clickable"
-              disabled={false}
               onClick={[Function]}
             />
           </WithStyles(ForwardRef(Tooltip))>

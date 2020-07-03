@@ -25,7 +25,7 @@ class MeetupListView(APIView):
 
     def get(self, request, *args, **kwargs):
         user, categories = request.user, request.GET.get("categories", [])
-        coords = [request.GET.get('latitude', 34.052235), request.GET.get('longitude', -118.243683),request.GET.get("radius", 25)]
+        coords = [request.GET.get('latitude'), request.GET.get('longitude'),request.GET.get("radius", 25)]
         today = date.today()
         start, end = request.GET.get("startDate", str(today)), request.GET.get("endDate", str(today + timedelta(days=7)))
         meetup_type = request.GET.get('type', 'public')
@@ -34,7 +34,7 @@ class MeetupListView(APIView):
         if meetup_type == "public":
             meetups = Meetup.get_public(categories, coords, request, start, end)
         elif meetup_type == "private":
-            meetups = Meetup.get_private(categories, coords, request, start, end)
+            meetups = Meetup.get_private(categories, coords, request, user, start, end)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 

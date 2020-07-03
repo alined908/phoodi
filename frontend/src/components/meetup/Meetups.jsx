@@ -64,7 +64,7 @@ const formatCategories = (entries) => {
   return categoriesString.length > 0 ? categoriesString : null;
 };
 
-const isOutsideRange = (day) => {
+export const isOutsideRange = (day) => {
   return (
     !isInclusivelyAfterDay(day, moment()) ||
     day.isAfter(moment().add("30", "d"))
@@ -72,7 +72,6 @@ const isOutsideRange = (day) => {
 };
 
 const countFilters = params => {
-  console.log(params)
   let count = 0;
     for(let key in params){
         if (key === 'location' || key ==='type'){
@@ -312,8 +311,7 @@ class Meetups extends Component {
       if (clickedPrefs[i]) {
         let pref = this.state.preferences[i];
         let category = pref.category;
-        console.log(category);
-        console.log(values);
+
         if (!values.includes(category)) {
           clickedPrefs[i] = !clickedPrefs[i];
         }
@@ -353,7 +351,6 @@ class Meetups extends Component {
     const locationName = this.state.location ? this.state.location : "Me"
     const params = parseURL(this.props.location.search)
     const numFilters = countFilters(params)
-    console.log(numFilters)
 
     const renderPreset = () => {
       return (
@@ -589,7 +586,7 @@ class Meetups extends Component {
               <div className={styles.resultsCount}>
                   {this.state.filters.start + 1} - {Math.min(this.state.filters.start + 11, this.state.totalCount)} of {this.state.totalCount} entries
               </div>
-            </div>
+          </div>
         </div>
         <div className={`${styles.searchMap} ${this.state.isMobile ? (this.state.mobileTabIndex === 2 ? styles.mobileShow : styles.mobileHide) : ""}`}>
           {coordinates.latitude !== null && 

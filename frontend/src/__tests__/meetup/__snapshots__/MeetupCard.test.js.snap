@@ -5,7 +5,9 @@ exports[`MeetupCard renders without crashing given props 1`] = `
   to="/meetups/uri"
 >
   <div
-    className="makeStyles-paper-1 elevate"
+    className="card"
+    onMouseEnter={null}
+    onMouseLeave={null}
   >
     <div
       className="cardInner"
@@ -31,11 +33,11 @@ exports[`MeetupCard renders without crashing given props 1`] = `
           className="cardIcon"
         >
           <TodayIcon />
-          Wednesday, June 10
+          Friday, July 3
         </div>
       </div>
       <div
-        className="makeStyles-middle-2 cardEvents"
+        className="makeStyles-middle-1 cardEvents"
       >
         <div
           className="cardEventsHeader"

@@ -19,7 +19,11 @@ class PostListView(APIView):
 
     def post(self, request, *args, **kwargs):
         user = request.user
-        images = request.data.getlist('image')
+
+        if hasattr(request.data, 'getlist'):
+            images = request.data.getlist('image')
+        else:
+            images = []
 
         content = request.data.get('content')
 

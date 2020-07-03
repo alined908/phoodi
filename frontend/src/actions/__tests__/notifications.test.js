@@ -15,20 +15,14 @@ describe("Notifications actions", () => {
     store.clearActions();
   });
 
-  it("should handle getNumberNotifs()", () => {
-    const event = { message: "Good job." };
-    const expectedAction = { type: types.GET_NOTIFS, payload: event.message };
-    expect(actions.getNumberNotifs(event)).toEqual(expectedAction);
-  });
-
-  it("should handle removeNotifs()", async () => {
+  it("should handle getNotifs()", async () => {
     const expectedActions = [
-      { type: types.REMOVE_NOTIFS, payload: { something: 2 } },
+      { type: types.GET_NOTIFS, payload: [] },
     ];
 
-    mock.onDelete("/api/notifs/").reply(200, { something: 2 });
+    mock.onGet("/api/notifications/").reply(200, []);
 
-    await store.dispatch(actions.removeNotifs({ something: 2 }));
+    await store.dispatch(actions.getNotifs());
     expect(store.getActions()).toEqual(expectedActions);
   });
 });

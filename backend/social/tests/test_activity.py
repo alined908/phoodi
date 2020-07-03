@@ -82,7 +82,8 @@ class ActivityTest(TestCase):
         activity = Activity.objects.last()
 
         payload = {
-            'value': 1
+            'value': 1,
+            'comment_id': None
         }
 
         response = client.post(

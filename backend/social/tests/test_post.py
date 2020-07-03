@@ -1,6 +1,7 @@
 from social.models import Post, Activity
 from meetup.models import User
-from social.serializers import PostSerializer
+from social.serializers import PostSerializer, ActivitySerializer
+from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
@@ -49,7 +50,9 @@ class PostTest(TestCase):
             content_type="application/json"
         )
         post = Post.objects.last()
-        serializer = PostSerializer(post)
+        self.assertEqual(post.content, payload['content'])
+        activity = Activity.objects.get(action_object_object_id=post.id, action_object_content_type=ContentType.objects.get_for_model(post))
+        serializer = ActivitySerializer(activity)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(serializer.data, response.data)
     

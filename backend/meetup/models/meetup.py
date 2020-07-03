@@ -52,13 +52,13 @@ class Meetup(models.Model):
         super(Meetup, self).save(*args, **kwargs)
 
     @staticmethod
-    def get_private(categories, coords, request, start, end, num_results=25):
+    def get_private(categories, coords, request, user, start, end, num_results=25):
         
         distance_query, category_ids = nearby_public_entities(coords, request, categories, num_results, 'meetup')
 
         member_query = RawSQL(
             "SELECT member.meetup_id as id FROM meetup_meetupmember as member WHERE user_id = %s",
-            (request.user.id,),
+            (user.id,),
         )
 
         if not category_ids:

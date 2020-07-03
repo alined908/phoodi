@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Avatar, Badge } from "@material-ui/core";
 import NotificationsIcon from "@material-ui/icons/Notifications";
@@ -113,4 +112,3 @@ Contact.propTypes = {
 };
 
 export default Contact;
-export { Contact as UnderlyingContact };

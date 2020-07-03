@@ -171,29 +171,6 @@ class TestWebsockets:
 
         await communicator.disconnect()
 
-    async def test_user_notifications(self, settings):
-        settings.CHANNEL_LAYERS = TEST_CHANNEL_LAYERS
-        user = await create_user("daniel@gmail.com")
-        token = await get_token(user)
-        path = "/ws/user/" + str(user.id) + "/?token=" + token
-        communicator = await auth_connect(path)
-
-        await communicator.send_json_to(
-            {"command": "fetch_notifications", "data": {"user": user.id}}
-        )
-
-        response = await communicator.receive_json_from()
-        assert response["command"] == "fetch_notifs"
-        assert response["message"] == {
-            "chat_message": 0,
-            "friend_inv": 0,
-            "meetup_inv": 0,
-            "meetup": 0,
-            "friend": 0,
-        }
-
-        await communicator.disconnect()
-
     # async def test_meetup_consumer_reload_meetup_event(self, settings):
     #     settings.CHANNEL_LAYERS = TEST_CHANNEL_LAYERS
     #     user = await create_user("daniel@gmail.com")

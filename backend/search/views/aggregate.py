@@ -12,7 +12,7 @@ class AggregateSearchView(APIView):
     def get(self, request, *args, **kwargs):
         
         query = request.GET.get('q')
-        coords = [request.GET.get('latitude', 34.052235), request.GET.get('longitude', -118.243683), request.GET.get('radius')]
+        coords = [request.GET.get('latitude'), request.GET.get('longitude'), request.GET.get('radius')]
         latitude, longitude, radius = get_user_coordinates(coords, request)
         ms = MultiSearch(index=['restaurants', 'categories'])
         

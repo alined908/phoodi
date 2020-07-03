@@ -90,31 +90,25 @@ class ActivityLike(Timestamps):
 
     def save(self, *args, **kwargs):
         if self.pk is None:
-            print(self.comment)
             if self.comment is None:
-                print("A")
                 self.activity.likes_count += 1
             else:
-                print("B")
                 self.comment.vote_score += 1
         else:
-            print(self._original_status)
-            print(self.status)
             if self._original_status != self.status:
                 if self.comment is None:
-                    print("D")
                     if self.status == self.ActivityLikeChoices.UNLIKE.value:
                         self.activity.likes_count -= 1
                     else:
                         self.activity.likes_count += 1
                 else:
-                    print("E")
                     if self.status == self.ActivityLikeChoices.UNLIKE.value:
                         self.comment.vote_score -= 1
                     else:
                         self.comment.vote_score += 1
-                        
-        self.comment.save()
+
+        if self.comment:               
+            self.comment.save()
         self.activity.save()
         self.full_clean()
 

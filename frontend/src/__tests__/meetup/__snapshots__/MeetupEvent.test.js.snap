@@ -17,10 +17,10 @@ exports[`MeetupEvent tests general renders without crashing 1`] = `
       className="headerIcons"
     >
       <ScheduleIcon />
-      6:38 PM
+      1:42 PM
        -
        
-      6:38 PM
+      1:42 PM
     </div>
     <WithStyles(ForwardRef(Tooltip))
       title="Event Creator"
@@ -141,26 +141,21 @@ exports[`MeetupEvent tests general renders without crashing 1`] = `
       className="secondHeaderLeft"
     >
       Categories
-      <Link
-        key="1"
-        to="/categories/desserts"
+      <span
+        className="categoryChip categoryChipHover"
       >
-        <span
-          className="categoryChip categoryChipHover"
-        >
-          <WithStyles(ForwardRef(Avatar))
-            src="undefined/static/category/desserts.png"
-            style={
-              Object {
-                "height": 20,
-                "width": 20,
-              }
+        <WithStyles(ForwardRef(Avatar))
+          src="undefined/static/category/desserts.png"
+          style={
+            Object {
+              "height": 20,
+              "width": 20,
             }
-            variant="square"
-          />
-          Dessert
-        </span>
-      </Link>
+          }
+          variant="square"
+        />
+        Dessert
+      </span>
     </div>
     <div
       className="secondHeaderLeft"
