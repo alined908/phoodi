@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {getActivities} from '../../actions'
+import {getActivities, addActivity} from '../../actions'
 import {Avatar} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import {People as PeopleIcon, Restaurant as RestaurantIcon, Event as EventIcon, Chat as ChatIcon} from '@material-ui/icons'
 import {FeedForm, FeedActivities} from '../components'
+import { Helmet } from "react-helmet";
 import styles from '../../styles/feed.module.css'
 
 class FeedNavigation extends Component {
@@ -111,14 +112,24 @@ class FeedPage extends Component {
     render () {
         return (
             <div className={styles.feedWrapper}>
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>
+                        Feed
+                    </title>
+                    <meta name="description" content="Feed" />
+                </Helmet>
                 <div className={styles.feedLeft}>
                     <FeedNavigation user={this.props.user}/>
                 </div>
                 <div className={styles.feed}>
                     <FeedForm 
+                        addActivity={this.props.addActivity}
                         user={this.props.user}
                     />
                     <FeedActivities 
+                        isActivitiesFetching={this.props.isActivitiesFetching}
+                        isActivitiesInitialized={this.props.isActivitiesInitialized}
                         activities={this.props.activities}
                         user={this.props.user}
                     />
@@ -137,13 +148,16 @@ class FeedPage extends Component {
 const mapStateToProps = state => {
     return {
         activities: state.feed.activities,
+        isActivitiesFetching: state.feed.isActivitiesFetching,
+        isActivitiesInitialized: state.feed.isActivitiesInitialized,
         user: state.user.user,
         friends: state.user.friends
     }
 }
 
 const mapDispatchToProps = {
-    getActivities
+    getActivities,
+    addActivity
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedPage)

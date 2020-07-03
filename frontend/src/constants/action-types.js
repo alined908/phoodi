@@ -75,7 +75,10 @@ export const READ_NOTIF = "read_notif";
 export const READ_ALL_NOTIFS = 'read_all_notifs';
 
 //Feed
-export const GET_ACTIVITIES = 'get_activities'
+export const GET_ACTIVITIES_REQUEST = 'get_activities_request'
+export const GET_ACTIVITIES_SUCCESS = 'get_activities_success'
+export const GET_ACTIVITIES_ERROR='get_activities_error'
+export const ADD_ACTIVITY = 'add_activity';
 
 //Errors
 export const ADD_GLOBAL_MESSAGE = "add_global_message";

@@ -8,6 +8,8 @@ class ActivityComments extends Component {
             <div className={styles.comments}>
                 {this.props.comments.map((comment) => (
                     <ActivityComment
+                        activity={this.props.activity}
+                        user={this.props.user}
                         form={`activity_comment-${comment.id}`}
                         key={comment.id}
                         comment={comment}

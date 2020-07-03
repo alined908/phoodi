@@ -8,6 +8,7 @@ import {Pagination} from '@material-ui/lab'
 import Geocode from "react-geocode";
 import {connect} from 'react-redux'
 import { getPreferences } from "../../actions";
+import {Helmet} from 'react-helmet'
 
 const marks = [
     { value: 5 },
@@ -328,6 +329,13 @@ class SearchPage extends Component {
     
         return (
             <div className={`${styles.searchPage} ${this.state.isMobile ? styles.mobileSearch :""}`}>
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>
+                        Restaurants Search
+                    </title>
+                    <meta name="description" content="Search Restaurants" />
+                </Helmet>
                 <div className={`${styles.searchConfig} ${this.state.isMobile ? (this.state.mobileTabIndex === 0 ? styles.mobileShow : styles.mobileHide) : ""}`}>
                     <div className={styles.filterTracker}>
                         {`${numFilters === 0 ? "No" : numFilters} Filters`}

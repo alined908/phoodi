@@ -3,6 +3,7 @@ from meetup.models import User, Restaurant
 from django.contrib.contenttypes.fields import GenericRelation
 from .activity import Activity
 from .utils import Rank, Image
+from meetup.helpers import path_and_rename_post
 from meetup.models import Timestamps
 from django.db.models.signals import post_save
 from django.dispatch import receiver

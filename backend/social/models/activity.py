@@ -79,7 +79,8 @@ class ActivityLike(Timestamps):
         UNLIKE = 0
         LIKE = 1
 
-    activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name="likes")
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name="activity_likes")
+    comment = models.ForeignKey(ActivityComment, on_delete=models.CASCADE, related_name='comment_likes', null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked_activities')
     status = models.IntegerField(default = ActivityLikeChoices.LIKE.value, choices=ActivityLikeChoices.choices)
 
@@ -89,14 +90,31 @@ class ActivityLike(Timestamps):
 
     def save(self, *args, **kwargs):
         if self.pk is None:
-            self.activity.likes_count += 1
+            print(self.comment)
+            if self.comment is None:
+                print("A")
+                self.activity.likes_count += 1
+            else:
+                print("B")
+                self.comment.vote_score += 1
         else:
+            print(self._original_status)
+            print(self.status)
             if self._original_status != self.status:
-                if self.status == self.ActivityLikeChoices.UNLIKE.value:
-                    self.activity.likes_count -= 1
+                if self.comment is None:
+                    print("D")
+                    if self.status == self.ActivityLikeChoices.UNLIKE.value:
+                        self.activity.likes_count -= 1
+                    else:
+                        self.activity.likes_count += 1
                 else:
-                    self.activity.likes_count += 1
-        
+                    print("E")
+                    if self.status == self.ActivityLikeChoices.UNLIKE.value:
+                        self.comment.vote_score -= 1
+                    else:
+                        self.comment.vote_score += 1
+                        
+        self.comment.save()
         self.activity.save()
         self.full_clean()
 

@@ -9,10 +9,50 @@ import moment from 'moment'
 
 class PostActivity extends Component {
     render(){
+        const activity = this.props.activity
         return(
-            <Card>
-                PostActivity
-            </Card>
+            <>
+                <CardHeader
+                    avatar={
+                        <Link to={`/profile/${activity.actor.id}`}>
+                            <Avatar src={activity.actor.avatar}>
+                                {activity.actor.first_name.charAt(0)}
+                                {activity.actor.last_name.charAt(0)}
+                            </Avatar>
+                        </Link>
+                    }
+                    title={
+                        <Link to={`/profile/${activity.actor.id}`}>
+                            {activity.actor.first_name} {activity.actor.last_name}
+                        </Link>
+                    }
+                    subheader={
+                        <span>
+                            <span>
+                                {moment(activity.created_at).fromNow()}
+                            </span>
+                            &nbsp;-&nbsp;
+                            <span>
+                                Post
+                            </span>
+                        </span>
+                    }
+                />
+                <Divider/>
+                {activity.action_object.images.length > 0 &&
+                    <div className={styles.contentDisplay}>
+                        <a target="_blank" href={activity.action_object.images[0].path}>
+                            <CardMedia
+                                className={styles.cardMedia}
+                                image={activity.action_object.images[0].path}
+                            />
+                        </a>
+                    </div>
+                }
+                <CardContent>
+                    {activity.action_object.content}
+                </CardContent>
+            </>
         )
     }
 }
@@ -181,8 +221,16 @@ class FeedActivity extends Component {
         )
     }
 
+    handleNewComment = (comment) => {
+        console.log(comment)
+        this.setState({
+            numComments: this.state.numComments + 1,
+            comments: [comment, ...this.state.comments],
+        })
+    } 
+
     render () {
-        console.log(this.props.activity)
+
         const activity = this.props.activity;
         const description = activity.description;
         const verb = activity.verb
@@ -193,6 +241,7 @@ class FeedActivity extends Component {
         } else if (description === "review"){
             type = <ReviewActivity activity={activity}/>
         } else if (description === 'friendship'){
+            return (<></>)
             type = <FriendshipActivity activity={activity}/>
         } else if (description === "meetup"){
             if (verb==="created" || verb==="joined"){
@@ -210,39 +259,43 @@ class FeedActivity extends Component {
                     {type}
                     <Divider/>
                     <CardActions>
-                        <span> 
-                            {this.state.isLiked ?
-                                <IconButton onClick={() => this.handleLike(0)} color="secondary">
-                                    <FavoriteIcon fontSize="inherit"/>
-                                </IconButton>
-                                :
-                                <IconButton onClick={() => this.handleLike(1)} color="secondary">
-                                    <FavoriteBorderIcon fontSize="inherit"/>
-                                </IconButton>
-                            }
-                            
-                            <span>
-                                {this.state.numLikes} likes
+                        <div className={styles.counterWrapper}>
+
+                            Comments
+                            <span className={styles.counters}>
+                                <span className={styles.count}> 
+                                    {this.state.isLiked ?
+                                        <IconButton onClick={() => this.handleLike(0)} color="secondary">
+                                            <FavoriteIcon fontSize="inherit"/>
+                                        </IconButton>
+                                        :
+                                        <IconButton onClick={() => this.handleLike(1)} color="secondary">
+                                            <FavoriteBorderIcon fontSize="inherit"/>
+                                        </IconButton>
+                                    }
+                                    
+                                    <span>
+                                        {this.state.numLikes} likes
+                                    </span>
+                                </span>
+                                <span className={styles.count}>
+                                    <CommentOutlinedIcon/>
+                                    <span style={{marginLeft: 8}}>
+                                        {this.state.numComments} comments
+                                    </span>
+                                </span>
                             </span>
-                        </span>
-                        <span>
-                            <CommentOutlinedIcon/>
-                            <span>
-                                {activity.comment_count} comments
-                            </span>
-                        </span>
+                        </div>
                     </CardActions>
-                    <Divider/>
-                    <CardContent>
-                        Comments
-                    </CardContent>
                     <Divider/>
                     <ActivityComments 
                         activity={activity}
-                        comments={activity.comments}
+                        user={this.props.user}
+                        comments={this.state.comments}
                     />
                     <ActivityCommentForm
                         form={`activity-${activity.id}`}
+                        handleNewComment={this.handleNewComment}
                         user={this.props.user}
                         activity={activity}
                         parent={null}

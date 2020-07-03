@@ -250,6 +250,8 @@ class Profile extends Component {
           <div className="innerRightBlock">
               {this.state.userLoaded && 
                 <FeedActivities 
+                    isActivitiesFetching={false}
+                    isActivitiesInitialized={true}
                     activities={this.state.user.activities}
                     user={this.state.user}
                 />

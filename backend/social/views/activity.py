@@ -70,20 +70,41 @@ class ActivityLikeView(APIView):
 
         user = request.user
         value = request.data.get('value')
+        comment_id = request.data.get('comment_id')
 
         try:
-            like = ActivityLike.objects.get(
-                user = user, 
-                activity=activity
-            )
+            if not comment_id:
+                like = ActivityLike.objects.get(
+                    user = user, 
+                    activity=activity,
+                    comment=None
+                )
+            else:
+                comment = ActivityComment.objects.get(pk=comment_id)
+
+                like = ActivityLike.objects.get(
+                    user = user, 
+                    activity=activity,
+                    comment=comment
+                )
             like.status = value
             like.save()
         except ActivityLike.DoesNotExist:
             try:
-                vote = ActivityLike.objects.create(
-                    user = user, 
-                    activity=activity
-                )
+                if not comment_id:
+                    vote = ActivityLike.objects.create(
+                        user = user, 
+                        activity=activity,
+                        comment=None
+                    )
+                else:
+                    comment = ActivityComment.objects.get(pk=comment_id)
+
+                    vote = ActivityLike.objects.create(
+                        user = user, 
+                        activity=activity,
+                        comment=comment
+                    )
             except ValidationError as e:
                 return Response({"errors": e.messages}, status=404)
 

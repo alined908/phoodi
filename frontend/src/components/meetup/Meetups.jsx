@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import {axiosClient} from '../../accounts/axiosClient'
 import {Pagination} from '@material-ui/lab'
-import {Settings as SettingsIcon, Event as EventIcon, Add as AddIcon} from '@material-ui/icons'
+import {Settings as SettingsIcon, Event as EventIcon, Add as AddIcon, Map as MapIcon} from '@material-ui/icons'
 import moment from "moment";
 import PropTypes from "prop-types";
 import {
@@ -110,14 +110,14 @@ class Meetups extends Component {
         radius: params.radius ? params.radius : props.user.settings.radius,
         start: params.start ? parseInt(params.start) : 0
       },
-      isMobile: window.matchMedia("(max-width: 768px)").matches,
+      isMobile: window.matchMedia("(max-width: 1100px)").matches,
       mobileTabIndex: 0
     };
   }
 
   async componentDidMount() {
     const handler = (e) => this.setState({ isMobile: e.matches });
-    window.matchMedia("(max-width: 768px)").addListener(handler);
+    window.matchMedia("(max-width: 1100px)").addListener(handler);
 
     let params = parseURL(this.props.location.search)
 
@@ -424,16 +424,16 @@ class Meetups extends Component {
               </div>
             </div>
             <div>
-              {!this.state.isMobile &&
-                <Fab
-                  color="secondary"
-                  size="medium"
-                  onClick={this.openFormModal}
-                  aria-label="add-meetup"
-                >
-                  <AddIcon/>
-                </Fab>
-              }
+              
+              <Fab
+                color="secondary"
+                size="medium"
+                onClick={this.openFormModal}
+                aria-label="add-meetup"
+              >
+                <AddIcon/>
+              </Fab>
+              
             </div>
           </div>
           <div className={styles.filter}>
@@ -614,15 +614,16 @@ class Meetups extends Component {
           <div className="innerWrap-mobileControl">
             <BottomNavigation value={this.state.mobileTabIndex} onChange={this.handleMobileTabChange} showLabels>
               <BottomNavigationAction label="Settings" icon={<SettingsIcon/>}/>
-              <Fab
+              {/* <Fab
                 className="mobileControl-Fab"
                 color="primary"
                 size="medium"
                 onClick={this.openFormModal}
               >
                   <AddIcon/>
-              </Fab>
+              </Fab> */}
               <BottomNavigationAction label="Meetups" icon={<EventIcon/>}/>
+              <BottomNavigationAction label="Map" icon={<MapIcon/>}/>
             </BottomNavigation>
           </div>
         }

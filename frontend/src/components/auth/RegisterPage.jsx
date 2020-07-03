@@ -308,7 +308,7 @@ class RegisterPage extends Component {
                         <Avatar
                           className={styles.avatarBig}
                           src={this.state.imageURL}
-                        ></Avatar>
+                        />
                       )}
                     </div>
                   </Grid>

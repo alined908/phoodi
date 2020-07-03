@@ -28,7 +28,6 @@ const MeetupCard = ({ meetup, onHover, index }) => {
   const classes = useStyles();
   const members = Object.values(meetup.members);
   const users = [];
-  console.log(onHover)
   members.map((member) => users.push(member.user));
 
   const handleHover = (index) => {

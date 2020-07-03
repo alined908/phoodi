@@ -1,5 +1,6 @@
-from social.models import Post
-from social.serializers import PostSerializer
+from social.models import Post, PostImage, Activity
+from social.serializers import PostSerializer, ActivitySerializer
+from django.contrib.contenttypes.models import ContentType
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
@@ -18,6 +19,7 @@ class PostListView(APIView):
 
     def post(self, request, *args, **kwargs):
         user = request.user
+        images = request.data.getlist('image')
 
         content = request.data.get('content')
 
@@ -26,7 +28,11 @@ class PostListView(APIView):
         except ValidationError as e:
             return Response({"errors": e.messages}, status=404)
 
-        serializer = PostSerializer(post)
+        for image in images:
+            image = PostImage.objects.create(post=post, path=image)
+
+        activity = Activity.objects.get(action_object_object_id=post.id, action_object_content_type=ContentType.objects.get_for_model(post))
+        serializer = ActivitySerializer(activity)
 
         return Response(serializer.data)
 

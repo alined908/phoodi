@@ -158,7 +158,14 @@ export const MuiTheme = {
               '&.Mui-focused':{
                 background: "white"
               },
-              borderRadius: "4px !important"
+              borderRadius: "4px !important",
+              '&.Mui-disabled':{
+                backgroundColor: "var(--bg-grey)",
+                cursor: "pointer",
+                '&:hover': {
+                  backgroundColor: "white"
+                },
+              },
           }
       },
       MuiFormHelperText:{

@@ -8,7 +8,8 @@ import styles from '../../styles/feed.module.css'
 
 class ActivityCommentForm extends Component {
     onSubmit = (formProps) => {
-       postActivityComment(this.props.activity.id, this.props.parent, formProps.text)
+       postActivityComment(this.props.activity.id, this.props.parent, formProps.text, (comment) => this.props.handleNewComment(comment))
+       this.props.reset()
     };
 
     render() {

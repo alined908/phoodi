@@ -137,3 +137,4 @@ class PathAndRename(object):
 path_and_rename_avatar = PathAndRename("avatar")
 path_and_rename_category = PathAndRename("category")
 path_and_rename_general = PathAndRename('general')
+path_and_rename_post = PathAndRename('post')
