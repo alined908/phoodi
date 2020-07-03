@@ -1,0 +1,239 @@
+/* Feed */
+.feedWrapper{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+.feedLeft, .feedRight {
+    flex: 3;
+    position: fixed;
+    top: 0;
+    height: calc(100% - 60px);
+}
+
+.feed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    max-width: 700px;
+    padding: 2rem 0;
+}
+
+.feedActivities {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.activityWrapper{
+    margin: 1rem 0;
+    max-width: 550px;
+    min-width: 370px;
+    width: 100%;
+}
+
+.counterWrapper{
+    display: flex;
+    font-family: "roboto";
+    align-items: center;
+    font-weight: 500;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.counters{
+    display: flex;
+    align-items: center;
+}
+
+.count{
+    display: flex;
+    align-items: center;
+    font-size: .8rem;
+}
+
+.count:first-child{
+    margin-right: 10px;
+}
+
+.cardMedia{
+    height: 300px !important;
+    transition: all .3s ease;
+}
+
+.cardMedia:hover{
+    transform: scale(1.02);
+    box-shadow: var(--shadow-1);
+}
+
+.contentDisplay {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-grey);
+}
+
+/* FeedSection */
+.feedSection{
+    padding: 1rem 0;
+}
+
+.feedSectionTitle{
+    font-size: 1rem;
+    font-family: "Roboto";
+    margin-bottom: 1rem;
+    color: var(--grey-text);
+}
+
+/* FeedBar */
+.feedRight {
+    top: 60px;
+    position: fixed;
+    padding: 2rem 2.5rem;
+    min-width: 300px;
+    right: 0;
+}
+
+.feedLeft {
+    top: 60px;
+    position: fixed;
+    padding: 2rem 2.5rem;
+    left: 0;
+    min-width: 300px;
+}
+
+.barWrapper{
+    max-width: 300px;
+}
+
+.barAvatar{
+    box-shadow: var(--circular-shadow);
+}
+
+.barAvatarWrapper{
+    margin-right: 10px !important;
+    filter: none !important;
+}
+
+.barEntry{
+    display: flex;
+    align-items: center;
+    font-size: .95rem;
+    margin-bottom: 1.75rem;
+    transition: all .2s ease;
+}
+
+.barEntry:hover{
+    transform: scale(1.05);
+}
+
+.barIcon {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    filter: drop-shadow( 1px 1px 1px rgba(0, 0, 0, .25));
+}
+
+/*FeedForm */
+.feedFormWrapper {
+    width: 100%;
+}
+
+.feedForm{
+    padding: .5rem 1rem;
+}
+
+.feedFormTop{
+    display: flex;
+    align-items: center;
+}
+
+.feedFormInput{
+    width: 100%;
+}
+
+.feedFormInput .Mui-disabled{
+    background-color: none !important;
+}
+
+.feedFormPopupActions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.popupImageInput{
+    display: none
+}
+
+.postImages {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.postImageWrapper{
+    position: relative
+}
+
+.postImageDelete{
+    position:absolute;
+    top: 0;
+    right: 0;
+}
+
+.postImage {
+    height: auto; 
+    width: auto; 
+    max-width: 300px; 
+    max-height: 300px;
+}
+
+/* Activity */
+.comments {
+
+}
+
+.commentForm{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .5rem 1rem .75rem 1rem;
+}
+
+.comment {
+    display: flex;
+    padding: .5rem 1rem 0 1rem;
+}
+
+.commentContent {
+    width: 100%;
+}
+
+.commentInner{
+    background: var(--background);
+    border-radius: 20px;
+    padding: .4rem .75rem;
+}
+
+.commentText{
+    font-family: "roboto";
+    font-weight: 500;
+    color: var(--grey-text);
+}
+
+@media only screen and (max-width: 1200px){
+    .feedLeft, .feedRight {
+      display: none;
+    }
+}
+
+@media only screen and (max-width: 768px){
+    .feed {
+      padding: 2rem 1rem;
+    }
+}

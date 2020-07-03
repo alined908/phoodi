@@ -1,10 +1,23 @@
-import os.path, geocoder
+import os.path, geocoder, inspect
 from uuid import uuid4
 from ipware import get_client_ip
 from meetup.models import Category
 from django.db.models.expressions import RawSQL
 from django.utils.deconstruct import deconstructible
 from django.core.mail import get_connection, EmailMultiAlternatives
+
+def get_user():
+    for frame_record in inspect.stack():
+        if frame_record[3] == "get_response":
+            request = frame_record[0].f_locals["request"]
+            break
+        else:
+            request = None
+
+    if not request:
+        return None
+
+    return request.user
 
 def convert_string_to_category_ids(categories):
 
@@ -123,3 +136,5 @@ class PathAndRename(object):
 
 path_and_rename_avatar = PathAndRename("avatar")
 path_and_rename_category = PathAndRename("category")
+path_and_rename_general = PathAndRename('general')
+path_and_rename_post = PathAndRename('post')

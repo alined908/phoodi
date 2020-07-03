@@ -146,7 +146,7 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
               "id": 1,
               "last_name": "Lee",
             },
-            "date": "2020-06-10",
+            "date": "2020-07-03",
             "events": Object {},
             "id": 1,
             "isMeetupEventsInitialized": true,
@@ -206,7 +206,7 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
           <span
             className="blockActionChip"
           >
-            Wednesday, June 10
+            Friday, July 3
           </span>
         </div>
       </div>
@@ -249,80 +249,120 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
       >
         Members
       </div>
-      <WithStyles(ForwardRef(List))
-        className="shellList"
-      >
-        <Link
-          key="1"
-          to="/profile/1"
-        >
-          <WithStyles(ForwardRef(ListItem))
-            className="member"
-          >
-            <WithStyles(ForwardRef(ListItemAvatar))>
-              <WithStyles(ForwardRef(Avatar))
-                src={null}
-              >
-                D
-                L
-              </WithStyles(ForwardRef(Avatar))>
-            </WithStyles(ForwardRef(ListItemAvatar))>
-            <WithStyles(ForwardRef(ListItemText))
-              primary="Daniel"
-              secondary={
-                <React.Fragment>
-                  <ForwardRef(WithStyles)
-                    color="inherit"
-                    component="span"
-                    variant="body2"
-                  >
-                    daniel@gmail.com 
-                  </ForwardRef(WithStyles)>
-                </React.Fragment>
-              }
-            />
-            <WithStyles(ForwardRef(Tooltip))
-              title="Meetup Creator"
-            >
-              <Component
-                height={24}
-                width={24}
-              />
-            </WithStyles(ForwardRef(Tooltip))>
-          </WithStyles(ForwardRef(ListItem))>
-        </Link>
-        <Link
-          key="2"
-          to="/profile/2"
-        >
-          <WithStyles(ForwardRef(ListItem))
-            className="member"
-          >
-            <WithStyles(ForwardRef(ListItemAvatar))>
-              <WithStyles(ForwardRef(Avatar))
-                src={null}
-              >
-                B
-                J
-              </WithStyles(ForwardRef(Avatar))>
-            </WithStyles(ForwardRef(ListItemAvatar))>
-            <WithStyles(ForwardRef(ListItemText))
-              primary="Bob"
-              secondary={
-                <React.Fragment>
-                  <ForwardRef(WithStyles)
-                    color="inherit"
-                    component="span"
-                    variant="body2"
-                  >
-                    example2@gmail.com 
-                  </ForwardRef(WithStyles)>
-                </React.Fragment>
-              }
-            />
-          </WithStyles(ForwardRef(ListItem))>
-        </Link>
-      </WithStyles(ForwardRef(List))>
+      <MeetupMembers
+        friends={
+          Array [
+            Object {
+              "chat_room": "something",
+              "created_at": "2020-07-03T13:42:55-07:00",
+              "id": 1,
+              "user": Object {
+                "avatar": null,
+                "email": "example2@gmail.com",
+                "first_name": "Bob",
+                "id": 2,
+                "last_name": "Jim",
+              },
+            },
+          ]
+        }
+        isPast={false}
+        leaveMeetup={[Function]}
+        meetup={
+          Object {
+            "categories": Array [
+              Object {
+                "api_label": "desserts",
+                "id": 1,
+                "image": null,
+                "label": "Dessert",
+              },
+            ],
+            "creator": Object {
+              "avatar": null,
+              "email": "daniel@gmail.com",
+              "first_name": "Daniel",
+              "id": 1,
+              "last_name": "Lee",
+            },
+            "date": "2020-07-03",
+            "events": Object {},
+            "id": 1,
+            "isMeetupEventsInitialized": true,
+            "latitude": 34.228754,
+            "location": "location",
+            "longitude": -118.2351192,
+            "members": Object {
+              "1": Object {
+                "admin": true,
+                "ban": false,
+                "id": 1,
+                "user": Object {
+                  "avatar": null,
+                  "email": "daniel@gmail.com",
+                  "first_name": "Daniel",
+                  "id": 1,
+                  "last_name": "Lee",
+                },
+              },
+              "2": Object {
+                "admin": false,
+                "ban": false,
+                "id": 2,
+                "user": Object {
+                  "avatar": null,
+                  "email": "example2@gmail.com",
+                  "first_name": "Bob",
+                  "id": 2,
+                  "last_name": "Jim",
+                },
+              },
+            },
+            "name": "Meetup",
+            "notifs": 0,
+            "public": true,
+            "uri": "uri",
+          }
+        }
+        members={
+          Object {
+            "1": Object {
+              "admin": true,
+              "ban": false,
+              "id": 1,
+              "user": Object {
+                "avatar": null,
+                "email": "daniel@gmail.com",
+                "first_name": "Daniel",
+                "id": 1,
+                "last_name": "Lee",
+              },
+            },
+            "2": Object {
+              "admin": false,
+              "ban": false,
+              "id": 2,
+              "user": Object {
+                "avatar": null,
+                "email": "example2@gmail.com",
+                "first_name": "Bob",
+                "id": 2,
+                "last_name": "Jim",
+              },
+            },
+          }
+        }
+        sendFriendInvite={[MockFunction]}
+        user={
+          Object {
+            "avatar": null,
+            "email": "daniel@gmail.com",
+            "first_name": "Daniel",
+            "id": 1,
+            "last_name": "Lee",
+          }
+        }
+      />
     </div>
     <div
       className="innerLeftHeaderBlock"
@@ -348,25 +388,81 @@ exports[`Meetup tests general renders without crashing given props 1`] = `
           </WithStyles(ForwardRef(IconButton))>
         </WithStyles(ForwardRef(Tooltip))>
       </div>
-      <WithStyles(ForwardRef(List))
-        className="shellList"
-      >
-        <Connect(MeetupFriend)
-          friend={
+      <MeetupFriends
+        friends={
+          Array [
             Object {
+              "chat_room": "something",
+              "created_at": "2020-07-03T13:42:55-07:00",
+              "id": 1,
+              "user": Object {
+                "avatar": null,
+                "email": "example2@gmail.com",
+                "first_name": "Bob",
+                "id": 2,
+                "last_name": "Jim",
+              },
+            },
+          ]
+        }
+        isPast={false}
+        meetup={
+          Object {
+            "categories": Array [
+              Object {
+                "api_label": "desserts",
+                "id": 1,
+                "image": null,
+                "label": "Dessert",
+              },
+            ],
+            "creator": Object {
               "avatar": null,
-              "email": "example2@gmail.com",
-              "first_name": "Bob",
-              "id": 2,
-              "last_name": "Jim",
-            }
+              "email": "daniel@gmail.com",
+              "first_name": "Daniel",
+              "id": 1,
+              "last_name": "Lee",
+            },
+            "date": "2020-07-03",
+            "events": Object {},
+            "id": 1,
+            "isMeetupEventsInitialized": true,
+            "latitude": 34.228754,
+            "location": "location",
+            "longitude": -118.2351192,
+            "members": Object {
+              "1": Object {
+                "admin": true,
+                "ban": false,
+                "id": 1,
+                "user": Object {
+                  "avatar": null,
+                  "email": "daniel@gmail.com",
+                  "first_name": "Daniel",
+                  "id": 1,
+                  "last_name": "Lee",
+                },
+              },
+              "2": Object {
+                "admin": false,
+                "ban": false,
+                "id": 2,
+                "user": Object {
+                  "avatar": null,
+                  "email": "example2@gmail.com",
+                  "first_name": "Bob",
+                  "id": 2,
+                  "last_name": "Jim",
+                },
+              },
+            },
+            "name": "Meetup",
+            "notifs": 0,
+            "public": true,
+            "uri": "uri",
           }
-          isMember={true}
-          isPast={false}
-          key="1"
-          uri="uri"
-        />
-      </WithStyles(ForwardRef(List))>
+        }
+      />
     </div>
   </div>
   <div

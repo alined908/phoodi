@@ -42,10 +42,17 @@ const useStyles = makeStyles((theme) => ({
     color: green[500],
   },
   listItem: {
-    boxShadow: "var(--shadow-0)",
-    backgroundColor: "white",
-    marginBottom: '1rem'
-  }
+    marginBottom: '1rem',
+    transition: 'all .2s ease',
+    '&:hover': {
+      transform: 'scale(1.05)',
+      backgroundColor: 'transparent'
+    },
+  },
+  avatar:{
+    marginRight: 15,
+    boxShadow: 'var(--circular-shadow)'
+  },
 }));
 
 const MeetupFriend = (props) => {
@@ -77,7 +84,7 @@ const MeetupFriend = (props) => {
     <Link to={`/profile/${props.friend.id}`}>
       <ListItem className={classes.listItem}>
         <ListItemAvatar>
-          <Avatar src={props.friend.avatar}>
+          <Avatar className={classes.avatar} src={props.friend.avatar}>
             {props.friend.first_name.charAt(0)}
             {props.friend.last_name.charAt(0)}
           </Avatar>

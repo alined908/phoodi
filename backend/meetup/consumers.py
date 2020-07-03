@@ -21,11 +21,9 @@ from meetup.serializers import (
     MeetupEventSerializer,
     MeetupMemberSerializer,
     MeetupEventOptionSerializer,
-    MeetupEventOptionVoteSerializer,
-    NotificationSerializer,
+    MeetupEventOptionVoteSerializer
 )
-from notifications.models import Notification
-from notifications.signals import notify
+from social.models import Notification
 
 
 class ChatContactsConsumer(AsyncWebsocketConsumer):
@@ -115,60 +113,6 @@ class UserNotificationConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_discard(
                 self.user_room_name, self.channel_name
             )
-
-    @sync_to_async
-    def fetch_chat_notifs(self, user):
-        chat_notifs = (
-            user.notifications.filter(description="chat_message").unread().count()
-        )
-        return chat_notifs
-
-    @sync_to_async
-    def fetch_inv_notifs(self, user):
-        friend_inv_notifs = (
-            user.notifications.filter(description="friend_inv").unread().count()
-        )
-        meetup_inv_notifs = (
-            user.notifications.filter(description="meetup_inv").unread().count()
-        )
-        return friend_inv_notifs, meetup_inv_notifs
-
-    @sync_to_async
-    def fetch_meetup_notifs(self, user):
-        meetup_notifs = user.notifications.filter(description="meetup").unread().count()
-        return meetup_notifs
-
-    @sync_to_async
-    def fetch_friend_notifs(self, user):
-        friend_notifs = user.notifications.filter(description="friend").unread().count()
-        return friend_notifs
-
-    async def fetch_notifications(self, command):
-        data = command["data"]
-        pk = data["user"]
-        user = await database_sync_to_async(User.objects.get)(pk=pk)
-        chat_notifs = await self.fetch_chat_notifs(user)
-        friend_inv_notifs, meetup_inv_notifs = await self.fetch_inv_notifs(user)
-        meetup_notifs = await self.fetch_meetup_notifs(user)
-        friend_notifs = await self.fetch_friend_notifs(user)
-        content = {
-            "command": "fetch_notifs",
-            "message": {
-                "chat_message": chat_notifs,
-                "friend_inv": friend_inv_notifs,
-                "meetup_inv": meetup_inv_notifs,
-                "meetup": meetup_notifs,
-                "friend": friend_notifs,
-            },
-        }
-
-        await self.channel_layer.group_send(
-            self.user_room_name, {"type": "notifications", "message": content}
-        )
-
-    commands = {
-        "fetch_notifications": fetch_notifications,
-    }
 
     async def receive(self, text_data):
         if not self.scope["user"]:

@@ -99,17 +99,24 @@ docker exec -i -t <backend_container_id> bash
 python manage.py search_index --rebuild
 ```
 ## Todo Next Iteration
+- [x] Change user settings to onetoone
+- [x] Activity Feed of Friends
+- [x] Add Custom Notification Model
+- [x] Notification Bar on Top right of navbar
+- [x] MeetupPage to Restaurant Esque
+- [x] Profile Activity Feed
+- [ ] User Reputation system
+- [ ] Separate into different apps
+
+- [ ] Better loading of resources (lighthouse images)
 - [ ] Google api calendar for meetups
 - [ ] Websocket Authentication Flow
 - [ ] Use httpOnly cookies for tokens
-- [ ] Activity Feed of Friends
 - [ ] Skeleton loading where applicable
 - [ ] Complete admin functionality for meetup member
 - [ ] Properly document and refactor codebase
 - [ ] User's top restaurants list (by city?, map with markers and fly functionality)
 - [ ] Add calendar of meetups
-- [ ] Notification Bar on Top right of navbar
-- [ ] Add Custom Notification Model
 - [ ] Review Score for food and service and possible secondary factors (interior, location, etc)
 - [ ] Social Auth Get Profile Pic and Save to database
 - [ ] Finish writing tests for frontend
@@ -117,7 +124,6 @@ python manage.py search_index --rebuild
 - [ ] Set up locust load test
 - [ ] Set up caching system/Optimize (redis)
 - [ ] Learn more about web application security (XSS, CSRF, SQL injection, MITM)
-- [ ] User Reputation system
 - [ ] Add capacity to meetup
 - [ ] Fix preferences swapping lag
 - [ ] Set up celery for asynchronous job processing (convert signals to create task for celery)

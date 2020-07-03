@@ -4,8 +4,6 @@ from django.forms.models import model_to_dict
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from notifications.models import Notification
-
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
@@ -29,18 +27,17 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserSerializerWithActivity(serializers.ModelSerializer):
-    activity = serializers.SerializerMethodField("_get_activity")
+    activities = serializers.SerializerMethodField("_get_activities")
 
-    def _get_activity(self, obj):
-        notifications = Notification.objects.filter(
-            actor_object_id=obj.id, description="user_activity"
-        )[:25]
-        serializer = NotificationSerializer(notifications, many=True)
+    def _get_activities(self, obj):
+        from social.serializers import ActivitySerializer
+
+        serializer = ActivitySerializer(obj.activities(only_self=True), many=True)
         return serializer.data
 
     class Meta:
         model = User
-        fields = ("id", "email", "first_name", "last_name", "avatar", "created_at", "activity")
+        fields = ("id", "email", "first_name", "last_name", "avatar", "created_at", "activities")
 
 
 class UserSerializerWithToken(serializers.ModelSerializer):
@@ -246,7 +243,7 @@ class CommentSerializer(serializers.ModelSerializer):
         return serializer.data
 
     class Meta:
-        model = Comment
+        model = ReviewComment
         fields = "__all__"
 
 
@@ -266,7 +263,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         return serializer.data
 
     def _get_children(self, obj):
-        top = Comment.objects.filter(review=obj, parent=None)
+        top = ReviewComment.objects.filter(review=obj, parent=None)
         serializer = CommentSerializer(top, many=True)
         return serializer.data
 
@@ -455,6 +452,9 @@ class ChatRoomSerializer(serializers.ModelSerializer):
         return mapping
 
     def _get_notifs(self, obj):
+        if not self.context.get('plain', False):
+            return None
+
         user = self.context["user"]
         notifs = user.notifications.filter(
             action_object_object_id=obj.id, description="chat_message"
@@ -488,46 +488,3 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatRoomMessage
         fields = ("id", "message", "timestamp", "is_read", "is_notif", "sender")
-
-
-class GenericNotificationRelatedField(serializers.RelatedField):
-    def to_representation(self, value):
-
-        if isinstance(value, User):
-            serializer = UserSerializer(value, context={"plain": True})
-        elif isinstance(value, Meetup):
-            serializer = MeetupSimpleSerializer(value)
-        elif isinstance(value, MeetupEvent):
-            serializer = MeetupEventSerializer(value)
-        elif isinstance(value, MeetupMember):
-            serializer = MeetupMemberSerializer(value, context={"plain": True})
-        elif isinstance(value, Friendship):
-            serializer = FriendshipSerializer(value)
-        elif isinstance(value, Preference):
-            serializer = CategoryPreferenceSerializer(value)
-        elif isinstance(value, Review):
-            serializer = ReviewSerializer(value, context={'restaurant': True})
-        elif isinstance(value, Restaurant):
-            serializer = RestaurantSerializer(value)
-        else:
-            return None
-
-        return serializer.data
-
-
-class NotificationSerializer(serializers.ModelSerializer):
-    actor = GenericNotificationRelatedField(read_only=True)
-    target = GenericNotificationRelatedField(read_only=True)
-    action_object = GenericNotificationRelatedField(read_only=True)
-
-    class Meta:
-        model = Notification
-        fields = (
-            "id",
-            "actor",
-            "verb",
-            "action_object",
-            "target",
-            "description",
-            "timestamp",
-        )

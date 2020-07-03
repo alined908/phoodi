@@ -169,7 +169,7 @@ class SearchBar extends Component {
             parts = parse(option._source.label, matches);
 
             row = (
-                <Link onClick={() => this.persistSearchToStorage(option)} to={`/search/?categories=${option._source.label}`} style={{width: "100%"}}>
+                <Link onClick={() => this.persistSearchToStorage(option)} to={`/r/search/?categories=${option._source.label}`} style={{width: "100%"}}>
                     <div className="search-entry">
                         <ListItemAvatar>
                             <Avatar
@@ -317,7 +317,7 @@ class SearchBar extends Component {
                 <Autocomplete
                     freeSolo
                     size="small"
-                    style={{flex: 1, boxShadow: "none"}}
+                    style={{flex: 1, boxShadow: "none", marginRight:"2px"}}
                     getOptionLabel={(option) =>
                         this.handleLabel(option)
                     }
@@ -342,7 +342,6 @@ class SearchBar extends Component {
                             InputProps={{
                                 ...params.InputProps,
                                 disableUnderline: true,
-                                style: {background: "white", fontSize: ".8rem"},
                                 endAdornment: (
                                 <>
                                     {this.state.isLoading ? (

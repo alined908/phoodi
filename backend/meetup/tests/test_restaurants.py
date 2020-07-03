@@ -1,11 +1,11 @@
-from meetup.models import User, Review, Comment, Vote, Restaurant, VoteChoice
+from meetup.models import User, Review, ReviewComment, Vote, Restaurant, VoteChoice
 from meetup.serializers import ReviewSerializer, CommentSerializer, RestaurantSerializer
 from rest_framework import status
 from rest_framework.test import APIClient
 from django.contrib.auth.hashers import make_password
 from django.test import TestCase
 import json
-from notifications.models import Notification
+from social.models import Notification, Activity
 
 client = APIClient()
 up = VoteChoice.UP.value
@@ -114,16 +114,16 @@ class ReviewTest(TestCase):
 
     def test_review_creates_user_activity(self):
         user = User.objects.get(pk=1)
-        notifications = Notification.objects.filter(actor_object_id=user.id, description="user_activity")
-        self.assertEqual(notifications.count(), 1)
+        activities = Activity.objects.filter(actor_object_id=user.id, description="review")
+        self.assertEqual(activities.count(), 1)
         self.create_review(review_text)
-        notifications = Notification.objects.filter(actor_object_id=self.user.id, description="user_activity")
+        notifications = Activity.objects.filter(actor_object_id=self.user.id, description="review")
         self.assertEqual(notifications.count(), 2)
 
-    def test_text_must_be_50_characters(self):
-        response = self.create_review("too short")
+    def test_text_must_be_10_characters(self):
+        response = self.create_review("short")
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.data, {"errors": ["Review length must be more than 50 characters."]})
+        self.assertEqual(response.data, {"errors": ["Review length must be more than 10 characters."]})
 
     def test_rating_must_be_between_1_and_10(self):
         response = self.create_review(review_text, 11)
@@ -167,7 +167,7 @@ class CommentTest(TestCase):
 
     def test_CommentListView_POST(self):
         response = self.create_comment(self.valid_comment, self.review.id)
-        comment = Comment.objects.get(pk=1)
+        comment = ReviewComment.objects.get(pk=1)
         serializer = CommentSerializer(comment)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, serializer.data)
@@ -179,18 +179,12 @@ class CommentTest(TestCase):
 
     def test_CommentView_GET(self):
         self.create_comment(self.valid_comment, self.review.id)
-        comment = Comment.objects.last()
+        comment = ReviewComment.objects.last()
         response = client.get('/api/reviews/%s/comments/%s/' % (self.review.id, comment.id))
         serializer = CommentSerializer(comment)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, serializer.data)
 
-    def test_text_must_be_50_characters(self):
-        self.valid_comment['text'] = "too short"
-        response = self.create_comment(self.valid_comment, self.review.id)
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.data, {"errors": ["Comment length must be more than 50 characters."]})
-    
     def test_increment_comment_counts(self):
         self.create_comment(self.valid_comment, self.review.id)
         self.review.refresh_from_db()
@@ -208,7 +202,7 @@ class VoteTest(TestCase):
         self.user = User.objects.get(pk=1)
         self.valid_vote_review = {'value': 1, 'review': 1}
         self.comment_payload = {"user": self.user, "review": self.review, "parent": None, "text": comment_text}
-        self.comment = Comment.objects.create(**self.comment_payload)
+        self.comment = ReviewComment.objects.create(**self.comment_payload)
         self.valid_vote_comment = {"value": 1, "comment": self.comment.pk}
 
     def authenticate(self):
@@ -229,14 +223,14 @@ class VoteTest(TestCase):
         self.user.refresh_from_db()
         self.assertEqual(vote.value, score)
         self.assertEqual(self.review.vote_score, score)
-        self.assertEqual(self.user.review_karma, score)
+        self.assertEqual(self.user.profile.review_karma, score)
         vote.handle_vote(new_value)
         self.review.refresh_from_db()
         self.user.refresh_from_db()
         vote.refresh_from_db()
         self.assertEqual(vote.value, new_value_score)
         self.assertEqual(self.review.vote_score, new_value_score)
-        self.assertEqual(self.user.review_karma, new_value_score)
+        self.assertEqual(self.user.profile.review_karma, new_value_score)
        
     def test_VoteView_POST_review(self):
         response = self.create_vote(self.valid_vote_review)
@@ -247,7 +241,7 @@ class VoteTest(TestCase):
     def test_VoteView_POST_comment(self):
         response = self.create_vote(self.valid_vote_comment)
         self.assertEqual(response.status_code, 204)
-        comment = Comment.objects.last()
+        comment = ReviewComment.objects.last()
         self.assertEqual(comment.vote_score, 1)
 
     def test_VoteView_POST_invalid(self):

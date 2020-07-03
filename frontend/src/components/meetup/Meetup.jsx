@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import {
-  MeetupFriend,
   MeetupEvent,
   MeetupForm,
   MeetupChat,
   MeetupEventForm,
   MeetupTree,
+  MeetupFriends,
+  MeetupMembers
 } from "../components";
 import { connect } from "react-redux";
 import {
@@ -21,7 +22,6 @@ import {
   reloadMeetupEvent,
   voteMeetupEvent,
   decideMeetupEvent,
-  removeNotifs,
   getFriends,
   addGlobalMessage,
   sendFriendInvite,
@@ -65,7 +65,7 @@ import {
   People as PeopleIcon
 } from "@material-ui/icons";
 import AuthenticationService from "../../accounts/AuthenticationService";
-import { ReactComponent as Crown } from "../../assets/svgs/crown.svg";
+
 import PropTypes from "prop-types";
 import {
   meetupPropType,
@@ -117,9 +117,9 @@ class Meetup extends Component {
       this.props.getFriends(this.props.user.id);
     }
 
-    if (this.props.meetup.notifs > 0) {
-      this.props.removeNotifs({ type: "meetup", id: this.props.meetup.id });
-    }
+    // if (this.props.meetup.notifs > 0) {
+    //   this.props.removeNotifs({ type: "meetup", id: this.props.meetup.id });
+    // }
   }
 
   componentDidUpdate(prevProps){
@@ -202,32 +202,9 @@ class Meetup extends Component {
     return keys;
   };
 
-  determineIsFriendMember = (friend, members) => {
-    return friend in members;
-  };
-
+  
   determineIsUserCreator = (id) => {
     return this.props.meetup.creator.id === id;
-  };
-
-  determineisMemberNotFriend = (user) => {
-    if (this.props.friends.length === 0 || this.props.user.id === user.id) {
-      return false;
-    }
-
-    for (var i = 0; i < this.props.friends.length; i++) {
-      let friend = this.props.friends[i];
-      if (friend.user.id === user.id) {
-        return false;
-      }
-    }
-
-    return true;
-  };
-
-  addFriend = (e, email) => {
-    e.preventDefault();
-    this.props.sendFriendInvite(email);
   };
 
   toggleChat = () => {
@@ -244,161 +221,6 @@ class Meetup extends Component {
     const isUserCreator = this.determineIsUserCreator(this.props.user.id);
     const emailDisable = this.determineEmailDisable(meetup.events);
     const isPast = moment(meetup.date).isBefore(moment(), 'day')
-
-    const renderFriends = () => {
-      return (
-        <List className={styles.shellList}>
-          {this.props.isFriendsFetching && (
-            <div className="loading">
-              <CircularProgress size={30}/>
-            </div>
-          )}
-          {this.props.friends.map((friend) => (
-            <MeetupFriend
-              key={friend.id}
-              friend={friend.user}
-              isMember={this.determineIsFriendMember(
-                friend.user.id,
-                meetup.members
-              )}
-              isPast={isPast}
-              uri={meetup.uri}
-            />
-          ))}
-        </List>
-      );
-    };
-
-    const renderMembers = (members) => {
-      return (
-        <List className={styles.shellList}>
-          {Object.keys(members).map((key) => (
-            <Link key={key} to={`/profile/${members[key].user.id}`}>
-              <ListItem className={styles.member}>
-                <ListItemAvatar>
-                  <Avatar src={members[key].user.avatar}>
-                    {members[key].user.first_name.charAt(0)}
-                    {members[key].user.last_name.charAt(0)}
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={members[key].user.first_name}
-                  secondary={
-                    <>
-                      <Typography
-                        component="span"
-                        color="inherit"
-                        variant="body2"
-                      >
-                        {members[key].user.email + " "}
-                      </Typography>
-                    </>
-                  }
-                ></ListItemText>
-                {this.determineIsUserCreator(members[key].user.id) && (
-                  <Tooltip title="Meetup Creator">
-                    <Crown width={24} height={24} />
-                  </Tooltip>
-                )}
-                {members[key].ban && (
-                  <Tooltip title="Used Ban">
-                    <BlockIcon color="secondary" />
-                  </Tooltip>
-                )}
-
-                {(members[key].user.id === this.props.user.id && !isUserCreator) &&
-                  <Tooltip title="You">
-                    <img
-                      style={{ width: 20, height: 20, marginLeft: 10 }}
-                      alt={"&#9787;"}
-                      src={`${process.env.REACT_APP_S3_STATIC_URL}/static/general/panda.png`}
-                    />
-                  </Tooltip>
-                }
-                {/* {members[key].admin && 
-                                      <Tooltip title="Admin">
-                                          <VerifiedUserIcon style={{color: "#3f51b5"}}/>
-                                      </Tooltip>
-                                  } */}
-                {/* {(isUserCreator && members[key].admin && this.props.user.id !== members[key].user.id) &&  
-                      <Tooltip title="Demote Admin">
-                          <IconButton>
-                              <PersonAddDisabledIcon/>
-                          </IconButton>
-                  </Tooltip> }
-                  {(isUserCreator && !members[key].admin && this.props.user.id !== members[key].user.id) &&
-                      <Tooltip title="Make Admin">
-                          <IconButton>
-                              <PersonAddIcon/>
-                          </IconButton>
-                      </Tooltip>
-                  } */}
-                {isUserMember && !isPast &&
-                  members[key].user.id !== this.props.user.id &&
-                  members[this.props.user.id].admin && (
-                    <Tooltip title="Remove Member">
-                      <IconButton
-                        aria-label="remove-member"
-                        color="secondary"
-                        size="small"
-                        onClick={(e) =>
-                          this.handleLeaveMeetup(e, members[key].user.email)
-                        }
-                      >
-                        <ExitToAppIcon />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                {this.determineisMemberNotFriend(members[key].user) && (
-                  <Tooltip title="Add Friend">
-                    <IconButton
-                      color="primary"
-                      size="small"
-                      onClick={(e) =>
-                        this.addFriend(e, members[key].user.email)
-                      }
-                    >
-                      <PersonAddIcon />
-                    </IconButton>
-                  </Tooltip>
-                )}
-              </ListItem>
-            </Link>
-          ))}
-        </List>
-      );
-    };
-
-    const renderEvents = (events) => {
-      return (
-        <>
-          {this.props.isMeetupEventsFetching && (
-            <div className="loading">
-              <CircularProgress size={30}/>
-            </div>
-          )}
-          {this.props.isMeetupEventsInitialized &&
-            events &&
-            this.sortEvents(events).map((event, index) => (
-              <MeetupEvent
-                key={event}
-                socket={this.state.meetupSocket}
-                uri={meetup.uri}
-                event={events[event]}
-                isUserMember={isUserMember}
-                coords={{
-                  latitude: meetup.latitude,
-                  longitude: meetup.longitude,
-                }}
-                isUserCreator={isUserCreator}
-                user={this.props.user}
-                isPast={isPast}
-                isMobile={this.state.isMobile}
-              />
-            ))}
-        </>
-      );
-    };
 
     return (
       <div className={`innerWrap  ${this.state.isMobile ? "innerWrap-mobile": ""}`}>
@@ -541,7 +363,16 @@ class Meetup extends Component {
               <div className="hr">
                 Members
               </div>
-              {renderMembers(meetup.members)}
+              <MeetupMembers 
+                isPast={isPast}
+                friends={this.props.friends}
+                isUserMember={isUserMember}
+                leaveMeetup={this.handleLeaveMeetup}
+                sendFriendInvite={this.props.sendFriendInvite}
+                meetup={meetup}
+                members={meetup.members}
+                user={this.props.user}
+              />
             </div>
           }
           <div className="innerLeftHeaderBlock">
@@ -560,22 +391,50 @@ class Meetup extends Component {
                 </Tooltip>
               }
             </div>
-            {renderFriends()}
+            <MeetupFriends
+              friends={this.props.friends} 
+              isPast={isPast}
+              meetup={this.props.meetup}
+              isFriendsFetching={this.props.isFriendsFetching}
+            />
           </div>
         </div>
         <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 3 ? "innerRight-show" : ""}`}>
           <div id="events-wrapper"></div>
           <div className="innerRightBlock" style={{overflowY:"auto"}} id="Events">
-            {renderEvents(meetup.events)}
+            {this.props.isMeetupEventsFetching && (
+              <div className="loading">
+                <CircularProgress size={30}/>
+              </div>
+            )}
+            {this.props.isMeetupEventsInitialized &&
+              meetup.events &&
+              this.sortEvents(meetup.events).map((event, index) => (
+                <MeetupEvent
+                  key={event}
+                  socket={this.state.meetupSocket}
+                  uri={meetup.uri}
+                  event={meetup.events[event]}
+                  isUserMember={isUserMember}
+                  coords={{
+                    latitude: meetup.latitude,
+                    longitude: meetup.longitude,
+                  }}
+                  isUserCreator={isUserCreator}
+                  user={this.props.user}
+                  isPast={isPast}
+                  isMobile={this.state.isMobile}
+                />
+              ))}
           </div>
           {(!isPast && isUserMember && !this.state.isMobile) &&
               <div className={styles.addEvent}>
                 <Tooltip title="Create Event">
                     <Fab
-                      color="primary"
-                        aria-label="add-event"
-                        size="medium"
-                        onClick={this.openEventModal}
+                      color="secondary"
+                      aria-label="add-event"
+                      size="medium"
+                      onClick={this.openEventModal}
                     >
                         <AddIcon />
                     </Fab>
@@ -594,7 +453,16 @@ class Meetup extends Component {
         }
         {this.state.isMobile &&
           <div className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 1 ? "innerLeft-show" : ""}`}>
-            {renderMembers(meetup.members)}
+            <MeetupMembers 
+              isPast={isPast}
+              friends={this.props.friends}
+              isUserMember={isUserMember}
+              leaveMeetup={this.handleLeaveMeetup}
+              sendFriendInvite={this.props.sendFriendInvite}
+              meetup={meetup}
+              members={meetup.members}
+              user={this.props.user}
+            />
           </div>
         }
         {this.state.isMobile && 
@@ -684,7 +552,6 @@ const mapDispatchToProps = {
   decideMeetupEvent,
   deleteMeetupEvent,
   sendMeetupEmails,
-  removeNotifs,
   addMeetupMember,
   addGlobalMessage,
   addEventOption,

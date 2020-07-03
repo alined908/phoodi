@@ -398,18 +398,16 @@ class MeetupEvent extends Component {
                 </span>
                 :
                 event.categories.map((category) => (
-                    <Link key={category.id} to={`/categories/${category.api_label}`}>
-                      <span
-                        className={`${styles.categoryChip} ${styles.categoryChipHover}`}
-                      >
-                        <Avatar
-                          style={{ width: 20, height: 20 }}
-                          src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${category.api_label}.png`}
-                          variant="square"
-                        />
-                        {category.label}
-                      </span>
-                    </Link>
+                  <span
+                    className={`${styles.categoryChip} ${styles.categoryChipHover}`}
+                  >
+                    <Avatar
+                      style={{ width: 20, height: 20 }}
+                      src={`${process.env.REACT_APP_S3_STATIC_URL}/static/category/${category.api_label}.png`}
+                      variant="square"
+                    />
+                    {category.label}
+                  </span>
                 ))
             }
             

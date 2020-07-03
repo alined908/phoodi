@@ -1,16 +1,21 @@
 from django.db import models
-from meetup.helpers import generate_unique_uri, send_mass_html_mail
+from meetup.helpers import generate_unique_uri, send_mass_html_mail, get_user
 from django.contrib.postgres.fields import JSONField
 from .user import User
 from .restaurant import Restaurant, RestaurantCategory
 from .category import Category
+from .invite import MeetupInvite
 from ..helpers import nearby_public_entities
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 from django.template.loader import render_to_string
 from django.contrib.postgres.fields import ArrayField
 from django.conf import settings
 from django.db.models.expressions import RawSQL
 from django.utils.dateformat import format
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.db.models.signals import pre_save, post_save, pre_delete
+from django.dispatch import receiver
 import requests, random, json, datetime, re
 from django.db.models import Q
 from enum import Enum
@@ -18,6 +23,7 @@ from enum import Enum
 BASE_URL = settings.BASE_URL
 url = "https://api.yelp.com/v3/businesses/search"
 headers = {"Authorization": "Bearer " + settings.YELP_API_KEY}
+channel_layer= get_channel_layer()
 
 class Meetup(models.Model):
     uri = models.URLField(default=generate_unique_uri)
@@ -43,39 +49,37 @@ class Meetup(models.Model):
 
     def save(self, *args, **kwargs):
         self.full_clean(["uri"])
-        return super(Meetup, self).save(*args, **kwargs)
+        super(Meetup, self).save(*args, **kwargs)
 
     @staticmethod
-    def get_private(user, categories, start, end):
-        category_ids = [int(x) for x in categories.split(",")] if categories else []
+    def get_private(categories, coords, request, user, start, end, num_results=25):
+        
+        distance_query, category_ids = nearby_public_entities(coords, request, categories, num_results, 'meetup')
+
+        member_query = RawSQL(
+            "SELECT member.meetup_id as id FROM meetup_meetupmember as member WHERE user_id = %s",
+            (user.id,),
+        )
 
         if not category_ids:
             meetups = Meetup.objects.filter(
-                id__in=RawSQL(
-                    "SELECT member.meetup_id as id FROM meetup_meetupmember as member WHERE user_id = %s",
-                    (user.id,),
-                ),
-                date__range=(start, end),
+                Q(id__in=distance_query) &
+                Q(id__in=member_query) &
+                Q(date__range=(start, end))
             ).order_by("date")
         else:
-            meetups = Meetup.objects.filter(
-                Q(
-                    id__in=RawSQL(
-                        "SELECT DISTINCT category.meetup_id \
+            category_query = RawSQL(
+                "SELECT DISTINCT category.meetup_id \
                 FROM meetup_meetupcategory as category \
                 WHERE category_id = ANY(%s)",
-                        (category_ids,),
-                    )
-                )
-                & Q(
-                    id__in=RawSQL(
-                        "SELECT member.meetup_id as id \
-                    FROM meetup_meetupmember as member \
-                    WHERE user_id = %s",
-                        (user.id,),
-                    )
-                )
-                & Q(date__range=(start, end))
+                (category_ids,),
+            )
+
+            meetups = Meetup.objects.filter(
+                Q(id__in=category_query) &
+                Q(id__in=distance_query) &
+                Q(id__in=member_query) &
+                Q(date__range=(start, end))
             ).order_by("date")
 
         return meetups
@@ -87,22 +91,24 @@ class Meetup(models.Model):
        
         if not category_ids:
             meetups = Meetup.objects.filter(
-                public=True, id__in=distance_query, date__range=(start, end)
+                public=True, 
+                id__in=distance_query, 
+                date__range=(start, end)
             ).order_by("date")
             
         else:
-            meetups = Meetup.objects.filter(
-                Q(public=True)
-                & Q(
-                    id__in=RawSQL(
-                        "SELECT DISTINCT category.meetup_id \
+            category_query = RawSQL(
+                "SELECT DISTINCT category.meetup_id \
                 FROM meetup_meetupcategory as category \
                 WHERE category_id = ANY(%s)",
-                        (category_ids,),
-                    )
-                )
-                & Q(id__in=distance_query)
-                & Q(date__range=(start, end))
+                (category_ids,),
+            )
+
+            meetups = Meetup.objects.filter(
+                Q(public=True) & 
+                Q(id__in=category_query) & 
+                Q(id__in=distance_query) & 
+                Q(date__range=(start, end))
             ).order_by("date")
 
         return meetups
@@ -126,7 +132,6 @@ class Meetup(models.Model):
 
         send_mass_html_mail(messages)
 
-
 class MeetupMember(models.Model):
     meetup = models.ForeignKey(Meetup, related_name="members", on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name="meetups", on_delete=models.CASCADE)
@@ -136,7 +141,6 @@ class MeetupMember(models.Model):
 
     def used_ban(self):
         return self.ban
-
 
 class MeetupEvent(models.Model):
     
@@ -410,3 +414,381 @@ class MeetupCategory(models.Model):
         Category, related_name="meetup_events", on_delete=models.CASCADE
     )
     objects = models.Manager()
+
+
+@receiver(pre_save, sender=Meetup)
+def set_notification_for_meetup(sender, instance, **kwargs):
+    if instance.id:
+        previous = Meetup.objects.get(pk=instance.id)
+        potential_changes = []
+
+        if previous.location != instance.location:
+            potential_changes.append(
+                "changed meetup location from %s to %s"
+                % (previous.location, instance.location)
+            )
+
+        if previous.date != instance.date:
+            potential_changes.append(
+                "changed meetup date from %s to %s"
+                % (str(previous.date), str(instance.date))
+            )
+
+        if previous.public != instance.public:
+            if instance.public:
+                potential_changes.append("changed meetup from private to public")
+            else:
+                potential_changes.append("changed meetup from public to private")
+
+        if previous.name != instance.name:
+            potential_changes.append(
+                "changed meetup name from %s to %s" % (previous.name, instance.name)
+            )
+
+        instance._meetup_notification = potential_changes
+
+@receiver(post_save, sender=Meetup)
+def meetup_post_save(sender, instance, created, **kwargs):
+    from ..serializers import MessageSerializer
+    from social.models import Activity
+    from .chat import ChatRoomMember, ChatRoomMessage, ChatRoom
+    
+    if created:
+        uri, name, creator = instance.uri, instance.name, instance.creator
+        # Create Chat Room For Meetup
+        room = ChatRoom.objects.create(uri=uri, name=name, meetup=instance)
+        ChatRoomMember.objects.create(room=room, user=creator)
+
+        # Create Meetup Chat Message --> Ex. User created Meetup x days ago
+        message = "created meetup named %s" % (instance.name)
+        ChatRoomMessage.objects.create(
+            room=room, sender=creator, is_notif=True, message=message
+        )
+
+        if instance.public:
+            # Create User Activity --> Ex. User created Meetup x days ago
+            Activity.objects.create(
+                actor=creator,
+                verb="created",
+                action_object=instance,
+                description="meetup",
+            )
+    else:
+        # Get User Who Completed Action
+        user = get_user() or instance.creator
+        member = MeetupMember.objects.get(meetup=instance, user=user)
+        room = ChatRoom.objects.get(uri=instance.uri)
+
+        # Create Meetup Chat Message --> Member set changes to Meetup x days ago
+        for change in instance._meetup_notification:
+            msg = ChatRoomMessage.objects.create(
+                sender=user, room=room, is_notif=True, message=change
+            )
+
+            content = {
+                "command": "new_message", 
+                "message": MessageSerializer(msg).data
+            }
+
+            async_to_sync(channel_layer.group_send)(
+                "chat_%s" % instance.uri, 
+                {
+                    "type": "chat_message", 
+                    "message": content
+                }
+            )
+
+
+@receiver(post_save, sender=MeetupMember)
+def meetup_member_post_save(sender, instance, created, **kwargs):
+    from ..serializers import MeetupMemberSerializer, MessageSerializer
+    from social.models import Activity
+    from .chat import ChatRoomMember, ChatRoomMessage, ChatRoom
+
+    meetup, user = instance.meetup, instance.user
+    serializer = MeetupMemberSerializer(instance)
+
+    if created and user != meetup.creator:
+        room = ChatRoom.objects.get(uri=meetup.uri)
+        ChatRoomMember.objects.create(room=room, user=user)
+
+        if meetup.public:
+            # Create User Activity --> Ex. User joined Meetup
+            Activity.objects.create(
+                actor = user,
+                action_object = meetup,
+                description="meetup",
+                verb="joined"
+            )
+
+        # Create Meetup Activity --> Ex. Member joined Meetup
+        message = "joined the meetup."
+        msg = ChatRoomMessage.objects.create(
+            sender=user, room=room, is_notif=True, message=message
+        )
+
+        # Send Meetup Activity To Meetup Channel
+        content = {
+            "command": "new_message", 
+            "message": MessageSerializer(msg).data
+        }
+
+        async_to_sync(channel_layer.group_send)(
+            "chat_%s" % meetup.uri, 
+            {
+                "type": "chat_message", 
+                "message": content
+            }
+        )
+
+    # Send New/Updated Meetup Member Object to Meetup Channel
+    content = {
+        "command": "new_member",
+        "message": {
+            "meetup": meetup.uri, 
+            "member": serializer.data
+        }
+    }
+
+    async_to_sync(channel_layer.group_send)(
+        "meetup_%s" % meetup.uri, 
+        {
+            "type": "meetup_event", 
+            "meetup_event": content
+        }
+    )
+
+
+@receiver(pre_delete, sender=MeetupMember)
+def handle_delete_member(sender, instance, **kwargs):
+    from ..serializers import MeetupMemberSerializer, MessageSerializer
+    from .chat import ChatRoom, ChatRoomMessage
+
+    meetup = instance.meetup
+    user = get_user()
+  
+    # Delete existing MeetupInvite
+    try:
+        invite = MeetupInvite.objects.get(meetup=meetup, receiver=instance.user)
+        invite.delete()
+    except MeetupInvite.DoesNotExist:
+        pass
+
+    # Send New Members List to Meetup Channel
+    members = MeetupMember.objects.filter(meetup=meetup).exclude(pk=instance.id)
+
+    mapping = {}
+
+    for member in members.all():
+        mapping.update(MeetupMemberSerializer(member).data)
+
+    content = {
+        "command": "delete_member",
+        "message": {
+            "meetup": meetup.uri, 
+            "members": mapping
+        }
+    }
+
+    async_to_sync(channel_layer.group_send)(
+        "meetup_%s" % meetup.uri, 
+        {
+            "type": "meetup_event", 
+            "meetup_event": content
+        }
+    )
+
+    # Create Meetup Activity --> Ex.User Left Meetup or Member Kicked Member
+    if user == instance.user:
+        message = "left the meetup."
+    else:
+        member = MeetupMember.objects.get(user=user, meetup=meetup)
+        message = "removed %s %s from the meetup." % (
+            instance.user.first_name,
+            instance.user.last_name,
+        )
+
+    room = ChatRoom.objects.get(uri=meetup.uri)
+    msg = ChatRoomMessage.objects.create(
+        sender=user, message=message, room=room, is_notif=True
+    )
+    
+    #Send Meetup Activity To Meetup Channel
+    content = {
+        "command": "new_message", 
+        "message": MessageSerializer(msg).data
+    }
+
+    async_to_sync(channel_layer.group_send)(
+        "chat_%s" % meetup.uri, 
+        {
+            "type": "chat_message",
+            "message": content
+        }
+    )
+
+@receiver(pre_save, sender=MeetupEvent)
+def handle_generate_options_on_meetup_event_field_change(sender, instance, **kwargs):
+    if instance.id is None:
+        instance._meetup_notification = ["created an event named %s" % (instance.title)]
+    else:
+        previous = MeetupEvent.objects.get(pk=instance.id)
+        does_change_warrant_new_options = False
+        potential_changes = []
+
+        if previous.title != instance.title:
+            potential_changes.append(
+                "changed name of event from %s to %s" % (previous.title, instance.title)
+            )
+
+        if previous.price != instance.price:
+            does_change_warrant_new_options = True
+            potential_changes.append(
+                "changed price of event %s from %s to %s"
+                % (instance.title, previous.price, instance.price)
+            )
+
+        if previous.distance != instance.distance:
+            does_change_warrant_new_options = True
+            potential_changes.append(
+                "changed distance of event %s from %d to %d"
+                % (instance.title, previous.distance, instance.distance)
+            )
+
+        if previous.entries != instance.entries:
+            does_change_warrant_new_options = True
+            previous_entries = ",".join(previous.entries.keys())
+            instance_entries = ",".join(instance.entries.keys())
+            previous.event_categories.all().delete()
+            potential_changes.append(
+                "changed categories of event %s from %s to %s"
+                % (instance.title, previous_entries, instance_entries)
+            )
+
+        if previous.start != instance.start:
+            potential_changes.append(
+                "changed start time of event %s" % (instance.title)
+            )
+
+        if previous.end != instance.end:
+            potential_changes.append("changed end time of event %s" % (instance.title))
+
+        if not previous.random and instance.random:
+            does_change_warrant_new_options = True
+            potential_changes.append(
+                "changed event %s to give random choices" % (instance.title)
+            )
+
+        if previous.random and not instance.random:
+            instance.delete_options()
+            potential_changes.append(
+                "changed event %s to not give random choices" % (instance.title)
+            )
+
+        if does_change_warrant_new_options:
+            instance.delete_options()
+            instance.generate_options()
+
+        instance._meetup_notification = potential_changes
+
+        if previous.chosen != instance.chosen:
+            instance._meetup_notification = "chosen changed"
+
+
+@receiver(post_save, sender=MeetupEvent)
+def handle_notif_on_meetup_event_create(sender, instance, created, **kwargs):
+    from ..serializers import (
+        MeetupEventSerializer,
+        MessageSerializer
+    )
+    from .chat import ChatRoomMessage, ChatRoom
+    from social.models import Notification
+    from social.serializers import NotificationSerializer
+    from social.models import Activity
+
+    meetup = instance.meetup
+
+    if created:
+        # If random is set then generate options, otherwise No Options Needed.
+        if instance.random:
+            instance.generate_options()
+        else:
+            instance.convert_entries_to_string()
+
+        if meetup.public:
+
+            # Create User Activity --> Ex. User created Event
+            Activity.objects.create(
+                actor = instance.creator.user,
+                action_object = instance,
+                target = meetup,
+                description="meetup",
+                verb="created event"
+            )
+
+            # Send User Notification To All Members of Meetup If Event Created
+            for member in meetup.members.all():
+                if member != instance.creator:
+                    user = member.user
+
+                    notification = Notification.objects.create(
+                        recipient = user,
+                        actor = instance.creator,
+                        description="meetup",
+                        verb=instance._meetup_notification[0],
+                        target=meetup,
+                        action_object=instance
+                    )
+
+                    content = {
+                        "command": "create_notif", 
+                        "message": NotificationSerializer(notification).data
+                    }
+
+                    async_to_sync(channel_layer.group_send)(
+                        "notif_room_for_user_%d" % user.id,
+                        {
+                            "type": "notifications", 
+                            "message": content
+                        }
+                    )
+
+    # Create Meetup Chat Message --> Member did something to Something on Meetup
+    if instance._meetup_notification != "chosen changed":
+        user = get_user() or instance.creator.user
+        room = ChatRoom.objects.get(uri=meetup.uri)
+
+        for change in instance._meetup_notification:
+            msg = ChatRoomMessage.objects.create(
+                sender=user, room=room, is_notif=True, message=change
+            )
+
+            content = {
+                "command": "new_message", 
+                "message": MessageSerializer(msg).data
+            }
+
+            async_to_sync(channel_layer.group_send)(
+                "chat_%s" % meetup.uri, 
+                {
+                    "type": "chat_message", 
+                    "message": content
+                }
+            )
+
+    # Send New Event Object To Meetup Channel
+    content = {
+        "command": "new_event",
+        "message": {
+            "meetup": meetup.uri,
+            "event": {instance.id: MeetupEventSerializer(instance).data},
+        },
+    }
+
+    async_to_sync(channel_layer.group_send)(
+        "meetup_%s" % meetup.uri, 
+        {
+            "type": "meetup_event", 
+            "meetup_event": content
+        }
+    )

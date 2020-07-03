@@ -15,26 +15,26 @@ from meetup.serializers import (
 from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from datetime import date, timedelta
+from meetup.helpers import get_user_coordinates
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
-
 
 class MeetupListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         user, categories = request.user, request.GET.get("categories", [])
-        coords = [
-            request.GET.get("latitude"),
-            request.GET.get("longitude"),
-            request.GET.get("radius"),
-        ]
-        start, end = request.GET.get("start"), request.GET.get("end")
+        coords = [request.GET.get('latitude'), request.GET.get('longitude'),request.GET.get("radius", 25)]
+        today = date.today()
+        start, end = request.GET.get("startDate", str(today)), request.GET.get("endDate", str(today + timedelta(days=7)))
+        meetup_type = request.GET.get('type', 'public')
+        latitude, longitude, radius = get_user_coordinates(coords, request)
 
-        if request.GET.get("type") == "public":
+        if meetup_type == "public":
             meetups = Meetup.get_public(categories, coords, request, start, end)
-        elif request.GET.get("type") == "private":
-            meetups = Meetup.get_private(user, categories, start, end)
+        elif meetup_type == "private":
+            meetups = Meetup.get_private(categories, coords, request, user, start, end)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -45,7 +45,14 @@ class MeetupListView(APIView):
                 serializer = MeetupSerializer(meetup, context={"user": user})
                 meetups_json[meetup.uri] = serializer.data
 
-        return Response({"meetups": meetups_json})
+        return Response({
+            "meetups": meetups_json,
+            'count': len(meetups_json),
+            "coords": {
+                "latitude": float(latitude),
+                "longitude": float(longitude)
+            }
+        })
 
     def post(self, request, *args, **kwargs):
         try:

@@ -19,7 +19,6 @@ class SearchUnitTest(UnitTestControl):
     fixtures = ("1_users.json","3_restaurants.json",)
 
     def setUp(self):
-        print('hello')
         self.rebuild_index()
         self.user = User.objects.get(pk=1)
         self.pizza_rst = Restaurant.objects.get(pk=1)

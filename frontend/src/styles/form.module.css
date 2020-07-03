@@ -15,7 +15,6 @@
   background-color: white;
   box-shadow: var(--shadow-0);
   border: var(--border-separator);
-  transform: scale(.9);
 }
 
 .form {

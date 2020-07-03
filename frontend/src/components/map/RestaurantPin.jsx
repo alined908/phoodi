@@ -1,4 +1,4 @@
-import React, {PureComponent, Component} from 'react'
+import React, {Component} from 'react'
 import {Marker, Popup} from 'react-map-gl'
 import {Avatar} from '@material-ui/core'
 import {Link} from 'react-router-dom'
@@ -87,20 +87,4 @@ class RestaurantPin extends Component {
     }
   }
 
-
-class RestaurantPins extends PureComponent {
-    render () {
-      const {data, offset, hoveredIndex} = this.props;
-  
-      return data.map((restaurant, index) => 
-        <RestaurantPin 
-          number={offset + index + 1}
-          identifier={`pin-${index}`} 
-          hovered={hoveredIndex === offset + index + 1}
-          data={restaurant}
-        />
-      )
-    }
-  }
-
-export default RestaurantPins
+export default RestaurantPin

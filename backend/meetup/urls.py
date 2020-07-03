@@ -33,5 +33,4 @@ urlpatterns = [
     path("chats/", views.ChatRoomListView.as_view()),
     path("chats/<uri>/", views.ChatRoomView.as_view()),
     path("chats/<uri>/messages/", views.ChatRoomMessageView.as_view()),
-    path("notifs/", views.UserNotificationView.as_view()),
 ]

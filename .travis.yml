@@ -45,8 +45,7 @@ script:
   - sleep 10
   - docker ps
   - docker-compose exec backend python manage.py migrate
-  - docker-compose exec backend python manage.py test meetup
-  - docker-compose exec backend python manage.py test search.tests.test_search
+  - docker-compose exec backend python manage.py test meetup search
   - docker-compose exec backend pytest
   - docker-compose exec frontend npm test -- --coverage -u
 

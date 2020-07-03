@@ -8,6 +8,7 @@ import {Pagination} from '@material-ui/lab'
 import Geocode from "react-geocode";
 import {connect} from 'react-redux'
 import { getPreferences } from "../../actions";
+import {Helmet} from 'react-helmet'
 
 const marks = [
     { value: 5 },
@@ -20,7 +21,7 @@ const marks = [
 const defaultFilters = {
     prices: [false, false, false, false],
     categories: [],
-    radius: 25,
+    radius: 10,
     rating: null,
     openNow: false,
     sort: 'rating',
@@ -59,6 +60,19 @@ const formatCategories = (entries) => {
 
     return ids
 };
+
+const countFilters = (params) => {
+        
+    let count = 0;
+    for(let key in params){
+        if (key === 'q' || key === 'location' || key ==='sort' || key === 'start'){
+            continue;
+        }
+        count += 1
+    }
+
+    return count;
+}
 
 const formatPrices = (prices) => {
     let priceVals = []
@@ -176,7 +190,11 @@ class SearchPage extends Component {
         const response = await axiosClient.request({
             method: 'get',
             url: '/search/restaurants/',
-            params: {...params, latitude: this.state.latitude, longitude: this.state.longitude}
+            params: {
+                ...params, 
+                latitude: this.state.latitude, 
+                longitude: this.state.longitude
+            }
         })
 
         this.setState({
@@ -186,7 +204,7 @@ class SearchPage extends Component {
             longitude: response.data.coords.longitude
         })
 
-        setTimeout(() => this.setState({loading: false}), 300)
+        setTimeout(() => this.setState({loading: false}), 200)
     }
 
     handleFilterChange = async () => {
@@ -301,29 +319,23 @@ class SearchPage extends Component {
         this.setState({mobileTabIndex: newValue})
     }
 
-    countFilters = (params) => {
-        
-        let count = 0;
-        for(let key in params){
-            if (key === 'q' || key === 'location' || key ==='sort' || key === 'start'){
-                continue;
-            }
-            count += 1
-        }
-
-        return count;
-    }
-
     render () {
         const coordinates = {latitude: this.state.latitude, longitude: this.state.longitude}
         const params = parseURL(this.props.location.search)
         const authenticated = this.props.user.authenticated
         const searchName = this.props.currentSearch ? this.props.currentSearch : (params.q ? params.q : "Food")
         const locationName = this.props.currentSearchLocation ? this.props.currentSearchLocation : "Me"
-        const numFilters = this.countFilters(params)
+        const numFilters = countFilters(params)
     
         return (
             <div className={`${styles.searchPage} ${this.state.isMobile ? styles.mobileSearch :""}`}>
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>
+                        Restaurants Search
+                    </title>
+                    <meta name="description" content="Search Restaurants" />
+                </Helmet>
                 <div className={`${styles.searchConfig} ${this.state.isMobile ? (this.state.mobileTabIndex === 0 ? styles.mobileShow : styles.mobileHide) : ""}`}>
                     <div className={styles.filterTracker}>
                         {`${numFilters === 0 ? "No" : numFilters} Filters`}
@@ -357,7 +369,7 @@ class SearchPage extends Component {
                             </span>
                         )}
                         <div className={styles.clearFilters} onClick={this.handleClearFilters}>
-                            {this.countFilters(params) > 0 && 
+                            {numFilters > 0 && 
                                 "Clear Filters"
                             }
                         </div>
@@ -441,6 +453,7 @@ class SearchPage extends Component {
                                 size="small"
                                 handleClick={this.onTagsChange}
                                 label="Search Categories..."
+                                background="#fff"
                             />
                         </div>
                     </div>
@@ -514,6 +527,7 @@ class SearchPage extends Component {
                             :
                             this.state.results.map((result, index) => 
                                 <RestaurantCard 
+                                    key={result.id}
                                     onHover={this.handleHover}
                                     data={result._source} 
                                     index={index + this.state.filters.start}
@@ -531,8 +545,6 @@ class SearchPage extends Component {
                                 {this.state.filters.start + 1} - {Math.min(this.state.filters.start + 11, this.state.totalCount)} of {this.state.totalCount} entries
                             </div>
                         </div>
-                        
-
                     </div>
                 </div>
                 <div className={`${styles.searchMap} ${this.state.isMobile ? (this.state.mobileTabIndex === 2 ? styles.mobileShow : styles.mobileHide) : ""}`}>
@@ -541,6 +553,7 @@ class SearchPage extends Component {
                             indexOffset={this.state.filters.start}
                             markers={this.state.results}
                             zoom={11}
+                            type="restaurants"
                             location={coordinates}
                             radius={this.state.filters.radius}
                             hoveredIndex={this.state.hoveredIndex}

@@ -7,3 +7,4 @@ from .preference import *
 from .restaurant import *
 from .review import *
 from .user import *
+from .utils import *

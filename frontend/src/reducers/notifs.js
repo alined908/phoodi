@@ -1,24 +1,20 @@
-import {
-  GET_NOTIFS,
-  REMOVE_NOTIFS,
-  CLEAR_STORE,
-} from "../constants/action-types";
+import * as types from "../constants/action-types";
 
 export const defaultState = {
-  chat_message: null,
-  friend_inv: null,
-  meetup_inv: null,
-  meetup: null,
-  friend: null,
+  notifications: []
 };
 
 export default function notifReducer(state = defaultState, action) {
   switch (action.type) {
-    case GET_NOTIFS:
-      return { ...state, ...action.payload };
-    case REMOVE_NOTIFS:
-      return { ...state, ...action.payload };
-    case CLEAR_STORE:
+    case types.GET_NOTIFS:
+      return {...state, notifications: action.payload}
+    case types.CREATE_NOTIF:
+      return { ...state, notifications: [...state.notifications, action.payload] };
+    case types.READ_NOTIF:
+      return {...state, notifications: state.notifications.filter(notif => notif.id !== action.payload)}
+    case types.READ_ALL_NOTIFS:
+      return {...state, notifications: []}
+    case types.CLEAR_STORE:
       return defaultState;
     default:
       return state;

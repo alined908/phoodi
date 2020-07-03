@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import {
   respondFriendInvite,
   respondMeetupInvite,
-  removeNotifs,
 } from "../../actions";
 import { inviteType, inviteStatus } from "../../constants/default-states";
 import { Link } from "react-router-dom";
@@ -109,13 +108,11 @@ Invite.propTypes = {
   type: PropTypes.number.isRequired,
   respondFriendInvite: PropTypes.func.isRequired,
   respondMeetupInvite: PropTypes.func.isRequired,
-  removeNotifs: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
   respondFriendInvite,
   respondMeetupInvite,
-  removeNotifs,
 };
 
 export default connect(null, mapDispatchToProps)(Invite);

@@ -118,6 +118,7 @@ const CategoryAutocomplete = (props) => {
           label={props.label}
           InputProps={{
             ...params.InputProps,
+            style: {background: `${props.background}`},
             classes,
             endAdornment: (
               <>

@@ -10,11 +10,13 @@
     padding: 0 3rem;
     position: fixed;
     top: 0;
-    height: 80px;
+    height: 60px;
     align-items: center;
     background: white;
-    z-index: 1;
+    color: black;
+    z-index: 3;
     box-shadow: var(--shadow-1);
+    transition: all .2s ease;
 }
 
 .appBarHome{
@@ -22,6 +24,8 @@
     background: transparent;
     height: 60px;
     box-shadow: none;
+    color: white;
+    transition: none;
 }
 
 .meta {
@@ -31,28 +35,35 @@
 }
 
 .title {
-    color: black;
     margin-left: .5rem;
-    font-size: 1.3rem !important;
+    font-weight: 600;
+    font-size: 1.5rem !important;
+    color: black;
+}
+
+.title:hover{
+    color: var(--secondary) !important;
+    transition: all .3s ease;
 }
 
 .search {
     display: flex;
     flex: 1;
-    box-shadow: 0 2px 18px rgba(0,0,0,.15);
-    min-width: 750px;
+    color: white;
+    min-width: 800px;
 }
 
 .searchMobile {
     display: flex;
     align-items: center;
     margin-right: 20px;
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     filter: drop-shadow( 1px 1px 1px rgba(0, 0, 0, .65));
+    transition: all .2s ease;
 }
 
 .searchMobile:hover{
-    font-size: 2rem;
+    font-size: 1.75rem;
     cursor:pointer;
 }
 
@@ -81,7 +92,8 @@
 
 .userProfile{
     cursor: pointer;
-    transition: all .3 ease;
+    transition: all .2s ease;
+    box-shadow: var(--circular-shadow);
 }
 
 .userProfile:hover{
@@ -91,23 +103,33 @@
 .menu {
     position: absolute;
     right: -20px;
-    top: 10px;
+    top: 14px;
     background-color: white;
     width: 200px;
     z-index: 10;
     box-shadow: 0 2px 12px rgba(0,0,0,0.175);
+    border-radius: 5px;
 }
 
 .actionButton {
     margin-right: 1rem;
-    font-size: .85rem !important;
+    border-radius: 0 !important;
+}
+
+.actionButton:first-child{
+    margin-right: 10px;
+}
+
+.login:hover {
+    border: 1px solid #ff4949;
+    color: #ff4949;
 }
 
 .content {
     flex-grow: 1;
     width: 100%;
     height: 100%;
-    padding-top: 80px;
+    padding-top: 60px;
 }
 
 .contentHome {
@@ -128,7 +150,12 @@
 }
 
 .name{
-    padding-left: 12px !important;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    font-family: "Roboto";
+    background: rgba(0, 0, 0, .85);
+    padding: .6rem 1.1rem;
+    color: rgba(250, 250, 250);
 }
 
 .bold {
@@ -136,5 +163,5 @@
 }
 
 .email {
-    color: var(--grey-text);
+    font-size: .7rem;
 }

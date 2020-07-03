@@ -37,7 +37,7 @@ class LoginPage extends Component {
       '/auth/facebook/', {accessToken: res.accessToken, email: res.email, name: res.name}
     )
     console.log(response.data)
-    signinHelper(response.data, this.props.dispatch, () => this.props.history.push("/meetups"))
+    signinHelper(response.data, this.props.dispatch, () => this.props.history.push("/feed"))
   }
 
 
@@ -49,7 +49,7 @@ class LoginPage extends Component {
       '/auth/google/', {tokenId: res.tokenId}
     )
     console.log(response.data)
-    signinHelper(response.data, this.props.dispatch, () => this.props.history.push("/meetups"))
+    signinHelper(response.data, this.props.dispatch, () => this.props.history.push("/feed"))
   }
 
   onSubmit = (formProps) => {
@@ -60,9 +60,10 @@ class LoginPage extends Component {
       };
     } else {
       redirect = () => {
-        this.props.history.push("/meetups");
+        this.props.history.push("/feed");
       };
     }
+    formProps.email = formProps.email.toLowerCase()
     this.props.signin(formProps, redirect);
   };
 

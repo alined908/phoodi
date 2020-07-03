@@ -1,11 +1,4 @@
-from meetup.models import (
-    Restaurant,
-    RestaurantCategory,
-    Review,
-    Comment,
-    Category,
-    Vote
-)
+from meetup.models import *
 from django.http import Http404
 from meetup.serializers import (
     RestaurantSerializer,
@@ -127,14 +120,14 @@ class CommentListView(APIView):
 
         if parent_id:
             try:
-                parent = Comment.objects.get(pk=parent_id)
-            except Comment.DoesNotExist:
+                parent = ReviewComment.objects.get(pk=parent_id)
+            except ReviewComment.DoesNotExist:
                 return Response({"error": "Parent comment does not exist."}, status=404)
         else:
             parent = None
 
         try:
-            comment = Comment.objects.create(
+            comment = ReviewComment.objects.create(
                 user=user,
                 text=text,
                 review=review,
@@ -155,8 +148,8 @@ class CommentView(APIView):
         comment_id = kwargs['comment_id']
 
         try:
-            comment = Comment.objects.get(review=review_id, pk=comment_id)
-        except Comment.DoesNotExist:
+            comment = ReviewComment.objects.get(review=review_id, pk=comment_id)
+        except ReviewComment.DoesNotExist:
             return Response({"error": "Comment does not exist."}, status=404)
 
         serializer = CommentSerializer(comment)
@@ -176,9 +169,9 @@ class VoteView(APIView):
                 votable = Review.objects.get(pk=review_id)
             else:
                 comment_id = request.data.get("comment")
-                votable = Comment.objects.get(pk=comment_id)
+                votable = ReviewComment.objects.get(pk=comment_id)
         except ObjectDoesNotExist:
-            return Response({"error": "Votable object does not exist."}, status=404)
+            return Response({"error": "Votable object does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
         try:
             vote = Vote.objects.get(
@@ -191,6 +184,6 @@ class VoteView(APIView):
             try:
                 vote = Vote.objects.create(user = user, content_object = votable, value = value)
             except ValidationError as e:
-                return Response({"errors": e.messages}, status=404)
+                return Response({"errors": e.messages}, status=status.HTTP_404_NOT_FOUND)
 
         return Response(status=status.HTTP_204_NO_CONTENT)

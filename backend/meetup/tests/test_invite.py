@@ -6,7 +6,7 @@ from meetup.models import (
     MeetupMember,
     Friendship,
 )
-from notifications.models import Notification
+from social.models import Notification, Activity
 from meetup.serializers import FriendInviteSerializer, MeetupInviteSerializer
 from rest_framework import status
 from rest_framework.test import APIClient
@@ -140,7 +140,7 @@ class InviteTest(TestCase):
             data=json.dumps(self.valid_payload, default=str),
             content_type="application/json",
         )
-        notifications = self.user2.notifications.filter(description='meetup_inv')
+        notifications = self.user2.notifications.filter(description='meetup_invite')
         self.assertEqual(notifications.count(), 1)
 
     def test_GET_friendinvite_valid(self):
@@ -208,7 +208,7 @@ class InviteTest(TestCase):
             data=json.dumps(self.valid_payload, default=str),
             content_type="application/json",
         )
-        notifications = self.user2.notifications.filter(description="friend_inv")
+        notifications = self.user2.notifications.filter(description="friend_invite")
         self.assertEqual(notifications.count(), 1)
 
     # def test_unable_to_inv_self(self):

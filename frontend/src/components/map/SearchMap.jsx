@@ -6,7 +6,7 @@ import ReactMapGL, {
   GeolocateControl,
   FlyToInterpolator
 } from "react-map-gl";
-import {SelfPin, RestaurantPins} from '../components'
+import {SelfPin, EntityPins} from '../components'
 import * as d3 from 'd3-ease'
 import PropTypes from "prop-types";
 import * as turf from '@turf/turf'
@@ -143,8 +143,9 @@ class SearchMap extends Component {
           positionOptions={{enableHighAccuracy: true}}
           trackUserLocation={true}
         />
-        <RestaurantPins 
-          data={this.props.markers} 
+        <EntityPins 
+          data={this.props.markers}
+          type={this.props.type}
           offset={this.props.indexOffset}
           hoveredIndex={this.props.hoveredIndex}
         />

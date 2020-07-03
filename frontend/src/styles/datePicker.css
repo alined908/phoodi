@@ -3,7 +3,7 @@
 }
 
 .DateRangePickerInput {
-    background-color: none;
+    background-color: transparent;
 }
 
 .DateRangePickerInput_arrow{
@@ -12,8 +12,7 @@
 
 .DateInput {
     overflow: hidden;
-    -webkit-box-shadow: var(--shadow-0) !important;
-    box-shadow: var(--shadow-0) !important;
+    border: var(--border-separator);
 }
 
 .DateInput_input {
@@ -21,17 +20,18 @@
     font-family: "Lato";
     font-weight: 600;
     font-size: .8rem;
-    background-color: var(--light-blue);
+    background-color: white;
     cursor: pointer !important;
+    
 }
 
 .DateInput_input:hover {
-    background-color: var(--background);
+    background-color: var(--light-blue);
 }
 
 .DateInput_input__focused{
-    border-bottom: 2px solid #00a699;
-    background: var(--background);
+    border-bottom: 2px solid var(--secondary);
+    background: var(--light-blue);
 }
 
 .CalendarDay__default,

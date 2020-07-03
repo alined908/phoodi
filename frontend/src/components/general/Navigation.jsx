@@ -2,9 +2,7 @@ import React from "react";
 import {
   Button,
   CssBaseline,
-  Typography,
   Divider,
-  ListItemAvatar,
   Popper,
   ClickAwayListener,
   Avatar,
@@ -14,8 +12,7 @@ import {
   Grow,
   MenuList,
   Badge,
-  Dialog,
-  DialogContent
+  Dialog
 } from "@material-ui/core";
 import {
   People as PeopleIcon,
@@ -30,7 +27,7 @@ import {
 } from "@material-ui/icons";
 import { Link, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
-import { Body, LiveUpdatingBadge, SearchBar } from "../components";
+import { Body, LiveUpdatingBadge, SearchBar, Notifications } from "../components";
 import PropTypes from "prop-types";
 import { userPropType, notifsPropType } from "../../constants/prop-types";
 import styles from '../../styles/navigation.module.css'
@@ -89,32 +86,21 @@ const Navigation = props => {
     }
   }, [open]);
 
-  const numNotifs = (notifs) => {
-    let count = 0;
-
-    for (let value of Object.values(notifs)) {
-      count += value;
-    }
-
-    return count;
-  };
-
   const authenticated = props.authenticated
   const user = props.user
-  const notifsCount = numNotifs(props.notifs)
   const isHomePage = location.pathname === '/'
 
   return (
     <div className={styles.root}>
       <CssBaseline />
 
-      <div className={`${styles.appBar} ${isHomePage ? styles.appBarHome : ""}`}>
+      <div className={`${styles.appBar} ${isHomePage ? styles.appBarHome : ""}`} id="nav">
         <div className={styles.meta}>
-          <Typography className={styles.title} variant="h5" noWrap>
-            <Link to="/">
+          <div className={styles.title} id="title">
+            <Link to={!authenticated ? "/" : "/feed"}>
               Phoodi
             </Link>
-          </Typography>
+          </div>
         </div>
         <div className={`${styles.search} ${(isHomePage || isMobile) && styles.searchHide}`}>
           <SearchBar isMobile={false}/>
@@ -127,19 +113,35 @@ const Navigation = props => {
         <div className={styles.user}>
           {isMobile &&
             <div className={styles.searchMobile} onClick={handleMobileSearchOpen}>
-              <SearchIcon color="primary" fontSize="inherit"/>
+              <SearchIcon color="inherit" fontSize="inherit"/>
             </div>
           }
+          {authenticated &&
+            <Notifications user={user}/>
+          }
           {!authenticated && (
-            <Link to="/register">
-              <Button
-                className={styles.actionButton}
-                // startIcon={<Assignment />}
-                color="primary"
-              >
-                Signup
-              </Button>
-            </Link>
+            <>
+              <Link to="/login">
+                <Button
+                  className={`${styles.actionButton} ${styles.login}`}
+                  // startIcon={<Assignment />}
+                  color="inherit"
+                  variant="outlined"
+                >
+                  Login
+                </Button>
+              </Link>
+              <Link to="/register">
+                <Button
+                  className={styles.actionButton}
+                  // startIcon={<Assignment />}
+                  color="secondary"
+                  variant='contained'
+                >
+                  Sign Up
+                </Button>
+              </Link>
+            </>
           )}
           {/* <span style={{marginRight: "2rem"}}>
             {authenticated && !isHomePage &&
@@ -152,19 +154,19 @@ const Navigation = props => {
           </span> */}
           {authenticated && (
             <div ref={anchorRef} className={styles.dropDownControl} onClick={handleToggle}>
-              {notifsCount > 0 ?
+              {/* {notifsCount > 0 ?
                 <Badge color="secondary" overlap="circle" badgeContent={notifsCount}>
                   <Avatar className={styles.userProfile} src={user.avatar} >
                     {user.first_name.charAt(0)}
                     {user.last_name.charAt(0)}
                   </Avatar>
                 </Badge>
-                :
+                : */}
                 <Avatar className={styles.userProfile} src={user.avatar} >
                   {user.first_name.charAt(0)}
                   {user.last_name.charAt(0)}
                 </Avatar>
-              }
+              {/* } */}
               <Popper 
                 open={open} 
                 anchorEl={anchorRef.current} 
@@ -181,29 +183,14 @@ const Navigation = props => {
                   <ClickAwayListener onClickAway={handleClose}>
                     <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                       <Link to={`/profile/${user.id}`} onClick={handleClose}>
-                        <ListItem className={styles.name}>
-                          <ListItemAvatar>
-                            <Avatar style={{width: 30, height: 30, fontSize: "1rem", marginRight: 8}} src={props.user.avatar}>
-                              {props.user.first_name.charAt(0)}
-                              {props.user.last_name.charAt(0)}
-                            </Avatar>
-                          </ListItemAvatar>
-                          <ListItemText
-                            primaryTypographyProps={{
-                              className: `${styles.link} ${styles.bold}`,
-                            }}
-                            primary={`${user.first_name} ${user.last_name}`}
-                            secondary={
-                              <Typography
-                                component="span"
-                                variant="body2"
-                                className={styles.email}
-                              >
-                                {user.email}
-                              </Typography>
-                            }
-                          />
-                        </ListItem>
+                        <div className={styles.name}>
+                          <div>
+                            {user.first_name} {user.last_name}
+                          </div>
+                          <div className={styles.email}>
+                            {user.email}
+                          </div>
+                        </div>
                       </Link>
                       <Divider/>
                       <Link to={`/profile/${user.id}`} onClick={handleClose}>
@@ -220,10 +207,7 @@ const Navigation = props => {
                       <Link to="/meetups?type=private"  onClick={handleClose}>
                         <ListItem button key="Meetups">
                           <ListItemIcon>
-                            <LiveUpdatingBadge
-                              type={"meetup"}
-                              icon={<PeopleIcon color="primary"/>}
-                            />
+                            <PeopleIcon color="primary"/>
                           </ListItemIcon>
                           <ListItemText
                             primary="Meetups"
@@ -235,10 +219,7 @@ const Navigation = props => {
                       <Link to="/friends" onClick={handleClose}>
                         <ListItem button key="Friends">
                           <ListItemIcon>
-                            <LiveUpdatingBadge
-                              type={"friend"}
-                              icon={<PermContactCalendarIcon color="primary"/>}
-                            />
+                            <PermContactCalendarIcon color="primary"/>
                           </ListItemIcon>
                           <ListItemText
                             primary="Friends"
@@ -249,10 +230,7 @@ const Navigation = props => {
                       <Link to="/chat" onClick={handleClose}>
                         <ListItem button key="Chat">
                           <ListItemIcon>
-                            <LiveUpdatingBadge
-                              type={"chat"}
-                              icon={<ChatOutlinedIcon  color="primary"/>}
-                            />
+                            <ChatOutlinedIcon  color="primary"/>
                           </ListItemIcon>
                           <ListItemText
                             primary="Chat"
@@ -263,10 +241,7 @@ const Navigation = props => {
                       <Link to="/invites" onClick={handleClose}>
                         <ListItem button key="Invites">
                           <ListItemIcon>
-                            <LiveUpdatingBadge
-                              type={"invite"}
-                              icon={<MailOutlinedIcon color="primary"/>}
-                            />
+                            <MailOutlinedIcon color="primary"/>
                           </ListItemIcon>
                           <ListItemText
                             primary="Invites"
@@ -335,8 +310,7 @@ Navigation.propTypes = {
 function mapStatetoProps(state) {
   return {
     authenticated: state.user.authenticated,
-    user: state.user.user,
-    notifs: state.notifs,
+    user: state.user.user
   };
 }
 

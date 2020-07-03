@@ -23,8 +23,8 @@ import {
   CategoryAutocomplete,
   Preferences,
   RegisterPage,
-  DisplayRating,
-  AuthWrapper
+  AuthWrapper,
+  FeedActivities
 } from "../components";
 import PropTypes from "prop-types";
 import { userPropType } from "../../constants/prop-types";
@@ -137,167 +137,10 @@ class Profile extends Component {
     this.props.sendFriendInvite(this.state.user.email);
   };
 
-  formatActivity = (activity) => {
-    console.log(activity)
-    const verb = activity.verb;
-    let activityHTML;
-
-    if (verb === "created" || verb === "joined") {
-      activityHTML = (
-        <Link
-            className={styles.link}
-            to={`/meetups/${activity.action_object && activity.action_object.uri}`}
-          >
-            <div className={styles.activityinfo}>
-                <Avatar
-                  className={styles.useravatar}
-                  src={this.state.user.avatar}
-                >
-                  {this.state.user.first_name.charAt(0)}
-                  {this.state.user.last_name.charAt(0)}
-                </Avatar>
-                <div className={styles.infoAll}>
-                  <div>
-                    <div className={styles.infoName}>
-                      {this.state.user.first_name} {this.state.user.last_name}
-                    </div>
-                    <div className={styles.infoActivity}>
-                      <span>
-                        {`${verb} a ${activity.action_object && activity.action_object.public ? "public" : "private"} meetup named `}
-                        {activity.action_object && activity.action_object.name}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-            </div>
-        </Link>
-      );
-    } else if (verb === "became friends with") {
-      activityHTML = (
-        <Link
-          className={styles.link}
-          style={{display: "inline-flex"}}
-          to={`/profile/${activity.action_object.id}`}
-        >
-          <div className={styles.activityinfo}>
-            <Avatar
-              className={styles.useravatar}
-              src={this.state.user.avatar}
-            >
-              {this.state.user.first_name.charAt(0)}
-              {this.state.user.last_name.charAt(0)}
-            </Avatar>
-            <div className={styles.infoAll}>
-              <div>
-                <div className={styles.infoName}>
-                  {this.state.user.first_name} {this.state.user.last_name}
-                </div>
-                <div className={styles.infoActivity}>
-                  <span>
-                    {verb} {`${activity.action_object.first_name} ${activity.action_object.last_name}.`}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Link>
-      );
-    } else if (verb === "created event") {
-      activityHTML = (
-        <Link
-          className={styles.link}
-          to={`/meetups/${activity.target.uri}`}
-        >
-          <div className={styles.activityinfo}>
-              <Avatar
-                className={styles.useravatar}
-                src={this.state.user.avatar}
-              >
-                {this.state.user.first_name.charAt(0)}
-                {this.state.user.last_name.charAt(0)}
-              </Avatar>
-              <div className={styles.infoAll}>
-                <div>
-                  <div className={styles.infoName}>
-                    {this.state.user.first_name} {this.state.user.last_name}
-                  </div>
-                  <div className={styles.infoActivity}>
-                    <span>
-                      {` added ${activity.action_object
-                      ? `an event named ${activity.action_object.title} to`
-                      : "a DELETED event to"}`} {activity.target.name}
-                    </span>
-                  </div>
-                </div>
-              </div>
-          </div>
-        </Link>
-      );
-    }
-      else if (verb === "review") {
-        activityHTML = (
-          <Link
-            className={styles.link}
-            to={`/restaurants/${activity.target.url}`}
-          >
-            <div className={styles.imageWrapper}>
-              <div className={styles.image} style={{backgroundImage: `url(${activity.target.yelp_image})`}}/>
-            </div>
-            <div className={styles.activityinfo}>
-              <Avatar
-                className={styles.useravatar}
-                src={this.state.user.avatar}
-              >
-                {this.state.user.first_name.charAt(0)}
-                {this.state.user.last_name.charAt(0)}
-              </Avatar>
-              <div className={styles.infoAll}>
-                <div>
-                  <div className={styles.infoName}>
-                    {this.state.user.first_name} {this.state.user.last_name}
-                  </div>
-                  <div className={styles.infoActivity}>
-                    <span>
-                      reviewed {activity.target.name}
-                    </span>
-                  </div>
-                </div>
-                <DisplayRating score={activity.action_object.rating}/>
-              </div>
-            </div>
-            <div className={styles.activityContent}>
-                {activity.action_object.text}
-            </div>
-          </Link>
-        )
-      
-    } else {
-      activityHTML = <></>;
-    }
-
-    return activityHTML;
-  };
-
   render() {
     const isUser = this.props.user && this.props.user.id && this.props.user.id.toString() === this.props.match.params.id;
     const isUserFriend = !isUser && !this.isUserFriend();
-
-    const renderPastActivity = () => {
-      return (
-        <div className={styles.pastactivity}>
-          {this.state.user.activity.map((activity) => (
-            <div className={styles.activity}>
-              {this.formatActivity(activity)}
-              <div className={styles.activitydate}>
-                {moment(activity.timestamp).fromNow()}
-              </div>
-            </div>
-          ))}
-        </div>
-      );
-    };
-
+    console.log(this.state.user)
     const renderFriends = () => {
       return (
         <div>
@@ -405,7 +248,14 @@ class Profile extends Component {
         </div>
         <div className={`innerRight ${this.state.isMobile ? "innerRight-mobile": ""} ${this.state.mobileTabIndex === 1 ? "innerRight-show" : ""}`}>
           <div className="innerRightBlock">
-              {this.state.userLoaded && renderPastActivity()}
+              {this.state.userLoaded && 
+                <FeedActivities 
+                    isActivitiesFetching={false}
+                    isActivitiesInitialized={true}
+                    activities={this.state.user.activities}
+                    user={this.state.user}
+                />
+              }
           </div>
         </div>
         <div className={`innerLeft ${this.state.isMobile ? "innerLeft-mobile": ""} ${this.state.mobileTabIndex === 2 ? "innerLeft-show" : ""} ${styles.profileFriends}`}>

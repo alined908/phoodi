@@ -4,7 +4,6 @@ import {
   deleteFriend,
   sendFriendInvite,
   addGlobalMessage,
-  removeNotifs,
 } from "../../actions";
 import { connect } from "react-redux";
 import {People as PeopleIcon, PersonAdd as PersonAddIcon} from '@material-ui/icons'
@@ -30,9 +29,9 @@ class Friends extends Component {
     const handler = (e) => this.setState({ isMobile: e.matches });
     window.matchMedia("(max-width: 768px)").addListener(handler);
     this.props.getFriends(this.props.user.id);
-    if (this.props.notifs !== null && this.props.notifs > 0) {
-      this.props.removeNotifs({ type: "friend" });
-    }
+    // if (this.props.notifs !== null && this.props.notifs > 0) {
+    //   this.props.removeNotifs({ type: "friend" });
+    // }
   }
 
   handleSubmit = (e) => {
@@ -143,7 +142,6 @@ Friends.propTypes = {
   notifs: PropTypes.number,
   getFriends: PropTypes.func.isRequired,
   deleteFriend: PropTypes.func.isRequired,
-  removeNotifs: PropTypes.func.isRequired,
   sendFriendInvite: PropTypes.func.isRequired,
   addGlobalMessage: PropTypes.func.isRequired,
 };
@@ -161,7 +159,6 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   getFriends,
   deleteFriend,
-  removeNotifs,
   sendFriendInvite,
   addGlobalMessage,
 };

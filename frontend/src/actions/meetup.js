@@ -3,34 +3,9 @@ import { axiosClient } from "../accounts/axiosClient";
 import { history } from "../components/MeetupApp";
 import moment from "moment";
 
-const determineMeetupsParams = (data) => {
-  let params;
-  if (data.type === "private") {
-    params = {
-      type: data.type,
-      ...(data.categories && {
-        categories: data.categories,
-      }),
-      start: data.startDate,
-      end: data.endDate,
-    };
-  } else {
-    params = {
-      type: data.type,
-      ...(data.categories && { categories: data.categories }),
-      latitude: data.coords.latitude,
-      longitude: data.coords.longitude,
-      radius: data.coords.radius,
-      start: data.startDate,
-      end: data.endDate,
-    };
-  }
-  return params;
-};
-
 export const getMeetups = (data) => async (dispatch) => {
+  console.log(data)
   dispatch({ type: types.GET_MEETUPS_REQUEST });
-  const params = determineMeetupsParams(data);
 
   try {
     const response = await axiosClient.request({
@@ -39,7 +14,7 @@ export const getMeetups = (data) => async (dispatch) => {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      params: params,
+      params: data,
     });
     dispatch({
       type: types.GET_MEETUPS_SUCCESS,

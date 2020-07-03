@@ -14,7 +14,7 @@ from meetup.serializers import (
     MeetupEventSerializer,
     MeetupMemberSerializer,
 )
-from notifications.models import Notification
+from social.models import Notification, Activity
 from rest_framework import status
 from rest_framework.test import APIClient
 from django.contrib.auth.hashers import make_password
@@ -58,7 +58,7 @@ class MeetupTest(TestCase):
         client.force_authenticate(user=self.user)
 
     def test_MeetupListView_GET_private_meetups(self):
-        response = client.get("/api/meetups/", {"type": "private", "start": yesterday, "end": tomorrow})
+        response = client.get("/api/meetups/", {"type": "private", "startDate": yesterday, "endDate": tomorrow,"latitude": 34.228754, "longitude": -118.2351192})
         meetups = self.user.meetups
         meetups_json = {}
 
@@ -82,12 +82,12 @@ class MeetupTest(TestCase):
             random=True,
         )
         response = client.get(
-            "/api/meetups/", {"type": "private", "categories": str(dessert.id), "start": yesterday, "end": tomorrow}
+            "/api/meetups/", {"type": "private", "latitude": 34.228754, "longitude": -118.2351192, "categories": str(dessert.id), "startDate": yesterday, "endDate": tomorrow}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data["meetups"]), 1)
         response = client.get(
-            "/api/meetups/", {"type": "private", "categories": str(bento.id), "start": yesterday, "end": tomorrow}
+            "/api/meetups/", {"type": "private", "latitude": 34.228754, "longitude": -118.2351192, "categories": str(bento.id), "startDate": yesterday, "endDate": tomorrow}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data["meetups"]), 0)
@@ -95,13 +95,13 @@ class MeetupTest(TestCase):
     def test_MeetupListView_GET_public_meetups(self):
         response = client.get(
             "/api/meetups/",
-            {"type": "public", "latitude": 34.228754, "longitude": -118.2351192, "start": yesterday, "end": tomorrow},
+            {"type": "public", "latitude": 34.228754, "longitude": -118.2351192, "startDate": yesterday, "endDate": tomorrow},
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data["meetups"]), 1)
         response = client.get(
             "/api/meetups/",
-            {"type": "public", "latitude": 37.871853, "longitude": -122.258423, "start": yesterday, "end": tomorrow},
+            {"type": "public", "latitude": 37.871853, "longitude": -122.258423, "startDate": yesterday, "endDate": tomorrow},
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data["meetups"]), 0)
@@ -126,7 +126,7 @@ class MeetupTest(TestCase):
                 "categories": str(dessert.id),
                 "latitude": 34.228754,
                 "longitude": -118.2351192,
-                "start": yesterday, "end": tomorrow
+                "startDate": yesterday, "endDate": tomorrow
             },
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -138,7 +138,7 @@ class MeetupTest(TestCase):
                 "categories": str(bento.id),
                 "latitude": 34.228754,
                 "longitude": -118.2351192,
-                "start": yesterday, "end": tomorrow
+                "startDate": yesterday, "endDate": tomorrow
             },
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -164,7 +164,7 @@ class MeetupTest(TestCase):
                 "categories": "desserts",
                 "latitude": 34.228754,
                 "longitude": -118.2351192,
-                "start": yesterday, "end": tomorrow
+                "startDate": yesterday, "endDate": tomorrow
             },
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -176,7 +176,7 @@ class MeetupTest(TestCase):
                 "categories": "bento",
                 "latitude": 34.228754,
                 "longitude": -118.2351192,
-                "start": yesterday, "end": tomorrow
+                "startDate": yesterday, "endDate": tomorrow
             },
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -239,15 +239,23 @@ class MeetupTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_Meetup_creation_user_activity(self):
-        notifications = Notification.objects.filter(actor_object_id=self.user.id, description="user_activity")
-        self.assertEqual(notifications.count(), 2)
+        activities = Activity.objects.filter(
+            actor_object_id=self.user.id, 
+            description="meetup", 
+            verb="created"
+        )
+        self.assertEqual(activities.count(), 1)
         client.post(
             "/api/meetups/",
             data=json.dumps(self.valid_payload, default=str),
             content_type="application/json",
         )
-        notifications = Notification.objects.filter(actor_object_id=self.user.id, description="user_activity")
-        self.assertEqual(notifications.count(), 3)
+        activities = Activity.objects.filter(
+            actor_object_id=self.user.id, 
+            description="meetup", 
+            verb="created"
+        )
+        self.assertEqual(activities.count(), 2)
 
     def test_Meetup_creation_chat_activity(self):
         client.post(
@@ -272,7 +280,7 @@ class MeetupTest(TestCase):
         self.assertEqual(meetups.first(), self.public)
 
     def test_get_private_meetups_no_categories(self):
-        meetups = Meetup.get_private(self.user, [], yesterday, tomorrow)
+        meetups = Meetup.get_private([], [34.228754, -118.2351192, 25], None, self.user, yesterday, tomorrow)
         self.assertEqual(meetups.count(), 1)
         self.assertEqual(meetups.first(), self.private)
 
@@ -391,8 +399,12 @@ class MeetupEventTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_MeetupEvent_create_user_and_chat_activity(self):
-        notifications = Notification.objects.filter(actor_object_id=self.user.id, description="user_activity")
-        self.assertEqual(notifications.count(), 2)
+        activities = Activity.objects.filter(
+            actor_object_id=self.user.id, 
+            description="meetup",
+            verb="created event"
+        )
+        self.assertEqual(activities.count(), 1)
         client.post(
             "/api/meetups/" + self.meetup.uri + "/events/",
             data=json.dumps(self.valid_payload, default=str),
@@ -400,18 +412,22 @@ class MeetupEventTest(TestCase):
         )
         message = ChatRoomMessage.objects.last()
         self.assertEqual(message.message, 'created an event named %s' % self.valid_payload['title'])
-        notifications = Notification.objects.filter(actor_object_id=self.user.id, description="user_activity")
-        self.assertEqual(notifications.count(), 3)
+        activities = Activity.objects.filter(
+            actor_object_id=self.user.id, 
+            description="meetup",
+            verb="created event"
+        )
+        self.assertEqual(activities.count(), 2)
 
     def test_MeetupEvent_create_push_notification(self):
-        user_notifs = self.user2.notifications.unread().filter(description="meetup")
+        user_notifs = self.user2.notifications.filter(description="meetup")
         self.assertEqual(user_notifs.count(), 1)
         client.post(
             "/api/meetups/" + self.meetup.uri + "/events/",
             data=json.dumps(self.valid_payload, default=str),
             content_type="application/json",
         )
-        user_notifs = self.user2.notifications.unread().filter(description="meetup")
+        user_notifs = self.user2.notifications.filter(description="meetup")
         self.assertEqual(user_notifs.count(), 2)
 
     def test_convert_entries_to_string(self):
@@ -611,8 +627,8 @@ class MeetupMemberTest(TestCase):
         )
         message = ChatRoomMessage.objects.last()
         self.assertEqual(message.message, "joined the meetup.")
-        notifications = Notification.objects.filter(actor_object_id=self.user3.id, description="user_activity")
-        self.assertEqual(notifications.count(), 1)
+        activities = Activity.objects.filter(actor_object_id=self.user3.id, description="meetup", verb='joined')
+        self.assertEqual(activities.count(), 1)
 
     def test_MeetupMember_delete_chat_activity(self):
         response = client.delete(

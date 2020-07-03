@@ -1,14 +1,17 @@
 from django.db import models
 from .category import Category
+from .utils import Followable, ContentTypeAware
 from ..helpers import nearby_public_entities
 from django.db.models.expressions import RawSQL
 from django.contrib.postgres.fields import JSONField
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db.models.signals import pre_save, post_save
+from django.dispatch import receiver
 from django.db.models import Q
 from django.utils.text import slugify
 from datetime import time
 
-class Restaurant(models.Model):
+class Restaurant(Followable, ContentTypeAware):
 
     PRICE_CHOICES = [
         (1, '$'),
@@ -49,6 +52,7 @@ class Restaurant(models.Model):
     review_count = models.IntegerField(default=0)
     option_count = models.IntegerField(default=0)
     comment_count = models.IntegerField(default=0)
+    follower_count = models.IntegerField(default=0)
     objects = models.Manager()
 
     def save(self, *args, **kwargs):
@@ -183,3 +187,19 @@ class RestaurantCategory(models.Model):
         Category, related_name="c_restaurants", on_delete=models.CASCADE
     )
     objects = models.Manager()
+
+@receiver(post_save, sender=Restaurant)
+def restaurant_hours(sender, instance, created, **kwargs):
+    if created:
+        days = RestaurantHours.DAY_CHOICES
+        start = time(hour=8, minute=0)
+        end = time(hour=20, minute=0)
+
+        for day in days:
+            number, name = day
+            RestaurantHours.objects.create(
+                restaurant=instance, 
+                day= number, 
+                open_time=start, 
+                close_time=end
+            )

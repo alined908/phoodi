@@ -46,24 +46,25 @@ describe("ChatBar unit", () => {
       .find("WithStyles(ForwardRef(IconButton))")
       .at(1);
     wrapper.setProps({ rooms: Object.values(rooms) });
-    expect(wrapper.find("Connect(Contact)")).toHaveLength(2);
+    console.log(wrapper.debug())
+    expect(wrapper.find("Contact")).toHaveLength(2);
     friendButton.simulate("click");
-    expect(wrapper.find("Connect(Contact)")).toHaveLength(1);
-    expect(wrapper.find("Connect(Contact)").first().props().room.uri).toEqual(
+    expect(wrapper.find("Contact")).toHaveLength(1);
+    expect(wrapper.find("Contact").first().props().room.uri).toEqual(
       rooms.meetup.uri
     );
     friendButton.simulate("click");
-    expect(wrapper.find("Connect(Contact)")).toHaveLength(2);
+    expect(wrapper.find("Contact")).toHaveLength(2);
     meetupButton.simulate("click");
-    expect(wrapper.find("Connect(Contact)")).toHaveLength(1);
-    expect(wrapper.find("Connect(Contact)").first().props().room.uri).toEqual(
+    expect(wrapper.find("Contact")).toHaveLength(1);
+    expect(wrapper.find("Contact").first().props().room.uri).toEqual(
       rooms.friend.uri
     );
     meetupButton.simulate("click");
-    expect(wrapper.find("Connect(Contact)")).toHaveLength(2);
+    expect(wrapper.find("Contact")).toHaveLength(2);
     meetupButton.simulate("click");
     friendButton.simulate("click");
-    expect(wrapper.find("Connect(Contact)")).toHaveLength(0);
+    expect(wrapper.find("Contact")).toHaveLength(0);
   });
 
   it("correctly filters out rooms onsearch", () => {
@@ -77,14 +78,14 @@ describe("ChatBar unit", () => {
     wrapper.setProps({ rooms: Object.values(rooms) });
     chatInput.simulate("change", { target: { value: "me" } });
     expect(wrapper.state("searchInput")).toEqual("me");
-    expect(wrapper.find("Connect(Contact)")).toHaveLength(1);
-    expect(wrapper.find("Connect(Contact)").first().props().room.uri).toEqual(
+    expect(wrapper.find("Contact")).toHaveLength(1);
+    expect(wrapper.find("Contact").first().props().room.uri).toEqual(
       rooms.meetup.uri
     );
     chatInput.simulate("change", { target: { value: user2.first_name } });
     expect(wrapper.state("searchInput")).toEqual(user2.first_name);
-    expect(wrapper.find("Connect(Contact)")).toHaveLength(1);
-    expect(wrapper.find("Connect(Contact)").first().props().room.uri).toEqual(
+    expect(wrapper.find("Contact")).toHaveLength(1);
+    expect(wrapper.find("Contact").first().props().room.uri).toEqual(
       rooms.friend.uri
     );
   });
@@ -106,16 +107,16 @@ describe("ChatBar unit", () => {
     const chatInput = wrapper.find(".searchInput");
     wrapper.setProps({ rooms: Object.values(rooms) });
     chatInput.simulate("change", { target: { value: "me" } });
-    expect(wrapper.find("Connect(Contact)")).toHaveLength(1);
+    expect(wrapper.find("Contact")).toHaveLength(1);
     meetupButton.simulate("click");
-    expect(wrapper.find("Connect(Contact)")).toHaveLength(0);
+    expect(wrapper.find("Contact")).toHaveLength(0);
     chatInput.simulate("change", { target: { value: user2.first_name } });
     expect(wrapper.state("searchInput")).toEqual(user2.first_name);
     expect(wrapper.state("filters")).toEqual({ friend: false, meetup: true });
-    expect(wrapper.find("Connect(Contact)")).toHaveLength(1);
+    expect(wrapper.find("Contact")).toHaveLength(1);
     friendButton.simulate("click");
-    expect(wrapper.find("Connect(Contact)")).toHaveLength(0);
+    expect(wrapper.find("Contact")).toHaveLength(0);
     chatInput.simulate("change", { target: { value: "" } });
-    expect(wrapper.find("Connect(Contact)")).toHaveLength(0);
+    expect(wrapper.find("Contact")).toHaveLength(0);
   });
 });

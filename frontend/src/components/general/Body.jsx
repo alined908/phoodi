@@ -9,6 +9,7 @@ import {
   HomePage,
   Calendar,
   Category,
+  FeedPage,
   MeetupWrapper,
   Friends,
   LoginPage,
@@ -52,6 +53,7 @@ class Body extends Component {
           />
           <Route path="/r/search" component={SearchPage}/>
           <Route path="/restaurants/:uri" component={Restaurant} />
+          <AuthenticatedRoute path="/feed" exact component={FeedPage}/>
           <AuthenticatedRoute path="/meetups" exact component={Meetups} />
           <AuthenticatedRoute path="/logout" component={LogoutPage} />
           <AuthenticatedRoute path="/meetups/:uri" component={MeetupWrapper} />

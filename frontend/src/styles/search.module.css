@@ -5,6 +5,12 @@
     flex-direction: row;
 }
 
+.header{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
 .mobileSearch{
     flex-direction: column;
     height: calc(100% - 50px);
@@ -12,10 +18,11 @@
 
 .mobileShow{
     width: 100%;
+    display: block;
 }
 
 .mobileHide{
-    display: none;
+    display: none !important;
 }
 
 .chip {
@@ -44,11 +51,10 @@
 
 /* Filters */
 .searchConfig {
+    overflow-y: auto;
     flex: 1;
     height: 100%;
     padding: 1.5rem 1rem 1.5rem 2rem;
-    overflow-y: auto;
-    overflow-x: hidden;
 }
 
 .searchConfig::-webkit-scrollbar{
@@ -101,22 +107,29 @@
 /* Results */
 
 .resultsWrapper {
+    display: flex;
+    flex-direction: column;
     overflow-y: auto;
     flex: 3;
     height: 100%;
-    padding-right: 2rem;
-    padding-left: 1rem;
-    padding-bottom: 1rem;
+    padding: 0 2rem 1rem 1rem;
 }
 
 .resultsWrapper::-webkit-scrollbar{
     display: none;
 }
 
+.results {
+    flex: 1;
+}
+
 .resultsPagination {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    align-self: flex-end; 
+    width: 100%;
+    
 }
 
 .resultsCount {
@@ -160,6 +173,11 @@
     cursor: pointer;
 }
 
+.resultWrapper{
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
 .cardWrapper {
     display: flex;
     width: 100%;
@@ -171,6 +189,8 @@
     min-width: 600px;
     color: var(--grey-text);
     font-weight: 500;
+    background: white;
+    border-radius: 10px;
 }
 
 .cardWrapper:hover{
@@ -484,4 +504,20 @@
 .mapChip{
     margin-left: 0;
     margin-right: 5px;
+}
+
+.mapMeetupName {
+    font-size: 1.1rem;
+    padding-bottom: .5rem;
+    border-bottom: var(--border-separator);
+    margin-bottom: .5rem;
+}
+
+.mapMeetupEntry{
+    display: flex;
+    align-items: center;
+}
+
+.mapMeetupInfo{
+    margin-left: 5px;
 }

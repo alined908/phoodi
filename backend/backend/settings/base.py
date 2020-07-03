@@ -16,13 +16,12 @@ INSTALLED_APPS = [
     "django_elasticsearch_dsl",
     'django_elasticsearch_dsl_drf',
     "search",
+    'social',
     "djoser",
-    'drf_yasg',
     "corsheaders",
     "channels",
     "meetup",
-    "storages",
-    "notifications",
+    "storages"
 ]
 
 ASGI_APPLICATION = "backend.routing.application"
@@ -73,9 +72,9 @@ AUTH_USER_MODEL = "meetup.User"
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
