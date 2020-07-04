@@ -1,7 +1,11 @@
 # Phoodi [![Build Status](https://travis-ci.com/alined908/phoodi.svg?token=PvKqjKHMMeoZSCY5YeNS&branch=master)](https://travis-ci.com/github/alined908/phoodi)
 A work in progress app for foodies - **Prototype** @ https://phoodie.me
 
-[![](https://i1.wp.com/9to5google.com/wp-content/uploads/sites/4/2018/09/youtube_logo_dark.jpg?w=2000&quality=82&strip=all&ssl=1)](https://www.youtube.com/watch?v=TxC_xeaN2mY)
+**Pictures**
+![meetups](https://user-images.githubusercontent.com/47507106/86501446-c72d7d00-bd4d-11ea-90cb-bbf8e9af03b0.png)
+![restaurants](https://user-images.githubusercontent.com/47507106/86501449-c8f74080-bd4d-11ea-8b27-d042e3555b1c.png)
+![meetup](https://user-images.githubusercontent.com/47507106/86501450-ca286d80-bd4d-11ea-9982-124c5a02e4fe.png)
+![home](https://user-images.githubusercontent.com/47507106/86501452-cb599a80-bd4d-11ea-9c69-3ca95072d8f4.png)
 
 ## Features
 - Search restaurants near specified location
